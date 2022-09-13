@@ -1,0 +1,13 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.renderWhitespace": "boundary",
+        "editor.fontSize": 12,
+        "terminal.integrated.fontSize": 12,
+        "cmake.buildDirectory": "${workspaceFolder}/target",
+    },
+}
