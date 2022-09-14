@@ -1,7 +1,7 @@
 #pragma once
 #ifndef HD_INC_OSLAYER_DEFINES_H
 #define HD_INC_OSLAYER_DEFINES_H
-#include "CompilerDefines.h"
+#include "compiler_defines.h"
 
 #if defined(HD_OS_WINDOWS)
 #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)

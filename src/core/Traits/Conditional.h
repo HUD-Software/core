@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TRAITS_CONDITIONAL_H
-#define HD_INC_OSLAYER_TRAITS_CONDITIONAL_H
+#ifndef HD_INC_OSLAYER_traits_CONDITIONAL_H
+#define HD_INC_OSLAYER_traits_CONDITIONAL_H
 
 namespace hud {
 
@@ -20,4 +20,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TRAITS_CONDITIONAL_H
+#endif // HD_INC_OSLAYER_traits_CONDITIONAL_H

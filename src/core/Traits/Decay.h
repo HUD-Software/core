@@ -1,13 +1,13 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TRAITS_DECAY_H
-#define HD_INC_OSLAYER_TRAITS_DECAY_H
-#include "RemoveReference.h"
-#include "Conditional.h"
-#include "IsArray.h"
-#include "RemoveExtent.h"
-#include "IsFunction.h"
-#include "AddPointer.h"
-#include "RemoveCV.h"
+#ifndef HD_INC_OSLAYER_traits_DECAY_H
+#define HD_INC_OSLAYER_traits_DECAY_H
+#include "remove_reference.h"
+#include "conditional.h"
+#include "is_array.h"
+#include "remove_extent.h"
+#include "is_function.h"
+#include "add_pointer.h"
+#include "remove_cv.h"
 
 namespace hud {
 
@@ -41,4 +41,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TRAITS_DECAY_H
+#endif // HD_INC_OSLAYER_traits_DECAY_H

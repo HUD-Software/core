@@ -1,7 +1,7 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TEMPLATES_DECLVAL_H
-#define HD_INC_OSLAYER_TEMPLATES_DECLVAL_H
-#include "../Traits/AddRValueReference.h"
+#ifndef HD_INC_OSLAYER_templates_DECLVAL_H
+#define HD_INC_OSLAYER_templates_DECLVAL_H
+#include "../traits/add_rvalue_reference.h"
 
 namespace hud {
 
@@ -16,4 +16,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TEMPLATES_DECLVAL_H
+#endif // HD_INC_OSLAYER_templates_DECLVAL_H

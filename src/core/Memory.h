@@ -1,40 +1,40 @@
 #pragma once
 #ifndef HD_INC_OSABSTRACTIONLAYER_MEMORY_H
 #define HD_INC_OSABSTRACTIONLAYER_MEMORY_H
-#include "Traits/IsConstructible.h"
-#include "Traits/IsNothrowConstructible.h"
-#include "Traits/IsDefaultConstructible.h"
-#include "Traits/IsTriviallyDefaultConstructible.h"
-#include "Traits/IsNothrowDefaultConstructible.h"
-#include "Traits/IsDestructible.h"
-#include "Traits/IsTriviallyDestructible.h"
-#include "Traits/IsNothrowDestructible.h"
-#include "Traits/IsCopyConstructible.h"
-#include "Traits/IsBitwiseCopyConstructible.h"
-#include "Traits/IsNothrowCopyConstructible.h"
-#include "Traits/IsMoveConstructible.h"
-#include "Traits/IsBitwiseMoveConstructible.h"
-#include "Traits/IsNothrowMoveConstructible.h"
-#include "Traits/IsCopyAssignable.h"
-#include "Traits/IsBitwiseCopyAssignable.h"
-#include "Traits/IsNothrowCopyAssignable.h"
-#include "Traits/IsMoveAssignable.h"
-#include "Traits/IsBitwiseMoveAssignable.h"
-#include "Traits/IsNothrowMoveAssignable.h"
-#include "Traits/IsBitwiseComparable.h"
-#include "Traits/IsComparableWithEqual.h"
-#include "Traits/IsComparableWithNotEqual.h"
-#include "Traits/IsPointer.h"
+#include "traits/is_constructible.h"
+#include "traits/is_nothrow_constructible.h"
+#include "traits/is_default_constructible.h"
+#include "traits/is_trivially_default_constructible.h"
+#include "traits/is_nothrow_default_constructible.h"
+#include "traits/is_destructible.h"
+#include "traits/is_trivially_destructible.h"
+#include "traits/is_nothrow_destructible.h"
+#include "traits/is_copy_constructible.h"
+#include "traits/is_bitwise_copy_constructible.h"
+#include "traits/is_nothrow_copy_constructible.h"
+#include "traits/is_move_constructible.h"
+#include "traits/is_bitwise_move_constructible.h"
+#include "traits/is_nothrow_move_constructible.h"
+#include "traits/is_copy_assignable.h"
+#include "traits/is_bitwise_copy_assignable.h"
+#include "traits/is_nothrow_copy_assignable.h"
+#include "traits/is_move_assignable.h"
+#include "traits/is_bitwise_move_assignable.h"
+#include "traits/is_nothrow_move_assignable.h"
+#include "traits/is_bitwise_comparable.h"
+#include "traits/is_comparable_with_equal.h"
+#include "traits/is_comparable_with_not_equal.h"
+#include "traits/is_pointer.h"
 
-#include "Templates/Move.h"
-#include "Templates/Forward.h"
+#include "templates/move.h"
+#include "templates/forward.h"
 
 #include <memory> // std::construct_at
 
 #if defined(HD_OS_WINDOWS)
-#include "OSWindows/WindowsMemory.h"
+#include "os_windows/memory.h"
 #elif defined(HD_OS_LINUX)
-#include "OSLinux/LinuxMemory.h"
+#include "os_linux/memory.h"
 #else
 #error Targeted OS not supported
 #endif

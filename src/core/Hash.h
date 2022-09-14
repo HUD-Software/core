@@ -1,12 +1,12 @@
 #pragma once
 #ifndef HD_INC_OSLAYER_HASH_H
 #define HD_INC_OSLAYER_HASH_H
-#include "Traits/IsEnum.h"
-#include "Traits/IsPointer.h"
-#include "Traits/UnderlyingType.h"
-#include "Traits/IsIntegral.h"
-#include "Hash/CityHash.h"
-#include "Templates/BitCast.h"
+#include "traits/is_enum.h"
+#include "traits/is_pointer.h"
+#include "traits/underlying_type.h"
+#include "traits/is_integral.h"
+#include "hash/city_hash.h"
+#include "templates/bit_cast.h"
 
 namespace hud {
 

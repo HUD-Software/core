@@ -1,11 +1,11 @@
 #pragma once
 #ifndef HD_INC_OSLAYER_HEAP_BUFFER_H
 #define HD_INC_OSLAYER_HEAP_BUFFER_H
-#include "../Traits/AddLValueReference.h"
-#include "../Traits/AddConst.h"
-#include "../Assert.h"
-#include "../Iterators/RandomAccessIterator.h"
-#include "../Slice.h"
+#include "../traits/add_lvalue_reference.h"
+#include "../traits/add_const.h"
+#include "../assert.h"
+#include "../iterators/random_access_iterator.h"
+#include "../slice.h"
 
 namespace hud {
 

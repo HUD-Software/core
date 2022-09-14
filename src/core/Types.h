@@ -1,12 +1,12 @@
 #pragma once
 #ifndef HD_INC_OSLAYER_TYPES_H
 #define HD_INC_OSLAYER_TYPES_H
-#include "Compilation.h"
+#include "compilation.h"
 
 #if defined(HD_OS_WINDOWS)
-#include "OSWindows/WindowsTypes.h"
+#include "os_windows/types.h"
 #elif defined(HD_OS_LINUX)
-#include "OSLinux/LinuxTypes.h"
+#include "os_linux/types.h"
 #else
 #error Targeted OS not supported
 #endif

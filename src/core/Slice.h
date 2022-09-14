@@ -1,10 +1,10 @@
 #pragma once
 #ifndef HD_INC_OSLAYER_SLICE_H
 #define HD_INC_OSLAYER_SLICE_H
-//#include "Templates/Swap.h"
-#include "Assert.h"
-#include "Iterators/RandomAccessIterator.h"
-#include "Traits/IsUnsigned.h"
+//#include "templates/swap.h"
+#include "assert.h"
+#include "iterators/random_access_iterator.h"
+#include "traits/is_unsigned.h"
 
 namespace hud {
 

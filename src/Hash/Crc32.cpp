@@ -1,6 +1,6 @@
-#include <OSLayer/Minimal.h>
-#include <OSLayer/Hash/Crc32.h>
-#include <OSLayer/Memory.h>
+#include <core/minimal.h>
+#include <core/hash/crc32.h>
+#include <core/memory.h>
 
 namespace hud::Hash{
 

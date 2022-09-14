@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TEMPLATES_LESS_H
-#define HD_INC_OSLAYER_TEMPLATES_LESS_H
+#ifndef HD_INC_OSLAYER_templates_LESS_H
+#define HD_INC_OSLAYER_templates_LESS_H
 
 namespace hud {
 
@@ -38,4 +38,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TEMPLATES_LESS_H
+#endif // HD_INC_OSLAYER_templates_LESS_H

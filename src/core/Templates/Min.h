@@ -1,7 +1,7 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TEMPLATES_MIN_H
-#define HD_INC_OSLAYER_TEMPLATES_MIN_H
-#include "Less.h"
+#ifndef HD_INC_OSLAYER_templates_MIN_H
+#define HD_INC_OSLAYER_templates_MIN_H
+#include "less.h"
 
 namespace hud {
 
@@ -14,4 +14,4 @@ namespace hud {
 } // namespace hud 
 
 
-#endif // HD_INC_OSLAYER_TEMPLATES_MIN_H
+#endif // HD_INC_OSLAYER_templates_MIN_H

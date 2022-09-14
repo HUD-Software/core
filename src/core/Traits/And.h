@@ -1,8 +1,8 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TRAITS_ADD_H
-#define HD_INC_OSLAYER_TRAITS_ADD_H
-#include "Conditional.h"
-#include "IntegralConstant.h"
+#ifndef HD_INC_OSLAYER_traits_ADD_H
+#define HD_INC_OSLAYER_traits_ADD_H
+#include "conditional.h"
+#include "integral_constant.h"
 
 namespace hud {
 
@@ -35,4 +35,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TRAITS_ADD_H
+#endif // HD_INC_OSLAYER_traits_ADD_H

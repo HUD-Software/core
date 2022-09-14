@@ -1,9 +1,9 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TEMPLATES_FORWARD_H
-#define HD_INC_OSLAYER_TEMPLATES_FORWARD_H
-#include "../Traits/RemoveReference.h"
-#include "../Traits/Not.h"
-#include "../Traits/IsReference.h"
+#ifndef HD_INC_OSLAYER_templates_FORWARD_H
+#define HD_INC_OSLAYER_templates_FORWARD_H
+#include "../traits/remove_reference.h"
+#include "../traits/not.h"
+#include "../traits/is_reference.h"
 
 namespace hud {
 
@@ -38,4 +38,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TEMPLATES_FORWARD_H
+#endif // HD_INC_OSLAYER_templates_FORWARD_H

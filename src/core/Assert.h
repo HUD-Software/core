@@ -1,8 +1,8 @@
 #pragma once
 #ifndef HD_INC_OSLAYER_ASSERT_H
 #define HD_INC_OSLAYER_ASSERT_H
-#include "Debugger.h"
-#include "Traits/IsConstantEvaluated.h"
+#include "debugger.h"
+#include "traits/is_constant_evaluated.h"
 
 namespace hud {
 

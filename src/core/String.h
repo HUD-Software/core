@@ -1,7 +1,7 @@
 #pragma once
 #ifndef HUD_INC_OSLAYER_STRING_H
 #define HUD_INC_OSLAYER_STRING_H
-#include "Array.h"
+#include "array.h"
 
 namespace hud {
 

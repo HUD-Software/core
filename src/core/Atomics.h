@@ -3,9 +3,9 @@
 #define HD_INC_OSLAYER_ATOMICS_H
 
 #if defined(HD_OS_WINDOWS)
-#include "OSWindows/WindowsAtomics.h"
+#include "os_windows/atomics.h"
 #elif defined(HD_OS_LINUX)
-#include "OSLinux/LinuxAtomics.h"
+#include "os_linux/atomics.h"
 #else
 #error Targeted OS not supported
 #endif

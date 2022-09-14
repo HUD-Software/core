@@ -1,8 +1,8 @@
 #pragma once
 #ifndef HD_INC_OSLAYER_MATH_H
 #define HD_INC_OSLAYER_MATH_H
-#include "Traits/MakeUnsigned.h"
-#include "Traits/IsIntegral.h"
+#include "traits/make_unsigned.h"
+#include "traits/is_integral.h"
 
 namespace hud {
     struct Math {

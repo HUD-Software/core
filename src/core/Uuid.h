@@ -3,9 +3,9 @@
 #define HD_INC_OSLAYER_UUID_H
 
 #if defined(HD_OS_WINDOWS)
-#include "OSWindows/WindowsUuid.h"
+#include "os_windows/uuid.h"
 #elif defined(HD_OS_LINUX)
-#include "OSLinux/LinuxUuid.h"
+#include "os_linux/uuid.h"
 #else
 #error Targeted OS not supported
 #endif

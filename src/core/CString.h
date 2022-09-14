@@ -3,9 +3,9 @@
 #define HD_INC_OSLAYER_CSTRING_H
 
 #if defined(HD_OS_WINDOWS)
-#include "OSWindows/WindowsCString.h"
+#include "os_windows/cstring.h"
 #elif defined(HD_OS_LINUX)
-#include "OSLinux/LinuxCString.h"
+#include "os_linux/cstring.h"
 #else
 #error Targeted OS not supported
 #endif

@@ -1,14 +1,14 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TEMPLATES_SWAP_H
-#define HD_INC_OSLAYER_TEMPLATES_SWAP_H
-#include "Move.h"
-#include "../Traits/IsMoveConstructible.h"
-#include "../Traits/IsMoveAssignable.h"
-#include "../Traits/IsNothrowMoveConstructible.h"
-#include "../Traits/IsNothrowMoveAssignable.h"
-#include "../Traits/IsBitwiseMoveConstructible.h"
-#include "../Traits/IsBitwiseCopyConstructible.h"
-#include "../Traits/IsDefaultConstructible.h"
+#ifndef HD_INC_OSLAYER_templates_SWAP_H
+#define HD_INC_OSLAYER_templates_SWAP_H
+#include "move.h"
+#include "../traits/is_move_constructible.h"
+#include "../traits/is_move_assignable.h"
+#include "../traits/is_nothrow_move_constructible.h"
+#include "../traits/is_nothrow_move_assignable.h"
+#include "../traits/is_bitwise_move_constructible.h"
+#include "../traits/is_bitwise_copy_constructible.h"
+#include "../traits/is_default_constructible.h"
 
 namespace hud {
 
@@ -42,4 +42,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TEMPLATES_SWAP_H
+#endif // HD_INC_OSLAYER_templates_SWAP_H

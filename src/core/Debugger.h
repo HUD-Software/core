@@ -3,9 +3,9 @@
 #define HD_INC_OSLAYER_DEBUGGER_H
 
 #if defined(HD_OS_WINDOWS)
-#include "OSWindows/WindowsDebugger.h"
+#include "os_windows/debugger.h"
 #elif defined(HD_OS_LINUX)
-#include "OSLinux/LinuxDebugger.h"
+#include "os_linux/debugger.h"
 #else
 #error Targeted OS not supported
 #endif

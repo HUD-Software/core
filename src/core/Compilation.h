@@ -1,7 +1,7 @@
 #pragma once
 #ifndef HD_INC_OSLAYER_COMPILATION_H
 #define HD_INC_OSLAYER_COMPILATION_H
-#include "Defines.h"
+#include "defines.h"
 
 namespace hud {
 

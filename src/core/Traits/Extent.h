@@ -1,7 +1,7 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TRAITS_EXTENT_H
-#define HD_INC_OSLAYER_TRAITS_EXTENT_H
-#include "IntegralConstant.h"
+#ifndef HD_INC_OSLAYER_traits_EXTENT_H
+#define HD_INC_OSLAYER_traits_EXTENT_H
+#include "integral_constant.h"
 
 namespace hud {
 
@@ -33,4 +33,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TRAITS_EXTENT_H
+#endif // HD_INC_OSLAYER_traits_EXTENT_H
