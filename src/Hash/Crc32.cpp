@@ -221,34 +221,34 @@ namespace hud::hash{
 
     bool crc32::is_lookup_table_values_correct() noexcept {
         // Generate the Crc32 Lookup table with the correct polynomial
-        u32 GeneratedCrc32Lookup[8][256] = {};
+        u32 generated_crc32_lookup[8][256] = {};
 
         for (unsigned int i = 0; i <= 0xFF; i++) { 
             uint32_t crc = i;   
             for (unsigned int j = 0; j < 8; j++) {
                 crc = (crc >> 1) ^ ((crc & 1) *hud::memory::reverse_bits(Polynomial));
             }
-            GeneratedCrc32Lookup[0][i] = crc;
+            generated_crc32_lookup[0][i] = crc;
         }
 
         for (unsigned int i = 0; i <= 0xFF; i++) {   
-            GeneratedCrc32Lookup[1][i] = (GeneratedCrc32Lookup[0][i] >> 8) ^ GeneratedCrc32Lookup[0][GeneratedCrc32Lookup[0][i] & 0xFF];
-            GeneratedCrc32Lookup[2][i] = (GeneratedCrc32Lookup[1][i] >> 8) ^ GeneratedCrc32Lookup[0][GeneratedCrc32Lookup[1][i] & 0xFF];
-            GeneratedCrc32Lookup[3][i] = (GeneratedCrc32Lookup[2][i] >> 8) ^ GeneratedCrc32Lookup[0][GeneratedCrc32Lookup[2][i] & 0xFF];
-            GeneratedCrc32Lookup[4][i] = (GeneratedCrc32Lookup[3][i] >> 8) ^ GeneratedCrc32Lookup[0][GeneratedCrc32Lookup[3][i] & 0xFF];
-            GeneratedCrc32Lookup[5][i] = (GeneratedCrc32Lookup[4][i] >> 8) ^ GeneratedCrc32Lookup[0][GeneratedCrc32Lookup[4][i] & 0xFF];
-            GeneratedCrc32Lookup[6][i] = (GeneratedCrc32Lookup[5][i] >> 8) ^ GeneratedCrc32Lookup[0][GeneratedCrc32Lookup[5][i] & 0xFF];
-            GeneratedCrc32Lookup[7][i] = (GeneratedCrc32Lookup[6][i] >> 8) ^ GeneratedCrc32Lookup[0][GeneratedCrc32Lookup[6][i] & 0xFF];
+            generated_crc32_lookup[1][i] = (generated_crc32_lookup[0][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[0][i] & 0xFF];
+            generated_crc32_lookup[2][i] = (generated_crc32_lookup[1][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[1][i] & 0xFF];
+            generated_crc32_lookup[3][i] = (generated_crc32_lookup[2][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[2][i] & 0xFF];
+            generated_crc32_lookup[4][i] = (generated_crc32_lookup[3][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[3][i] & 0xFF];
+            generated_crc32_lookup[5][i] = (generated_crc32_lookup[4][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[4][i] & 0xFF];
+            generated_crc32_lookup[6][i] = (generated_crc32_lookup[5][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[5][i] & 0xFF];
+            generated_crc32_lookup[7][i] = (generated_crc32_lookup[6][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[6][i] & 0xFF];
         }
 
 		// Assert that all values in the lookup table are corrects
         for (u32 i = 0; i < 8; i++) {
             for (u32 j = 0; j < 256; j++) {
-                check(GeneratedCrc32Lookup[i][j] == CRC32_LOOKUP[i][j]);
+                check(generated_crc32_lookup[i][j] == CRC32_LOOKUP[i][j]);
             }
         }
         // Compare with the static lookup table
-        return hud::memory::compare_equal(CRC32_LOOKUP, GeneratedCrc32Lookup);
+        return hud::memory::compare_equal(CRC32_LOOKUP, generated_crc32_lookup);
     }
 
 } // namespace hud
