@@ -1,0 +1,10 @@
+^C:\HUD-SOFTWARE\CORE\TARGET\CMAKEFILES\E0A112C2AADA73EEE4E25E2644082724\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/HUD-Software/core -BC:/HUD-Software/core/target --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/HUD-Software/core/target/Core.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,0 +1,3 @@
+C:/HUD-Software/core/target/CMakeFiles/Core.dir
+C:/HUD-Software/core/target/CMakeFiles/ALL_BUILD.dir
+C:/HUD-Software/core/target/CMakeFiles/ZERO_CHECK.dir
