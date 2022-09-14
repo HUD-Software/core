@@ -1,22 +1,22 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_UNDERLYING_TYPE_H
-#define HD_INC_OSLAYER_traits_UNDERLYING_TYPE_H
+#ifndef HD_INC_CORE_TRAITS_UNDERLYING_TYPE_H
+#define HD_INC_CORE_TRAITS_UNDERLYING_TYPE_H
 
 namespace hud {
 
     /*
-    * Retrieves the underlying type of enum type T without const volatile qualifiers.
+    * Retrieves the underlying type of enum type type_t without const volatile qualifiers.
     * The underlying type of an enum declared with enum class is int unless a different type is specified on declaration.
     */
-    template<typename T>
-    struct UnderlyingType {
-        using Type = __underlying_type(T);
+    template<typename type_t>
+    struct underlying_type {
+        using type = __underlying_type(type_t);
     };
 
-    /* Equivalent of typename UnderlyingType<T>::Type. */
-    template<typename T>
-    using UnderlyingTypeT = typename UnderlyingType<T>::Type;
+    /* Equivalent of typename underlying_type<type_t>::type. */
+    template<typename type_t>
+    using underlying_type_t = typename underlying_type<type_t>::type;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_UNDERLYING_TYPE_H
+#endif // HD_INC_CORE_TRAITS_UNDERLYING_TYPE_H

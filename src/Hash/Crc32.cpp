@@ -2,12 +2,12 @@
 #include <core/hash/crc32.h>
 #include <core/memory.h>
 
-namespace hud::Hash{
+namespace hud::hash{
 
     /** CRC-32 polynomial 
 	* This is the CRC-32 reversed polynomial.
     * Use by ( Source : Wikipedia https://en.wikipedia.org/wiki/Cyclic_redundancy_check#Commonly_used_and_standardized_CRCs ) :
-    * ISO 3309 (HDLC), ANSI X3.66 (ADCCP), FIPS PUB 71, FED-STD-1003, ITU-T V.42, ISO/IEC/IEEE 802-3 (Ethernet), SATA, MPEG-2, PKZIP, Gzip, Bzip2, POSIX cksum,PNG, ZMODEM, many others 
+    * ISO 3309 (HDLC), ANSI X3.66 (ADCCP), FIPS PUB 71, FED-STD-1003, ITU-type_t V.42, ISO/IEC/IEEE 802-3 (Ethernet), SATA, MPEG-2, PKZIP, Gzip, Bzip2, POSIX cksum,PNG, ZMODEM, many others 
 	*/
     static constexpr u32 Polynomial = 0x04c11db7;
 
@@ -18,7 +18,7 @@ namespace hud::Hash{
     * Adapation from https://create.stephan-brumme.com/crc32/
     * LookUpTable generated with polynomial 0x04c11db7
     */
-    static const u32 Crc32Lookup[8][256] =
+    static const u32 CRC32_LOOKUP[8][256] =
     {
 		{
 			0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07, 0x90bf1d91,
@@ -166,7 +166,7 @@ namespace hud::Hash{
 		}
     };
 
-    u32 Crc32::hash(const u8* buffer, usize count, const u32 seed) noexcept {
+    u32 crc32::hash(const u8* buffer, usize count, const u32 seed) noexcept {
         // Slicing-by-8 intel algorithm
         // http://slicing-by-8.sourceforge.net/
         // Alignement optimisation come from https://matt.sh/redis-crcspeed
@@ -174,37 +174,37 @@ namespace hud::Hash{
         const u8* HD_RESTRICT current_u8 = buffer;
 
         // Consume all bits until we are 8 bits aligned
-        while (count && !Memory::is_pointer_aligned(current_u8, 8)) {
-            crc = Crc32Lookup[0][(crc ^ *current_u8++) & 0xff] ^ (crc >> 8);
+        while (count && !memory::is_pointer_aligned(current_u8, 8)) {
+            crc = CRC32_LOOKUP[0][(crc ^ *current_u8++) & 0xff] ^ (crc >> 8);
             count--;
         }
 
         // Process eight bytes at once (Slicing-by-8)
         const u32* current_u32 = reinterpret_cast<const u32*>(current_u8);
         while (count >= 8) {
-            if constexpr (Compilation::is_endianness(EEndianness::big)) {
-                u32 one = *current_u32++ ^ Memory::reverse(crc);
+            if constexpr (compilation::is_endianness(endianness_e::big)) {
+                u32 one = *current_u32++ ^hud::memory::reverse(crc);
                 u32 two = *current_u32++;
-                crc = Crc32Lookup[0][two & 0xFF] ^
-					Crc32Lookup[1][(two >> 8) & 0xFF] ^
-					Crc32Lookup[2][(two >> 16) & 0xFF] ^
-					Crc32Lookup[3][(two >> 24) & 0xFF] ^
-					Crc32Lookup[4][one & 0xFF] ^
-					Crc32Lookup[5][(one >> 8) & 0xFF] ^
-					Crc32Lookup[6][(one >> 16) & 0xFF] ^
-					Crc32Lookup[7][(one >> 24) & 0xFF];
+                crc = CRC32_LOOKUP[0][two & 0xFF] ^
+					CRC32_LOOKUP[1][(two >> 8) & 0xFF] ^
+					CRC32_LOOKUP[2][(two >> 16) & 0xFF] ^
+					CRC32_LOOKUP[3][(two >> 24) & 0xFF] ^
+					CRC32_LOOKUP[4][one & 0xFF] ^
+					CRC32_LOOKUP[5][(one >> 8) & 0xFF] ^
+					CRC32_LOOKUP[6][(one >> 16) & 0xFF] ^
+					CRC32_LOOKUP[7][(one >> 24) & 0xFF];
             }
             else {
                 u32 one = *current_u32++ ^ crc;
                 u32 two = *current_u32++;
-                crc = Crc32Lookup[0][(two >> 24) & 0xFF] ^
-                    Crc32Lookup[1][(two >> 16) & 0xFF] ^
-                    Crc32Lookup[2][(two >> 8) & 0xFF] ^
-                    Crc32Lookup[3][two & 0xFF] ^
-                    Crc32Lookup[4][(one >> 24) & 0xFF] ^
-                    Crc32Lookup[5][(one >> 16) & 0xFF] ^
-                    Crc32Lookup[6][(one >> 8) & 0xFF] ^
-                    Crc32Lookup[7][one & 0xFF];
+                crc = CRC32_LOOKUP[0][(two >> 24) & 0xFF] ^
+                    CRC32_LOOKUP[1][(two >> 16) & 0xFF] ^
+                    CRC32_LOOKUP[2][(two >> 8) & 0xFF] ^
+                    CRC32_LOOKUP[3][two & 0xFF] ^
+                    CRC32_LOOKUP[4][(one >> 24) & 0xFF] ^
+                    CRC32_LOOKUP[5][(one >> 16) & 0xFF] ^
+                    CRC32_LOOKUP[6][(one >> 8) & 0xFF] ^
+                    CRC32_LOOKUP[7][one & 0xFF];
             }
             count -= 8;
         }
@@ -212,21 +212,21 @@ namespace hud::Hash{
         // Consume remaining 1 to 7 bytes (standard algorithm)
         current_u8 = reinterpret_cast<const uint8_t*>(current_u32);
 		while (count-- != 0) {
-			crc = (crc >> 8) ^ Crc32Lookup[0][(crc & 0xFF) ^ *current_u8];
+			crc = (crc >> 8) ^ CRC32_LOOKUP[0][(crc & 0xFF) ^ *current_u8];
 			current_u8++;
 		}
 
         return ~crc; 
     }
 
-    bool Crc32::is_lookup_table_values_correct() noexcept {
+    bool crc32::is_lookup_table_values_correct() noexcept {
         // Generate the Crc32 Lookup table with the correct polynomial
         u32 GeneratedCrc32Lookup[8][256] = {};
 
         for (unsigned int i = 0; i <= 0xFF; i++) { 
             uint32_t crc = i;   
             for (unsigned int j = 0; j < 8; j++) {
-                crc = (crc >> 1) ^ ((crc & 1) * Memory::reverse_bits(Polynomial));
+                crc = (crc >> 1) ^ ((crc & 1) *hud::memory::reverse_bits(Polynomial));
             }
             GeneratedCrc32Lookup[0][i] = crc;
         }
@@ -244,11 +244,11 @@ namespace hud::Hash{
 		// Assert that all values in the lookup table are corrects
         for (u32 i = 0; i < 8; i++) {
             for (u32 j = 0; j < 256; j++) {
-                check(GeneratedCrc32Lookup[i][j] == Crc32Lookup[i][j]);
+                check(GeneratedCrc32Lookup[i][j] == CRC32_LOOKUP[i][j]);
             }
         }
         // Compare with the static lookup table
-        return Memory::compare_equal(Crc32Lookup, GeneratedCrc32Lookup);
+        return hud::memory::compare_equal(CRC32_LOOKUP, GeneratedCrc32Lookup);
     }
 
 } // namespace hud

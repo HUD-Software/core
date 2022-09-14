@@ -1,31 +1,31 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_UNSIGNED_H
-#define HD_INC_OSLAYER_traits_IS_UNSIGNED_H
+#ifndef HD_INC_CORE_TRAITS_IS_UNSIGNED_H
+#define HD_INC_CORE_TRAITS_IS_UNSIGNED_H
 #include "integral_constant.h"
-#include "and.h"
+#include "conjunction.h"
 #include "is_integral.h"
 #include "remove_cv.h"
 namespace hud {
 
     /**
-    * Checks whether T is a unsigned integral type.
-    * A type, T, is considered unsigned by this class if :
+    * Checks whether type_t is a unsigned integral type.
+    * A type, type_t, is considered unsigned by this class if :
     * - It is an unsigned integral or boolean.
-    * - T(0) < T(-1) is true.
+    * - type_t(0) < type_t(-1) is true.
     */
-    template<typename T, bool = IsIntegralV<T>>
-    struct IsUnsigned
-        : FalseType {
+    template<typename type_t, bool = is_integral_v<type_t>>
+    struct is_unsigned
+        : false_type {
     };
-    template<typename T>
-    struct IsUnsigned<T, true>
-        : BoolConstant < RemoveCVT<T>(0) < RemoveCVT<T>(-1) > {
+    template<typename type_t>
+    struct is_unsigned<type_t, true>
+        : bool_constant < remove_cv_t<type_t>(0) < remove_cv_t<type_t>(-1) > {
     };
 
-    /** Equivalent of IsUnsigned<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsUnsignedV = IsUnsigned<T>::Value;
+    /** Equivalent of is_unsigned<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_unsigned_v = is_unsigned<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_UNSIGNED_H
+#endif // HD_INC_CORE_TRAITS_IS_UNSIGNED_H

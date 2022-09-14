@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_LINUX_ATOMICS_H
-#define HD_INC_OSLAYER_OS_LINUX_ATOMICS_H
+#ifndef HD_INC_CORE_OS_LINUX_ATOMICS_H
+#define HD_INC_CORE_OS_LINUX_ATOMICS_H
 #include "../os_common/atomics.h"
 #include "../traits/remove_pointer.h"
 
@@ -8,16 +8,16 @@
 #error This file must be included only when targetting Linux OS
 #endif 
 
-namespace hud::OS::Linux{
+namespace hud::os::linux{
     
-    struct Atomics 
-        : public OS::Common::Atomics {
+    struct atomics 
+        : public os::common::atomics {
 
         /**
         * Establishes a multi-thread fence. Prevents the compiler and CPU from reordering certain types of memory operations around it
         * @param order The memory ordering executed by this fence
         */
-        static void thread_fence(const EMemoryOrder order) noexcept {
+        static void thread_fence(const memory_order_e order) noexcept {
             __atomic_thread_fence(to_gcc_order(order));
         }
 
@@ -27,12 +27,12 @@ namespace hud::OS::Linux{
         * @param order The memory ordering fence applied by this operation. Possible values are relaxed, seq_cst, consume and acquire
         * @return The loaded value of source
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static T load(const T& source, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsIntegralV<T> || IsPointerV<T>) {
-            // Atomic load do not support release and acq_rel memory fence
-            check(order != EMemoryOrder::release);
-            check(order != EMemoryOrder::acq_rel);
+        static type_t load(const type_t& source, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t> || is_pointer_v<type_t>) {
+            // atomic load do not support release and acq_rel memory fence
+            check(order != memory_order_e::release);
+            check(order != memory_order_e::acq_rel);
             return __atomic_load_n(&source, to_gcc_order(order));
         }
 
@@ -42,12 +42,12 @@ namespace hud::OS::Linux{
         * @param value The value to store in destination
         * @param order The memory ordering fence applied by this operation. Possible values are relaxed, seq_cst and release
         */
-        template<typename T>
-        static void store(T& destination, const T value, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsIntegralV<T> || IsPointerV<T>)  {
-            // Atomic store do not support consume, acquire and and acq_rel memory fence
-            check(order != EMemoryOrder::consume);
-            check(order != EMemoryOrder::acquire);
-            check(order != EMemoryOrder::acq_rel);
+        template<typename type_t>
+        static void store(type_t& destination, const type_t value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t> || is_pointer_v<type_t>)  {
+            // atomic store do not support consume, acquire and and acq_rel memory fence
+            check(order != memory_order_e::consume);
+            check(order != memory_order_e::acquire);
+            check(order != memory_order_e::acq_rel);
             __atomic_store_n(&destination, value, to_gcc_order(order));
         }
 
@@ -60,10 +60,10 @@ namespace hud::OS::Linux{
         * @param order The memory ordering fence applied by this operation
         * @return Initial value of the variable referenced by the destination parameter. Equal to expected if the operation is done, new value of destination otherwise.
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static T compare_and_swap(T& destination, const T& expected, const T& value, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsIntegralV<T> || IsPointerV<T>) {
-            check(hud::Memory::is_pointer_aligned(&destination, sizeof(T)));
+        static type_t compare_and_swap(type_t& destination, const type_t& expected, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t> || is_pointer_v<type_t>) {
+            check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
             return __sync_val_compare_and_swap(&destination, expected, value);
         }
 
@@ -77,10 +77,10 @@ namespace hud::OS::Linux{
         * @param order The memory ordering fence applied by this operation
         * @return true if the value is copied to destination, false otherwise.
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static bool compare_and_set(T& destination, T& expected, const T& value, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsIntegralV<T> || IsPointerV<T>) {
-            check(hud::Memory::is_pointer_aligned(&destination, sizeof(T)));
+        static bool compare_and_set(type_t& destination, type_t& expected, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t> || is_pointer_v<type_t>) {
+            check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
             return __atomic_compare_exchange_n(&destination, &expected, value, false, to_gcc_order(order), to_gcc_failure_order(order));
         }
 
@@ -91,10 +91,10 @@ namespace hud::OS::Linux{
         * @param order The memory ordering fence applied by this operation
         * @return Initial value of the variable referenced by the destination parameter.
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static T exchange(T& destination, const T& value, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsIntegralV<T> || IsPointerV<T>) {
-            check(hud::Memory::is_pointer_aligned(&destination, sizeof(T)));
+        static type_t exchange(type_t& destination, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t> || is_pointer_v<type_t>) {
+            check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
             return __atomic_exchange_n(&destination, value, to_gcc_order(order));
         }
 
@@ -106,10 +106,10 @@ namespace hud::OS::Linux{
         * @param order The memory ordering fence applied by this operation
         * @return Initial value of the variable referenced by the addend parameter.
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static T fetch_add(T& addend, const T& to_add, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsIntegralV<T>) {
-            check(hud::Memory::is_pointer_aligned(&addend, sizeof(T)));
+        static type_t fetch_add(type_t& addend, const type_t& to_add, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t>) {
+            check(hud::memory::is_pointer_aligned(&addend, sizeof(type_t)));
             return __atomic_fetch_add(&addend, to_add, to_gcc_order(order));
         }
 
@@ -121,11 +121,11 @@ namespace hud::OS::Linux{
         * @param order The memory ordering fence applied by this operation
         * @return Initial value of the variable referenced by the addend parameter.
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static T fetch_add(T& addend, const isize to_add, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsPointerV<T>) {
-            check(hud::Memory::is_pointer_aligned(&addend, sizeof(T)));
-            const usize ptrdiff_to_add = static_cast<usize>(to_add) * sizeof(hud::RemovePointerT<T>);
+        static type_t fetch_add(type_t& addend, const isize to_add, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_pointer_v<type_t>) {
+            check(hud::memory::is_pointer_aligned(&addend, sizeof(type_t)));
+            const usize ptrdiff_to_add = static_cast<usize>(to_add) * sizeof(hud::remove_pointer_t<type_t>);
             return __atomic_fetch_add(&addend, static_cast<isize>(ptrdiff_to_add), to_gcc_order(order));
         }
 
@@ -137,10 +137,10 @@ namespace hud::OS::Linux{
         * @param order The memory ordering fence applied by this operation
         * @return Initial value of the variable referenced by the subtracted parameter.
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static T fetch_sub(T& subtracted, const T& to_subtract, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsIntegralV<T>) {
-            check(hud::Memory::is_pointer_aligned(&subtracted, sizeof(T)));
+        static type_t fetch_sub(type_t& subtracted, const type_t& to_subtract, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t>) {
+            check(hud::memory::is_pointer_aligned(&subtracted, sizeof(type_t)));
             return __atomic_fetch_sub(&subtracted, to_subtract, to_gcc_order(order));
         }
 
@@ -152,38 +152,38 @@ namespace hud::OS::Linux{
         * @param order The memory ordering fence applied by this operation
         * @return Initial value of the variable referenced by the subtracted parameter.
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static T fetch_sub(T& subtracted, const isize to_subtract, [[maybe_unused]] const EMemoryOrder order = EMemoryOrder::seq_cst) noexcept requires(IsPointerV<T>) {
-            check(hud::Memory::is_pointer_aligned(&subtracted, sizeof(T)));
-            const usize ptrdiff_to_subtract = static_cast<usize>(to_subtract) * sizeof(hud::RemovePointerT<T>);
+        static type_t fetch_sub(type_t& subtracted, const isize to_subtract, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_pointer_v<type_t>) {
+            check(hud::memory::is_pointer_aligned(&subtracted, sizeof(type_t)));
+            const usize ptrdiff_to_subtract = static_cast<usize>(to_subtract) * sizeof(hud::remove_pointer_t<type_t>);
             return __atomic_fetch_sub(&subtracted, static_cast<isize>(ptrdiff_to_subtract), to_gcc_order(order));
         }
 
     private:
 
         private:
-        static inline constexpr i32 to_gcc_order(EMemoryOrder order) {
+        static inline constexpr i32 to_gcc_order(memory_order_e order) {
             // Avoid switch statement to make this a constexpr.
-            return order == EMemoryOrder::relaxed ? __ATOMIC_RELAXED:
-                    (order == EMemoryOrder::acquire ? __ATOMIC_ACQUIRE:
-                    (order == EMemoryOrder::release ? __ATOMIC_RELEASE:
-                    (order == EMemoryOrder::seq_cst ? __ATOMIC_SEQ_CST:
-                    (order == EMemoryOrder::acq_rel ? __ATOMIC_ACQ_REL:
+            return order == memory_order_e::relaxed ? __ATOMIC_RELAXED:
+                    (order == memory_order_e::acquire ? __ATOMIC_ACQUIRE:
+                    (order == memory_order_e::release ? __ATOMIC_RELEASE:
+                    (order == memory_order_e::seq_cst ? __ATOMIC_SEQ_CST:
+                    (order == memory_order_e::acq_rel ? __ATOMIC_ACQ_REL:
                     __ATOMIC_CONSUME))));
         }
-        static inline constexpr i32 to_gcc_failure_order(EMemoryOrder order) {
+        static inline constexpr i32 to_gcc_failure_order(memory_order_e order) {
             // Avoid switch statement to make this a constexpr.
             // This memory order cannot be __ATOMIC_RELEASE nor __ATOMIC_ACQ_REL. It also cannot be a stronger order than that specified by success_memorder. 
-            return order == EMemoryOrder::relaxed ? __ATOMIC_RELAXED:
-                    (order == EMemoryOrder::acquire ? __ATOMIC_ACQUIRE:
-                    (order == EMemoryOrder::release ? __ATOMIC_RELAXED: // failure order cannot be __ATOMIC_RELEASE
-                    (order == EMemoryOrder::seq_cst ? __ATOMIC_SEQ_CST:
-                    (order == EMemoryOrder::acq_rel ? __ATOMIC_ACQUIRE: // failure order cannot be __ATOMIC_ACQ_REL
+            return order == memory_order_e::relaxed ? __ATOMIC_RELAXED:
+                    (order == memory_order_e::acquire ? __ATOMIC_ACQUIRE:
+                    (order == memory_order_e::release ? __ATOMIC_RELAXED: // failure order cannot be __ATOMIC_RELEASE
+                    (order == memory_order_e::seq_cst ? __ATOMIC_SEQ_CST:
+                    (order == memory_order_e::acq_rel ? __ATOMIC_ACQUIRE: // failure order cannot be __ATOMIC_ACQ_REL
                     __ATOMIC_CONSUME))));
         }
     };
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_OS_WINDOWS_ATOMICS_H
+#endif // HD_INC_CORE_OS_WINDOWS_ATOMICS_H

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_DEBUGGER_H
-#define HD_INC_OSLAYER_DEBUGGER_H
+#ifndef HD_INC_CORE_DEBUGGER_H
+#define HD_INC_CORE_DEBUGGER_H
 
 #if defined(HD_OS_WINDOWS)
 #include "os_windows/debugger.h"
@@ -12,14 +12,14 @@
 
 namespace hud {
 
-    /** Provides Debugger operations. */
+    /** Provides debugger operations. */
     #if defined(HD_OS_WINDOWS)
-    using Debugger = OS::Windows::Debugger;
+    using debugger = os::windows::debugger;
     #elif defined(HD_OS_LINUX)
-    using Debugger = OS::Linux::Debugger;
+    using debugger = os::linux::debugger;
     #endif
 
 } // namespace hud
 
 
-#endif // HD_INC_OSLAYER_DEBUGGER_H
+#endif // HD_INC_CORE_DEBUGGER_H

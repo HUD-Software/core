@@ -1,14 +1,14 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_LINUX_DEBUGGER_H
-#define HD_INC_OSLAYER_OS_LINUX_DEBUGGER_H
+#ifndef HD_INC_CORE_OS_LINUX_DEBUGGER_H
+#define HD_INC_CORE_OS_LINUX_DEBUGGER_H
 
 #if !defined(HD_OS_LINUX)
 #error This file must be included only when targetting Linux OS
 #endif 
 
-namespace hud::OS::Linux{
+namespace hud::os::linux{
 
-    struct Debugger {
+    struct debugger {
 
         /** Checks whether the calling process is being debugged by a user-mode debugger. */
         static bool is_present() noexcept;
@@ -31,7 +31,7 @@ namespace hud::OS::Linux{
         /** Break the debugger if the calling process is being debugged by a user-mode debugger. */
         static HD_FORCEINLINE void break_here() noexcept {
             if (is_present()) {
-               if constexpr(hud::Compilation::is_compiler(ECompiler::clang)) {
+               if constexpr(hud::compilation::is_compiler(compiler_e::clang)) {
                     __builtin_debugtrap();
                } else {
                     #if defined(HD_TARGET_X86_FAMILY)
@@ -45,6 +45,6 @@ namespace hud::OS::Linux{
 
     };
 
-} //namespace hud::OS::Windows
+} //namespace hud::os::windows
 
-#endif /* HD_INC_OSLAYER_OS_LINUX_DEBUGGER_H */ 
+#endif /* HD_INC_CORE_OS_LINUX_DEBUGGER_H */ 

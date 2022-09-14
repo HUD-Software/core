@@ -1,15 +1,15 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_LINUX_MEMORY_H
-#define HD_INC_OSLAYER_OS_LINUX_MEMORY_H
+#ifndef HD_INC_CORE_OS_LINUX_MEMORY_H
+#define HD_INC_CORE_OS_LINUX_MEMORY_H
 #include "../os_common/memory.h"
 
 #if !defined(HD_OS_LINUX)
 #error This file must be included only when targetting Linux OS
 #endif 
 
-namespace hud::OS::Linux {
+namespace hud::os::linux {
 
-    struct Memory : public OS::Common::Memory {
+    struct memory : public os::common::memory {
         /**
         * Reverses the order of bytes in an integer.
         * Convert from little-endian to big-endian conversion and inverse.
@@ -71,6 +71,6 @@ namespace hud::OS::Linux {
         }
     };
 
-} // hud::OS::Linux
+} // hud::os::linux
 
-#endif /* HD_INC_OSLAYER_OS_LINUX_MEMORY_H */
+#endif /* HD_INC_CORE_OS_LINUX_MEMORY_H */

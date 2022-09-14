@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_UUID_H
-#define HD_INC_OSLAYER_UUID_H
+#ifndef HD_INC_CORE_UUID_H
+#define HD_INC_CORE_UUID_H
 
 #if defined(HD_OS_WINDOWS)
 #include "os_windows/uuid.h"
@@ -14,13 +14,13 @@ namespace hud {
 
     /** Provides UUID operations. */
     #if defined(HD_OS_WINDOWS)
-    using Uuid = OS::Windows::Uuid;
+    using uuid = os::windows::uuid;
     #elif defined(HD_OS_LINUX)
-    using Uuid = OS::Linux::Uuid;
+    using uuid = os::linux::uuid;
     #else
     #error Unsupported platform
     #endif
 
 } // namespace hud 
 
-#endif // HD_INC_OSLAYER_UUID_H
+#endif // HD_INC_CORE_UUID_H

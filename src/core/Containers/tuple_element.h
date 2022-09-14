@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TUPLE_ELEMENT_H
-#define HD_INC_OSLAYER_TUPLE_ELEMENT_H
+#ifndef HD_INC_CORE_TUPLE_ELEMENT_H
+#define HD_INC_CORE_TUPLE_ELEMENT_H
 #include "../traits/add_const.h"
 #include "../traits/add_volatile.h"
 #include "../traits/add_cv.h"
@@ -16,17 +16,17 @@ namespace hud {
     * @tparam index The index to get
     * @tparam TupleLike The tuple-like type
     */
-    template<const usize index, typename TupleType>
-    struct TupleElement;
+    template<const usize index, typename tuple_t>
+    struct tuple_element;
 
     /**
     * Specialization for const qualified tuple-like objects.
     * @tparam index The index to get
     * @tparam TupleLike The tuple-like type
     */
-    template<const usize index, typename TupleType>
-    struct TupleElement<index, const TupleType>
-        : AddConst<typename TupleElement<index, TupleType>::Type> {
+    template<const usize index, typename tuple_t>
+    struct tuple_element<index, const tuple_t>
+        : add_const<typename tuple_element<index, tuple_t>::type> {
     };
 
     /**
@@ -34,9 +34,9 @@ namespace hud {
     * @tparam index The index to get
     * @tparam TupleLike The tuple-like type
     */
-    template<const usize index, typename TupleType>
-    struct TupleElement<index, volatile TupleType> 
-        : AddVolatile<typename TupleElement<index, TupleType>::Type> {
+    template<const usize index, typename tuple_t>
+    struct tuple_element<index, volatile tuple_t> 
+        : add_volatile<typename tuple_element<index, tuple_t>::type> {
     };
 
     /**
@@ -44,15 +44,15 @@ namespace hud {
     * @tparam at The index to get
     * @tparam TupleLike The tuple-like type
     */
-    template<const usize index, typename TupleType>
-    struct TupleElement<index, const volatile TupleType> 
-        : AddCV<typename TupleElement<index, TupleType>::Type> {
+    template<const usize index, typename tuple_t>
+    struct tuple_element<index, const volatile tuple_t> 
+        : add_cv<typename tuple_element<index, tuple_t>::type> {
     };
 
-    /** Equalivent of typename TupleElement<at, TupleType>::Type. */
-    template<const usize index, typename TupleType>
-    using TupleElementT = typename TupleElement<index, TupleType>::Type;
+    /** Equalivent of typename tuple_element<at, tuple_t>::type. */
+    template<const usize index, typename tuple_t>
+    using tuple_element_t = typename tuple_element<index, tuple_t>::type;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_TUPLE_ELEMENT_H
+#endif // HD_INC_CORE_TUPLE_ELEMENT_H

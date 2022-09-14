@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OPTIONAL_H
-#define HD_INC_OSLAYER_OPTIONAL_H
+#ifndef HD_INC_CORE_OPTIONAL_H
+#define HD_INC_CORE_OPTIONAL_H
 #include "aligned_buffer.h"
 #include "../memory.h"
 #include "../templates/forward.h"
@@ -26,8 +26,8 @@
 #include "../traits/is_object.h"
 #include "../traits/remove_cv_ref.h"
 #include "../traits/decay.h"
-#include "../traits/and.h"
-#include "../traits/not.h"
+#include "../traits/conjunction.h"
+#include "../traits/negation.h"
 
 namespace hud {
 
@@ -35,26 +35,26 @@ namespace hud {
 
         /**
         * Contains the tagged union of the possible value.
-        * @tparam T The OptionalDestructibleBase that inherit this class.
-        * @tparam ValueType The type to store
+        * @tparam base_t The optional_destructible_base that inherit this class.
+        * @tparam value_t The type to store
         */
-        template<typename T, typename ValueType>
-        struct OptionalStorage {
+        template<typename base_t, typename value_t>
+        struct optional_storage {
 
-            /** Retrieves this as a OptionalDestructibleBase */
-            constexpr T* this_T() noexcept {
-                return static_cast<T*>(this);
+            /** Retrieves this as a optional_destructible_base */
+            constexpr base_t* this_T() noexcept {
+                return static_cast<base_t*>(this);
             }
 
-            /** Retrieves this as a OptionalDestructibleBase */
-            constexpr const T* this_T() const noexcept {
-                return static_cast<const T*>(this);
+            /** Retrieves this as a optional_destructible_base */
+            constexpr const base_t* this_T() const noexcept {
+                return static_cast<const base_t*>(this);
             }
 
             /** Call destructor on the contained value and mark the storage without value */
             constexpr void reset() noexcept {
                if (this_T()->some) {
-                    Memory::destroy(this_T()->some_value);
+                    hud::memory::destroy(this_T()->some_value);
                     this_T()->some = false;
                 }
             }
@@ -67,57 +67,57 @@ namespace hud {
 
             /** Retrivies the contained value */
             [[nodiscard]]
-            constexpr ValueType& value() & noexcept {
+            constexpr value_t& value() & noexcept {
                 check(has_value());
                 return this_T()->some_value;
             }
 
             /** Retrivies the contained value */
             [[nodiscard]]
-            constexpr const ValueType& value() const& noexcept {
+            constexpr const value_t& value() const& noexcept {
                 check(has_value());
                 return this_T()->some_value;
             }
 
             /** Retrivies the contained value */
             [[nodiscard]]
-            constexpr const ValueType&& value() const&& noexcept {
+            constexpr const value_t&& value() const&& noexcept {
                 check(has_value());
                 return hud::move(this_T()->some_value);
             }
 
             /** Retrivies the contained value */
             [[nodiscard]]
-            constexpr ValueType&& value() && noexcept {
+            constexpr value_t&& value() && noexcept {
                 check(has_value());
                 return hud::move(this_T()->some_value);
             }
 
             /**
             * Construct the value with the given parameter.
-            * @tparam ...U Types of ...args
+            * @tparam ...u_type_t Types of ...args
             * @param ...args Parameters forwarded to the value constructor
             */
-            template<typename... U>
-            constexpr void construct_in_place(U&&... args) noexcept {
-                Memory::construct_at(&this_T()->some_value, hud::forward<U>(args)...);
+            template<typename... u_type_t>
+            constexpr void construct_in_place(u_type_t&&... args) noexcept {
+                hud::memory::construct_at(&this_T()->some_value, hud::forward<u_type_t>(args)...);
                 this_T()->some = true;
             }
 
             /** 
-            * Assign another Optional to this. 
+            * Assign another optional to this. 
             * If *this and other does not contain a value, do nothing.
             * If *this and other contain a value, assign the value by forwarding the value of other in *this value.
-            * If *this contains a value, but other does, the contained value is destroyed, and the Optional does not contains a value after this call.
+            * If *this contains a value, but other does, the contained value is destroyed, and the optional does not contains a value after this call.
             * If *this does not contain a value, but other do, the value is constructed by forwarding the value of other in *this value.
-            * @tparam U Type of other
-            * @param other The Optional to assign
+            * @tparam u_type_t Type of other
+            * @param other The optional to assign
             */
-            template<typename U>
-            constexpr void assign(U&& other) noexcept {
+            template<typename u_type_t>
+            constexpr void assign(u_type_t&& other) noexcept {
                 if (has_value() == other.has_value()) {
                     if (has_value()) {
-                        value() = hud::forward<U>(other).value();
+                        value() = hud::forward<u_type_t>(other).value();
                     }
                 }
                 else {
@@ -125,44 +125,44 @@ namespace hud {
                         reset();
                     }
                     else {
-                        construct_in_place(hud::forward<U>(other).value());
+                        construct_in_place(hud::forward<u_type_t>(other).value());
                     }
                 }
             }
         };
 
         /**
-        * Destructor base of the Optional. If the inner type is trivially destructible, the Optional is trivially destructible.
-        * @tparam T Inner type
+        * Destructor base of the optional. If the inner type is trivially destructible, the optional is trivially destructible.
+        * @tparam type_t Inner type
         */
-        template< typename T, bool = IsTriviallyDestructibleV<T>>
-        struct OptionalDestructibleBase
-            : OptionalStorage<OptionalDestructibleBase<T>, T>
+        template< typename type_t, bool = is_trivially_destructible_v<type_t>>
+        struct optional_destructible_base
+            : optional_storage<optional_destructible_base<type_t>, type_t>
         {
-            /** By default Optional do not contains value */
-            constexpr OptionalDestructibleBase() noexcept
+            /** By default optional do not contains value */
+            constexpr optional_destructible_base() noexcept
                 : none_value()
                 , some(false) {
             }
 
             /**
-            * Construct an Optional that contains a value. 
+            * Construct an optional that contains a value. 
             * The Value is construct in place.
-            * @tparam ...TArgs Types of args
-            * @param TagInPlace tag used to select this constructor
+            * @tparam ...args_t Types of args
+            * @param tag_in_place tag used to select this constructor
             * @param args List of args forwarded to the constructed value
             */
-            template<typename... TArgs>
-            constexpr explicit OptionalDestructibleBase(TagInPlace, TArgs&&... args) noexcept requires(IsConstructibleV<T, TArgs...>)
-                : some_value(hud::forward<TArgs>(args)...)
+            template<typename... args_t>
+            constexpr explicit optional_destructible_base(tag_in_place, args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t...>)
+                : some_value(hud::forward<args_t>(args)...)
                 , some(true) {
             }
 
             /** Aligned value in union that contains the value or nothing (Empty struct)*/
             struct Empty {};
-            union alignas(alignof(T)) {
+            union alignas(alignof(type_t)) {
                 Empty none_value;
-                T some_value;
+                type_t some_value;
             };
 
             /**  True if storage contains a value, false otherwise */
@@ -170,44 +170,44 @@ namespace hud {
         };
 
         /**
-        * Destructor base of the Optional. If the inner type is trivially destructible, the Optional is trivially destructible.
-        * @tparam T Inner type
+        * Destructor base of the optional. If the inner type is trivially destructible, the optional is trivially destructible.
+        * @tparam type_t Inner type
         */
-        template< typename T >
-        struct OptionalDestructibleBase<T, false>
-            : OptionalStorage<OptionalDestructibleBase<T>, T>
+        template< typename type_t >
+        struct optional_destructible_base<type_t, false>
+            : optional_storage<optional_destructible_base<type_t>, type_t>
         {
-            /** By default Optional do not contains value */
-            constexpr OptionalDestructibleBase() noexcept
+            /** By default optional do not contains value */
+            constexpr optional_destructible_base() noexcept
                 : none_value()
                 , some(false) {
             }
 
             /**
-            * Construct an Optional that contains a value.
+            * Construct an optional that contains a value.
             * The Value is construct in place.
-            * @tparam ...TArgs Types of args
-            * @param TagInPlace tag used to select this constructor
+            * @tparam ...args_t Types of args
+            * @param tag_in_place tag used to select this constructor
             * @param args List of args forwarded to the constructed value
             */
-            template<typename... TArgs>
-            constexpr explicit OptionalDestructibleBase(TagInPlace, TArgs&&... args) noexcept requires(IsConstructibleV<T, TArgs...>)
-                : some_value(hud::forward<TArgs>(args)...)
+            template<typename... args_t>
+            constexpr explicit optional_destructible_base(tag_in_place, args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t...>)
+                : some_value(hud::forward<args_t>(args)...)
                 , some(true) {
             }
 
             /** Call the destructor of inner value if this has value */
-            constexpr ~OptionalDestructibleBase() noexcept {
+            constexpr ~optional_destructible_base() noexcept {
                 if (some) {
-                    Memory::destroy(some_value);
+                    hud::memory::destroy(some_value);
                 }
             }
 
             /** Aligned value in union that contains the value or nothing (Empty struct)*/
             struct Empty {};
-            union alignas(alignof(T)) {
+            union alignas(alignof(type_t)) {
                 Empty none_value;
-                T some_value;
+                type_t some_value;
             };
 
             /**  True if storage contains a value, false otherwise */
@@ -215,439 +215,439 @@ namespace hud {
         };
 
         /**
-        * Copy constructor base of the Optional. If the inner type is trivially copy constructible, the Optional is trivially copy constructible.
-        * @tparam T Inner type 
+        * Copy constructor base of the optional. If the inner type is trivially copy constructible, the optional is trivially copy constructible.
+        * @tparam type_t Inner type 
         */
-        template< typename T, bool = IsTriviallyCopyConstructibleV<T>>
-        struct OptionalCopyBase
-            : OptionalDestructibleBase<T> {
-            using Super = OptionalDestructibleBase<T>;
-            using Super::Super;
+        template< typename type_t, bool = is_trivially_copy_constructible_v<type_t>>
+        struct optional_copy_base
+            : optional_destructible_base<type_t> {
+            using super_type = optional_destructible_base<type_t>;
+            using super_type::super_type;
         };
-        template<typename T>
-        struct OptionalCopyBase<T, false>
-            : OptionalDestructibleBase<T> {
+        template<typename type_t>
+        struct optional_copy_base<type_t, false>
+            : optional_destructible_base<type_t> {
 
-            using Super = OptionalDestructibleBase<T>;
-            using Super::Super;
+            using super_type = optional_destructible_base<type_t>;
+            using super_type::super_type;
 
-            constexpr OptionalCopyBase() = default;
-            constexpr OptionalCopyBase(const OptionalCopyBase& other) noexcept {
+            constexpr optional_copy_base() = default;
+            constexpr optional_copy_base(const optional_copy_base& other) noexcept {
                 if (other.some) {
                     this->construct_in_place(other.some_value);
                 }
             }
-            constexpr OptionalCopyBase(OptionalCopyBase&&) = default;
-            constexpr OptionalCopyBase& operator=(const OptionalCopyBase&) = default;
-            constexpr OptionalCopyBase& operator=(OptionalCopyBase&&) = default;
+            constexpr optional_copy_base(optional_copy_base&&) = default;
+            constexpr optional_copy_base& operator=(const optional_copy_base&) = default;
+            constexpr optional_copy_base& operator=(optional_copy_base&&) = default;
         };
 
 
         /**
-        * Move constructor base of the Optional. If the inner type is trivially move constructible, the Optional is trivially move constructible.
-        * @tparam T Inner type
+        * Move constructor base of the optional. If the inner type is trivially move constructible, the optional is trivially move constructible.
+        * @tparam type_t Inner type
         */
-        template<typename T, bool = IsTriviallyMoveConstructibleV<T>>
-        struct OptionalMoveBase
-            : OptionalCopyBase<T> {
-            using Super = OptionalCopyBase<T>;
-            using Super::Super;
+        template<typename type_t, bool = is_trivially_move_constructible_v<type_t>>
+        struct optional_move_base
+            : optional_copy_base<type_t> {
+            using super_type = optional_copy_base<type_t>;
+            using super_type::super_type;
         };
 
-        template<typename T>
-        struct OptionalMoveBase<T, false>
-            : OptionalCopyBase<T> {
-            using Super = OptionalCopyBase<T>;
-            using Super::Super;
+        template<typename type_t>
+        struct optional_move_base<type_t, false>
+            : optional_copy_base<type_t> {
+            using super_type = optional_copy_base<type_t>;
+            using super_type::super_type;
 
-            constexpr OptionalMoveBase() = default;
-            constexpr OptionalMoveBase(OptionalMoveBase&& other) noexcept {
+            constexpr optional_move_base() = default;
+            constexpr optional_move_base(optional_move_base&& other) noexcept {
                 if (other.some) {
-                    Memory::construct_at(&(this->some_value), hud::forward<T>(other.some_value));
+                    hud::memory::construct_at(&(this->some_value), hud::forward<type_t>(other.some_value));
                     this->some = true;
                 }
             }
-            constexpr OptionalMoveBase(const OptionalMoveBase&) = default;
-            constexpr OptionalMoveBase& operator=(const OptionalMoveBase&) = default;
-            constexpr OptionalMoveBase& operator=(OptionalMoveBase&&) = default;
+            constexpr optional_move_base(const optional_move_base&) = default;
+            constexpr optional_move_base& operator=(const optional_move_base&) = default;
+            constexpr optional_move_base& operator=(optional_move_base&&) = default;
         };
 
         /**
-        * Copy assign operator base of the Optional. If the inner type is trivially copy assignable, the Optional is trivially copy assignable.
-        * If the inner type is neither copy assignable, the Optional is explictly not copy assignable.
-        * @tparam T Inner type
+        * Copy assign operator base of the optional. If the inner type is trivially copy assignable, the optional is trivially copy assignable.
+        * If the inner type is neither copy assignable, the optional is explictly not copy assignable.
+        * @tparam type_t Inner type
         */
-        template<typename T,
-            bool IsCopyAssignTrivial = IsTriviallyCopyConstructibleV<T> && IsTriviallyCopyAssignableV<T> && IsTriviallyDestructibleV<T>,
-            bool IsCopyAssignDeleted = IsCopyConstructibleV<T>&& IsCopyAssignableV<T>>
-        struct OptionalCopyAssignBase
-            : OptionalMoveBase<T> {
-            using Super = OptionalMoveBase<T>;
-            using Super::Super;
+        template<typename type_t,
+            bool IsCopyAssignTrivial = is_trivially_copy_constructible_v<type_t> && is_trivially_copy_assignable_v<type_t> && is_trivially_destructible_v<type_t>,
+            bool IsCopyAssignDeleted = is_copy_constructible_v<type_t>&& is_copy_assignable_v<type_t>>
+        struct optional_copy_assign_base
+            : optional_move_base<type_t> {
+            using super_type = optional_move_base<type_t>;
+            using super_type::super_type;
         };
-        template<typename T>
-        struct OptionalCopyAssignBase<T, false, true> // Neither trivial or deleted
-            : OptionalMoveBase<T> {
-            using Super = OptionalMoveBase<T>;
-            using Super::Super;
-            constexpr OptionalCopyAssignBase() = default;
-            constexpr OptionalCopyAssignBase(const OptionalCopyAssignBase&) = default;
-            constexpr OptionalCopyAssignBase(OptionalCopyAssignBase&&) = default;
-            constexpr OptionalCopyAssignBase& operator=(const OptionalCopyAssignBase& other) noexcept {
+        template<typename type_t>
+        struct optional_copy_assign_base<type_t, false, true> // Neither trivial or deleted
+            : optional_move_base<type_t> {
+            using super_type = optional_move_base<type_t>;
+            using super_type::super_type;
+            constexpr optional_copy_assign_base() = default;
+            constexpr optional_copy_assign_base(const optional_copy_assign_base&) = default;
+            constexpr optional_copy_assign_base(optional_copy_assign_base&&) = default;
+            constexpr optional_copy_assign_base& operator=(const optional_copy_assign_base& other) noexcept {
                 this->assign(other);
                 return *this;
             };
-            constexpr OptionalCopyAssignBase& operator=(OptionalCopyAssignBase&&) = default;
+            constexpr optional_copy_assign_base& operator=(optional_copy_assign_base&&) = default;
         };
-        template<typename T, bool IsCopyAssignTrivial>
-        struct OptionalCopyAssignBase<T, IsCopyAssignTrivial, false> // deleted
-            : OptionalMoveBase<T> {
-            using Super = OptionalMoveBase<T>;
-            using Super::Super;
-            constexpr OptionalCopyAssignBase() = default;
-            constexpr OptionalCopyAssignBase(const OptionalCopyAssignBase&) = default;
-            constexpr OptionalCopyAssignBase(OptionalCopyAssignBase&&) = default;
-            constexpr OptionalCopyAssignBase& operator=(const OptionalCopyAssignBase&) = delete;
-            constexpr OptionalCopyAssignBase& operator=(OptionalCopyAssignBase&&) = default;
+        template<typename type_t, bool IsCopyAssignTrivial>
+        struct optional_copy_assign_base<type_t, IsCopyAssignTrivial, false> // deleted
+            : optional_move_base<type_t> {
+            using super_type = optional_move_base<type_t>;
+            using super_type::super_type;
+            constexpr optional_copy_assign_base() = default;
+            constexpr optional_copy_assign_base(const optional_copy_assign_base&) = default;
+            constexpr optional_copy_assign_base(optional_copy_assign_base&&) = default;
+            constexpr optional_copy_assign_base& operator=(const optional_copy_assign_base&) = delete;
+            constexpr optional_copy_assign_base& operator=(optional_copy_assign_base&&) = default;
         };
 
         /**
-        * Move assign operator base of the Optional. If the inner type is trivially move assignable, the Optional is trivially move assignable.
-        * If the inner type is neither move assignable, the Optional is explictly not move assignable.
-        * @tparam T Inner type
+        * Move assign operator base of the optional. If the inner type is trivially move assignable, the optional is trivially move assignable.
+        * If the inner type is neither move assignable, the optional is explictly not move assignable.
+        * @tparam type_t Inner type
         */
-        template<typename T,
-            bool IsMoveAssignTrivial = IsTriviallyMoveAssignableV<T> && IsTriviallyMoveConstructibleV<T> && IsTriviallyDestructibleV<T>,
-            bool IsMoveAssignDeleted = IsMoveConstructibleV<T>&& IsMoveAssignableV<T>>
-        struct OptionalMoveAssignBase
-            : OptionalCopyAssignBase<T> {
-            using Super = OptionalCopyAssignBase<T>;
-            using Super::Super;
+        template<typename type_t,
+            bool IsMoveAssignTrivial = is_trivially_move_assignable_v<type_t> && is_trivially_move_constructible_v<type_t> && is_trivially_destructible_v<type_t>,
+            bool IsMoveAssignDeleted = is_move_constructible_v<type_t>&& is_move_assignable_v<type_t>>
+        struct optional_move_assign_base
+            : optional_copy_assign_base<type_t> {
+            using super_type = optional_copy_assign_base<type_t>;
+            using super_type::super_type;
         };
-        template<typename T>
-        struct OptionalMoveAssignBase<T, false, true> // Neither trivial or deleted
-            : OptionalCopyAssignBase<T> {
-            using Super = OptionalCopyAssignBase<T>;
-            using Super::Super;
-            constexpr OptionalMoveAssignBase() = default;
-            constexpr OptionalMoveAssignBase(const OptionalMoveAssignBase&) = default;
-            constexpr OptionalMoveAssignBase(OptionalMoveAssignBase&&) = default;
-            constexpr OptionalMoveAssignBase& operator=(const OptionalMoveAssignBase&) = default;
-            constexpr OptionalMoveAssignBase& operator=(OptionalMoveAssignBase&& other) noexcept {
-                this->assign(hud::forward<OptionalMoveAssignBase>(other));
+        template<typename type_t>
+        struct optional_move_assign_base<type_t, false, true> // Neither trivial or deleted
+            : optional_copy_assign_base<type_t> {
+            using super_type = optional_copy_assign_base<type_t>;
+            using super_type::super_type;
+            constexpr optional_move_assign_base() = default;
+            constexpr optional_move_assign_base(const optional_move_assign_base&) = default;
+            constexpr optional_move_assign_base(optional_move_assign_base&&) = default;
+            constexpr optional_move_assign_base& operator=(const optional_move_assign_base&) = default;
+            constexpr optional_move_assign_base& operator=(optional_move_assign_base&& other) noexcept {
+                this->assign(hud::forward<optional_move_assign_base>(other));
                 return *this;
             };
         };
-        template<typename T, bool IsMoveAssignTrivial>
-        struct OptionalMoveAssignBase<T, IsMoveAssignTrivial, false> // deleted
-            : OptionalCopyAssignBase<T> {
-            using Super = OptionalCopyAssignBase<T>;
-            using Super::Super;
-            constexpr OptionalMoveAssignBase() = default;
-            constexpr OptionalMoveAssignBase(const OptionalMoveAssignBase&) = default;
-            constexpr OptionalMoveAssignBase(OptionalMoveAssignBase&&) = default;
-            constexpr OptionalMoveAssignBase& operator=(const OptionalMoveAssignBase&) = default;
-            constexpr OptionalMoveAssignBase& operator=(OptionalMoveAssignBase&&) = delete;
+        template<typename type_t, bool IsMoveAssignTrivial>
+        struct optional_move_assign_base<type_t, IsMoveAssignTrivial, false> // deleted
+            : optional_copy_assign_base<type_t> {
+            using super_type = optional_copy_assign_base<type_t>;
+            using super_type::super_type;
+            constexpr optional_move_assign_base() = default;
+            constexpr optional_move_assign_base(const optional_move_assign_base&) = default;
+            constexpr optional_move_assign_base(optional_move_assign_base&&) = default;
+            constexpr optional_move_assign_base& operator=(const optional_move_assign_base&) = default;
+            constexpr optional_move_assign_base& operator=(optional_move_assign_base&&) = delete;
         };
 
 
-        /** Hidden implementation of the Optional. */
-        template<typename T>
-        struct OptionalImpl : OptionalMoveAssignBase<T> {
-            using Super = OptionalMoveAssignBase<T>;
-            using Super::Super;
+        /** Hidden implementation of the optional. */
+        template<typename type_t>
+        struct optional_impl : optional_move_assign_base<type_t> {
+            using super_type = optional_move_assign_base<type_t>;
+            using super_type::super_type;
 
-            constexpr OptionalImpl() = default;
-            constexpr OptionalImpl(const OptionalImpl&) = default;
-            constexpr OptionalImpl(OptionalImpl&&) = default;
-            constexpr OptionalImpl& operator=(const OptionalImpl&) = default;
-            constexpr OptionalImpl& operator=(OptionalImpl&&) = default;
+            constexpr optional_impl() = default;
+            constexpr optional_impl(const optional_impl&) = default;
+            constexpr optional_impl(optional_impl&&) = default;
+            constexpr optional_impl& operator=(const optional_impl&) = default;
+            constexpr optional_impl& operator=(optional_impl&&) = default;
         };
 
     } // details
 
-    /** Empty class type used to indicate Optional type with uninitialized state */
-    struct NullOpt {
-        struct Tag {};
-        explicit constexpr NullOpt(Tag) {}
+    /** Empty class type used to indicate optional type with uninitialized state */
+    struct null_opt {
+        struct tag {};
+        explicit constexpr null_opt(tag) {}
     };
 
-    /** Constant used to indicate Optional type with uninitialized state. */
-    inline constexpr NullOpt nullopt{ NullOpt::Tag{} };
+    /** Constant used to indicate optional type with uninitialized state. */
+    inline constexpr null_opt nullopt{ null_opt::tag{} };
 
 
     /**
     * Manages an optional contained value, i.e. a value that may or may not be present. 
-    * If an Optional<T> contains a value, the value is guaranteed to be allocated as part of the optional object footprint, i.e. no dynamic memory allocation ever takes place.
+    * If an optional<type_t> contains a value, the value is guaranteed to be allocated as part of the optional object footprint, i.e. no dynamic memory allocation ever takes place.
     * The optional object contains a value in the following conditions:
-    *  - The object is initialized with/assigned from a value of type T or another optional that contains a value. 
+    *  - The object is initialized with/assigned from a value of type type_t or another optional that contains a value. 
     * The object does not contain a value in the following conditions:
     *  - The object is default-initialized.
     *  - The object is initialized with/assigned from a value of type hud::nullopt or an optional object that does not contain a value.
     *  - The member function reset() is called. 
     */
-    template<typename T>
-    class Optional : details::OptionalImpl<T> {
-        using Super = details::OptionalImpl<T>;
+    template<typename type_t>
+    class optional : details::optional_impl<type_t> {
+        using super_type = details::optional_impl<type_t>;
 
-        static_assert(!IsReferenceV<T>, "Optional<T&> is ill-formed");
-        static_assert(IsDestructibleV<T>, "Optional<T> must meet the requirements of destructible type (t.~T() should be valid.");
+        static_assert(!is_reference_v<type_t>, "optional<type_t&> is ill-formed");
+        static_assert(is_destructible_v<type_t>, "optional<type_t> must meet the requirements of destructible type (t.~type_t() should be valid.");
 
     public:
-        /** Default construct an Optional that does not contain a value */
-        constexpr Optional() noexcept = default;
+        /** Default construct an optional that does not contain a value */
+        constexpr optional() noexcept = default;
 
-        /** Copy construct the Optional. Copy the inner value if presents. */
-        constexpr Optional(const Optional&) noexcept = default;
+        /** Copy construct the optional. Copy the inner value if presents. */
+        constexpr optional(const optional&) noexcept = default;
 
-        /** Move construct the Optional. Move the inner value if presents. Does not make other empty. */
-        constexpr Optional(Optional&&) noexcept = default;
+        /** Move construct the optional. Move the inner value if presents. Does not make other empty. */
+        constexpr optional(optional&&) noexcept = default;
 
         /**
-        * Construct an Optional that does not contain a value
-        * @param NullOptT nullopt tag that indicate Optional type with uninitialized state
+        * Construct an optional that does not contain a value
+        * @param null_opt tag that indicate optional type with uninitialized state
         */
-        constexpr Optional(NullOpt) noexcept
+        constexpr optional(null_opt) noexcept
         {};
 
         /**
-        * Construct an Optional that contain a in-place constructed T value
-        * @param TagInPlace tag used to select this constructor
-        * @tparam TArgs The T constructor arguments
+        * Construct an optional that contain a in-place constructed type_t value
+        * @param tag_in_place tag used to select this constructor
+        * @tparam args_t The type_t constructor arguments
         * @param args Arguments to forward to the constructor of the value
         */
-        template<typename... TArgs>
-        constexpr explicit Optional(TagInPlace, TArgs&&... args) noexcept requires(IsConstructibleV<T, TArgs...>)
-            : Super(TagInPlace{}, hud::forward<TArgs>(args)...) {
+        template<typename... args_t>
+        constexpr explicit optional(tag_in_place, args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t...>)
+            : super_type(tag_in_place{}, hud::forward<args_t>(args)...) {
         }
 
         /**
         * Constructs an optional object that contains a value
-        * @tparam U Type of value
+        * @tparam u_type_t Type of value
         * @param value The value to move
         */
-        template<typename U = T>
-        explicit(!IsConvertibleV<U&&, T>) constexpr Optional(U&& value) noexcept requires(IsConstructibleV<T, U&&>&& IsNotSameV<RemoveCVRefT<U>, TagInPlace>&& IsNotSameV<U, Optional<T>>)
-            : Super(TagInPlace{}, hud::move(value)) {
+        template<typename u_type_t = type_t>
+        explicit(!is_convertible_v<u_type_t&&, type_t>) constexpr optional(u_type_t&& value) noexcept requires(is_constructible_v<type_t, u_type_t&&>&& is_not_same_v<remove_cv_ref_t<u_type_t>, tag_in_place>&& is_not_same_v<u_type_t, optional<type_t>>)
+            : super_type(tag_in_place{}, hud::move(value)) {
         }
 
         /**
-        * If the Optional contains a value, destroy that value.
+        * If the optional contains a value, destroy that value.
         * Otherwise do nothing.
         * This does not contain a value after this call.
-        * @param NullOpt The nullopt tag
+        * @param null_opt The nullopt tag
         */
-        constexpr Optional& operator=(NullOpt) noexcept {
+        constexpr optional& operator=(null_opt) noexcept {
             reset();
             return *this;
         }
 
         /** 
-        * If the Optional contains a value, copy assign of the contained value.
+        * If the optional contains a value, copy assign of the contained value.
         * Otherwise do nothing.
         */
-        constexpr Optional& operator=(const Optional&) noexcept = default;
+        constexpr optional& operator=(const optional&) noexcept = default;
 
         /**
-        * If the Optional contains a value, move assign of the contained value.
+        * If the optional contains a value, move assign of the contained value.
         * Otherwise do nothing.
         * Does not make other empty. 
         */
-        constexpr Optional& operator=(Optional&&) noexcept = default;
+        constexpr optional& operator=(optional&&) noexcept = default;
     
 
         /*
-        * Depending on whether *this contains a value before the call, the contained value is either direct-initialized from hud::forward<U>(value) or assigned from hud::forward<U>(value).
+        * Depending on whether *this contains a value before the call, the contained value is either direct-initialized from hud::forward<u_type_t>(value) or assigned from hud::forward<u_type_t>(value).
         * @param value The value to perfect-forward assign
         * @return *this
         */
-        template<typename U = T>
-        constexpr Optional& operator=(U&& value) noexcept
-            requires(AndV<
-                IsNotSame<RemoveCVRefT<U>, Optional<T>>,
-                IsConstructible<T, U>,
-                IsAssignable<T&, U>,
-                Not<And<IsScalar<T>,IsSame<DecayT<U>, T>>>
+        template<typename u_type_t = type_t>
+        constexpr optional& operator=(u_type_t&& value) noexcept
+            requires(conjunction_v<
+                is_not_same<remove_cv_ref_t<u_type_t>, optional<type_t>>,
+                is_constructible<type_t, u_type_t>,
+                is_assignable<type_t&, u_type_t>,
+                negation<conjunction<is_scalar<type_t>,is_same<decay_t<u_type_t>, type_t>>>
                 >) {
             if (has_value()) {
-                this->some_value = hud::forward<U>(value);
+                this->some_value = hud::forward<u_type_t>(value);
             }
             else {
-                this->construct_in_place(hud::forward<U>(value));
+                this->construct_in_place(hud::forward<u_type_t>(value));
             }
             return *this;
         }
 
         /**
-        * Copy assign another Optional to this.
+        * Copy assign another optional to this.
         * If *this and other does not contain a value, do nothing.
         * If *this and other contain a value, assign *this value with other values.
-        * If *this contains a value, but other does, the contained value is destroyed, and the Optional does not contains a value after this call.
+        * If *this contains a value, but other does, the contained value is destroyed, and the optional does not contains a value after this call.
         * If *this does not contain a value, but other do, the value is constructed *this value with other values.
-        * @tparam U Type of other
-        * @param other The Optional to assign
+        * @tparam u_type_t Type of other
+        * @param other The optional to assign
         */
-        template<typename U>
-        constexpr Optional& operator=(const Optional<U>&other) noexcept
-            requires((IsCopyConstructibleV<T, U> && IsCopyAssignableV<T, U>) &&
+        template<typename u_type_t>
+        constexpr optional& operator=(const optional<u_type_t>&other) noexcept
+            requires((is_copy_constructible_v<type_t, u_type_t> && is_copy_assignable_v<type_t, u_type_t>) &&
                 !(
-                    IsConstructibleV<T, Optional<U>&> ||
-                    IsConstructibleV<T, const Optional<U>&> ||
-                    IsConstructibleV<T, Optional<U>&&> ||
-                    IsConstructibleV < T, const Optional<U>&&> ||
-                    IsConvertibleV< Optional<U>&, T> ||
-                    IsConvertibleV<const Optional<U>&, T> ||
-                    IsConvertibleV<Optional<U>&&, T> ||
-                    IsConvertibleV<const Optional<U>&&, T> ||
-                    IsAssignableV<T&, Optional<U>&> ||
-                    IsAssignableV<T&, const Optional<U>&> ||
-                    IsAssignableV<T&, Optional<U>&&> ||
-                    IsAssignableV<T&, const Optional<U>&&>
+                    is_constructible_v<type_t, optional<u_type_t>&> ||
+                    is_constructible_v<type_t, const optional<u_type_t>&> ||
+                    is_constructible_v<type_t, optional<u_type_t>&&> ||
+                    is_constructible_v < type_t, const optional<u_type_t>&&> ||
+                    is_convertible_v< optional<u_type_t>&, type_t> ||
+                    is_convertible_v<const optional<u_type_t>&, type_t> ||
+                    is_convertible_v<optional<u_type_t>&&, type_t> ||
+                    is_convertible_v<const optional<u_type_t>&&, type_t> ||
+                    is_assignable_v<type_t&, optional<u_type_t>&> ||
+                    is_assignable_v<type_t&, const optional<u_type_t>&> ||
+                    is_assignable_v<type_t&, optional<u_type_t>&&> ||
+                    is_assignable_v<type_t&, const optional<u_type_t>&&>
                     )) {
             this->assign(other);
             return *this;
         }
 
         /**
-        * Move sassign another Optional to this.
+        * Move sassign another optional to this.
         * If *this and other does not contain a value, do nothing.
         * If *this and other contain a value, assign the value by forwarding the value of other in *this value.
-        * If *this contains a value, but other does, the contained value is destroyed, and the Optional does not contains a value after this call.
+        * If *this contains a value, but other does, the contained value is destroyed, and the optional does not contains a value after this call.
         * If *this does not contain a value, but other do, the value is constructed by forwarding the value of other in *this value.
-        * @tparam U Type of other
-        * @param other The Optional to assign
+        * @tparam u_type_t Type of other
+        * @param other The optional to assign
         */
-        template<typename U>
-        constexpr Optional& operator=(Optional<U> && other) noexcept
+        template<typename u_type_t>
+        constexpr optional& operator=(optional<u_type_t> && other) noexcept
             requires(
-                AndV<
-                    IsConstructible<T, U>, IsAssignable<T&, U>,
-                    Not<Or<
-                        IsConstructible<T, Optional<U>&>,
-                        IsConstructible<T, const Optional<U>&>,
-                        IsConstructible<T, Optional<U>&&>,
-                        IsConstructible < T, const Optional<U>&&>,
-                        IsConvertible< Optional<U>&, T>,
-                        IsConvertible<const Optional<U>&, T>,
-                        IsConvertible<Optional<U>&&, T>,
-                        IsConvertible<const Optional<U>&&, T>,
-                        IsAssignable<T&, Optional<U>&>,
-                        IsAssignable<T&, const Optional<U>&>,
-                        IsAssignable<T&, Optional<U>&&>,
-                        IsAssignable<T&, const Optional<U>&&>
+                conjunction_v<
+                    is_constructible<type_t, u_type_t>, is_assignable<type_t&, u_type_t>,
+                    negation<disjunction<
+                        is_constructible<type_t, optional<u_type_t>&>,
+                        is_constructible<type_t, const optional<u_type_t>&>,
+                        is_constructible<type_t, optional<u_type_t>&&>,
+                        is_constructible < type_t, const optional<u_type_t>&&>,
+                        is_convertible< optional<u_type_t>&, type_t>,
+                        is_convertible<const optional<u_type_t>&, type_t>,
+                        is_convertible<optional<u_type_t>&&, type_t>,
+                        is_convertible<const optional<u_type_t>&&, type_t>,
+                        is_assignable<type_t&, optional<u_type_t>&>,
+                        is_assignable<type_t&, const optional<u_type_t>&>,
+                        is_assignable<type_t&, optional<u_type_t>&&>,
+                        is_assignable<type_t&, const optional<u_type_t>&&>
                     >>
                 >) {
-            this->assign(hud::forward<Optional<U>>(other));
+            this->assign(hud::forward<optional<u_type_t>>(other));
             return *this;
         }
 
-        /** Checks whether the Optional contains a value or not */
+        /** Checks whether the optional contains a value or not */
         [[nodiscard]]
         constexpr bool has_value() const noexcept {
-            return Super::has_value();
+            return super_type::has_value();
         }
 
         /** Retrieves a const l-value reference to the contained value */
         [[nodiscard]]
-        constexpr T& value() & noexcept {
-            return Super::value();
+        constexpr type_t& value() & noexcept {
+            return super_type::value();
         }
 
         /** Retrieves a const l-value reference to the contained value */
         [[nodiscard]]
-        constexpr const T& value() const& noexcept {
-            return Super::value();
+        constexpr const type_t& value() const& noexcept {
+            return super_type::value();
         }
 
         /** Retrieves a const l-value reference to the contained value */
         [[nodiscard]]
-        constexpr const T&& value() const&& noexcept {
-            return move(Super::value());
+        constexpr const type_t&& value() const&& noexcept {
+            return move(super_type::value());
         }
 
         /** Retrieves a const l-value reference to the contained value */
         [[nodiscard]]
-        constexpr T&& value() && noexcept {
-            return move(Super::value());
+        constexpr type_t&& value() && noexcept {
+            return move(super_type::value());
         }
 
         /** 
-        * If the Optional contains a value, destroy that value.
+        * If the optional contains a value, destroy that value.
         * Otherwise do nothing. 
         * This does not contain a value after this call. 
         */
         constexpr void reset() noexcept {
-            Super::reset();
+            super_type::reset();
         }
 
         /**
         Construct the contained value in-place.
         If this contain a value the contained value is destroyed by calling its destructor before constructing the value.
-        @tparam ...TArgs Types of args
+        @tparam ...args_t Types of args
         @param args Arguments to forward to the constructor of the value
         */
-        template<typename... TArgs>
-        constexpr T& emplace(TArgs&&... args) noexcept {
+        template<typename... args_t>
+        constexpr type_t& emplace(args_t&&... args) noexcept {
             reset();
-            this->construct_in_place(hud::forward<TArgs>(args)...);
+            this->construct_in_place(hud::forward<args_t>(args)...);
             return value();
         }
 
-        /** Checks whether the Optional contains a value or not */
+        /** Checks whether the optional contains a value or not */
         [[nodiscard]]
         constexpr explicit operator bool() const noexcept {
             return has_value();
         }
 
-        /** Retrieves a reference to the contained value if Optional contains a value, return the default_value otherwise */
-        template<typename U>
+        /** Retrieves a reference to the contained value if optional contains a value, return the default_value otherwise */
+        template<typename u_type_t>
         [[nodiscard]]
-        constexpr T value_or(U&& default_value) const& noexcept {
-            static_assert(IsCopyConstructibleV<T>, "Optional<T>::value_or: T must be copy constructible");
-            static_assert(IsConvertibleV<U, T>, "Optional<T>::value_or: U must be convertible to T");
-            return has_value() ? value() : static_cast<T>(hud::forward<U>(default_value));
+        constexpr type_t value_or(u_type_t&& default_value) const& noexcept {
+            static_assert(is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
+            static_assert(is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
+            return has_value() ? value() : static_cast<type_t>(hud::forward<u_type_t>(default_value));
         }
 
-        /** Retrieve a reference to the contained value if Optional contains a value, return the default_value otherwise */
-        template<typename U>
+        /** Retrieve a reference to the contained value if optional contains a value, return the default_value otherwise */
+        template<typename u_type_t>
         [[nodiscard]]
-        constexpr T value_or(U&& default_value) && noexcept {
-            static_assert(IsCopyConstructibleV<T>, "Optional<T>::value_or: T must be copy constructible");
-            static_assert(IsConvertibleV<U, T>, "Optional<T>::value_or: U must be convertible to T");
-            return has_value() ? move(value()) : static_cast<T>(hud::forward<U>(default_value));
+        constexpr type_t value_or(u_type_t&& default_value) && noexcept {
+            static_assert(is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
+            static_assert(is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
+            return has_value() ? move(value()) : static_cast<type_t>(hud::forward<u_type_t>(default_value));
         }
 
         /** Retrieves a pointer to the contained value */
         [[nodiscard]]
-        constexpr T* operator->() noexcept {
+        constexpr type_t* operator->() noexcept {
             check(has_value());
             return &value();
         }
 
         /** Retrieves a pointer to the contained value */
         [[nodiscard]]
-        constexpr const T* operator->() const noexcept {
+        constexpr const type_t* operator->() const noexcept {
             check(has_value());
             return &value();
         }
 
         /** Retrieves a reference to the contained value */
         [[nodiscard]]
-        constexpr T& operator*() noexcept {
+        constexpr type_t& operator*() noexcept {
             check(has_value());
             return value();
         }
 
         /** Retrieves a reference to the contained value */
         [[nodiscard]]
-        constexpr const T& operator*() const noexcept {
+        constexpr const type_t& operator*() const noexcept {
             check(has_value());
             return value();
         }
 
 
-        /** Swap with another Optional */
-        constexpr void swap(Optional& other) noexcept {
+        /** Swap with another optional */
+        constexpr void swap(optional& other) noexcept {
             if (has_value() == other.has_value()) {
                 if (has_value()) {
                     hud::swap(value(), other.value());
@@ -655,9 +655,9 @@ namespace hud {
             }
             else {
                 const bool this_has_value = has_value();
-                // Move the Optional that contains value to the Optional that do not contains value then destroy the first one
-                Optional& empty = this_has_value ? other : *this;
-                Optional& non_empty = this_has_value ? *this : other;
+                // Move the optional that contains value to the optional that do not contains value then destroy the first one
+                optional& empty = this_has_value ? other : *this;
+                optional& non_empty = this_has_value ? *this : other;
                 empty.construct_in_place(move(non_empty.value()));
                 non_empty.reset();
             }
@@ -665,337 +665,337 @@ namespace hud {
     };
 
     /**
-    * Swap first Optional with the second Optional
+    * Swap first optional with the second optional
     * Same as first.swap(second)
-    * @tparam T The element type of both Optional
-    * @param first The first Optional to swap
-    * @param second The second Optional to swap
+    * @tparam type_t The element type of both optional
+    * @param first The first optional to swap
+    * @param second The second optional to swap
     */
-    template<typename T>
-    constexpr void swap(Optional<T>& first, Optional<T>& second) noexcept {
+    template<typename type_t>
+    constexpr void swap(optional<type_t>& first, optional<type_t>& second) noexcept {
         first.swap(second);
     }
 
     /**
-    * Checks whether right and left Optional are equals.
+    * Checks whether right and left optional are equals.
     * Optionals are equals if both contained or not a value and if contained values are equals.
     * Value types must be comparable with operator==()
-    * @tparam Left Value type of the left Optional
-    * @tparam Right Value type of the right Optional
-    * @param left The left Optional to compare
-    * @param right The right Optional to compare
-    * @param true if right and left Optional are equals, false otherwise
+    * @tparam left_t Value type of the left optional
+    * @tparam right_t Value type of the right optional
+    * @param left The left optional to compare
+    * @param right The right optional to compare
+    * @param true if right and left optional are equals, false otherwise
     */
-    template<typename Left, typename Right>
+    template<typename left_t, typename right_t>
     [[nodiscard]]
-    constexpr bool operator==(const Optional<Left>& left, const Optional<Right>& right) noexcept requires(IsComparableWithEqualV<Left, Right>) {
+    constexpr bool operator==(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(is_comparable_with_equal_v<left_t, right_t>) {
         const bool left_has_value = left.has_value();
         return left_has_value == right.has_value() && (!left_has_value || left.value() == right.value());
     }
 
 
     /**
-    * Checks whether right and left Optional are not equals.
-    * Optionals are not equals if at least one Optional don't contains a value or if both contains a value, checks whether both values are not equals
+    * Checks whether right and left optional are not equals.
+    * Optionals are not equals if at least one optional don't contains a value or if both contains a value, checks whether both values are not equals
     * Value types must be comparable with operator!=()
-    * @tparam Left Value type of the left Optional
-    * @tparam Right Value type of the right Optional
-    * @param left The left Optional to compare
-    * @param right The right Optional to compare
-    * @param true if right and left Optional are not equals, false otherwise
+    * @tparam left_t Value type of the left optional
+    * @tparam right_t Value type of the right optional
+    * @param left The left optional to compare
+    * @param right The right optional to compare
+    * @param true if right and left optional are not equals, false otherwise
     */
-    template<typename Left, typename Right>
+    template<typename left_t, typename right_t>
     [[nodiscard]]
-    constexpr bool operator!=(const Optional<Left>& left, const Optional<Right>& right) noexcept requires(IsComparableWithNotEqualV<Left, Right>) {
+    constexpr bool operator!=(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(is_comparable_with_not_equal_v<left_t, right_t>) {
         const bool left_has_value = left.has_value();
         return left_has_value != right.has_value() || (left_has_value && left.value() != right.value());
     }
 
     /**
-    * Checks whether right is less than left Optional.
+    * Checks whether right is less than left optional.
     * An right is less than left if :
     *     - right don't contains a value while left do, or,
     *     - both contains a value and right value is less than left value.
     * Value types must be comparable with operator<()
-    * @tparam Left Value type of the left Optional
-    * @tparam Right Value type of the right Optional
-    * @param left The left Optional to compare
-    * @param right The right Optional to compare
-    * @param true if right is less than left Optional, false otherwise
+    * @tparam left_t Value type of the left optional
+    * @tparam right_t Value type of the right optional
+    * @param left The left optional to compare
+    * @param right The right optional to compare
+    * @param true if right is less than left optional, false otherwise
     */
-    template<typename Left, typename Right>
+    template<typename left_t, typename right_t>
     [[nodiscard]]
-    constexpr bool operator<(const Optional<Left>& left, const Optional<Right>& right) noexcept requires(IsComparableWithLessV<Left, Right>) {
+    constexpr bool operator<(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(is_comparable_with_less_v<left_t, right_t>) {
         return right.has_value() && (!left.has_value() || left.value() < right.value());
     }
 
     /**
-    * Checks whether right is greater than left Optional.
+    * Checks whether right is greater than left optional.
     * An right is greater than left if :
     *     - right contains a value while left don't, or,
     *     - both contains a value and right value is greater than left value.
     * Value types must be comparable with operator>()
-    * @tparam Left Value type of the left Optional
-    * @tparam Right Value type of the right Optional
-    * @param left The left Optional to compare
-    * @param right The right Optional to compare
-    * @param true if right is greater than left Optional, false otherwise
+    * @tparam left_t Value type of the left optional
+    * @tparam right_t Value type of the right optional
+    * @param left The left optional to compare
+    * @param right The right optional to compare
+    * @param true if right is greater than left optional, false otherwise
     */
-    template<typename Left, typename Right>
+    template<typename left_t, typename right_t>
     [[nodiscard]]
-    constexpr bool operator>(const Optional<Left>& left, const Optional<Right>& right) noexcept requires(IsComparableWithGreaterV<Left, Right>) {
+    constexpr bool operator>(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(is_comparable_with_greater_v<left_t, right_t>) {
         return left.has_value() && (!right.has_value() || left.value() > right.value());
     }
 
     /**
-    * Checks whether right is less or equal than left Optional.
+    * Checks whether right is less or equal than left optional.
     * An right is less or equal than left if :
     *     - right don't contains a value while left do, or,
     *     - both contains a value and right value is less or equal than left value.
     * Value types must be comparable with operator<=()
-    * @tparam Left Value type of the left Optional
-    * @tparam Right Value type of the right Optional
-    * @param left The left Optional to compare
-    * @param right The right Optional to compare
-    * @param true if right is less or equal than left Optional, false otherwise
+    * @tparam left_t Value type of the left optional
+    * @tparam right_t Value type of the right optional
+    * @param left The left optional to compare
+    * @param right The right optional to compare
+    * @param true if right is less or equal than left optional, false otherwise
     */
-    template<typename Left, typename Right>
+    template<typename left_t, typename right_t>
     [[nodiscard]]
-    constexpr bool operator<=(const Optional<Left>& left, const Optional<Right>& right) noexcept requires(IsComparableWithLessEqualV<Left, Right>) {
+    constexpr bool operator<=(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(is_comparable_with_less_equal_v<left_t, right_t>) {
         return !left.has_value() || (right.has_value() && left.value() <= right.value());
     }
 
     /**
-    * Checks whether right is greater or equal than left Optional.
+    * Checks whether right is greater or equal than left optional.
     * An right is greater or equal than left if :
     *     - right contains a value while left don't, or,
     *     - both contains a value and right value is greater or equal than left value.
     * Value types must be comparable with operator>=()
-    * @tparam Left Value type of the left Optional
-    * @tparam Right Value type of the right Optional
-    * @param left The left Optional to compare
-    * @param right The right Optional to compare
-    * @param true if right is greater or equal than left Optional, false otherwise
+    * @tparam left_t Value type of the left optional
+    * @tparam right_t Value type of the right optional
+    * @param left The left optional to compare
+    * @param right The right optional to compare
+    * @param true if right is greater or equal than left optional, false otherwise
     */
-    template<typename Left, typename Right>
+    template<typename left_t, typename right_t>
     [[nodiscard]]
-    constexpr bool operator>=(const Optional<Left>& left, const Optional<Right>& right) noexcept requires(IsComparableWithGreaterEqualV<Left, Right>) {
+    constexpr bool operator>=(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(is_comparable_with_greater_equal_v<left_t, right_t>) {
         return !right.has_value() || (left.has_value() && left.value() >= right.value());
     }
 
 
     /**
-    * Checks whether an Optional value is equal to a value
-    * Optional is equal to a value if :
-    *     - the Optional contain a value and the contained value is equal the compared value.
+    * Checks whether an optional value is equal to a value
+    * optional is equal to a value if :
+    *     - the optional contain a value and the contained value is equal the compared value.
     * Value types must be comparable with operator==()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is equal to a value, false otherwise
+    * @param true if an optional value is equal to a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator==(const Optional<TOption>& option, const TValue& value) noexcept requires(IsComparableWithEqualV<TOption, TValue>) {
+    constexpr bool operator==(const optional<type_t>& option, const value_t& value) noexcept requires(is_comparable_with_equal_v<type_t, value_t>) {
         return option.has_value() ? option.value() == value : false;
     }
 
     /**
-    * Checks whether a value is equal to an Optional
-    * A value is equal to a Optional if :
-    *     - the Optional contain a value and the value is equal the Optional value.
+    * Checks whether a value is equal to an optional
+    * A value is equal to a optional if :
+    *     - the optional contain a value and the value is equal the optional value.
     * Value types must be comparable with operator==()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if a value is equal to an Optional, false otherwise
+    * @param true if a value is equal to an optional, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator==(const TValue& value, const Optional<TOption>& option) noexcept requires(IsComparableWithEqualV<TValue, TOption>) {
+    constexpr bool operator==(const value_t& value, const optional<type_t>& option) noexcept requires(is_comparable_with_equal_v<value_t, type_t>) {
         return option.has_value() ? value == option.value() : false;
     }
 
 
     /**
-    * Checks whether an Optional value is not equal to a value
-    * Optional is not equal to a value if:
-    *     - the Optional do not contain a value and the Optional value is not equal the compared value, or,
-    *     - the Optional do not have a value
+    * Checks whether an optional value is not equal to a value
+    * optional is not equal to a value if:
+    *     - the optional do not contain a value and the optional value is not equal the compared value, or,
+    *     - the optional do not have a value
     * Value types must be comparable with operator!=()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is not equal to a value, false otherwise
+    * @param true if an optional value is not equal to a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator!=(const Optional<TOption>& option, const TValue& value) noexcept requires(IsComparableWithNotEqualV<TOption, TValue>) {
+    constexpr bool operator!=(const optional<type_t>& option, const value_t& value) noexcept requires(is_comparable_with_not_equal_v<type_t, value_t>) {
         return option.has_value() ? option.value() != value : true;
     }
 
     /**
-    * Checks whether a value is not equal an Optional
-    * A value is not equal to an Optional if:
-    *     - the Optional do not contain a value and the Optional value is not equal the compared value, or,
-    *     - the Optional do not have a value
+    * Checks whether a value is not equal an optional
+    * A value is not equal to an optional if:
+    *     - the optional do not contain a value and the optional value is not equal the compared value, or,
+    *     - the optional do not have a value
     * Value types must be comparable with operator!=()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if a value is not equal an Optional, false otherwise
+    * @param true if a value is not equal an optional, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator!=(const TValue& value, const Optional<TOption>& option) noexcept requires(IsComparableWithNotEqualV<TValue, TOption>) {
+    constexpr bool operator!=(const value_t& value, const optional<type_t>& option) noexcept requires(is_comparable_with_not_equal_v<value_t, type_t>) {
         return option.has_value() ? value != option.value() : true;
     }
 
     /**
-    * Checks whether an Optional value is less than a value
-    * Optional is less to a value if:
-    *     - the Optional contains a value and the Optional value is less than the compared value, or,
-    *     - the Optional do not contain a value
+    * Checks whether an optional value is less than a value
+    * optional is less to a value if:
+    *     - the optional contains a value and the optional value is less than the compared value, or,
+    *     - the optional do not contain a value
     * Value types must be comparable with operator<()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is less than a value, false otherwise
+    * @param true if an optional value is less than a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator<(const Optional<TOption>& option, const TValue& value) noexcept requires(IsComparableWithLessV<TOption, TValue>) {
+    constexpr bool operator<(const optional<type_t>& option, const value_t& value) noexcept requires(is_comparable_with_less_v<type_t, value_t>) {
         return option.has_value() ? option.value() < value : true;
     }
 
     /**
-    * Checks whether a value is less than an Optional
-    * A value is less than an Optional if:
-    *     - the Optional contain a value and the value is less than the Optional value
+    * Checks whether a value is less than an optional
+    * A value is less than an optional if:
+    *     - the optional contain a value and the value is less than the optional value
     * Value types must be comparable with operator<()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is less than a value, false otherwise
+    * @param true if an optional value is less than a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator<(const TValue& value, const Optional<TOption>& option) noexcept requires(IsComparableWithLessV<TValue, TOption>) {
+    constexpr bool operator<(const value_t& value, const optional<type_t>& option) noexcept requires(is_comparable_with_less_v<value_t, type_t>) {
         return option.has_value() ? value < option.value() : false;
     }
 
     /**
-    * Checks whether an Optional value is greater than a value
-    * Optional is greater than a value if:
-    *     - the Optional contain a value and the contained value is greater than the compared value
+    * Checks whether an optional value is greater than a value
+    * optional is greater than a value if:
+    *     - the optional contain a value and the contained value is greater than the compared value
     * Value types must be comparable with operator>()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is greater than a value, false otherwise
+    * @param true if an optional value is greater than a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator>(const Optional<TOption>& option, const TValue& value) noexcept requires(IsComparableWithGreaterV<TOption, TValue>) {
+    constexpr bool operator>(const optional<type_t>& option, const value_t& value) noexcept requires(is_comparable_with_greater_v<type_t, value_t>) {
         return option.has_value() ? option.value() > value : false;
     }
 
     /**
-    * Checks whether a value is greater than an Optional
-    * A value is greater than an Optional if:
-    *     - the Optional contain a value and the contained value is greater than the compared value, or,
-    *     - the Optional do not contain a value
+    * Checks whether a value is greater than an optional
+    * A value is greater than an optional if:
+    *     - the optional contain a value and the contained value is greater than the compared value, or,
+    *     - the optional do not contain a value
     * Value types must be comparable with operator>()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if a value is greater than an Optional, false otherwise
+    * @param true if a value is greater than an optional, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator>(const TValue& value, const Optional<TOption>& option) noexcept requires(IsComparableWithGreaterV<TValue, TOption>) {
+    constexpr bool operator>(const value_t& value, const optional<type_t>& option) noexcept requires(is_comparable_with_greater_v<value_t, type_t>) {
         return option.has_value() ? value > option.value() : true;
     }
 
 
     /**
-    * Checks whether an Optional value is less or equal a value
-    * Optional is less or equal to a value if:
-    *     - the Optional contains a value and the Optional value is less or equal the compared value, or,
-    *     - the Optional do not contain a value
+    * Checks whether an optional value is less or equal a value
+    * optional is less or equal to a value if:
+    *     - the optional contains a value and the optional value is less or equal the compared value, or,
+    *     - the optional do not contain a value
     * Value types must be comparable with operator<=()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is less or equal to a value, false otherwise
+    * @param true if an optional value is less or equal to a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator<=(const Optional<TOption>& option, const TValue& value) noexcept requires(IsComparableWithLessV<TOption, TValue>) {
+    constexpr bool operator<=(const optional<type_t>& option, const value_t& value) noexcept requires(is_comparable_with_less_v<type_t, value_t>) {
         return option.has_value() ? option.value() <= value : true;
     }
 
     /**
-    * Checks whether a value is less or equal an Optional
-    * A value is less or equal than an Optional if:
-    *     - the Optional contain a value and the value is less or equal the Optional value
+    * Checks whether a value is less or equal an optional
+    * A value is less or equal than an optional if:
+    *     - the optional contain a value and the value is less or equal the optional value
     * Value types must be comparable with operator<=()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is less or equal to a value, false otherwise
+    * @param true if an optional value is less or equal to a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator<=(const TValue& value, const Optional<TOption>& option) noexcept requires(IsComparableWithLessV<TValue, TOption>) {
+    constexpr bool operator<=(const value_t& value, const optional<type_t>& option) noexcept requires(is_comparable_with_less_v<value_t, type_t>) {
         return option.has_value() ? value <= option.value() : false;
     }
 
     /**
-    * Checks whether an Optional value is greater or equal a value
-    * Optional is greater or equal to a value if:
-    *     - the Optional contains a value and the Optional value is greater or equal the compared value
+    * Checks whether an optional value is greater or equal a value
+    * optional is greater or equal to a value if:
+    *     - the optional contains a value and the optional value is greater or equal the compared value
     * Value types must be comparable with operator>=()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is greater or equal to a value, false otherwise
+    * @param true if an optional value is greater or equal to a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator>=(const Optional<TOption>& option, const TValue& value) noexcept requires(IsComparableWithGreaterEqualV<TOption, TValue>) {
+    constexpr bool operator>=(const optional<type_t>& option, const value_t& value) noexcept requires(is_comparable_with_greater_equal_v<type_t, value_t>) {
         return option.has_value() ? option.value() >= value : false;
     }
 
     /**
-    * Checks whether a value is greater or equal an Optional
-    * A value is less than an Optional if:
-    *     - the Optional contain a value and the value is greater or equal the Optional value, or,
-    *     - the Optional do not contain a value
+    * Checks whether a value is greater or equal an optional
+    * A value is less than an optional if:
+    *     - the optional contain a value and the value is greater or equal the optional value, or,
+    *     - the optional do not contain a value
     * Value types must be comparable with operator>=()
-    * @tparam TOption Value type of the Optional
-    * @tparam TValue Type of the value
-    * @param option The Optional to compare
+    * @tparam type_t Value type of the optional
+    * @tparam value_t Type of the value
+    * @param option The optional to compare
     * @param value The value to compare
-    * @param true if an Optional value is greater or equal to a value, false otherwise
+    * @param true if an optional value is greater or equal to a value, false otherwise
     */
-    template<typename TOption, typename TValue>
+    template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator>=(const TValue& value, const Optional<TOption>& option) noexcept requires(IsComparableWithGreaterEqualV<TValue, TOption>) {
+    constexpr bool operator>=(const value_t& value, const optional<type_t>& option) noexcept requires(is_comparable_with_greater_equal_v<value_t, type_t>) {
         return option.has_value() ? value >= option.value() : true;
     }
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_OPTIONAL_H
+#endif // HD_INC_CORE_OPTIONAL_H

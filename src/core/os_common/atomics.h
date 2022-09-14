@@ -1,12 +1,12 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_COMMON_ATOMICS_H
-#define HD_INC_OSLAYER_OS_COMMON_ATOMICS_H
+#ifndef HD_INC_CORE_OS_COMMON_ATOMICS_H
+#define HD_INC_CORE_OS_COMMON_ATOMICS_H
 
-namespace hud::OS::Common{
+namespace hud::os::common{
 
-    struct Atomics {
+    struct atomics {
     /** Specifies how memory accesses, including regular, non-atomic memory accesses, are to be ordered around an atomic operation. */
-    enum class EMemoryOrder {
+    enum class memory_order_e {
         /** No synchronization or ordering constraints imposed on other reads or writes, only this operation's atomicity is guaranteed. */
         relaxed,
         /**
@@ -43,4 +43,4 @@ namespace hud::OS::Common{
 };
 }
 
-#endif // HD_INC_OSLAYER_OS_COMMON_ATOMICS_H
+#endif // HD_INC_CORE_OS_COMMON_ATOMICS_H

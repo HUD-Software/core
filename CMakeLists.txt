@@ -41,13 +41,13 @@ set( interface
 	src/core/hash/crc32.h
 	src/core/iterators/random_access_iterator.h
 	src/core/os_common/atomics.h
-	src/core/os_common/char.h
+	src/core/os_common/character.h
 	src/core/os_common/cstring.h
 	src/core/os_common/memory.h
 	src/core/os_common/types.h
 	src/core/os_common/uuid.h
 	src/core/os_linux/atomics.h
-	src/core/os_linux/char.h
+	src/core/os_linux/character.h
 	src/core/os_linux/cstring.h
 	src/core/os_linux/debugger.h
 	src/core/os_linux/memory.h
@@ -55,7 +55,7 @@ set( interface
 	src/core/os_linux/uuid.h
 	src/core/os_windows/atomics.h
 	src/core/os_windows/atomics_intel.h
-	src/core/os_windows/char.h
+	src/core/os_windows/character.h
 	src/core/os_windows/cstring.h
 	src/core/os_windows/debugger.h
 	src/core/os_windows/memory.h
@@ -84,7 +84,7 @@ set( interface
 	src/core/traits/add_pointer.h
 	src/core/traits/add_rvalue_reference.h
 	src/core/traits/add_volatile.h
-	src/core/traits/and.h
+	src/core/traits/conjunction.h
 	src/core/traits/apply_cv.h
 	src/core/traits/common_type.h
 	src/core/traits/conditional.h
@@ -180,8 +180,8 @@ set( interface
 	src/core/traits/is_volatile.h
 	src/core/traits/make_signed.h
 	src/core/traits/make_unsigned.h
-	src/core/traits/not.h
-	src/core/traits/or.h
+	src/core/traits/negation.h
+	src/core/traits/disjunction.h
 	src/core/traits/remove_all_extents.h
 	src/core/traits/remove_const.h
 	src/core/traits/remove_cv.h
@@ -195,7 +195,7 @@ set( interface
 	src/core/traits/void_t.h
 	src/core/assert.h
 	src/core/atomics.h
-	src/core/char.h
+	src/core/character.h
 	src/core/compilation.h
 	src/core/compiler_defines.h
 	src/core/containers

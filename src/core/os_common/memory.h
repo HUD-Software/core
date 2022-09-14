@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_COMMON_MEMORY_H
-#define HD_INC_OSLAYER_OS_COMMON_MEMORY_H
+#ifndef HD_INC_CORE_OS_COMMON_MEMORY_H
+#define HD_INC_CORE_OS_COMMON_MEMORY_H
 #include "../assert.h"
 #include <stdlib.h> // malloc, free, ...
 #include <string.h> // memset
@@ -8,9 +8,9 @@
 #include "../traits/is_constant_evaluated.h"
 #include "../traits/is_not_same.h"
 
-namespace hud::OS::Common{
+namespace hud::os::common{
 
-    struct Memory {
+    struct memory {
 
         /**
         * Aligned allocation header size.
@@ -43,7 +43,7 @@ namespace hud::OS::Common{
         /**
         * Align the given pointer and add header before the align pointer.
         * This assume allocation is big enough. ( Size + Alignment + sizeof(size) + sizeof(uptr) )
-        * Memory follow this pattern : AlignmentPadding|AllocationSize|UnalignPointer|AlignPointer
+        * memory follow this pattern : AlignmentPadding|AllocationSize|UnalignPointer|AlignPointer
         * @param unaligned_pointer The unaligned pointer to align
         * @param size The size of the allocation of the unaligned_pointer
         * @param alignment Alignment in bytes
@@ -66,9 +66,9 @@ namespace hud::OS::Common{
         * @param alignment Alignment in bytes
         * @return true if the pointer is aligned, false otherwise
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static constexpr bool is_pointer_aligned(const T* const pointer, const u32 alignment) noexcept {
+        static constexpr bool is_pointer_aligned(const type_t* const pointer, const u32 alignment) noexcept {
             return is_address_aligned(reinterpret_cast<const uptr>(pointer), alignment);
         }
 
@@ -83,7 +83,7 @@ namespace hud::OS::Common{
         }
 
         /**
-        * Allocate memory block with no alignment requirements. Must be freed with hud::Memory::free.
+        * Allocate memory block with no alignment requirements. Must be freed with hud::memory::free.
         * @param size Number of bytes to allocate
         * @return Pointer to the allocated memory block, nullptr if failed
         */
@@ -94,30 +94,30 @@ namespace hud::OS::Common{
         }
 
         /**
-        * Allocate memory block of a defined type T with no alignment requirements. Must be freed with hud::Memory::free.
-        * Never used if T is void because it's constexpr version of allocate.
+        * Allocate memory block of a defined type type_t with no alignment requirements. Must be freed with hud::memory::free.
+        * Never used if type_t is void because it's constexpr version of allocate.
         * Indeed, using void* return type can implies a cast that is not allowed in constexpr.
-        * Sometimes, compiler can use this fonction in non constant evaluated expression because T is not void or provided by the user-defined code.
-        * In this case, we forward the pointer to allocate and reinterpret_cast to T* the returned pointer.
-        * This enforce the choise of std::allocate<T>.allocate() ONLY in constant evaluated expression because reinterpret_cast to T* will result in a compilation error in constant evaluated expression.
-        * @tparam T The type to allocate
-        * @param count Number of T to allocate
+        * Sometimes, compiler can use this fonction in non constant evaluated expression because type_t is not void or provided by the user-defined code.
+        * In this case, we forward the pointer to allocate and reinterpret_cast to type_t* the returned pointer.
+        * This enforce the choise of std::allocate<type_t>.allocate() ONLY in constant evaluated expression because reinterpret_cast to type_t* will result in a compilation error in constant evaluated expression.
+        * @tparam type_t The type to allocate
+        * @param count Number of type_t to allocate
         * @return Pointer to the allocated memory block, nullptr if failed
         */
-        template<typename T>
+        template<typename type_t>
         [[nodiscard]]
-        static constexpr T* allocate_array(const usize count) noexcept requires(IsNotSameV<T, void>) {
-            const usize allocation_size = count * sizeof(T);
+        static constexpr type_t* allocate_array(const usize count) noexcept requires(is_not_same_v<type_t, void>) {
+            const usize allocation_size = count * sizeof(type_t);
             if (is_constant_evaluated()) {
                 // Usage of std::allocator.allocate is allowed in constexpr dynamic allocation. 
-                // The allocation should be freed with std::allocator<T>().deallocate in the same constexpr expression
-                return std::allocator<T>().allocate(count);
+                // The allocation should be freed with std::allocator<type_t>().deallocate in the same constexpr expression
+                return std::allocator<type_t>().allocate(count);
             }
-            return reinterpret_cast<T*>(allocate(allocation_size));
+            return reinterpret_cast<type_t*>(allocate(allocation_size));
         }
 
         /**
-        * Allocate memory block with no alignment requirements and fille the buffer with 0. Must be freed with hud::Memory::free
+        * Allocate memory block with no alignment requirements and fille the buffer with 0. Must be freed with hud::memory::free
         * @param size Number of bytes to allocate
         * @return Pointer to the allocated memory block, nullptr if failed
         */
@@ -131,7 +131,7 @@ namespace hud::OS::Common{
         }
 
         /**
-        * Allocate aligned memory block. Must be freed with hud::Memory::free_align
+        * Allocate aligned memory block. Must be freed with hud::memory::free_align
         * @param size Number of bytes to allocate
         * @param alignment Required alignment in bytes
         * @return Pointer to the aligned allocated memory block, nullptr if failed
@@ -156,20 +156,20 @@ namespace hud::OS::Common{
         * In constant evaluated expression, this do only a simple allocation without alignment
         * To be used in a constant expression the type type of the allocation must be provided, 
         * void* is not usable in constant evaluated expression.
-        * @param count Number of T to allocate
+        * @param count Number of type_t to allocate
         * @param alignment Required alignment in bytes. Used only in non constant evaluated expression
         * @return Pointer to the aligned allocated memory block, nullptr if failed
         */
-        template<typename T>
-        static constexpr T* allocate_align(const usize count, const u32 alignment) noexcept {
+        template<typename type_t>
+        static constexpr type_t* allocate_align(const usize count, const u32 alignment) noexcept {
             if (is_constant_evaluated()) {
-                return allocate_array<T>(count);
+                return allocate_array<type_t>(count);
             }
-            return reinterpret_cast<T*>(allocate_align(count * sizeof(T), alignment));
+            return reinterpret_cast<type_t*>(allocate_align(count * sizeof(type_t), alignment));
         }
 
         /**
-        * Allocate aligned memory block and fille the buffer with 0. Must be freed with hud::Memory::free_align
+        * Allocate aligned memory block and fille the buffer with 0. Must be freed with hud::memory::free_align
         * @param size Number of bytes to allocate
         * @param alignment Alignment in bytes
         * @return Pointer to the allocated memory block, nullptr if failed
@@ -189,24 +189,24 @@ namespace hud::OS::Common{
         }
 
         /**
-        * Free memory block of a defined type T.
-        * Never used if T is void or not trivially destructible because it's constexpr version of free.
+        * Free memory block of a defined type type_t.
+        * Never used if type_t is void or not trivially destructible because it's constexpr version of free.
         * Indeed, using void* can implies a cast that is not allowed in constexpr.
-        * Sometimes, compiler can use this fonction in non constant evaluated expression because T is not void.
+        * Sometimes, compiler can use this fonction in non constant evaluated expression because type_t is not void.
         * In this case, we forward the pointer to free and reinterpret_cast to void* the given pointer.
-        * This enforce the choise of std::allocator<T>::deallocate() ONLY in constant evaluated expression because reinterpret_cast to
+        * This enforce the choise of std::allocator<type_t>::deallocate() ONLY in constant evaluated expression because reinterpret_cast to
         * void* will result in a compilation error in constant evaluated expression.
-        * @tparam T The type to deallocate. Do not destroy the type.
+        * @tparam type_t The type to deallocate. Do not destroy the type.
         * @param alloc The allocation to free. Must be allocated with the constexpr allocate function in a constexpr expression.
-        * @param count Number of T to deallocate
+        * @param count Number of type_t to deallocate
         */
-        template<typename T>
-        static constexpr void free_array(T* alloc, const usize count) noexcept {
+        template<typename type_t>
+        static constexpr void free_array(type_t* alloc, const usize count) noexcept {
             if (is_constant_evaluated()) {
                 if (alloc != nullptr) {
                     // Usage of std::allocator.deallocate is allowed in constexpr dynamic allocation. 
-                    // The allocation should be freed after std::allocator<T>().allocate in the same constexpr expression
-                    std::allocator<T>().deallocate(alloc, count);
+                    // The allocation should be freed after std::allocator<type_t>().allocate in the same constexpr expression
+                    std::allocator<type_t>().deallocate(alloc, count);
                 }
             }
             else {
@@ -215,19 +215,19 @@ namespace hud::OS::Common{
         }
 
         /**
-        * Free memory block of a defined type T in a constant expression
-        * Never used if T is void or not trivially destructible because it's constexpr version of free.
+        * Free memory block of a defined type type_t in a constant expression
+        * Never used if type_t is void or not trivially destructible because it's constexpr version of free.
         * Indeed, using void* can implies a cast that is not allowed in constexpr.
-        * Sometimes, compiler can use this fonction in non constant evaluated expression because T is not void.
+        * Sometimes, compiler can use this fonction in non constant evaluated expression because type_t is not void.
         * In this case, we forward the pointer to free and reinterpret_cast to void* the given pointer.
         * This enforce the choise of delete[] ONLY in constant evaluated expression because reinterpret_cast to
         * void* will result in a compilation error in constant evaluated expression.
-        * @tparam T The type to allocate. Do not construct the type.
+        * @tparam type_t The type to allocate. Do not construct the type.
         * @param alloc The allocation to free. Must be allocated with the constexpr allocate function in a constexpr expression
-        * @param count Number of T to allocate
+        * @param count Number of type_t to allocate
         */
-        template<typename T>
-        static constexpr void free_align(T* pointer, const usize count) noexcept {
+        template<typename type_t>
+        static constexpr void free_align(type_t* pointer, const usize count) noexcept {
             if (is_constant_evaluated()) {
                 free_array(pointer, count);
             }
@@ -246,7 +246,7 @@ namespace hud::OS::Common{
         /**
         * Reallocate a memory block with no alignment requrements allocated with allocate.
         * If pointer is nullptr, the behaviour is the same has allocate.
-        * If size is 0, the behaviour is the same has hud::Memory::free and return value is nullptr.
+        * If size is 0, the behaviour is the same has hud::memory::free and return value is nullptr.
         * After a reallocation, pointer is invalidated.
         * @param pointer Pointer to memory block to reallocate
         * @param size Number of bytes to reallocate
@@ -260,7 +260,7 @@ namespace hud::OS::Common{
         /**
         * Reallocate an aligned memory block allocated with allocate_align.
         * If pointer is nullptr, the behaviour is the same has allocate_align.
-        * If size is 0, the behaviour is the same has hud::Memory::free_align and return value is nullptr.
+        * If size is 0, the behaviour is the same has hud::memory::free_align and return value is nullptr.
         * After a reallocation, pointer is invalidated.
         * @param pointer Pointer to memory block to reallocate
         * @param size Number of bytes to reallocate
@@ -307,10 +307,10 @@ namespace hud::OS::Common{
             
             return memcpy(destination, source, size);
         }
-        template<typename T>
-        static constexpr T* copy(T* destination, const T* source, const usize size) noexcept requires(sizeof(T) == 1)  {
+        template<typename type_t>
+        static constexpr type_t* copy(type_t* destination, const type_t* source, const usize size) noexcept requires(sizeof(type_t) == 1)  {
             if (is_constant_evaluated()) {
-                T* dest = destination;
+                type_t* dest = destination;
                 for (usize position = 0; position < size; position++) {
                     std::construct_at(destination, *source);
                     destination++;
@@ -319,7 +319,7 @@ namespace hud::OS::Common{
                 return dest;
             }
             else {
-                return static_cast<T*>(copy(static_cast<void*>(destination), static_cast<const void*>(source), size));
+                return static_cast<type_t*>(copy(static_cast<void*>(destination), static_cast<const void*>(source), size));
             }
         }
         /**
@@ -329,9 +329,9 @@ namespace hud::OS::Common{
         * @param size Number of bytes to copy
         * @return destination pointer
         */
-        template<typename T, usize buffer_size>
-        static constexpr T* copy(T(&destination)[buffer_size], const T(&source)[buffer_size]) noexcept {
-            return copy(destination, source, buffer_size * sizeof(T));
+        template<typename type_t, usize buffer_size>
+        static constexpr type_t* copy(type_t(&destination)[buffer_size], const type_t(&source)[buffer_size]) noexcept {
+            return copy(destination, source, buffer_size * sizeof(type_t));
         }
 
         /**
@@ -353,10 +353,10 @@ namespace hud::OS::Common{
                 set(static_cast<void*>(destination), size, value);
             }
         }
-        template<typename T>
-        static constexpr void set(T* destination, const usize size, const u8 value) noexcept requires(IsIntegralV<T> ) {
+        template<typename type_t>
+        static constexpr void set(type_t* destination, const usize size, const u8 value) noexcept requires(is_integral_v<type_t> ) {
             if (is_constant_evaluated()) {
-                for (usize position = 0; position < size/sizeof(T); position++) {
+                for (usize position = 0; position < size/sizeof(type_t); position++) {
                     std::construct_at(destination + position, value);
                 }
             }
@@ -370,9 +370,9 @@ namespace hud::OS::Common{
         * @param buffer The buffer memory to set to value
         * @param value The value to be set
         */
-        template<typename T, usize buffer_size>
-        static constexpr void set(T(&buffer)[buffer_size], const u8 value) noexcept {
-            set(buffer, buffer_size * sizeof(T), value);
+        template<typename type_t, usize buffer_size>
+        static constexpr void set(type_t(&buffer)[buffer_size], const u8 value) noexcept {
+            set(buffer, buffer_size * sizeof(type_t), value);
         }
 
         /**
@@ -386,14 +386,14 @@ namespace hud::OS::Common{
         static constexpr void set_zero(u8* destination, const usize size) noexcept {
             set(destination, size, 0);
         }
-        template<typename T>
-        static constexpr void set_zero(T* destination, const usize size) noexcept requires(IsIntegralV<T>){
+        template<typename type_t>
+        static constexpr void set_zero(type_t* destination, const usize size) noexcept requires(is_integral_v<type_t>){
             set(destination, size, 0);
         }
-        template<typename T>
-        static constexpr void set_zero(T* destination, const usize size) noexcept requires(IsPointerV<T>) {
+        template<typename type_t>
+        static constexpr void set_zero(type_t* destination, const usize size) noexcept requires(is_pointer_v<type_t>) {
             if (is_constant_evaluated()) {
-                for (usize position = 0; position < size / sizeof(T); position++) {
+                for (usize position = 0; position < size / sizeof(type_t); position++) {
                     std::construct_at(destination + position, nullptr);
                 }
             }
@@ -406,9 +406,9 @@ namespace hud::OS::Common{
         * Set a block of memory referenced by buffer to zero.
         * @param buffer The buffer memory to set to zero
         */
-        template<typename T, usize buffer_size>
-        static constexpr void set_zero(T(&buffer)[buffer_size]) noexcept {
-            set_zero(buffer, buffer_size * sizeof(T));
+        template<typename type_t, usize buffer_size>
+        static constexpr void set_zero(type_t(&buffer)[buffer_size]) noexcept {
+            set_zero(buffer, buffer_size * sizeof(type_t));
         }
 
         /**
@@ -427,7 +427,7 @@ namespace hud::OS::Common{
                 if (size == 0) {
                     return destination;
                 }
-                u8* tmp = Memory::allocate_array<u8>(size);
+                u8* tmp = memory::allocate_array<u8>(size);
                 // copy src to tmp
                 for (usize position = 0; position < size; position++) {
                     std::construct_at(tmp + position, *source);
@@ -440,7 +440,7 @@ namespace hud::OS::Common{
                     destination++;
                 }
 
-                Memory::free_array(tmp, size);
+                memory::free_array(tmp, size);
                 return dest;
             }
             else {
@@ -481,9 +481,9 @@ namespace hud::OS::Common{
                 return compare(static_cast<const void*>(buffer1), static_cast<const void*>(buffer2), size);
             }
         }
-        template<typename T, usize buffer_size>
+        template<typename type_t, usize buffer_size>
         [[nodiscard]]
-        static constexpr i32 compare(const T(&buffer1)[buffer_size], const T(&buffer2)[buffer_size]) noexcept {
+        static constexpr i32 compare(const type_t(&buffer1)[buffer_size], const type_t(&buffer2)[buffer_size]) noexcept {
             return compare(buffer1, buffer2, buffer_size);
         }
 
@@ -503,10 +503,10 @@ namespace hud::OS::Common{
         static constexpr bool compare_equal(const u8* buffer1, const u8* buffer2, const usize size) noexcept {
             return compare(buffer1, buffer2, size) == 0;
         }
-        template<typename T, usize buffer_size>
+        template<typename type_t, usize buffer_size>
         [[nodiscard]]
-        static constexpr bool compare_equal(const T(&buffer1)[buffer_size], const T(&buffer2)[buffer_size]) noexcept {
-            return compare_equal(buffer1, buffer2, buffer_size * sizeof(T));
+        static constexpr bool compare_equal(const type_t(&buffer1)[buffer_size], const type_t(&buffer2)[buffer_size]) noexcept {
+            return compare_equal(buffer1, buffer2, buffer_size * sizeof(type_t));
         }
 
         /**
@@ -525,9 +525,9 @@ namespace hud::OS::Common{
         static constexpr bool compare_less(const u8* buffer1, const u8* buffer2, const usize size) noexcept {
             return compare(buffer1, buffer2, size) < 0;
         }
-        template<typename T, usize buffer_size>
+        template<typename type_t, usize buffer_size>
         [[nodiscard]]
-        static constexpr bool compare_less(const T(&buffer1)[buffer_size], const T(&buffer2)[buffer_size]) noexcept {
+        static constexpr bool compare_less(const type_t(&buffer1)[buffer_size], const type_t(&buffer2)[buffer_size]) noexcept {
             return compare_less(buffer1, buffer2, buffer_size);
         }
 
@@ -547,9 +547,9 @@ namespace hud::OS::Common{
         static constexpr bool compare_greater(const u8* buffer1, const u8* buffer2, const usize size) noexcept {
             return compare(buffer1, buffer2, size) > 0;
         }
-        template<typename T, usize buffer_size>
+        template<typename type_t, usize buffer_size>
         [[nodiscard]]
-        static constexpr bool compare_greater(const T(&buffer1)[buffer_size], const T(&buffer2)[buffer_size]) noexcept {
+        static constexpr bool compare_greater(const type_t(&buffer1)[buffer_size], const type_t(&buffer2)[buffer_size]) noexcept {
             return compare_greater(buffer1, buffer2, buffer_size);
         }
 
@@ -567,4 +567,4 @@ namespace hud::OS::Common{
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_OS_COMMON_MEMORY_H
+#endif // HD_INC_CORE_OS_COMMON_MEMORY_H

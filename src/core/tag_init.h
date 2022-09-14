@@ -1,18 +1,18 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_INITTAG_H
-#define HD_INC_OSLAYER_INITTAG_H
+#ifndef HD_INC_CORE_INITTAG_H
+#define HD_INC_CORE_INITTAG_H
 
 namespace hud {
 
     /** Empty class type used to indicate to initialize an object. */
-    struct TagInit {
-        struct Tag {};
-        explicit constexpr TagInit(Tag) {}
+    struct tag_init {
+        struct tag {};
+        explicit constexpr tag_init(tag) {}
     };
 
     /** Constant used to indicate to initialize an object. */
-    inline constexpr TagInit taginit{ TagInit::Tag{} };
+    inline constexpr tag_init init{ tag_init::tag{} };
 
 }
 
-#endif // HD_INC_OSLAYER_INITTAG_H
+#endif // HD_INC_CORE_INITTAG_H

@@ -1,20 +1,20 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_CLASS_H
-#define HD_INC_OSLAYER_traits_IS_CLASS_H
+#ifndef HD_INC_CORE_TRAITS_IS_CLASS_H
+#define HD_INC_CORE_TRAITS_IS_CLASS_H
 #include "integral_constant.h"
 
 namespace hud {
 
-    /** Checks whether T is a class type. */
-    template<typename T>
-    struct IsClass
-        : BoolConstant<__is_class(T)> {
+    /** Checks whether type_t is a class type. */
+    template<typename type_t>
+    struct is_class
+        : bool_constant<__is_class(type_t)> {
     };
 
-    /** Equivalent of IsClass<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsClassV = IsClass<T>::Value;
+    /** Equivalent of is_class<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_class_v = is_class<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_CLASS_H
+#endif // HD_INC_CORE_TRAITS_IS_CLASS_H

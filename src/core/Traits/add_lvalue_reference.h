@@ -1,24 +1,24 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_ADD_LVALUE_REFERENCE_H
-#define HD_INC_OSLAYER_traits_ADD_LVALUE_REFERENCE_H
+#ifndef HD_INC_CORE_TRAITS_ADD_LVALUE_REFERENCE_H
+#define HD_INC_CORE_TRAITS_ADD_LVALUE_REFERENCE_H
 #include "is_referenceable.h"
 
 namespace hud {
 
-    /** Provides a member typedef Type which is T& if T is referenceable. Otherwise type is T. */
-    template<typename T, bool = IsReferenceableV<T>>
-    struct AddLValueReference {
-        using Type = T;
+    /** Provides a member typedef Type which is type_t& if type_t is referenceable. Otherwise type is type_t. */
+    template<typename type_t, bool = is_referenceable_v<type_t>>
+    struct add_lvalue_reference {
+        using type = type_t;
     };
-    template<typename T>
-    struct AddLValueReference<T,true> {
-        using Type = T&;
+    template<typename type_t>
+    struct add_lvalue_reference<type_t,true> {
+        using type = type_t&;
     };
 
-    /** Equivalent of typename AddLValueReference<T>::Type. */
-    template <typename T>
-    using AddLValueReferenceT = typename AddLValueReference<T>::Type;
+    /** Equivalent of typename add_lvalue_reference<type_t>::type. */
+    template <typename type_t>
+    using add_lvalue_reference_t = typename add_lvalue_reference<type_t>::type;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_ADD_LVALUE_REFERENCE_H
+#endif // HD_INC_CORE_TRAITS_ADD_LVALUE_REFERENCE_H

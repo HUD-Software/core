@@ -1,8 +1,8 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_SCALAR_H
-#define HD_INC_OSLAYER_traits_IS_SCALAR_H
+#ifndef HD_INC_CORE_TRAITS_IS_SCALAR_H
+#define HD_INC_CORE_TRAITS_IS_SCALAR_H
 #include "integral_constant.h"
-#include "or.h"
+#include "disjunction.h"
 #include "is_arithmetic.h"
 #include "is_enum.h"
 #include "is_pointer.h"
@@ -13,18 +13,18 @@
 namespace hud {
 
     /**
-    * Checks whether T is a scalar type including cv-qualified variants.
+    * Checks whether type_t is a scalar type including cv-qualified variants.
     * A scalar type is a type that has built-in functionality for the addition operator without overloads (arithmetic, pointer, member pointer, enum and hud::ptr::null).
     */
-    template<typename T>
-    struct IsScalar
-        : Or< IsArithmetic<T>, IsEnum<T>, IsPointer<T>, IsMemberPointer<T>, IsNullptr<T> > {
+    template<typename type_t>
+    struct is_scalar
+        : disjunction< is_arithmetic<type_t>, is_enum<type_t>, is_pointer<type_t>, is_member_pointer<type_t>, is_nullptr<type_t> > {
     };
 
-    /** Equivalent of IsScalar<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsScalarV = IsScalar<T>::Value;
+    /** Equivalent of is_scalar<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_scalar_v = is_scalar<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_SCALAR_H
+#endif // HD_INC_CORE_TRAITS_IS_SCALAR_H

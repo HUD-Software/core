@@ -1,40 +1,40 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_NOTHROW_DESTRUCTIBLE_H
-#define HD_INC_OSLAYER_traits_IS_NOTHROW_DESTRUCTIBLE_H
+#ifndef HD_INC_CORE_TRAITS_IS_NOTHROW_DESTRUCTIBLE_H
+#define HD_INC_CORE_TRAITS_IS_NOTHROW_DESTRUCTIBLE_H
 #include "integral_constant.h"
 #include "../templates/declval.h"
-#include "and.h"
+#include "conjunction.h"
 #include "is_destructible.h"
 
 namespace hud {
 /**
-    * Checks whether T is a destructible type, and such destruction is known not to throw any exception.
+    * Checks whether type_t is a destructible type, and such destruction is known not to throw any exception.
     * Notice that all class destructors are noexcept unless explicitly specified otherwise.
     */
 #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
-    template <typename T>
-    struct IsNothrowDestructible
-        : BoolConstant<__is_nothrow_destructible(T)> {
+    template <typename type_t>
+    struct is_nothrow_destructible
+        : bool_constant<__is_nothrow_destructible(type_t)> {
     };
 #else
     namespace details {
-        template<typename T>
+        template<typename type_t>
         struct IsNothrowDestructibleWellFormed
-            : BoolConstant<noexcept(hud::declval<T>().~T())> {
+            : bool_constant<noexcept(hud::declval<type_t>().~type_t())> {
         };
     }
 
-    template <typename T>
-    struct IsNothrowDestructible
-        : And<hud::IsDestructible<T>,details::IsNothrowDestructibleWellFormed<T>> {
+    template <typename type_t>
+    struct is_nothrow_destructible
+        : conjunction<hud::is_destructible<type_t>,details::IsNothrowDestructibleWellFormed<type_t>> {
     };
 
 #endif
-    /** Equivalent of IsNothrowDestructible<T>::Value. */
-    template <class T>
-    inline constexpr bool IsNothrowDestructibleV = IsNothrowDestructible<T>::Value;
+    /** Equivalent of is_nothrow_destructible<type_t>::value. */
+    template <class type_t>
+    inline constexpr bool is_nothrow_destructible_v = is_nothrow_destructible<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_NOTHROW_DESTRUCTIBLE_H
+#endif // HD_INC_CORE_TRAITS_IS_NOTHROW_DESTRUCTIBLE_H
 

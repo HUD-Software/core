@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_ALLOCATOR_HEAP_H
-#define HD_INC_OSLAYER_ALLOCATOR_HEAP_H
+#ifndef HD_INC_CORE_ALLOCATOR_HEAP_H
+#define HD_INC_CORE_ALLOCATOR_HEAP_H
 #include "../memory.h"
 #include "../traits/is_power_of_two.h"
 #include "allocation.h"
@@ -8,37 +8,37 @@
 namespace hud {
 
     /** Allocator that use the system heap allocation. */
-    struct HeapAllocator {
+    struct heap_allocator {
 
         /** The type of allocation done by this allocator. */
-        template<typename T>
-        using AllocationType = Allocation<T>;
+        template<typename type_t>
+        using allocation_type = allocation<type_t>;
 
         /**
         * Allocate memory block with no alignment requirements
-        * @tparam T The element type to allocate
-        * @param count Number of element T to allocate
-        * @return Allocation view into the allocated memory, empty Allocation if failed
+        * @tparam type_t The element type to allocate
+        * @param count Number of element type_t to allocate
+        * @return allocation view into the allocated memory, empty allocation if failed
         */
-        template<typename T = u8>
+        template<typename type_t = u8>
         [[nodiscard]]
-        constexpr AllocationType<T> allocate(const usize count) noexcept {
+        constexpr allocation_type<type_t> allocate(const usize count) noexcept {
             if (count > 0) {
-                return AllocationType<T>(Memory::allocate_array<T>(count), count);
+                return allocation_type<type_t>(memory::allocate_array<type_t>(count), count);
             }
-            return AllocationType<T>{};
+            return allocation_type<type_t>{};
         }
 
         /**
         * Free memory block
         * @param buffer The buffer to free
         */
-        template<typename T = u8>
-        constexpr void free(const AllocationType<T>& buffer) noexcept {
-            Memory::free_array(buffer.data(), buffer.count());
+        template<typename type_t = u8>
+        constexpr void free(const allocation_type<type_t>& buffer) noexcept {
+           hud::memory::free_array(buffer.data(), buffer.count());
         }
     };
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_ALLOCATOR_HEAP_H
+#endif // HD_INC_CORE_ALLOCATOR_HEAP_H

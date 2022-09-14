@@ -6,38 +6,38 @@
 namespace hud {
 
     /**
-    ASCII slice for the String class
+    ASCII slice for the string class
     */
-    struct AsciiSlice {
+    struct ascii_slice {
         
     public:
-        Slice<u8> slice;
+        slice<u8> slice;
     };
 
     /**
-    UTF-8 slice for the String class
+    UTF-8 slice for the string class
     */
-    struct Utf8Slice {
+    struct utf8_slice {
 
     public:
-        Slice<u8> slice;
+        slice<u8> slice;
     };
 
     /**
-    String representation
+    string representation
     Internally it's just an array of bytes.
     */
-    class String {
+    class string {
 
     public:
         /**
         Default construct
         */
-        explicit constexpr String() noexcept = default;
+        explicit constexpr string() noexcept = default;
 
         
     private:
-        Array<u8> bytes_array; // Array of bytes representing the string
+        array<u8> bytes_array; // array of bytes representing the string
     };
 } // namespace hud
 

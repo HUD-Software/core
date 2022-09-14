@@ -8,9 +8,9 @@
 #include <cstdio>  // vsnprintf
 #include <cstdarg> // va_list
 
-namespace hud::OS::Common{
+namespace hud::os::common{
 
-    struct CString {
+    struct cstring {
 
         /** 
         * Test whether null-terminated string contains only pure ansi characters.
@@ -31,8 +31,8 @@ namespace hud::OS::Common{
                 return false;
             }
 
-            while (!Char::is_null(*string)) {
-                if (!Char::is_pure_ansi(*string)) {
+            while (!character::is_null(*string)) {
+                if (!character::is_pure_ansi(*string)) {
                     return false;
                 }
                 string++;
@@ -54,10 +54,10 @@ namespace hud::OS::Common{
 
             while (string_size-- > 0) {
                 ansichar cur = *string;
-                if (Char::is_null(cur)) {
+                if (character::is_null(cur)) {
                     return true;
                 }
-                if (!Char::is_pure_ansi(cur)) {
+                if (!character::is_pure_ansi(cur)) {
                     return false;
                 }
                 string++;
@@ -79,10 +79,10 @@ namespace hud::OS::Common{
 
             while (string_size-- > 0) {
                 wchar cur = *string;
-                if (Char::is_null(cur)) {
+                if (character::is_null(cur)) {
                     return true;
                 }
-                if (!Char::is_pure_ansi(cur)) {
+                if (!character::is_pure_ansi(cur)) {
                     return false;
                 }
                 string++;
@@ -92,20 +92,20 @@ namespace hud::OS::Common{
 
         /** 
         * Test if a null-terminated string is null or empty.
-        * @param String The null-terminated string
+        * @param string The null-terminated string
         * @return true if the string is null or empty, false otherwise
         */
         static HD_FORCEINLINE bool is_null_or_empty(const ansichar* const string) noexcept {
-            return (string == nullptr) || Char::is_null(*string);
+            return (string == nullptr) || character::is_null(*string);
         }
 
         /** 
         * Test if a wide null-terminated string is null or empty.
-        * @param String The null-terminated string
+        * @param string The null-terminated string
         * @return true if the string is null or empty, false otherwise
         */
         static HD_FORCEINLINE bool is_null_or_empty(const wchar* const string) noexcept {
-            return (string == nullptr) || Char::is_null(*string);
+            return (string == nullptr) || character::is_null(*string);
         }
 
         /**
@@ -217,9 +217,9 @@ namespace hud::OS::Common{
         */
         static ansichar* to_uppercase(ansichar* string) noexcept {
             ansichar* ptr = string;
-            while (!Char::is_null(*ptr)) {
+            while (!character::is_null(*ptr)) {
                 ansichar* cur = ptr++;
-                *cur = Char::to_uppercase(*cur);
+                *cur = character::to_uppercase(*cur);
             }
             return string;
         }
@@ -231,9 +231,9 @@ namespace hud::OS::Common{
         */
         static wchar* to_uppercase(wchar* string) noexcept {
             wchar* ptr = string;
-            while (!Char::is_null(*ptr)) {
+            while (!character::is_null(*ptr)) {
                 wchar* cur = ptr++;
-                *cur = Char::to_uppercase(*cur);
+                *cur = character::to_uppercase(*cur);
             }
             return string;
         }
@@ -251,12 +251,12 @@ namespace hud::OS::Common{
 
             while (string_size-- > 0) {
                 ansichar* cur = string++;
-                if (Char::is_null(*cur)) {
+                if (character::is_null(*cur)) {
                     return false;
                 }
-                *cur = Char::to_uppercase(*cur);
+                *cur = character::to_uppercase(*cur);
             }
-            return Char::is_null(*string);
+            return character::is_null(*string);
         }
 
         /**
@@ -272,12 +272,12 @@ namespace hud::OS::Common{
 
             while (string_size-- > 0) {
                 wchar* cur = string++;
-                if (Char::is_null(*cur)) {
+                if (character::is_null(*cur)) {
                     return false;
                 }
-                *cur = Char::to_uppercase(*cur);
+                *cur = character::to_uppercase(*cur);
             }
-            return Char::is_null(*string);
+            return character::is_null(*string);
         }
 
         /**
@@ -289,7 +289,7 @@ namespace hud::OS::Common{
         static ansichar* to_uppercase_partial(ansichar* string, usize count) noexcept {
             ansichar* ptr = string;
             while (count-- > 0) {
-                *ptr = Char::to_uppercase(*ptr);
+                *ptr = character::to_uppercase(*ptr);
                 ptr++;
             }
             return string;
@@ -304,7 +304,7 @@ namespace hud::OS::Common{
         static wchar* to_uppercase_partial(wchar* string, usize count) noexcept {
             wchar* ptr = string;
             while (count-- > 0) {
-                *ptr = Char::to_uppercase(*ptr);
+                *ptr = character::to_uppercase(*ptr);
                 ptr++;
             }
             return string;
@@ -325,10 +325,10 @@ namespace hud::OS::Common{
             const usize not_capatilized_count = string_size - count;
             while (string_size-- > not_capatilized_count) {
                 ansichar* cur = string++;
-                if (Char::is_null(*cur)) {
+                if (character::is_null(*cur)) {
                     return false;
                 }
-                *cur = Char::to_uppercase(*cur);
+                *cur = character::to_uppercase(*cur);
             }
 
             return true;
@@ -349,10 +349,10 @@ namespace hud::OS::Common{
             const usize not_capatilized_count = string_size - count;
             while (string_size-- > not_capatilized_count) {
                 wchar* cur = string++;
-                if (Char::is_null(*cur)) {
+                if (character::is_null(*cur)) {
                     return false;
                 }
-                *cur = Char::to_uppercase(*cur);
+                *cur = character::to_uppercase(*cur);
             }
 
             return true;
@@ -365,8 +365,8 @@ namespace hud::OS::Common{
         */
         static HD_FORCEINLINE ansichar* to_lowercase(ansichar* string) noexcept {
             ansichar* ptr = string;
-            while (!Char::is_null(*ptr)) {
-                *ptr = Char::to_lowercase(*ptr);
+            while (!character::is_null(*ptr)) {
+                *ptr = character::to_lowercase(*ptr);
                 ptr++;
             }
             return string;
@@ -379,8 +379,8 @@ namespace hud::OS::Common{
         */
         static HD_FORCEINLINE wchar* to_lowercase(wchar* string) noexcept {
             wchar* ptr = string;
-            while (!Char::is_null(*ptr)) {
-                *ptr = Char::to_lowercase(*ptr);
+            while (!character::is_null(*ptr)) {
+                *ptr = character::to_lowercase(*ptr);
                 ptr++;
             }
             return string;
@@ -397,13 +397,13 @@ namespace hud::OS::Common{
                 return false;
             }
             while (string_size-- > 0) {
-                if (Char::is_null(*string)) {
+                if (character::is_null(*string)) {
                     return false;
                 }
-                *string = Char::to_lowercase(*string);
+                *string = character::to_lowercase(*string);
                 string++;
             }
-            return Char::is_null(*string);
+            return character::is_null(*string);
         }
 
         /**
@@ -417,13 +417,13 @@ namespace hud::OS::Common{
                 return false;
             }
             while (string_size-- > 0) {
-                if (Char::is_null(*string)) {
+                if (character::is_null(*string)) {
                     return false;
                 }
-                *string = Char::to_lowercase(*string);
+                *string = character::to_lowercase(*string);
                 string++;
             }
-            return Char::is_null(*string);
+            return character::is_null(*string);
         }
 
         /**
@@ -435,7 +435,7 @@ namespace hud::OS::Common{
         static ansichar* to_lowercase_partial(ansichar* string, usize count) noexcept {
             ansichar* ptr = string;
             while (count-- > 0) {
-                *ptr = Char::to_lowercase(*ptr);
+                *ptr = character::to_lowercase(*ptr);
                 ptr++;
             }
             return string;
@@ -450,7 +450,7 @@ namespace hud::OS::Common{
         static wchar* to_lowercase_partial(wchar* string, usize count) noexcept {
             wchar* ptr = string;
             while (count-- > 0) {
-                *ptr = Char::to_lowercase(*ptr);
+                *ptr = character::to_lowercase(*ptr);
                 ptr++;
             }
             return string;
@@ -472,10 +472,10 @@ namespace hud::OS::Common{
             const usize not_minimized_count = string_size - count;
             while (string_size-- > not_minimized_count) {
                 ansichar* cur = string++;
-                if (Char::is_null(*cur)) {
+                if (character::is_null(*cur)) {
                     return false;
                 }
-                *cur = Char::to_lowercase(*cur);
+                *cur = character::to_lowercase(*cur);
             }
 
             return true;
@@ -496,10 +496,10 @@ namespace hud::OS::Common{
             const usize not_minimized_count = string_size - count;
             while (string_size-- > not_minimized_count) {
                 wchar* cur = string++;
-                if (Char::is_null(*cur)) {
+                if (character::is_null(*cur)) {
                     return false;
                 }
-                *cur = Char::to_lowercase(*cur);
+                *cur = character::to_lowercase(*cur);
             }
 
             return true;
@@ -670,6 +670,6 @@ namespace hud::OS::Common{
 
     };
 
-} // namespace hud::OS::Common
+} // namespace hud::os::common
 
 #endif //HD_INC_OSABSTRACTIONLAYER_OS_COMMON_CSTRING_H

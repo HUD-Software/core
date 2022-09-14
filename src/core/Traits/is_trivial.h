@@ -1,12 +1,12 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_TRIVIAL_H
-#define HD_INC_OSLAYER_traits_IS_TRIVIAL_H
+#ifndef HD_INC_CORE_TRAITS_IS_TRIVIAL_H
+#define HD_INC_CORE_TRAITS_IS_TRIVIAL_H
 #include "integral_constant.h"
 
 namespace hud {
 
     /**
-    * Checks whether T is a trivial type.
+    * Checks whether type_t is a trivial type.
     * A trivial type is a type whose storage is contiguous (trivially copyable) and which only supports static default initialization (trivially default constructible), either cv-qualified or not.
     * It includes scalar types, trivial classes and arrays of any such types.
     * A trivial class is a class (defined with class, struct or union) that is both trivially default constructible and trivially copyable, which implies that:
@@ -17,20 +17,20 @@ namespace hud {
     * Example:
     *   struct A { int m; };
     *   struct B { B() {} };
-    *   IsTrivial<int>::Value -> true
-    *   IsTrivial<A>::Value -> true
-    *   IsTrivial<B>::Value -> false
+    *   is_trivial<int>::value -> true
+    *   is_trivial<A>::value -> true
+    *   is_trivial<B>::value -> false
     */
-    template<typename T>
-    struct IsTrivial
-        : BoolConstant<__is_trivial(T)> {
+    template<typename type_t>
+    struct is_trivial
+        : bool_constant<__is_trivial(type_t)> {
     };
 
-    /** Equivalent of IsTrivial<T>::Value */
-    template<typename T>
-    inline constexpr bool IsTrivialV = IsTrivial<T>::Value;
+    /** Equivalent of is_trivial<type_t>::value */
+    template<typename type_t>
+    inline constexpr bool is_trivial_v = is_trivial<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_TRIVIAL_H
+#endif // HD_INC_CORE_TRAITS_IS_TRIVIAL_H
 

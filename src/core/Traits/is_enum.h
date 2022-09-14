@@ -1,20 +1,20 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_ENUM_H
-#define HD_INC_OSLAYER_traits_IS_ENUM_H
+#ifndef HD_INC_CORE_TRAITS_IS_ENUM_H
+#define HD_INC_CORE_TRAITS_IS_ENUM_H
 #include "integral_constant.h"
 
 namespace hud {
 
-    /** Checks whether T is an enumeration type. */
-    template<typename T>
-    struct IsEnum
-        : public BoolConstant<__is_enum(T)> {
+    /** Checks whether type_t is an enumeration type. */
+    template<typename type_t>
+    struct is_enum
+        : public bool_constant<__is_enum(type_t)> {
     };
 
-    /** Equivalent of IsEnum<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsEnumV = IsEnum<T>::Value;
+    /** Equivalent of is_enum<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_enum_v = is_enum<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_ENUM_H
+#endif // HD_INC_CORE_TRAITS_IS_ENUM_H

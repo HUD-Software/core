@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_templates_BITCAST_H
-#define HD_INC_OSLAYER_templates_BITCAST_H
+#ifndef HD_INC_CORE_TEMPLATES_BITCAST_H
+#define HD_INC_CORE_TEMPLATES_BITCAST_H
 #include "../traits/is_same_size.h"
 #include "../traits/is_trivially_copyable.h"
 
@@ -15,10 +15,10 @@ namespace hud {
         */
         template<typename To, typename From>
         [[nodiscard]]
-        constexpr To bit_cast(const From& value) noexcept requires(sizeof(To) == sizeof(From) && IsTriviallyCopyableV<To> && IsTriviallyCopyableV<From>){
+        constexpr To bit_cast(const From& value) noexcept requires(sizeof(To) == sizeof(From) && is_trivially_copyable_v<To> && is_trivially_copyable_v<From>){
             return __builtin_bit_cast(To, value);
         }
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_templates_BITCAST_H
+#endif // HD_INC_CORE_TEMPLATES_BITCAST_H

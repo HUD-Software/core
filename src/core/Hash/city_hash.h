@@ -60,13 +60,13 @@
 // doesn't hold for any hash functions in this file.
 
 #pragma once
-#ifndef HD_INC_OSLAYER_HASH_CITY_HASH_H
-#define HD_INC_OSLAYER_HASH_CITY_HASH_H
+#ifndef HD_INC_CORE_HASH_CITY_HASH_H
+#define HD_INC_CORE_HASH_CITY_HASH_H
 #include "../core/memory.h"
 #include "../templates/swap.h"
 #include "../templates/bit_cast.h"
 
-namespace hud::Hash{
+namespace hud::hash{
 
 
     namespace details {
@@ -88,14 +88,14 @@ namespace hud::Hash{
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
         static constexpr u32 unaligned_load32(const ansichar* buffer) {
             ansichar result[sizeof(u32)];
-            Memory::copy(result, buffer, sizeof(u32));
+            hud::memory::copy(result, buffer, sizeof(u32));
             return hud::bit_cast<u32>(result);
         }
 
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
         static constexpr u64 unaligned_load64(const ansichar* buffer) {
             ansichar result[sizeof(u64)];
-            Memory::copy(result, buffer, sizeof(u64));
+            hud::memory::copy(result, buffer, sizeof(u64));
             return hud::bit_cast<u64>(result);
         }
 
@@ -130,10 +130,10 @@ namespace hud::Hash{
         */
         constexpr u32 combine(u32 a, u32 b) noexcept {
             a *= C1;
-            a = Memory::rotate_left(a, 15);
+            a = hud::memory::rotate_left(a, 15);
             a *= C2;
             b ^= a;
-            b = Memory::rotate_left(b, 13);
+            b = hud::memory::rotate_left(b, 13);
             return b * 5 + 0xe6546b64;
         }
 
@@ -143,8 +143,8 @@ namespace hud::Hash{
         * @return The 32 bits aligned memory
         */
         static constexpr u32 fetch_32(const ansichar* buffer) noexcept {
-            if constexpr (Compilation::is_endianness(EEndianness::big)) {
-                return Memory::reverse(unaligned_load32(buffer));
+            if constexpr (compilation::is_endianness(endianness_e::big)) {
+                return hud::memory::reverse(unaligned_load32(buffer));
             }
             else {
                 return unaligned_load32(buffer);
@@ -157,8 +157,8 @@ namespace hud::Hash{
         * @return The 32 bits aligned memory
         */
         static constexpr u64 fetch_64(const ansichar* buffer) noexcept {
-            if constexpr (Compilation::is_endianness(EEndianness::big)) {
-                return Memory::reverse(unaligned_load64(buffer));
+            if constexpr (compilation::is_endianness(endianness_e::big)) {
+                return hud::memory::reverse(unaligned_load64(buffer));
             }
             else {
                 return unaligned_load64(buffer);
@@ -264,8 +264,8 @@ namespace hud::Hash{
                 u64 mul = K2 + length * 2;
                 u64 a = fetch_64(key) + K2;
                 u64 b = fetch_64(key + length - 8);
-                u64 c = Memory::rotate_right(b, 37) * mul + a;
-                u64 d = (Memory::rotate_right(a, 25) + b) * mul;
+                u64 c = hud::memory::rotate_right(b, 37) * mul + a;
+                u64 d = (hud::memory::rotate_right(a, 25) + b) * mul;
                 return hash_64_len_16(c, d, mul);
             }
             if (length >= 4) {
@@ -296,8 +296,8 @@ namespace hud::Hash{
             u64 b = fetch_64(key + 8);
             u64 c = fetch_64(key + length - 8) * mul;
             u64 d = fetch_64(key + length - 16) * K2;
-            return hash_64_len_16(Memory::rotate_right(a + b, 43) + Memory::rotate_right(c, 30) + d,
-                a + Memory::rotate_right(b + K2, 18) + c, mul);
+            return hash_64_len_16(hud::memory::rotate_right(a + b, 43) + hud::memory::rotate_right(c, 30) + d,
+                a + hud::memory::rotate_right(b + K2, 18) + c, mul);
         }
 
         /**
@@ -316,13 +316,13 @@ namespace hud::Hash{
             u64 f = fetch_64(key + 24) * 9;
             u64 g = fetch_64(key + len - 8);
             u64 h = fetch_64(key + len - 16) * mul;
-            u64 u = Memory::rotate_right(a + g, 43) + (Memory::rotate_right(b, 30) + c) * 9;
+            u64 u = hud::memory::rotate_right(a + g, 43) + (hud::memory::rotate_right(b, 30) + c) * 9;
             u64 v = ((a + g) ^ d) + f + 1;
-            u64 w = Memory::reverse((u + v) * mul) + h;
-            u64 x = Memory::rotate_right(e + f, 42) + c;
-            u64 y = (Memory::reverse((v + w) * mul) + g) * mul;
+            u64 w = hud::memory::reverse((u + v) * mul) + h;
+            u64 x = hud::memory::rotate_right(e + f, 42) + c;
+            u64 y = (hud::memory::reverse((v + w) * mul) + g) * mul;
             u64 z = e + f + c;
-            a = Memory::reverse((x + z) * mul + y) + b;
+            a = hud::memory::reverse((x + z) * mul + y) + b;
             b = shift_mix((z + a) * mul + d + h) * mul;
             return b + x;
         }
@@ -367,11 +367,11 @@ namespace hud::Hash{
         */
         static constexpr u128 weak_hash_len_32_with_seeds(u64 w, u64 x, u64 y, u64 z, u64 a, u64 b) noexcept {
             a += w;
-            b = Memory::rotate_right(b + a + z, 21);
+            b = hud::memory::rotate_right(b + a + z, 21);
             u64 c = a;
             a += x;
             a += y;
-            b += Memory::rotate_right(a, 44);
+            b += hud::memory::rotate_right(a, 44);
             return u128{ a + z, b + c };
         }
 
@@ -394,7 +394,7 @@ namespace hud::Hash{
 
     }
 
-    struct CityHash {
+    struct city_hash {
 
         /**
         * Combine two 32 bits value with murmur3
@@ -423,64 +423,64 @@ namespace hud::Hash{
 
             //length > 24
             u32 h = static_cast<u32>(length), g = details::C1 * static_cast<u32>(length), f = g;
-            u32 a0 = Memory::rotate_right(details::fetch_32(buffer + length - 4) * details::C1, 17) * details::C2;
-            u32 a1 = Memory::rotate_right(details::fetch_32(buffer + length - 8) * details::C1, 17) * details::C2;
-            u32 a2 = Memory::rotate_right(details::fetch_32(buffer + length - 16) * details::C1, 17) * details::C2;
-            u32 a3 = Memory::rotate_right(details::fetch_32(buffer + length - 12) * details::C1, 17) * details::C2;
-            u32 a4 = Memory::rotate_right(details::fetch_32(buffer + length - 20) * details::C1, 17) * details::C2;
+            u32 a0 = hud::memory::rotate_right(details::fetch_32(buffer + length - 4) * details::C1, 17) * details::C2;
+            u32 a1 = hud::memory::rotate_right(details::fetch_32(buffer + length - 8) * details::C1, 17) * details::C2;
+            u32 a2 = hud::memory::rotate_right(details::fetch_32(buffer + length - 16) * details::C1, 17) * details::C2;
+            u32 a3 = hud::memory::rotate_right(details::fetch_32(buffer + length - 12) * details::C1, 17) * details::C2;
+            u32 a4 = hud::memory::rotate_right(details::fetch_32(buffer + length - 20) * details::C1, 17) * details::C2;
             h ^= a0;
-            h = Memory::rotate_right(h, 19);
+            h = hud::memory::rotate_right(h, 19);
             h = h * 5 + 0xe6546b64;
             h ^= a2;
-            h = Memory::rotate_right(h, 19);
+            h = hud::memory::rotate_right(h, 19);
             h = h * 5 + 0xe6546b64;
             g ^= a1;
-            g = Memory::rotate_right(g, 19);
+            g = hud::memory::rotate_right(g, 19);
             g = g * 5 + 0xe6546b64;
             g ^= a3;
-            g = Memory::rotate_right(g, 19);
+            g = hud::memory::rotate_right(g, 19);
             g = g * 5 + 0xe6546b64;
             f += a4;
-            f = Memory::rotate_right(f, 19);
+            f = hud::memory::rotate_right(f, 19);
             f = f * 5 + 0xe6546b64;
             usize iters = (length - 1) / 20;
             do {
-                u32 a0_ = Memory::rotate_right(details::fetch_32(buffer) * details::C1, 17) * details::C2;
+                u32 a0_ = hud::memory::rotate_right(details::fetch_32(buffer) * details::C1, 17) * details::C2;
                 u32 a1_ = details::fetch_32(buffer + 4);
-                u32 a2_ = Memory::rotate_right(details::fetch_32(buffer + 8) * details::C1, 17) * details::C2;
-                u32 a3_ = Memory::rotate_right(details::fetch_32(buffer + 12) * details::C1, 17) * details::C2;
+                u32 a2_ = hud::memory::rotate_right(details::fetch_32(buffer + 8) * details::C1, 17) * details::C2;
+                u32 a3_ = hud::memory::rotate_right(details::fetch_32(buffer + 12) * details::C1, 17) * details::C2;
                 u32 a4_ = details::fetch_32(buffer + 16);
                 h ^= a0_;
-                h = Memory::rotate_right(h, 18);
+                h = hud::memory::rotate_right(h, 18);
                 h = h * 5 + 0xe6546b64;
                 f += a1_;
-                f = Memory::rotate_right(f, 19);
+                f = hud::memory::rotate_right(f, 19);
                 f = f * details::C1;
                 g += a2_;
-                g = Memory::rotate_right(g, 18);
+                g = hud::memory::rotate_right(g, 18);
                 g = g * 5 + 0xe6546b64;
                 h ^= a3_ + a1_;
-                h = Memory::rotate_right(h, 19);
+                h = hud::memory::rotate_right(h, 19);
                 h = h * 5 + 0xe6546b64;
                 g ^= a4_;
-                g = Memory::reverse(g) * 5;
+                g = hud::memory::reverse(g) * 5;
                 h += a4_ * 5;
-                h = Memory::reverse(h);
+                h = hud::memory::reverse(h);
                 f += a0_;
                 swap(f, h);
                 swap(f, g);
                 buffer += 20;
             } while (--iters != 0);
-            g = Memory::rotate_right(g, 11) * details::C1;
-            g = Memory::rotate_right(g, 17) * details::C1;
-            f = Memory::rotate_right(f, 11) * details::C1;
-            f = Memory::rotate_right(f, 17) * details::C1;
-            h = Memory::rotate_right(h + g, 19);
+            g = hud::memory::rotate_right(g, 11) * details::C1;
+            g = hud::memory::rotate_right(g, 17) * details::C1;
+            f = hud::memory::rotate_right(f, 11) * details::C1;
+            f = hud::memory::rotate_right(f, 17) * details::C1;
+            h = hud::memory::rotate_right(h + g, 19);
             h = h * 5 + 0xe6546b64;
-            h = Memory::rotate_right(h, 17) * details::C1;
-            h = Memory::rotate_right(h + f, 19);
+            h = hud::memory::rotate_right(h, 17) * details::C1;
+            h = hud::memory::rotate_right(h + f, 19);
             h = h * 5 + 0xe6546b64;
-            h = Memory::rotate_right(h, 17) * details::C1;
+            h = hud::memory::rotate_right(h, 17) * details::C1;
             return h;
         }
 
@@ -516,11 +516,11 @@ namespace hud::Hash{
             // Decrease len to the nearest multiple of 64, and operate on 64-byte chunks.
             length = (length - 1) & ~static_cast<usize>(63);
             do {
-                x = Memory::rotate_right(x + y + v.low + details::fetch_64(buffer + 8), 37) * details::K1;
-                y = Memory::rotate_right(y + v.high + details::fetch_64(buffer + 48), 42) * details::K1;
+                x = hud::memory::rotate_right(x + y + v.low + details::fetch_64(buffer + 8), 37) * details::K1;
+                y = hud::memory::rotate_right(y + v.high + details::fetch_64(buffer + 48), 42) * details::K1;
                 x ^= w.high;
                 y += v.low + details::fetch_64(buffer + 40);
-                z = Memory::rotate_right(z + w.low, 33) * details::K1;
+                z = hud::memory::rotate_right(z + w.low, 33) * details::K1;
                 v = details::weak_hash_len_32_with_seeds(buffer, v.high * details::K1, x + w.low);
                 w = details::weak_hash_len_32_with_seeds(buffer + 32, z + w.high, y + details::fetch_64(buffer + 16));
                 swap(z, x);
@@ -534,4 +534,4 @@ namespace hud::Hash{
 
 } // namespace hud::CityHash
 
-#endif // HD_INC_OSLAYER_HASH_CITY_HASH_H
+#endif // HD_INC_CORE_HASH_CITY_HASH_H

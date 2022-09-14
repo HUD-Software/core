@@ -1,24 +1,24 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_MEMBER_POINTER_H
-#define HD_INC_OSLAYER_traits_IS_MEMBER_POINTER_H
+#ifndef HD_INC_CORE_TRAITS_IS_MEMBER_POINTER_H
+#define HD_INC_CORE_TRAITS_IS_MEMBER_POINTER_H
 #include "integral_constant.h"
 
 namespace hud {
 
-    /** Checks whether T is a pointer to non-static member object or a pointer to non-static member function. */
-    template<typename T>
-    struct IsMemberPointer
-        : FalseType {
+    /** Checks whether type_t is a pointer to non-static member object or a pointer to non-static member function. */
+    template<typename type_t>
+    struct is_member_pointer
+        : false_type {
     };
-    template<typename T, typename Class>
-    struct IsMemberPointer<T Class::*>
-        : TrueType {
+    template<typename type_t, typename class_t>
+    struct is_member_pointer<type_t class_t::*>
+        : true_type {
     };
 
-    /** Equivalent of IsMemberPointer<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsMemberPointerV = IsMemberPointer<T>::Value;
+    /** Equivalent of is_member_pointer<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_member_pointer_v = is_member_pointer<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_MEMBER_POINTER_H
+#endif // HD_INC_CORE_TRAITS_IS_MEMBER_POINTER_H

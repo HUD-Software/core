@@ -1,33 +1,33 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_REMOVE_EXTENT_H
-#define HD_INC_OSLAYER_traits_REMOVE_EXTENT_H
+#ifndef HD_INC_CORE_TRAITS_REMOVE_EXTENT_H
+#define HD_INC_CORE_TRAITS_REMOVE_EXTENT_H
 
 namespace hud {
 
     /**
     * Remove extent ([]) of an bounded or unbounded array.
-    * If T is an array type, this is the same type as its elements. Otherwise, member type is the same as T.
-    * Notice that, for multidimensional arrays, only the first array dimension is removed(see RemoveAllExtents to obtain the type of the elements in the deepest dimension).
+    * If type_t is an array type, this is the same type as its elements. Otherwise, member type is the same as type_t.
+    * Notice that, for multidimensional arrays, only the first array dimension is removed(see remove_all_extents to obtain the type of the elements in the deepest dimension).
     */
-    template<typename T>
-    struct RemoveExtent {
-        using Type = T;
+    template<typename type_t>
+    struct remove_extent {
+        using type = type_t;
     };
 
-    template<typename T>
-    struct RemoveExtent<T[]> {
-        using Type = T;
+    template<typename type_t>
+    struct remove_extent<type_t[]> {
+        using type = type_t;
     };
 
-    template<typename T, size_t size>
-    struct RemoveExtent<T[size]> {
-        using Type = T;
+    template<typename type_t, size_t extent>
+    struct remove_extent<type_t[extent]> {
+        using type = type_t;
     };
 
-    /** Equivalent of typename RemoveExtent<T>::Type. */
-    template<typename T>
-    using RemoveExtentT = typename RemoveExtent<T>::Type;
+    /** Equivalent of typename remove_extent<type_t>::type. */
+    template<typename type_t>
+    using remove_extent_t = typename remove_extent<type_t>::type;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_REMOVE_EXTENT_H
+#endif // HD_INC_CORE_TRAITS_REMOVE_EXTENT_H

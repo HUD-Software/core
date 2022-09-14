@@ -1,14 +1,14 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_HASH_CRC32_HASH_H
-#define HD_INC_OSLAYER_HASH_CRC32_HASH_H
+#ifndef HD_INC_CORE_HASH_CRC32_HASH_H
+#define HD_INC_CORE_HASH_CRC32_HASH_H
 
 
-namespace hud::Hash{
+namespace hud::hash{
 
-    struct Crc32 {
+    struct crc32 {
 
         /**
-        * CRC32 hash based on Intel Slice-by-8 algorithm
+        * CRC32 hash based on Intel slice-by-8 algorithm
         * Polynomial used is 0x04C11DB7
         * @param buffer Pointer to the first byte to hash
         * @param count Number of bit to hash
@@ -28,4 +28,4 @@ namespace hud::Hash{
 
 } // namespace hud 
 
-#endif // HD_INC_OSLAYER_HASH_CRC32_HASH_H
+#endif // HD_INC_CORE_HASH_CRC32_HASH_H

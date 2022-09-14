@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_LINUX_UUID_H
-#define HD_INC_OSLAYER_OS_LINUX_UUID_H
+#ifndef HD_INC_CORE_OS_LINUX_UUID_H
+#define HD_INC_CORE_OS_LINUX_UUID_H
 #include "../os_common/uuid.h"
 #include <sys/random.h>
 
@@ -9,13 +9,13 @@
 #endif 
 
 
-namespace hud::OS::Linux{
+namespace hud::os::linux{
 
-    struct Uuid 
-        : public OS::Common::Uuid {
+    struct uuid 
+        : public os::common::uuid {
        
         /** Default constructor. Initialize all components to 0. */
-        constexpr Uuid() noexcept = default;
+        constexpr uuid() noexcept = default;
 
         /**
         * Constructor. Initialise component with paramters. 
@@ -24,16 +24,16 @@ namespace hud::OS::Linux{
         * @param comp_c The c component.
         * @param comp_d The d component.
         */
-        constexpr Uuid(const u32 comp_a, const u32 comp_b, const u32 comp_c, const u32 comp_d) noexcept
-            : OS::Common::Uuid(comp_a, comp_b, comp_c, comp_d) {
+        constexpr uuid(const u32 comp_a, const u32 comp_b, const u32 comp_c, const u32 comp_d) noexcept
+            : os::common::uuid(comp_a, comp_b, comp_c, comp_d) {
         }
 
         /**
         * Create a Universally Unique Identifiers.
-        * @param guid reference to the Uuid that received the cerated Uuid
-        * @return true if the Uuid is created, false otherwise
+        * @param guid reference to the uuid that received the cerated uuid
+        * @return true if the uuid is created, false otherwise
         */
-        static bool create(Uuid& guid) noexcept {
+        static bool create(uuid& guid) noexcept {
             // Generate a UUID from Truly Random or Pseudo-Random Numbers as defined in RFC-4122
             // See : https://datatracker.ietf.org/doc/html/rfc4122#section-4.4
             //       https://www.cryptosys.net/pki/uuid-rfc4122.html
@@ -50,12 +50,12 @@ namespace hud::OS::Linux{
             // 3. Set the two most significant bits of the 9th byte to 10, so the high nibble will be one of "8", "9", "A", or "B" 
             bytes[8] = (bytes[8] & 0x3F) | 0x80;
 
-            // Save in the Uuid
+            // Save in the uuid
             const u32* as_u32 = reinterpret_cast<const u32*>(&bytes[0]);
-            guid = Uuid{as_u32[0], as_u32[1], as_u32[2], as_u32[3]};
+            guid = uuid{as_u32[0], as_u32[1], as_u32[2], as_u32[3]};
             return true;
         }
     };
 }
 
-#endif /* HD_INC_OSLAYER_OS_LINUX_UUID_H */
+#endif /* HD_INC_CORE_OS_LINUX_UUID_H */

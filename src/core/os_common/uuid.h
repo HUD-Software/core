@@ -1,38 +1,38 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_COMMON_UUID_H
-#define HD_INC_OSLAYER_OS_COMMON_UUID_H
+#ifndef HD_INC_CORE_OS_COMMON_UUID_H
+#define HD_INC_CORE_OS_COMMON_UUID_H
 #include "../memory.h"
 #include "../traits/is_constant_evaluated.h"
 
-namespace hud::OS::Common{
+namespace hud::os::common{
 
-    enum class EGuidFormat
+    enum class uuid_format_e
     {
         /** 00000000000000000000000000000000 */
-        Digits,
+        digits,
 
         /** 00000000-0000-0000-0000-000000000000 */
-        URN,
+        urn,
 
         /** {00000000-0000-0000-0000-000000000000} */
-        URNInBraces,
+        urn_in_braces,
 
         /** (00000000-0000-0000-0000-000000000000) */
-        URNInParentheses,
+        urn_in_parentheses,
 
         /** {0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}} */
-        HexInBraces,
+        hex_in_braces,
 
         /** 00000000-00000000-00000000-00000000 */
-        Integer
+        integer
     };
 
 
 /** Universally Unique Identifiers (UUIDs). A UUID is a unique 128-bit number, stored as 16 bytes */
-struct alignas(16) Uuid {
+struct alignas(16) uuid {
 
     /** Default constructor. Initialize all components to 0. */
-    constexpr Uuid() noexcept = default;
+    constexpr uuid() noexcept = default;
 
     /**
     * Constructor. Initialise component with paramters.
@@ -41,29 +41,29 @@ struct alignas(16) Uuid {
     * @param comp_c The c component.
     * @param comp_d The d component.
     */
-    constexpr Uuid(const u32 comp_a, const u32 comp_b, const u32 comp_c, const u32 comp_d) noexcept
+    constexpr uuid(const u32 comp_a, const u32 comp_b, const u32 comp_c, const u32 comp_d) noexcept
         :a(comp_a), b(comp_b), c(comp_c), d(comp_d) {
     }
 
-    /** Check whether the Uuid is valid or not. */
+    /** Check whether the uuid is valid or not. */
     [[nodiscard]]
     bool is_valid() const noexcept {
-        constexpr const Uuid invalid;
-        return !Memory::compare_equal(this, &invalid, sizeof(Uuid));
+        constexpr const uuid invalid;
+        return !hud::memory::compare_equal(this, &invalid, sizeof(uuid));
     }
 
-    /** Reset the Uuid with all components to zero. Making it invalid*/
+    /** Reset the uuid with all components to zero. Making it invalid*/
     void reset() noexcept {
-        Memory::set_zero(this, sizeof(Uuid));
+        hud::memory::set_zero(this, sizeof(uuid));
     }
 
     /** 
     * Assign another guid to this.
-    * @param other The Uuid to assign to this
+    * @param other The uuid to assign to this
     * @return *this
     */
-    Uuid& operator=(const Uuid& other) noexcept {
-        Memory::copy(this, &other, sizeof(Uuid));
+    uuid& operator=(const uuid& other) noexcept {
+        hud::memory::copy(this, &other, sizeof(uuid));
         return *this;
     }
 
@@ -79,26 +79,26 @@ struct alignas(16) Uuid {
 };
 
 /**
-* Check if two Uuid are equal.
-* @param left Left-hand side Uuid
-* @param right Right-hand side Uuid
+* Check if two uuid are equal.
+* @param left Left-hand side uuid
+* @param right Right-hand side uuid
 * @return true if left equal right, false otherwise
 */
 [[nodiscard]]
-bool operator==(const Uuid& left, const Uuid& right) noexcept {
-    return Memory::compare_equal(&left, &right, sizeof(Uuid));
+bool operator==(const uuid& left, const uuid& right) noexcept {
+    return hud::memory::compare_equal(&left, &right, sizeof(uuid));
 }
 
 /**
-* Check if two Uuid are not equal.
-* @param left Left-hand side Uuid
-* @param right Right-hand side Uuid
+* Check if two uuid are not equal.
+* @param left Left-hand side uuid
+* @param right Right-hand side uuid
 * @return true if left is not equal right, false otherwise
 */
 [[nodiscard]]
-bool operator!=(const Uuid& left, const Uuid& right) noexcept {
+bool operator!=(const uuid& left, const uuid& right) noexcept {
     return !(left == right);
 }
 } // namespace hud::OS::GUID
 
-#endif // HD_INC_OSLAYER_OS_COMMON_UUID_H
+#endif // HD_INC_CORE_OS_COMMON_UUID_H

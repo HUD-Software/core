@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_DECAY_H
-#define HD_INC_OSLAYER_traits_DECAY_H
+#ifndef HD_INC_CORE_TRAITS_DECAY_H
+#define HD_INC_CORE_TRAITS_DECAY_H
 #include "remove_reference.h"
 #include "conditional.h"
 #include "is_array.h"
@@ -12,33 +12,33 @@
 namespace hud {
 
     /**
-    * Retrieves the decay type of T.
-    * Provides a member typedef Type decay type of T.
-    * The decay type of T is the same type that results from the standard conversions that happen when an lvalue expression is used as an rvalue, with its cv-qualifier stripped:
-    *   - If T is a function type, a function-to-pointer conversion is applied and the decay type is the same as: AddPointerT<T>
-    *   - If T is an array type, an array-to-pointer conversion is applied and the decay type is the same as: AddPointerT<RemoveExtentT<RemoveReferenceT<T>>>
-    *   - Otherwise, a regular lvalue-to-rvalue conversion is applied and the decay type is the same as: RemoveCVT<RemoveReferenceT<T>>.
+    * Retrieves the decay type of type_t.
+    * Provides a member typedef type decay type of type_t.
+    * The decay type of type_t is the same type that results from the standard conversions that happen when an lvalue expression is used as an rvalue, with its cv-qualifier stripped:
+    *   - If type_t is a function type, a function-to-pointer conversion is applied and the decay type is the same as: add_pointer_t<type_t>
+    *   - If type_t is an array type, an array-to-pointer conversion is applied and the decay type is the same as: add_pointer_t<remove_extent_t<remove_reference_t<type_t>>>
+    *   - Otherwise, a regular lvalue-to-rvalue conversion is applied and the decay type is the same as: remove_cv_t<remove_reference_t<type_t>>.
     * This resembles the implicit conversions happening when an argument is passed by value to a function.
     */
-    template <class T>
-    struct Decay {
+    template <class type_t>
+    struct decay {
     private:
-        using NoRefType = RemoveReferenceT<T>;
+        using NoRefType = remove_reference_t<type_t>;
 
     public:
-        using Type = ConditionalT < IsArrayV<NoRefType>,
-                                    RemoveExtentT<NoRefType>*,
-                                    ConditionalT<   IsFunctionV<NoRefType>,
-                                                    AddPointerT<NoRefType>,
-                                                    RemoveCVT<NoRefType>
+        using type = conditional_t < is_array_v<NoRefType>,
+                                    remove_extent_t<NoRefType>*,
+                                    conditional_t<   is_function_v<NoRefType>,
+                                                    add_pointer_t<NoRefType>,
+                                                    remove_cv_t<NoRefType>
                                                 >
                                   >;
     };
 
-    /** Equivalent of typename Decay<T>::Type. */
-    template <typename T>
-    using DecayT = typename Decay<T>::Type;
+    /** Equivalent of typename decay<type_t>::type. */
+    template <typename type_t>
+    using decay_t = typename decay<type_t>::type;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_DECAY_H
+#endif // HD_INC_CORE_TRAITS_DECAY_H

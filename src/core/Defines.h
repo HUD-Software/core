@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_DEFINES_H
-#define HD_INC_OSLAYER_DEFINES_H
+#ifndef HD_INC_CORE_DEFINES_H
+#define HD_INC_CORE_DEFINES_H
 #include "compiler_defines.h"
 
 #if defined(HD_OS_WINDOWS)
@@ -45,5 +45,5 @@
 
 #endif // defined(HD_OS_...)
 
-#endif // HD_INC_OSLAYER_DEFINES_H
+#endif // HD_INC_CORE_DEFINES_H
 

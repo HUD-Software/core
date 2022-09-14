@@ -1,37 +1,37 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_APPLY_CONST_VOLATILE_H
-#define HD_INC_OSLAYER_traits_APPLY_CONST_VOLATILE_H
+#ifndef HD_INC_CORE_TRAITS_APPLY_CONST_VOLATILE_H
+#define HD_INC_CORE_TRAITS_APPLY_CONST_VOLATILE_H
 
 namespace hud {
 
-    /* Conditionaly add const volatile qualifier to the type T. */
-    template<typename T, bool apply_const, bool apply_volatile >
-    struct ApplyCV {
+    /* Conditionaly add const volatile qualifier to the type type_t. */
+    template<typename type_t, bool apply_const, bool apply_volatile >
+    struct apply_cv {
         // Do not apply const and volatile
-        using Type = T;
+        using type = type_t;
     };
 
-    template<typename T>
-    struct ApplyCV<T, true, true> {
+    template<typename type_t>
+    struct apply_cv<type_t, true, true> {
         // Apply const and volatile
-        using Type = T const volatile;
+        using type = type_t const volatile;
     };
 
-    template<typename T>
-    struct ApplyCV<T, true, false> {
+    template<typename type_t>
+    struct apply_cv<type_t, true, false> {
         // Apply const only
-        using Type = T const;
+        using type = type_t const;
     };
 
-    template<typename T>
-    struct ApplyCV<T, false, true> {
+    template<typename type_t>
+    struct apply_cv<type_t, false, true> {
         // Apply volatile only
-        using Type = T volatile;
+        using type = type_t volatile;
     };
 
-    /** Equivalent of typename ApplyCV<T, apply_const, apply_volatile>::Type. */
-    template<typename T, bool apply_const, bool apply_volatile >
-    using ApplyCVT = typename ApplyCV<T, apply_const, apply_volatile>::Type;
+    /** Equivalent of typename apply_cv<type_t, apply_const, apply_volatile>::type. */
+    template<typename type_t, bool apply_const, bool apply_volatile >
+    using apply_cv_t = typename apply_cv<type_t, apply_const, apply_volatile>::type;
 }
 
-#endif // HD_INC_OSLAYER_traits_APPLY_CONST_VOLATILE_H
+#endif // HD_INC_CORE_TRAITS_APPLY_CONST_VOLATILE_H

@@ -1,29 +1,29 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_NOTHROW_SWAPPABLE_H
-#define HD_INC_OSLAYER_traits_IS_NOTHROW_SWAPPABLE_H
+#ifndef HD_INC_CORE_TRAITS_IS_NOTHROW_SWAPPABLE_H
+#define HD_INC_CORE_TRAITS_IS_NOTHROW_SWAPPABLE_H
 #include "integral_constant.h"
 #include "is_swappable.h"
-#include "and.h"
+#include "conjunction.h"
 
 namespace hud {
 
     namespace details {
-        template<typename T, typename U = T>
-        struct IsNothrowSwappableImpl
-            : BoolConstant<noexcept(swap(declval<T>(), declval<U>())) && noexcept(swap(declval<T>(), declval<U>()))> {
+        template<typename type_t, typename u_type_t = type_t>
+        struct is_nothrow_swappable_impl
+            : bool_constant<noexcept(swap(declval<type_t>(), declval<u_type_t>())) && noexcept(swap(declval<type_t>(), declval<u_type_t>()))> {
         };
     }
 
-    /** Check whether T is swappable with U and such swap is known not to throw any exception. */
-    template<typename T, typename U = T>
-    struct IsNothrowSwappable
-        : And< IsSwappable<T, U>, details::IsNothrowSwappableImpl<AddLValueReferenceT<T>, AddLValueReferenceT<U>>> {
+    /** Check whether type_t is swappable with u_type_t and such swap is known not to throw any exception. */
+    template<typename type_t, typename u_type_t = type_t>
+    struct is_nothrow_swappable
+        : conjunction< is_swappable<type_t, u_type_t>, details::is_nothrow_swappable_impl<add_lvalue_reference_t<type_t>, add_lvalue_reference_t<u_type_t>>> {
     };
 
-    /** Equivalent of IsNothrowSwappable<T, U>::Value. */
-    template<typename T, typename U = T>
-    inline constexpr bool IsNothrowSwappableV = IsNothrowSwappable<T, U>::Value;
+    /** Equivalent of is_nothrow_swappable<type_t, u_type_t>::value. */
+    template<typename type_t, typename u_type_t = type_t>
+    inline constexpr bool is_nothrow_swappable_v = is_nothrow_swappable<type_t, u_type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_NOTHROW_SWAPPABLE_H
+#endif // HD_INC_CORE_TRAITS_IS_NOTHROW_SWAPPABLE_H

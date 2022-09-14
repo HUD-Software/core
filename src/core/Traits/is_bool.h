@@ -1,21 +1,21 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_BOOL_H
-#define HD_INC_OSLAYER_traits_IS_BOOL_H
+#ifndef HD_INC_CORE_TRAITS_IS_BOOL_H
+#define HD_INC_CORE_TRAITS_IS_BOOL_H
 #include "is_same.h"
 #include "remove_cv.h"
 
 namespace hud {
 
-    /** Checks whether T is a bool type. */
-    template<typename T>
-    struct IsBool
-        : IsSame<RemoveCVT<T>, bool> {
+    /** Checks whether type_t is a bool type. */
+    template<typename type_t>
+    struct is_bool
+        : is_same<remove_cv_t<type_t>, bool> {
     };
 
-    /** Equivalent of IsBool<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsBoolV = IsBool<T>::Value;
+    /** Equivalent of is_bool<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_bool_v = is_bool<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_BOOL_H
+#endif // HD_INC_CORE_TRAITS_IS_BOOL_H

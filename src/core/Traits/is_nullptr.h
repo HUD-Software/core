@@ -1,22 +1,22 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_NULLPTR_H
-#define HD_INC_OSLAYER_traits_IS_NULLPTR_H
+#ifndef HD_INC_CORE_TRAITS_IS_NULLPTR_H
+#define HD_INC_CORE_TRAITS_IS_NULLPTR_H
 #include "integral_constant.h"
 #include "is_same.h"
 #include "remove_cv.h"
 
 namespace hud {
 
-    /** Checks whether T is hud::ptr::null or std::nullptr_t type. */
-    template<typename T>
-    struct IsNullptr
-        : IsSame<RemoveCVT<T>, decltype(nullptr)> {
+    /** Checks whether type_t is hud::ptr::null or std::nullptr_t type. */
+    template<typename type_t>
+    struct is_nullptr
+        : is_same<remove_cv_t<type_t>, decltype(nullptr)> {
     };
 
-    /** Equivalent of IsNullptrV<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsNullptrV = IsNullptr<T>::Value;
+    /** Equivalent of is_nullptr<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_nullptr_v = is_nullptr<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_NULLPTR_H
+#endif // HD_INC_CORE_TRAITS_IS_NULLPTR_H

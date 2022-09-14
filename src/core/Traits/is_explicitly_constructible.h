@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_EXPLICITLY_CONSTRUCTIBLE_H
-#define HD_INC_OSLAYER_traits_IS_EXPLICITLY_CONSTRUCTIBLE_H
+#ifndef HD_INC_CORE_TRAITS_IS_EXPLICITLY_CONSTRUCTIBLE_H
+#define HD_INC_CORE_TRAITS_IS_EXPLICITLY_CONSTRUCTIBLE_H
 #include "../traits/is_constructible.h"
 #include "../traits/is_convertible.h"
 #include "../traits/void_t.h"
@@ -9,46 +9,46 @@
 namespace hud {
 
     namespace details {
-        template <typename T>
-        constexpr void ImplicitConstruct(const T&) noexcept;
+        template <typename type_t>
+        constexpr void implicit_construct(const type_t&) noexcept;
 
-        template<typename Void, bool is_constructible, typename T, typename ...TArgs>
-        struct IsExplicitlyConstructibleImpl2
-            : public BoolConstant<is_constructible> {
+        template<typename void_t, bool is_constructible, typename type_t, typename ...args_t>
+        struct is_explicitly_constructible_impl_2
+            : public bool_constant<is_constructible> {
         };
 
-        template<typename T, typename ...TArgs>
-        struct IsExplicitlyConstructibleImpl2 < hud::VoidT<decltype(details::ImplicitConstruct<T>({ hud::declval<TArgs>()... })) > , true, T, TArgs... >
-            : public FalseType {
+        template<typename type_t, typename ...args_t>
+        struct is_explicitly_constructible_impl_2 < hud::void_t<decltype(details::implicit_construct<type_t>({ hud::declval<args_t>()... })) > , true, type_t, args_t... >
+            : public false_type {
         };
 
-        template <typename T, typename... TArgs>
-        struct IsExplicitlyConstructibleImpl
-            : IsExplicitlyConstructibleImpl2<void, IsConstructibleV<T, TArgs...>, T, TArgs...> {
+        template <typename type_t, typename... args_t>
+        struct is_explicitly_constructible_impl
+            : is_explicitly_constructible_impl_2<void, is_constructible_v<type_t, args_t...>, type_t, args_t...> {
         };
 
-        template <typename T>
-        struct IsExplicitlyConstructibleImpl<T, const T&>
-            : BoolConstant<!IsConvertibleV<const T&, T>> {
+        template <typename type_t>
+        struct is_explicitly_constructible_impl<type_t, const type_t&>
+            : bool_constant<!is_convertible_v<const type_t&, type_t>> {
         };
 
-        template <typename T>
-        struct IsExplicitlyConstructibleImpl<T, T&&>
-            : BoolConstant<!IsConvertibleV<T&&, T>> {
+        template <typename type_t>
+        struct is_explicitly_constructible_impl<type_t, type_t&&>
+            : bool_constant<!is_convertible_v<type_t&&, type_t>> {
         };
 
     } // namespace hud::details
 
-    /** Checks whether T is an explicitly constructible type with TArgs. */
-    template< typename T, typename... TArgs>
-    struct IsExplicitlyConstructible
-        : details::IsExplicitlyConstructibleImpl < T, TArgs... > {
+    /** Checks whether type_t is an explicitly constructible type with args_t. */
+    template< typename type_t, typename... args_t>
+    struct is_explicitly_constructible
+        : details::is_explicitly_constructible_impl < type_t, args_t... > {
     };
 
-    /** Equivalent of IsExplicitlyConstructible<T, TArgs...>::Value. */
-    template<typename T, typename ...TArgs >
-    inline constexpr bool IsExplicitlyConstructibleV = IsExplicitlyConstructible<T, TArgs...>::Value;
+    /** Equivalent of is_explicitly_constructible<type_t, args_t...>::value. */
+    template<typename type_t, typename ...args_t >
+    inline constexpr bool is_explicitly_constructible_v = is_explicitly_constructible<type_t, args_t...>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_EXPLICITLY_CONSTRUCTIBLE_H
+#endif // HD_INC_CORE_TRAITS_IS_EXPLICITLY_CONSTRUCTIBLE_H

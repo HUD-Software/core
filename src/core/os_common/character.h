@@ -1,12 +1,12 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_COMMON_CHAR_H
-#define HD_INC_OSLAYER_OS_COMMON_CHAR_H
+#ifndef HD_INC_CORE_OS_COMMON_CHAR_H
+#define HD_INC_CORE_OS_COMMON_CHAR_H
 #include <ctype.h> // isalum, isalpha, etc...
 #include <wctype.h> // iswalum, iswalpha, etc...
 
-namespace hud::OS::Common{
+namespace hud::os::common{
 
-    struct Char {
+    struct character {
 
         static constexpr ansichar ANSI_NULL_CHARACTER = '\0';
         static constexpr wchar WIDE_NULL_CHARACTER = L'\0';
@@ -203,6 +203,6 @@ namespace hud::OS::Common{
 
     };
 
-} // namespace hud::OS::Common
+} // namespace hud::os::common
 
-#endif // HD_INC_OSLAYER_OS_COMMON_CHAR_H
+#endif // HD_INC_CORE_OS_COMMON_CHAR_H

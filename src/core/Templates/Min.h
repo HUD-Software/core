@@ -1,17 +1,17 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_templates_MIN_H
-#define HD_INC_OSLAYER_templates_MIN_H
+#ifndef HD_INC_CORE_TEMPLATES_MIN_H
+#define HD_INC_CORE_TEMPLATES_MIN_H
 #include "less.h"
 
 namespace hud {
 
     /** Retrieves a if a < b, b otherwise. */
-    template<typename U, typename V>
-    constexpr auto min(const U& a, const V& b) noexcept {
-        return Less<U,V>()(a, b) ? a : b;
+    template<typename u_t, typename v_t>
+    constexpr auto min(const u_t& a, const v_t& b) noexcept {
+        return less<u_t,v_t>()(a, b) ? a : b;
     }
 
 } // namespace hud 
 
 
-#endif // HD_INC_OSLAYER_templates_MIN_H
+#endif // HD_INC_CORE_TEMPLATES_MIN_H

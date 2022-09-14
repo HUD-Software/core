@@ -1,30 +1,30 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_templates_SELECT_DELETER_POINTER_POINTER_TYPE_H
-#define HD_INC_OSLAYER_templates_SELECT_DELETER_POINTER_POINTER_TYPE_H
+#ifndef HD_INC_CORE_TEMPLATES_SELECT_DELETER_POINTER_POINTER_TYPE_H
+#define HD_INC_CORE_TEMPLATES_SELECT_DELETER_POINTER_POINTER_TYPE_H
 #include "../traits/remove_reference.h"
 #include "../traits/void_t.h"
 
 namespace hud {
 
     /**
-    * Retrieves the type of the pointer depending of the Deleter.
-    * Provides the typedef PointerType equals to DeleterType::PointerType if the deleter has PointerType member. Otherwise, the typedef PointerType is equal to T*.
-    * @tparam T The pointer type of the unique pointer
-    * @tparam Deleter The deleter type of the unique pointer
+    * Retrieves the type of the pointer depending of the deleter_t.
+    * Provides the typedef pointer_type equals to DeleterType::pointer_type if the deleter has pointer_type member. Otherwise, the typedef pointer_type is equal to type_t*.
+    * @tparam type_t The pointer type of the unique pointer
+    * @tparam deleter_t The deleter type of the unique pointer
     */
-    template <typename T, typename Deleter, typename = void>
-    struct SelectDeleterPointerType {
-        using PointerType = T*;
+    template <typename type_t, typename deleter_t, typename = void>
+    struct select_deleter_pointer_type {
+        using pointer_type = type_t*;
     };
-    template <typename T, typename Deleter>
-    struct SelectDeleterPointerType<T, Deleter, VoidT<typename RemoveReferenceT<Deleter>::PointerType>> {
-        using PointerType = typename RemoveReferenceT<Deleter>::PointerType;
+    template <typename type_t, typename deleter_t>
+    struct select_deleter_pointer_type<type_t, deleter_t, void_t<typename remove_reference_t<deleter_t>::pointer_type>> {
+        using pointer_type = typename remove_reference_t<deleter_t>::pointer_type;
     };
 
-    /** Helper alias template equivalent to SelectDeleterPointerType<T, Deleter>::PointerType. */
-    template<typename T, typename Deleter>
-    using SelectDeleterPointerTypeT = typename SelectDeleterPointerType<T, Deleter>::PointerType;
+    /** Helper alias template equivalent to select_deleter_pointer_type<type_t, deleter_t>::pointer_type. */
+    template<typename type_t, typename deleter_t>
+    using select_deleter_pointer_type_t = typename select_deleter_pointer_type<type_t, deleter_t>::pointer_type;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_templates_SELECT_DELETER_POINTER_POINTER_TYPE_H
+#endif // HD_INC_CORE_TEMPLATES_SELECT_DELETER_POINTER_POINTER_TYPE_H

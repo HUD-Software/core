@@ -2,9 +2,9 @@
 #ifndef HD_INC_OSABSTRACTIONLAYER_OS_COMMON_TYPES_H
 #define HD_INC_OSABSTRACTIONLAYER_OS_COMMON_TYPES_H
 #include <stdint.h> // uint8_t, uint16_t, ....
-namespace hud::OS::Common{
+namespace hud::os::common{
 
-    struct Types {
+    struct types {
         // Unsigned common types
         using u8 = uint8_t;     // 8 bits unsigned integer
         using u16 = uint16_t;   // 16 bits unsigned integer
@@ -17,7 +17,7 @@ namespace hud::OS::Common{
         using i32 = int32_t;   // 32 bits signed integer
         using i64 = int64_t;   // 64 bits signed integer
 
-        // Character common types
+        // characteracter common types
         using ansichar = char;      // 8 bits character
         using wchar = wchar_t;      // Platform dependent size bits wide character
         using char16 = char16_t;    // 16 bits character type
@@ -100,5 +100,5 @@ namespace hud::OS::Common{
 #endif
     };
 
-} // namespace hud::OS::Common
+} // namespace hud::os::common
 #endif // HD_INC_OSABSTRACTIONLAYER_OS_COMMON_TYPES_H

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_ALIGNED_BUFFER_H
-#define HD_INC_OSLAYER_ALIGNED_BUFFER_H
+#ifndef HD_INC_CORE_ALIGNED_BUFFER_H
+#define HD_INC_CORE_ALIGNED_BUFFER_H
 #include "../traits/is_power_of_two.h"
 
 namespace hud {
@@ -10,8 +10,8 @@ namespace hud {
     * The aligned memory can be retrieves with pointer() function.
     * The given alignment must be a power of two. 
     */
-    template<usize size, u32 alignment> requires(IsPowerOfTwoV<alignment>)
-    class AlignedBuffer {
+    template<usize size, u32 alignment> requires(is_power_of_two_v<alignment>)
+    class aligned_buffer {
     public:
         /** Retrieves a pointer to the compile-time aligned array of bytes. */
         [[nodiscard]]
@@ -19,11 +19,11 @@ namespace hud {
             return storage;
         }
 
-        /** Retrieves a pointer of type T to the compile-time aligned array of bytes. */
-        template<typename T>
+        /** Retrieves a pointer of type type_t to the compile-time aligned array of bytes. */
+        template<typename type_t>
         [[nodiscard]]
-        HD_FORCEINLINE T* pointer_as() noexcept {
-            return static_cast<T*>(pointer());
+        HD_FORCEINLINE type_t* pointer_as() noexcept {
+            return static_cast<type_t*>(pointer());
         }
 
         /** Retrieves a pointer to the compile-time aligned array of bytes. */
@@ -32,11 +32,11 @@ namespace hud {
             return storage;
         }
 
-        /** Retrieves a pointer of type T to the compile-time aligned array of bytes. */
-        template<typename T>
+        /** Retrieves a pointer of type type_t to the compile-time aligned array of bytes. */
+        template<typename type_t>
         [[nodiscard]]
-        HD_FORCEINLINE const T* pointer() const noexcept {
-            return static_cast<const T*>(pointer());
+        HD_FORCEINLINE const type_t* pointer() const noexcept {
+            return static_cast<const type_t*>(pointer());
         }
 
     private:
@@ -45,4 +45,4 @@ namespace hud {
     };
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_ALIGNED_BUFFER_H
+#endif // HD_INC_CORE_ALIGNED_BUFFER_H

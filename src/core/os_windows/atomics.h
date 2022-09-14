@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_WINDOWS_ATOMICS_H
-#define HD_INC_OSLAYER_OS_WINDOWS_ATOMICS_H
+#ifndef HD_INC_CORE_OS_WINDOWS_ATOMICS_H
+#define HD_INC_CORE_OS_WINDOWS_ATOMICS_H
 
 #if defined(HD_TARGET_X86) |  defined(HD_TARGET_X64)
 #include "atomics_intel.h"
@@ -11,12 +11,12 @@
 #endif
 
 
-namespace hud::OS::Windows{
+namespace hud::os::windows{
     
 #if defined(HD_TARGET_X86) |  defined(HD_TARGET_X64)
-    struct Atomics : public AtomicsIntel{};
+    struct atomics : public atomics_intel{};
 #endif
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_OS_WINDOWS_ATOMICS_H
+#endif // HD_INC_CORE_OS_WINDOWS_ATOMICS_H

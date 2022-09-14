@@ -1,8 +1,8 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_BITWISE_COMPARABLE_H
-#define HD_INC_OSLAYER_traits_IS_BITWISE_COMPARABLE_H
-#include "or.h"
-#include "and.h"
+#ifndef HD_INC_CORE_TRAITS_IS_BITWISE_COMPARABLE_H
+#define HD_INC_CORE_TRAITS_IS_BITWISE_COMPARABLE_H
+#include "disjunction.h"
+#include "conjunction.h"
 #include "is_pointer.h"
 #include "is_member_pointer.h"
 #include "is_same_size.h"
@@ -15,39 +15,39 @@
 namespace hud {
 
     /**
-    * Checks whether T is a bitwise comparable with U.
+    * Checks whether type_t is a bitwise comparable with u_type_t.
     * There is no good way to detect this, specify this trait for your type to allow bitwise comparison.
     * This traits is specialize with Value equal to true if:
-    * - T and U are pointers or pointers to member function
-    * - T and U are integrals with same size
-    * - T and U are enums with underlying type with same size
+    * - type_t and u_type_t are pointers or pointers to member function
+    * - type_t and u_type_t are integrals with same size
+    * - type_t and u_type_t are enums with underlying type with same size
     */
-    template<typename T, typename U = T>
-    struct IsBitwiseComparable
-        : Or<
-        And<  // If both are pointers or pointer's to member it's bitwise comparable
-        Or<IsPointer<T>, IsMemberPointer<T>>,
-        Or<IsPointer<U>, IsMemberPointer<U>>
+    template<typename type_t, typename u_type_t = type_t>
+    struct is_bitwise_comparable
+        : disjunction<
+        conjunction<  // If both are pointers or pointer's to member it's bitwise comparable
+        disjunction<is_pointer<type_t>, is_member_pointer<type_t>>,
+        disjunction<is_pointer<u_type_t>, is_member_pointer<u_type_t>>
         >,
-        And< // Or if same size and both are integral or enums it's bitwise comparable
-        IsSameSize<T, U>,
-        Or<
-        And<IsIntegral<T>, IsIntegral<U>>, // Assuming two's-complement
-        And<IsEnum<T>, IsEnum<U>>
+        conjunction< // or if same size and both are integral or enums it's bitwise comparable
+        is_same_size<type_t, u_type_t>,
+        disjunction<
+        conjunction<is_integral<type_t>, is_integral<u_type_t>>, // Assuming two's-complement
+        conjunction<is_enum<type_t>, is_enum<u_type_t>>
         >
         >,
-        And< // Or if same POD type. POD 
-        IsSame<T, U>,
-        And<HasUniqueObjectRepresentations<T>>,
-        And<IsStandardLayout<T>>
+        conjunction< // or if same POD type. POD 
+        is_same<type_t, u_type_t>,
+        conjunction<has_unique_object_representations<type_t>>,
+        conjunction<is_standard_layout<type_t>>
         >
         > {
     };
 
-    /** Equivalent of IsBitwiseComparable<U, V=U>::Value. */
-    template<typename U, typename V = U>
-    inline constexpr bool IsBitwiseComparableV = IsBitwiseComparable<U, V>::Value;
+    /** Equivalent of is_bitwise_comparable<u_type_t, V=u_type_t>::value. */
+    template<typename u_type_t, typename V = u_type_t>
+    inline constexpr bool is_bitwise_comparable_v = is_bitwise_comparable<u_type_t, V>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_BITWISE_COMPARABLE_H
+#endif // HD_INC_CORE_TRAITS_IS_BITWISE_COMPARABLE_H

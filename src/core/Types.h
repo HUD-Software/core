@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_TYPES_H
-#define HD_INC_OSLAYER_TYPES_H
+#ifndef HD_INC_CORE_TYPES_H
+#define HD_INC_CORE_TYPES_H
 #include "compilation.h"
 
 #if defined(HD_OS_WINDOWS)
@@ -13,86 +13,86 @@
 
 namespace hud {
     #if defined(HD_OS_WINDOWS)
-    using Types = OS::Windows::Types;
+    using types = os::windows::types;
     #elif defined(HD_OS_LINUX)
-    using Types = OS::Linux::Types;
+    using types = os::linux::types;
     #endif
 
     // Unsigned common types
-    using u8 = Types::u8;    // 8 bits unsigned integer
-    using u16 = Types::u16;  // 16 bits unsigned integer
-    using u32 = Types::u32;  // 32 bits unsigned integer
-    using u64 = Types::u64;  // 64 bits unsigned integer
+    using u8 = types::u8;    // 8 bits unsigned integer
+    using u16 = types::u16;  // 16 bits unsigned integer
+    using u32 = types::u32;  // 32 bits unsigned integer
+    using u64 = types::u64;  // 64 bits unsigned integer
     
     // Signed common types
-    using i8 = Types::i8;     // 8 bits signed integer
-    using i16 = Types::i16;   // 16 bits signed integer
-    using i32 = Types::i32;   // 32 bits signed integer
-    using i64 = Types::i64;   // 64 bits signed integer
+    using i8 = types::i8;     // 8 bits signed integer
+    using i16 = types::i16;   // 16 bits signed integer
+    using i32 = types::i32;   // 32 bits signed integer
+    using i64 = types::i64;   // 64 bits signed integer
 
-    // Character common types
-    using ansichar = Types::ansichar; // 8 bits character
-    using wchar = Types::wchar; // Platform dependent size bits wide character
-    using char16 = Types::char16;     // 16 bits character type
-    using char32 = Types::char32;     // 32 bits character type
+    // characteracter common types
+    using ansichar = types::ansichar; // 8 bits character
+    using wchar = types::wchar; // Platform dependent size bits wide character
+    using char16 = types::char16;     // 16 bits character type
+    using char32 = types::char32;     // 32 bits character type
 
     // Floating point types
-    using f32 = Types::f32;   // 32 bits f32 (IEEE 754)
-    using f64 = Types::f64;   // 64 bits f32 (IEEE 754)
+    using f32 = types::f32;   // 32 bits f32 (IEEE 754)
+    using f64 = types::f64;   // 64 bits f32 (IEEE 754)
 
     // Pointer types
-    using uptr = Types::uptr; // unsigned integer same size as a pointer
-    using iptr = Types::iptr;   // signed integer same size as a pointer
+    using uptr = types::uptr; // unsigned integer same size as a pointer
+    using iptr = types::iptr;   // signed integer same size as a pointer
 
     // Size types
-    using usize = Types::usize;   // sizeof operator compatible value
-    using isize = Types::isize;   // signed integer representing a valid pointer subtraction operation
+    using usize = types::usize;   // sizeof operator compatible value
+    using isize = types::isize;   // signed integer representing a valid pointer subtraction operation
 
     // Pointer types
-    using ptr = Types::ptr; // contains pointer types
+    using ptr = types::ptr; // contains pointer types
 
     // Min-Max unsigned common type
-    static inline constexpr u8 u8_max = Types::u8_max;
-    static inline constexpr u8 u8_min = Types::u8_min;
-    static inline constexpr u16 u16_max = Types::u16_max;
-    static inline constexpr u16 u16_min = Types::u16_min;
-    static inline constexpr u32 u32_max = Types::u32_max;
-    static inline constexpr u32 u32_min = Types::u32_min;
-    static inline constexpr u64 u64_max = Types::u64_max;
-    static inline constexpr u64 u64_min = Types::u64_min;
+    static inline constexpr u8 u8_max = types::u8_max;
+    static inline constexpr u8 u8_min = types::u8_min;
+    static inline constexpr u16 u16_max = types::u16_max;
+    static inline constexpr u16 u16_min = types::u16_min;
+    static inline constexpr u32 u32_max = types::u32_max;
+    static inline constexpr u32 u32_min = types::u32_min;
+    static inline constexpr u64 u64_max = types::u64_max;
+    static inline constexpr u64 u64_min = types::u64_min;
 
-    static inline constexpr i8 i8_max = Types::i8_max;
-    static inline constexpr i8 i8_min = Types::i8_min;
-    static inline constexpr i16 i16_max = Types::i16_max;
-    static inline constexpr i16 i16_min = Types::i16_min;
-    static inline constexpr i32 i32_max = Types::i32_max;
-    static inline constexpr i32 i32_min = Types::i32_min;
-    static inline constexpr i64 i64_max = Types::i64_max;
-    static inline constexpr i64 i64_min = Types::i64_min;
+    static inline constexpr i8 i8_max = types::i8_max;
+    static inline constexpr i8 i8_min = types::i8_min;
+    static inline constexpr i16 i16_max = types::i16_max;
+    static inline constexpr i16 i16_min = types::i16_min;
+    static inline constexpr i32 i32_max = types::i32_max;
+    static inline constexpr i32 i32_min = types::i32_min;
+    static inline constexpr i64 i64_max = types::i64_max;
+    static inline constexpr i64 i64_min = types::i64_min;
 
-    static inline constexpr ansichar ansichar_max = Types::ansichar_max;
-    static inline constexpr ansichar ansichar_min = Types::ansichar_min;
+    static inline constexpr ansichar ansichar_max = types::ansichar_max;
+    static inline constexpr ansichar ansichar_min = types::ansichar_min;
 
-    static inline constexpr wchar wchar_max = Types::wchar_max;
-    static inline constexpr wchar wchar_min = Types::wchar_min;
+    static inline constexpr wchar wchar_max = types::wchar_max;
+    static inline constexpr wchar wchar_min = types::wchar_min;
 
-    static inline constexpr f32 f32_max = Types::f32_max;
-    static inline constexpr f32 f32_min = Types::f32_min;
+    static inline constexpr f32 f32_max = types::f32_max;
+    static inline constexpr f32 f32_min = types::f32_min;
 
-    static inline constexpr f64 f64_max = Types::f64_max;
-    static inline constexpr f64 f64_min = Types::f64_min;
+    static inline constexpr f64 f64_max = types::f64_max;
+    static inline constexpr f64 f64_min = types::f64_min;
 
-    static inline constexpr uptr uptr_max = Types::uptr_max;
-    static inline constexpr uptr uptr_min = Types::uptr_min;
-    static inline constexpr iptr iptr_max = Types::iptr_max;
-    static inline constexpr iptr iptr_min = Types::iptr_min;
-    static inline constexpr usize usize_max = Types::usize_max;
-    static inline constexpr usize usize_min = Types::usize_min;
-    static inline constexpr isize isize_max = Types::isize_max;
-    static inline constexpr isize isize_min = Types::isize_min;
+    static inline constexpr uptr uptr_max = types::uptr_max;
+    static inline constexpr uptr uptr_min = types::uptr_min;
+    static inline constexpr iptr iptr_max = types::iptr_max;
+    static inline constexpr iptr iptr_min = types::iptr_min;
+    static inline constexpr usize usize_max = types::usize_max;
+    static inline constexpr usize usize_min = types::usize_min;
+    static inline constexpr isize isize_max = types::isize_max;
+    static inline constexpr isize isize_min = types::isize_min;
 
-    static inline constexpr usize index_min = Types::usize_min;
-    static inline constexpr usize index_max = Types::usize_max - 1;
+    static inline constexpr usize index_min = types::usize_min;
+    static inline constexpr usize index_max = types::usize_max - 1;
     static inline constexpr usize index_none = static_cast<usize>(- 1);
 
 } // namespace hud
@@ -130,8 +130,8 @@ static_assert(sizeof(hud::isize) == 8, "sizeof(hud::isize) != 8 bytes");
 #endif
 
 // Statically check for type sign
-#define is_unsigned(T) (T(0) < T(-1))
-#define is_signed(T) (T(-1) < T(0))
+#define is_unsigned(type_t) (type_t(0) < type_t(-1))
+#define is_signed(type_t) (type_t(-1) < type_t(0))
 static_assert(!is_signed(bool) && is_unsigned(bool), "bool is signed");
 static_assert(is_signed(hud::i8) && !is_unsigned(hud::i8), "hud::i8 is not signed");
 static_assert(is_signed(hud::i16) && !is_unsigned(hud::i16), "hud::i16 is not signed");
@@ -227,7 +227,7 @@ static_assert(hud::isize_min == (-9223372036854775807 - 1), "isize_min!= 0");
     using i32 = hud::i32;   // 32 bits signed integer
     using i64 = hud::i64;   // 64 bits signed integer
 
-    // Character common types
+    // characteracter common types
     using ansichar = hud::ansichar; // 8 bits character
     using wchar = hud::wchar; // Platform dependent size bits wide character
     using char16 = hud::char16;     // 16 bits character type
@@ -250,4 +250,4 @@ static_assert(hud::isize_min == (-9223372036854775807 - 1), "isize_min!= 0");
 
 #endif
 
-#endif // HD_INC_OSLAYER_TYPES_H
+#endif // HD_INC_CORE_TYPES_H

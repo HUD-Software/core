@@ -1,32 +1,32 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_templates_LESS_H
-#define HD_INC_OSLAYER_templates_LESS_H
+#ifndef HD_INC_CORE_TEMPLATES_LESS_H
+#define HD_INC_CORE_TEMPLATES_LESS_H
 
 namespace hud {
 
-    /** Checks whether the first argument of type T compares less than the second (as returned by operator <). */
-    template<typename U, typename V = U>
-    struct Less {
+    /** Checks whether the first argument of type type_t compares less than the second (as returned by operator <). */
+    template<typename u_type_t, typename V = u_type_t>
+    struct less {
         /** Member function returning whether the first argument compares less than the second (a<b). */
         [[nodiscard]]
-        constexpr bool operator()(const U& a, const V& b) const noexcept {
+        constexpr bool operator()(const u_type_t& a, const V& b) const noexcept {
             return a < b;
         }
     };
 
-    /** Pointer specification for Less. */
-    template<typename T>
-    struct Less<T*, T*> {
+    /** Pointer specification for less. */
+    template<typename type_t>
+    struct less<type_t*, type_t*> {
         [[nodiscard]]
-        bool operator()(T* a, T* b) const noexcept {
+        bool operator()(type_t* a, type_t* b) const noexcept {
             return a < b;
         }
         [[nodiscard]]
-        constexpr bool operator()(T*, hud::ptr::null) const noexcept {
+        constexpr bool operator()(type_t*, hud::ptr::null) const noexcept {
             return false;
         }
         [[nodiscard]]
-        constexpr bool operator()(hud::ptr::null, T* a) const noexcept {
+        constexpr bool operator()(hud::ptr::null, type_t* a) const noexcept {
             return a != nullptr;
         }
         [[nodiscard]]
@@ -38,4 +38,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_templates_LESS_H
+#endif // HD_INC_CORE_TEMPLATES_LESS_H

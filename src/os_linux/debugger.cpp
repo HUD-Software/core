@@ -4,9 +4,9 @@
 #include <unistd.h> // read
 #include <string.h> // strstr
 
-namespace hud::OS::Linux{
+namespace hud::os::linux{
 
-    bool Debugger::is_present() noexcept {
+    bool debugger::is_present() noexcept {
         // /proc/self/status contained TracerPid which is the PID of the process tracing this process ( 0 if not being traced )
         // https://man7.org/linux/man-pages/man5/procfs.5.html
         i32 file_descriptor = open("/proc/self/status", O_RDONLY);

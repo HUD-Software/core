@@ -1,15 +1,15 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_WINDOWS_MEMORY_H
-#define HD_INC_OSLAYER_OS_WINDOWS_MEMORY_H
+#ifndef HD_INC_CORE_OS_WINDOWS_MEMORY_H
+#define HD_INC_CORE_OS_WINDOWS_MEMORY_H
 #include "../os_common/memory.h"
 
 #if !defined(HD_OS_WINDOWS)
 #error This file must be included only when targetting Windows OS
 #endif 
 
-namespace hud::OS::Windows{
+namespace hud::os::windows{
 
-    struct Memory : public OS::Common::Memory {
+    struct memory : public os::common::memory {
 
         /**
         * Reverses the order of bytes in an integer.
@@ -119,7 +119,7 @@ namespace hud::OS::Windows{
         }
     };
 
-} // namespace hud::OS::Windows
+} // namespace hud::os::windows
 
-#endif // HD_INC_OSLAYER_OS_WINDOWS_MEMORY_H
+#endif // HD_INC_CORE_OS_WINDOWS_MEMORY_H
 

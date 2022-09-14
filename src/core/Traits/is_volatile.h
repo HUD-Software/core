@@ -1,24 +1,24 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_VOLATILE_H
-#define HD_INC_OSLAYER_traits_IS_VOLATILE_H
+#ifndef HD_INC_CORE_TRAITS_IS_VOLATILE_H
+#define HD_INC_CORE_TRAITS_IS_VOLATILE_H
 #include "integral_constant.h"
 
 namespace hud {
 
-    /** Checks whether T is a volatile-qualified type. */
-    template<typename T>
-    struct IsVolatile
-        : FalseType {
+    /** Checks whether type_t is a volatile-qualified type. */
+    template<typename type_t>
+    struct is_volatile
+        : false_type {
     };
-    template<typename T>
-    struct IsVolatile<volatile T>
-        : TrueType {
+    template<typename type_t>
+    struct is_volatile<volatile type_t>
+        : true_type {
     };
 
-    /** Equivalent of IsVolatile<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsVolatileV = IsVolatile<T>::Value;
+    /** Equivalent of is_volatile<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_volatile_v = is_volatile<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_VOLATILE_H
+#endif // HD_INC_CORE_TRAITS_IS_VOLATILE_H

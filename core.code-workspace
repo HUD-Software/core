@@ -9,5 +9,22 @@
         "editor.fontSize": 12,
         "terminal.integrated.fontSize": 12,
         "cmake.buildDirectory": "${workspaceFolder}/target",
+        "files.associations": {
+            "xmemory": "cpp",
+            "xutility": "cpp",
+            "compare": "cpp",
+            "memory": "cpp",
+            "tuple": "cpp",
+            "type_traits": "cpp",
+            "utility": "cpp",
+            "xtr1common": "cpp",
+            "atomic": "cpp",
+            "initializer_list": "cpp",
+            "concepts": "cpp",
+            "exception": "cpp",
+            "limits": "cpp",
+            "new": "cpp",
+            "xstddef": "cpp"
+        },
     },
 }

@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_CONSTANT_EVALUATED
-#define HD_INC_OSLAYER_traits_IS_CONSTANT_EVALUATED
+#ifndef HD_INC_CORE_TRAITS_IS_CONSTANT_EVALUATED
+#define HD_INC_CORE_TRAITS_IS_CONSTANT_EVALUATED
 
 namespace hud {
 
@@ -12,4 +12,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_CONSTANT_EVALUATED
+#endif // HD_INC_CORE_TRAITS_IS_CONSTANT_EVALUATED

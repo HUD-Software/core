@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_COMPILER_DEFINES_H
-#define HD_INC_OSLAYER_COMPILER_DEFINES_H
+#ifndef HD_INC_CORE_COMPILER_DEFINES_H
+#define HD_INC_CORE_COMPILER_DEFINES_H
 
 /**
 ---- To check for which OS the code is compiled:
@@ -139,10 +139,10 @@ __aarch64__
 #error Operating System targeted not supported
 #endif
 #if !defined(HD_DEBUG) && !defined(HD_DEBUGOPTIMIZED) && !defined(HD_RELEASE)
-#error Compilation mode is not set
+#error compilation mode is not set
 #endif
 #if defined(HD_COMPILER_MSVC) && !(__cplusplus >= 202002L)
-#error Compilation should be done with latest C++ version
+#error compilation should be done with latest C++ version
 #endif
 
 #if defined(HD_TARGET_32_BITS)
@@ -151,4 +151,4 @@ static_assert(sizeof(void*) == 4, "HD_TARGET_32_BITS is defined but size of poin
 static_assert(sizeof(void*) == 8, "HD_TARGET_64_BITS is defined but size of pointers are not 8 bytes");
 #endif
 
-#endif // HD_INC_OSLAYER_COMPILER_DEFINES_H
+#endif // HD_INC_CORE_COMPILER_DEFINES_H

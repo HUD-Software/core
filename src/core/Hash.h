@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_HASH_H
-#define HD_INC_OSLAYER_HASH_H
+#ifndef HD_INC_CORE_HASH_H
+#define HD_INC_CORE_HASH_H
 #include "traits/is_enum.h"
 #include "traits/is_pointer.h"
 #include "traits/underlying_type.h"
@@ -10,8 +10,8 @@
 
 namespace hud {
 
-    template<typename T>
-    static inline u32 hash(const T) noexcept;
+    template<typename type_t>
+    static inline u32 hash(const type_t) noexcept;
 
     /** Retrieves the 32 bits hash of a i8 value. */
     [[nodiscard]]
@@ -92,16 +92,16 @@ namespace hud {
     }
 
     /** Retrieves the 32 bits hash of an enumeration. */
-    template<typename T>
+    template<typename type_t>
     [[nodiscard]]
-    static constexpr u32 hash(const T value) noexcept requires(IsEnumV<T>) {
-         return hash(static_cast<UnderlyingTypeT<T>>(value));
+    static constexpr u32 hash(const type_t value) noexcept requires(is_enum_v<type_t>) {
+         return hash(static_cast<underlying_type_t<type_t>>(value));
     }
 
-    /** Retrieves the 32 bits hash of a pointer of a type T. */
-    template<typename T>
+    /** Retrieves the 32 bits hash of a pointer of a type type_t. */
+    template<typename type_t>
     [[nodiscard]]
-    static u32 hash(T* const pointer) noexcept {
+    static u32 hash(type_t* const pointer) noexcept {
         const uptr ptr = reinterpret_cast<uptr>(pointer);
         if constexpr (sizeof(uptr) == 4) {
             return static_cast<u32>(ptr);
@@ -113,4 +113,4 @@ namespace hud {
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_HASH_H
+#endif // HD_INC_CORE_HASH_H

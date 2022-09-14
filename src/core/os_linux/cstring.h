@@ -1,16 +1,16 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_LINUX_CSTRING_H
-#define HD_INC_OSLAYER_OS_LINUX_CSTRING_H
+#ifndef HD_INC_CORE_OS_LINUX_CSTRING_H
+#define HD_INC_CORE_OS_LINUX_CSTRING_H
 #include "../os_common/cstring.h"
 
 #if !defined(HD_OS_LINUX)
 #error This file must be included only when targetting Linux OS
 #endif 
 
-namespace hud::OS::Linux{
+namespace hud::os::linux{
 
-    struct CString 
-        : public OS::Common::CString {
+    struct cstring 
+        : public os::common::cstring {
 
         /**
         * Copy ansi string and assert the given parameters.
@@ -57,7 +57,7 @@ namespace hud::OS::Linux{
             check(destination_size >= (length(source) + 1));
             check(count <= length(source));
             strncpy(destination, source, count);
-            destination[count] = Char::ANSI_NULL_CHARACTER;
+            destination[count] = character::ANSI_NULL_CHARACTER;
             return true;
         }
 
@@ -76,7 +76,7 @@ namespace hud::OS::Linux{
             check(destination_size >= (length(source) + 1));
             check(destination_size >= count);
             wcsncpy(destination, source, count);
-            destination[count] = Char::WIDE_NULL_CHARACTER;
+            destination[count] = character::WIDE_NULL_CHARACTER;
             return true;
         }
 
@@ -172,7 +172,7 @@ namespace hud::OS::Linux{
         * @return Number of character written, -1 if an error occurred.
         */
         static HD_FORCEINLINE i32 format_vargs(ansichar* buffer, u32 buffer_size, const ansichar* format, va_list args) noexcept {
-            return Common::CString::format_vargs(buffer, buffer_size, format, args);
+            return Common::cstring::format_vargs(buffer, buffer_size, format, args);
         }
 
         /**
@@ -188,6 +188,6 @@ namespace hud::OS::Linux{
         }
     };
 
-} // hud::OS::Linux
+} // hud::os::linux
 
-#endif /* HD_INC_OSLAYER_OS_LINUX_CSTRING_H */
+#endif /* HD_INC_CORE_OS_LINUX_CSTRING_H */

@@ -1,24 +1,24 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_LVALUE_REFERENCE_H
-#define HD_INC_OSLAYER_traits_IS_LVALUE_REFERENCE_H
+#ifndef HD_INC_CORE_TRAITS_IS_LVALUE_REFERENCE_H
+#define HD_INC_CORE_TRAITS_IS_LVALUE_REFERENCE_H
 #include "integral_constant.h"
 
 namespace hud {
 
-    /** Checks whether T is a lvalue reference type. */
-    template <typename T>
-    struct IsLValueReference
-        : FalseType {
+    /** Checks whether type_t is a lvalue reference type. */
+    template <typename type_t>
+    struct is_lvalue_reference
+        : false_type {
     };
-    template <typename T>
-    struct IsLValueReference<T&>
-        : TrueType {
+    template <typename type_t>
+    struct is_lvalue_reference<type_t&>
+        : true_type {
     };
 
-    /** Equivalent of IsLValueReference<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsLValueReferenceV = IsLValueReference<T>::Value;
+    /** Equivalent of is_lvalue_reference<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_lvalue_reference_v = is_lvalue_reference<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_LVALUE_REFERENCE_H
+#endif // HD_INC_CORE_TRAITS_IS_LVALUE_REFERENCE_H

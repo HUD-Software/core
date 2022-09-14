@@ -1,24 +1,24 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_BOUNDED_ARRAY_H
-#define HD_INC_OSLAYER_traits_IS_BOUNDED_ARRAY_H
+#ifndef HD_INC_CORE_TRAITS_IS_BOUNDED_ARRAY_H
+#define HD_INC_CORE_TRAITS_IS_BOUNDED_ARRAY_H
 #include "integral_constant.h"
 
 namespace hud {
 
-    /** Checks whether T is a bounded array type. */
-    template<typename T>
-    struct IsBoundedArray
-        : FalseType {
+    /** Checks whether type_t is a bounded array type. */
+    template<typename type_t>
+    struct is_bounded_array
+        : false_type {
     };
-    template<typename T, usize extent>
-    struct IsBoundedArray<T[extent]>
-        : TrueType {
+    template<typename type_t, usize extent>
+    struct is_bounded_array<type_t[extent]>
+        : true_type {
     };
 
-    /** Equivalent of IsBoundedArray<T>::Value. */
-    template <typename T>
-    inline constexpr bool IsBoundedArrayV = IsBoundedArray<T>::Value;
+    /** Equivalent of is_bounded_array<type_t>::value. */
+    template <typename type_t>
+    inline constexpr bool is_bounded_array_v = is_bounded_array<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_BOUNDED_ARRAY_H
+#endif // HD_INC_CORE_TRAITS_IS_BOUNDED_ARRAY_H

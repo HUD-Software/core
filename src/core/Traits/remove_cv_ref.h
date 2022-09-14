@@ -1,20 +1,20 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_REMOVE_CVREF_H
-#define HD_INC_OSLAYER_traits_REMOVE_CVREF_H
+#ifndef HD_INC_CORE_TRAITS_REMOVE_CVREF_H
+#define HD_INC_CORE_TRAITS_REMOVE_CVREF_H
 #include "remove_cv.h"
 #include "remove_reference.h"
 
 namespace hud {
 
     /** Remove the reference and the topmost const and volatile qualifier of a type */
-    template<typename T>
-    struct RemoveCVRef 
-        : RemoveCV<RemoveReferenceT<T>> {
+    template<typename type_t>
+    struct remove_cv_ref 
+        : remove_cv<remove_reference_t<type_t>> {
     };
 
-    /** Equivalent of typename RemoveCVRef<T>::Type. */
-    template<typename T>
-    using RemoveCVRefT = typename RemoveCVRef<T>::Type;
+    /** Equivalent of typename remove_cv_ref<type_t>::type. */
+    template<typename type_t>
+    using remove_cv_ref_t = typename remove_cv_ref<type_t>::type;
 }
 
-#endif // HD_INC_OSLAYER_traits_REMOVE_CVREF_H
+#endif // HD_INC_CORE_TRAITS_REMOVE_CVREF_H

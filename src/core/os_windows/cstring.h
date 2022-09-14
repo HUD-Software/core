@@ -1,16 +1,16 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_WINDOWS_CSTRING_H
-#define HD_INC_OSLAYER_OS_WINDOWS_CSTRING_H
+#ifndef HD_INC_CORE_OS_WINDOWS_CSTRING_H
+#define HD_INC_CORE_OS_WINDOWS_CSTRING_H
 #include "../os_common/cstring.h"
 
 #if !defined(HD_OS_WINDOWS)
 #error This file must be included only when targetting Windows OS
 #endif 
 
-namespace hud::OS::Windows{
+namespace hud::os::windows{
 
-    struct CString 
-        : public OS::Common::CString
+    struct cstring 
+        : public os::common::cstring
     {
         /**
         * Copy ansi string and assert the given parameters.
@@ -159,7 +159,7 @@ namespace hud::OS::Windows{
         * @return Number of character written, -1 if an error occurred.
         */
         static HD_FORCEINLINE i32 format_vargs(ansichar* buffer, u32 buffer_size, const ansichar* format, va_list args) noexcept {
-            return Common::CString::format_vargs(buffer, buffer_size, format, args);
+            return Common::cstring::format_vargs(buffer, buffer_size, format, args);
         }
 
         /**
@@ -175,6 +175,6 @@ namespace hud::OS::Windows{
         }
     };
 
-} // namespace hud::OS::Windows
+} // namespace hud::os::windows
 
-#endif // HD_INC_OSLAYER_OS_WINDOWS_CSTRING_H
+#endif // HD_INC_CORE_OS_WINDOWS_CSTRING_H

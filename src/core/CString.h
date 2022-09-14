@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_CSTRING_H
-#define HD_INC_OSLAYER_CSTRING_H
+#ifndef HD_INC_CORE_CSTRING_H
+#define HD_INC_CORE_CSTRING_H
 
 #if defined(HD_OS_WINDOWS)
 #include "os_windows/cstring.h"
@@ -12,12 +12,12 @@
 
 namespace hud {
 
-    /** Provides raw C String operations. */
-    struct CString :
+    /** Provides raw C string operations. */
+    struct cstring :
         #if defined(HD_OS_WINDOWS)
-        OS::Windows::CString
+        os::windows::cstring
         #elif defined(HD_OS_LINUX)
-        OS::Linux::CString
+        os::linux::cstring
         #endif
     {
         /**
@@ -55,4 +55,4 @@ namespace hud {
  
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_CSTRING_H
+#endif // HD_INC_CORE_CSTRING_H

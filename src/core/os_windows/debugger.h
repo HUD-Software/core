@@ -1,6 +1,6 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_OS_WINDOWS_DEBUGGER_H
-#define HD_INC_OSLAYER_OS_WINDOWS_DEBUGGER_H
+#ifndef HD_INC_CORE_OS_WINDOWS_DEBUGGER_H
+#define HD_INC_CORE_OS_WINDOWS_DEBUGGER_H
 #include "windows_api.h"
 #include <cstdlib> // abort
 
@@ -8,9 +8,9 @@
 #error This file must be included only when targetting Windows OS
 #endif 
 
-namespace hud::OS::Windows{
+namespace hud::os::windows{
 
-    struct Debugger {
+    struct debugger {
 
         /** Checks whether the calling process is being debugged by a user-mode debugger. */
         static HD_FORCEINLINE bool is_present() noexcept {
@@ -41,6 +41,6 @@ namespace hud::OS::Windows{
 
     };
 
-} //namespace hud::OS::Windows
+} //namespace hud::os::windows
 
-#endif // HD_INC_OSLAYER_OS_WINDOWS_DEBUGGER_H
+#endif // HD_INC_CORE_OS_WINDOWS_DEBUGGER_H

@@ -1,28 +1,28 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_SAME_H
-#define HD_INC_OSLAYER_traits_IS_SAME_H
+#ifndef HD_INC_CORE_TRAITS_IS_SAME_H
+#define HD_INC_CORE_TRAITS_IS_SAME_H
 #include "integral_constant.h"
 
 namespace hud {
 
     /**
-    * Checks whether T is the same type as U, including having the same const and/or volatile qualification, if any.
+    * Checks whether type_t is the same type as u_type_t, including having the same const and/or volatile qualification, if any.
     * Two different type names are considered to represent the same type if -and only if- one is a typedef of the other:
     * Two names representing types with the exact same characteristics but which none is a typedef of the other are not considered the same type.
     */
-    template<typename T, typename U>
-    struct IsSame
-        : FalseType {
+    template<typename type_t, typename u_type_t>
+    struct is_same
+        : false_type {
     };
-    template<typename T>
-    struct IsSame<T, T>
-        : TrueType {
+    template<typename type_t>
+    struct is_same<type_t, type_t>
+        : true_type {
     };
 
-    /** Equivalent of IsSame<T,U>::Value. */
-    template<typename T, typename U>
-    inline constexpr bool IsSameV = IsSame<T, U>::Value;
+    /** Equivalent of is_same<type_t,u_type_t>::value. */
+    template<typename type_t, typename u_type_t>
+    inline constexpr bool is_same_v = is_same<type_t, u_type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_SAME_H
+#endif // HD_INC_CORE_TRAITS_IS_SAME_H

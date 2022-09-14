@@ -1,24 +1,24 @@
 #pragma once
-#ifndef HD_INC_OSLAYER_traits_IS_OBJECT_H
-#define HD_INC_OSLAYER_traits_IS_OBJECT_H
-#include "not.h"
-#include "or.h"
+#ifndef HD_INC_CORE_TRAITS_IS_OBJECT_H
+#define HD_INC_CORE_TRAITS_IS_OBJECT_H
+#include "negation.h"
+#include "disjunction.h"
 #include "is_function.h"
 #include "is_reference.h"
 #include "is_void.h"
 
 namespace hud {
 
-    /** Checks whether T is an object type (that is any possibly cv-qualified type other than function, reference, or void types). */
-    template < typename T>
-    struct IsObject
-        : Not<Or<IsFunction<T>, IsReference<T>, IsVoid<T>>> {
+    /** Checks whether type_t is an object type (that is any possibly cv-qualified type other than function, reference, or void types). */
+    template < typename type_t>
+    struct is_object
+        : negation<disjunction<is_function<type_t>, is_reference<type_t>, is_void<type_t>>> {
     };
 
-    /** Equivalent of IsObject<T>::Value. */
-    template<typename T>
-    inline constexpr bool IsObjectV = IsObject<T>::Value;
+    /** Equivalent of is_object<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_object_v = is_object<type_t>::value;
 
 } // namespace hud
 
-#endif // HD_INC_OSLAYER_traits_IS_OBJECT_H
+#endif // HD_INC_CORE_TRAITS_IS_OBJECT_H
