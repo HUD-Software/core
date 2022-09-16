@@ -8,19 +8,16 @@ project(Core
 		LANGUAGES CXX
 )
 
-# Set the name of the target
-set(target_name OSLayer)
-
 # Define a grouping for source files in IDE project generation
 # source_files variable is a list all files in Implementation and Interface directory
 set( src
-	src/hash/Crc32.cpp
+	src/hash/crc32.cpp
 )
 
 #Linux implementations
 if(UNIX AND NOT APPLE)
 set( src ${implementations}
-	src/os_linux/LinuxDebugger.cpp
+	src/os_linux/debugger.cpp
 )
 endif()
 
@@ -232,9 +229,6 @@ if(MSVC)
 	target_compile_options( Core PRIVATE /Zc:__cplusplus /std:c++20)
 endif()
 
-#Set the target under Runtime folder
-set_target_properties(Core PROPERTIES FOLDER Runtime)
-
 # Set output directory
 set_target_properties(Core PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/target/${CMAKE_SYSTEM_NAME}_${CMAKE_CXX_COMPILER_ID}_${CMAKE_SYSTEM_PROCESSOR}/${CMAKE_BUILD_TYPE})
 
@@ -259,3 +253,5 @@ target_compile_definitions(
 	# DebugOptimized specific compiler flags
 	$<$<CONFIG:RelWithDebInfo>:HD_DEBUGOPTIMIZED>
 )
+
+add_subdirectory(test)
