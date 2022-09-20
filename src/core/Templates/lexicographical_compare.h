@@ -100,7 +100,7 @@ namespace hud {
     template<typename it1_t, typename it2_t>
     [[nodiscard]]
     HD_FORCEINLINE constexpr bool lexicographical_compare(it1_t* buffer_1, it2_t* buffer_2, usize size) noexcept requires(sizeof(it1_t) == 1 && sizeof(it2_t) == 1) {
-        returnhud::memory::compare_less(buffer_1, buffer_2, size);
+        return hud::memory::compare_less(buffer_1, buffer_2, size);
     }
     
     /**
@@ -121,7 +121,7 @@ namespace hud {
     template<typename array1_t, typename array2_t, usize size>
     [[nodiscard]]
     HD_FORCEINLINE constexpr bool lexicographical_compare(const array1_t(&arr_1)[size], const array2_t(&arr_2)[size]) noexcept requires(sizeof(array1_t) == 1 && sizeof(array2_t) == 1) {
-         returnhud::memory::compare_less(arr_1, arr_2, size);
+         return hud::memory::compare_less(arr_1, arr_2, size);
     }
 
 } // namespace hud 

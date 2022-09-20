@@ -10,7 +10,7 @@ namespace hud {
 
     /** Function object class, whose function-like invokation takes an object of type type_t* and deletes it with delete operator. */
     template< typename type_t >
-    struct hud::default_deleter
+    struct default_deleter
     {
         /** The pointer type to delete. */
         using pointer_type = type_t*;

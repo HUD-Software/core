@@ -12,24 +12,24 @@ namespace hud {
     */
     template<typename type_t, usize dimension_index = 0>
     struct extent
-        : integral_constant<usize,0> {
+        : hud::integral_constant<usize,0> {
     };
-    template<typename type_t, usize extent>
-    struct extent<type_t[extent], 0>
-        : integral_constant<usize, extent> {
+    template<typename type_t, usize extent_size>
+    struct extent<type_t[extent_size], 0>
+        : hud::integral_constant<usize, extent_size> {
     };
-    template<typename type_t, usize dimension_index, usize extent>
-    struct extent<type_t[extent], dimension_index>
-        : extent<type_t, dimension_index - 1> {
+    template<typename type_t, usize dimension_index, usize extent_size>
+    struct extent<type_t[extent_size], dimension_index>
+        : hud::extent<type_t, dimension_index - 1> {
     };
     template<typename type_t, usize dimension_index>
     struct extent<type_t[], dimension_index>
-        : extent<type_t, dimension_index - 1> {
+        : hud::extent<type_t, dimension_index - 1> {
     };
 
     /** Equivalent of extent<type_t, dimension_index>::value. */
     template<typename type_t, usize dimension_index = 0>
-    inline constexpr usize extent_v = extent<type_t, dimension_index>::value;
+    inline constexpr usize extent_v = hud::extent<type_t, dimension_index>::value;
 
 } // namespace hud
 

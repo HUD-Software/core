@@ -26,13 +26,13 @@ namespace hud {
 
     /** integral_constant wraps a static constant boolean value. */
     template<bool value>
-    using bool_constant = integral_constant<bool, value>;
+    using bool_constant = hud::integral_constant<bool, value>;
 
     /** True boolean integral constant */
-    using true_type = bool_constant<true>;
+    using true_type = hud::bool_constant<true>;
 
     /** False boolean integral constant */
-    using false_type = bool_constant<false>;
+    using false_type = hud::bool_constant<false>;
 
 } // namespace hud
 

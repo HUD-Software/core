@@ -90,7 +90,7 @@ namespace hud {
     template<typename type_t>
     struct make_signed
         : details::make_signed_impl<type_t> {
-        static_assert(or_v< conjunction<is_integral<type_t>, negation<is_bool<type_t>>>, is_enum<type_t> >, "make_signed<type_t> requires that type_t shall be a (possibly cv-qualified) integral type or enumeration but not a bool type.");
+        static_assert(hud::disjunction_v< hud::conjunction<hud::is_integral<type_t>, hud::negation<hud::is_bool<type_t>>>, hud::is_enum<type_t> >, "make_signed<type_t> requires that type_t shall be a (possibly cv-qualified) integral type or enumeration but not a bool type.");
     };
 
     /** Equivalent of typename make_signed<type_t>::type. */

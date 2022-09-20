@@ -8,11 +8,11 @@ namespace hud {
     /** Checks whether type_t is a pointer to non-static member object or a pointer to non-static member function. */
     template<typename type_t>
     struct is_member_pointer
-        : false_type {
+        : hud::false_type {
     };
     template<typename type_t, typename class_t>
     struct is_member_pointer<type_t class_t::*>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_member_pointer<type_t>::value. */

@@ -8,11 +8,11 @@ namespace hud {
     /** Checks whether type_t is a unbounded array type. */
     template<typename type_t>
     struct is_unbounded_array 
-        : false_type {
+        : hud::false_type {
     };
     template<typename type_t>
     struct is_unbounded_array<type_t[]>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_unbounded_array<type_t>::value. */

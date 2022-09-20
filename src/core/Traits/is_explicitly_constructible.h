@@ -19,7 +19,7 @@ namespace hud {
 
         template<typename type_t, typename ...args_t>
         struct is_explicitly_constructible_impl_2 < hud::void_t<decltype(details::implicit_construct<type_t>({ hud::declval<args_t>()... })) > , true, type_t, args_t... >
-            : public false_type {
+            : public hud::false_type {
         };
 
         template <typename type_t, typename... args_t>

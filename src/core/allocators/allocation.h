@@ -158,16 +158,16 @@ namespace hud {
             return slice(begin_ptr, count());
         }
 
-        /** Retrieves an const_iterator to the beginning of the slice. */
+        /** Retrieves an iterator_type to the beginning of the slice. */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr iterator begin() const noexcept {
-            return iterator(begin_ptr);
+        HD_FORCEINLINE constexpr iterator_type begin() const noexcept {
+            return iterator_type(begin_ptr);
         }
 
-        /** Retrieves an const_iterator to the end of the slice. */
+        /** Retrieves an iterator_type to the end of the slice. */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr iterator end() const noexcept {
-            return iterator(end_ptr);
+        HD_FORCEINLINE constexpr iterator_type end() const noexcept {
+            return iterator_type(end_ptr);
         }
 
      private:

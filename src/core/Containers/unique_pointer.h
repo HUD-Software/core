@@ -65,7 +65,7 @@ namespace hud {
         */
         template<typename unique_pointer_t, typename u_unique_pointer_t>
         struct is_unique_pointer_convertible_to_unique_pointer
-            : false_type {
+            : hud::false_type {
         };
         template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
         struct is_unique_pointer_convertible_to_unique_pointer<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
@@ -85,7 +85,7 @@ namespace hud {
         */
         template<typename unique_pointer_t, typename u_unique_pointer_t>
         struct is_unique_pointer_move_assignable_to_unique_pointer
-            : false_type {
+            : hud::false_type {
         };
         template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
         struct is_unique_pointer_move_assignable_to_unique_pointer<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
@@ -105,7 +105,7 @@ namespace hud {
         */
         template<typename unique_pointer_t, typename u_ptr_t>
         struct is_unique_pointer_array_can_be_reset_with
-            : false_type {
+            : hud::false_type {
         };
         template<typename ptr_t, typename deleter_t, typename u_ptr_t>
         struct is_unique_pointer_array_can_be_reset_with<unique_pointer<ptr_t[], deleter_t>, u_ptr_t*>
@@ -141,7 +141,7 @@ namespace hud {
         */
         template<typename unique_pointer_t, typename u_unique_pointer_t>
         struct is_unique_pointer_convertible_to_unique_pointer_array
-            : false_type {
+            : hud::false_type {
         };
         template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
         struct is_unique_pointer_convertible_to_unique_pointer_array<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
@@ -160,7 +160,7 @@ namespace hud {
         */
         template<typename unique_pointer_t, typename u_unique_pointer_t>
         struct is_unique_pointer_array_move_constructible_from_unique_pointer
-            : false_type {
+            : hud::false_type {
         };
         template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
         struct is_unique_pointer_array_move_constructible_from_unique_pointer<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
@@ -179,7 +179,7 @@ namespace hud {
         */
         template<typename unique_pointer_t, typename u_unique_pointer_t>
         struct is_unique_pointer_move_assignable_to_unique_pointer_array
-            : false_type {
+            : hud::false_type {
         };
         template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
         struct is_unique_pointer_move_assignable_to_unique_pointer_array<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
@@ -220,7 +220,7 @@ namespace hud {
         * Default constructor that value-initializes the stored pointer and the stored deleter.
         * unique_pointer do not accept throwable default constructible deleter.
         */
-        HD_FORCEINLINE constexpr unique_pointer() noexcept requires(is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer() noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
             : inner(taginit) {
             static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
         }
@@ -230,7 +230,7 @@ namespace hud {
         * unique_pointer do not accept throwable default constructible deleter
         * @param pointer The poiner to own
         */
-        HD_FORCEINLINE constexpr explicit unique_pointer(pointer_type pointer) noexcept requires(is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr explicit unique_pointer(pointer_type pointer) noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
             : inner(pointer, taginit) {
             static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
         }
@@ -251,7 +251,7 @@ namespace hud {
         * @param deleter The deleter used to delete the owned pointer
         */
         HD_FORCEINLINE constexpr unique_pointer(pointer_type pointer, deleter_t&& deleter) noexcept requires(!is_reference_v<deleter_t>&& is_move_constructible_v<deleter_t>)
-            : inner(pointer, move(deleter)) {
+            : inner(pointer, hud::move(deleter)) {
             static_assert(is_nothrow_move_constructible_v<deleter_t>, "unique_pointer do not accept throwable move constructible deleter_t");
         }
 
@@ -264,7 +264,7 @@ namespace hud {
 
 
         /** Construct a unique_pointer from a nullptr */
-        HD_FORCEINLINE constexpr unique_pointer(hud::ptr::null) noexcept requires(is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer(hud::ptr::null) noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
             : inner(taginit) {
             static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
         }
@@ -295,7 +295,7 @@ namespace hud {
         * @param other The unique_pointer to transfert ownership from.
         * @return *this
         */
-        constexpr unique_pointer& operator=(unique_pointer&& other) noexcept requires(is_move_assignable_v<deleter_t>) {
+        constexpr unique_pointer& operator=(unique_pointer&& other) noexcept requires(hud::is_move_assignable_v<deleter_t>) {
             static_assert(!is_reference_v<deleter_t> ? is_nothrow_move_assignable_v<deleter_t> : true, "unique_pointer do not accept throwable move assignable deleter_t if deleter_t is no a reference");
             static_assert(is_reference_v<deleter_t> ? IsNothrowCopyAssignableV<remove_reference_t<deleter_t>> : true, "unique_pointer do not accept throwable copy assignable deleter_t if deleter_t is reference)");
 
@@ -446,7 +446,7 @@ namespace hud {
         * Default constructor that value-initializes the stored pointer and the stored deleter.
         * unique_pointer do not accept throwable default constructible deleter.
         */
-        HD_FORCEINLINE constexpr unique_pointer() noexcept requires(is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer() noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
             : inner(taginit) {
             static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
         }
@@ -457,7 +457,7 @@ namespace hud {
         * @param pointer The poiner to own
         */
         template<typename u_ptr_t>
-        HD_FORCEINLINE constexpr explicit unique_pointer(u_ptr_t pointer) noexcept requires(is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t> && details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
+        HD_FORCEINLINE constexpr explicit unique_pointer(u_ptr_t pointer) noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t> && details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
             : inner(pointer, taginit) {
             static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
         }
@@ -480,7 +480,7 @@ namespace hud {
         */
         template<typename u_ptr_t>
         HD_FORCEINLINE constexpr unique_pointer(u_ptr_t pointer, deleter_t&& deleter) noexcept requires(!is_reference_v<deleter_t> && is_move_constructible_v<deleter_t>&& details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
-            : inner(pointer, move(deleter)) {
+            : inner(pointer, hud::move(deleter)) {
             static_assert(is_nothrow_move_constructible_v<deleter_t>, "unique_pointer do not accept throwable move constructible deleter_t");
         }
 
@@ -489,7 +489,7 @@ namespace hud {
 
 
         /** Construct a unique_pointer from a nullptr. */ 
-        HD_FORCEINLINE constexpr unique_pointer(hud::ptr::null) noexcept requires(is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer(hud::ptr::null) noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
             : inner(taginit) {
             static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
         }
@@ -520,7 +520,7 @@ namespace hud {
         * @param other The unique_pointer to transfert ownership from.
         * @return *this
         */
-        constexpr unique_pointer& operator=(unique_pointer&& other) noexcept requires(is_move_assignable_v<deleter_t>) {
+        constexpr unique_pointer& operator=(unique_pointer&& other) noexcept requires(hud::is_move_assignable_v<deleter_t>) {
             static_assert(!is_reference_v<deleter_t> ? is_nothrow_move_assignable_v<deleter_t> : true, "unique_pointer do not accept throwable move assignable deleter_t if deleter_t is no a reference");
             static_assert(is_reference_v<deleter_t> ? IsNothrowCopyAssignableV<remove_reference_t<deleter_t>> : true, "unique_pointer do not accept throwable copy assignable deleter_t if deleter_t is reference)");
 

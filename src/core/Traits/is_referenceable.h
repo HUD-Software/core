@@ -9,12 +9,12 @@ namespace hud {
     /** Check if a type is referenceable (type_t& is well-formed). */
     template<typename type_t, typename = void>
     struct is_referenceable
-        : false_type {
+        : hud::false_type {
     };
 
     template<typename type_t>
     struct is_referenceable<type_t, void_t<type_t&> >
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_referenceable<type_t>::value. */

@@ -18,7 +18,7 @@ namespace hud::os::windows{
         * @param The integer the order of bytes reversed
         */
         static constexpr u32 reverse(const u32 value) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 u32 tmp = ((value << 8) & 0xFF00FF00) | ((value >> 8) & 0xFF00FF);
                 return (tmp << 16) | (tmp >> 16);
             }
@@ -34,7 +34,7 @@ namespace hud::os::windows{
         * @param The integer the order of bytes reversed
         */
         static constexpr u64 reverse(const u64 value) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 u64 tmp = value;
                 tmp = ((tmp & 0x00000000FFFFFFFFull) << 32) | ((tmp & 0xFFFFFFFF00000000ull) >> 32);
                 tmp = ((tmp & 0x0000FFFF0000FFFFull) << 16) | ((tmp & 0xFFFF0000FFFF0000ull) >> 16);
@@ -53,7 +53,7 @@ namespace hud::os::windows{
         * @return The rotated value
         */
         static constexpr u32 rotate_left(const u32 value, const u32 shift) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 if (shift == 0) {
                     return value;
                 }
@@ -71,7 +71,7 @@ namespace hud::os::windows{
         * @return The rotated value
         */
         static constexpr u64 rotate_left(const u64 value, const u32 shift) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 if (shift == 0) {
                     return value;
                 }
@@ -89,7 +89,7 @@ namespace hud::os::windows{
         * @return The rotated value
         */
         static constexpr u32 rotate_right(const u32 value, const u32 shift) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 if (shift == 0) {
                     return value;
                 }
@@ -107,7 +107,7 @@ namespace hud::os::windows{
         @return The rotated value
         */
         static constexpr u64 rotate_right(const u64 value, const u32 shift) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 if (shift == 0) {
                     return value;
                 }

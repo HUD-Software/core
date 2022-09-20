@@ -8,15 +8,15 @@ namespace hud {
     /** Checks whether type_t is an array type ( Bounded or unbounded ). */
     template<typename type_t>
     struct is_array
-        : false_type {
+        : hud::false_type {
     };
     template <typename type_t, usize extent>
     struct is_array<type_t[extent]>
-        : true_type {
+        : hud::true_type {
     };
     template <typename type_t>
     struct is_array<type_t[]>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_array<type_t>::value. */

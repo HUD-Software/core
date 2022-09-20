@@ -9,11 +9,11 @@ namespace hud {
     /** Performs the logical negation of value member of type_t. */
     template<typename type_t, bool = type_t::value>
     struct negation
-        : false_type {
+        : hud::false_type {
     };
     template<typename type_t>
     struct negation<type_t, false>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of negation<type_t>::value. */

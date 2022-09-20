@@ -11,7 +11,7 @@ namespace hud {
     */
     template<typename type_t>
     struct remove_all_extents {
-        using Type = type_t;
+        using type = type_t;
     };
 
     template<typename type_t>

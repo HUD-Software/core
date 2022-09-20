@@ -8,11 +8,11 @@ namespace hud {
     /** Checks whether type_t is a pointer to object or a pointer to function (but not a pointer to member/member function). */
     template<typename type_t>
     struct is_pointer
-        : false_type {
+        : hud::false_type {
     };
     template<typename type_t>
     struct is_pointer<type_t*>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_pointer<type_t>::value. */

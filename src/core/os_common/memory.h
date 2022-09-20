@@ -108,7 +108,7 @@ namespace hud::os::common{
         [[nodiscard]]
         static constexpr type_t* allocate_array(const usize count) noexcept requires(is_not_same_v<type_t, void>) {
             const usize allocation_size = count * sizeof(type_t);
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 // Usage of std::allocator.allocate is allowed in constexpr dynamic allocation. 
                 // The allocation should be freed with std::allocator<type_t>().deallocate in the same constexpr expression
                 return std::allocator<type_t>().allocate(count);
@@ -162,7 +162,7 @@ namespace hud::os::common{
         */
         template<typename type_t>
         static constexpr type_t* allocate_align(const usize count, const u32 alignment) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 return allocate_array<type_t>(count);
             }
             return reinterpret_cast<type_t*>(allocate_align(count * sizeof(type_t), alignment));
@@ -202,7 +202,7 @@ namespace hud::os::common{
         */
         template<typename type_t>
         static constexpr void free_array(type_t* alloc, const usize count) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 if (alloc != nullptr) {
                     // Usage of std::allocator.deallocate is allowed in constexpr dynamic allocation. 
                     // The allocation should be freed after std::allocator<type_t>().allocate in the same constexpr expression
@@ -228,7 +228,7 @@ namespace hud::os::common{
         */
         template<typename type_t>
         static constexpr void free_align(type_t* pointer, const usize count) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 free_array(pointer, count);
             }
             else {
@@ -309,7 +309,7 @@ namespace hud::os::common{
         }
         template<typename type_t>
         static constexpr type_t* copy(type_t* destination, const type_t* source, const usize size) noexcept requires(sizeof(type_t) == 1)  {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 type_t* dest = destination;
                 for (usize position = 0; position < size; position++) {
                     std::construct_at(destination, *source);
@@ -344,7 +344,7 @@ namespace hud::os::common{
             memset(destination, value, size);
         }
         static constexpr void set(u8* destination, const usize size, const u8 value) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 for (usize position = 0; position < size; position++) {
                     std::construct_at(destination + position, value);
                 }
@@ -355,7 +355,7 @@ namespace hud::os::common{
         }
         template<typename type_t>
         static constexpr void set(type_t* destination, const usize size, const u8 value) noexcept requires(is_integral_v<type_t> ) {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 for (usize position = 0; position < size/sizeof(type_t); position++) {
                     std::construct_at(destination + position, value);
                 }
@@ -392,7 +392,7 @@ namespace hud::os::common{
         }
         template<typename type_t>
         static constexpr void set_zero(type_t* destination, const usize size) noexcept requires(is_pointer_v<type_t>) {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 for (usize position = 0; position < size / sizeof(type_t); position++) {
                     std::construct_at(destination + position, nullptr);
                 }
@@ -422,12 +422,12 @@ namespace hud::os::common{
             return memmove(destination, source, size);
         }
         static constexpr void* move(u8* destination, const u8* source, const usize size) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 u8* dest = destination;
                 if (size == 0) {
                     return destination;
                 }
-                u8* tmp = memory::allocate_array<u8>(size);
+                u8* tmp = hud::os::common::memory::allocate_array<u8>(size);
                 // copy src to tmp
                 for (usize position = 0; position < size; position++) {
                     std::construct_at(tmp + position, *source);
@@ -440,7 +440,7 @@ namespace hud::os::common{
                     destination++;
                 }
 
-                memory::free_array(tmp, size);
+                hud::os::common::memory::free_array(tmp, size);
                 return dest;
             }
             else {
@@ -464,7 +464,7 @@ namespace hud::os::common{
         }
         [[nodiscard]]
         static constexpr i32 compare(const u8* buffer1, const u8* buffer2, const usize size) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 const u8* lhs = buffer1;
                 const u8* rhs = buffer2;
                 for (usize position = 0; position < size; position++) {

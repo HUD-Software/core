@@ -8,11 +8,11 @@ namespace hud {
     /** Checks whether type_t is a lvalue reference type. */
     template <typename type_t>
     struct is_lvalue_reference
-        : false_type {
+        : hud::false_type {
     };
     template <typename type_t>
     struct is_lvalue_reference<type_t&>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_lvalue_reference<type_t>::value. */

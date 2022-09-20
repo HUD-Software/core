@@ -554,7 +554,7 @@ namespace hud::os::common{
         */
         [[nodiscard]]
         static constexpr usize length(const ansichar* string) noexcept {
-            if (is_constant_evaluated()) {
+            if (hud::is_constant_evaluated()) {
                 usize string_length = 0;
                 while (*string != '\0') {
                     string_length++;

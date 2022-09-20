@@ -58,11 +58,11 @@ namespace hud {
         * pair do not accept throwable default constructible components.
         */
         constexpr explicit(!(is_implicitly_default_constructible_v<type1_t>&& is_implicitly_default_constructible_v<type2_t>))
-            pair() noexcept requires(is_default_constructible_v<type1_t>&& is_default_constructible_v<type2_t>)
+            pair() noexcept requires(hud::is_default_constructible_v<type1_t>&& hud::is_default_constructible_v<type2_t>)
             : first()
             , second() {
-            static_assert(is_nothrow_default_constructible_v<type1_t>, "type1_t default constructor is throwable. pair is not designed to allow throwable default constructible components");
-            static_assert(is_nothrow_default_constructible_v<type2_t>, "type2_t default constructor is throwable. pair is not designed to allow throwable default constructible components");
+            static_assert(hud::is_nothrow_default_constructible_v<type1_t>, "type1_t default constructor is throwable. pair is not designed to allow throwable default constructible components");
+            static_assert(hud::is_nothrow_default_constructible_v<type2_t>, "type2_t default constructor is throwable. pair is not designed to allow throwable default constructible components");
         }
 
 
@@ -75,11 +75,11 @@ namespace hud {
         * @param s An object of the same type of second, or some other type implicitly convertible to it.
         */
         constexpr explicit(!(is_convertible_v<const type1_t&, type1_t>&& is_convertible_v<const type2_t&, type2_t>))
-            pair(const type1_t& f, const type2_t& s) noexcept requires(is_copy_constructible_v<type1_t>&& is_copy_constructible_v<type2_t>)
+            pair(const type1_t& f, const type2_t& s) noexcept requires(hud::is_copy_constructible_v<type1_t>&& is_copy_constructible_v<type2_t>)
             : first(f)
             , second(s) {
-            static_assert(is_nothrow_copy_constructible_v<type1_t>, "type1_t(const type1_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
-            static_assert(is_nothrow_copy_constructible_v<type2_t>, "type2_t(const type2_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<type1_t>, "type1_t(const type1_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<type2_t>, "type2_t(const type2_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
         }
 
 
@@ -95,11 +95,11 @@ namespace hud {
         */
         template<typename u_type_t = type1_t, typename v_type_t = type2_t>
         constexpr explicit(!(is_convertible_v<u_type_t&&, type1_t>&& is_convertible_v<v_type_t&&, type2_t>))
-            pair(u_type_t&& f, v_type_t&& s) noexcept requires(is_move_constructible_v<type1_t, u_type_t>&& is_move_constructible_v<type2_t, v_type_t>)
+            pair(u_type_t&& f, v_type_t&& s) noexcept requires(hud::is_move_constructible_v<type1_t, u_type_t>&& hud::is_move_constructible_v<type2_t, v_type_t>)
             : first(hud::forward<u_type_t>(f))
             , second(hud::forward<v_type_t>(s)) {
-            static_assert(is_nothrow_move_constructible_v<type1_t, u_type_t>, "type1_t(u_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
-            static_assert(is_nothrow_move_constructible_v<type2_t, v_type_t>, "type2_t(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<type1_t, u_type_t>, "type1_t(u_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<type2_t, v_type_t>, "type2_t(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
         }
 
         /**
@@ -123,11 +123,11 @@ namespace hud {
         */
         template<typename u_type1_t, typename u_type2_t>
         constexpr explicit(!(is_convertible_v<const u_type1_t&, type1_t>&& is_convertible_v<const u_type2_t&, type2_t>))
-            pair(const pair<u_type1_t, u_type2_t>& other) noexcept requires(is_copy_constructible_v<type1_t, u_type1_t>&& is_copy_constructible_v<type2_t, u_type2_t>)
+            pair(const pair<u_type1_t, u_type2_t>& other) noexcept requires(hud::is_copy_constructible_v<type1_t, u_type1_t>&& is_copy_constructible_v<type2_t, u_type2_t>)
             : first(other.first)
             , second(other.second) {
-            static_assert(is_nothrow_copy_constructible_v<type1_t, u_type1_t>, "type1_t(const u_type1_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
-            static_assert(is_nothrow_copy_constructible_v<type2_t, u_type2_t>, "type2_t(const u_type2_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<type1_t, u_type1_t>, "type1_t(const u_type1_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<type2_t, u_type2_t>, "type2_t(const u_type2_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
         }
 
         /**
@@ -152,11 +152,11 @@ namespace hud {
         */
         template<typename u_type1_t, typename u_type2_t>
         constexpr explicit(!(is_convertible_v<u_type1_t, type1_t>&& is_convertible_v<u_type2_t,type2_t>))
-            pair(pair<u_type1_t, u_type2_t>&& other) noexcept requires(is_move_constructible_v<type1_t, u_type1_t>&& is_move_constructible_v<type2_t, u_type2_t>)
+            pair(pair<u_type1_t, u_type2_t>&& other) noexcept requires(hud::is_move_constructible_v<type1_t, u_type1_t>&& hud::is_move_constructible_v<type2_t, u_type2_t>)
             : first(hud::forward<u_type1_t>(other.first))
             , second(hud::forward<u_type2_t>(other.second)) {
-            static_assert(is_nothrow_move_constructible_v<type1_t, u_type1_t>, "type1_t(u_type1_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
-            static_assert(is_nothrow_move_constructible_v<type2_t, u_type2_t>, "type2_t(u_type2_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<type1_t, u_type1_t>, "type1_t(u_type1_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<type2_t, u_type2_t>, "type2_t(u_type2_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
         }
 
         /**
@@ -166,9 +166,9 @@ namespace hud {
         * @param other Another pair object.
         * @return *this
         */
-        constexpr pair& operator=(const pair& other) noexcept requires(is_copy_assignable_v<type1_t>&& is_copy_assignable_v<type2_t>) {
-            static_assert(IsNothrowCopyAssignableV<type1_t>, "type1_t& type1_t::operator=(const type1_t&) is throwable. pair is not designed to allow throwable copy assignable components");
-            static_assert(IsNothrowCopyAssignableV<type2_t>, "type2_t& type2_t::operator=(const type2_t&) is throwable. pair is not designed to allow throwable copy assignable components");
+        constexpr pair& operator=(const pair& other) noexcept requires(hud::is_copy_assignable_v<type1_t>&& hud::is_copy_assignable_v<type2_t>) {
+            static_assert(hud::is_nothrow_copy_assignable_v<type1_t>, "type1_t& type1_t::operator=(const type1_t&) is throwable. pair is not designed to allow throwable copy assignable components");
+            static_assert(hud::is_nothrow_copy_assignable_v<type2_t>, "type2_t& type2_t::operator=(const type2_t&) is throwable. pair is not designed to allow throwable copy assignable components");
             first = other.first;
             second = other.second;
             return *this;
@@ -184,9 +184,9 @@ namespace hud {
         * @return *this
         */
         template<typename u_type_t, typename v_type_t>
-        constexpr pair& operator=(const pair<u_type_t, v_type_t>& other) noexcept requires(is_assignable_v<type1_t&, const u_type_t&>&& is_copy_assignable_v<type2_t, v_type_t>) {
-            static_assert(IsNothrowCopyAssignableV<type1_t, u_type_t>, "type1_t& type1_t::operator=(const u_type_t&) is throwable. pair is not designed to allow throwable copy assignable components");
-            static_assert(IsNothrowCopyAssignableV<type2_t, v_type_t>, "type2_t& type2_t::operator=(const v_type_t&) is throwable. pair is not designed to allow throwable copy assignable components");
+        constexpr pair& operator=(const pair<u_type_t, v_type_t>& other) noexcept requires(is_assignable_v<type1_t&, const u_type_t&>&& hud::is_copy_assignable_v<type2_t, v_type_t>) {
+            static_assert(hud::is_nothrow_copy_assignable_v<type1_t, u_type_t>, "type1_t& type1_t::operator=(const u_type_t&) is throwable. pair is not designed to allow throwable copy assignable components");
+            static_assert(hud::is_nothrow_copy_assignable_v<type2_t, v_type_t>, "type2_t& type2_t::operator=(const v_type_t&) is throwable. pair is not designed to allow throwable copy assignable components");
             first = other.first;
             second = other.second;
             return *this;
@@ -199,9 +199,9 @@ namespace hud {
         * @param other Another pair object.
         * @return *this
         */
-        constexpr pair& operator=(pair&& other) noexcept requires(is_move_assignable_v<type1_t>&& is_move_assignable_v<type2_t>) {
-            static_assert(is_nothrow_move_assignable_v<type1_t>, "type1_t& type1_t::operator=(type1_t&&) is throwable. pair is not designed to allow throwable move assignable components");
-            static_assert(is_nothrow_move_assignable_v<type2_t>, "type2_t& type2_t::operator=(type2_t&&) is throwable. pair is not designed to allow throwable move assignable components");
+        constexpr pair& operator=(pair&& other) noexcept requires(hud::is_move_assignable_v<type1_t>&& is_move_assignable_v<type2_t>) {
+            static_assert(hud::is_nothrow_move_assignable_v<type1_t>, "type1_t& type1_t::operator=(type1_t&&) is throwable. pair is not designed to allow throwable move assignable components");
+            static_assert(hud::is_nothrow_move_assignable_v<type2_t>, "type2_t& type2_t::operator=(type2_t&&) is throwable. pair is not designed to allow throwable move assignable components");
             first = hud::forward<type1_t>(other.first);
             second = hud::forward<type2_t>(other.second);
             return *this;

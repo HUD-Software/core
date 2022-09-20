@@ -8,11 +8,11 @@ namespace hud {
     /** Checks whether type_t is a volatile-qualified type. */
     template<typename type_t>
     struct is_volatile
-        : false_type {
+        : hud::false_type {
     };
     template<typename type_t>
     struct is_volatile<volatile type_t>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_volatile<type_t>::value. */

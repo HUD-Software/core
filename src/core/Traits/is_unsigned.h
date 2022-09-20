@@ -15,7 +15,7 @@ namespace hud {
     */
     template<typename type_t, bool = is_integral_v<type_t>>
     struct is_unsigned
-        : false_type {
+        : hud::false_type {
     };
     template<typename type_t>
     struct is_unsigned<type_t, true>

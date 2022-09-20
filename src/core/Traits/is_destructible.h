@@ -33,11 +33,11 @@ namespace hud {
     namespace details {
         template<typename type_t, typename = void>
         struct is_destructor_well_formed
-            : false_type {
+            : hud::false_type {
         };
         template<typename type_t>
         struct is_destructor_well_formed<type_t, void_t<decltype(hud::declval<type_t&>().~type_t())>>
-            : true_type {
+            : hud::true_type {
         };
     }
 
@@ -55,10 +55,10 @@ namespace hud {
         is_unbounded_array<type_t>,
         is_function<type_t>
         >,
-        false_type, // false if void, unbounded array, or function ignoring cv-qualifiers
+        hud::false_type, // false if void, unbounded array, or function ignoring cv-qualifiers
         conditional_t<
         or_v<is_reference<type_t>, is_scalar<type_t>>,
-        true_type, // true if reference or scalar
+        hud::true_type, // true if reference or scalar
         details::is_destructor_well_formed<remove_all_extents_t<type_t>> // else check if calling the constructor is well-formed
         >> {
     };

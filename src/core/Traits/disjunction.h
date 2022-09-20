@@ -12,7 +12,7 @@ namespace hud {
 
     template<>
     struct disjunction<> 
-        : public false_type {
+        : public hud::false_type {
         // Empty is false
     };
 
@@ -30,11 +30,11 @@ namespace hud {
 
     /** Equivalent of disjunction<type_t...>::value */
     template<typename... type_t>
-    inline constexpr bool or_v = disjunction<type_t...>::value;
+    inline constexpr bool disjunction_v = disjunction<type_t...>::value;
 
     /** Equivalent of disjunction<type_t...>::type */
     template<typename... type_t>
-    using or_t = typename disjunction<type_t...>::type;
+    using disjunction_t = typename disjunction<type_t...>::type;
 
 } // namespace hud
 

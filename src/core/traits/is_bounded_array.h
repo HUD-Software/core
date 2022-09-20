@@ -8,11 +8,11 @@ namespace hud {
     /** Checks whether type_t is a bounded array type. */
     template<typename type_t>
     struct is_bounded_array
-        : false_type {
+        : hud::false_type {
     };
     template<typename type_t, usize extent>
     struct is_bounded_array<type_t[extent]>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_bounded_array<type_t>::value. */

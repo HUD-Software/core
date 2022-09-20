@@ -8,12 +8,12 @@ namespace hud {
     /** Checks whether type_t is a const-qualified type. */
     template<typename type_t>
     struct is_const 
-        : false_type {
+        : hud::false_type {
     };
 
     template<typename type_t>
     struct is_const<type_t const>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_const<type_t>::value. */

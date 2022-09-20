@@ -51,7 +51,7 @@ namespace hud {
         struct tuple_leaf {
 
             /** Default constructor. Value-initialize content. */
-            HD_FORCEINLINE constexpr tuple_leaf(tag_init) noexcept
+            HD_FORCEINLINE constexpr tuple_leaf(hud::tag_init) noexcept
                 : content() {
                 static_assert(is_nothrow_default_constructible_v<type_t>, "type_t() default constructor is throwable. tuple is not designed to allow throwable default constructible components");
             }
@@ -77,7 +77,7 @@ namespace hud {
             */
             template<typename UType>
             HD_FORCEINLINE constexpr tuple_leaf(UType&& arg) noexcept
-                : content(forward<UType>(arg)) {
+                : content(hud::forward<UType>(arg)) {
                 static_assert(is_nothrow_move_constructible_v<type_t, UType>, "type_t(UType&&) move constructor is throwable. tuple is not designed to allow throwable move constructible components");
             }
 
@@ -103,22 +103,22 @@ namespace hud {
         /**
         * tuple_impl is the implementation of the tuple with an sequence of index and a list of types
         * indices is used to access tuple_leaf that contains the type_t where types_t[indices]... relation is respected.
-        * @tparam index_seq_t index_sequence of types_t...
+        * @tparam index_seq_t hud::index_sequence of types_t...
         * @tparam types_t... List of types_t of the tuple
         */
         template<typename index_seq_t, typename... types_t>
         struct tuple_impl;
 
         template<usize... indices, typename... types_t>
-        struct tuple_impl<index_sequence<indices...>, types_t...>
+        struct tuple_impl<hud::index_sequence<indices...>, types_t...>
             : tuple_leaf<indices, types_t>... {
 
             /**
             * Default constructor that calls all tuple leafs default constructors.
             * Value-initializes all elements, if any.
             */
-            HD_FORCEINLINE constexpr tuple_impl(tag_init) noexcept
-                : tuple_leaf<indices, types_t>(taginit)... {
+            HD_FORCEINLINE constexpr tuple_impl(hud::tag_init) noexcept
+                : tuple_leaf<indices, types_t>(hud::tag_init)... {
             }
 
             /**
@@ -143,7 +143,7 @@ namespace hud {
             */
             template<typename... u_types_t>
             HD_FORCEINLINE constexpr tuple_impl(u_types_t&&... args) noexcept
-                : tuple_leaf<indices, types_t>(forward<u_types_t>(args))...{
+                : tuple_leaf<indices, types_t>(hud::forward<u_types_t>(args))...{
             }
 
             /** Copy constructor */
@@ -160,7 +160,7 @@ namespace hud {
         */
         template<typename pair_t, typename tuple_t>
         struct IsPairExplictlyCopyConstructibleToTuple
-            : false_type {
+            : hud::false_type {
         };
         template<typename pair_type0_t, typename pair_type1_t, typename tuple_type0_t, typename tuple_type1_t >
         struct IsPairExplictlyCopyConstructibleToTuple<hud::pair<pair_type0_t, pair_type1_t>, hud::tuple<tuple_type0_t, tuple_type1_t>>
@@ -177,7 +177,7 @@ namespace hud {
         */
         template<typename pair_t, typename tuple_t>
         struct is_pair_explictly_move_constructible_to_tuple
-            : false_type {
+            : hud::false_type {
         };
         template<typename pair_type0_t, typename pair_type1_t, typename tuple_type0_t, typename tuple_type1_t >
         struct is_pair_explictly_move_constructible_to_tuple<hud::pair<pair_type0_t, pair_type1_t>, hud::tuple<tuple_type0_t, tuple_type1_t>>
@@ -205,7 +205,7 @@ namespace hud {
                 static_assert(is_same_size_v<tuple<types_t...>, tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
                 if constexpr (count > 0u) {
                     constexpr const usize idx = tuple_size_v< tuple<types_t...>>-count;
-                    get<idx>(to) = get<idx>(from);
+                    hud::get<idx>(to) = hud::get<idx>(from);
                     tuple_assign<count - 1u>()(to, from);
                 }
             }
@@ -222,8 +222,8 @@ namespace hud {
                 static_assert(is_same_size_v<tuple<types_t...>, tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
                 if constexpr (count > 0) {
                     constexpr const usize idx = tuple_size_v< tuple<types_t...>>-count;
-                    get<idx>(to) = get<idx>(move(from));
-                    tuple_assign<count - 1u>()(to, move(from));
+                    hud::get<idx>(to) = hud::get<idx>(hud::move(from));
+                    tuple_assign<count - 1u>()(to, hud::move(from));
                 }
             }
         };
@@ -233,12 +233,12 @@ namespace hud {
         struct swap_element {
             template <typename>
             static constexpr bool EvaluateIfInstanciate = false;
-            static_assert(EvaluateIfInstanciate<false_type>, "type_t is not swappable");
+            static_assert(EvaluateIfInstanciate<hud::false_type>, "type_t is not swappable");
         };
         template<usize type_index, typename... types_t, typename... u_types_t >
         struct swap_element < type_index, tuple<types_t...>, tuple<u_types_t...>, true> {
             constexpr void operator()(tuple<types_t...>& first, tuple<u_types_t...>& second) noexcept {
-                hud::swap(get<type_index>(first), get<type_index>(second));
+                hud::swap(hud::get<type_index>(first), hud::get<type_index>(second));
             }
         };
 
@@ -264,7 +264,7 @@ namespace hud {
                     constexpr const usize index_to_swap = tuple_size_v< tuple<types_t...>>-count;
                     swap_element<index_to_swap, tuple<types_t...>, tuple<u_types_t...>>()(first, second);
 
-                    //hud::swap(get<index_to_swap>(first), get<index_to_swap>(second));
+                    //hud::swap(hud::get<index_to_swap>(first), hud::get<index_to_swap>(second));
                     tuple_swap<count - 1u>()(first, second);
                 }
             }
@@ -289,7 +289,7 @@ namespace hud {
                 static_assert(is_same_size_v<tuple<types_t...>, tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
                 if constexpr (count > 0u) {
                     constexpr const usize index_to_swap = tuple_size_v< tuple<types_t...>>-count;
-                    return get<index_to_swap>(first) == get<index_to_swap>(second) && tuple_equals<count - 1u>()(first, second);
+                    return hud::get<index_to_swap>(first) == hud::get<index_to_swap>(second) && tuple_equals<count - 1u>()(first, second);
                 }
                 else {
                     return true;
@@ -316,10 +316,10 @@ namespace hud {
                 static_assert(hud::is_same_size_v<tuple<types_t...>, tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
                 if constexpr (count > 0u) {
                     constexpr const usize index_to_swap = hud::tuple_size_v< tuple<types_t...>>-count;
-                    if (get<index_to_swap>(first) < get<index_to_swap>(second)) {
+                    if (hud::get<index_to_swap>(first) < hud::get<index_to_swap>(second)) {
                         return true;
                     }
-                    if (get<index_to_swap>(second) < get<index_to_swap>(first)) {
+                    if (hud::get<index_to_swap>(second) < hud::get<index_to_swap>(first)) {
                         return false;
                     }
                     return tuple_less<count - 1u>()(first, second);
@@ -353,29 +353,29 @@ namespace hud {
                 using return_type = typename cat_tuples_arg<tuples_t...>::tuple_type;
 
                 /**
-                * Create an index_sequence of the tuples_t... list element index.
+                * Create an hud::index_sequence of the tuples_t... list element index.
                 * For exemple:
                 *     If tuples_t... is tuple<u32, f32>, tuple<char, wchar, char16>, tuple<u64, f64>
                 *     tuple_type is tuple<u32, f32, char, wchar, char16, u64 f64>
-                *     element_index_seq is index_sequence< 0,1, 0,1,2, 0,1>
+                *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
                 */
                 template< typename element_indices_seq, typename...>
                 struct cat_element_index {
                     using element_index_seq = element_indices_seq;
                 };
                 template<usize... element_indices, typename... args_t, typename... rest_t>
-                struct cat_element_index< index_sequence<element_indices...>, tuple<args_t...>, rest_t...> {
-                    using element_index_seq = typename cat_element_index<cat_integer_sequence_t< index_sequence<element_indices...>, make_index_sequence_for<args_t...>>, rest_t...>::element_index_seq;
+                struct cat_element_index< hud::index_sequence<element_indices...>, tuple<args_t...>, rest_t...> {
+                    using element_index_seq = typename cat_element_index<cat_integer_sequence_t< hud::index_sequence<element_indices...>, make_index_sequence_for<args_t...>>, rest_t...>::element_index_seq;
                 };
                 using element_index_seq = typename cat_element_index<make_index_sequence_for<>, tuples_t...>::element_index_seq;
 
                 /**
-                * Create a index_sequence of the tuples_t... list index mask to match the element index index_sequence.
+                * Create a hud::index_sequence of the tuples_t... list index mask to match the element index hud::index_sequence.
                 * For exemple:
                 *     If tuples_t... is tuple<u32, f32>, tuple<char, wchar, char16>, tuple<u64, f64>
                 *     tuple_type is tuple<u32, f32, char, wchar, char16, u64 f64>
-                *     element_index_seq is index_sequence< 0,1, 0,1,2, 0,1>
-                *     mask_index_seq is index_sequence< 0,0, 1,1,1, 2,2>
+                *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
+                *     mask_index_seq is hud::index_sequence< 0,0, 1,1,1, 2,2>
                 */
                 template<usize mask_index, typename type_t>
                 static constexpr usize repeat_mask_index = mask_index;
@@ -386,8 +386,8 @@ namespace hud {
                     static_assert(sizeof...(rest_t) == 0, "Unsupported tuple_cat arguments.");
                 };
                 template<usize tuple_index, usize... mask_indices, typename... args_t, typename... rest_t>
-                struct cat_mask_index<tuple_index, index_sequence<mask_indices...>, tuple<args_t...>, rest_t... > {
-                    using mask_index_seq = typename cat_mask_index< tuple_index + 1u, cat_integer_sequence_t< index_sequence<mask_indices...>, index_sequence<repeat_mask_index<tuple_index, args_t>...>>, rest_t... >::mask_index_seq;
+                struct cat_mask_index<tuple_index, hud::index_sequence<mask_indices...>, tuple<args_t...>, rest_t... > {
+                    using mask_index_seq = typename cat_mask_index< tuple_index + 1u, cat_integer_sequence_t< hud::index_sequence<mask_indices...>, hud::index_sequence<repeat_mask_index<tuple_index, args_t>...>>, rest_t... >::mask_index_seq;
                 };
                 using mask_index_seq = typename cat_mask_index<0, make_index_sequence_for<>, tuples_t...>::mask_index_seq;
 
@@ -395,23 +395,23 @@ namespace hud {
                 * Constructs a tuple that is a concatenation of all tuples in the given "tuple of tulpes" in the same order.
                 * @tparam tuple The tuple type of tuples to concatenate
                 * @tparam element_indices List element index
-                * @tparam mask_indices List index mask to match the element index index_sequence
-                * @param index_sequence of element_indices
-                * @param index_sequence of mask_indices
+                * @tparam mask_indices List index mask to match the element index hud::index_sequence
+                * @param hud::index_sequence of element_indices
+                * @param hud::index_sequence of mask_indices
                 * @param tulpe The tuple of tulpes to concatenate
                 * @return The concatenated tuple
                 */
-                template<typename tuple, usize... element_indices, usize... mask_indices>
-                static HD_FORCEINLINE constexpr return_type concatenate(index_sequence<element_indices...>, index_sequence<mask_indices...>, tuple&& tuple) noexcept {
-                    return return_type(get<element_indices>(get<mask_indices>(forward<tuple>(tuple)))...);
+                template<typename tuple_t, usize... element_indices, usize... mask_indices>
+                static HD_FORCEINLINE constexpr return_type concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, tuple_t&& tuple) noexcept {
+                    return return_type(hud::get<element_indices>(hud::hud::get<mask_indices>(hud::forward<tuple>(tuple)))...);
                 }
             };
 
             template<>
             struct tuples_cat_impl<> {
                 using return_type = tuple<>;
-                using element_index_seq = index_sequence<>;
-                using mask_index_seq = index_sequence<>;
+                using element_index_seq = hud::index_sequence<>;
+                using mask_index_seq = hud::index_sequence<>;
 
                 /**
                 * Constructs an empty tuple
@@ -419,7 +419,7 @@ namespace hud {
                 * @return The concatenated tuple
                 */
                 template<typename EmptyTuple, usize... element_indices, usize... mask_indices>
-                static HD_FORCEINLINE constexpr EmptyTuple concatenate(index_sequence<element_indices...>, index_sequence<mask_indices...>, EmptyTuple&&) noexcept {
+                static HD_FORCEINLINE constexpr EmptyTuple concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, EmptyTuple&&) noexcept {
                     return EmptyTuple();
                 }
             };
@@ -464,8 +464,8 @@ namespace hud {
         * tuple do not accept throwable default constructible components
         */
         explicit(or_v<is_explicitly_default_constructible<types_t>...>)
-            constexpr tuple(tag_init) noexcept requires(conjunction_v<is_default_constructible<types_t>...>)
-            : super_type(taginit) {
+            constexpr tuple(hud::tag_init) noexcept requires(conjunction_v<is_default_constructible<types_t>...>)
+            : super_type(hud::tag_init) {
         }
 
         /**
@@ -499,7 +499,7 @@ namespace hud {
         template<typename... u_types_t>
         explicit(or_v<is_explicitly_move_constructible<types_t, u_types_t>...>)
             constexpr tuple(u_types_t&&... args) noexcept
-            : super_type(forward<u_types_t>(args)...) {
+            : super_type(hud::forward<u_types_t>(args)...) {
         }
 
 
@@ -528,7 +528,7 @@ namespace hud {
         template<typename first_type, typename second_type>
         explicit(details::is_pair_explictly_move_constructible_to_tuple_v<pair<first_type, second_type>, tuple>)
             constexpr tuple(std::pair< first_type, second_type >&& pair) noexcept
-            : tuple(move(pair.first), move(pair.second)) {
+            : tuple(hud::move(pair.first), hud::move(pair.second)) {
         }
 
         /**
@@ -574,7 +574,7 @@ namespace hud {
         template<typename... u_types_t>
         explicit(or_v<is_explicitly_move_constructible<types_t, u_types_t>...>)
             constexpr tuple(tuple<u_types_t...>&& other) noexcept
-            : tuple(forward<tuple<u_types_t...>>(other), make_index_sequence_for<u_types_t...>{}) {
+            : tuple(hud::forward<tuple<u_types_t...>>(other), make_index_sequence_for<u_types_t...>{}) {
         }
 
 
@@ -611,7 +611,7 @@ namespace hud {
         * @return *this
         */
         constexpr tuple& operator=(tuple&& other) noexcept requires(conjunction_v<is_move_assignable<types_t>...>) {
-            details::tuple_assign<sizeof...(types_t)>()(*this, move(other));
+            details::tuple_assign<sizeof...(types_t)>()(*this, hud::move(other));
             return *this;
         }
 
@@ -624,7 +624,7 @@ namespace hud {
         */
         template<typename... u_types_t>
         constexpr tuple& operator=(tuple<u_types_t...>&& other) noexcept requires(conjunction_v<is_move_assignable<types_t, u_types_t>...>) {
-            details::tuple_assign<sizeof...(types_t)>()(*this, move(other));
+            details::tuple_assign<sizeof...(types_t)>()(*this, hud::move(other));
             return *this;
         }
 
@@ -646,11 +646,11 @@ namespace hud {
         * @tparam tuple_t The type of tuple to copy
         * @tparam indices... The tuple element indices
         * @param tuple The tuple to copy
-        * @param indices... The index_sequence of indices
+        * @param indices... The hud::index_sequence of indices
         */
         template<typename tuple_t, usize... indices>
-        HD_FORCEINLINE constexpr explicit tuple(tuple_t&& tuple, index_sequence<indices...>) noexcept
-            : tuple(get<indices>(forward<tuple_t>(tuple))...) {
+        HD_FORCEINLINE constexpr explicit tuple(tuple_t&& tuple, hud::index_sequence<indices...>) noexcept
+            : tuple(hud::get<indices>(hud::forward<tuple_t>(tuple))...) {
         }
     };
 
@@ -862,7 +862,7 @@ namespace hud {
     template< typename... types_t >
     [[nodiscard]]
     HD_FORCEINLINE constexpr tuple<types_t...> make_tuple(types_t&&... args) noexcept {
-        return tuple<types_t...>(forward<types_t>(args)...);
+        return tuple<types_t...>(hud::forward<types_t>(args)...);
     }
 
     /**
@@ -871,7 +871,7 @@ namespace hud {
     */
     template<typename... types_t>
     HD_FORCEINLINE constexpr tuple<types_t&&...> forward_as_tuple(types_t&&... args) noexcept {
-        return tuple<types_t&&...>(forward<types_t>(args)...);
+        return tuple<types_t&&...>(hud::forward<types_t>(args)...);
     }
 
     /**
@@ -883,7 +883,7 @@ namespace hud {
     template<typename... tuples_t>
     HD_FORCEINLINE constexpr typename details::tuple_cat<tuples_t...>::return_type tuple_cat(tuples_t&&... args) noexcept {
         using tuple_cat_result = details::tuple_cat<tuples_t...>;
-        return tuple_cat_result::concatenate(forward_as_tuple(forward<tuples_t>(args)...));
+        return tuple_cat_result::concatenate(forward_as_tuple(hud::forward<tuples_t>(args)...));
     }
 
 } // namespace hud

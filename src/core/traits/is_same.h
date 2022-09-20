@@ -12,11 +12,11 @@ namespace hud {
     */
     template<typename type_t, typename u_type_t>
     struct is_same
-        : false_type {
+        : hud::false_type {
     };
     template<typename type_t>
     struct is_same<type_t, type_t>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_same<type_t,u_type_t>::value. */

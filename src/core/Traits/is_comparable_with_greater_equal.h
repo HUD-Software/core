@@ -12,12 +12,12 @@ namespace hud {
     /** Checks whether lhs_t type is comparable with rhs_t type with operator>=. */
     template<typename lhs_t, typename rhs_t, typename = void>
     struct is_comparable_with_greater_equal
-        : false_type {
+        : hud::false_type {
     };
 
     template<typename lhs_t, typename rhs_t>
     struct is_comparable_with_greater_equal<lhs_t, rhs_t, void_t<decltype(hud::declval<add_const_t<add_lvalue_reference_t<lhs_t>>>() >= hud::declval<add_const_t<add_lvalue_reference_t<rhs_t>>>())>>
-        : true_type {
+        : hud::true_type {
     };
 
     /** Equivalent of is_comparable_with_greater_equal<lhs_t,rhs_t>::value. */

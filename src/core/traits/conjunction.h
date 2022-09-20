@@ -12,7 +12,7 @@ namespace hud {
 
     template<>
     struct conjunction<>
-        : true_type {
+        : hud::true_type {
         // Empty is true
     };
 

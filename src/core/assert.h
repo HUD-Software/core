@@ -12,7 +12,7 @@ namespace hud {
         * @param condition The condition to assert
         */
         static constexpr void check([[maybe_unused]] const bool condition) noexcept {
-            if (compilation::is_assertion_enabled() && !is_constant_evaluated()) {
+            if (compilation::is_assertion_enabled() && !hud::is_constant_evaluated()) {
                 debugger::check(condition);
             }
         }

@@ -135,7 +135,7 @@ namespace hud {
         * Destructor base of the optional. If the inner type is trivially destructible, the optional is trivially destructible.
         * @tparam type_t Inner type
         */
-        template< typename type_t, bool = is_trivially_destructible_v<type_t>>
+        template< typename type_t, bool = hud::is_trivially_destructible_v<type_t>>
         struct optional_destructible_base
             : optional_storage<optional_destructible_base<type_t>, type_t>
         {
@@ -158,10 +158,10 @@ namespace hud {
                 , some(true) {
             }
 
-            /** Aligned value in union that contains the value or nothing (Empty struct)*/
-            struct Empty {};
+            /** Aligned value in union that contains the value or nothing (empty struct)*/
+            struct empty {};
             union alignas(alignof(type_t)) {
-                Empty none_value;
+                empty none_value;
                 type_t some_value;
             };
 
@@ -203,10 +203,10 @@ namespace hud {
                 }
             }
 
-            /** Aligned value in union that contains the value or nothing (Empty struct)*/
-            struct Empty {};
+            /** Aligned value in union that contains the value or nothing (empty struct)*/
+            struct empty {};
             union alignas(alignof(type_t)) {
-                Empty none_value;
+                empty none_value;
                 type_t some_value;
             };
 
@@ -278,8 +278,8 @@ namespace hud {
         * @tparam type_t Inner type
         */
         template<typename type_t,
-            bool IsCopyAssignTrivial = is_trivially_copy_constructible_v<type_t> && is_trivially_copy_assignable_v<type_t> && is_trivially_destructible_v<type_t>,
-            bool IsCopyAssignDeleted = is_copy_constructible_v<type_t>&& is_copy_assignable_v<type_t>>
+            bool IsCopyAssignTrivial = is_trivially_copy_constructible_v<type_t> && is_trivially_copy_assignable_v<type_t> && hud::is_trivially_destructible_v<type_t>,
+            bool IsCopyAssignDeleted = is_copy_constructible_v<type_t>&& hud::is_copy_assignable_v<type_t>>
         struct optional_copy_assign_base
             : optional_move_base<type_t> {
             using super_type = optional_move_base<type_t>;
@@ -317,8 +317,8 @@ namespace hud {
         * @tparam type_t Inner type
         */
         template<typename type_t,
-            bool IsMoveAssignTrivial = is_trivially_move_assignable_v<type_t> && is_trivially_move_constructible_v<type_t> && is_trivially_destructible_v<type_t>,
-            bool IsMoveAssignDeleted = is_move_constructible_v<type_t>&& is_move_assignable_v<type_t>>
+            bool IsMoveAssignTrivial = is_trivially_move_assignable_v<type_t> && is_trivially_move_constructible_v<type_t> && hud::is_trivially_destructible_v<type_t>,
+            bool IsMoveAssignDeleted = hud::is_move_constructible_v<type_t>&& is_move_assignable_v<type_t>>
         struct optional_move_assign_base
             : optional_copy_assign_base<type_t> {
             using super_type = optional_copy_assign_base<type_t>;
@@ -489,7 +489,7 @@ namespace hud {
         */
         template<typename u_type_t>
         constexpr optional& operator=(const optional<u_type_t>&other) noexcept
-            requires((is_copy_constructible_v<type_t, u_type_t> && is_copy_assignable_v<type_t, u_type_t>) &&
+            requires((hud::is_copy_constructible_v<type_t, u_type_t> && hud::is_copy_assignable_v<type_t, u_type_t>) &&
                 !(
                     is_constructible_v<type_t, optional<u_type_t>&> ||
                     is_constructible_v<type_t, const optional<u_type_t>&> ||
@@ -562,13 +562,13 @@ namespace hud {
         /** Retrieves a const l-value reference to the contained value */
         [[nodiscard]]
         constexpr const type_t&& value() const&& noexcept {
-            return move(super_type::value());
+            return hud::move(super_type::value());
         }
 
         /** Retrieves a const l-value reference to the contained value */
         [[nodiscard]]
         constexpr type_t&& value() && noexcept {
-            return move(super_type::value());
+            return hud::move(super_type::value());
         }
 
         /** 
@@ -603,7 +603,7 @@ namespace hud {
         template<typename u_type_t>
         [[nodiscard]]
         constexpr type_t value_or(u_type_t&& default_value) const& noexcept {
-            static_assert(is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
+            static_assert(hud::is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
             static_assert(is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
             return has_value() ? value() : static_cast<type_t>(hud::forward<u_type_t>(default_value));
         }
@@ -612,9 +612,9 @@ namespace hud {
         template<typename u_type_t>
         [[nodiscard]]
         constexpr type_t value_or(u_type_t&& default_value) && noexcept {
-            static_assert(is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
+            static_assert(hud::is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
             static_assert(is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
-            return has_value() ? move(value()) : static_cast<type_t>(hud::forward<u_type_t>(default_value));
+            return has_value() ? hud::move(value()) : static_cast<type_t>(hud::forward<u_type_t>(default_value));
         }
 
         /** Retrieves a pointer to the contained value */
@@ -658,7 +658,7 @@ namespace hud {
                 // Move the optional that contains value to the optional that do not contains value then destroy the first one
                 optional& empty = this_has_value ? other : *this;
                 optional& non_empty = this_has_value ? *this : other;
-                empty.construct_in_place(move(non_empty.value()));
+                empty.construct_in_place(hud::move(non_empty.value()));
                 non_empty.reset();
             }
         }
@@ -688,7 +688,7 @@ namespace hud {
     */
     template<typename left_t, typename right_t>
     [[nodiscard]]
-    constexpr bool operator==(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(is_comparable_with_equal_v<left_t, right_t>) {
+    constexpr bool operator==(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(hud::is_comparable_with_equal_v<left_t, right_t>) {
         const bool left_has_value = left.has_value();
         return left_has_value == right.has_value() && (!left_has_value || left.value() == right.value());
     }
@@ -706,7 +706,7 @@ namespace hud {
     */
     template<typename left_t, typename right_t>
     [[nodiscard]]
-    constexpr bool operator!=(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(is_comparable_with_not_equal_v<left_t, right_t>) {
+    constexpr bool operator!=(const optional<left_t>& left, const optional<right_t>& right) noexcept requires(hud::is_comparable_with_not_equal_v<left_t, right_t>) {
         const bool left_has_value = left.has_value();
         return left_has_value != right.has_value() || (left_has_value && left.value() != right.value());
     }
@@ -797,7 +797,7 @@ namespace hud {
     */
     template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator==(const optional<type_t>& option, const value_t& value) noexcept requires(is_comparable_with_equal_v<type_t, value_t>) {
+    constexpr bool operator==(const optional<type_t>& option, const value_t& value) noexcept requires(hud::is_comparable_with_equal_v<type_t, value_t>) {
         return option.has_value() ? option.value() == value : false;
     }
 
@@ -814,7 +814,7 @@ namespace hud {
     */
     template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator==(const value_t& value, const optional<type_t>& option) noexcept requires(is_comparable_with_equal_v<value_t, type_t>) {
+    constexpr bool operator==(const value_t& value, const optional<type_t>& option) noexcept requires(hud::is_comparable_with_equal_v<value_t, type_t>) {
         return option.has_value() ? value == option.value() : false;
     }
 
@@ -833,7 +833,7 @@ namespace hud {
     */
     template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator!=(const optional<type_t>& option, const value_t& value) noexcept requires(is_comparable_with_not_equal_v<type_t, value_t>) {
+    constexpr bool operator!=(const optional<type_t>& option, const value_t& value) noexcept requires(hud::is_comparable_with_not_equal_v<type_t, value_t>) {
         return option.has_value() ? option.value() != value : true;
     }
 
@@ -851,7 +851,7 @@ namespace hud {
     */
     template<typename type_t, typename value_t>
     [[nodiscard]]
-    constexpr bool operator!=(const value_t& value, const optional<type_t>& option) noexcept requires(is_comparable_with_not_equal_v<value_t, type_t>) {
+    constexpr bool operator!=(const value_t& value, const optional<type_t>& option) noexcept requires(hud::is_comparable_with_not_equal_v<value_t, type_t>) {
         return option.has_value() ? value != option.value() : true;
     }
 
