@@ -16,7 +16,7 @@ namespace hud {
     };
 
     template<typename lhs_t, typename rhs_t>
-    struct is_comparable_with_greater_equal<lhs_t, rhs_t, void_t<decltype(hud::declval<add_const_t<add_lvalue_reference_t<lhs_t>>>() >= hud::declval<add_const_t<add_lvalue_reference_t<rhs_t>>>())>>
+    struct is_comparable_with_greater_equal<lhs_t, rhs_t, void_t<decltype(hud::declval<hud::add_const_t<hud::add_lvalue_reference_t<lhs_t>>>() >= hud::declval<hud::add_const_t<hud::add_lvalue_reference_t<rhs_t>>>())>>
         : hud::true_type {
     };
 

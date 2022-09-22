@@ -172,7 +172,7 @@ namespace hud::os::linux{
         * @return Number of character written, -1 if an error occurred.
         */
         static HD_FORCEINLINE i32 format_vargs(ansichar* buffer, u32 buffer_size, const ansichar* format, va_list args) noexcept {
-            return Common::cstring::format_vargs(buffer, buffer_size, format, args);
+            return hud::common::cstring::format_vargs(buffer, buffer_size, format, args);
         }
 
         /**

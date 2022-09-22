@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(Array, emplace_at_to_ref_can_default_construct_non_trivially_default_constructible_type)
+TEST(array, emplace_at_to_ref_can_default_construct_non_trivially_default_constructible_type)
 {
 
-    using type = hud::test::default_constructible_type;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::default_constructible_type;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_trivially_default_constructible_v<type>);
     static_assert(hud::is_default_constructible_v<type>);
 
@@ -300,11 +300,11 @@ TEST(Array, emplace_at_to_ref_can_default_construct_non_trivially_default_constr
     }
 }
 
-TEST(Array, emplace_at_to_ref_can_default_construct_trivially_default_constructible_type)
+TEST(array, emplace_at_to_ref_can_default_construct_trivially_default_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_trivially_default_constructible_v<type>);
 
     // Emplace at the end of empty array
@@ -544,11 +544,11 @@ TEST(Array, emplace_at_to_ref_can_default_construct_trivially_default_constructi
     }
 }
 
-TEST(Array, emplace_at_to_ref_can_construct_non_trivially_constructible_type)
+TEST(array, emplace_at_to_ref_can_construct_non_trivially_constructible_type)
 {
 
-    using type = hud::test::NonDefaultConstructibleType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::NonDefaultConstructibleType;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_trivially_constructible_v<type, usize>);
     static_assert(hud::is_constructible_v<type, usize>);
 
@@ -845,11 +845,11 @@ TEST(Array, emplace_at_to_ref_can_construct_non_trivially_constructible_type)
     }
 }
 
-TEST(Array, emplace_at_to_ref_can_construct_trivially_constructible_type)
+TEST(array, emplace_at_to_ref_can_construct_trivially_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_trivially_constructible_v<type, usize>);
 
     // Emplace at the end of empty array
@@ -1079,11 +1079,11 @@ TEST(Array, emplace_at_to_ref_can_construct_trivially_constructible_type)
     }
 }
 
-TEST(Array, emplace_at_to_ref_can_copy_construct_non_bitwise_copy_constructible_type)
+TEST(array, emplace_at_to_ref_can_copy_construct_non_bitwise_copy_constructible_type)
 {
 
-    using type = hud::test::NonBitwiseCopyConstructibleType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type, type>);
     static_assert(hud::is_copy_constructible_v<type, type>);
 
@@ -1373,11 +1373,11 @@ TEST(Array, emplace_at_to_ref_can_copy_construct_non_bitwise_copy_constructible_
     }
 }
 
-TEST(Array, emplace_at_to_ref_can_copy_construct_bitwise_copy_constructible_type)
+TEST(array, emplace_at_to_ref_can_copy_construct_bitwise_copy_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_bitwise_copy_constructible_v<type, type>);
 
     // Emplace at the end of empty array
@@ -1633,11 +1633,11 @@ TEST(Array, emplace_at_to_ref_can_copy_construct_bitwise_copy_constructible_type
     }
 }
 
-TEST(Array, emplace_at_to_ref_can_move_construct_non_bitwise_move_constructible_type)
+TEST(array, emplace_at_to_ref_can_move_construct_non_bitwise_move_constructible_type)
 {
 
-    using type = hud::test::NonBitwiseMoveConstructibleType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
     static_assert(hud::is_move_constructible_v<type>);
 
@@ -1959,11 +1959,11 @@ TEST(Array, emplace_at_to_ref_can_move_construct_non_bitwise_move_constructible_
     }
 }
 
-TEST(Array, emplace_at_to_ref_can_move_construct_bitwise_move_constructible_type)
+TEST(array, emplace_at_to_ref_can_move_construct_bitwise_move_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_bitwise_move_constructible_v<type>);
 
     // Emplace at the end of empty array

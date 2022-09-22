@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(Memory, destroy_trivial_type)
+TEST(memory, destroy_trivial_type)
 {
 
 
@@ -29,7 +29,7 @@ TEST(Memory, destroy_trivial_type)
     }
 }
 
-TEST(Memory, destroy_trivially_destructible_type)
+TEST(memory, destroy_trivially_destructible_type)
 {
 
 
@@ -61,11 +61,11 @@ TEST(Memory, destroy_trivially_destructible_type)
     }
 }
 
-TEST(Memory, destroy_non_trivially_destructible_type)
+TEST(memory, destroy_non_trivially_destructible_type)
 {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     using ResultType = i32;
     
     static_assert(!std::is_trivially_destructible_v<type>);
@@ -73,7 +73,7 @@ TEST(Memory, destroy_non_trivially_destructible_type)
     auto test = []() -> ResultType {
         i32 is_destructor_called = 0;
         type* to_destroy = hud::memory::allocate_array<type>(1);
-        hud::test::LeakArrayGuard guard(to_destroy, 1);
+        hud_test::LeakArrayGuard guard(to_destroy, 1);
         hud::memory::construct_at(to_destroy, &is_destructor_called);
         hud::memory::destroy(*to_destroy);
         return is_destructor_called;
@@ -92,7 +92,7 @@ TEST(Memory, destroy_non_trivially_destructible_type)
     }
 }
 
-TEST(Memory, destroy_array_trivial_type)
+TEST(memory, destroy_array_trivial_type)
 {
 
     using type = u32;
@@ -109,19 +109,19 @@ TEST(Memory, destroy_array_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15u);
-        ASSERT_EQ(hud::get<1>(result), 30u);
+        ASSERT_EQ(std::get<0>(result), 15u);
+        ASSERT_EQ(std::get<1>(result), 30u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15u);
-        ASSERT_EQ(hud::get<1>(result), 30u);
+        ASSERT_EQ(std::get<0>(result), 15u);
+        ASSERT_EQ(std::get<1>(result), 30u);
     }
 }
 
-TEST(Memory, destroy_array_trivially_destructible_type)
+TEST(memory, destroy_array_trivially_destructible_type)
 {
 
 
@@ -143,23 +143,23 @@ TEST(Memory, destroy_array_trivially_destructible_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15);
-        ASSERT_EQ(hud::get<1>(result), 30);
+        ASSERT_EQ(std::get<0>(result), 15);
+        ASSERT_EQ(std::get<1>(result), 30);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15);
-        ASSERT_EQ(hud::get<1>(result), 30);
+        ASSERT_EQ(std::get<0>(result), 15);
+        ASSERT_EQ(std::get<1>(result), 30);
     }
 }
 
-TEST(Memory, destroy_array_non_trivially_destructible_type)
+TEST(memory, destroy_array_non_trivially_destructible_type)
 {
 
     
-    using type = hud::test::SetBoolToTrueWhenDestroyed;
+    using type = hud_test::SetBoolToTrueWhenDestroyed;
     using ResultType = std::tuple<i32, i32>;
 
     static_assert(!std::is_trivially_destructible_v<type>);
@@ -167,7 +167,7 @@ TEST(Memory, destroy_array_non_trivially_destructible_type)
     auto test = []() -> ResultType {
         i32 value[2] = { 0,0 };
         type* to_destroy = hud::memory::allocate_array<type>(2);
-        hud::test::LeakArrayGuard guard(to_destroy, 2);
+        hud_test::LeakArrayGuard guard(to_destroy, 2);
         hud::memory::construct_array_at(to_destroy, to_destroy + 2);
         to_destroy[0].set_ptr(value);
         to_destroy[1].set_ptr(value + 1);
@@ -178,14 +178,14 @@ TEST(Memory, destroy_array_non_trivially_destructible_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 1);
-        ASSERT_EQ(hud::get<1>(result), 1);
+        ASSERT_EQ(std::get<0>(result), 1);
+        ASSERT_EQ(std::get<1>(result), 1);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 1);
-        ASSERT_EQ(hud::get<1>(result), 1);
+        ASSERT_EQ(std::get<0>(result), 1);
+        ASSERT_EQ(std::get<1>(result), 1);
     }
 }

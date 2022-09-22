@@ -16,20 +16,20 @@ namespace hud {
     /** Checks whether type_t is a bitwise copy constructible type ( Constructible with a bitwise memory copy ) with the argument type u_type_t. */
     template<typename type_t, typename u_type_t>
     struct is_bitwise_copy_constructible
-        : disjunction<
-        conjunction<  // If both are pointers or pointer's to member it's bitwise comparable
-        disjunction<is_pointer<type_t>, is_member_pointer<type_t>>,
-        disjunction<is_pointer<u_type_t>, is_member_pointer<u_type_t>>
+        : hud::disjunction<
+        hud::conjunction<  // If both are pointers or pointer's to member it's bitwise comparable
+        hud::disjunction<is_pointer<type_t>, is_member_pointer<type_t>>,
+        hud::disjunction<is_pointer<u_type_t>, is_member_pointer<u_type_t>>
         >,
-        conjunction< // or if same size and both are integral or enums it's bitwise comparable
-        is_same_size<type_t, u_type_t>,
-        disjunction<
-        conjunction<is_integral<type_t>, is_integral<u_type_t>>, // Assuming two's-complement
-        conjunction<is_enum<type_t>, is_enum<u_type_t>>
+        hud::conjunction< // or if same size and both are integral or enums it's bitwise comparable
+        hud::is_same_size<type_t, u_type_t>,
+        hud::disjunction<
+        hud::conjunction<is_integral<type_t>, is_integral<u_type_t>>, // Assuming two's-complement
+        hud::conjunction<is_enum<type_t>, is_enum<u_type_t>>
         >
         >,
-        conjunction< // or if same type trivially copy constructible
-        is_same<type_t, u_type_t>,
+        hud::conjunction< // or if same type trivially copy constructible
+        hud::is_same<type_t, u_type_t>,
         is_trivially_copy_constructible<type_t, u_type_t>
         >
         > {

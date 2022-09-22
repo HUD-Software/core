@@ -10,7 +10,7 @@ namespace hud {
     /**Checks whether type_t is a reference type (lvalue reference or rvalue reference). */
     template < typename type_t>
     struct is_reference
-        : disjunction< is_lvalue_reference<type_t>, is_rvalue_reference<type_t>> {
+        : hud::disjunction< is_lvalue_reference<type_t>, is_rvalue_reference<type_t>> {
     };
 
     /** Equivalent of is_reference<type_t>::value */

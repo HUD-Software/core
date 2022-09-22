@@ -1,6 +1,6 @@
 #include <core/memory.h>
 
-TEST(Memory, compare_pointer_to_buffer) {
+TEST(memory, compare_pointer_to_buffer) {
 
 
 
@@ -73,7 +73,7 @@ TEST(Memory, compare_pointer_to_buffer) {
     }
 }
 
-TEST(Memory, compare_C_buffer) {
+TEST(memory, compare_C_buffer) {
 
 
 
@@ -146,7 +146,7 @@ TEST(Memory, compare_C_buffer) {
     }
 }
 
-TEST(Memory, compare_equal_pointer_to_buffer)
+TEST(memory, compare_equal_pointer_to_buffer)
 {
 
 
@@ -219,7 +219,7 @@ TEST(Memory, compare_equal_pointer_to_buffer)
     }
 }
 
-TEST(Memory, compare_equal_C_buffer)
+TEST(memory, compare_equal_C_buffer)
 {
 
 
@@ -292,7 +292,7 @@ TEST(Memory, compare_equal_C_buffer)
     }
 }
 
-TEST(Memory, compare_less_pointer_to_buffer)
+TEST(memory, compare_less_pointer_to_buffer)
 {
 
 
@@ -365,7 +365,7 @@ TEST(Memory, compare_less_pointer_to_buffer)
     }
 }
 
-TEST(Memory, compare_less_C_array)
+TEST(memory, compare_less_C_array)
 {
 
 
@@ -439,7 +439,7 @@ TEST(Memory, compare_less_C_array)
 }
 
 
-TEST(Memory, compare_greater_pointer_to_buffer)
+TEST(memory, compare_greater_pointer_to_buffer)
 {
 
 
@@ -512,7 +512,7 @@ TEST(Memory, compare_greater_pointer_to_buffer)
     }
 }
 
-TEST(Memory, compare_greater_C_array)
+TEST(memory, compare_greater_C_array)
 {
 
 

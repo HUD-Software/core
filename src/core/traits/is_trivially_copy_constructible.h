@@ -18,7 +18,7 @@ namespace hud {
     */
     template<typename type_t, typename u_type_t = type_t>
     struct is_trivially_copy_constructible
-        : is_trivially_constructible< type_t, add_lvalue_reference_t< add_const_t<u_type_t>>> {
+        : is_trivially_constructible< type_t, hud::add_lvalue_reference_t< hud::add_const_t<u_type_t>>> {
     };
 
     /** Equivalent of  is_trivially_copy_constructible<type_t,u_type_t>::value. */

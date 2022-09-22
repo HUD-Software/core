@@ -1,9 +1,9 @@
 #pragma once
-#ifndef HD_INC_CORE_HASH_CRC32_HASH_H
-#define HD_INC_CORE_HASH_CRC32_HASH_H
+#ifndef HD_INC_CORE_HASH_ALGORITHM_CRC32_HASH_H
+#define HD_INC_CORE_HASH_ALGORITHM_CRC32_HASH_H
 
 
-namespace hud::hash{
+namespace hud::hash_algorithm{
 
     struct crc32 {
 
@@ -26,6 +26,6 @@ namespace hud::hash{
         static bool is_lookup_table_values_correct() noexcept;
     };
 
-} // namespace hud 
+} // namespace hud::hash_algorithm 
 
-#endif // HD_INC_CORE_HASH_CRC32_HASH_H
+#endif // HD_INC_CORE_HASH_ALGORITHM_CRC32_HASH_H

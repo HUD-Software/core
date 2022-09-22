@@ -24,17 +24,17 @@ namespace hud {
 
         template <typename type_t, typename... args_t>
         struct is_implicitly_constructible_impl
-            : is_implicitly_constructible_impl_2<void, is_constructible_v<type_t, args_t...>, type_t, args_t...> {
+            : is_implicitly_constructible_impl_2<void, hud::is_constructible_v<type_t, args_t...>, type_t, args_t...> {
         };
 
         template <typename type_t>
         struct is_implicitly_constructible_impl<type_t, const type_t&>
-            : is_convertible<const type_t&, type_t> {
+            : hud::is_convertible<const type_t&, type_t> {
         };
 
         template <typename type_t>
         struct is_implicitly_constructible_impl<type_t, type_t&&>
-            : is_convertible<type_t&&, type_t> {
+            : hud::is_convertible<type_t&&, type_t> {
         };
 
     }

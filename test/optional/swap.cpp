@@ -35,7 +35,7 @@ TEST(optional, swap_empty_with_empty_trivial_type) {
 TEST(optional, swap_empty_with_empty_non_trivial_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option;
@@ -100,7 +100,7 @@ TEST(optional, swap_empty_with_non_empty_trivial_type) {
 TEST(optional, swap_empty_with_non_empty_non_trivial_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option;
@@ -168,7 +168,7 @@ TEST(optional, swap_non_empty_with_non_empty_trivial_type) {
 TEST(optional, swap_non_empty_with_non_empty_non_trivial_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option{ hud::in_place, 456, nullptr };
@@ -236,7 +236,7 @@ TEST(optional, hud_swap_empty_with_empty_trivial_type) {
 TEST(optional, hud_swap_empty_with_empty_non_trivial_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option;
@@ -301,7 +301,7 @@ TEST(optional, hud_swap_empty_with_non_empty_trivial_type) {
 TEST(optional, hud_swap_empty_with_non_empty_non_trivial_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option;
@@ -369,7 +369,7 @@ TEST(optional, hud_swap_non_empty_with_non_empty_trivial_type) {
 TEST(optional, hud_swap_non_empty_with_non_empty_non_trivial_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option{ hud::in_place, 456, nullptr };

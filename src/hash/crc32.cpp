@@ -2,14 +2,14 @@
 #include <core/hash/crc32.h>
 #include <core/memory.h>
 
-namespace hud::hash{
+namespace hud::hash_algorithm{
 
     /** CRC-32 polynomial 
 	* This is the CRC-32 reversed polynomial.
     * Use by ( Source : Wikipedia https://en.wikipedia.org/wiki/Cyclic_redundancy_check#Commonly_used_and_standardized_CRCs ) :
     * ISO 3309 (HDLC), ANSI X3.66 (ADCCP), FIPS PUB 71, FED-STD-1003, ITU-type_t V.42, ISO/IEC/IEEE 802-3 (Ethernet), SATA, MPEG-2, PKZIP, Gzip, Bzip2, POSIX cksum,PNG, ZMODEM, many others 
 	*/
-    static constexpr u32 Polynomial = 0x04c11db7;
+    static constexpr u32 POLYNOMIAL = 0x04c11db7;
 
     /**
     * This CRC implementation is based on slice-by-8 intel algorithm from the paper 
@@ -226,7 +226,7 @@ namespace hud::hash{
         for (unsigned int i = 0; i <= 0xFF; i++) { 
             uint32_t crc = i;   
             for (unsigned int j = 0; j < 8; j++) {
-                crc = (crc >> 1) ^ ((crc & 1) *hud::memory::reverse_bits(Polynomial));
+                crc = (crc >> 1) ^ ((crc & 1) *hud::memory::reverse_bits(POLYNOMIAL));
             }
             generated_crc32_lookup[0][i] = crc;
         }
@@ -251,4 +251,4 @@ namespace hud::hash{
         return hud::memory::compare_equal(CRC32_LOOKUP, generated_crc32_lookup);
     }
 
-} // namespace hud
+} // namespace hud::hash_algorithm

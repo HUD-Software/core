@@ -17,7 +17,7 @@ TEST(optional, trivially_copy_constructible_if_type_is_trivially_copy_constructi
 TEST(optional, not_trivially_copy_constructible_if_type_is_not_trivially_copy_constructible) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     ASSERT_FALSE(hud::is_trivially_copy_constructible_v<type>);
     ASSERT_FALSE(hud::is_trivially_copy_constructible_v<hud::optional<type>>);
@@ -35,7 +35,7 @@ TEST(optional, trivially_destructible_if_type_is_trivially_destructible) {
 TEST(optional, not_trivially_destructible_if_type_is_not_trivially_destructible) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     ASSERT_FALSE(hud::is_trivially_destructible_v<type>);
     ASSERT_FALSE(hud::is_trivially_destructible_v<hud::optional<type>>);
@@ -44,7 +44,7 @@ TEST(optional, not_trivially_destructible_if_type_is_not_trivially_destructible)
 TEST(optional, cast_bool) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option_empty;
@@ -71,7 +71,7 @@ TEST(optional, cast_bool) {
 TEST(optional, has_value) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option_empty;
@@ -97,7 +97,7 @@ TEST(optional, has_value) {
 TEST(optional, value) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         
@@ -144,7 +144,7 @@ TEST(optional, value) {
 TEST(optional, value_or) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option_empty;
@@ -197,7 +197,7 @@ TEST(optional, operator_arrow) {
 
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option{ hud::in_place, 123, nullptr };
@@ -226,7 +226,7 @@ TEST(optional, operator_arrow) {
 TEST(optional, operator_dereference) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option{ hud::in_place, 123, nullptr };
@@ -254,7 +254,7 @@ TEST(optional, operator_dereference) {
 TEST(optional, reset_on_empty_do_nothing) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     const auto test = []() {
         hud::optional<type> option_empty;
@@ -287,7 +287,7 @@ TEST(optional, reset_on_empty_do_nothing) {
 TEST(optional, reset_call_destructor_if_T_is_not_trivially_destructible) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_destructible_v<type>);
 

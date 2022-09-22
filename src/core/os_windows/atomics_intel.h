@@ -50,7 +50,7 @@ namespace hud::os::windows {
         */
         template<typename type_t>
         [[nodiscard]]
-        static type_t load(const type_t& source, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t> || is_pointer_v<type_t>) {
+        static type_t load(const type_t& source, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_integral_v<type_t> || hud::is_pointer_v<type_t>) {
             type_t destination = load_no_barrier(source);
 
             // Load barrier
@@ -116,7 +116,7 @@ namespace hud::os::windows {
         * @param order The memory ordering fence applied by this operation. Possible values are relaxed, seq_cst and release
         */
         template<typename type_t>
-        static void store(type_t& destination, const type_t value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_pointer_v<type_t>) {
+        static void store(type_t& destination, const type_t value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(hud::is_pointer_v<type_t>) {
             switch (order) {
             case memory_order_e::relaxed:
                 store_no_barrier(destination, value);
@@ -181,7 +181,7 @@ namespace hud::os::windows {
         */
         template<typename type_t>
         [[nodiscard]]
-        static type_t compare_and_swap(type_t& destination, const type_t& expected, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_pointer_v<type_t>) {
+        static type_t compare_and_swap(type_t& destination, const type_t& expected, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(hud::is_pointer_v<type_t>) {
             check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
             if constexpr (sizeof(type_t) == 4) {
                 return reinterpret_cast<type_t>(_InterlockedCompareExchange(reinterpret_cast<volatile long*>(&destination), reinterpret_cast<long>(value), reinterpret_cast<long>(expected)));
@@ -224,7 +224,7 @@ namespace hud::os::windows {
         */
         template<typename type_t>
         [[nodiscard]]
-        static bool compare_and_set(type_t& destination, type_t& expected, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_pointer_v<type_t>) {
+        static bool compare_and_set(type_t& destination, type_t& expected, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(hud::is_pointer_v<type_t>) {
             type_t old = compare_and_swap(destination, expected, value, order);
             if (old == expected) {
                 return true;
@@ -273,7 +273,7 @@ namespace hud::os::windows {
         */
         template<typename type_t>
         [[nodiscard]]
-        static type_t exchange(type_t& destination, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_pointer_v<type_t>) {
+        static type_t exchange(type_t& destination, const type_t& value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(hud::is_pointer_v<type_t>) {
             check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
             if constexpr (sizeof(type_t) == 4) {
                 return reinterpret_cast<type_t>(_InterlockedExchange(reinterpret_cast<volatile long*>(&destination), reinterpret_cast<long>(value)));
@@ -325,7 +325,7 @@ namespace hud::os::windows {
         */
         template<typename type_t>
         [[nodiscard]]
-        static type_t fetch_add(type_t& addend, const isize to_add, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_pointer_v<type_t>) {
+        static type_t fetch_add(type_t& addend, const isize to_add, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(hud::is_pointer_v<type_t>) {
             check(hud::memory::is_pointer_aligned(&addend, sizeof(type_t)));
             const usize ptrdiff_to_add = static_cast<usize>(to_add) * sizeof(remove_pointer_t<type_t>);
             if constexpr (sizeof(type_t) == 4) {
@@ -361,7 +361,7 @@ namespace hud::os::windows {
         */
         template<typename type_t>
         [[nodiscard]]
-        static type_t fetch_sub(type_t& subtracted, const isize to_subtract, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(is_pointer_v<type_t>) {
+        static type_t fetch_sub(type_t& subtracted, const isize to_subtract, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept requires(hud::is_pointer_v<type_t>) {
             return fetch_add(subtracted, -to_subtract, order);
         }
 
@@ -395,7 +395,7 @@ namespace hud::os::windows {
         * @param value The pointer address to store in destination
         */
         template<typename type_t>
-        static void store_no_barrier(type_t& destination, type_t value) noexcept requires(is_pointer_v<type_t>)
+        static void store_no_barrier(type_t& destination, type_t value) noexcept requires(hud::is_pointer_v<type_t>)
         {
             check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
             if constexpr (sizeof(type_t) == 4) {
@@ -437,7 +437,7 @@ namespace hud::os::windows {
         */
         template<typename type_t>
         [[nodiscard]]
-        static type_t load_no_barrier(const type_t& source) noexcept requires(is_pointer_v<type_t>)
+        static type_t load_no_barrier(const type_t& source) noexcept requires(hud::is_pointer_v<type_t>)
         {
             check(hud::memory::is_pointer_aligned(&source, sizeof(type_t)));
             if constexpr (sizeof(type_t) == 4) {

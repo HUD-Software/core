@@ -15,7 +15,7 @@ namespace hud {
     */
     template<typename type_t, typename u_type_t = type_t>
     struct is_trivially_swappable
-        : conjunction<is_trivially_move_constructible<type_t, u_type_t>, is_trivially_move_assignable<type_t, u_type_t>, is_trivially_destructible<type_t>, is_trivially_destructible<u_type_t>> {
+        : hud::conjunction<is_trivially_move_constructible<type_t, u_type_t>, is_trivially_move_assignable<type_t, u_type_t>, is_trivially_destructible<type_t>, is_trivially_destructible<u_type_t>> {
     };
 
     /** Equivalent of is_trivially_swappable<type_t, u_type_t>::value */

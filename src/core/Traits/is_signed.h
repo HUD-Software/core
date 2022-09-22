@@ -16,7 +16,7 @@ namespace hud {
     */
     template<typename type_t, bool = is_integral_v<type_t>>
     struct is_signed
-        : bool_constant < remove_cv_t<type_t>(-1) < remove_cv_t<type_t>(0) > {
+        : hud::bool_constant < remove_cv_t<type_t>(-1) < remove_cv_t<type_t>(0) > {
     };
     template<typename type_t>
     struct is_signed<type_t, false>

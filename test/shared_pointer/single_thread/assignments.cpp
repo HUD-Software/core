@@ -1,13 +1,13 @@
 #include <core/containers/shared_pointer.h>
 
-TEST(SharedPointer_not_safe, copy_assignement_same_type) {
+TEST(shared_pointer_not_safe, copy_assignement_same_type) {
 
 
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType(id, &dtor_count);
-        const SharedPointer<hud::test::NonBitwiseType> shared_ptr_to_copy(type);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr;
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
+        const hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr_to_copy(type);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         shared_ptr = shared_ptr_to_copy;
         return std::tuple{
             shared_ptr_to_copy.pointer() == type,
@@ -33,23 +33,23 @@ TEST(SharedPointer_not_safe, copy_assignement_same_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 2u);
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_EQ(hud::get<9>(result), 2u);
-        ASSERT_EQ(hud::get<10>(result), 123);
-        ASSERT_EQ(hud::get<11>(result), 1u);
-        ASSERT_EQ(hud::get<12>(result), 0u);
-        ASSERT_EQ(hud::get<13>(result), 0u);
-        ASSERT_EQ(hud::get<14>(result), 0u);
-        ASSERT_EQ(hud::get<15>(result), 0u);
-        ASSERT_EQ(hud::get<16>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 2u);
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_EQ(std::get<9>(result), 2u);
+        ASSERT_EQ(std::get<10>(result), 123);
+        ASSERT_EQ(std::get<11>(result), 1u);
+        ASSERT_EQ(std::get<12>(result), 0u);
+        ASSERT_EQ(std::get<13>(result), 0u);
+        ASSERT_EQ(std::get<14>(result), 0u);
+        ASSERT_EQ(std::get<15>(result), 0u);
+        ASSERT_EQ(std::get<16>(result), 0);
     }
 
     // Constant
@@ -58,35 +58,35 @@ TEST(SharedPointer_not_safe, copy_assignement_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test(123);
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_EQ(hud::get<1>(result), 2u);
-//        ASSERT_EQ(hud::get<2>(result), 123);
-//        ASSERT_EQ(hud::get<3>(result), 1u);
-//        ASSERT_EQ(hud::get<4>(result), 0u);
-//        ASSERT_EQ(hud::get<5>(result), 0u);
-//        ASSERT_EQ(hud::get<6>(result), 0u);
-//        ASSERT_EQ(hud::get<7>(result), 0u);
-//        ASSERT_TRUE(hud::get<8>(result));
-//        ASSERT_EQ(hud::get<9>(result), 2u);
-//        ASSERT_EQ(hud::get<10>(result), 123);
-//        ASSERT_EQ(hud::get<11>(result), 1u);
-//        ASSERT_EQ(hud::get<12>(result), 0u);
-//        ASSERT_EQ(hud::get<13>(result), 0u);
-//        ASSERT_EQ(hud::get<14>(result), 0u);
-//        ASSERT_EQ(hud::get<15>(result), 0u);
-//        ASSERT_EQ(hud::get<16>(result), 0);
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_EQ(std::get<1>(result), 2u);
+//        ASSERT_EQ(std::get<2>(result), 123);
+//        ASSERT_EQ(std::get<3>(result), 1u);
+//        ASSERT_EQ(std::get<4>(result), 0u);
+//        ASSERT_EQ(std::get<5>(result), 0u);
+//        ASSERT_EQ(std::get<6>(result), 0u);
+//        ASSERT_EQ(std::get<7>(result), 0u);
+//        ASSERT_TRUE(std::get<8>(result));
+//        ASSERT_EQ(std::get<9>(result), 2u);
+//        ASSERT_EQ(std::get<10>(result), 123);
+//        ASSERT_EQ(std::get<11>(result), 1u);
+//        ASSERT_EQ(std::get<12>(result), 0u);
+//        ASSERT_EQ(std::get<13>(result), 0u);
+//        ASSERT_EQ(std::get<14>(result), 0u);
+//        ASSERT_EQ(std::get<15>(result), 0u);
+//        ASSERT_EQ(std::get<16>(result), 0);
 //    }
 //#endif
 }
 
-TEST(SharedPointer_not_safe, copy_assignement_different_type) {
+TEST(shared_pointer_not_safe, copy_assignement_different_type) {
 
 
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
-        hud::test::NonBitwiseType2* type = new hud::test::NonBitwiseType2(id, &dtor_count);
-        const SharedPointer<hud::test::NonBitwiseType2> shared_ptr_to_copy(type);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr;
+        hud_test::non_bitwise_type2* type = new hud_test::non_bitwise_type2(id, &dtor_count);
+        const hud::shared_pointer<hud_test::non_bitwise_type2> shared_ptr_to_copy(type);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         shared_ptr = shared_ptr_to_copy;
         return std::tuple{
             shared_ptr_to_copy.pointer() == type,
@@ -112,23 +112,23 @@ TEST(SharedPointer_not_safe, copy_assignement_different_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 2u);
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_EQ(hud::get<9>(result), 2u);
-        ASSERT_EQ(hud::get<10>(result), 123);
-        ASSERT_EQ(hud::get<11>(result), 1u);
-        ASSERT_EQ(hud::get<12>(result), 0u);
-        ASSERT_EQ(hud::get<13>(result), 0u);
-        ASSERT_EQ(hud::get<14>(result), 0u);
-        ASSERT_EQ(hud::get<15>(result), 0u);
-        ASSERT_EQ(hud::get<16>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 2u);
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_EQ(std::get<9>(result), 2u);
+        ASSERT_EQ(std::get<10>(result), 123);
+        ASSERT_EQ(std::get<11>(result), 1u);
+        ASSERT_EQ(std::get<12>(result), 0u);
+        ASSERT_EQ(std::get<13>(result), 0u);
+        ASSERT_EQ(std::get<14>(result), 0u);
+        ASSERT_EQ(std::get<15>(result), 0u);
+        ASSERT_EQ(std::get<16>(result), 0);
     }
 
     // Constant
@@ -137,35 +137,35 @@ TEST(SharedPointer_not_safe, copy_assignement_different_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test(123);
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_EQ(hud::get<1>(result), 2u);
-//        ASSERT_EQ(hud::get<2>(result), 123);
-//        ASSERT_EQ(hud::get<3>(result), 1u);
-//        ASSERT_EQ(hud::get<4>(result), 0u);
-//        ASSERT_EQ(hud::get<5>(result), 0u);
-//        ASSERT_EQ(hud::get<6>(result), 0u);
-//        ASSERT_EQ(hud::get<7>(result), 0u);
-//        ASSERT_TRUE(hud::get<8>(result));
-//        ASSERT_EQ(hud::get<9>(result), 2u);
-//        ASSERT_EQ(hud::get<10>(result), 123);
-//        ASSERT_EQ(hud::get<11>(result), 1u);
-//        ASSERT_EQ(hud::get<12>(result), 0u);
-//        ASSERT_EQ(hud::get<13>(result), 0u);
-//        ASSERT_EQ(hud::get<14>(result), 0u);
-//        ASSERT_EQ(hud::get<15>(result), 0u);
-//        ASSERT_EQ(hud::get<16>(result), 0);
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_EQ(std::get<1>(result), 2u);
+//        ASSERT_EQ(std::get<2>(result), 123);
+//        ASSERT_EQ(std::get<3>(result), 1u);
+//        ASSERT_EQ(std::get<4>(result), 0u);
+//        ASSERT_EQ(std::get<5>(result), 0u);
+//        ASSERT_EQ(std::get<6>(result), 0u);
+//        ASSERT_EQ(std::get<7>(result), 0u);
+//        ASSERT_TRUE(std::get<8>(result));
+//        ASSERT_EQ(std::get<9>(result), 2u);
+//        ASSERT_EQ(std::get<10>(result), 123);
+//        ASSERT_EQ(std::get<11>(result), 1u);
+//        ASSERT_EQ(std::get<12>(result), 0u);
+//        ASSERT_EQ(std::get<13>(result), 0u);
+//        ASSERT_EQ(std::get<14>(result), 0u);
+//        ASSERT_EQ(std::get<15>(result), 0u);
+//        ASSERT_EQ(std::get<16>(result), 0);
 //    }
 //#endif
 }
 
-TEST(SharedPointer_not_safe, copy_assignement_an_empty_same_type) {
+TEST(shared_pointer_not_safe, copy_assignement_an_empty_same_type) {
 
 
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType(id, &dtor_count);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr(type);
-        const SharedPointer<hud::test::NonBitwiseType> empty;
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
+        const hud::shared_pointer<hud_test::non_bitwise_type> empty;
         shared_ptr = empty;
         return std::tuple{
             shared_ptr.pointer() == nullptr,
@@ -177,9 +177,9 @@ TEST(SharedPointer_not_safe, copy_assignement_an_empty_same_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
-        ASSERT_EQ(hud::get<2>(result), 1);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
+        ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant
@@ -188,20 +188,20 @@ TEST(SharedPointer_not_safe, copy_assignement_an_empty_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test(123);
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_EQ(hud::get<1>(result), 0u);
-//        ASSERT_EQ(hud::get<2>(result), 1);
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_EQ(std::get<1>(result), 0u);
+//        ASSERT_EQ(std::get<2>(result), 1);
 //    }
 //#endif
 }
 
-TEST(SharedPointer_not_safe, copy_assignement_nullptr) {
+TEST(shared_pointer_not_safe, copy_assignement_nullptr) {
 
 
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType(id, &dtor_count);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr(type);
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
         shared_ptr = nullptr;
         return std::tuple{
             shared_ptr.pointer() == nullptr,
@@ -213,9 +213,9 @@ TEST(SharedPointer_not_safe, copy_assignement_nullptr) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
-        ASSERT_EQ(hud::get<2>(result), 1);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
+        ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant
@@ -224,21 +224,21 @@ TEST(SharedPointer_not_safe, copy_assignement_nullptr) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test(123);
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_EQ(hud::get<1>(result), 0u);
-//        ASSERT_EQ(hud::get<2>(result), 1);
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_EQ(std::get<1>(result), 0u);
+//        ASSERT_EQ(std::get<2>(result), 1);
 //    }
 //#endif
 }
 
-TEST(SharedPointer_not_safe, move_assignement_same_type) {
+TEST(shared_pointer_not_safe, move_assignement_same_type) {
 
 
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType(id, &dtor_count);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr_to_copy(type);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr;
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr_to_copy(type);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         shared_ptr = hud::move(shared_ptr_to_copy);
         return std::tuple{
             shared_ptr_to_copy.pointer() == nullptr,
@@ -258,17 +258,17 @@ TEST(SharedPointer_not_safe, move_assignement_same_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 123);
-        ASSERT_EQ(hud::get<5>(result), 1u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
-        ASSERT_EQ(hud::get<8>(result), 0u);
-        ASSERT_EQ(hud::get<9>(result), 0u);
-        ASSERT_EQ(hud::get<10>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 123);
+        ASSERT_EQ(std::get<5>(result), 1u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0u);
+        ASSERT_EQ(std::get<8>(result), 0u);
+        ASSERT_EQ(std::get<9>(result), 0u);
+        ASSERT_EQ(std::get<10>(result), 0);
     }
 
     // Constant
@@ -277,29 +277,29 @@ TEST(SharedPointer_not_safe, move_assignement_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test(123);
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_EQ(hud::get<1>(result), 0u);
-//        ASSERT_TRUE(hud::get<2>(result));
-//        ASSERT_EQ(hud::get<3>(result), 1u);
-//        ASSERT_EQ(hud::get<4>(result), 123);
-//        ASSERT_EQ(hud::get<5>(result), 1u);
-//        ASSERT_EQ(hud::get<6>(result), 0u);
-//        ASSERT_EQ(hud::get<7>(result), 0u);
-//        ASSERT_EQ(hud::get<8>(result), 0u);
-//        ASSERT_EQ(hud::get<9>(result), 0u);
-//        ASSERT_EQ(hud::get<10>(result), 0);
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_EQ(std::get<1>(result), 0u);
+//        ASSERT_TRUE(std::get<2>(result));
+//        ASSERT_EQ(std::get<3>(result), 1u);
+//        ASSERT_EQ(std::get<4>(result), 123);
+//        ASSERT_EQ(std::get<5>(result), 1u);
+//        ASSERT_EQ(std::get<6>(result), 0u);
+//        ASSERT_EQ(std::get<7>(result), 0u);
+//        ASSERT_EQ(std::get<8>(result), 0u);
+//        ASSERT_EQ(std::get<9>(result), 0u);
+//        ASSERT_EQ(std::get<10>(result), 0);
 //    }
 //#endif
 }
 
-TEST(SharedPointer_not_safe, move_assignement_different_type) {
+TEST(shared_pointer_not_safe, move_assignement_different_type) {
 
 
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
-        hud::test::NonBitwiseType2* type = new hud::test::NonBitwiseType2(id, &dtor_count);
-        SharedPointer<hud::test::NonBitwiseType2> shared_ptr_to_copy(type);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr;
+        hud_test::non_bitwise_type2* type = new hud_test::non_bitwise_type2(id, &dtor_count);
+        hud::shared_pointer<hud_test::non_bitwise_type2> shared_ptr_to_copy(type);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         shared_ptr = hud::move(shared_ptr_to_copy);
         return std::tuple{
             shared_ptr_to_copy.pointer() == nullptr,
@@ -319,17 +319,17 @@ TEST(SharedPointer_not_safe, move_assignement_different_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 123);
-        ASSERT_EQ(hud::get<5>(result), 1u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
-        ASSERT_EQ(hud::get<8>(result), 0u);
-        ASSERT_EQ(hud::get<9>(result), 0u);
-        ASSERT_EQ(hud::get<10>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 123);
+        ASSERT_EQ(std::get<5>(result), 1u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0u);
+        ASSERT_EQ(std::get<8>(result), 0u);
+        ASSERT_EQ(std::get<9>(result), 0u);
+        ASSERT_EQ(std::get<10>(result), 0);
     }
 
     // Constant
@@ -338,29 +338,29 @@ TEST(SharedPointer_not_safe, move_assignement_different_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test(123);
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_EQ(hud::get<1>(result), 0u);
-//        ASSERT_TRUE(hud::get<2>(result));
-//        ASSERT_EQ(hud::get<3>(result), 1u);
-//        ASSERT_EQ(hud::get<4>(result), 123);
-//        ASSERT_EQ(hud::get<5>(result), 1u);
-//        ASSERT_EQ(hud::get<6>(result), 0u);
-//        ASSERT_EQ(hud::get<7>(result), 0u);
-//        ASSERT_EQ(hud::get<8>(result), 0u);
-//        ASSERT_EQ(hud::get<9>(result), 0u);
-//        ASSERT_EQ(hud::get<10>(result), 0);
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_EQ(std::get<1>(result), 0u);
+//        ASSERT_TRUE(std::get<2>(result));
+//        ASSERT_EQ(std::get<3>(result), 1u);
+//        ASSERT_EQ(std::get<4>(result), 123);
+//        ASSERT_EQ(std::get<5>(result), 1u);
+//        ASSERT_EQ(std::get<6>(result), 0u);
+//        ASSERT_EQ(std::get<7>(result), 0u);
+//        ASSERT_EQ(std::get<8>(result), 0u);
+//        ASSERT_EQ(std::get<9>(result), 0u);
+//        ASSERT_EQ(std::get<10>(result), 0);
 //    }
 //#endif
 }
 
-TEST(SharedPointer_not_safe, move_assignement_an_empty_same_type) {
+TEST(shared_pointer_not_safe, move_assignement_an_empty_same_type) {
 
 
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType(id, &dtor_count);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr(type);
-        SharedPointer<hud::test::NonBitwiseType> empty;
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
+        hud::shared_pointer<hud_test::non_bitwise_type> empty;
         shared_ptr = hud::move(empty);
         return std::tuple{
             shared_ptr.pointer() == nullptr,
@@ -372,9 +372,9 @@ TEST(SharedPointer_not_safe, move_assignement_an_empty_same_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
-        ASSERT_EQ(hud::get<2>(result), 1);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
+        ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant
@@ -383,20 +383,20 @@ TEST(SharedPointer_not_safe, move_assignement_an_empty_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test(123);
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_EQ(hud::get<1>(result), 0u);
-//        ASSERT_EQ(hud::get<2>(result), 1);
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_EQ(std::get<1>(result), 0u);
+//        ASSERT_EQ(std::get<2>(result), 1);
 //    }
 //#endif
     }
 
-TEST(SharedPointer_not_safe, move_assignement_nullptr) {
+TEST(shared_pointer_not_safe, move_assignement_nullptr) {
 
 
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType(id, &dtor_count);
-        SharedPointer<hud::test::NonBitwiseType> shared_ptr(type);
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
         shared_ptr = hud::move(nullptr);
         return std::tuple{
             shared_ptr.pointer() == nullptr,
@@ -408,9 +408,9 @@ TEST(SharedPointer_not_safe, move_assignement_nullptr) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
-        ASSERT_EQ(hud::get<2>(result), 1);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
+        ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant
@@ -419,9 +419,9 @@ TEST(SharedPointer_not_safe, move_assignement_nullptr) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test(123);
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_EQ(hud::get<1>(result), 0u);
-//        ASSERT_EQ(hud::get<2>(result), 1);
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_EQ(std::get<1>(result), 0u);
+//        ASSERT_EQ(std::get<2>(result), 1);
 //    }
 //#endif
 }

@@ -1,9 +1,9 @@
 #include <core/containers/pair.h>
 
-TEST(Pair, operator_equal) {
+TEST(pair, operator_equal) {
 
 
-    const auto test = [](Pair<i32, wchar> r, Pair<i32, wchar> l) {
+    const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
         return r == l;
     };
 
@@ -25,10 +25,10 @@ TEST(Pair, operator_equal) {
     }
 }
 
-TEST(Pair, operator_not_equal) {
+TEST(pair, operator_not_equal) {
 
 
-    const auto test = [](Pair<i32, wchar> r, Pair<i32, wchar> l) {
+    const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
         return r != l;
     };
 
@@ -51,10 +51,10 @@ TEST(Pair, operator_not_equal) {
 }
 
 
-TEST(Pair, operator_less) {
+TEST(pair, operator_less) {
 
 
-    const auto test = [](Pair<i32, wchar> r, Pair<i32, wchar> l) {
+    const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
         return r < l;
     };
 
@@ -80,10 +80,10 @@ TEST(Pair, operator_less) {
     }
 }
 
-TEST(Pair, operator_less_equal) {
+TEST(pair, operator_less_equal) {
 
 
-    const auto test = [](Pair<i32, wchar> r, Pair<i32, wchar> l) {
+    const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
         return r <= l;
     };
 
@@ -109,10 +109,10 @@ TEST(Pair, operator_less_equal) {
     }
 }
 
-TEST(Pair, operator_greater) {
+TEST(pair, operator_greater) {
 
 
-    const auto test = [](Pair<i32, wchar> r, Pair<i32, wchar> l) {
+    const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
         return r > l;
     };
 
@@ -139,10 +139,10 @@ TEST(Pair, operator_greater) {
 }
 
 
-TEST(Pair, operator_greater_equal) {
+TEST(pair, operator_greater_equal) {
 
 
-    const auto test = [](Pair<i32, wchar> r, Pair<i32, wchar> l) {
+    const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
         return r >= l;
     };
 

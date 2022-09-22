@@ -1,7 +1,7 @@
 #pragma once
 #ifndef HD_INC_OSABSTRACTIONLAYER_OS_COMMON_CSTRING_H
 #define HD_INC_OSABSTRACTIONLAYER_OS_COMMON_CSTRING_H
-#include "../char.h"
+#include "../character.h"
 #include "../assert.h"
 #include <string.h> // strcpy, strcmp, etc...
 #include <wchar.h> // wcscpy, wcscat, etc...

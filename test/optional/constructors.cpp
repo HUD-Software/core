@@ -33,7 +33,7 @@ TEST(optional, default_constructor_non_trivially_default_constructible_type)
 {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_default_constructible_v<type>);
 
@@ -65,7 +65,7 @@ TEST(optional, nullopt_constructor)
 
 
     auto test = []() {
-        hud::optional<hud::test::NonBitwiseType> option(nullopt);
+        hud::optional<hud_test::non_bitwise_type> option(hud::nullopt);
         return option.has_value();
     };
 
@@ -85,7 +85,7 @@ TEST(optional, constructor_in_place_of_non_trivially_constructible_type)
 {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_constructible_v<type>);
 
     auto test = []() {
@@ -102,19 +102,19 @@ TEST(optional, constructor_in_place_of_non_trivially_constructible_type)
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 0);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 0);
     }
 }
 
@@ -137,15 +137,15 @@ TEST(optional, constructor_in_place_of_trivially_constructible_type)
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
     }
 }
 
@@ -174,26 +174,26 @@ TEST(optional, copy_construct_bitwise_copy_constructible_same_type) {
     {
 
         const auto result = test(hud::optional<type>(123));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 123);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 123);
     }
 
     // Constant
     {
         constexpr auto result = test(hud::optional<type>(123));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 123);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 123);
     }
 }
 
 TEST(optional, copy_construct_non_bitwise_copy_constructible_same_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
     // If type is non bitwise copy constructible, hud::optional<type> must be non bitwise copy constructible
@@ -216,27 +216,27 @@ TEST(optional, copy_construct_non_bitwise_copy_constructible_same_type) {
     // Non constant
     {
         const auto result = test(hud::optional<type>(nullptr));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(hud::optional<type>(nullptr));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 }
 
@@ -252,7 +252,7 @@ TEST(optional, trivially_move_constructible_if_type_is_trivially_move_constructi
 TEST(optional, not_trivially_move_constructible_if_type_is_not_trivially_move_constructible) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     ASSERT_FALSE(hud::is_trivially_move_constructible_v<type>);
     ASSERT_FALSE(hud::is_trivially_move_constructible_v<hud::optional<type>>);
@@ -283,26 +283,26 @@ TEST(optional, move_construct_bitwise_copy_constructible_same_type) {
     {
 
         const auto result = test(hud::optional<type>(123));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 123);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 123);
     }
 
     // Constant
     {
         constexpr auto result = test(hud::optional<type>(123));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 123);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 123);
     }
 }
 
 TEST(optional, move_construct_non_bitwise_copy_constructible_same_type) {
 
 
-    using type = hud::test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::NonBitwiseCopyConstructibleType;
 
     // Ensure the type is copyable but not moveable
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
@@ -329,11 +329,11 @@ TEST(optional, move_construct_non_bitwise_copy_constructible_same_type) {
     // Non constant
     {
         const auto result = test(hud::optional<type>(123));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 123);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 123);
 
     }
 
@@ -342,11 +342,11 @@ TEST(optional, move_construct_non_bitwise_copy_constructible_same_type) {
     // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
 #if !defined(HD_COMPILER_MSVC)
     constexpr auto result = test(hud::optional<type>(123));
-    ASSERT_TRUE(hud::get<0>(result));
-    ASSERT_TRUE(hud::get<1>(result));
-    ASSERT_TRUE(hud::get<2>(result));
-    ASSERT_EQ(hud::get<3>(result), 1u);
-    ASSERT_EQ(hud::get<4>(result), 123);
+    ASSERT_TRUE(std::get<0>(result));
+    ASSERT_TRUE(std::get<1>(result));
+    ASSERT_TRUE(std::get<2>(result));
+    ASSERT_EQ(std::get<3>(result), 1u);
+    ASSERT_EQ(std::get<4>(result), 123);
 #endif
 
 }
@@ -374,26 +374,26 @@ TEST(optional, move_construct_bitwise_move_constructible_same_type) {
     {
 
         const auto result = test(hud::optional<type>(123));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 123);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 123);
     }
 
     // Constant
     {
         constexpr auto result = test(hud::optional<type>(123));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 123);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 123);
     }
 }
 
 TEST(optional, move_construct_non_bitwise_move_constructible_same_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
 
     // If type is non bitwise copy constructible, hud::optional<type> must be non bitwise copy constructible
@@ -416,28 +416,28 @@ TEST(optional, move_construct_non_bitwise_move_constructible_same_type) {
     // Non constant
     {
         const auto result = test(hud::optional<type>(hud::in_place, 123, nullptr));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 1u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 1u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0u);
 
     }
 
     // Constant
     {
         constexpr auto result = test(hud::optional<type>(hud::in_place, 123, nullptr));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 1u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 1u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 }
 
@@ -460,22 +460,22 @@ TEST(optional, param_constructor_bitwise_copy_constructible_same_type_by_copy) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
     }
 }
 
 TEST(optional, param_constructor_non_bitwise_copy_constructible_same_type_by_copy) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
     static_assert(hud::is_copy_constructible_v<hud::optional<type>, type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<hud::optional<type>, type>);
@@ -497,25 +497,25 @@ TEST(optional, param_constructor_non_bitwise_copy_constructible_same_type_by_cop
     // Non constant
     {
         const auto result = test(type(123, nullptr));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 1u);
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 1u);
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(type(123, nullptr));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 1u);
-        ASSERT_EQ(hud::get<3>(result), 1u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 1u);
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
     }
 }
 
@@ -539,22 +539,22 @@ TEST(optional, param_constructor_bitwise_move_constructible_same_type_by_move) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
     }
 }
 
 TEST(optional, param_constructor_non_bitwise_move_constructible_same_type_by_move) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
     static_assert(hud::is_move_constructible_v<hud::optional<type>, type>);
     static_assert(!hud::is_bitwise_move_constructible_v<hud::optional<type>, type>);
@@ -576,25 +576,25 @@ TEST(optional, param_constructor_non_bitwise_move_constructible_same_type_by_mov
     // Non constant
     {
         const auto result = test(type(123, nullptr));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 1u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 1u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(type(123, nullptr));
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 1u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 1u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
     }
 }
 

@@ -14,7 +14,7 @@ namespace hud {
 
         template<typename void_t, bool is_constructible, typename type_t, typename ...args_t>
         struct is_explicitly_constructible_impl_2
-            : public bool_constant<is_constructible> {
+            : public hud::bool_constant<is_constructible> {
         };
 
         template<typename type_t, typename ...args_t>
@@ -24,17 +24,17 @@ namespace hud {
 
         template <typename type_t, typename... args_t>
         struct is_explicitly_constructible_impl
-            : is_explicitly_constructible_impl_2<void, is_constructible_v<type_t, args_t...>, type_t, args_t...> {
+            : is_explicitly_constructible_impl_2<void, hud::is_constructible_v<type_t, args_t...>, type_t, args_t...> {
         };
 
         template <typename type_t>
         struct is_explicitly_constructible_impl<type_t, const type_t&>
-            : bool_constant<!is_convertible_v<const type_t&, type_t>> {
+            : hud::bool_constant<!hud::is_convertible_v<const type_t&, type_t>> {
         };
 
         template <typename type_t>
         struct is_explicitly_constructible_impl<type_t, type_t&&>
-            : bool_constant<!is_convertible_v<type_t&&, type_t>> {
+            : hud::bool_constant<!hud::is_convertible_v<type_t&&, type_t>> {
         };
 
     } // namespace hud::details

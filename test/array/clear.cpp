@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(Array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
+TEST(array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
 {
 
-    using type = hud::test::NonBitwiseType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::non_bitwise_type;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     i32 destructor_called[2] = { false, false };
     array_type array;
@@ -36,11 +36,11 @@ TEST(Array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
     ASSERT_TRUE(destructor_called[1]);
 }
 
-TEST(Array, clear_destroy_but_keep_allocated_memory_with_trivial_type)
+TEST(array, clear_destroy_but_keep_allocated_memory_with_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     array_type array;
     array.reserve(2);
@@ -66,11 +66,11 @@ TEST(Array, clear_destroy_but_keep_allocated_memory_with_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(Array, clear_empty_do_nothing_with_non_trivial_type)
+TEST(array, clear_empty_do_nothing_with_non_trivial_type)
 {
 
-    using type = hud::test::NonBitwiseType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::non_bitwise_type;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     array_type array;
     ASSERT_EQ(array.data(), nullptr);
@@ -87,11 +87,11 @@ TEST(Array, clear_empty_do_nothing_with_non_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(Array, clear_empty_do_nothing_with_trivial_type)
+TEST(array, clear_empty_do_nothing_with_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     array_type array;
     ASSERT_EQ(array.data(), nullptr);
@@ -108,11 +108,11 @@ TEST(Array, clear_empty_do_nothing_with_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(Array, clear_shrink_destroy_but_keep_allocated_memory_with_non_trivial_type)
+TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_non_trivial_type)
 {
 
-    using type = hud::test::NonBitwiseType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::non_bitwise_type;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     i32 destructor_called[2] = { false, false };
     array_type array;
@@ -141,11 +141,11 @@ TEST(Array, clear_shrink_destroy_but_keep_allocated_memory_with_non_trivial_type
     ASSERT_TRUE(destructor_called[1]);
 }
 
-TEST(Array, clear_shrink_destroy_but_keep_allocated_memory_with_trivial_type)
+TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     array_type array;
     array.reserve(2);
@@ -169,11 +169,11 @@ TEST(Array, clear_shrink_destroy_but_keep_allocated_memory_with_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 1u);
 }
 
-TEST(Array, clear_shrink_empty_do_nothing_with_non_trivial_type)
+TEST(array, clear_shrink_empty_do_nothing_with_non_trivial_type)
 {
 
-    using type = hud::test::NonBitwiseType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::non_bitwise_type;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     array_type array;
     ASSERT_EQ(array.data(), nullptr);
@@ -190,11 +190,11 @@ TEST(Array, clear_shrink_empty_do_nothing_with_non_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(Array, clear_shrink_empty_do_nothing_with_trivial_type)
+TEST(array, clear_shrink_empty_do_nothing_with_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     array_type array;
     ASSERT_EQ(array.data(), nullptr);

@@ -18,7 +18,7 @@ TEST(optional, assign_empty_trivial_type_with_nullopt) {
         hud::optional<type> option;
         const bool had_value = option.has_value();
 
-        option = nullopt;
+        option = hud::nullopt;
 
         return std::tuple{
             had_value,
@@ -29,21 +29,21 @@ TEST(optional, assign_empty_trivial_type_with_nullopt) {
     // Non constant
     {
         auto result = test();
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_FALSE(hud::get<1>(result));
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_FALSE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_FALSE(hud::get<1>(result));
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_FALSE(std::get<1>(result));
     }
 }
 
 TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -53,7 +53,7 @@ TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
         hud::optional<type> option;
         const bool had_value = option.has_value();
 
-        option = nullopt;
+        option = hud::nullopt;
 
         return std::tuple{
             had_value,
@@ -64,15 +64,15 @@ TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
     // Non constant
     {
         auto result = test();
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_FALSE(hud::get<1>(result));
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_FALSE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_FALSE(hud::get<1>(result));
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_FALSE(std::get<1>(result));
     }
 }
 
@@ -89,7 +89,7 @@ TEST(optional, assign_non_empty_trivial_type_with_nullopt) {
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
-        option = nullopt;
+        option = hud::nullopt;
 
         return std::tuple{
             had_value_before,
@@ -102,23 +102,23 @@ TEST(optional, assign_non_empty_trivial_type_with_nullopt) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_FALSE(hud::get<2>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_FALSE(std::get<2>(result));
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_FALSE(hud::get<2>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_FALSE(std::get<2>(result));
     }
 }
 
 TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -135,7 +135,7 @@ TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
         const u32 move_constructor_count_before = option.value().move_constructor_count();
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
 
-        option = nullopt;
+        option = hud::nullopt;
 
         return std::tuple{
             had_value_before,
@@ -153,29 +153,29 @@ TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
     // Non constant
     {
         auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_FALSE(hud::get<7>(result));
-        ASSERT_EQ(hud::get<8>(result), 1);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_FALSE(std::get<7>(result));
+        ASSERT_EQ(std::get<8>(result), 1);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_FALSE(hud::get<7>(result));
-        ASSERT_EQ(hud::get<8>(result), 1);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_FALSE(std::get<7>(result));
+        ASSERT_EQ(std::get<8>(result), 1);
     }
 }
 
@@ -201,18 +201,18 @@ TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
         
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -240,18 +240,18 @@ TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -279,20 +279,20 @@ TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123,456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123,456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -322,27 +322,27 @@ TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_different_type
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
 TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -372,38 +372,38 @@ TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 1u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 1u);
-        ASSERT_EQ(hud::get<8>(result), 0);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 1u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 1u);
+        ASSERT_EQ(std::get<8>(result), 0);
         
     }
 
     // Constant
    /* {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 1u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 1u);
-        ASSERT_EQ(hud::get<8>(result), 0);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 1u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 1u);
+        ASSERT_EQ(std::get<8>(result), 0);
     }*/
 }
 
 TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType2;
-    using OtherType = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type_2;
+    using OtherType = hud_test::non_bitwise_copy_assignable_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
@@ -428,27 +428,27 @@ TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_different_type
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 }
 
 TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same_type) {
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -495,53 +495,53 @@ TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same_type)
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0);
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_EQ(hud::get<9>(result), 456);
-        ASSERT_EQ(hud::get<10>(result), 0u);
-        ASSERT_EQ(hud::get<11>(result), 1u);
-        ASSERT_EQ(hud::get<12>(result), 1u);
-        ASSERT_EQ(hud::get<13>(result), 0u);
-        ASSERT_EQ(hud::get<14>(result), 0u);
-        ASSERT_EQ(hud::get<15>(result), 0);
-        ASSERT_EQ(hud::get<16>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0);
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_EQ(std::get<9>(result), 456);
+        ASSERT_EQ(std::get<10>(result), 0u);
+        ASSERT_EQ(std::get<11>(result), 1u);
+        ASSERT_EQ(std::get<12>(result), 1u);
+        ASSERT_EQ(std::get<13>(result), 0u);
+        ASSERT_EQ(std::get<14>(result), 0u);
+        ASSERT_EQ(std::get<15>(result), 0);
+        ASSERT_EQ(std::get<16>(result), 0);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0);
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_EQ(hud::get<9>(result), 456);
-        ASSERT_EQ(hud::get<10>(result), 0u);
-        ASSERT_EQ(hud::get<11>(result), 1u);
-        ASSERT_EQ(hud::get<12>(result), 1u);
-        ASSERT_EQ(hud::get<13>(result), 0u);
-        ASSERT_EQ(hud::get<14>(result), 0u);
-        ASSERT_EQ(hud::get<15>(result), 0);
-        ASSERT_EQ(hud::get<16>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0);
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_EQ(std::get<9>(result), 456);
+        ASSERT_EQ(std::get<10>(result), 0u);
+        ASSERT_EQ(std::get<11>(result), 1u);
+        ASSERT_EQ(std::get<12>(result), 1u);
+        ASSERT_EQ(std::get<13>(result), 0u);
+        ASSERT_EQ(std::get<14>(result), 0u);
+        ASSERT_EQ(std::get<15>(result), 0);
+        ASSERT_EQ(std::get<16>(result), 0);
     }
 }
 
 TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType2;
-    using OtherType = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type_2;
+    using OtherType = hud_test::non_bitwise_copy_assignable_type;
 
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
@@ -575,27 +575,27 @@ TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_different_
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_EQ(hud::get<5>(result), 456);
-        ASSERT_EQ(hud::get<6>(result), 1u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_EQ(std::get<5>(result), 456);
+        ASSERT_EQ(std::get<6>(result), 1u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_EQ(hud::get<5>(result), 456);
-        ASSERT_EQ(hud::get<6>(result), 1u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_EQ(std::get<5>(result), 456);
+        ASSERT_EQ(std::get<6>(result), 1u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 }
 
@@ -621,18 +621,18 @@ TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -660,18 +660,18 @@ TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -699,20 +699,20 @@ TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -742,20 +742,20 @@ TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_different_type
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -765,7 +765,7 @@ TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_type) {
     
     //using namespace hud;
 
-    //using type = hud::test::NonBitwiseCopyAssignableType;
+    //using type = hud_test::non_bitwise_copy_assignable_type;
 
     //static_assert(!hud::is_trivially_copy_constructible_v<type>);
     //static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -791,29 +791,29 @@ TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_type) {
     //// Non constant
     //{
     //    auto result = test(123);
-    //    ASSERT_FALSE(hud::get<0>(result));
-    //    ASSERT_TRUE(hud::get<1>(result));
-    //    ASSERT_EQ(hud::get<2>(result), 123);
-    //    ASSERT_EQ(hud::get<3>(result), 0u);
-    //    ASSERT_EQ(hud::get<4>(result), 1u);
+    //    ASSERT_FALSE(std::get<0>(result));
+    //    ASSERT_TRUE(std::get<1>(result));
+    //    ASSERT_EQ(std::get<2>(result), 123);
+    //    ASSERT_EQ(std::get<3>(result), 0u);
+    //    ASSERT_EQ(std::get<4>(result), 1u);
     //}
 
     //// Constant
     //{
     //    auto result = test(123);
-    //    ASSERT_FALSE(hud::get<0>(result));
-    //    ASSERT_TRUE(hud::get<1>(result));
-    //    ASSERT_EQ(hud::get<2>(result), 123);
-    //    ASSERT_EQ(hud::get<3>(result), 0u);
-    //    ASSERT_EQ(hud::get<4>(result), 1u);
+    //    ASSERT_FALSE(std::get<0>(result));
+    //    ASSERT_TRUE(std::get<1>(result));
+    //    ASSERT_EQ(std::get<2>(result), 123);
+    //    ASSERT_EQ(std::get<3>(result), 0u);
+    //    ASSERT_EQ(std::get<4>(result), 1u);
     //}
 }
 
 TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType2;
-    using OtherType = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type_2;
+    using OtherType = hud_test::non_bitwise_copy_assignable_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
@@ -838,21 +838,21 @@ TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_different_type
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 }
 
@@ -861,7 +861,7 @@ TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same_type)
     // because hud::is_constructible_v<type_t, U> where type_t and U is not move assignable is false
   
     //using namespace hud;
-    //using type = hud::test::NonBitwiseCopyAssignableType;
+    //using type = hud_test::non_bitwise_copy_assignable_type;
 
     //static_assert(!hud::is_trivially_copy_constructible_v<type>);
     //static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -893,35 +893,35 @@ TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same_type)
     //// Non constant
     //{
     //    auto result = test(123, 456);
-    //    ASSERT_TRUE(hud::get<0>(result));
-    //    ASSERT_EQ(hud::get<1>(result), 123);
-    //    ASSERT_EQ(hud::get<2>(result), 0u);
-    //    ASSERT_EQ(hud::get<3>(result), 0u);
-    //    ASSERT_TRUE(hud::get<4>(result));
-    //    ASSERT_EQ(hud::get<5>(result), 456);
-    //    ASSERT_EQ(hud::get<6>(result), 1u);
-    //    ASSERT_EQ(hud::get<7>(result), 0u);
+    //    ASSERT_TRUE(std::get<0>(result));
+    //    ASSERT_EQ(std::get<1>(result), 123);
+    //    ASSERT_EQ(std::get<2>(result), 0u);
+    //    ASSERT_EQ(std::get<3>(result), 0u);
+    //    ASSERT_TRUE(std::get<4>(result));
+    //    ASSERT_EQ(std::get<5>(result), 456);
+    //    ASSERT_EQ(std::get<6>(result), 1u);
+    //    ASSERT_EQ(std::get<7>(result), 0u);
     //}
 
     //// Constant
     //{
     //    constexpr auto result = test(123, 456);
-    //    ASSERT_TRUE(hud::get<0>(result));
-    //    ASSERT_EQ(hud::get<1>(result), 123);
-    //    ASSERT_EQ(hud::get<2>(result), 0u);
-    //    ASSERT_EQ(hud::get<3>(result), 0u);
-    //    ASSERT_TRUE(hud::get<4>(result));
-    //    ASSERT_EQ(hud::get<5>(result), 456);
-    //    ASSERT_EQ(hud::get<6>(result), 1u);
-    //    ASSERT_EQ(hud::get<7>(result), 0u);
+    //    ASSERT_TRUE(std::get<0>(result));
+    //    ASSERT_EQ(std::get<1>(result), 123);
+    //    ASSERT_EQ(std::get<2>(result), 0u);
+    //    ASSERT_EQ(std::get<3>(result), 0u);
+    //    ASSERT_TRUE(std::get<4>(result));
+    //    ASSERT_EQ(std::get<5>(result), 456);
+    //    ASSERT_EQ(std::get<6>(result), 1u);
+    //    ASSERT_EQ(std::get<7>(result), 0u);
     //}
 }
 
 TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType2;
-    using OtherType = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type_2;
+    using OtherType = hud_test::non_bitwise_copy_assignable_type;
 
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
@@ -955,27 +955,27 @@ TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_different_
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_EQ(hud::get<5>(result), 456);
-        ASSERT_EQ(hud::get<6>(result), 1u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_EQ(std::get<5>(result), 456);
+        ASSERT_EQ(std::get<6>(result), 1u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_EQ(hud::get<5>(result), 456);
-        ASSERT_EQ(hud::get<6>(result), 1u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_EQ(std::get<5>(result), 456);
+        ASSERT_EQ(std::get<6>(result), 1u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 }
 
@@ -1001,18 +1001,18 @@ TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -1040,18 +1040,18 @@ TEST(optional, assign_by_move_empty_trivially_move_assignable_different_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -1079,20 +1079,20 @@ TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_type) {
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -1122,27 +1122,27 @@ TEST(optional, assign_by_move_non_empty_trivially_move_assignable_different_type
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
 TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_type) {
 
 
-    using type = hud::test::NonBitwiseMoveAssignableType;
+    using type = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
@@ -1170,33 +1170,33 @@ TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 1u);
     }
 
     // Constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 1u);
     }
 }
 
 TEST(optional, assign_by_move_empty_non_trivially_move_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseMoveAssignableType2;
-    using OtherType = hud::test::NonBitwiseMoveAssignableType;
+    using type = hud_test::NonBitwiseMoveAssignableType2;
+    using OtherType = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_move_assignable_v<type, OtherType>);
@@ -1223,31 +1223,31 @@ TEST(optional, assign_by_move_empty_non_trivially_move_assignable_different_type
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 1u);
     }
 }
 
 TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same_type) {
 
-    using type = hud::test::NonBitwiseMoveAssignableType;
+    using type = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
@@ -1286,44 +1286,44 @@ TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same_type)
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_EQ(hud::get<7>(result), 456);
-        ASSERT_EQ(hud::get<8>(result), 0u);
-        ASSERT_EQ(hud::get<9>(result), 0u);
-        ASSERT_EQ(hud::get<10>(result), 1u);
-        ASSERT_EQ(hud::get<11>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_EQ(std::get<7>(result), 456);
+        ASSERT_EQ(std::get<8>(result), 0u);
+        ASSERT_EQ(std::get<9>(result), 0u);
+        ASSERT_EQ(std::get<10>(result), 1u);
+        ASSERT_EQ(std::get<11>(result), 0u);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_EQ(hud::get<7>(result), 456);
-        ASSERT_EQ(hud::get<8>(result), 0u);
-        ASSERT_EQ(hud::get<9>(result), 0u);
-        ASSERT_EQ(hud::get<10>(result), 1u);
-        ASSERT_EQ(hud::get<11>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_EQ(std::get<7>(result), 456);
+        ASSERT_EQ(std::get<8>(result), 0u);
+        ASSERT_EQ(std::get<9>(result), 0u);
+        ASSERT_EQ(std::get<10>(result), 1u);
+        ASSERT_EQ(std::get<11>(result), 0u);
     }
 }
 
 TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseMoveAssignableType2;
-    using OtherType = hud::test::NonBitwiseMoveAssignableType;
+    using type = hud_test::NonBitwiseMoveAssignableType2;
+    using OtherType = hud_test::NonBitwiseMoveAssignableType;
 
 
     static_assert(!hud::is_trivially_move_constructible_v<type, OtherType>);
@@ -1363,36 +1363,36 @@ TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_different_
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_EQ(hud::get<7>(result), 456);
-        ASSERT_EQ(hud::get<8>(result), 0u);
-        ASSERT_EQ(hud::get<9>(result), 0u);
-        ASSERT_EQ(hud::get<10>(result), 1u);
-        ASSERT_EQ(hud::get<11>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_EQ(std::get<7>(result), 456);
+        ASSERT_EQ(std::get<8>(result), 0u);
+        ASSERT_EQ(std::get<9>(result), 0u);
+        ASSERT_EQ(std::get<10>(result), 1u);
+        ASSERT_EQ(std::get<11>(result), 0u);
 
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_EQ(hud::get<7>(result), 456);
-        ASSERT_EQ(hud::get<8>(result), 0u);
-        ASSERT_EQ(hud::get<9>(result), 0u);
-        ASSERT_EQ(hud::get<10>(result), 1u);
-        ASSERT_EQ(hud::get<11>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_EQ(std::get<7>(result), 456);
+        ASSERT_EQ(std::get<8>(result), 0u);
+        ASSERT_EQ(std::get<9>(result), 0u);
+        ASSERT_EQ(std::get<10>(result), 1u);
+        ASSERT_EQ(std::get<11>(result), 0u);
     }
 }
 
@@ -1424,17 +1424,17 @@ TEST(optional, copy_assign_empty_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Non constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -1467,24 +1467,24 @@ TEST(optional, copy_assign_empty_trivially_copy_assignable_different_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Non constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
 TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -1515,30 +1515,30 @@ TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 1u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 1u);
-        ASSERT_EQ(hud::get<8>(result), 0);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 1u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 1u);
+        ASSERT_EQ(std::get<8>(result), 0);
     }
 
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 1u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 1u);
-        ASSERT_EQ(hud::get<8>(result), 0);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 1u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 1u);
+        ASSERT_EQ(std::get<8>(result), 0);
     }
 
 }
@@ -1546,8 +1546,8 @@ TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) {
 TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType2;
-    using OtherType = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type_2;
+    using OtherType = hud_test::non_bitwise_copy_assignable_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
@@ -1573,21 +1573,21 @@ TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 
 }
@@ -1618,20 +1618,20 @@ TEST(optional, copy_assign_non_empty_trivially_copy_assignable_same_type) {
     // Non constant
     {
         const auto result = test(123,456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -1664,27 +1664,27 @@ TEST(optional, copy_assign_non_empty_trivially_copy_assignable_different_type) {
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
 TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
@@ -1730,52 +1730,52 @@ TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0);
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_EQ(hud::get<9>(result), 456);
-        ASSERT_EQ(hud::get<10>(result), 0u);
-        ASSERT_EQ(hud::get<11>(result), 1u);
-        ASSERT_EQ(hud::get<12>(result), 1u);
-        ASSERT_EQ(hud::get<13>(result), 0u);
-        ASSERT_EQ(hud::get<14>(result), 0u);
-        ASSERT_EQ(hud::get<15>(result), 0);
-        ASSERT_EQ(hud::get<16>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0);
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_EQ(std::get<9>(result), 456);
+        ASSERT_EQ(std::get<10>(result), 0u);
+        ASSERT_EQ(std::get<11>(result), 1u);
+        ASSERT_EQ(std::get<12>(result), 1u);
+        ASSERT_EQ(std::get<13>(result), 0u);
+        ASSERT_EQ(std::get<14>(result), 0u);
+        ASSERT_EQ(std::get<15>(result), 0);
+        ASSERT_EQ(std::get<16>(result), 0);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0);
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_EQ(hud::get<9>(result), 456);
-        ASSERT_EQ(hud::get<10>(result), 0u);
-        ASSERT_EQ(hud::get<11>(result), 1u);
-        ASSERT_EQ(hud::get<12>(result), 1u);
-        ASSERT_EQ(hud::get<13>(result), 0u);
-        ASSERT_EQ(hud::get<14>(result), 0u);
-        ASSERT_EQ(hud::get<15>(result), 0);
-        ASSERT_EQ(hud::get<16>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0);
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_EQ(std::get<9>(result), 456);
+        ASSERT_EQ(std::get<10>(result), 0u);
+        ASSERT_EQ(std::get<11>(result), 1u);
+        ASSERT_EQ(std::get<12>(result), 1u);
+        ASSERT_EQ(std::get<13>(result), 0u);
+        ASSERT_EQ(std::get<14>(result), 0u);
+        ASSERT_EQ(std::get<15>(result), 0);
+        ASSERT_EQ(std::get<16>(result), 0);
     }
 }
 
 TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_different_type) {
 
-    using type = hud::test::NonBitwiseCopyAssignableType2;
-    using OtherType = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type_2;
+    using OtherType = hud_test::non_bitwise_copy_assignable_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
@@ -1807,27 +1807,27 @@ TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_different_typ
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_EQ(hud::get<5>(result), 456);
-        ASSERT_EQ(hud::get<6>(result), 1u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_EQ(std::get<5>(result), 456);
+        ASSERT_EQ(std::get<6>(result), 1u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_EQ(hud::get<5>(result), 456);
-        ASSERT_EQ(hud::get<6>(result), 1u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_EQ(std::get<5>(result), 456);
+        ASSERT_EQ(std::get<6>(result), 1u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 }
 
@@ -1858,24 +1858,24 @@ TEST(optional, move_assign_empty_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Non constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
 TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type) {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -1900,22 +1900,22 @@ TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 }
 
@@ -1948,25 +1948,25 @@ TEST(optional, move_assign_empty_trivially_copy_assignable_different_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Non constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
 TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType2;
-    using OtherType = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type_2;
+    using OtherType = hud_test::non_bitwise_copy_assignable_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
@@ -1992,21 +1992,21 @@ TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
     }
 }
 
@@ -2037,24 +2037,24 @@ TEST(optional, move_assign_empty_trivially_move_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Non constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
 TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type) {
 
 
-    using type = hud::test::NonBitwiseMoveAssignableType;
+    using type = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
@@ -2081,26 +2081,26 @@ TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 1u);
     }
 
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 1u);
     }
 }
 
@@ -2133,25 +2133,25 @@ TEST(optional, move_assign_empty_trivially_move_assignable_different_type) {
     // Non constant
     {
         auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Non constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
 TEST(optional, move_assign_empty_non_trivially_move_assignable_different_type) {
 
 
-    using type = hud::test::NonBitwiseMoveAssignableType2;
-    using OtherType = hud::test::NonBitwiseMoveAssignableType;
+    using type = hud_test::NonBitwiseMoveAssignableType2;
+    using OtherType = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
@@ -2179,25 +2179,25 @@ TEST(optional, move_assign_empty_non_trivially_move_assignable_different_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_EQ(hud::get<2>(result), 123);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 1u);
+        ASSERT_FALSE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_EQ(std::get<2>(result), 123);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 1u);
     }
 }
 
@@ -2223,7 +2223,7 @@ TEST(optional, move_assign_non_empty_trivially_copy_assignable_same_type) {
 TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_same_type) {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
@@ -2273,27 +2273,27 @@ TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_type) {
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
 TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_different_type) {
 
-    using type = hud::test::NonBitwiseCopyAssignableType2;
-    using OtherType = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type_2;
+    using OtherType = hud_test::non_bitwise_copy_assignable_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
@@ -2325,27 +2325,27 @@ TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_different_typ
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_EQ(hud::get<5>(result), 456);
-        ASSERT_EQ(hud::get<6>(result), 1u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_EQ(std::get<5>(result), 456);
+        ASSERT_EQ(std::get<6>(result), 1u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_EQ(hud::get<5>(result), 456);
-        ASSERT_EQ(hud::get<6>(result), 1u);
-        ASSERT_EQ(hud::get<7>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_EQ(std::get<5>(result), 456);
+        ASSERT_EQ(std::get<6>(result), 1u);
+        ASSERT_EQ(std::get<7>(result), 0u);
     }
 }
 
@@ -2377,27 +2377,27 @@ TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type) {
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
 TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_type) {
 
 
-    using type = hud::test::NonBitwiseType;
+    using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
@@ -2443,45 +2443,45 @@ TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_type) {
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0);
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_EQ(hud::get<9>(result), 456);
-        ASSERT_EQ(hud::get<10>(result), 1u);
-        ASSERT_EQ(hud::get<11>(result), 0u);
-        ASSERT_EQ(hud::get<12>(result), 1u);
-        ASSERT_EQ(hud::get<13>(result), 0u);
-        ASSERT_EQ(hud::get<14>(result), 0u);
-        ASSERT_EQ(hud::get<15>(result), 0);
-        ASSERT_EQ(hud::get<16>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0);
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_EQ(std::get<9>(result), 456);
+        ASSERT_EQ(std::get<10>(result), 1u);
+        ASSERT_EQ(std::get<11>(result), 0u);
+        ASSERT_EQ(std::get<12>(result), 1u);
+        ASSERT_EQ(std::get<13>(result), 0u);
+        ASSERT_EQ(std::get<14>(result), 0u);
+        ASSERT_EQ(std::get<15>(result), 0);
+        ASSERT_EQ(std::get<16>(result), 0);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_EQ(hud::get<6>(result), 0u);
-        ASSERT_EQ(hud::get<7>(result), 0);
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_EQ(hud::get<9>(result), 456);
-        ASSERT_EQ(hud::get<10>(result), 1u);
-        ASSERT_EQ(hud::get<11>(result), 0u);
-        ASSERT_EQ(hud::get<12>(result), 1u);
-        ASSERT_EQ(hud::get<13>(result), 0u);
-        ASSERT_EQ(hud::get<14>(result), 0u);
-        ASSERT_EQ(hud::get<15>(result), 0);
-        ASSERT_EQ(hud::get<16>(result), 0);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_EQ(std::get<6>(result), 0u);
+        ASSERT_EQ(std::get<7>(result), 0);
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_EQ(std::get<9>(result), 456);
+        ASSERT_EQ(std::get<10>(result), 1u);
+        ASSERT_EQ(std::get<11>(result), 0u);
+        ASSERT_EQ(std::get<12>(result), 1u);
+        ASSERT_EQ(std::get<13>(result), 0u);
+        ASSERT_EQ(std::get<14>(result), 0u);
+        ASSERT_EQ(std::get<15>(result), 0);
+        ASSERT_EQ(std::get<16>(result), 0);
     }
 }
 
@@ -2514,27 +2514,27 @@ TEST(optional, move_assign_non_empty_trivially_move_assignable_different_type) {
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_EQ(hud::get<3>(result), 456);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
 TEST(optional, move_assign_non_empty_non_trivially_move_assignable_different_type) {
 
-    using type = hud::test::NonBitwiseMoveAssignableType2;
-    using OtherType = hud::test::NonBitwiseMoveAssignableType;
+    using type = hud_test::NonBitwiseMoveAssignableType2;
+    using OtherType = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_move_assignable_v<type, OtherType>);
@@ -2572,34 +2572,34 @@ TEST(optional, move_assign_non_empty_non_trivially_move_assignable_different_typ
     // Non constant
     {
         auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_EQ(hud::get<7>(result), 456);
-        ASSERT_EQ(hud::get<8>(result), 0u);
-        ASSERT_EQ(hud::get<9>(result), 0u);
-        ASSERT_EQ(hud::get<10>(result), 1u);
-        ASSERT_EQ(hud::get<11>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_EQ(std::get<7>(result), 456);
+        ASSERT_EQ(std::get<8>(result), 0u);
+        ASSERT_EQ(std::get<9>(result), 0u);
+        ASSERT_EQ(std::get<10>(result), 1u);
+        ASSERT_EQ(std::get<11>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 123);
-        ASSERT_EQ(hud::get<2>(result), 0u);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 0u);
-        ASSERT_EQ(hud::get<5>(result), 0u);
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_EQ(hud::get<7>(result), 456);
-        ASSERT_EQ(hud::get<8>(result), 0u);
-        ASSERT_EQ(hud::get<9>(result), 0u);
-        ASSERT_EQ(hud::get<10>(result), 1u);
-        ASSERT_EQ(hud::get<11>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 123);
+        ASSERT_EQ(std::get<2>(result), 0u);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 0u);
+        ASSERT_EQ(std::get<5>(result), 0u);
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_EQ(std::get<7>(result), 456);
+        ASSERT_EQ(std::get<8>(result), 0u);
+        ASSERT_EQ(std::get<9>(result), 0u);
+        ASSERT_EQ(std::get<10>(result), 1u);
+        ASSERT_EQ(std::get<11>(result), 0u);
     }
 }

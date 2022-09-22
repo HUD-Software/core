@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(Array, emplace_back_to_ref_can_default_construct_non_trivially_default_constructible_type)
+TEST(array, emplace_back_to_ref_can_default_construct_non_trivially_default_constructible_type)
 {
 
-    using type = hud::test::default_constructible_type;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::default_constructible_type;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_trivially_default_constructible_v<type>);
     static_assert(hud::is_default_constructible_v<type>);
 
@@ -30,7 +30,7 @@ TEST(Array, emplace_back_to_ref_can_default_construct_non_trivially_default_cons
 
             // Ensure the returned ref is refering to the correct element
             ASSERT_EQ(&ref, &array[index]);
-            ASSERT_EQ(array[index].id(), hud::test::default_constructible_type::DEFAULT_ID_VALUE);
+            ASSERT_EQ(array[index].id(), hud_test::default_constructible_type::DEFAULT_ID_VALUE);
 
             // Ensure we really reallocate
             ASSERT_EQ(array.allocator().allocation_count(), index + 1);
@@ -66,7 +66,7 @@ TEST(Array, emplace_back_to_ref_can_default_construct_non_trivially_default_cons
 
             // Ensure the returned ref is refering to the correct element
             ASSERT_EQ(&ref, &array[index]);
-            ASSERT_EQ(array[index].id(), hud::test::default_constructible_type::DEFAULT_ID_VALUE);
+            ASSERT_EQ(array[index].id(), hud_test::default_constructible_type::DEFAULT_ID_VALUE);
 
             // Ensure we really reallocate
             ASSERT_EQ(array.allocator().allocation_count(), 1u);
@@ -75,11 +75,11 @@ TEST(Array, emplace_back_to_ref_can_default_construct_non_trivially_default_cons
     }
 }
 
-TEST(Array, emplace_back_to_ref_can_default_construct_trivially_default_constructible_type)
+TEST(array, emplace_back_to_ref_can_default_construct_trivially_default_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_trivially_default_constructible_v<type>);
 
     // test with reallocation
@@ -148,11 +148,11 @@ TEST(Array, emplace_back_to_ref_can_default_construct_trivially_default_construc
     }
 }
 
-TEST(Array, emplace_back_to_ref_can_construct_non_trivially_constructible_type)
+TEST(array, emplace_back_to_ref_can_construct_non_trivially_constructible_type)
 {
 
-    using type = hud::test::NonDefaultConstructibleType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::NonDefaultConstructibleType;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_trivially_constructible_v<type, usize>);
     static_assert(hud::is_constructible_v<type, usize>);
 
@@ -227,11 +227,11 @@ TEST(Array, emplace_back_to_ref_can_construct_non_trivially_constructible_type)
     }
 }
 
-TEST(Array, emplace_back_to_ref_can_construct_trivially_constructible_type)
+TEST(array, emplace_back_to_ref_can_construct_trivially_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_trivially_constructible_v<type, usize>);
 
     // test with reallocation
@@ -301,11 +301,11 @@ TEST(Array, emplace_back_to_ref_can_construct_trivially_constructible_type)
     }
 }
 
-TEST(Array, emplace_back_to_ref_can_copy_construct_non_trivially_copy_constructible_type)
+TEST(array, emplace_back_to_ref_can_copy_construct_non_trivially_copy_constructible_type)
 {
 
-    using type = hud::test::NonBitwiseCopyConstructibleType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_copy_constructible_v<type>);
 
@@ -385,11 +385,11 @@ TEST(Array, emplace_back_to_ref_can_copy_construct_non_trivially_copy_constructi
     }
 }
 
-TEST(Array, emplace_back_to_ref_can_copy_construct_trivially_copy_constructible_type)
+TEST(array, emplace_back_to_ref_can_copy_construct_trivially_copy_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
 
     // test with reallocation
@@ -460,11 +460,11 @@ TEST(Array, emplace_back_to_ref_can_copy_construct_trivially_copy_constructible_
     }
 }
 
-TEST(Array, emplace_back_to_ref_can_move_construct_non_bitwise_move_constructible_type)
+TEST(array, emplace_back_to_ref_can_move_construct_non_bitwise_move_constructible_type)
 {
 
-    using type = hud::test::NonBitwiseMoveConstructibleType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
     static_assert(hud::is_move_constructible_v<type>);
 
@@ -544,11 +544,11 @@ TEST(Array, emplace_back_to_ref_can_move_construct_non_bitwise_move_constructibl
     }
 }
 
-TEST(Array, emplace_back_to_ref_can_move_construct_bitwise_move_constructible_type)
+TEST(array, emplace_back_to_ref_can_move_construct_bitwise_move_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_bitwise_move_constructible_v<type>);
 
     // test with reallocation

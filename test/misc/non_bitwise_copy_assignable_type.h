@@ -6,24 +6,24 @@
 #include <core/traits/is_bitwise_copy_assignable.h>
 #include <core/traits/is_bitwise_copy_constructible.h>
 
-namespace hud::test {
+namespace hud_test {
 
     /**
     * A copy assignable type that is not a bitwise assignable type
-    * The id is copied in order to know which NonBitwiseCopyAssignableType is the original NonBitwiseCopyAssignableType.
+    * The id is copied in order to know which non_bitwise_copy_assignable_type is the original non_bitwise_copy_assignable_type.
     */
-    struct NonBitwiseCopyAssignableType
+    struct non_bitwise_copy_assignable_type
     {
         /**
-        * Default construct a NonBitwiseCopyAssignableType
+        * Default construct a non_bitwise_copy_assignable_type
         */
-        constexpr NonBitwiseCopyAssignableType() noexcept = default;
+        constexpr non_bitwise_copy_assignable_type() noexcept = default;
 
         /**
         * Copy constructor
-        * @param other The NonBitwiseCopyAssignableType to copy
+        * @param other The non_bitwise_copy_assignable_type to copy
         */
-        constexpr NonBitwiseCopyAssignableType(const NonBitwiseCopyAssignableType& other) noexcept 
+        constexpr non_bitwise_copy_assignable_type(const non_bitwise_copy_assignable_type& other) noexcept 
             : copy_assigned_count(other.copy_assigned_count)
             , copy_construct_count(other.copy_construct_count+1)
             , unique_id(other.unique_id)
@@ -32,19 +32,19 @@ namespace hud::test {
         /**
         * Construct with a given id
         * @tparam Integral The integral type to set
-        * @param id The id of the NonBitwiseCopyAssignableType
+        * @param id The id of the non_bitwise_copy_assignable_type
         */
         template<typename Integral>
-        constexpr NonBitwiseCopyAssignableType(Integral id) noexcept requires(hud::is_integral_v<Integral>)
+        constexpr non_bitwise_copy_assignable_type(Integral id) noexcept requires(hud::is_integral_v<Integral>)
             : unique_id(static_cast<i32>(id)) {
         }
 
         /**
-        * Assign another NonBitwiseCopyAssignableType to this
-        * @param other The NonBitwiseCopyAssignableType to assign
+        * Assign another non_bitwise_copy_assignable_type to this
+        * @param other The non_bitwise_copy_assignable_type to assign
         * @return *this
         */
-        constexpr NonBitwiseCopyAssignableType& operator=(const NonBitwiseCopyAssignableType& other) noexcept {
+        constexpr non_bitwise_copy_assignable_type& operator=(const non_bitwise_copy_assignable_type& other) noexcept {
             if (&other != this) {
                 copy_assigned_count = other.copy_assigned_count + 1;
                 copy_construct_count = other.copy_construct_count;
@@ -58,7 +58,7 @@ namespace hud::test {
         * @param id The id to assign
         * @return *this
         */
-        constexpr NonBitwiseCopyAssignableType& operator=(i32 id) noexcept {
+        constexpr non_bitwise_copy_assignable_type& operator=(i32 id) noexcept {
             unique_id = id;
             return *this;
         }
@@ -82,8 +82,8 @@ namespace hud::test {
         }
 
     private:
-        NonBitwiseCopyAssignableType(NonBitwiseCopyAssignableType&&) = delete;
-        NonBitwiseCopyAssignableType& operator=(NonBitwiseCopyAssignableType&&) = delete;
+        non_bitwise_copy_assignable_type(non_bitwise_copy_assignable_type&&) = delete;
+        non_bitwise_copy_assignable_type& operator=(non_bitwise_copy_assignable_type&&) = delete;
 
     private:
         /** Informs if the copy assign operator was called */
@@ -94,93 +94,93 @@ namespace hud::test {
         i32 unique_id = 0;
     };
 
-static_assert(std::is_copy_assignable_v<NonBitwiseCopyAssignableType>);
-static_assert(std::is_copy_constructible_v<NonBitwiseCopyAssignableType>);
-static_assert(!hud::is_bitwise_copy_assignable_v<NonBitwiseCopyAssignableType>);
-static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyAssignableType>);
+static_assert(std::is_copy_assignable_v<non_bitwise_copy_assignable_type>);
+static_assert(std::is_copy_constructible_v<non_bitwise_copy_assignable_type>);
+static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_copy_assignable_type>);
+static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type>);
 
 
     /**
     * A copy assignable type that is not a bitwise assignable type
-    * The id is copied in order to know which NonBitwiseCopyAssignableType2 is the original NonBitwiseCopyAssignableType2.
-    * This type can be assigned with a NonBitwiseCopyAssignableType
+    * The id is copied in order to know which non_bitwise_copy_assignable_type_2 is the original non_bitwise_copy_assignable_type_2.
+    * This type can be assigned with a non_bitwise_copy_assignable_type
     */
-    struct NonBitwiseCopyAssignableType2 : public NonBitwiseCopyAssignableType
+    struct non_bitwise_copy_assignable_type_2 : public non_bitwise_copy_assignable_type
     {
         /** Default construct */
-        constexpr NonBitwiseCopyAssignableType2() noexcept = default;
-        constexpr NonBitwiseCopyAssignableType2(const NonBitwiseCopyAssignableType2&) noexcept = default;
+        constexpr non_bitwise_copy_assignable_type_2() noexcept = default;
+        constexpr non_bitwise_copy_assignable_type_2(const non_bitwise_copy_assignable_type_2&) noexcept = default;
         /**
         * Construct with a given id
-        * @param id The id of the NonBitwiseCopyAssignableType
+        * @param id The id of the non_bitwise_copy_assignable_type
         */
-        constexpr NonBitwiseCopyAssignableType2(i32 id) noexcept
-            : NonBitwiseCopyAssignableType(id) {
+        constexpr non_bitwise_copy_assignable_type_2(i32 id) noexcept
+            : non_bitwise_copy_assignable_type(id) {
         }
 
         /**
         * Copy constructor
-        * @param other The NonBitwiseCopyAssignableType to copy
+        * @param other The non_bitwise_copy_assignable_type to copy
         */
-        constexpr NonBitwiseCopyAssignableType2(const NonBitwiseCopyAssignableType& other) noexcept
-            : NonBitwiseCopyAssignableType(other){
+        constexpr non_bitwise_copy_assignable_type_2(const non_bitwise_copy_assignable_type& other) noexcept
+            : non_bitwise_copy_assignable_type(other) {
         }
 
         /**
-        * Assign a NonBitwiseCopyAssignableType to this
-        * @param other The NonBitwiseCopyAssignableType to assign
+        * Assign a non_bitwise_copy_assignable_type to this
+        * @param other The non_bitwise_copy_assignable_type to assign
         * @return *this
         */
-        constexpr NonBitwiseCopyAssignableType2& operator=(const NonBitwiseCopyAssignableType& other) noexcept{
+        constexpr non_bitwise_copy_assignable_type_2& operator=(const non_bitwise_copy_assignable_type& other) noexcept{
             if (&other != this) {
-                NonBitwiseCopyAssignableType::operator=(other);
+                non_bitwise_copy_assignable_type::operator=(other);
             }
             return *this;
         }
 
-        constexpr NonBitwiseCopyAssignableType2& operator=(const NonBitwiseCopyAssignableType2& other) noexcept = default;
+        constexpr non_bitwise_copy_assignable_type_2& operator=(const non_bitwise_copy_assignable_type_2& other) noexcept = default;
     };
 
-    static_assert(std::is_copy_assignable_v<NonBitwiseCopyAssignableType2>);
-    static_assert(std::is_copy_constructible_v<NonBitwiseCopyAssignableType2>);
-    static_assert(std::is_constructible_v<NonBitwiseCopyAssignableType2, const NonBitwiseCopyAssignableType&>);
-    static_assert(!hud::is_bitwise_copy_assignable_v<NonBitwiseCopyAssignableType2>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyAssignableType2>);
+    static_assert(std::is_copy_assignable_v<non_bitwise_copy_assignable_type_2>);
+    static_assert(std::is_copy_constructible_v<non_bitwise_copy_assignable_type_2>);
+    static_assert(std::is_constructible_v<non_bitwise_copy_assignable_type_2, const non_bitwise_copy_assignable_type&>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_copy_assignable_type_2>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type_2>);
 
 
     /**
     * A copy assignable type that is not a bitwise assignable type
-    * The id is copied in order to know which NonBitwiseCopyAssignableType2 is the original NonBitwiseCopyAssignableType2.
-    * This type can be assigned with a NonBitwiseCopyAssignableType
+    * The id is copied in order to know which non_bitwise_copy_assignable_type_2 is the original non_bitwise_copy_assignable_type_2.
+    * This type can be assigned with a non_bitwise_copy_assignable_type
     */
-    struct NonBitwiseCopyAssignableType3 : public NonBitwiseCopyAssignableType2 {
+    struct non_bitwise_copy_assignable_type_3 : public non_bitwise_copy_assignable_type_2 {
 
     public:
 
-        constexpr NonBitwiseCopyAssignableType3() noexcept = default;
+        constexpr non_bitwise_copy_assignable_type_3() noexcept = default;
 
-        constexpr NonBitwiseCopyAssignableType3(i32* increment_ptr) noexcept
-            : NonBitwiseCopyAssignableType2()
+        constexpr non_bitwise_copy_assignable_type_3(i32* increment_ptr) noexcept
+            : non_bitwise_copy_assignable_type_2()
             , increment(increment_ptr) {
         }
 
         /**
         * Copy constructor
-        * @param other The NonBitwiseCopyAssignableType to copy
+        * @param other The non_bitwise_copy_assignable_type to copy
         */
-        constexpr NonBitwiseCopyAssignableType3(const NonBitwiseCopyAssignableType3& other) noexcept
-            : NonBitwiseCopyAssignableType2(other)
+        constexpr non_bitwise_copy_assignable_type_3(const non_bitwise_copy_assignable_type_3& other) noexcept
+            : non_bitwise_copy_assignable_type_2(other)
             , increment(other.increment) {
         }
 
         /**
-       * Assign a NonBitwiseCopyAssignableType to this
-       * @param other The NonBitwiseCopyAssignableType to assign
+       * Assign a non_bitwise_copy_assignable_type to this
+       * @param other The non_bitwise_copy_assignable_type to assign
        * @return *this
        */
-        constexpr NonBitwiseCopyAssignableType3& operator=(const NonBitwiseCopyAssignableType3& other) noexcept {
+        constexpr non_bitwise_copy_assignable_type_3& operator=(const non_bitwise_copy_assignable_type_3& other) noexcept {
             if (&other != this) {
-                NonBitwiseCopyAssignableType2::operator=(other);
+                non_bitwise_copy_assignable_type_2::operator=(other);
                 increment = other.increment;
                 if (increment) {
                     ++(*increment);
@@ -200,45 +200,45 @@ static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyAssignableType
         i32* increment = nullptr;
     };
 
-    static_assert(std::is_copy_assignable_v<NonBitwiseCopyAssignableType3>);
-    static_assert(std::is_copy_constructible_v<NonBitwiseCopyAssignableType3>);
-    static_assert(std::is_constructible_v<NonBitwiseCopyAssignableType3, const NonBitwiseCopyAssignableType3&>);
-    static_assert(!hud::is_bitwise_copy_assignable_v<NonBitwiseCopyAssignableType3>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyAssignableType3>);
+    static_assert(std::is_copy_assignable_v<non_bitwise_copy_assignable_type_3>);
+    static_assert(std::is_copy_constructible_v<non_bitwise_copy_assignable_type_3>);
+    static_assert(std::is_constructible_v<non_bitwise_copy_assignable_type_3, const non_bitwise_copy_assignable_type_3&>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_copy_assignable_type_3>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type_3>);
 
 
     /**
     * A copy assignable type that is not a bitwise assignable type
-    * The id is copied in order to know which NonBitwiseCopyAssignableType2 is the original NonBitwiseCopyAssignableType2.
-    * This type can be assigned with a NonBitwiseCopyAssignableType
+    * The id is copied in order to know which non_bitwise_copy_assignable_type_2 is the original non_bitwise_copy_assignable_type_2.
+    * This type can be assigned with a non_bitwise_copy_assignable_type
     */
-    struct NonBitwiseCopyAssignableType4 : public NonBitwiseCopyAssignableType3
+    struct non_bitwise_copy_assignable_type_4 : public non_bitwise_copy_assignable_type_3
     {
         /** Default construct */
-        constexpr NonBitwiseCopyAssignableType4() noexcept = default;
+        constexpr non_bitwise_copy_assignable_type_4() noexcept = default;
 
         /** */
-        constexpr NonBitwiseCopyAssignableType4(i32* increment_ptr) noexcept
-            : NonBitwiseCopyAssignableType3(increment_ptr){
+        constexpr non_bitwise_copy_assignable_type_4(i32* increment_ptr) noexcept
+            : non_bitwise_copy_assignable_type_3(increment_ptr) {
         }
 
         /**
         * Copy constructor
-        * @param other The NonBitwiseCopyAssignableType to copy
+        * @param other The non_bitwise_copy_assignable_type to copy
         */
-        constexpr NonBitwiseCopyAssignableType4(const NonBitwiseCopyAssignableType3& other) noexcept
-            : NonBitwiseCopyAssignableType3(other) {
+        constexpr non_bitwise_copy_assignable_type_4(const non_bitwise_copy_assignable_type_3& other) noexcept
+            : non_bitwise_copy_assignable_type_3(other) {
             
         }
 
         /**
-        * Assign a NonBitwiseCopyAssignableType to this
-        * @param other The NonBitwiseCopyAssignableType to assign
+        * Assign a non_bitwise_copy_assignable_type to this
+        * @param other The non_bitwise_copy_assignable_type to assign
         * @return *this
         */
-        constexpr NonBitwiseCopyAssignableType4& operator=(const NonBitwiseCopyAssignableType3& other) noexcept {
+        constexpr non_bitwise_copy_assignable_type_4& operator=(const non_bitwise_copy_assignable_type_3& other) noexcept {
             if (&other != this) {
-                NonBitwiseCopyAssignableType3::operator=(other);
+                non_bitwise_copy_assignable_type_3::operator=(other);
                 if (incrementation_ptr()) {
                     increment_value = *incrementation_ptr();
                 }
@@ -246,9 +246,9 @@ static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyAssignableType
             return *this;
         }
 
-        constexpr NonBitwiseCopyAssignableType4& operator=(const NonBitwiseCopyAssignableType4& other) noexcept {
+        constexpr non_bitwise_copy_assignable_type_4& operator=(const non_bitwise_copy_assignable_type_4& other) noexcept {
             if (&other != this) {
-                NonBitwiseCopyAssignableType3::operator=(other);
+                non_bitwise_copy_assignable_type_3::operator=(other);
                 if (incrementation_ptr()) {
                     increment_value = *incrementation_ptr();
                 }
@@ -266,12 +266,12 @@ static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyAssignableType
         i32 increment_value = -1;
     };
 
-    static_assert(std::is_copy_assignable_v<NonBitwiseCopyAssignableType4>);
-    static_assert(std::is_copy_constructible_v<NonBitwiseCopyAssignableType4>);
-    static_assert(std::is_constructible_v<NonBitwiseCopyAssignableType4, const NonBitwiseCopyAssignableType3&>);
-    static_assert(!hud::is_bitwise_copy_assignable_v<NonBitwiseCopyAssignableType4>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyAssignableType4>);
-} // namespace hud::test
+    static_assert(std::is_copy_assignable_v<non_bitwise_copy_assignable_type_4>);
+    static_assert(std::is_copy_constructible_v<non_bitwise_copy_assignable_type_4>);
+    static_assert(std::is_constructible_v<non_bitwise_copy_assignable_type_4, const non_bitwise_copy_assignable_type_3&>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_copy_assignable_type_4>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type_4>);
+} // namespace hud_test
 
 #endif // HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H
 

@@ -3,40 +3,40 @@
 
 namespace {
     template<typename type_t>
-    struct CustomDeleter
+    struct custom_deleter
         : public hud::default_deleter<type_t>
-        , hud::test::NonBitwiseType {
+        , hud_test::non_bitwise_type {
 
-        constexpr CustomDeleter() noexcept = default;
-        constexpr CustomDeleter(const CustomDeleter& other) noexcept = default;
-        constexpr CustomDeleter(CustomDeleter&& other) noexcept = default;
-        constexpr CustomDeleter(hud::default_deleter<type_t>&& other) noexcept
+        constexpr custom_deleter() noexcept = default;
+        constexpr custom_deleter(const custom_deleter& other) noexcept = default;
+        constexpr custom_deleter(custom_deleter&& other) noexcept = default;
+        constexpr custom_deleter(hud::default_deleter<type_t>&& other) noexcept
             : hud::default_deleter<type_t>(hud::move(other))
-            , hud::test::NonBitwiseType(hud::move(other)) {
+            , hud_test::non_bitwise_type(hud::move(other)) {
         }
         template<typename U>
-        constexpr CustomDeleter(CustomDeleter<U>&& other) noexcept
+        constexpr custom_deleter(custom_deleter<U>&& other) noexcept
             : hud::default_deleter<type_t>(hud::move(other))
-            , hud::test::NonBitwiseType(hud::move(other)) {
+            , hud_test::non_bitwise_type(hud::move(other)) {
         }
-        constexpr CustomDeleter& operator=(const CustomDeleter&) noexcept {
+        constexpr custom_deleter& operator=(const custom_deleter&) noexcept {
             return *this;
         }
-        constexpr CustomDeleter& operator=(CustomDeleter&&) noexcept {
+        constexpr custom_deleter& operator=(custom_deleter&&) noexcept {
             return *this;
         }
 
     };
 
-    using DeleterType = CustomDeleter<hud::test::NonBitwiseType>;
+    using deleter_type = custom_deleter<hud_test::non_bitwise_type>;
 }
 
-TEST(UniquePointer, pointer) {
+TEST(unique_pointer, pointer) {
 
     const auto test = []() {
         i32* ptr = new i32(35);
-        hud::UniquePointer<i32> p(ptr);
-        hud::UniquePointer<i32> p2;
+        hud::unique_pointer<i32> p(ptr);
+        hud::unique_pointer<i32> p2;
         return std::tuple {
             p.pointer() == ptr,
             p2.pointer() == nullptr
@@ -60,11 +60,11 @@ TEST(UniquePointer, pointer) {
 }
 
 
-TEST(UniquePointer, is_owning) {
+TEST(unique_pointer, is_owning) {
     const auto test = []() {
         i32* ptr = new i32(35);
-        hud::UniquePointer<i32> p(ptr);
-        hud::UniquePointer<i32> p2;
+        hud::unique_pointer<i32> p(ptr);
+        hud::unique_pointer<i32> p2;
         return std::tuple{
             p.is_owning(),
             p2.is_owning()
@@ -87,11 +87,11 @@ TEST(UniquePointer, is_owning) {
     }
 }
 
-TEST(UniquePointer, cast_bool) {
+TEST(unique_pointer, cast_bool) {
     const auto test = []() {
         i32* ptr = new i32(35);
-        hud::UniquePointer<i32> p(ptr);
-        hud::UniquePointer<i32> p2;
+        hud::unique_pointer<i32> p(ptr);
+        hud::unique_pointer<i32> p2;
         return std::tuple{
             static_cast<bool>(p),
             static_cast<bool>(p2)
@@ -114,10 +114,10 @@ TEST(UniquePointer, cast_bool) {
     }
 }
 
-TEST(UniquePointer, operator_dereference) {
+TEST(unique_pointer, operator_dereference) {
     const auto test = []() {
         i32* ptr = new i32(35);
-        hud::UniquePointer<i32> p(ptr);
+        hud::unique_pointer<i32> p(ptr);
         return *p == 35;
     };
 
@@ -134,10 +134,10 @@ TEST(UniquePointer, operator_dereference) {
     }
 }
 
-TEST(UniquePointer, operator_arrow) {
+TEST(unique_pointer, operator_arrow) {
     const auto test = []() {
         i32* ptr = new i32(35);
-        hud::UniquePointer<i32> p(ptr);
+        hud::unique_pointer<i32> p(ptr);
         return p.operator->() == ptr;
     };
 
@@ -154,13 +154,13 @@ TEST(UniquePointer, operator_arrow) {
     }
 }
 
-TEST(UniquePointer, deleter) {
+TEST(unique_pointer, deleter) {
     const auto test = []() {
         i32 dtor_counter = 0;
-        DeleterType deleter;
+        deleter_type deleter;
         deleter.set_dtor_counter_ptr(&dtor_counter);
-        hud::UniquePointer<hud::test::NonBitwiseType, DeleterType> p(new hud::test::NonBitwiseType(1, nullptr), deleter);
-        const hud::UniquePointer<hud::test::NonBitwiseType, const DeleterType> p_const(new hud::test::NonBitwiseType(2, nullptr), deleter);
+        hud::unique_pointer<hud_test::non_bitwise_type, deleter_type> p(new hud_test::non_bitwise_type(1, nullptr), deleter);
+        const hud::unique_pointer<hud_test::non_bitwise_type, const deleter_type> p_const(new hud_test::non_bitwise_type(2, nullptr), deleter);
         return std::tuple{
             !hud::is_const_v<hud::remove_reference_t<decltype(p.deleter())>>,
             hud::is_const_v<hud::remove_reference_t<decltype(p_const.deleter())>>,
@@ -188,17 +188,17 @@ TEST(UniquePointer, deleter) {
     }
 }
 
-TEST(UniquePointer, release) {
-    const auto test = [](){
-        hud::test::NonBitwiseType* ptr = new hud::test::NonBitwiseType(1, nullptr);
-        hud::UniquePointer<hud::test::NonBitwiseType> p(ptr);
+TEST(unique_pointer, release) {
+    const auto test = []() {
+        hud_test::non_bitwise_type* ptr = new hud_test::non_bitwise_type(1, nullptr);
+        hud::unique_pointer<hud_test::non_bitwise_type> p(ptr);
         auto released_ptr = p.leak();
-        hud::test::NonBitwiseType* ptr_const = new hud::test::NonBitwiseType(1, nullptr);
-        hud::UniquePointer<const hud::test::NonBitwiseType> p_const(ptr_const);
+        hud_test::non_bitwise_type* ptr_const = new hud_test::non_bitwise_type(1, nullptr);
+        hud::unique_pointer<const hud_test::non_bitwise_type> p_const(ptr_const);
         auto const_released_ptr = p_const.leak();
         const auto result = std::tuple{
-            hud::is_same_v<decltype(released_ptr), hud::test::NonBitwiseType*>,
-            hud::is_same_v<decltype(const_released_ptr), const hud::test::NonBitwiseType*>,
+            hud::is_same_v<decltype(released_ptr), hud_test::non_bitwise_type*>,
+            hud::is_same_v<decltype(const_released_ptr), const hud_test::non_bitwise_type*>,
             released_ptr == ptr,
             const_released_ptr == ptr_const
         };
@@ -227,14 +227,14 @@ TEST(UniquePointer, release) {
 }
 
 
-TEST(UniquePointer, reset) {
+TEST(unique_pointer, reset) {
     const auto test = []() {
-        hud::test::NonBitwiseType* ptr = new hud::test::NonBitwiseType(1, nullptr);
-        hud::UniquePointer<hud::test::NonBitwiseType> p(ptr);
+        hud_test::non_bitwise_type* ptr = new hud_test::non_bitwise_type(1, nullptr);
+        hud::unique_pointer<hud_test::non_bitwise_type> p(ptr);
         const bool is_not_null = p.pointer() == ptr;
         p.reset(nullptr);
         const bool is_null = p.pointer() == nullptr;
-        ptr = new hud::test::NonBitwiseType(1, nullptr);
+        ptr = new hud_test::non_bitwise_type(1, nullptr);
         p.reset(ptr);
         const bool is_not_null_2 = p.pointer() == ptr;
         p.reset();
@@ -267,10 +267,10 @@ TEST(UniquePointer, reset) {
 }
 
 
-TEST(UniquePointer, make_unique) {
+TEST(unique_pointer, make_unique) {
     const auto test = []() {
         i32 dtor_count = 0;
-        hud::UniquePointer<hud::test::NonBitwiseType> ptr = hud::make_unique<hud::test::NonBitwiseType>(123, &dtor_count);
+        hud::unique_pointer<hud_test::non_bitwise_type> ptr = hud::make_unique<hud_test::non_bitwise_type>(123, &dtor_count);
         return ptr->id() == 123;
     };
 
@@ -287,11 +287,11 @@ TEST(UniquePointer, make_unique) {
     }
 }
 
-TEST(UniquePointer, hash) {
+TEST(unique_pointer, hash) {
 
     const auto test = []() {
-        hud::test::NonBitwiseType* ptr = new hud::test::NonBitwiseType(1, nullptr);
-        hud::UniquePointer<hud::test::NonBitwiseType> p(ptr);
+        hud_test::non_bitwise_type* ptr = new hud_test::non_bitwise_type(1, nullptr);
+        hud::unique_pointer<hud_test::non_bitwise_type> p(ptr);
         return hud::hash(p) == hud::hash(ptr);
     };
 

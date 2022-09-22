@@ -23,7 +23,7 @@ namespace hud {
     */
     template<typename type_t>
     struct is_trivial
-        : bool_constant<__is_trivial(type_t)> {
+        : hud::bool_constant<__is_trivial(type_t)> {
     };
 
     /** Equivalent of is_trivial<type_t>::value */

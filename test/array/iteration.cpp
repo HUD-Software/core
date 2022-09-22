@@ -1,6 +1,6 @@
 #include <core/containers/array.h>
 
-TEST(Array, iterators)
+TEST(array, iterators)
 {
 
 
@@ -46,7 +46,7 @@ TEST(Array, iterators)
     }
 }
 
-TEST(Array, range_for_loop)
+TEST(array, range_for_loop)
 {
 
 

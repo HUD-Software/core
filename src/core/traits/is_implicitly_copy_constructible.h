@@ -9,7 +9,7 @@ namespace hud {
     /** Checks whether type_t is an implicitly copy constructible type with u_type_t. */
     template<typename type_t, typename u_type_t = type_t>
     struct is_implicitly_copy_constructible
-        : is_implicitly_constructible< type_t, add_lvalue_reference_t<add_const_t<u_type_t>> > {
+        : is_implicitly_constructible< type_t, hud::add_lvalue_reference_t<hud::add_const_t<u_type_t>> > {
     };
 
     /** Equivalent of is_implicitly_copy_constructible<type_t, u_type_t>::value. */

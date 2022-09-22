@@ -79,7 +79,7 @@ namespace hud {
         * @return Reference on the element at the given index
         */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr add_lvalue_reference_t<type_t> operator[](const usize index) const noexcept {
+        HD_FORCEINLINE constexpr hud::add_lvalue_reference_t<type_t> operator[](const usize index) const noexcept {
             check(is_valid_index(index));
             return *(data() + index);
         }

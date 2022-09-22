@@ -1,0 +1,24 @@
+name: Windows
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Generate visual Studio solution
+        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64
+      - name: Build
+        run: cmake.exe --build target --config Release
+      - name: 
+        run: | 
+          xcopy target\test\Release release\ /s /y
+          xcopy target\src\Release release\ /s /y
+          xcopy src\core release\core\ /s /y
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Windows_MSVC_AMD64
+          path: release\**

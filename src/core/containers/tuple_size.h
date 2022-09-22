@@ -33,7 +33,7 @@ namespace hud {
         */
         template<typename tuple_like >
         struct tuple_size_impl< tuple_like, void_t< decltype(tuple_size<tuple_like>::value) > >
-            : integral_constant<usize, tuple_size<tuple_like>::value> {
+            : hud::integral_constant<usize, tuple_size<tuple_like>::value> {
         };
     }
 

@@ -1,14 +1,14 @@
 #include <core/containers/shared_pointer.h>
 #include <array>
 
-TEST(SharedPointer_array_safe, destructor) {
+TEST(shared_pointer_array_safe, destructor) {
 
     const auto test = []() {
         i32 dtor_count[4] = { 0 };
         {
-            hud::SharedPointer<hud::test::NonBitwiseType[4], hud::EThreadSafety::safe> ptr(new hud::test::NonBitwiseType[4]{ { 123, &dtor_count[0] }, { 123, &dtor_count[1] }, { 123, &dtor_count[2] }, { 123, &dtor_count[3] } });
+            hud::shared_pointer<hud_test::non_bitwise_type[4], hud::thread_safety_e::safe> ptr(new hud_test::non_bitwise_type[4]{ { 123, &dtor_count[0] }, { 123, &dtor_count[1] }, { 123, &dtor_count[2] }, { 123, &dtor_count[3] } });
             {
-                hud::SharedPointer<hud::test::NonBitwiseType[4], hud::EThreadSafety::safe> ptr_2(ptr);
+                hud::shared_pointer<hud_test::non_bitwise_type[4], hud::thread_safety_e::safe> ptr_2(ptr);
             } // dtor_count == 0
 
         } // dtor_count == 1
@@ -23,18 +23,18 @@ TEST(SharedPointer_array_safe, destructor) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
     }
 }

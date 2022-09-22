@@ -6,7 +6,7 @@
 #include <core/traits/is_bitwise_copy_assignable.h>
 #include <core/traits/is_bitwise_move_assignable.h>
 
-namespace hud::test {
+namespace hud_test {
 
     
     /**
@@ -34,7 +34,7 @@ namespace hud::test {
         * @param other The SetBoolToTrueWhenDestroyed to copy
         */
         constexpr SetBoolToTrueWhenDestroyed(const SetBoolToTrueWhenDestroyed& other) noexcept
-            : is_destructor_called(other.is_destructor_called){
+            : is_destructor_called(other.is_destructor_called) {
         }
 
         /**
@@ -103,6 +103,6 @@ static_assert(!hud::is_bitwise_copy_constructible_v<SetBoolToTrueWhenDestroyed>)
 static_assert(!hud::is_bitwise_move_constructible_v<SetBoolToTrueWhenDestroyed>);
 static_assert(!hud::is_bitwise_copy_assignable_v<SetBoolToTrueWhenDestroyed>);
 static_assert(!hud::is_bitwise_move_assignable_v<SetBoolToTrueWhenDestroyed>);
-} // namespace hud::test
+} // namespace hud_test
 
 #endif // HD_INC_MISC_SETBOOLTOTRUEWHENDESTROYED_H

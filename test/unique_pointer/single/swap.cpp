@@ -1,12 +1,12 @@
 #include <core/containers/unique_pointer.h>
 
-TEST(UniquePointer, swap) {
+TEST(unique_pointer, swap) {
 
     // UniquePointer::swap
     {
         const auto test = []() {
-            hud::UniquePointer<i32> p(new i32(1));
-            hud::UniquePointer<i32> p2(new i32(2));
+            hud::unique_pointer<i32> p(new i32(1));
+            hud::unique_pointer<i32> p2(new i32(2));
             p.swap(p2);
             return std::tuple{
                 *p == 2,
@@ -33,8 +33,8 @@ TEST(UniquePointer, swap) {
     // hud::swap
     {
         const auto test = []() {
-            hud::UniquePointer<i32> p(new i32(1));
-            hud::UniquePointer<i32> p2(new i32(2));
+            hud::unique_pointer<i32> p(new i32(1));
+            hud::unique_pointer<i32> p2(new i32(2));
             hud::swap(p, p2);
             return std::tuple{
                 *p == 2,

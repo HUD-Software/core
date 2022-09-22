@@ -11,7 +11,7 @@ namespace hud {
     };
 
     /** Constant used to indicate to initialize an object. */
-    inline constexpr tag_init init{ tag_init::tag{} };
+    inline constexpr tag_init taginit{ tag_init::tag{} };
 
 }
 

@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(Memory, copy_assign_array_trivial_type)
+TEST(memory, copy_assign_array_trivial_type)
 {
 
 
@@ -20,23 +20,23 @@ TEST(Memory, copy_assign_array_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15u);
-        ASSERT_EQ(hud::get<1>(result), 32u);
-        ASSERT_EQ(hud::get<2>(result), 15u);
-        ASSERT_EQ(hud::get<3>(result), 32u);
+        ASSERT_EQ(std::get<0>(result), 15u);
+        ASSERT_EQ(std::get<1>(result), 32u);
+        ASSERT_EQ(std::get<2>(result), 15u);
+        ASSERT_EQ(std::get<3>(result), 32u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15u);
-        ASSERT_EQ(hud::get<1>(result), 32u);
-        ASSERT_EQ(hud::get<2>(result), 15u);
-        ASSERT_EQ(hud::get<3>(result), 32u);
+        ASSERT_EQ(std::get<0>(result), 15u);
+        ASSERT_EQ(std::get<1>(result), 32u);
+        ASSERT_EQ(std::get<2>(result), 15u);
+        ASSERT_EQ(std::get<3>(result), 32u);
     }
 }
 
-TEST(Memory, copy_assign_array_bitwise_assignable_type)
+TEST(memory, copy_assign_array_bitwise_assignable_type)
 {
 
 
@@ -63,42 +63,42 @@ TEST(Memory, copy_assign_array_bitwise_assignable_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15);
-        ASSERT_EQ(hud::get<1>(result), 32);
-        ASSERT_EQ(hud::get<2>(result), 15);
-        ASSERT_EQ(hud::get<3>(result), 32);
+        ASSERT_EQ(std::get<0>(result), 15);
+        ASSERT_EQ(std::get<1>(result), 32);
+        ASSERT_EQ(std::get<2>(result), 15);
+        ASSERT_EQ(std::get<3>(result), 32);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15);
-        ASSERT_EQ(hud::get<1>(result), 32);
-        ASSERT_EQ(hud::get<2>(result), 15);
-        ASSERT_EQ(hud::get<3>(result), 32);
+        ASSERT_EQ(std::get<0>(result), 15);
+        ASSERT_EQ(std::get<1>(result), 32);
+        ASSERT_EQ(std::get<2>(result), 15);
+        ASSERT_EQ(std::get<3>(result), 32);
     }
 }
 
-TEST(Memory, copy_assign_array_non_bitwise_copy_assignable_different_type)
+TEST(memory, copy_assign_array_non_bitwise_copy_assignable_different_type)
 {
 
 
-    using SourceType = hud::test::NonBitwiseCopyAssignableType3;
-    using DestinationType = hud::test::NonBitwiseCopyAssignableType4;
+    using source_type = hud_test::non_bitwise_copy_assignable_type_3;
+    using destination_type = hud_test::non_bitwise_copy_assignable_type_4;
     using ResultType = std::tuple<u32, u32, i32, u32, u32, i32>;
 
-    static_assert(hud::is_copy_constructible_v<DestinationType, SourceType>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<DestinationType, SourceType>);
-    static_assert(!std::is_same_v<DestinationType, SourceType>);
+    static_assert(hud::is_copy_constructible_v<destination_type, source_type>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<destination_type, source_type>);
+    static_assert(!std::is_same_v<destination_type, source_type>);
 
     auto test = []() -> ResultType {
         i32 assign_counter = 0;
-        SourceType* src = hud::memory::allocate_array<SourceType>(2);
-        hud::test::LeakArrayGuard src_guard(src, 2);
+        source_type* src = hud::memory::allocate_array<source_type>(2);
+        hud_test::LeakArrayGuard src_guard(src, 2);
         hud::memory::construct_array_at(src, src+2, &assign_counter);
 
-        DestinationType* dest = hud::memory::allocate_array<DestinationType>(2);
-        hud::test::LeakArrayGuard dest_guard(dest, 2);
+        destination_type* dest = hud::memory::allocate_array<destination_type>(2);
+        hud_test::LeakArrayGuard dest_guard(dest, 2);
         hud::memory::construct_array_at(dest, dest+2);
 
         hud::memory::copy_assign_array(dest, src, 2);
@@ -113,31 +113,31 @@ TEST(Memory, copy_assign_array_non_bitwise_copy_assignable_different_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 0u);
-        ASSERT_EQ(hud::get<1>(result), 1u);
-        ASSERT_EQ(hud::get<2>(result), 1);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 2);
+        ASSERT_EQ(std::get<0>(result), 0u);
+        ASSERT_EQ(std::get<1>(result), 1u);
+        ASSERT_EQ(std::get<2>(result), 1);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 2);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 0u);
-        ASSERT_EQ(hud::get<1>(result), 1u);
-        ASSERT_EQ(hud::get<2>(result), 1);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 2);
+        ASSERT_EQ(std::get<0>(result), 0u);
+        ASSERT_EQ(std::get<1>(result), 1u);
+        ASSERT_EQ(std::get<2>(result), 1);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 2);
     }
 }
 
-TEST(Memory, copy_assign_array_non_bitwise_copy_assignable_same_type)
+TEST(memory, copy_assign_array_non_bitwise_copy_assignable_same_type)
 {
 
 
-    using type = hud::test::NonBitwiseCopyAssignableType4;
+    using type = hud_test::non_bitwise_copy_assignable_type_4;
     using ResultType = std::tuple<u32, u32, i32, u32, u32, i32>;
     
     static_assert(hud::is_copy_assignable_v<type>);
@@ -146,10 +146,10 @@ TEST(Memory, copy_assign_array_non_bitwise_copy_assignable_same_type)
     auto test = []() -> ResultType {
         i32 assign_counter = 0;
         type* src = hud::memory::allocate_array<type>(2);
-        hud::test::LeakArrayGuard guard_src(src, 2);
+        hud_test::LeakArrayGuard guard_src(src, 2);
         hud::memory::construct_array_at(src, src+2, & assign_counter);
         type* dest = hud::memory::allocate_array<type>(2);
-        hud::test::LeakArrayGuard guard_dest(dest, 2);
+        hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest+2);
 
         hud::memory::copy_assign_array(dest, src, 2);
@@ -165,22 +165,22 @@ TEST(Memory, copy_assign_array_non_bitwise_copy_assignable_same_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 0u);
-        ASSERT_EQ(hud::get<1>(result), 1u);
-        ASSERT_EQ(hud::get<2>(result), 1);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 2);
+        ASSERT_EQ(std::get<0>(result), 0u);
+        ASSERT_EQ(std::get<1>(result), 1u);
+        ASSERT_EQ(std::get<2>(result), 1);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 2);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 0u);
-        ASSERT_EQ(hud::get<1>(result), 1u);
-        ASSERT_EQ(hud::get<2>(result), 1);
-        ASSERT_EQ(hud::get<3>(result), 0u);
-        ASSERT_EQ(hud::get<4>(result), 1u);
-        ASSERT_EQ(hud::get<5>(result), 2);
+        ASSERT_EQ(std::get<0>(result), 0u);
+        ASSERT_EQ(std::get<1>(result), 1u);
+        ASSERT_EQ(std::get<2>(result), 1);
+        ASSERT_EQ(std::get<3>(result), 0u);
+        ASSERT_EQ(std::get<4>(result), 1u);
+        ASSERT_EQ(std::get<5>(result), 2);
     }
 }

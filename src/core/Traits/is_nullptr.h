@@ -10,7 +10,7 @@ namespace hud {
     /** Checks whether type_t is hud::ptr::null or std::nullptr_t type. */
     template<typename type_t>
     struct is_nullptr
-        : is_same<remove_cv_t<type_t>, decltype(nullptr)> {
+        : hud::is_same<remove_cv_t<type_t>, decltype(nullptr)> {
     };
 
     /** Equivalent of is_nullptr<type_t>::value. */

@@ -8,7 +8,7 @@ namespace hud {
     /** Checks whether type_t is a union type. */
     template<typename type_t>
     struct is_union
-        : bool_constant<__is_union(type_t)> {
+        : hud::bool_constant<__is_union(type_t)> {
     };
 
     /** Equivalent of is_union<type_t>::value */

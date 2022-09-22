@@ -354,7 +354,7 @@ namespace hud {
         * @return Index of the newly created element
         */
         template<typename... args_t>
-        constexpr usize emplace_back(args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t...>) {
+        constexpr usize emplace_back(args_t&&... args) noexcept requires(hud::is_constructible_v<type_t, args_t...>) {
             const usize old_count = count();
             const usize new_count = count() + 1u;
 
@@ -385,7 +385,7 @@ namespace hud {
         */
         template<typename... args_t>
         [[nodiscard]]
-        constexpr type_t& emplace_back_to_ref(args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t...>) {
+        constexpr type_t& emplace_back_to_ref(args_t&&... args) noexcept requires(hud::is_constructible_v<type_t, args_t...>) {
             const usize element_index = emplace_back(hud::forward<args_t>(args)...);
             return *data_at(element_index);
         }
@@ -796,8 +796,8 @@ namespace hud {
         * Swap with another array.
         * @param other The array to swap with
         */
-        void swap(array& other) noexcept requires(is_swappable_v<type_t>) {
-            static_assert(is_nothrow_swappable_v<type_t>, "swap(array<type_t>&) is throwable. array is not designed to allow throwable swappable components");
+        void swap(array& other) noexcept requires(hud::is_swappable_v<type_t>) {
+            static_assert(hud::is_nothrow_swappable_v<type_t>, "swap(array<type_t>&) is throwable. array is not designed to allow throwable swappable components");
             hud::swap(end_ptr, other.end_ptr);
             hud::swap(allocation, other.allocation);
             hud::swap(*static_cast<allocator_type*>(this), *static_cast<allocator_type*>(&other));
@@ -1088,7 +1088,7 @@ namespace hud {
     * @param second The second array to swap
     */
     template<typename type_t, typename allocator_t>
-    HD_FORCEINLINE void swap(array<type_t, allocator_t>& first, array<type_t, allocator_t>& second) noexcept requires(is_swappable_v<type_t>) {
+    HD_FORCEINLINE void swap(array<type_t, allocator_t>& first, array<type_t, allocator_t>& second) noexcept requires(hud::is_swappable_v<type_t>) {
         first.swap(second);
     }
 

@@ -18,7 +18,7 @@ namespace hud {
     */
     template<typename type_t>
     struct has_unique_object_representations
-        : bool_constant< __has_unique_object_representations(remove_cv_t<remove_all_extents_t<type_t>>)> {
+        : hud::bool_constant< __has_unique_object_representations(remove_cv_t<hud::remove_all_extents_t<type_t>>)> {
     };
 
     /** Equivalent of has_unique_object_representations<type_t>::value. */

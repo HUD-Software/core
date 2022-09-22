@@ -82,13 +82,13 @@ namespace hud {
     /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
     [[nodiscard]]
     static inline u32 hash(const ansichar* value, usize length) noexcept {
-        return Hash::CityHash::hash_32(value, length);
+        return hud::hash_algorithm::city_hash::hash_32(value, length);
     }
     
     /** Retrieves the 32 bits hash of a wchar null-terminated string. */
     [[nodiscard]]
     static inline u32 hash(const wchar* value, usize length) noexcept {
-        return Hash::CityHash::hash_32(reinterpret_cast<const ansichar*>(value), length * sizeof(wchar));
+        return hud::hash_algorithm::city_hash::hash_32(reinterpret_cast<const ansichar*>(value), length * sizeof(wchar));
     }
 
     /** Retrieves the 32 bits hash of an enumeration. */

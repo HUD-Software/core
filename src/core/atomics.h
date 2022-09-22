@@ -231,7 +231,7 @@ namespace hud {
             alignas(sizeof(type_t)) type_t storage;
         };
 
-        template<typename type_t> requires(is_pointer_v<type_t>)
+        template<typename type_t> requires(hud::is_pointer_v<type_t>)
         class atomic_impl<type_t> {
 
         protected:

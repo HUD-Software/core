@@ -11,17 +11,17 @@ namespace hud {
         : hud::false_type {
     };
     template <typename type_t, usize extent>
-    struct is_array<type_t[extent]>
+    struct hud::is_array<type_t[extent]>
         : hud::true_type {
     };
     template <typename type_t>
-    struct is_array<type_t[]>
+    struct hud::is_array<type_t[]>
         : hud::true_type {
     };
 
-    /** Equivalent of is_array<type_t>::value. */
+    /** Equivalent of hud::is_array<type_t>::value. */
     template <typename type_t>
-    inline constexpr bool is_array_v = is_array<type_t>::value;
+    inline constexpr bool is_array_v = hud::is_array<type_t>::value;
 
 } // namespace hud
 

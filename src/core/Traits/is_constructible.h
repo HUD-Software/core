@@ -11,7 +11,7 @@ namespace hud {
     */
     template<typename type_t, typename... args_t>
     struct is_constructible
-        : bool_constant<__is_constructible(type_t, args_t...)> {
+        : hud::bool_constant<__is_constructible(type_t, args_t...)> {
     };
 
     /** Equivalent of is_constructible<type_t, args_t...>::value. */

@@ -12,7 +12,7 @@ namespace hud {
     /** Checks whether type_t is an object type (that is any possibly cv-qualified type other than function, reference, or void types). */
     template < typename type_t>
     struct is_object
-        : negation<disjunction<is_function<type_t>, is_reference<type_t>, is_void<type_t>>> {
+        : hud::negation<hud::disjunction<is_function<type_t>, is_reference<type_t>, is_void<type_t>>> {
     };
 
     /** Equivalent of is_object<type_t>::value. */

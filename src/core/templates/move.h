@@ -14,8 +14,8 @@ namespace hud {
     * @return An rvalue reference to object.
     */
     template<typename type_t>
-    constexpr remove_reference_t<type_t> && move(type_t && object) noexcept {
-        return static_cast<remove_reference_t<type_t>&&>(object);
+    constexpr hud::remove_reference_t<type_t> && move(type_t && object) noexcept {
+        return static_cast<hud::remove_reference_t<type_t>&&>(object);
     }
 
 } // namespace hud

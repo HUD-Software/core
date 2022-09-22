@@ -1,11 +1,11 @@
 #include <core/containers/tuple.h>
 
 TEST(Tuple, swap_non_trivially_copy_assignable_same_types) {
-    using TupleType = hud::Tuple<hud::test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
+    using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
 
     const auto test = []() {
-        TupleType tuple_a{ 1, 12.0f, 123, L'c' };
-        TupleType tuple_b{ 2, 36.0f, 568, L'p' };
+        tuple_type tuple_a{ 1, 12.0f, 123, L'c' };
+        tuple_type tuple_b{ 2, 36.0f, 568, L'p' };
         hud::swap(tuple_a, tuple_b);
         return std::tuple{
             hud::get<0>(tuple_a).id() == 2,
@@ -72,11 +72,11 @@ TEST(Tuple, swap_non_trivially_copy_assignable_same_types) {
 }
 
 TEST(Tuple, swap_non_trivially_copy_assignable_different_types) {
-    using TupleType = hud::Tuple<hud::test::NonBitwiseMoveAssignableType2, f32, i32, wchar>;
-    using OtherTupleType = hud::Tuple<hud::test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
+    using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType2, f32, i32, wchar>;
+    using other_tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
     const auto test = []() {
-        TupleType tuple_a{ 1, 12.0f, 123, L'c' };
-        OtherTupleType tuple_b{ 2, 36.0f, 568, L'p' };
+        tuple_type tuple_a{ 1, 12.0f, 123, L'c' };
+        other_tuple_type tuple_b{ 2, 36.0f, 568, L'p' };
         hud::swap(tuple_a, tuple_b);
         return std::tuple{
             hud::get<0>(tuple_a).id() == 2,

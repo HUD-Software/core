@@ -12,13 +12,13 @@ namespace hud {
         : hud::false_type {
     };
     template<typename type_t>
-    struct negation<type_t, false>
+    struct hud::negation<type_t, false>
         : hud::true_type {
     };
 
-    /** Equivalent of negation<type_t>::value. */
+    /** Equivalent of hud::negation<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool negation_v = negation<type_t>::value;
+    inline constexpr bool negation_v = hud::negation<type_t>::value;
 
 } // namespace hud
 

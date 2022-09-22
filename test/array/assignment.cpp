@@ -2,7 +2,7 @@
 #include "allocators.h"
 #include "../misc/leak_guard.h"
 
-TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
+TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
 {
 
     using type = i32;
@@ -12,7 +12,7 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
     // Test without extra
     {
         const auto test = [](std::initializer_list<type>&& elements_in_assigned, std::initializer_list<type> elements_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
 
             assigned = elements_to_assign;
 
@@ -40,51 +40,51 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, {1,2});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {3,4});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
 
@@ -92,51 +92,51 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
     }
@@ -144,7 +144,7 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
     // Test with extra
     {
         const auto test = [](std::initializer_list<type>&& elements_in_assigned, const usize extra, std::initializer_list<type> elements_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
 
             assigned = elements_to_assign;
 
@@ -172,99 +172,99 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
         {
             {
                 const auto result = test({}, 0u, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 0u, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
 
@@ -272,124 +272,124 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
         {
             {
                 constexpr auto result = test({}, 0u, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_different_type)
+TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_different_type)
 {
 
-    using SourceType = i32;
-    using DestinationType = u32;
+    using source_type = i32;
+    using destination_type = u32;
     // Ensure we test with different types
-    static_assert(!std::is_same_v<DestinationType, SourceType>);
-    static_assert(hud::is_bitwise_copy_assignable_v<DestinationType, SourceType>);
+    static_assert(!std::is_same_v<destination_type, source_type>);
+    static_assert(hud::is_bitwise_copy_assignable_v<destination_type, source_type>);
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<DestinationType>&& elements_in_assigned, std::initializer_list<SourceType> elements_to_assign) {
-            hud::array<DestinationType, hud::test::array_allocator<alignof(DestinationType)>> assigned(elements_in_assigned);
+        const auto test = [](std::initializer_list<destination_type>&& elements_in_assigned, std::initializer_list<source_type> elements_to_assign) {
+            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
 
             assigned = elements_to_assign;
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++) {
-                if (assigned[index] != static_cast<DestinationType>(*(elements_to_assign.begin() + index))) {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -410,51 +410,51 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_different_typ
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
 
@@ -462,66 +462,66 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_different_typ
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
     }
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<DestinationType>&& elements_in_assigned, const usize extra, std::initializer_list<SourceType> elements_to_assign) {
-            hud::array<DestinationType, hud::test::array_allocator<alignof(DestinationType)>> assigned(elements_in_assigned, extra);
+        const auto test = [](std::initializer_list<destination_type>&& elements_in_assigned, const usize extra, std::initializer_list<source_type> elements_to_assign) {
+            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra);
 
             assigned = elements_to_assign;
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++) {
-                if (assigned[index] != static_cast<DestinationType>(*(elements_to_assign.begin() + index))) {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -542,99 +542,99 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_different_typ
         {
             {
                 const auto result = test({}, 0u, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 0u, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
 
@@ -642,114 +642,114 @@ TEST(Array, assign_std_initializer_list_of_bitwise_copy_assignable_different_typ
         {
             {
                 constexpr auto result = test({}, 0u, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type)
+TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type)
 {
 
-    using type = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type;
     static_assert(!hud::is_bitwise_copy_assignable_v<type>);
 
     // Test without extra
     {
         const auto test = [](std::initializer_list<type>&& elements_in_assigned, std::initializer_list<type> elements_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
 
             assigned = elements_to_assign;
 
@@ -810,69 +810,69 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
         }
 
@@ -880,69 +880,69 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
         }
     }
@@ -950,7 +950,7 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type
     // Test with extra
     {
         const auto test = [](std::initializer_list<type>&& elements_in_assigned, const usize extra, std::initializer_list<type> elements_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
 
             assigned = elements_to_assign;
 
@@ -1012,135 +1012,135 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type
         {
             {
                 const auto result = test({}, 0, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 0, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 0, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
         }
 
@@ -1148,153 +1148,153 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type
         {
             {
                 constexpr auto result = test({}, 0, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different_type)
+TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different_type)
 {
 
-    using DestinationType = hud::test::NonBitwiseCopyAssignableType2;
-    using SourceType = hud::test::NonBitwiseCopyAssignableType;
+    using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
+    using source_type = hud_test::non_bitwise_copy_assignable_type;
     // Ensure we test with different types
-    static_assert(!std::is_same_v<DestinationType, SourceType>);
-    static_assert(!hud::is_bitwise_copy_assignable_v<DestinationType, SourceType>);
+    static_assert(!std::is_same_v<destination_type, source_type>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<destination_type, source_type>);
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<DestinationType>&& elements_in_assigned, std::initializer_list<SourceType> elements_to_assign) {
-            hud::array<DestinationType, hud::test::array_allocator<alignof(DestinationType)>> assigned(elements_in_assigned);
+        const auto test = [](std::initializer_list<destination_type>&& elements_in_assigned, std::initializer_list<source_type> elements_to_assign) {
+            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
 
             assigned = elements_to_assign;
 
@@ -1355,69 +1355,69 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
         }
 
@@ -1425,77 +1425,77 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
         }
     }
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<DestinationType>&& elements_in_assigned, const usize extra, std::initializer_list<SourceType> elements_to_assign) {
-            hud::array<DestinationType, hud::test::array_allocator<alignof(DestinationType)>> assigned(elements_in_assigned, extra);
+        const auto test = [](std::initializer_list<destination_type>&& elements_in_assigned, const usize extra, std::initializer_list<source_type> elements_to_assign) {
+            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra);
 
             assigned = elements_to_assign;
 
@@ -1557,135 +1557,135 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different
         {
             {
                 const auto result = test({}, 0, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 0, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 0, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
         }
 
@@ -1693,141 +1693,141 @@ TEST(Array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different
         {
             {
                 constexpr auto result = test({}, 0, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
+TEST(array, assign_std_initializer_list_call_destructor_of_elements)
 {
 
 
@@ -1846,8 +1846,8 @@ TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
                     dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
                 }
             }
-            hud::test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
-            hud::test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
 
             i32* dtor_to_assigned_counter = nullptr;
             i32** dtor_to_assigned_ptr_counter = nullptr;
@@ -1861,13 +1861,13 @@ TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
                     dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;
                 }
             }
-            hud::test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assigned);
-            hud::test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
 
 
-            hud::array<hud::test::SetBoolToTrueWhenDestroyed, hud::test::array_allocator<alignof(hud::test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned);
+            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned);
 
-            switch(count_to_assigned){
+            switch(count_to_assigned) {
                 case 0:
                 assigned = std::initializer_list<i32*>{};
                 break;
@@ -1939,45 +1939,45 @@ TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
         {
             {
                 const auto result = test(0, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0,2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(3, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 3);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
         }
 
@@ -1985,45 +1985,45 @@ TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
         {
             {
                 constexpr auto result = test(0, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(3, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 3);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
         }
     }
@@ -2043,8 +2043,8 @@ TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
                     dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
                 }
             }
-            hud::test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
-            hud::test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
 
             i32* dtor_to_assigned_counter = nullptr;
             i32** dtor_to_assigned_ptr_counter = nullptr;
@@ -2058,13 +2058,13 @@ TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
                     dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;
                 }
             }
-            hud::test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assigned);
-            hud::test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
 
 
-            hud::array<hud::test::SetBoolToTrueWhenDestroyed, hud::test::array_allocator<alignof(hud::test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned, extra);
+            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned, extra);
 
-            switch(count_to_assigned){
+            switch(count_to_assigned) {
                 case 0:
                 assigned = std::initializer_list<i32*>{};
                 break;
@@ -2137,87 +2137,87 @@ TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
         {
             {
                 const auto result = test(0, 0, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 1, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 0, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 1, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 1, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 const auto result = test(2, 0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 1, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(3, 0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(3, 1, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 0, 3);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 const auto result = test(2, 1, 3);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
         }
 
@@ -2225,93 +2225,93 @@ TEST(Array, assign_std_initializer_list_call_destructor_of_elements)
         {
             {
                 constexpr auto result = test(0, 0, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 1, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 0, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 1, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 1, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 constexpr auto result = test(2, 0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 1, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(3, 0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(3, 1, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 0, 3);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 constexpr auto result = test(2, 1, 3);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_array_of_bitwise_copy_assignable_same_type)
+TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
 {
 
     using type = i32;
@@ -2321,8 +2321,8 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_same_type)
     // Test without extra
     {
         const auto test = [](std::initializer_list<type>&& elements_in_assigned, std::initializer_list<type> elements_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud::test::array_allocator<alignof(type)>> to_assign(elements_to_assign);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign);
 
             assigned = to_assign;
 
@@ -2350,51 +2350,51 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_same_type)
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
 
@@ -2402,51 +2402,51 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_same_type)
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
     }
@@ -2454,8 +2454,8 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_same_type)
     // Test with extra
     {
         const auto test = [](std::initializer_list<type>&& elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud::test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned = to_assign;
 
@@ -2483,200 +2483,200 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_same_type)
         {
             {
                 const auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 const auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
 
@@ -2684,226 +2684,226 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_same_type)
         {
             {
                 constexpr auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_array_of_bitwise_copy_assignable_different_type)
+TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
 {
 
-    using SourceType = i32;
-    using DestinationType = u32;
+    using source_type = i32;
+    using destination_type = u32;
     // Ensure we test with different types
-    static_assert(!std::is_same_v<DestinationType, SourceType>);
-    static_assert(hud::is_bitwise_copy_assignable_v<DestinationType, SourceType>);
+    static_assert(!std::is_same_v<destination_type, source_type>);
+    static_assert(hud::is_bitwise_copy_assignable_v<destination_type, source_type>);
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<DestinationType>&& elements_in_assigned, std::initializer_list<SourceType> elements_to_assign) {
-            hud::array<DestinationType, hud::test::array_allocator<alignof(DestinationType)>> assigned(elements_in_assigned);
-            hud::array<SourceType, hud::test::array_allocator<alignof(SourceType)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<destination_type>&& elements_in_assigned, std::initializer_list<source_type> elements_to_assign) {
+            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::array<source_type, hud_test::array_allocator<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned = to_assign;
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++) {
-                if (assigned[index] != static_cast<DestinationType>(*(elements_to_assign.begin() + index))) {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -2924,51 +2924,51 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_different_type)
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
 
@@ -2976,67 +2976,67 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_different_type)
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
     }
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<DestinationType>&& elements_in_assigned, const usize extra_in_assigned, std::initializer_list<SourceType> elements_to_assign, const usize extra_to_assign) {
-            hud::array<DestinationType, hud::test::array_allocator<alignof(DestinationType)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<SourceType, hud::test::array_allocator<alignof(SourceType)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<destination_type>&& elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign) {
+            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::array<source_type, hud_test::array_allocator<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned = to_assign;
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++) {
-                if (assigned[index] != static_cast<DestinationType>(*(elements_to_assign.begin() + index))) {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -3057,200 +3057,200 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_different_type)
         {
             {
                 const auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 const auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
 
@@ -3258,216 +3258,216 @@ TEST(Array, assign_array_of_bitwise_copy_assignable_different_type)
         {
             {
                 constexpr auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_array_of_non_bitwise_copy_assignable_same_type)
+TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
 {
 
-    using type = hud::test::NonBitwiseCopyAssignableType;
+    using type = hud_test::non_bitwise_copy_assignable_type;
     static_assert(!hud::is_bitwise_copy_assignable_v<type>);
 
     // Test without extra
     {
         const auto test = [](std::initializer_list<i32>&& elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud::test::array_allocator<alignof(type)>> to_assign(elements_to_assign);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign);
 
             assigned = to_assign;
 
@@ -3528,69 +3528,69 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_same_type)
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
         }
 
@@ -3598,69 +3598,69 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_same_type)
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
         }
     }
@@ -3668,8 +3668,8 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_same_type)
     // Test with extra
     {
         const auto test = [](std::initializer_list<i32>&& elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud::test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned = to_assign;
 
@@ -3731,272 +3731,272 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_same_type)
         {
             {
                 const auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 const auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
         }
 
@@ -4004,291 +4004,291 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_same_type)
         {
             {
                 constexpr auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_array_of_non_bitwise_copy_assignable_different_type)
+TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
 {
 
-    using DestinationType = hud::test::NonBitwiseCopyAssignableType2;
-    using SourceType = hud::test::NonBitwiseCopyAssignableType;
+    using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
+    using source_type = hud_test::non_bitwise_copy_assignable_type;
     // Ensure we test with different types
-    static_assert(!std::is_same_v<DestinationType, SourceType>);
-    static_assert(!hud::is_bitwise_copy_assignable_v<DestinationType, SourceType>);
+    static_assert(!std::is_same_v<destination_type, source_type>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<destination_type, source_type>);
 
     // Test without extra
     {
         const auto test = [](std::initializer_list<i32>&& elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
-            hud::array<DestinationType, hud::test::array_allocator<alignof(DestinationType)>> assigned(elements_in_assigned);
-            hud::array<SourceType, hud::test::array_allocator<alignof(SourceType)>> to_assign(elements_to_assign);
+            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::array<source_type, hud_test::array_allocator<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned = to_assign;
 
@@ -4349,69 +4349,69 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_different_type)
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
         }
 
@@ -4419,69 +4419,69 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_different_type)
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
         }
     }
@@ -4489,8 +4489,8 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_different_type)
     // Test with extra
     {
         const auto test = [](std::initializer_list<i32>&& elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
-            hud::array<DestinationType, hud::test::array_allocator<alignof(DestinationType)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<SourceType, hud::test::array_allocator<alignof(SourceType)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::array<source_type, hud_test::array_allocator<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned = to_assign;
 
@@ -4552,272 +4552,272 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_different_type)
         {
             {
                 const auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 const auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
         }
 
@@ -4825,278 +4825,278 @@ TEST(Array, assign_array_of_non_bitwise_copy_assignable_different_type)
         {
             {
                 constexpr auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 2u);
-                ASSERT_EQ(hud::get<7>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 2u);
+                ASSERT_EQ(std::get<7>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_TRUE(hud::get<3>(result));
-                ASSERT_TRUE(hud::get<4>(result));
-                ASSERT_TRUE(hud::get<5>(result));
-                ASSERT_EQ(hud::get<6>(result), 1u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_TRUE(std::get<3>(result));
+                ASSERT_TRUE(std::get<4>(result));
+                ASSERT_TRUE(std::get<5>(result));
+                ASSERT_EQ(std::get<6>(result), 1u);
+                ASSERT_EQ(std::get<7>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, assign_array_call_destructor_of_elements)
+TEST(array, assign_array_call_destructor_of_elements)
 {
 
 
@@ -5115,8 +5115,8 @@ TEST(Array, assign_array_call_destructor_of_elements)
                     dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
                 }
             }
-            hud::test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
-            hud::test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
 
             i32* dtor_to_assigned_counter = nullptr;
             i32** dtor_to_assigned_ptr_counter = nullptr;
@@ -5130,12 +5130,12 @@ TEST(Array, assign_array_call_destructor_of_elements)
                     dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;
                 }
             }
-            hud::test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assigned);
-            hud::test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
 
 
-            hud::array<hud::test::SetBoolToTrueWhenDestroyed, hud::test::array_allocator<alignof(hud::test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned);
-            hud::array<hud::test::SetBoolToTrueWhenDestroyed, hud::test::array_allocator<alignof(hud::test::SetBoolToTrueWhenDestroyed)>> to_assigned(dtor_to_assigned_ptr_counter, count_to_assigned);
+            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned);
+            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assigned(dtor_to_assigned_ptr_counter, count_to_assigned);
 
             assigned = to_assigned;
 
@@ -5199,45 +5199,45 @@ TEST(Array, assign_array_call_destructor_of_elements)
         {
             {
                 const auto result = test(0, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(3, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 3);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
         }
 
@@ -5245,45 +5245,45 @@ TEST(Array, assign_array_call_destructor_of_elements)
         {
             {
                 constexpr auto result = test(0, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 0);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(3, 2);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 3);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
         }
     }
@@ -5303,8 +5303,8 @@ TEST(Array, assign_array_call_destructor_of_elements)
                     dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
                 }
             }
-            hud::test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
-            hud::test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
 
             i32* dtor_to_assigned_counter = nullptr;
             i32** dtor_to_assigned_ptr_counter = nullptr;
@@ -5318,12 +5318,12 @@ TEST(Array, assign_array_call_destructor_of_elements)
                     dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;
                 }
             }
-            hud::test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assign);
-            hud::test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assign);
+            hud_test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assign);
+            hud_test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assign);
 
 
-            hud::array<hud::test::SetBoolToTrueWhenDestroyed, hud::test::array_allocator<alignof(hud::test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned, extra_in_assigned);
-            hud::array<hud::test::SetBoolToTrueWhenDestroyed, hud::test::array_allocator<alignof(hud::test::SetBoolToTrueWhenDestroyed)>> to_assigned(dtor_to_assigned_ptr_counter, count_to_assign, extra_to_assign);
+            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned, extra_in_assigned);
+            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assigned(dtor_to_assigned_ptr_counter, count_to_assign, extra_to_assign);
 
             assigned = to_assigned;
 
@@ -5387,176 +5387,176 @@ TEST(Array, assign_array_call_destructor_of_elements)
         {
             {
                 const auto result = test(0, 0u, 0, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 1u, 0, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 0u, 0, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 1u, 0, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
 
             {
                 const auto result = test(2, 0u, 0, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 1u, 0, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 0u, 0, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 1u, 0, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
 
             {
                 const auto result = test(0, 0u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 1u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 const auto result = test(0, 0u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(0, 1u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
 
             {
                 const auto result = test(2, 0u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 1u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 0u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 1u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
 
             {
                 const auto result = test(3, 0u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(3, 1u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(3, 0u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(3, 1u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
 
             {
                 const auto result = test(2, 0u, 3, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 const auto result = test(2, 1u, 3, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 const auto result = test(2, 0u, 3, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 const auto result = test(2, 1u, 3, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
         }
 
@@ -5564,182 +5564,182 @@ TEST(Array, assign_array_call_destructor_of_elements)
         {
             {
                 constexpr auto result = test(0, 0u, 0, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 1u, 0, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 0u, 0, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 1u, 0, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
 
             {
                 constexpr auto result = test(2, 0u, 0, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 1u, 0, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 0u, 0, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 1u, 0, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
 
             {
                 constexpr auto result = test(0, 0u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 1u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 constexpr auto result = test(0, 0u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(0, 1u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
 
             {
                 constexpr auto result = test(2, 0u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 1u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 0u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 1u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
 
             {
                 constexpr auto result = test(3, 0u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(3, 1u, 2, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(3, 0u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(3, 1u, 2, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
 
             {
                 constexpr auto result = test(2, 0u, 3, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 constexpr auto result = test(2, 1u, 3, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
             {
                 constexpr auto result = test(2, 0u, 3, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
             }
             {
                 constexpr auto result = test(2, 1u, 3, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_TRUE(hud::get<1>(result));
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_TRUE(std::get<1>(result));
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, move_assign_array_of_bitwise_move_assignable_same_type)
+TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 {
 
     using type = i32;
@@ -5749,8 +5749,8 @@ TEST(Array, move_assign_array_of_bitwise_move_assignable_same_type)
     // Test without extra
     {
         const auto test = [](std::initializer_list<type>&& elements_in_assigned, std::initializer_list<type> elements_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud::test::array_allocator<alignof(type)>> to_assign(elements_to_assign);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign);
 
             assigned = hud::move(to_assign);
 
@@ -5778,51 +5778,51 @@ TEST(Array, move_assign_array_of_bitwise_move_assignable_same_type)
         {
             {
                 const auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
 
@@ -5830,51 +5830,51 @@ TEST(Array, move_assign_array_of_bitwise_move_assignable_same_type)
         {
             {
                 constexpr auto result = test({}, {});
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, {});
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, { 1,2 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3,4 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, { 4,5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, { 3, 4, 5 });
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
     }
@@ -5882,8 +5882,8 @@ TEST(Array, move_assign_array_of_bitwise_move_assignable_same_type)
     // Test with extra
     {
         const auto test = [](std::initializer_list<type>&& elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud::test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned = hud::move(to_assign);
 
@@ -5911,200 +5911,200 @@ TEST(Array, move_assign_array_of_bitwise_move_assignable_same_type)
         {
             {
                 const auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({}, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 const auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 const auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
         }
 
@@ -6112,206 +6112,206 @@ TEST(Array, move_assign_array_of_bitwise_move_assignable_same_type)
         {
             {
                 constexpr auto result = test({}, 0u, {}, 0u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, {}, 1u);
-                ASSERT_FALSE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 0u);
-                ASSERT_EQ(hud::get<3>(result), 0u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_FALSE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 0u);
+                ASSERT_EQ(std::get<3>(result), 0u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 1u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 1u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, {}, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 0u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 0u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 0u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, { 1,2 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 2u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 2u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3,4 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 0u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2,3 }, 1u, { 4,5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 2u);
-                ASSERT_EQ(hud::get<2>(result), 4u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 2u);
+                ASSERT_EQ(std::get<2>(result), 4u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
 
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 0u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 0u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 2u);
-                ASSERT_EQ(hud::get<4>(result), 1u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 2u);
+                ASSERT_EQ(std::get<4>(result), 1u);
             }
             {
                 constexpr auto result = test({ 1,2 }, 1u, { 3, 4, 5 }, 1u);
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 3u);
-                ASSERT_EQ(hud::get<2>(result), 3u);
-                ASSERT_EQ(hud::get<3>(result), 1u);
-                ASSERT_EQ(hud::get<4>(result), 0u);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 3u);
+                ASSERT_EQ(std::get<2>(result), 3u);
+                ASSERT_EQ(std::get<3>(result), 1u);
+                ASSERT_EQ(std::get<4>(result), 0u);
             }
         }
     }
 }
 
-TEST(Array, move_assign_array_of_bitwise_move_assignable_different_type)
+TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
 {
 
     using Type1 = i32;
@@ -6321,8 +6321,8 @@ TEST(Array, move_assign_array_of_bitwise_move_assignable_different_type)
     static_assert(hud::is_bitwise_copy_assignable_v<Type2, Type1>);
 
     auto test_assign = [](std::initializer_list<Type1>&& elements_in_assigned, usize extra, std::initializer_list<Type2> elements_to_assign, usize extra_2) {
-        hud::array<Type1, hud::test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
-        hud::array<Type2, hud::test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
+        hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
+        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
 
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
@@ -6399,10 +6399,10 @@ TEST(Array, move_assign_array_of_bitwise_move_assignable_different_type)
     }
 }
 
-TEST(Array, move_assign_array_of_non_bitwise_move_assignable_same_type)
+TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
 {
 
-    using type = hud::test::NonBitwiseMoveAssignableType;
+    using type = hud_test::NonBitwiseMoveAssignableType;
     static_assert(!hud::is_bitwise_move_assignable_v<type>);
 
     auto test_assign = [](std::initializer_list<type>&& elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_2) {
@@ -6418,8 +6418,8 @@ TEST(Array, move_assign_array_of_non_bitwise_move_assignable_same_type)
             ASSERT_EQ(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type, hud::test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
-        hud::array<type, hud::test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_2);
+        hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+        hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_2);
 
         // Ensure assigned copy constructor is set to 1
         for (const type& element : assigned) {
@@ -6543,11 +6543,11 @@ TEST(Array, move_assign_array_of_non_bitwise_move_assignable_same_type)
     }
 }
 
-TEST(Array, move_assign_array_of_non_bitwise_move_assignable_different_type)
+TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type)
 {
 
-    using Type1 = hud::test::NonBitwiseMoveAssignableType2;
-    using Type2 = hud::test::NonBitwiseMoveAssignableType;
+    using Type1 = hud_test::NonBitwiseMoveAssignableType2;
+    using Type2 = hud_test::NonBitwiseMoveAssignableType;
     // Ensure we test with different types
     static_assert(!std::is_same_v<Type1, Type2>);
     static_assert(!hud::is_bitwise_copy_assignable_v<Type2, Type1>);
@@ -6565,8 +6565,8 @@ TEST(Array, move_assign_array_of_non_bitwise_move_assignable_different_type)
             ASSERT_EQ(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<Type1, hud::test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
-        hud::array<Type2, hud::test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
+        hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
+        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
 
         // Ensure assigned copy constructor is set to 1
         for (const Type1& element : assigned) {
@@ -6690,7 +6690,7 @@ TEST(Array, move_assign_array_of_non_bitwise_move_assignable_different_type)
     }
 }
 
-TEST(Array, move_assign_array_call_destructor_of_elements)
+TEST(array, move_assign_array_call_destructor_of_elements)
 {
 
 
@@ -6706,11 +6706,11 @@ TEST(Array, move_assign_array_call_destructor_of_elements)
             *destructor_counter = 0;
         }
 
-        hud::array<hud::test::SetBoolToTrueWhenDestroyed, hud::test::array_allocator<alignof(hud::test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
-        hud::array<hud::test::SetBoolToTrueWhenDestroyed, hud::test::array_allocator<alignof(hud::test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
+        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
+        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const hud::test::SetBoolToTrueWhenDestroyed& element : assigned) {
+        for (const hud_test::SetBoolToTrueWhenDestroyed& element : assigned) {
             ASSERT_NE(element.ptr(), nullptr);
             ASSERT_EQ(*element.ptr(),0);
         }

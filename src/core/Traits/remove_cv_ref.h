@@ -9,7 +9,7 @@ namespace hud {
     /** Remove the reference and the topmost const and volatile qualifier of a type */
     template<typename type_t>
     struct remove_cv_ref 
-        : remove_cv<remove_reference_t<type_t>> {
+        : remove_cv<hud::remove_reference_t<type_t>> {
     };
 
     /** Equivalent of typename remove_cv_ref<type_t>::type. */

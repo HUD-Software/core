@@ -8,7 +8,7 @@ namespace hud {
     /** Checks whether type_t is a constructible type using the set of argument types specified by args_t, and such construction is known not to throw any exception. */
     template <typename type_t, typename... args_t>
     struct is_nothrow_constructible
-        : bool_constant<__is_nothrow_constructible(type_t, args_t...)> {
+        : hud::bool_constant<__is_nothrow_constructible(type_t, args_t...)> {
     };
 
     /** Equivalent of is_nothrow_constructible<type_t, args_t...>::value. */

@@ -11,30 +11,30 @@ namespace hud {
     struct disjunction;
 
     template<>
-    struct disjunction<> 
+    struct hud::disjunction<> 
         : public hud::false_type {
         // Empty is false
     };
 
     template<typename type_t>
-    struct disjunction<type_t> 
+    struct hud::disjunction<type_t> 
         : type_t {
         // Only 1 boolean, evaluate without conditional
     };
 
     template<typename type_t, typename... rest_t>
-    struct disjunction<type_t, rest_t...> 
-        : conditional_t<type_t::value, type_t, disjunction<rest_t...>> {
+    struct hud::disjunction<type_t, rest_t...> 
+        : hud::conditional_t<type_t::value, type_t, hud::disjunction<rest_t...>> {
         // If type_t is false evaluate next, else type_t is true
     };
 
-    /** Equivalent of disjunction<type_t...>::value */
+    /** Equivalent of hud::disjunction<type_t...>::value */
     template<typename... type_t>
-    inline constexpr bool disjunction_v = disjunction<type_t...>::value;
+    inline constexpr bool disjunction_v = hud::disjunction<type_t...>::value;
 
-    /** Equivalent of disjunction<type_t...>::type */
+    /** Equivalent of hud::disjunction<type_t...>::type */
     template<typename... type_t>
-    using disjunction_t = typename disjunction<type_t...>::type;
+    using disjunction_t = typename hud::disjunction<type_t...>::type;
 
 } // namespace hud
 

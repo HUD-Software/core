@@ -3,7 +3,7 @@
 #define HD_INC_MISC_FOREACH_TYPE_H
 #include <utility> // std::integer_sequence
 
-namespace hud::test {
+namespace hud_test {
     template<typename... Types>
     struct for_each_type;
 
@@ -37,6 +37,6 @@ namespace hud::test {
         }
     };
 
-} // namespace hud::test
+} // namespace hud_test
 
 #endif // HD_INC_MISC_FOREACH_TYPE_H

@@ -3,7 +3,7 @@
 #define HD_INC_MISC_NON_DEFAULT_CONSTRUCTIBLE_TYPE_H
 #include <core/minimal.h>
 
-namespace hud::test {
+namespace hud_test {
 
 
     /**
@@ -80,6 +80,6 @@ namespace hud::test {
         i32 unique_id;
     };
 
-} // namespace hud::test
+} // namespace hud_test
 
 #endif // HD_INC_MISC_NON_DEFAULT_CONSTRUCTIBLE_TYPE_H

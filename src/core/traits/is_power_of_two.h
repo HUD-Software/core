@@ -8,7 +8,7 @@ namespace hud {
     /** Check wheter the given number is a power of two or not. */
     template<usize value>
     struct is_power_of_two
-        : bool_constant<value && !(value& (value - 1))> {
+        : hud::bool_constant<value && !(value& (value - 1))> {
     };
 
     /** Equivalent of is_power_of_two<value>::value. */

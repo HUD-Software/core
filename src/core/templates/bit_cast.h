@@ -15,7 +15,7 @@ namespace hud {
         */
         template<typename To, typename From>
         [[nodiscard]]
-        constexpr To bit_cast(const From& value) noexcept requires(sizeof(To) == sizeof(From) && is_trivially_copyable_v<To> && is_trivially_copyable_v<From>){
+        constexpr To bit_cast(const From& value) noexcept requires(sizeof(To) == sizeof(From) && is_trivially_copyable_v<To> && is_trivially_copyable_v<From>) {
             return __builtin_bit_cast(To, value);
         }
 

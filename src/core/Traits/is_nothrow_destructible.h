@@ -14,19 +14,19 @@ namespace hud {
 #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
     template <typename type_t>
     struct is_nothrow_destructible
-        : bool_constant<__is_nothrow_destructible(type_t)> {
+        : hud::bool_constant<__is_nothrow_destructible(type_t)> {
     };
 #else
     namespace details {
         template<typename type_t>
         struct IsNothrowDestructibleWellFormed
-            : bool_constant<noexcept(hud::declval<type_t>().~type_t())> {
+            : hud::bool_constant<noexcept(hud::declval<type_t>().~type_t())> {
         };
     }
 
     template <typename type_t>
     struct is_nothrow_destructible
-        : conjunction<hud::is_destructible<type_t>,details::IsNothrowDestructibleWellFormed<type_t>> {
+        : hud::conjunction<hud::is_destructible<type_t>,details::IsNothrowDestructibleWellFormed<type_t>> {
     };
 
 #endif

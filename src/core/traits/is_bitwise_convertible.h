@@ -15,9 +15,9 @@ namespace hud {
     /** Checks whether type_t is a bitwise convertible type with the argument type u_type_t. */
     template<typename type_t, typename u_type_t>
     struct is_bitwise_convertible
-        : disjunction<
-            conjunction< disjunction<is_pointer<type_t>, is_member_pointer<type_t>>, disjunction<is_pointer<u_type_t>, is_member_pointer<u_type_t>>>, // If both are pointers or pointer's to member it's bitwise convertible
-            conjunction< disjunction< conjunction<is_integral<type_t>, is_integral<u_type_t>>, conjunction<is_enum<type_t>, is_enum<u_type_t>>>, is_same_size<type_t, u_type_t>> // If same size and both are integral or enums it's bitwise convertible, assuming two's-complement
+        : hud::disjunction<
+            hud::conjunction< hud::disjunction<is_pointer<type_t>, is_member_pointer<type_t>>, hud::disjunction<is_pointer<u_type_t>, is_member_pointer<u_type_t>>>, // If both are pointers or pointer's to member it's bitwise convertible
+            hud::conjunction< hud::disjunction< hud::conjunction<is_integral<type_t>, is_integral<u_type_t>>, hud::conjunction<is_enum<type_t>, is_enum<u_type_t>>>, hud::is_same_size<type_t, u_type_t>> // If same size and both are integral or enums it's bitwise convertible, assuming two's-complement
         > {
     };
 

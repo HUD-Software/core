@@ -387,11 +387,11 @@ namespace hud::os::common{
             set(destination, size, 0);
         }
         template<typename type_t>
-        static constexpr void set_zero(type_t* destination, const usize size) noexcept requires(is_integral_v<type_t>){
+        static constexpr void set_zero(type_t* destination, const usize size) noexcept requires(is_integral_v<type_t>) {
             set(destination, size, 0);
         }
         template<typename type_t>
-        static constexpr void set_zero(type_t* destination, const usize size) noexcept requires(is_pointer_v<type_t>) {
+        static constexpr void set_zero(type_t* destination, const usize size) noexcept requires(hud::is_pointer_v<type_t>) {
             if (hud::is_constant_evaluated()) {
                 for (usize position = 0; position < size / sizeof(type_t); position++) {
                     std::construct_at(destination + position, nullptr);

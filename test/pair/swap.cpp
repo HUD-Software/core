@@ -7,7 +7,7 @@ TEST(optional, swap_empty_trivial_type) {
     {
 
 
-        const auto test = [](Pair<i32, wchar> a, Pair<i32, wchar> b) {
+        const auto test = [](hud::pair<i32, wchar> a, hud::pair<i32, wchar> b) {
             static_assert(hud::is_swappable_v<usize, usize>);
             a.swap(b);
             return std::tuple{
@@ -41,7 +41,7 @@ TEST(optional, swap_empty_trivial_type) {
 
     // hud::swap
     {
-        const auto test = [](Pair<i32, wchar> a, Pair<i32, wchar> b) {
+        const auto test = [](hud::pair<i32, wchar> a, hud::pair<i32, wchar> b) {
             static_assert(hud::is_swappable_v<usize, usize>);
             swap(a, b);
             return std::tuple{

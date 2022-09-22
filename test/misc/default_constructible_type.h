@@ -3,7 +3,7 @@
 #define HD_INC_MISC_DEFAULT_CONSTRUCTIBLE_TYPE_H
 #include <core/minimal.h>
 
-namespace hud::test {
+namespace hud_test {
 
 
     /**
@@ -11,7 +11,7 @@ namespace hud::test {
     */
     struct default_constructible_type {
             
-        static constexpr const i32 DEFAULT_ID_VALUE = i32_max;
+        static constexpr const i32 DEFAULT_ID_VALUE = hud::i32_max;
 
         /** Default constructor */
         constexpr default_constructible_type() noexcept
@@ -94,6 +94,6 @@ namespace hud::test {
      i32 unique_id = DEFAULT_ID_VALUE;
  };
 
-} // namespace hud::test
+} // namespace hud_test
 
 #endif // HD_INC_MISC_DEFAULT_CONSTRUCTIBLE_TYPE_H

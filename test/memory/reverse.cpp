@@ -1,6 +1,6 @@
 #include <core/memory.h>
 
-TEST(Memory, reverse_bits) {
+TEST(memory, reverse_bits) {
 
 
     // Non constant
@@ -16,7 +16,7 @@ TEST(Memory, reverse_bits) {
     }
 }
 
-TEST(Memory,reverse) {
+TEST(memory,reverse) {
 
 
     auto test = []() -> std::tuple<u32, u64> {

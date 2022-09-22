@@ -3,45 +3,45 @@
 
 namespace {
     template<typename type_t>
-    struct CustomDeleter
+    struct custom_deleter
         : public hud::default_deleter<type_t>
-        , hud::test::NonBitwiseType {
+        , hud_test::non_bitwise_type {
 
-        constexpr CustomDeleter() noexcept = default;
-        constexpr CustomDeleter(const CustomDeleter& other) noexcept = default;
-        constexpr CustomDeleter(CustomDeleter&& other) noexcept = default;
-        constexpr CustomDeleter(hud::default_deleter<type_t>&& other) noexcept
+        constexpr custom_deleter() noexcept = default;
+        constexpr custom_deleter(const custom_deleter& other) noexcept = default;
+        constexpr custom_deleter(custom_deleter&& other) noexcept = default;
+        constexpr custom_deleter(hud::default_deleter<type_t>&& other) noexcept
             : hud::default_deleter<type_t>(hud::move(other))
-            , hud::test::NonBitwiseType(hud::move(other)) {
+            , hud_test::non_bitwise_type(hud::move(other)) {
         }
         template<typename U>
-        constexpr CustomDeleter(CustomDeleter<U>&& other) noexcept
+        constexpr custom_deleter(custom_deleter<U>&& other) noexcept
             : hud::default_deleter<type_t>(hud::move(other))
-            , hud::test::NonBitwiseType(hud::move(other)) {
+            , hud_test::non_bitwise_type(hud::move(other)) {
         }
-        constexpr CustomDeleter& operator=(const CustomDeleter&) noexcept {
+        constexpr custom_deleter& operator=(const custom_deleter&) noexcept {
             return *this;
         }
-        constexpr CustomDeleter& operator=(CustomDeleter&&) noexcept {
+        constexpr custom_deleter& operator=(custom_deleter&&) noexcept {
             return *this;
         }
 
     };
 
-    using DeleterType = CustomDeleter<hud::test::NonBitwiseType[]>;
-    using ConstDeleterType = CustomDeleter<const hud::test::NonBitwiseType[]>;
+    using deleter_type = custom_deleter<hud_test::non_bitwise_type[]>;
+    using const_deleter_type = custom_deleter<const hud_test::non_bitwise_type[]>;
 
     template<typename type_t>
-    struct CustomDeleter2 : public CustomDeleter<type_t> {
+    struct custom_deleter2 : public custom_deleter<type_t> {
     };
-    using DeleterType2 = CustomDeleter2<hud::test::NonBitwiseType[]>;
-    using ConstDeleterType2 = CustomDeleter2<const hud::test::NonBitwiseType[]>;
+    using deleter_type2 = custom_deleter2<hud_test::non_bitwise_type[]>;
+    using const_deleter_type2 = custom_deleter2<const hud_test::non_bitwise_type[]>;
 }
 
 
-TEST(UniquePointer_array, default_constructor) {
+TEST(unique_pointer_array, default_constructor) {
     const auto test = []() {
-        hud::UniquePointer<hud::test::NonBitwiseType[]> p;
+        hud::unique_pointer<hud_test::non_bitwise_type[]> p;
         return p.pointer() == nullptr;
     };
 
@@ -58,11 +58,11 @@ TEST(UniquePointer_array, default_constructor) {
     }
 }
 
-TEST(UniquePointer_array, constructor_with_same_pointer) {
+TEST(unique_pointer_array, constructor_with_same_pointer) {
 
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr}  }; 
-        hud::UniquePointer<hud::test::NonBitwiseType[]> p(pi);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr}  }; 
+        hud::unique_pointer<hud_test::non_bitwise_type[]> p(pi);
         return std::tuple{
             p.pointer() == pi,
             pi->constructor_count() == 1u,
@@ -96,11 +96,11 @@ TEST(UniquePointer_array, constructor_with_same_pointer) {
     }
 }
 
-TEST(UniquePointer_array, constructor_with_different_pointer) {
+TEST(unique_pointer_array, constructor_with_different_pointer) {
 
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        hud::UniquePointer<const hud::test::NonBitwiseType[]> p(pi);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        hud::unique_pointer<const hud_test::non_bitwise_type[]> p(pi);
         return std::tuple{
             p.pointer() == pi,
             pi->constructor_count() == 1u,
@@ -134,15 +134,15 @@ TEST(UniquePointer_array, constructor_with_different_pointer) {
     }
 }
 
-TEST(UniquePointer_array, constructor_with_pointer_and_same_deleter_by_copy) {
+TEST(unique_pointer_array, constructor_with_pointer_and_same_deleter_by_copy) {
 
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType > p(pi, deleter);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type > p(pi, deleter);
         return std::tuple{
             p.pointer() == pi,
-            hud::is_same_v<decltype(p.deleter()), DeleterType&>,
+            hud::is_same_v<decltype(p.deleter()), deleter_type&>,
             pi->constructor_count() == 1u,
             pi->copy_constructor_count() == 0u,
             pi->move_constructor_count() == 0u,
@@ -191,15 +191,15 @@ TEST(UniquePointer_array, constructor_with_pointer_and_same_deleter_by_copy) {
     }
 }
 
-TEST(UniquePointer_array, constructor_with_pointer_and_different_deleter_by_copy) {
+TEST(unique_pointer_array, constructor_with_pointer_and_different_deleter_by_copy) {
 
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType2 deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType > p(pi, deleter);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type2 deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type > p(pi, deleter);
         return std::tuple{
             p.pointer() == pi,
-            hud::is_same_v<decltype(p.deleter()), DeleterType&>,
+            hud::is_same_v<decltype(p.deleter()), deleter_type&>,
             pi->constructor_count() == 1u,
             pi->copy_constructor_count() == 0u,
             pi->move_constructor_count() == 0u,
@@ -249,14 +249,14 @@ TEST(UniquePointer_array, constructor_with_pointer_and_different_deleter_by_copy
 }
 
 
-TEST(UniquePointer_array, constructor_with_pointer_and_same_deleter_by_move) {
+TEST(unique_pointer_array, constructor_with_pointer_and_same_deleter_by_move) {
     const auto test = []() {
-        static_assert(hud::is_move_constructible_v<DeleterType>);
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType > p(pi, DeleterType{});
+        static_assert(hud::is_move_constructible_v<deleter_type>);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type > p(pi, deleter_type{});
         return std::tuple{
             p.pointer() == pi,
-            hud::is_same_v<decltype(p.deleter()), DeleterType&>,
+            hud::is_same_v<decltype(p.deleter()), deleter_type&>,
             pi->constructor_count() == 1u,
             pi->copy_constructor_count() == 0u,
             pi->move_constructor_count() == 0u,
@@ -305,14 +305,14 @@ TEST(UniquePointer_array, constructor_with_pointer_and_same_deleter_by_move) {
     }
 }
 
-TEST(UniquePointer_array, constructor_with_pointer_and_different_deleter_by_move) {
+TEST(unique_pointer_array, constructor_with_pointer_and_different_deleter_by_move) {
     const auto test = []() {
-        static_assert(hud::is_move_constructible_v<DeleterType>);
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType > p(pi, DeleterType2{});
+        static_assert(hud::is_move_constructible_v<deleter_type>);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type > p(pi, deleter_type2{});
         return std::tuple{
             p.pointer() == pi,
-            hud::is_same_v<decltype(p.deleter()), DeleterType&>,
+            hud::is_same_v<decltype(p.deleter()), deleter_type&>,
             pi->constructor_count() == 1u,
             pi->copy_constructor_count() == 0u,
             pi->move_constructor_count() == 0u,
@@ -361,11 +361,11 @@ TEST(UniquePointer_array, constructor_with_pointer_and_different_deleter_by_move
     }
 }
 
-TEST(UniquePointer_array, constructor_with_pointer_and_ref_same_deleter) {
+TEST(unique_pointer_array, constructor_with_pointer_and_ref_same_deleter) {
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType& > p(pi, deleter);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type& > p(pi, deleter);
         return std::tuple{
             p.pointer() == pi,
             &(p.deleter()) == &deleter,
@@ -432,11 +432,11 @@ TEST(UniquePointer_array, constructor_with_pointer_and_ref_same_deleter) {
     }
 }
 
-TEST(UniquePointer_array, constructor_with_pointer_and_ref_different_deleter) {
+TEST(unique_pointer_array, constructor_with_pointer_and_ref_different_deleter) {
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType2 deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType& > p(pi, deleter);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type2 deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type& > p(pi, deleter);
         return std::tuple{
             p.pointer() == pi,
             &(p.deleter()) == &deleter,
@@ -503,9 +503,9 @@ TEST(UniquePointer_array, constructor_with_pointer_and_ref_different_deleter) {
     }
 }
 
-TEST(UniquePointer_array, constructor_with_nullptr) {
+TEST(unique_pointer_array, constructor_with_nullptr) {
     const auto test = []() {
-        hud::UniquePointer<hud::test::NonBitwiseType[]> p(nullptr);
+        hud::unique_pointer<hud_test::non_bitwise_type[]> p(nullptr);
         return p.pointer() == nullptr;
     };
 
@@ -522,10 +522,10 @@ TEST(UniquePointer_array, constructor_with_nullptr) {
     }
 }
 
-TEST(UniquePointer_array, constructor_with_nullptr_with_deleter) {
+TEST(unique_pointer_array, constructor_with_nullptr_with_deleter) {
     const auto test = []() {
-        DeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType> p(nullptr, deleter);
+        deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type> p(nullptr, deleter);
         return p.pointer() == nullptr;
     };
 
@@ -543,10 +543,10 @@ TEST(UniquePointer_array, constructor_with_nullptr_with_deleter) {
 }
 
 
-TEST(UniquePointer_array, constructor_with_nullptr_with_deleter_ref) {
+TEST(unique_pointer_array, constructor_with_nullptr_with_deleter_ref) {
     const auto test = []() {
-        DeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType&> p(nullptr, deleter);
+        deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type&> p(nullptr, deleter);
         return p.pointer() == nullptr;
     };
 
@@ -563,11 +563,11 @@ TEST(UniquePointer_array, constructor_with_nullptr_with_deleter_ref) {
     }
 }
 
-TEST(UniquePointer_array, move_constructor_same_type) {
+TEST(unique_pointer_array, move_constructor_same_type) {
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType > other(pi);
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType > p(hud::move(other));
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type > other(pi);
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type > p(hud::move(other));
         return std::tuple{
             other.pointer() == nullptr,
             p.pointer() == pi,
@@ -619,12 +619,12 @@ TEST(UniquePointer_array, move_constructor_same_type) {
     }
 }
 
-TEST(UniquePointer_array, move_constructor_same_type_different_deleter) {
+TEST(unique_pointer_array, move_constructor_same_type_different_deleter) {
     
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType2 > other(pi);
-        hud::UniquePointer<const hud::test::NonBitwiseType[], ConstDeleterType > p(hud::move(other));
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type2 > other(pi);
+        hud::unique_pointer<const hud_test::non_bitwise_type[], const_deleter_type > p(hud::move(other));
         return std::tuple{
             other.pointer() == nullptr,
             p.pointer() == pi,
@@ -676,13 +676,13 @@ TEST(UniquePointer_array, move_constructor_same_type_different_deleter) {
     }
 }
 
-TEST(UniquePointer_array, move_constructor_same_type_with_same_deleter_ref) {
+TEST(unique_pointer_array, move_constructor_same_type_with_same_deleter_ref) {
 
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType& > other(pi, deleter);
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType& > p(hud::move(other));
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type& > other(pi, deleter);
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type& > p(hud::move(other));
         return std::tuple{
             other.pointer() == nullptr,
             p.pointer() == pi,
@@ -737,12 +737,12 @@ TEST(UniquePointer_array, move_constructor_same_type_with_same_deleter_ref) {
     }
 }
 
-TEST(UniquePointer_array, move_constructor_different_type_same_deleter) {
+TEST(unique_pointer_array, move_constructor_different_type_same_deleter) {
 
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType > other(pi);
-        hud::UniquePointer<const hud::test::NonBitwiseType[], ConstDeleterType > p(hud::move(other));
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type > other(pi);
+        hud::unique_pointer<const hud_test::non_bitwise_type[], const_deleter_type > p(hud::move(other));
         return std::tuple{
             other.pointer() == nullptr,
             p.pointer() == pi,
@@ -794,11 +794,11 @@ TEST(UniquePointer_array, move_constructor_different_type_same_deleter) {
     }
 }
 
-TEST(UniquePointer_array, move_constructor_different_type_different_deleter) {
+TEST(unique_pointer_array, move_constructor_different_type_different_deleter) {
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType2 > other(pi);
-        hud::UniquePointer<const hud::test::NonBitwiseType[], ConstDeleterType > p(hud::move(other));
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type2 > other(pi);
+        hud::unique_pointer<const hud_test::non_bitwise_type[], const_deleter_type > p(hud::move(other));
         return std::tuple{
             other.pointer() == nullptr,
             p.pointer() == pi,

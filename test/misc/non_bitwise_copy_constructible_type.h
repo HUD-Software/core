@@ -5,7 +5,7 @@
 #include <type_traits>
 #include <core/traits/is_bitwise_copy_constructible.h>
 
-namespace hud::test {
+namespace hud_test {
     
     /**
     * A copy constructible type that is not a bitwise copyable type
@@ -37,7 +37,7 @@ namespace hud::test {
         */
         constexpr NonBitwiseCopyConstructibleType(const NonBitwiseCopyConstructibleType& other) noexcept
             : copy_construct_count(other.copy_construct_count +1)
-            , unique_id(other.unique_id){
+            , unique_id(other.unique_id) {
         }
 
         /** Retrieves count of copy construction done */
@@ -71,7 +71,7 @@ static_assert( !hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructible
     /**
     * A copy constructible type that is not a bitwise copyable type
     * The id is copied in order to know which NonBitwiseCopyConstructibleType is the original NonBitwiseCopyConstructibleType.
-    * This type can be construct with a NonBitwiseCopyAssignableType
+    * This type can be construct with a hud_test::non_bitwise_copy_assignable_type
     */
     struct NonBitwiseCopyConstructibleType2 : public NonBitwiseCopyConstructibleType
     {
@@ -86,7 +86,7 @@ static_assert( !hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructible
         * @param id The id of the NonBitwiseCopyConstructibleType2
         */
         constexpr NonBitwiseCopyConstructibleType2(i32 id) noexcept
-            : NonBitwiseCopyConstructibleType(id){
+            : NonBitwiseCopyConstructibleType(id) {
         }
 
         /**
@@ -194,7 +194,7 @@ static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleT
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType4>);
     static_assert(!hud::is_move_constructible_v<NonBitwiseCopyConstructibleType4, NonBitwiseCopyConstructibleType3>);
 
-} // namespace hud::test
+} // namespace hud_test
  
 #endif // HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H
 

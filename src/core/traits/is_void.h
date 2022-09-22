@@ -10,7 +10,7 @@ namespace hud {
     /** Checks whether type_t is a void type. */
     template<typename type_t>
     struct is_void
-        : is_same<void, remove_cv_t<type_t>> {
+        : hud::is_same<void, remove_cv_t<type_t>> {
     };
 
     /** Equivalent of is_void<type_t>::value. */

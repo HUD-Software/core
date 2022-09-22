@@ -12,7 +12,7 @@ namespace hud {
     /** Checks whether type_t is a non-static member object. */
     template<typename type_t>
     struct is_member_object_pointer
-        : conjunction<is_member_pointer<type_t>, negation<is_member_function_pointer<type_t>>> {
+        : hud::conjunction<is_member_pointer<type_t>, hud::negation<is_member_function_pointer<type_t>>> {
     };
 
     /** Equivalent of is_member_object_pointer<type_t>::value */

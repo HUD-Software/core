@@ -10,7 +10,7 @@ namespace hud {
     /** Checks whether u_type_t is a trivially move assignable type to type_t. */
     template<typename type_t, typename u_type_t = type_t>
     struct is_trivially_move_assignable
-        : is_trivially_assignable<add_lvalue_reference_t<type_t>, add_rvalue_reference_t<u_type_t>> {
+        : is_trivially_assignable<hud::add_lvalue_reference_t<type_t>, add_rvalue_reference_t<u_type_t>> {
     };
 
     /** Equivalent of is_trivially_move_assignable<type_t, u_type_t>::value */

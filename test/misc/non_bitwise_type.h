@@ -5,25 +5,25 @@
 #include <type_traits>
 
 
-namespace hud::test {
+namespace hud_test {
 
 
     /**
     * A non bitwise constructible, copyable or moveable type
-    * The id is copied in order to know which NonBitwiseType is the original NonBitwiseType.
+    * The id is copied in order to know which non_bitwise_type is the original non_bitwise_type.
     */
-    struct NonBitwiseType
+    struct non_bitwise_type
     {
         /**
-        * Default construct a NonBitwiseType
+        * Default construct a non_bitwise_type
         */
-        constexpr NonBitwiseType() noexcept = default;
+        constexpr non_bitwise_type() noexcept = default;
 
         /**
         * Copy constructor
-        * @param other The NonBitwiseType to copy
+        * @param other The non_bitwise_type to copy
         */
-        constexpr NonBitwiseType(const NonBitwiseType& other) noexcept
+        constexpr non_bitwise_type(const non_bitwise_type& other) noexcept
             : move_assigned_count(other.move_assigned_count)
             , copy_assigned_count(other.copy_assigned_count)
             , param_construct_count(other.param_construct_count)
@@ -35,9 +35,9 @@ namespace hud::test {
 
         /**
         * Move constructor
-        * @param other The NonBitwiseType to move
+        * @param other The non_bitwise_type to move
         */
-        constexpr NonBitwiseType(NonBitwiseType&& other) noexcept
+        constexpr non_bitwise_type(non_bitwise_type&& other) noexcept
             : move_assigned_count(other.move_assigned_count)
             , copy_assigned_count(other.copy_assigned_count)
             , param_construct_count(other.param_construct_count)
@@ -52,7 +52,7 @@ namespace hud::test {
         * The given bool is set to false if not nullptr.
         * @param ptr_to_bool Pointer to the boolean
         */
-        constexpr NonBitwiseType(i32* ptr_to_destructor_counter) noexcept
+        constexpr non_bitwise_type(i32* ptr_to_destructor_counter) noexcept
             : param_construct_count(1)
             , is_destructor_counter(ptr_to_destructor_counter) {
             if (is_destructor_counter != nullptr) {
@@ -63,10 +63,10 @@ namespace hud::test {
         /**
         * Construct with a given id and keep a pointer on the given boolean.
         * The given bool is set to false if not nullptr.
-        * @param id The id of the NonBitwiseType
+        * @param id The id of the non_bitwise_type
         * @param ptr_to_bool Pointer to the boolean
         */
-        constexpr NonBitwiseType(i32 id, i32* ptr_to_destructor_counter) noexcept
+        constexpr non_bitwise_type(i32 id, i32* ptr_to_destructor_counter) noexcept
             : param_construct_count(1)
             , unique_id(id)
             , is_destructor_counter(ptr_to_destructor_counter) {
@@ -76,11 +76,11 @@ namespace hud::test {
         }
 
         /**
-        * Copy assign another NonBitwiseType
-        * @param other The NonBitwiseType to assign
+        * Copy assign another non_bitwise_type
+        * @param other The non_bitwise_type to assign
         * @return *this
         */
-        constexpr NonBitwiseType& operator=(const NonBitwiseType& other) noexcept {
+        constexpr non_bitwise_type& operator=(const non_bitwise_type& other) noexcept {
             move_assigned_count = other.move_assigned_count;
             copy_assigned_count = other.copy_assigned_count + 1;
             param_construct_count = other.param_construct_count;
@@ -92,11 +92,11 @@ namespace hud::test {
         }
 
         /**
-        * Move assign another NonBitwiseType
-        * @param other The NonBitwiseType to assign
+        * Move assign another non_bitwise_type
+        * @param other The non_bitwise_type to assign
         * @return *this
         */
-        constexpr NonBitwiseType& operator=(NonBitwiseType&& other) noexcept {
+        constexpr non_bitwise_type& operator=(non_bitwise_type&& other) noexcept {
             move_assigned_count = other.move_assigned_count + 1;
             copy_assigned_count = other.copy_assigned_count;
             param_construct_count = other.param_construct_count;
@@ -115,8 +115,8 @@ namespace hud::test {
             is_destructor_counter = ptr_to_destructor_counter;
         }
 
-        /** Destroy the NonBitwiseType instance and set the boolean pointer value to true. */
-        constexpr virtual ~NonBitwiseType() noexcept {
+        /** Destroy the non_bitwise_type instance and set the boolean pointer value to true. */
+        constexpr virtual ~non_bitwise_type() noexcept {
             if (is_destructor_counter != nullptr) {
                 ++(*is_destructor_counter);
             }
@@ -182,38 +182,38 @@ namespace hud::test {
     };
 
     [[nodiscard]]
-    HD_FORCEINLINE constexpr bool operator==(const NonBitwiseType& left, const NonBitwiseType& right) noexcept {
+    HD_FORCEINLINE constexpr bool operator==(const non_bitwise_type& left, const non_bitwise_type& right) noexcept {
         return left.id() == right.id();
     }
 
     [[nodiscard]]
-    HD_FORCEINLINE constexpr bool operator==(const NonBitwiseType& left, const i32 id) noexcept {
+    HD_FORCEINLINE constexpr bool operator==(const non_bitwise_type& left, const i32 id) noexcept {
         return left.id() == id;
     }
 
-    static_assert(std::is_move_constructible_v<NonBitwiseType>);
-    static_assert(std::is_copy_constructible_v<NonBitwiseType>);
-    static_assert(std::is_move_assignable_v<NonBitwiseType>);
-    static_assert(std::is_copy_assignable_v<NonBitwiseType>);
-    static_assert(std::is_destructible_v<NonBitwiseType>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseType>);
-    static_assert(!hud::is_bitwise_move_constructible_v<NonBitwiseType>);
-    static_assert(!hud::is_bitwise_copy_assignable_v<NonBitwiseType>);
-    static_assert(!hud::is_bitwise_move_assignable_v<NonBitwiseType>);
+    static_assert(std::is_move_constructible_v<non_bitwise_type>);
+    static_assert(std::is_copy_constructible_v<non_bitwise_type>);
+    static_assert(std::is_move_assignable_v<non_bitwise_type>);
+    static_assert(std::is_copy_assignable_v<non_bitwise_type>);
+    static_assert(std::is_destructible_v<non_bitwise_type>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_type>);
+    static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_type>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_type>);
+    static_assert(!hud::is_bitwise_move_assignable_v<non_bitwise_type>);
 
 
-    struct NonBitwiseType2 : public NonBitwiseType {
+    struct non_bitwise_type2 : public non_bitwise_type {
 
-        constexpr NonBitwiseType2(const NonBitwiseType& other) noexcept
-            : NonBitwiseType(other) {
+        constexpr non_bitwise_type2(const non_bitwise_type& other) noexcept
+            : non_bitwise_type(other) {
         }
 
-        constexpr NonBitwiseType2(i32 id, i32* ptr_to_destructor_counter) noexcept
-            : NonBitwiseType(id, ptr_to_destructor_counter) {
+        constexpr non_bitwise_type2(i32 id, i32* ptr_to_destructor_counter) noexcept
+            : non_bitwise_type(id, ptr_to_destructor_counter) {
         }
 
-        constexpr ~NonBitwiseType2() noexcept = default;
+        constexpr ~non_bitwise_type2() noexcept = default;
     };
-} // namespace hud::test
+} // namespace hud_test
 
 #endif // HD_INC_MISC_NON_DEFAULT_CONSTRUCTIBLE_TYPE_H

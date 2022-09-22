@@ -26,7 +26,7 @@ namespace hud {
     */
     template<typename type_t>
     struct is_standard_layout
-        : bool_constant<__is_standard_layout(type_t)> {
+        : hud::bool_constant<__is_standard_layout(type_t)> {
     };
 
     /** Equivalent of is_standard_layout<type_t>::value. */

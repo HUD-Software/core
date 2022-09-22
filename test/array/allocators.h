@@ -4,7 +4,7 @@
 #include <core/allocators/aligned_heap_allocator.h>
 #include <core/allocators/allocation.h>
 
-namespace hud::test {
+namespace hud_test {
     template<u32 alignement>
     struct array_allocator
     {
@@ -111,6 +111,6 @@ namespace hud::test {
 
    
 
-} // namespace hud::test
+} // namespace hud_test
 
 #endif // HD_INC_TEST_ARRAY_ALLOCATORS_H

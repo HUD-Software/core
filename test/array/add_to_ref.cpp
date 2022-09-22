@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(Array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
+TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
 {
 
-    using type = hud::test::NonBitwiseCopyAssignableType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::non_bitwise_copy_assignable_type;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type, type>);
     static_assert(hud::is_copy_constructible_v<type, type>);
 
@@ -52,28 +52,28 @@ TEST(Array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 0u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 0u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<8>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<9>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 0u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 0u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            ASSERT_EQ(std::get<8>(second_element_result), 2u);
+            ASSERT_EQ(std::get<9>(second_element_result), 1u);
         }
 
         // Constant
@@ -81,28 +81,28 @@ TEST(Array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 0u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 0u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<8>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<9>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 0u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 0u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            ASSERT_EQ(std::get<8>(second_element_result), 2u);
+            ASSERT_EQ(std::get<9>(second_element_result), 1u);
         }
     }
 
@@ -150,28 +150,28 @@ TEST(Array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 0u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 0u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<8>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<9>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 0u);
+            ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            ASSERT_EQ(std::get<6>(second_element_result), 0u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            ASSERT_EQ(std::get<8>(second_element_result), 1u);
+            ASSERT_EQ(std::get<9>(second_element_result), 0u);
         }
 
         // Constant
@@ -179,37 +179,37 @@ TEST(Array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 0u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 0u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<8>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<9>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 0u);
+            ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            ASSERT_EQ(std::get<6>(second_element_result), 0u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            ASSERT_EQ(std::get<8>(second_element_result), 1u);
+            ASSERT_EQ(std::get<9>(second_element_result), 0u);
         }
     }
 }
 
-TEST(Array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
+TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_bitwise_copy_constructible_v<type, type>);
 
     // With reallocation
@@ -254,25 +254,25 @@ TEST(Array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
 
         // Constant
@@ -280,25 +280,25 @@ TEST(Array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
     }
 
@@ -345,25 +345,25 @@ TEST(Array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
 
         // Constant
@@ -371,34 +371,34 @@ TEST(Array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
     }
 }
 
-TEST(Array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
+TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
 {
 
-    using type = hud::test::NonBitwiseMoveConstructibleType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
     static_assert(hud::is_move_constructible_v<type>);
 
@@ -444,28 +444,28 @@ TEST(Array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 0u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 0u);
+            ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<8>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<9>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 2u);
+            ASSERT_EQ(std::get<5>(second_element_result), 0u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            ASSERT_EQ(std::get<8>(second_element_result), 2u);
+            ASSERT_EQ(std::get<9>(second_element_result), 1u);
         }
 
         // Constant
@@ -473,36 +473,36 @@ TEST(Array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 0u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 0u);
+            ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
             // MSVC call copy constructor instead of move constructor 
             // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
             if constexpr (hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-                ASSERT_EQ(hud::get<5>(second_element_result), 1u);
+                ASSERT_EQ(std::get<4>(second_element_result), 1u);
+                ASSERT_EQ(std::get<5>(second_element_result), 1u);
             }
             else {
-                ASSERT_EQ(hud::get<4>(second_element_result), 2u);
-                ASSERT_EQ(hud::get<5>(second_element_result), 0u);
+                ASSERT_EQ(std::get<4>(second_element_result), 2u);
+                ASSERT_EQ(std::get<5>(second_element_result), 0u);
             }
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<8>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<9>(second_element_result), 1u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            ASSERT_EQ(std::get<8>(second_element_result), 2u);
+            ASSERT_EQ(std::get<9>(second_element_result), 1u);
         }
     }
 
@@ -549,28 +549,28 @@ TEST(Array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 0u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 0u);
+            ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<8>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<9>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 0u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            ASSERT_EQ(std::get<8>(second_element_result), 1u);
+            ASSERT_EQ(std::get<9>(second_element_result), 0u);
         }
 
         // Constant
@@ -578,37 +578,37 @@ TEST(Array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 0u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 0u);
+            ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
-            ASSERT_EQ(hud::get<8>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<9>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 0u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            ASSERT_EQ(std::get<8>(second_element_result), 1u);
+            ASSERT_EQ(std::get<9>(second_element_result), 0u);
         }
     }
 }
 
-TEST(Array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
+TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(hud::is_bitwise_move_constructible_v<type>);
 
     // With reallocation
@@ -651,25 +651,25 @@ TEST(Array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
 
         // Constant
@@ -677,25 +677,25 @@ TEST(Array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
     }
 
@@ -740,25 +740,25 @@ TEST(Array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
 
         // Constant
@@ -766,34 +766,34 @@ TEST(Array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
     }
 }
 
-TEST(Array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_type)
+TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_type)
 {
 
-    using type = hud::test::NonBitwiseCopyConstructibleType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
     static_assert(hud::is_copy_constructible_v<type>);
 
@@ -837,25 +837,25 @@ TEST(Array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 2u);
+            ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
 
         // Constant
@@ -863,25 +863,25 @@ TEST(Array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 1u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 2u);
+            ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
     }
 
@@ -927,25 +927,25 @@ TEST(Array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_type)
             const auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
 
         // Constant
@@ -953,25 +953,25 @@ TEST(Array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_type)
             constexpr auto result = test();
 
             // First element is correctly added
-            const auto first_element_result = hud::get<0>(result);
-            ASSERT_TRUE(hud::get<0>(first_element_result));
-            ASSERT_TRUE(hud::get<1>(first_element_result));
-            ASSERT_EQ(hud::get<2>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<3>(first_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(first_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(first_element_result), 0u);
+            const auto first_element_result = std::get<0>(result);
+            ASSERT_TRUE(std::get<0>(first_element_result));
+            ASSERT_TRUE(std::get<1>(first_element_result));
+            ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
-            const auto second_element_result = hud::get<1>(result);
-            ASSERT_TRUE(hud::get<0>(second_element_result));
-            ASSERT_TRUE(hud::get<1>(second_element_result));
-            ASSERT_EQ(hud::get<2>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<3>(second_element_result), 2u);
-            ASSERT_EQ(hud::get<4>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<5>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<6>(second_element_result), 1u);
-            ASSERT_EQ(hud::get<7>(second_element_result), 0u);
+            const auto second_element_result = std::get<1>(result);
+            ASSERT_TRUE(std::get<0>(second_element_result));
+            ASSERT_TRUE(std::get<1>(second_element_result));
+            ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
     }
 }

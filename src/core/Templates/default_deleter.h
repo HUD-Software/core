@@ -46,7 +46,7 @@ namespace hud {
 
         /**  Copy construct from another type */
         template<typename u_type_t>
-        constexpr default_deleter(const hud::default_deleter<u_type_t[]>&) noexcept requires(hud::is_convertible_v<u_type_t(*)[], type_t(*)[]>){
+        constexpr default_deleter(const hud::default_deleter<u_type_t[]>&) noexcept requires(hud::is_convertible_v<u_type_t(*)[], type_t(*)[]>) {
         }
 
         /** Delete the raw pointer using delete[] */

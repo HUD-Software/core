@@ -2,47 +2,47 @@
 
 namespace {
     template<typename type_t>
-    struct CustomDeleter
+    struct custom_deleter
         : public hud::default_deleter<type_t>
-        , hud::test::NonBitwiseType {
+        , hud_test::non_bitwise_type {
 
-        constexpr CustomDeleter() noexcept = default;
-        constexpr CustomDeleter(const CustomDeleter& other) noexcept = default;
-        constexpr CustomDeleter(CustomDeleter&& other) noexcept = default;
-        constexpr CustomDeleter(hud::default_deleter<type_t>&& other) noexcept
+        constexpr custom_deleter() noexcept = default;
+        constexpr custom_deleter(const custom_deleter& other) noexcept = default;
+        constexpr custom_deleter(custom_deleter&& other) noexcept = default;
+        constexpr custom_deleter(hud::default_deleter<type_t>&& other) noexcept
             : hud::default_deleter<type_t>(hud::move(other))
-            , hud::test::NonBitwiseType(hud::move(other)) {
+            , hud_test::non_bitwise_type(hud::move(other)) {
         }
         template<typename U>
-        constexpr CustomDeleter(CustomDeleter<U>&& other) noexcept
+        constexpr custom_deleter(custom_deleter<U>&& other) noexcept
             : hud::default_deleter<type_t>(hud::move(other))
-            , hud::test::NonBitwiseType(hud::move(other)) {
+            , hud_test::non_bitwise_type(hud::move(other)) {
         }
-        constexpr CustomDeleter& operator=(const CustomDeleter&) noexcept {
+        constexpr custom_deleter& operator=(const custom_deleter&) noexcept {
             return *this;
         }
-        constexpr CustomDeleter& operator=(CustomDeleter&&) noexcept {
+        constexpr custom_deleter& operator=(custom_deleter&&) noexcept {
             return *this;
         }
     };
 
-    using DeleterType = CustomDeleter<hud::test::NonBitwiseType[]>;
-    using ConstDeleterType = CustomDeleter<const hud::test::NonBitwiseType[]>;
+    using deleter_type = custom_deleter<hud_test::non_bitwise_type[]>;
+    using const_deleter_type = custom_deleter<const hud_test::non_bitwise_type[]>;
 
     template<typename type_t>
-    struct CustomDeleter2 : public CustomDeleter<type_t> {
+    struct custom_deleter2 : public custom_deleter<type_t> {
     };
-    using DeleterType2 = CustomDeleter2<hud::test::NonBitwiseType[]>;
-    using ConstDeleterType2 = CustomDeleter2<const hud::test::NonBitwiseType[]>;
+    using deleter_type2 = custom_deleter2<hud_test::non_bitwise_type[]>;
+    using const_deleter_type2 = custom_deleter2<const hud_test::non_bitwise_type[]>;
 }
 
-TEST(UniquePointer_array, assign_by_move_same_type) {
+TEST(unique_pointer_array, assign_by_move_same_type) {
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType other_deleter;
-        DeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType> other(pi, other_deleter);
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType> p(nullptr, deleter);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type other_deleter;
+        deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type> other(pi, other_deleter);
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type> p(nullptr, deleter);
         
         p = hud::move(other);
         return std::tuple{
@@ -64,46 +64,46 @@ TEST(UniquePointer_array, assign_by_move_same_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
     }
 }
 
 
-TEST(UniquePointer_array, assign_by_move_same_type_with_deleter_ref) {
+TEST(unique_pointer_array, assign_by_move_same_type_with_deleter_ref) {
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType other_deleter;
-        DeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType&> other(pi, other_deleter);
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType&> p(nullptr, deleter);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type other_deleter;
+        deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type&> other(pi, other_deleter);
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type&> p(nullptr, deleter);
         p = hud::move(other);
         return std::tuple {
             other.pointer() == nullptr,
@@ -126,49 +126,49 @@ TEST(UniquePointer_array, assign_by_move_same_type_with_deleter_ref) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
-        ASSERT_TRUE(hud::get<12>(result));
-        ASSERT_TRUE(hud::get<13>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
+        ASSERT_TRUE(std::get<12>(result));
+        ASSERT_TRUE(std::get<13>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
-        ASSERT_TRUE(hud::get<12>(result));
-        ASSERT_TRUE(hud::get<13>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
+        ASSERT_TRUE(std::get<12>(result));
+        ASSERT_TRUE(std::get<13>(result));
     }
 }
 
-TEST(UniquePointer_array, assign_by_move_same_type_with_different_deleter_ref) {
+TEST(unique_pointer_array, assign_by_move_same_type_with_different_deleter_ref) {
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType2 other_deleter;
-        DeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType2&> other(pi, other_deleter);
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType&> p(nullptr, deleter);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type2 other_deleter;
+        deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type2&> other(pi, other_deleter);
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type&> p(nullptr, deleter);
         p = hud::move(other);
         return std::tuple{
             other.pointer() == nullptr,
@@ -191,49 +191,49 @@ TEST(UniquePointer_array, assign_by_move_same_type_with_different_deleter_ref) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
-        ASSERT_TRUE(hud::get<12>(result));
-        ASSERT_TRUE(hud::get<13>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
+        ASSERT_TRUE(std::get<12>(result));
+        ASSERT_TRUE(std::get<13>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
-        ASSERT_TRUE(hud::get<12>(result));
-        ASSERT_TRUE(hud::get<13>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
+        ASSERT_TRUE(std::get<12>(result));
+        ASSERT_TRUE(std::get<13>(result));
     }
 }
 
-TEST(UniquePointer_array, assign_by_move_different_type) {
+TEST(unique_pointer_array, assign_by_move_different_type) {
     const auto test = []() {
-        hud::test::NonBitwiseType* pi = new hud::test::NonBitwiseType[2]{ {123, nullptr}, {456, nullptr} };
-        DeleterType other_deleter;
-        ConstDeleterType deleter;
-        hud::UniquePointer<hud::test::NonBitwiseType[], DeleterType> other(pi, other_deleter);
-        hud::UniquePointer<const hud::test::NonBitwiseType[], ConstDeleterType> p(nullptr, deleter);
+        hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type[2]{ {123, nullptr}, {456, nullptr} };
+        deleter_type other_deleter;
+        const_deleter_type deleter;
+        hud::unique_pointer<hud_test::non_bitwise_type[], deleter_type> other(pi, other_deleter);
+        hud::unique_pointer<const hud_test::non_bitwise_type[], const_deleter_type> p(nullptr, deleter);
    
         p = hud::move(other);
         return std::tuple{
@@ -255,34 +255,34 @@ TEST(UniquePointer_array, assign_by_move_different_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
     }
 }

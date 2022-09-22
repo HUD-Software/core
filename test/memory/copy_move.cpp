@@ -1,6 +1,6 @@
 #include <core/memory.h>
 
-TEST(Memory, copy_pointer_to_buffer) {
+TEST(memory, copy_pointer_to_buffer) {
 
 
 
@@ -30,7 +30,7 @@ TEST(Memory, copy_pointer_to_buffer) {
     }
 }
 
-TEST(Memory, copy_C_arary) {
+TEST(memory, copy_C_arary) {
 
 
 
@@ -60,7 +60,7 @@ TEST(Memory, copy_C_arary) {
     }
 }
 
-TEST(Memory, move_pointer_to_buffer) {
+TEST(memory, move_pointer_to_buffer) {
 
 
     auto test = [](u32 index_dest, u32 index_src) -> std::tuple<u8, u8, u8, u8> {

@@ -14,12 +14,12 @@ namespace hud {
     */
     template<typename type_t, typename u_type_t = type_t>
     struct is_copy_constructible
-        : is_constructible<type_t, add_lvalue_reference_t< add_const_t<u_type_t>>> {
+        : is_constructible<type_t, hud::add_lvalue_reference_t< hud::add_const_t<u_type_t>>> {
     };
 
-    /** Equivalent of is_copy_constructible<type_t, u_type_t>::value. */
+    /** Equivalent of hud::is_copy_constructible<type_t, u_type_t>::value. */
     template<typename type_t, typename u_type_t = type_t>
-    inline constexpr bool is_copy_constructible_v = is_copy_constructible<type_t, u_type_t>::value;
+    inline constexpr bool is_copy_constructible_v = hud::is_copy_constructible<type_t, u_type_t>::value;
 
 } // namespace hud
 

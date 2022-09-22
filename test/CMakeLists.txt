@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.18)
 
 # Set project name
-project(Test
+project(test_core
 		DESCRIPTION "HUD Engine Core tests"
 		LANGUAGES CXX
 )
 
-add_executable(Test 
+add_executable(test_core 
 	array/add.cpp
 	array/add_no_construct.cpp
 	array/add_to_ref.cpp
@@ -258,14 +258,14 @@ add_executable(Test
 
 set(CMAKE_CXX_STANDARD 20)
 if(MSVC)
-	target_compile_options( Test PRIVATE /Zc:__cplusplus /std:c++20)
+	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj)
 endif()
 
-target_precompile_headers(Test PRIVATE precompiled.h)
+target_precompile_headers(test_core PRIVATE precompiled.h)
 
 # Add defines
 target_compile_definitions(
-	Test
+	test_core
 	PRIVATE
 	_HAS_EXCEPTIONS=0
 	_CRT_SECURE_NO_WARNINGS
@@ -284,23 +284,43 @@ target_compile_definitions(
 )
 
 # Add Core dependency
-target_link_libraries(Test PRIVATE Core)
+target_link_libraries(test_core PRIVATE core)
 
-# Add Google test dependencys
+# Add Google test dependency
+message("Fetching HUD-Software/google-test...")
 include(FetchContent)
 FetchContent_Declare(
-    googletest 
-    GIT_REPOSITORY  git@github.com:HUD-Software/google-test.git
-    GIT_TAG         e6f4409b1dbda2bdd95d7012d9b5431edfa43907 # v1.12.1
+	google_test 
+	GIT_REPOSITORY  git@github.com:HUD-Software/google-test.git
+	GIT_TAG         5306f1a0e51f6001c624588fafdb646bb377866c
 )
-FetchContent_MakeAvailable(googletest)
+FetchContent_MakeAvailable(google_test)
 
-target_link_libraries( Test PRIVATE gtest )
+target_link_libraries( test_core PRIVATE gtest )
 
-add_test(NAME Core_tests COMMAND Test --gtest_output=xml:core_test_report.xml --extra-verbose --gtest_break_on_failure)
+# Add Intel slice-by-8 dependency
+message("Fetching HUD-Software/slice-by-8...")
+include(FetchContent)
+FetchContent_Declare(
+    slice_by_8 
+    GIT_REPOSITORY  git@github.com:HUD-Software/slice-by-8.git
+    GIT_TAG         536f6c5a297ff6263c56944c9bb04358f5b0d7da
+)
+FetchContent_MakeAvailable(slice_by_8)
 
-# #add ThirdParty's dependencies
-# add_dependencies( ${target_name} SliceBy8)
-# target_link_libraries( ${target_name} PRIVATE SliceBy8)
-# add_dependencies( ${target_name} CityHash)
-# target_link_libraries( ${target_name} PRIVATE CityHash)
+target_link_libraries( test_core PRIVATE slice_by_8 )
+
+# Add Intel cityhash dependency
+message("Fetching HUD-Software/cityhash...")
+include(FetchContent)
+FetchContent_Declare(
+    cityhash
+    GIT_REPOSITORY  git@github.com:HUD-Software/cityhash.git
+    GIT_TAG         01bb23df43fecd290b398c2e4314dff4c0dc0672
+)
+FetchContent_MakeAvailable(cityhash)
+
+target_link_libraries( test_core PRIVATE cityhash )
+
+# Add the executable test
+add_test(NAME test_core COMMAND test_core --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)

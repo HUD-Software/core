@@ -337,11 +337,14 @@ namespace hud {
         class reference_controller {
 
         public:
+            /**  reference_controller_base syntax sugar. */
+            using reference_controller_base_type = reference_controller_base<thread_safety>;
+        public:
             /** Default constrcutor. */
             constexpr reference_controller() noexcept = default;
 
             /** Construct a reference_controller by sharing ownership of the controller to control. */
-            constexpr explicit reference_controller(reference_controller_base_type<thread_safety>* controller_base) noexcept
+            constexpr explicit reference_controller(reference_controller_base_type* controller_base) noexcept
                 : controller(controller_base) {
             }
 
@@ -426,8 +429,6 @@ namespace hud {
             }
 
         private:
-            /**  reference_controller_base syntax sugar. */
-            using reference_controller_base_type = reference_controller_base<thread_safety>;
             /** Pointer to the owned reference_controller_base_type. */
             reference_controller_base_type* controller = nullptr;
         };
@@ -473,10 +474,10 @@ namespace hud {
 
     public:
         /** Internal pointer type representation. */
-        using pointer_type = remove_extent_t<type_t>*;
+        using pointer_type = hud::remove_extent_t<type_t>*;
         /** Internal deleter_t type used to delete the internal pointer. */
         template<typename u_type_t>
-        using deleter_type = conditional_t<is_array_v<type_t>, hud::default_deleter<u_type_t[]>, hud::default_deleter<u_type_t>>;
+        using deleter_type = hud::conditional_t<is_array_v<type_t>, hud::default_deleter<u_type_t[]>, hud::default_deleter<u_type_t>>;
 
     public:
         /** Default constructor. Do not own pointer. */
@@ -596,7 +597,7 @@ namespace hud {
 
         /** Dereference owned pointer. */
         [[nodiscard]]
-        constexpr add_lvalue_reference_t<remove_extent_t<type_t>> operator*() const noexcept requires(!is_void_v<type_t>) {
+        constexpr hud::add_lvalue_reference_t<hud::remove_extent_t<type_t>> operator*() const noexcept requires(!is_void_v<type_t>) {
             return *pointer();
         }
 
@@ -608,13 +609,13 @@ namespace hud {
 
         /** Retrieves a reference to the element at the given index. */
         [[nodiscard]]
-        constexpr add_const_t<add_lvalue_reference_t<remove_extent_t<type_t>>> operator[](const usize at) const noexcept requires(is_array_v<type_t>){
+        constexpr hud::add_const_t<hud::add_lvalue_reference_t<hud::remove_extent_t<type_t>>> operator[](const usize at) const noexcept requires(is_array_v<type_t>) {
             return pointer()[at];
         } 
         
         /** Retrieves a reference to the element at the given index. */
         [[nodiscard]]
-        constexpr add_lvalue_reference_t<remove_extent_t<type_t>> operator[](const usize at) noexcept requires(is_array_v<type_t>) {
+        constexpr hud::add_lvalue_reference_t<hud::remove_extent_t<type_t>> operator[](const usize at) noexcept requires(is_array_v<type_t>) {
             return pointer()[at];
         }
 
@@ -652,11 +653,11 @@ namespace hud {
         /** Friend with other owing pointer types */
         template<typename u_type_t, thread_safety_e> friend class shared_pointer;
         template<typename u_type_t, thread_safety_e thread_safety_1, typename... args_t> friend shared_pointer<u_type_t, thread_safety_1> make_shared(args_t&&... args) noexcept requires(!is_array_v<u_type_t>);
-        template<typename u_type_t, thread_safety_e thread_safety_1> friend shared_pointer<u_type_t, thread_safety_1> make_shared(usize count) noexcept requires(is_unbounded_array_v<u_type_t>);
+        template<typename u_type_t, thread_safety_e thread_safety_1> friend shared_pointer<u_type_t, thread_safety_1> make_shared(usize count) noexcept requires(hud::is_unbounded_array_v<u_type_t>);
 
         /**
         * Construct a shared_pointer form a reference_controller_no_deleter.
-        * Only used by make_shared(...).
+        * Only used by hud::make_shared(...).
         * @param controller The controller to use
         */
         HD_FORCEINLINE explicit shared_pointer(details::reference_controller_no_deleter<type_t, thread_safety>* controller) noexcept
@@ -665,7 +666,7 @@ namespace hud {
 
     private:
         /** Pair containing pointer, deleter and shared reference counter. */
-        using inner_type = Pair< pointer_type, details::reference_controller<thread_safety>>;
+        using inner_type = hud::pair< pointer_type, details::reference_controller<thread_safety>>;
         inner_type inner;
     };
 
@@ -973,7 +974,7 @@ namespace hud {
     */
     template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe>
     [[nodiscard]]
-    HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(const usize count) noexcept requires(is_unbounded_array_v<type_t>) {
+    HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(const usize count) noexcept requires(hud::is_unbounded_array_v<type_t>) {
         return shared_pointer<type_t, thread_safety>(new (std::nothrow) details::reference_controller_no_deleter<type_t, thread_safety>(count));
     }
 

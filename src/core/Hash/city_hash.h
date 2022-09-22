@@ -60,13 +60,13 @@
 // doesn't hold for any hash functions in this file.
 
 #pragma once
-#ifndef HD_INC_CORE_HASH_CITY_HASH_H
-#define HD_INC_CORE_HASH_CITY_HASH_H
+#ifndef HD_INC_CORE_HASH_ALGORITHM_CITY_HASH_H
+#define HD_INC_CORE_HASH_ALGORITHM_CITY_HASH_H
 #include "../core/memory.h"
 #include "../templates/swap.h"
 #include "../templates/bit_cast.h"
 
-namespace hud::hash{
+namespace hud::hash_algorithm{
 
 
     namespace details {
@@ -532,6 +532,6 @@ namespace hud::hash{
         }
     };
 
-} // namespace hud::CityHash
+} // namespace hud::hash_algorithm
 
-#endif // HD_INC_CORE_HASH_CITY_HASH_H
+#endif // HD_INC_CORE_HASH_ALGORITHM_CITY_HASH_H

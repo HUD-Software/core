@@ -10,7 +10,7 @@ namespace hud {
     /**  Checks whether type_t is an arithmetic type (that is, an integral type or a floating-point type) or a cv-qualified version thereof. */
     template<typename type_t>
     struct is_arithmetic
-        : disjunction< is_integral<type_t>, is_floating_point<type_t> > {
+        : hud::disjunction< is_integral<type_t>, is_floating_point<type_t> > {
     };
 
     /** Equivalent of is_arithmetic<type_t>::value. */

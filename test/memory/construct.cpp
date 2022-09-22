@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(Memory, construct_at_trival_type)
+TEST(memory, construct_at_trival_type)
 {
 
 
@@ -33,7 +33,7 @@ TEST(Memory, construct_at_trival_type)
     }
 }
 
-TEST(Memory, construct_at_non_trivially_constructible_type)
+TEST(memory, construct_at_non_trivially_constructible_type)
 {
 
 
@@ -51,14 +51,14 @@ TEST(Memory, construct_at_non_trivially_constructible_type)
 
     auto test_no_param = []() -> ResultType {
         type* to_construct = hud::memory::allocate_array<type>(1);
-        hud::test::LeakArrayGuard guard(to_construct, 1);
+        hud_test::LeakArrayGuard guard(to_construct, 1);
         hud::memory::construct_at(to_construct);
         return to_construct->value;
     };
 
     auto test_param = []() -> ResultType {
         type* to_construct = hud::memory::allocate_array<type>(1);
-        hud::test::LeakArrayGuard guard(to_construct, 1);
+        hud_test::LeakArrayGuard guard(to_construct, 1);
         hud::memory::construct_at(to_construct, 15);
         return to_construct->value;
     };
@@ -79,7 +79,7 @@ TEST(Memory, construct_at_non_trivially_constructible_type)
     }
 }
 
-TEST(Memory, construct_array_at_trival_type)
+TEST(memory, construct_array_at_trival_type)
 {
 
 
@@ -102,25 +102,25 @@ TEST(Memory, construct_array_at_trival_type)
     // Non constant
     {
         ResultType result_no_param = test_no_param();
-        ASSERT_EQ(hud::get<0>(result_no_param), 0u);
-        ASSERT_EQ(hud::get<1>(result_no_param), 0u);
+        ASSERT_EQ(std::get<0>(result_no_param), 0u);
+        ASSERT_EQ(std::get<1>(result_no_param), 0u);
         ResultType result_param = test_param();
-        ASSERT_EQ(hud::get<0>(result_param), 15u);
-        ASSERT_EQ(hud::get<1>(result_param), 15u);
+        ASSERT_EQ(std::get<0>(result_param), 15u);
+        ASSERT_EQ(std::get<1>(result_param), 15u);
     }
 
     // Constant
     {
         constexpr ResultType result_no_param = test_no_param();
-        ASSERT_EQ(hud::get<0>(result_no_param), 0u);
-        ASSERT_EQ(hud::get<1>(result_no_param), 0u);
+        ASSERT_EQ(std::get<0>(result_no_param), 0u);
+        ASSERT_EQ(std::get<1>(result_no_param), 0u);
         constexpr ResultType result_param = test_param();
-        ASSERT_EQ(hud::get<0>(result_param), 15u);
-        ASSERT_EQ(hud::get<1>(result_param), 15u);
+        ASSERT_EQ(std::get<0>(result_param), 15u);
+        ASSERT_EQ(std::get<1>(result_param), 15u);
     }
 }
 
-TEST(Memory, construct_array_at_non_trival_type)
+TEST(memory, construct_array_at_non_trival_type)
 {
 
 
@@ -138,14 +138,14 @@ TEST(Memory, construct_array_at_non_trival_type)
 
     auto test_no_param = []() -> ResultType {
         type* to_construct = hud::memory::allocate_array<type>(2);
-        hud::test::LeakArrayGuard guard(to_construct, 2);
+        hud_test::LeakArrayGuard guard(to_construct, 2);
         hud::memory::construct_array_at(to_construct, to_construct +2);
         return { to_construct[0].value, to_construct[1].value };
     };
     
     auto test_param = []() -> ResultType {
         type* to_construct = hud::memory::allocate_array<type>(2);
-        hud::test::LeakArrayGuard guard(to_construct, 2);
+        hud_test::LeakArrayGuard guard(to_construct, 2);
         hud::memory::construct_array_at(to_construct, to_construct+2, 15);
         return { to_construct[0].value, to_construct[1].value };
     };
@@ -153,20 +153,20 @@ TEST(Memory, construct_array_at_non_trival_type)
     // Non constant
     {
         ResultType result_no_param = test_no_param();
-        ASSERT_EQ(hud::get<0>(result_no_param), 0);
-        ASSERT_EQ(hud::get<1>(result_no_param), 0);
+        ASSERT_EQ(std::get<0>(result_no_param), 0);
+        ASSERT_EQ(std::get<1>(result_no_param), 0);
         ResultType result_param = test_param();
-        ASSERT_EQ(hud::get<0>(result_param), 15);
-        ASSERT_EQ(hud::get<1>(result_param), 15);
+        ASSERT_EQ(std::get<0>(result_param), 15);
+        ASSERT_EQ(std::get<1>(result_param), 15);
     }
 
     // Constant
     {
         constexpr ResultType result_no_param = test_no_param();
-        ASSERT_EQ(hud::get<0>(result_no_param), 0);
-        ASSERT_EQ(hud::get<1>(result_no_param), 0);
+        ASSERT_EQ(std::get<0>(result_no_param), 0);
+        ASSERT_EQ(std::get<1>(result_no_param), 0);
         constexpr ResultType result_param = test_param();
-        ASSERT_EQ(hud::get<0>(result_param), 15);
-        ASSERT_EQ(hud::get<1>(result_param), 15);
+        ASSERT_EQ(std::get<0>(result_param), 15);
+        ASSERT_EQ(std::get<1>(result_param), 15);
     }
 }

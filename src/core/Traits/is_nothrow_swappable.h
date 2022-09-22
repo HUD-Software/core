@@ -10,14 +10,14 @@ namespace hud {
     namespace details {
         template<typename type_t, typename u_type_t = type_t>
         struct is_nothrow_swappable_impl
-            : bool_constant<noexcept(swap(declval<type_t>(), declval<u_type_t>())) && noexcept(swap(declval<type_t>(), declval<u_type_t>()))> {
+            : hud::bool_constant<noexcept(swap(declval<type_t>(), declval<u_type_t>())) && noexcept(swap(declval<type_t>(), declval<u_type_t>()))> {
         };
     }
 
     /** Check whether type_t is swappable with u_type_t and such swap is known not to throw any exception. */
     template<typename type_t, typename u_type_t = type_t>
     struct is_nothrow_swappable
-        : conjunction< is_swappable<type_t, u_type_t>, details::is_nothrow_swappable_impl<add_lvalue_reference_t<type_t>, add_lvalue_reference_t<u_type_t>>> {
+        : hud::conjunction< is_swappable<type_t, u_type_t>, details::is_nothrow_swappable_impl<hud::add_lvalue_reference_t<type_t>, hud::add_lvalue_reference_t<u_type_t>>> {
     };
 
     /** Equivalent of is_nothrow_swappable<type_t, u_type_t>::value. */

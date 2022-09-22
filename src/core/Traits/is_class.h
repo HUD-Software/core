@@ -8,7 +8,7 @@ namespace hud {
     /** Checks whether type_t is a class type. */
     template<typename type_t>
     struct is_class
-        : bool_constant<__is_class(type_t)> {
+        : hud::bool_constant<__is_class(type_t)> {
     };
 
     /** Equivalent of is_class<type_t>::value. */

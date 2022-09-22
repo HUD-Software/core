@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(Array, swap_empty_array_do_nothing)
+TEST(array, swap_empty_array_do_nothing)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     array_type a, b;
     ASSERT_EQ(a.data(), nullptr);
@@ -46,11 +46,11 @@ TEST(Array, swap_empty_array_do_nothing)
     ASSERT_EQ(b.allocator().free_count(), 0u);
 }
 
-TEST(Array, swap_non_trivial_type)
+TEST(array, swap_non_trivial_type)
 {
 
-    using type = hud::test::NonBitwiseType;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using type = hud_test::non_bitwise_type;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     i32 a_destructor_called[2] = { false, false };
     array_type a;
@@ -137,11 +137,11 @@ TEST(Array, swap_non_trivial_type)
     ASSERT_EQ(b.allocator().free_count(), 0u);
 }
 
-TEST(Array, swap_trivial_type)
+TEST(array, swap_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
     array_type a;
     a.reserve(4);

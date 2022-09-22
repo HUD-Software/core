@@ -17,7 +17,7 @@ namespace hud {
     * @return An rvalue reference to object if object is not an lvalue reference.
     */
     template<typename type_t>
-    constexpr type_t && forward(remove_reference_t<type_t> & object) noexcept {
+    constexpr type_t && forward(hud::remove_reference_t<type_t> & object) noexcept {
         return static_cast<type_t&&>(object);
     }
 
@@ -31,7 +31,7 @@ namespace hud {
     * @return An rvalue reference to object if object is not an lvalue reference.
     */
     template<typename type_t>
-    constexpr type_t && forward(remove_reference_t<type_t> && object) noexcept {
+    constexpr type_t && forward(hud::remove_reference_t<type_t> && object) noexcept {
         static_assert(negation_v< is_lvalue_reference<type_t>>, "can not forward an rvalue as an lvalue");
         return static_cast<type_t&&>(object);
     }

@@ -15,13 +15,13 @@ namespace hud {
         : hud::false_type {
     };
     template<typename type_t>
-    struct is_same<type_t, type_t>
+    struct hud::is_same<type_t, type_t>
         : hud::true_type {
     };
 
-    /** Equivalent of is_same<type_t,u_type_t>::value. */
+    /** Equivalent of hud::is_same<type_t,u_type_t>::value. */
     template<typename type_t, typename u_type_t>
-    inline constexpr bool is_same_v = is_same<type_t, u_type_t>::value;
+    inline constexpr bool is_same_v = hud::is_same<type_t, u_type_t>::value;
 
 } // namespace hud
 

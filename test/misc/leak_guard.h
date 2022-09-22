@@ -3,7 +3,7 @@
 #define HD_INC_TEST_MISC_LEAKGUARD_H
 #include <core/memory.h>
 
-namespace hud::test {
+namespace hud_test {
 
 template<typename type_t = void>
     class LeakGuard {

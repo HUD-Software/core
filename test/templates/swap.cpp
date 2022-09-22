@@ -36,7 +36,7 @@ TEST(templates, swap_non_rivial_type) {
 }
 
 
-TEST(Memory, swap_array_trivial_type) {
+TEST(memory, swap_array_trivial_type) {
     i32 c[3] = { 1,2,3 };
     i32 d[3] = { 4,5,6 };
     hud::swap(c, d);
@@ -50,7 +50,7 @@ TEST(Memory, swap_array_trivial_type) {
 
 }
 
-TEST(Memory, swap_array_non_trivial_type) {
+TEST(memory, swap_array_non_trivial_type) {
     type_t c[3] = { 1,2,3 };
     type_t d[3] = { 4,5,6 };
     hud::swap(c, d);

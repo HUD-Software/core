@@ -15,11 +15,11 @@ TEST(Compilation, get_compiler) {
 
 TEST(Compilation, get_compiler_name) {
 #if defined(HD_COMPILER_CLANG_CL)
-    ASSERT_TRUE(hud::CString::equals(hud::compilation::get_compiler_name(), "Clang-cl"));
+    ASSERT_TRUE(hud::cstring::equals(hud::compilation::get_compiler_name(), "Clang-cl"));
 #elif defined(HD_COMPILER_MSVC)
-    ASSERT_TRUE(hud::CString::equals(hud::compilation::get_compiler_name(), "Microsoft Visual Studio"));
+    ASSERT_TRUE(hud::cstring::equals(hud::compilation::get_compiler_name(), "Microsoft Visual Studio"));
 #elif defined(HD_COMPILER_CLANG)
-    ASSERT_TRUE(hud::CString::equals(hud::compilation::get_compiler_name(), "Clang"));
+    ASSERT_TRUE(hud::cstring::equals(hud::compilation::get_compiler_name(), "Clang"));
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -37,13 +37,13 @@ TEST(Compilation, is_targeting_64bits) {
 
 TEST(Compilation, get_cpu_instruction_set) {
 #if defined(HD_TARGET_X64)
-    ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::ECPUInstructionSet::x64);
+    ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::x64);
 #elif defined(HD_TARGET_X86)
-    ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::ECPUInstructionSet::x86);
+    ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::x86);
 #elif defined(HD_TARGET_ARM32)
-    ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::ECPUInstructionSet::arm32);
+    ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::arm32);
 #elif defined(HD_TARGET_ARM64)
-    ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::ECPUInstructionSet::arm64);
+    ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::arm64);
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -51,13 +51,13 @@ TEST(Compilation, get_cpu_instruction_set) {
 
 TEST(Compilation, is_cpu_instruction_set) {
 #if defined(HD_TARGET_X64)
-    ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::ECPUInstructionSet::x64));
+    ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::x64));
 #elif defined(HD_TARGET_X86)
-    ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::ECPUInstructionSet::x86));
+    ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::x86));
 #elif defined(HD_TARGET_ARM32)
-    ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::ECPUInstructionSet::arm32));
+    ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::arm32));
 #elif defined(HD_TARGET_ARM64)
-    ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::ECPUInstructionSet::arm64));
+    ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::arm64));
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -65,9 +65,9 @@ TEST(Compilation, is_cpu_instruction_set) {
 
 TEST(Compilation, get_os) {
 #if defined(HD_OS_WINDOWS)
-    ASSERT_EQ(hud::compilation::get_os(), hud::EOS::windows);
+    ASSERT_EQ(hud::compilation::get_os(), hud::os_e::windows);
 #elif defined(HD_OS_LINUX)
-    ASSERT_EQ(hud::compilation::get_os(), hud::EOS::linux);
+    ASSERT_EQ(hud::compilation::get_os(), hud::os_e::linux);
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -85,9 +85,9 @@ TEST(Compilation, is_assertion_enabled) {
 
 TEST(Compilation, get_endianness) {
 #if defined(HD_LITTLE_ENDIAN)
-    ASSERT_EQ(hud::compilation::get_endianness(), hud::EEndianness::little);
+    ASSERT_EQ(hud::compilation::get_endianness(), hud::endianness_e::little);
 #elif defined(HD_BIG_ENDIAN)
-    ASSERT_EQ(hud::compilation::get_endianness(), hud::EEndianness::big);
+    ASSERT_EQ(hud::compilation::get_endianness(), hud::endianness_e::big);
 #else
     FAIL();
 #endif
@@ -95,9 +95,9 @@ TEST(Compilation, get_endianness) {
 
 TEST(Compilation, is_endianness) {
 #if defined(HD_LITTLE_ENDIAN)
-    ASSERT_TRUE(hud::compilation::is_endianness(hud::EEndianness::little));
+    ASSERT_TRUE(hud::compilation::is_endianness(hud::endianness_e::little));
 #elif defined(HD_BIG_ENDIAN)
-    ASSERT_TRUE(hud::compilation::is_endianness(hud::EEndianness::big));
+    ASSERT_TRUE(hud::compilation::is_endianness(hud::endianness_e::big));
 #else
     FAIL();
 #endif

@@ -16,7 +16,7 @@ namespace hud {
     */
     template <typename type_t>
     struct is_trivially_copyable
-        : bool_constant<__is_trivially_copyable(type_t)> {
+        : hud::bool_constant<__is_trivially_copyable(type_t)> {
     };
 
     /** Equivalent of is_trivially_copyable<type_t>::value. */

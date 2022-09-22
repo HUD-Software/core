@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(Array, default_constructor_should_allocate_no_memory)
+TEST(array, default_constructor_should_allocate_no_memory)
 {
     auto test = []() -> std::tuple<bool, usize, usize> {
         hud::array<hud::u32> array;
@@ -11,27 +11,27 @@ TEST(Array, default_constructor_should_allocate_no_memory)
     // Non Constant
     {
         auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
-        ASSERT_EQ(hud::get<2>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
+        ASSERT_EQ(std::get<2>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
-        ASSERT_EQ(hud::get<2>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
+        ASSERT_EQ(std::get<2>(result), 0u);
     }
 }
 
-TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_same_type)
+TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_same_type)
 {
 
 
     using TypeList = std::tuple<i8, i16, i32, i64, u8, u16, u32, u64, uptr, iptr, usize, isize>;
 
-    hud::test::for_each_type<TypeList>()([]<typename type_t>() noexcept {
+    hud_test::for_each_type<TypeList>()([]<typename type_t>() noexcept {
 
         static_assert(hud::is_bitwise_copy_constructible_v<type_t>);
 
@@ -70,15 +70,15 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                 constexpr type_t raw[element_count] = { 1,2,3,4 };
                 const auto result = test_default_allocator(raw, element_count);
                 // Allocation of 4 i32 should be done
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), element_count);
-                ASSERT_EQ(hud::get<2>(result), element_count);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), element_count);
+                ASSERT_EQ(std::get<2>(result), element_count);
 
                 // Ensure it's not the same memory buffer
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure values are correclty copied
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
             }
 
             // Constant
@@ -87,22 +87,22 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                 constexpr type_t raw[element_count] = { 1,2,3,4 };
                 constexpr auto result = test_default_allocator(raw, element_count);
                 // Allocation of 4 i32 should be done
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), element_count);
-                ASSERT_EQ(hud::get<2>(result), element_count);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), element_count);
+                ASSERT_EQ(std::get<2>(result), element_count);
 
                 // Ensure it's not the same memory buffer
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure values are correclty copied
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
             }
         }
 
         // test with allocator no extra
         {
             auto test_with_allocator = [](const type_t* raw, usize element_count) {
-                hud::array<type_t, hud::test::array_allocator<alignof(type_t)>> array(raw, element_count, hud::test::array_allocator<alignof(type_t)>{});
+                hud::array<type_t, hud_test::array_allocator<alignof(type_t)>> array(raw, element_count, hud_test::array_allocator<alignof(type_t)>{});
                 bool all_values_copied = true;
 
                 // Ensure values are correclty copied
@@ -137,19 +137,19 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                 constexpr type_t raw[element_count] = { 1,2,3,4 };
                 const auto result = test_with_allocator(raw, element_count);
                 // Allocation of 4 i32 should be done
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), element_count);
-                ASSERT_EQ(hud::get<2>(result), element_count);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), element_count);
+                ASSERT_EQ(std::get<2>(result), element_count);
 
                 // Ensure it's not the same memory buffer
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure values are correclty copied
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
@@ -158,24 +158,24 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                 constexpr type_t raw[element_count] = { 1,2,3,4 };
                 constexpr auto result = test_with_allocator(raw, element_count);
                 // Allocation of 4 i32 should be done
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), element_count);
-                ASSERT_EQ(hud::get<2>(result), element_count);
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), element_count);
+                ASSERT_EQ(std::get<2>(result), element_count);
 
                 // Ensure it's not the same memory buffer
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure values are correclty copied
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test default allocator with extra
@@ -212,15 +212,15 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                             constexpr type_t raw[element_count] = { 1,2,3,4 };
                             const auto result = test_default_allocator(raw, element_count);
                             // Allocation of 4 i32 should be done
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), element_count);
-                            ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), element_count);
+                            ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                             // Ensure it's not the same memory buffer
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure values are correclty copied
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
                         }
 
                         // Constant
@@ -229,15 +229,15 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                             constexpr type_t raw[element_count] = { 1,2,3,4 };
                             constexpr auto result = test_default_allocator(raw, element_count);
                             // Allocation of 4 i32 should be done
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), element_count);
-                            ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), element_count);
+                            ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                             // Ensure it's not the same memory buffer
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure values are correclty copied
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
                         }
 
                     }
@@ -245,7 +245,7 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                     // Test with allocator with extra
                     {
                         auto test_with_allocator = [](const type_t* raw, usize element_count) {
-                            hud::array<type_t, hud::test::array_allocator<alignof(type_t)>> array(raw, element_count, extra, hud::test::array_allocator<alignof(type_t)>{});
+                            hud::array<type_t, hud_test::array_allocator<alignof(type_t)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(type_t)>{});
                             bool all_values_copied = true;
 
                             // Ensure values are correclty copied
@@ -280,19 +280,19 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                             constexpr type_t raw[element_count] = { 1,2,3,4 };
                             const auto result = test_with_allocator(raw, element_count);
                             // Allocation of 4 i32 should be done
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), element_count);
-                            ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), element_count);
+                            ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                             // Ensure it's not the same memory buffer
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure values are correclty copied
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
@@ -302,19 +302,19 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
                             constexpr auto result = test_with_allocator(raw, element_count);
 
                             // Allocation of 4 i32 should be done
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), element_count);
-                            ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), element_count);
+                            ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                             // Ensure it's not the same memory buffer
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure values are correclty copied
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
             });
@@ -322,10 +322,10 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
     });
 }
 
-TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_same_type)
+TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_same_type)
 {
 
-    using type = hud::test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::NonBitwiseCopyConstructibleType;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
     // test with default allocator no extra
@@ -377,18 +377,18 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
             constexpr type raw[element_count] = { 1,2,3,4 };
             const auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), element_count);
-            ASSERT_EQ(hud::get<2>(result), element_count);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), element_count);
+            ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant
@@ -397,25 +397,25 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
             constexpr type raw[element_count] = { 1,2,3,4 };
             constexpr auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), element_count);
-            ASSERT_EQ(hud::get<2>(result), element_count);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), element_count);
+            ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
         }
     }
 
     // test with allocator no extra
     {
         auto test_with_allocator = [](const type* raw, usize element_count) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> array(raw, element_count, hud::test::array_allocator<alignof(type)>{});
+            hud::array<type, hud_test::array_allocator<alignof(type)>> array(raw, element_count, hud_test::array_allocator<alignof(type)>{});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
@@ -464,22 +464,22 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
             constexpr type raw[element_count] = { 1,2,3,4 };
             const auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), element_count);
-            ASSERT_EQ(hud::get<2>(result), element_count);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), element_count);
+            ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<6>(result), 1u);
-            ASSERT_EQ(hud::get<7>(result), 0u);
+            ASSERT_EQ(std::get<6>(result), 1u);
+            ASSERT_EQ(std::get<7>(result), 0u);
         }
 
         // Constant
@@ -488,27 +488,27 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
             constexpr type raw[element_count] = { 1,2,3,4 };
             constexpr auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), element_count);
-            ASSERT_EQ(hud::get<2>(result), element_count);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), element_count);
+            ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<6>(result), 1u);
-            ASSERT_EQ(hud::get<7>(result), 0u);
+            ASSERT_EQ(std::get<6>(result), 1u);
+            ASSERT_EQ(std::get<7>(result), 0u);
         }
     }
 
     {
-        hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
             []<usize extra>() {
 
             // Test default allcoator with extra
@@ -560,18 +560,18 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                         constexpr type raw[element_count] = { 1,2,3,4 };
                         const auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
                     }
 
                     // Constant
@@ -580,18 +580,18 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                         constexpr type raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
                     }
                 }
 
@@ -599,7 +599,7 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                 // Test with allocator with extra
                 {
                     auto test_with_allocator = [](const type* raw, usize element_count) {
-                        hud::array<type, hud::test::array_allocator<alignof(type)>> array(raw, element_count, extra, hud::test::array_allocator<alignof(type)>{});
+                        hud::array<type, hud_test::array_allocator<alignof(type)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(type)>{});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
@@ -648,22 +648,22 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                         constexpr type raw[element_count] = { 1,2,3,4 };
                         const auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<6>(result), 1u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<6>(result), 1u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
                     }
 
                     // Constant
@@ -672,37 +672,37 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                         constexpr type raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<6>(result), 1u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<6>(result), 1u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
         });
     }
 }
 
-TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_different_type)
+TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_different_type)
 {
 
 
     using TypesToTest = std::tuple<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>;
 
     bool at_least_one_copy_tested = false;
-    hud::test::for_each_type<TypesToTest>()([&at_least_one_copy_tested]<typename type_t>() noexcept {
-        hud::test::for_each_type<TypesToTest>()([&at_least_one_copy_tested]<typename U>() noexcept {
+    hud_test::for_each_type<TypesToTest>()([&at_least_one_copy_tested]<typename type_t>() noexcept {
+        hud_test::for_each_type<TypesToTest>()([&at_least_one_copy_tested]<typename U>() noexcept {
 
             // Test only types that are not the same but are bitwise copy constructible
             if constexpr (!std::is_same_v<type_t, U> && hud::is_bitwise_copy_constructible_v<type_t, U>)
@@ -743,15 +743,15 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                         constexpr U raw[element_count] = { 1,2,3,4 };
                         const auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
                     }
 
                     // Constant
@@ -760,22 +760,22 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                         constexpr U raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
                     }
                 }
 
                 // test with allocator no extra
                 {
                     auto test_with_allocator = [](const U* raw, usize element_count) {
-                        hud::array<type_t, hud::test::array_allocator<alignof(type_t)>> array(raw, element_count, hud::test::array_allocator<alignof(type_t)>{});
+                        hud::array<type_t, hud_test::array_allocator<alignof(type_t)>> array(raw, element_count, hud_test::array_allocator<alignof(type_t)>{});
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
@@ -810,19 +810,19 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                         constexpr U raw[element_count] = { 1,2,3,4 };
                         const auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
                     }
 
                     // Constant
@@ -831,24 +831,24 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                         constexpr U raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
                     }
                 }
 
                 {
-                    hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+                    hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                         []<usize extra>() {
 
                         // Test default allocator with extra
@@ -885,15 +885,15 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                                     constexpr U raw[element_count] = { 1,2,3,4 };
                                     const auto result = test_default_allocator(raw, element_count);
                                     // Allocation of 4 i32 should be done
-                                    ASSERT_TRUE(hud::get<0>(result));
-                                    ASSERT_EQ(hud::get<1>(result), element_count);
-                                    ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                                    ASSERT_TRUE(std::get<0>(result));
+                                    ASSERT_EQ(std::get<1>(result), element_count);
+                                    ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                                     // Ensure it's not the same memory buffer
-                                    ASSERT_TRUE(hud::get<3>(result));
+                                    ASSERT_TRUE(std::get<3>(result));
 
                                     // Ensure values are correclty copied
-                                    ASSERT_TRUE(hud::get<4>(result));
+                                    ASSERT_TRUE(std::get<4>(result));
                                 }
 
                                 // Constant
@@ -902,15 +902,15 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                                     constexpr U raw[element_count] = { 1,2,3,4 };
                                     constexpr auto result = test_default_allocator(raw, element_count);
                                     // Allocation of 4 i32 should be done
-                                    ASSERT_TRUE(hud::get<0>(result));
-                                    ASSERT_EQ(hud::get<1>(result), element_count);
-                                    ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                                    ASSERT_TRUE(std::get<0>(result));
+                                    ASSERT_EQ(std::get<1>(result), element_count);
+                                    ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                                     // Ensure it's not the same memory buffer
-                                    ASSERT_TRUE(hud::get<3>(result));
+                                    ASSERT_TRUE(std::get<3>(result));
 
                                     // Ensure values are correclty copied
-                                    ASSERT_TRUE(hud::get<4>(result));
+                                    ASSERT_TRUE(std::get<4>(result));
                                 }
 
                             }
@@ -918,7 +918,7 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                             // Test with allocator with extra
                             {
                                 auto test_with_allocator = [](const U* raw, usize element_count) {
-                                    hud::array<type_t, hud::test::array_allocator<alignof(type_t)>> array(raw, element_count, extra, hud::test::array_allocator<alignof(type_t)>{});
+                                    hud::array<type_t, hud_test::array_allocator<alignof(type_t)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(type_t)>{});
                                     bool all_values_copied = true;
 
                                     // Ensure values are correclty copied
@@ -953,19 +953,19 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                                     constexpr U raw[element_count] = { 1,2,3,4 };
                                     const auto result = test_with_allocator(raw, element_count);
                                     // Allocation of 4 i32 should be done
-                                    ASSERT_TRUE(hud::get<0>(result));
-                                    ASSERT_EQ(hud::get<1>(result), element_count);
-                                    ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                                    ASSERT_TRUE(std::get<0>(result));
+                                    ASSERT_EQ(std::get<1>(result), element_count);
+                                    ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                                     // Ensure it's not the same memory buffer
-                                    ASSERT_TRUE(hud::get<3>(result));
+                                    ASSERT_TRUE(std::get<3>(result));
 
                                     // Ensure values are correclty copied
-                                    ASSERT_TRUE(hud::get<4>(result));
+                                    ASSERT_TRUE(std::get<4>(result));
 
                                     // Ensure we are allocating only one time
-                                    ASSERT_EQ(hud::get<5>(result), 1u);
-                                    ASSERT_EQ(hud::get<6>(result), 0u);
+                                    ASSERT_EQ(std::get<5>(result), 1u);
+                                    ASSERT_EQ(std::get<6>(result), 0u);
                                 }
 
                                 // Constant
@@ -975,19 +975,19 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
                                     constexpr auto result = test_with_allocator(raw, element_count);
 
                                     // Allocation of 4 i32 should be done
-                                    ASSERT_TRUE(hud::get<0>(result));
-                                    ASSERT_EQ(hud::get<1>(result), element_count);
-                                    ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                                    ASSERT_TRUE(std::get<0>(result));
+                                    ASSERT_EQ(std::get<1>(result), element_count);
+                                    ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                                     // Ensure it's not the same memory buffer
-                                    ASSERT_TRUE(hud::get<3>(result));
+                                    ASSERT_TRUE(std::get<3>(result));
 
                                     // Ensure values are correclty copied
-                                    ASSERT_TRUE(hud::get<4>(result));
+                                    ASSERT_TRUE(std::get<4>(result));
 
                                     // Ensure we are allocating only one time
-                                    ASSERT_EQ(hud::get<5>(result), 1u);
-                                    ASSERT_EQ(hud::get<6>(result), 0u);
+                                    ASSERT_EQ(std::get<5>(result), 1u);
+                                    ASSERT_EQ(std::get<6>(result), 0u);
                                 }
                             }
                     });
@@ -1000,12 +1000,12 @@ TEST(Array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
 
 }
 
-TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_different_type)
+TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_different_type)
 {
 
 
-    using Type1 = hud::test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud::test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
+    using Type2 = hud_test::NonBitwiseCopyConstructibleType;
 
     // test with default allocator no extra
     {
@@ -1056,18 +1056,18 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
             constexpr Type1 raw[element_count] = { 1,2,3,4 };
             const auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), element_count);
-            ASSERT_EQ(hud::get<2>(result), element_count);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), element_count);
+            ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant
@@ -1076,25 +1076,25 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
             constexpr Type1 raw[element_count] = { 1,2,3,4 };
             constexpr auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), element_count);
-            ASSERT_EQ(hud::get<2>(result), element_count);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), element_count);
+            ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
         }
     }
 
     // test with allocator no extra
     {
         auto test_with_allocator = [](const Type1* raw, usize element_count) {
-            hud::array<Type2, hud::test::array_allocator<alignof(Type2)>> array(raw, element_count, hud::test::array_allocator<alignof(Type2)>{});
+            hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(raw, element_count, hud_test::array_allocator<alignof(Type2)>{});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
@@ -1143,22 +1143,22 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
             constexpr Type1 raw[element_count] = { 1,2,3,4 };
             const auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), element_count);
-            ASSERT_EQ(hud::get<2>(result), element_count);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), element_count);
+            ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<6>(result), 1u);
-            ASSERT_EQ(hud::get<7>(result), 0u);
+            ASSERT_EQ(std::get<6>(result), 1u);
+            ASSERT_EQ(std::get<7>(result), 0u);
         }
 
         // Constant
@@ -1167,27 +1167,27 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
             constexpr Type1 raw[element_count] = { 1,2,3,4 };
             constexpr auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), element_count);
-            ASSERT_EQ(hud::get<2>(result), element_count);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), element_count);
+            ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<6>(result), 1u);
-            ASSERT_EQ(hud::get<7>(result), 0u);
+            ASSERT_EQ(std::get<6>(result), 1u);
+            ASSERT_EQ(std::get<7>(result), 0u);
         }
     }
 
     {
-        hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
             []<usize extra>() {
 
             // Test default allcoator with extra
@@ -1239,18 +1239,18 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                         constexpr Type1 raw[element_count] = { 1,2,3,4 };
                         const auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
                     }
 
                     // Constant
@@ -1259,18 +1259,18 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                         constexpr Type1 raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
                     }
                 }
 
@@ -1278,7 +1278,7 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                 // Test with allocator with extra
                 {
                     auto test_with_allocator = [](const Type1* raw, usize element_count) {
-                        hud::array<Type2, hud::test::array_allocator<alignof(Type2)>> array(raw, element_count, extra, hud::test::array_allocator<alignof(Type2)>{});
+                        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(Type2)>{});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
@@ -1327,22 +1327,22 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                         constexpr Type1 raw[element_count] = { 1,2,3,4 };
                         const auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<6>(result), 1u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<6>(result), 1u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
                     }
 
                     // Constant
@@ -1351,29 +1351,29 @@ TEST(Array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
                         constexpr Type1 raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), element_count);
-                        ASSERT_EQ(hud::get<2>(result), element_count + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), element_count);
+                        ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<6>(result), 1u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<6>(result), 1u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
         });
     }
 }
 
-TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_same_type)
+TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_same_type)
 {
 
     using type = i32;
@@ -1411,37 +1411,37 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_same_t
         {
             const auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
         }
     }
 
     // test with allocator no extra
     {
         auto test_with_allocator = [](std::initializer_list<type> initializer) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> array(initializer, hud::test::array_allocator<alignof(type)>{});
+            hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, hud_test::array_allocator<alignof(type)>{});
             bool all_values_copied = true;
 
             // Ensure values are correclty copied
@@ -1474,43 +1474,43 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_same_t
         {
             const auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<5>(result), 1u);
-            ASSERT_EQ(hud::get<6>(result), 0u);
+            ASSERT_EQ(std::get<5>(result), 1u);
+            ASSERT_EQ(std::get<6>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<5>(result), 1u);
-            ASSERT_EQ(hud::get<6>(result), 0u);
+            ASSERT_EQ(std::get<5>(result), 1u);
+            ASSERT_EQ(std::get<6>(result), 0u);
         }
     }
 
     {
-        hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
             []<usize extra>() {
 
             // Test default allocator with extra
@@ -1545,30 +1545,30 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_same_t
                     {
                         const auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
                     }
 
                 }
@@ -1576,7 +1576,7 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_same_t
                 // Test with allocator with extra
                 {
                     auto test_with_allocator = [](std::initializer_list<i32> initializer) {
-                        hud::array<type, hud::test::array_allocator<alignof(type)>> array(initializer, extra, hud::test::array_allocator<alignof(type)>{});
+                        hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, extra, hud_test::array_allocator<alignof(type)>{});
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
@@ -1609,19 +1609,19 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_same_t
                     {
                         const auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
                     }
 
                     // Constant
@@ -1629,26 +1629,26 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_same_t
                         constexpr auto result = test_with_allocator({ 1,2,3,4 });
 
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
                     }
                 }
         });
     }
 }
 
-TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_different_type)
+TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_different_type)
 {
 
     using Type1 = i32;
@@ -1688,37 +1688,37 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_differ
         {
             const auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
         }
     }
 
     // test with allocator no extra
     {
         auto test_with_allocator = [](std::initializer_list<Type1> initializer) {
-            hud::array<Type2, hud::test::array_allocator<alignof(Type2)>> array(initializer, hud::test::array_allocator<alignof(Type2)>{});
+            hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, hud_test::array_allocator<alignof(Type2)>{});
             bool all_values_copied = true;
 
             // Ensure values are correclty copied
@@ -1751,43 +1751,43 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_differ
         {
             const auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<5>(result), 1u);
-            ASSERT_EQ(hud::get<6>(result), 0u);
+            ASSERT_EQ(std::get<5>(result), 1u);
+            ASSERT_EQ(std::get<6>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<5>(result), 1u);
-            ASSERT_EQ(hud::get<6>(result), 0u);
+            ASSERT_EQ(std::get<5>(result), 1u);
+            ASSERT_EQ(std::get<6>(result), 0u);
         }
     }
 
     {
-        hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
             []<usize extra>() {
 
             // Test default allocator with extra
@@ -1822,30 +1822,30 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_differ
                     {
                         const auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
                     }
 
                 }
@@ -1853,7 +1853,7 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_differ
                 // Test with allocator with extra
                 {
                     auto test_with_allocator = [](std::initializer_list<Type1> initializer) {
-                        hud::array<Type2, hud::test::array_allocator<alignof(Type2)>> array(initializer, extra, hud::test::array_allocator<alignof(Type2)>{});
+                        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, extra, hud_test::array_allocator<alignof(Type2)>{});
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
@@ -1886,19 +1886,19 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_differ
                     {
                         const auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
                     }
 
                     // Constant
@@ -1906,29 +1906,29 @@ TEST(Array, construct_with_initializer_list_of_bitwise_copy_constructible_differ
                         constexpr auto result = test_with_allocator({ 1,2,3,4 });
 
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
                     }
                 }
         });
     }
 }
 
-TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_same_type)
+TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_same_type)
 {
 
-    using type = hud::test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::NonBitwiseCopyConstructibleType;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
     // test with default allocator no extra
@@ -1978,43 +1978,43 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_sa
         {
             const auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
         }
     }
 
     // test with allocator no extra
     {
         auto test_with_allocator = [](std::initializer_list<type> initializer) {
-            hud::array<type, hud::test::array_allocator<alignof(type)>> array(initializer, hud::test::array_allocator<alignof(type)>{});
+            hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, hud_test::array_allocator<alignof(type)>{});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
@@ -2061,49 +2061,49 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_sa
         {
             const auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<6>(result), 1u);
-            ASSERT_EQ(hud::get<7>(result), 0u);
+            ASSERT_EQ(std::get<6>(result), 1u);
+            ASSERT_EQ(std::get<7>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<6>(result), 1u);
-            ASSERT_EQ(hud::get<7>(result), 0u);
+            ASSERT_EQ(std::get<6>(result), 1u);
+            ASSERT_EQ(std::get<7>(result), 0u);
         }
     }
 
     {
-        hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
             []<usize extra>() {
 
             // Test default allcoator with extra
@@ -2153,36 +2153,36 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_sa
                     {
                         const auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
                     }
                 }
 
@@ -2190,7 +2190,7 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_sa
                 // Test with allocator with extra
                 {
                     auto test_with_allocator = [](std::initializer_list<type> initializer) {
-                        hud::array<type, hud::test::array_allocator<alignof(type)>> array(initializer, extra, hud::test::array_allocator<alignof(type)>{});
+                        hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, extra, hud_test::array_allocator<alignof(type)>{});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
@@ -2237,55 +2237,55 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_sa
                     {
                         const auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<6>(result), 1u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<6>(result), 1u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<6>(result), 1u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<6>(result), 1u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
         });
     }
 }
 
-TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_different_type)
+TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_different_type)
 {
 
-    using Type1 = hud::test::NonBitwiseCopyConstructibleType;
-    using Type2 = hud::test::NonBitwiseCopyConstructibleType2;
+    using Type1 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
     static_assert(!std::is_same_v<Type1, Type2> && !hud::is_bitwise_copy_constructible_v<Type2, Type1>);
 
     // test with default allocator no extra
@@ -2335,43 +2335,43 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_di
         {
             const auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
         }
     }
 
     // test with allocator no extra
     {
         auto test_with_allocator = [](std::initializer_list<Type1> initializer) {
-            hud::array<Type2, hud::test::array_allocator<alignof(Type2)>> array(initializer, hud::test::array_allocator<alignof(Type2)>{});
+            hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, hud_test::array_allocator<alignof(Type2)>{});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
@@ -2418,49 +2418,49 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_di
         {
             const auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<6>(result), 1u);
-            ASSERT_EQ(hud::get<7>(result), 0u);
+            ASSERT_EQ(std::get<6>(result), 1u);
+            ASSERT_EQ(std::get<7>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u);
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(hud::get<5>(result));
+            ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<6>(result), 1u);
-            ASSERT_EQ(hud::get<7>(result), 0u);
+            ASSERT_EQ(std::get<6>(result), 1u);
+            ASSERT_EQ(std::get<7>(result), 0u);
         }
     }
 
     {
-        hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
             []<usize extra>() {
 
             // Test default allcoator with extra
@@ -2510,36 +2510,36 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_di
                     {
                         const auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
                     }
                 }
 
@@ -2547,7 +2547,7 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_di
                 // Test with allocator with extra
                 {
                     auto test_with_allocator = [](std::initializer_list<Type1> initializer) {
-                        hud::array<Type2, hud::test::array_allocator<alignof(Type2)>> array(initializer, extra, hud::test::array_allocator<alignof(Type2)>{});
+                        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, extra, hud_test::array_allocator<alignof(Type2)>{});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
@@ -2594,51 +2594,51 @@ TEST(Array, construct_with_initializer_list_of_non_bitwise_copy_constructible_di
                     {
                         const auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<6>(result), 1u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<6>(result), 1u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + extra);
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(hud::get<5>(result));
+                        ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(hud::get<6>(result), 1u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<6>(result), 1u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
         });
     }
 }
 
-TEST(Array, copy_construct_bitwise_copy_constructible_same_type)
+TEST(array, copy_construct_bitwise_copy_constructible_same_type)
 {
 
 
@@ -2647,9 +2647,9 @@ TEST(Array, copy_construct_bitwise_copy_constructible_same_type)
 
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
 
-    using CopiedType = hud::array<type, hud::test::array_allocator<alignof(type)>>;
+    using CopiedType = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
-    hud::test::for_each_type<hud::test::array_allocator<alignof(type)>, hud::test::ArrayAllocator2<alignof(type)>>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<hud_test::array_allocator<alignof(type)>, hud_test::ArrayAllocator2<alignof(type)>>()([]<typename Allocator>() noexcept {
 
         auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
@@ -2686,34 +2686,34 @@ TEST(Array, copy_construct_bitwise_copy_constructible_same_type)
         {
             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
             // Ensure we copy all datas in order
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u + 1u);
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure the copy data is not the same memory of the copied data
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<5>(result), 1u);
-            ASSERT_EQ(hud::get<6>(result), 0u);
+            ASSERT_EQ(std::get<5>(result), 1u);
+            ASSERT_EQ(std::get<6>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
             // Ensure we copy all datas in order
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u + 1u);
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure the copy data is not the same memory of the copied data
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<5>(result), 1u);
-            ASSERT_EQ(hud::get<6>(result), 0u);
+            ASSERT_EQ(std::get<5>(result), 1u);
+            ASSERT_EQ(std::get<6>(result), 0u);
         }
 
 
@@ -2752,40 +2752,40 @@ TEST(Array, copy_construct_bitwise_copy_constructible_same_type)
         {
             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
             // Ensure we copy all datas in order
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u + 1u);
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure the copy data is not the same memory of the copied data
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<5>(result), 1u);
-            ASSERT_EQ(hud::get<6>(result), 0u);
+            ASSERT_EQ(std::get<5>(result), 1u);
+            ASSERT_EQ(std::get<6>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
             // Ensure we copy all datas in order
-            ASSERT_TRUE(hud::get<0>(result));
-            ASSERT_EQ(hud::get<1>(result), 4u);
-            ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-            ASSERT_TRUE(hud::get<3>(result));
+            ASSERT_TRUE(std::get<0>(result));
+            ASSERT_EQ(std::get<1>(result), 4u);
+            ASSERT_EQ(std::get<2>(result), 4u + 1u);
+            ASSERT_TRUE(std::get<3>(result));
 
             // Ensure the copy data is not the same memory of the copied data
-            ASSERT_TRUE(hud::get<4>(result));
+            ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(hud::get<5>(result), 1u);
-            ASSERT_EQ(hud::get<6>(result), 0u);
+            ASSERT_EQ(std::get<5>(result), 1u);
+            ASSERT_EQ(std::get<6>(result), 0u);
         }
 
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test with default allocator
@@ -2825,34 +2825,34 @@ TEST(Array, copy_construct_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -2893,34 +2893,34 @@ TEST(Array, copy_construct_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
             });
@@ -2928,15 +2928,15 @@ TEST(Array, copy_construct_bitwise_copy_constructible_same_type)
     });
 }
 
-TEST(Array, copy_construct_bitwise_copy_constructible_different_type)
+TEST(array, copy_construct_bitwise_copy_constructible_different_type)
 {
 
     /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = i32;
     using Type2 = u32;
 
-    using AllocatorOfCopiedArray = hud::test::array_allocator<alignof(Type1)>;
-    using OtherAllocatorOfArray = hud::test::ArrayAllocator2<alignof(Type2)>;
+    using AllocatorOfCopiedArray = hud_test::array_allocator<alignof(Type1)>;
+    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfCopiedArray, OtherAllocatorOfArray>);
@@ -2944,7 +2944,7 @@ TEST(Array, copy_construct_bitwise_copy_constructible_different_type)
     static_assert(hud::is_bitwise_copy_constructible_v<Type2, Type1>);
 
 
-    hud::test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
 
         // Test with default allocator no extra
         {
@@ -2983,34 +2983,34 @@ TEST(Array, copy_construct_bitwise_copy_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3052,40 +3052,40 @@ TEST(Array, copy_construct_bitwise_copy_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test with default allocator
@@ -3125,34 +3125,34 @@ TEST(Array, copy_construct_bitwise_copy_constructible_different_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -3193,34 +3193,34 @@ TEST(Array, copy_construct_bitwise_copy_constructible_different_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
             });
@@ -3228,22 +3228,22 @@ TEST(Array, copy_construct_bitwise_copy_constructible_different_type)
     });
 }
 
-TEST(Array, copy_construct_non_bitwise_copy_constructible_same_type)
+TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
 {
 
 
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
-    using type = hud::test::NonBitwiseCopyConstructibleType;
-    using AllocatorOfCopiedArray = hud::test::array_allocator<alignof(type)>;
-    using OtherAllocatorOfArray = hud::test::ArrayAllocator2<alignof(type)>;
+    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using AllocatorOfCopiedArray = hud_test::array_allocator<alignof(type)>;
+    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfCopiedArray, OtherAllocatorOfArray>);
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
-    using CopiedType = const hud::array<hud::test::NonBitwiseCopyConstructibleType, AllocatorOfCopiedArray>;
+    using CopiedType = const hud::array<hud_test::NonBitwiseCopyConstructibleType, AllocatorOfCopiedArray>;
 
-    hud::test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
 
         // Test default allocator
         {
@@ -3283,34 +3283,34 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3352,40 +3352,40 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_wtih_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_wtih_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test default allocator
@@ -3426,34 +3426,34 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -3496,34 +3496,34 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -3532,23 +3532,23 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_same_type)
     });
 }
 
-TEST(Array, copy_construct_non_bitwise_copy_constructible_different_type)
+TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
 {
 
 
 
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
-    using Type1 = hud::test::NonBitwiseCopyConstructibleType;
-    using Type2 = hud::test::NonBitwiseCopyConstructibleType2;
-    using AllocatorOfCopiedArray = hud::test::array_allocator<alignof(Type1)>;
-    using OtherAllocatorOfArray = hud::test::ArrayAllocator2<alignof(Type2)>;
+    using Type1 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
+    using AllocatorOfCopiedArray = hud_test::array_allocator<alignof(Type1)>;
+    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfCopiedArray, OtherAllocatorOfArray>);
     static_assert(!std::is_same_v<Type1, Type2>);
     static_assert(!hud::is_bitwise_copy_constructible_v<Type2, Type1>);
 
-    hud::test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
 
         // Test default allocator
         {
@@ -3588,34 +3588,34 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3657,40 +3657,40 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_different_type)
             {
                 const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test default allocator
@@ -3731,34 +3731,34 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_different_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -3800,34 +3800,34 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_different_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
             });
@@ -3835,21 +3835,21 @@ TEST(Array, copy_construct_non_bitwise_copy_constructible_different_type)
     });
 }
 
-TEST(Array, move_construct_bitwise_copy_constructible_same_type)
+TEST(array, move_construct_bitwise_copy_constructible_same_type)
 {
 
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
     using type = i32;
-    using AllocatorOfMovedArray = hud::test::array_allocator<alignof(type)>;
-    using OtherAllocatorOfArray = hud::test::ArrayAllocator2<alignof(type)>;
+    using AllocatorOfMovedArray = hud_test::array_allocator<alignof(type)>;
+    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
     static_assert(hud::is_bitwise_move_constructible_v<type>);
     using MovedType = hud::array<type, AllocatorOfMovedArray>;
 
-    hud::test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
 
         // Test default allocator
         {
@@ -3858,7 +3858,7 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<type, Allocator> hud::move(std::move(moved));
+                hud::array<type, Allocator> move(std::move(moved));
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -3895,36 +3895,36 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
                 // Bitwise copyable with same type should just stole the pointer without reallocating
                 // If allocator are not the same, a reallocation is done to allocate with the correct allocator
                 if (std::is_same_v<AllocatorOfMovedArray, Allocator>) {
-                    ASSERT_EQ(hud::get<5>(result), 0u);
-                    ASSERT_EQ(hud::get<6>(result), 0u);
-                    ASSERT_EQ(hud::get<7>(result), 0u);
-                    ASSERT_EQ(hud::get<8>(result), 1u);
-                    ASSERT_EQ(hud::get<9>(result), 1u);
-                    ASSERT_EQ(hud::get<10>(result), 0u);
-                    ASSERT_EQ(hud::get<11>(result), 0u);
-                    ASSERT_EQ(hud::get<12>(result), 0u);
+                    ASSERT_EQ(std::get<5>(result), 0u);
+                    ASSERT_EQ(std::get<6>(result), 0u);
+                    ASSERT_EQ(std::get<7>(result), 0u);
+                    ASSERT_EQ(std::get<8>(result), 1u);
+                    ASSERT_EQ(std::get<9>(result), 1u);
+                    ASSERT_EQ(std::get<10>(result), 0u);
+                    ASSERT_EQ(std::get<11>(result), 0u);
+                    ASSERT_EQ(std::get<12>(result), 0u);
                 }
                 else {
-                    ASSERT_EQ(hud::get<5>(result), 1u);
-                    ASSERT_EQ(hud::get<6>(result), 0u);
-                    ASSERT_EQ(hud::get<7>(result), 0u);
-                    ASSERT_EQ(hud::get<8>(result), 0u);
-                    ASSERT_EQ(hud::get<9>(result), 1u);
-                    ASSERT_EQ(hud::get<10>(result), 1u);
-                    ASSERT_EQ(hud::get<11>(result), 0u);
-                    ASSERT_EQ(hud::get<12>(result), 0u);
+                    ASSERT_EQ(std::get<5>(result), 1u);
+                    ASSERT_EQ(std::get<6>(result), 0u);
+                    ASSERT_EQ(std::get<7>(result), 0u);
+                    ASSERT_EQ(std::get<8>(result), 0u);
+                    ASSERT_EQ(std::get<9>(result), 1u);
+                    ASSERT_EQ(std::get<10>(result), 1u);
+                    ASSERT_EQ(std::get<11>(result), 0u);
+                    ASSERT_EQ(std::get<12>(result), 0u);
                 }
             }
 
@@ -3932,36 +3932,36 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
                 // Bitwise copyable with same type should just stole the pointer without reallocating
                 // If allocator are not the same, a reallocation is done to allocate with the correct allocator
                 if (std::is_same_v<AllocatorOfMovedArray, Allocator>) {
-                    ASSERT_EQ(hud::get<5>(result), 0u);
-                    ASSERT_EQ(hud::get<6>(result), 0u);
-                    ASSERT_EQ(hud::get<7>(result), 0u);
-                    ASSERT_EQ(hud::get<8>(result), 1u);
-                    ASSERT_EQ(hud::get<9>(result), 1u);
-                    ASSERT_EQ(hud::get<10>(result), 0u);
-                    ASSERT_EQ(hud::get<11>(result), 0u);
-                    ASSERT_EQ(hud::get<12>(result), 0u);
+                    ASSERT_EQ(std::get<5>(result), 0u);
+                    ASSERT_EQ(std::get<6>(result), 0u);
+                    ASSERT_EQ(std::get<7>(result), 0u);
+                    ASSERT_EQ(std::get<8>(result), 1u);
+                    ASSERT_EQ(std::get<9>(result), 1u);
+                    ASSERT_EQ(std::get<10>(result), 0u);
+                    ASSERT_EQ(std::get<11>(result), 0u);
+                    ASSERT_EQ(std::get<12>(result), 0u);
                 }
                 else {
-                    ASSERT_EQ(hud::get<5>(result), 1u);
-                    ASSERT_EQ(hud::get<6>(result), 0u);
-                    ASSERT_EQ(hud::get<7>(result), 0u);
-                    ASSERT_EQ(hud::get<8>(result), 0u);
-                    ASSERT_EQ(hud::get<9>(result), 1u);
-                    ASSERT_EQ(hud::get<10>(result), 1u);
-                    ASSERT_EQ(hud::get<11>(result), 0u);
-                    ASSERT_EQ(hud::get<12>(result), 0u);
+                    ASSERT_EQ(std::get<5>(result), 1u);
+                    ASSERT_EQ(std::get<6>(result), 0u);
+                    ASSERT_EQ(std::get<7>(result), 0u);
+                    ASSERT_EQ(std::get<8>(result), 0u);
+                    ASSERT_EQ(std::get<9>(result), 1u);
+                    ASSERT_EQ(std::get<10>(result), 1u);
+                    ASSERT_EQ(std::get<11>(result), 0u);
+                    ASSERT_EQ(std::get<12>(result), 0u);
                 }
             }
         }
@@ -3972,7 +3972,7 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<type, Allocator> hud::move(std::move(moved), Allocator{});
+                hud::array<type, Allocator> move(std::move(moved), Allocator{});
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -4009,52 +4009,52 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test default allocator
@@ -4064,7 +4064,7 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
                             MovedType moved(initializer, copied_extra);
 
                             // Copy the array
-                            hud::array<type, Allocator> hud::move(std::move(moved), extra);
+                            hud::array<type, Allocator> move(std::move(moved), extra);
 
                             // Ensure we moved all datas in order
                             bool all_values_moved = true;
@@ -4101,46 +4101,46 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we allocate and free the moved array and just allocate the new array once
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we allocate and free the moved array and just allocate the new array once
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
 
@@ -4150,7 +4150,7 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
                             MovedType moved(initializer, copied_extra);
 
                             // Copy the array
-                            hud::array<type, Allocator> hud::move(std::move(moved), extra, Allocator{});
+                            hud::array<type, Allocator> move(std::move(moved), extra, Allocator{});
 
                             // Ensure we moved all datas in order
                             bool all_values_moved = true;
@@ -4187,46 +4187,46 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we allocate and free the moved array and just allocate the new array once
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we allocate and free the moved array and just allocate the new array once
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
             });
@@ -4234,15 +4234,15 @@ TEST(Array, move_construct_bitwise_copy_constructible_same_type)
     });
 }
 
-TEST(Array, move_construct_bitwise_move_constructible_different_type)
+TEST(array, move_construct_bitwise_move_constructible_different_type)
 {
 
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
     using Type1 = i32;
     using Type2 = u32;
-    using AllocatorOfMovedArray = hud::test::array_allocator<alignof(Type1)>;
-    using OtherAllocatorOfArray = hud::test::ArrayAllocator2<alignof(Type2)>;
+    using AllocatorOfMovedArray = hud_test::array_allocator<alignof(Type1)>;
+    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
 
 
     // Ensure we test with different allocator
@@ -4252,7 +4252,7 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
 
     using MovedType = hud::array<Type1, AllocatorOfMovedArray>;
 
-    hud::test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>()noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>()noexcept {
 
         // Test default allocator
         {
@@ -4260,7 +4260,7 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<Type2, Allocator> hud::move(std::move(moved));
+                hud::array<Type2, Allocator> move(std::move(moved));
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -4297,36 +4297,36 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Bitwise moveable with same type should just stole the pointer without reallocating
                 // If allocator are not the same, a reallocation is done to allocate with the correct allocator
                 if (std::is_same_v<AllocatorOfMovedArray, Allocator>) {
-                    ASSERT_EQ(hud::get<5>(result), 0u);
-                    ASSERT_EQ(hud::get<6>(result), 0u);
-                    ASSERT_EQ(hud::get<7>(result), 0u);
-                    ASSERT_EQ(hud::get<8>(result), 1u);
-                    ASSERT_EQ(hud::get<9>(result), 1u);
-                    ASSERT_EQ(hud::get<10>(result), 0u);
-                    ASSERT_EQ(hud::get<11>(result), 0u);
-                    ASSERT_EQ(hud::get<12>(result), 0u);
+                    ASSERT_EQ(std::get<5>(result), 0u);
+                    ASSERT_EQ(std::get<6>(result), 0u);
+                    ASSERT_EQ(std::get<7>(result), 0u);
+                    ASSERT_EQ(std::get<8>(result), 1u);
+                    ASSERT_EQ(std::get<9>(result), 1u);
+                    ASSERT_EQ(std::get<10>(result), 0u);
+                    ASSERT_EQ(std::get<11>(result), 0u);
+                    ASSERT_EQ(std::get<12>(result), 0u);
                 }
                 else {
-                    ASSERT_EQ(hud::get<5>(result), 1u);
-                    ASSERT_EQ(hud::get<6>(result), 0u);
-                    ASSERT_EQ(hud::get<7>(result), 0u);
-                    ASSERT_EQ(hud::get<8>(result), 0u);
-                    ASSERT_EQ(hud::get<9>(result), 1u);
-                    ASSERT_EQ(hud::get<10>(result), 1u);
-                    ASSERT_EQ(hud::get<11>(result), 0u);
-                    ASSERT_EQ(hud::get<12>(result), 0u);
+                    ASSERT_EQ(std::get<5>(result), 1u);
+                    ASSERT_EQ(std::get<6>(result), 0u);
+                    ASSERT_EQ(std::get<7>(result), 0u);
+                    ASSERT_EQ(std::get<8>(result), 0u);
+                    ASSERT_EQ(std::get<9>(result), 1u);
+                    ASSERT_EQ(std::get<10>(result), 1u);
+                    ASSERT_EQ(std::get<11>(result), 0u);
+                    ASSERT_EQ(std::get<12>(result), 0u);
                 }
             }
 
@@ -4334,37 +4334,37 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // We move bitwise move constructible of different type, we can't just still the buffer
                 // ( Can't reinterpret_cast the pointer in constant evaluated fonction) so we have an allocation , move and free, always!
                 // Allocator is move only if allocator are the same
                 if (std::is_same_v<AllocatorOfMovedArray, Allocator>) {
-                    ASSERT_EQ(hud::get<5>(result), 1u);
-                    ASSERT_EQ(hud::get<6>(result), 0u);
-                    ASSERT_EQ(hud::get<7>(result), 0u);
-                    ASSERT_EQ(hud::get<8>(result), 1u);
-                    ASSERT_EQ(hud::get<9>(result), 1u);
-                    ASSERT_EQ(hud::get<10>(result), 1u);
-                    ASSERT_EQ(hud::get<11>(result), 0u);
-                    ASSERT_EQ(hud::get<12>(result), 0u);
+                    ASSERT_EQ(std::get<5>(result), 1u);
+                    ASSERT_EQ(std::get<6>(result), 0u);
+                    ASSERT_EQ(std::get<7>(result), 0u);
+                    ASSERT_EQ(std::get<8>(result), 1u);
+                    ASSERT_EQ(std::get<9>(result), 1u);
+                    ASSERT_EQ(std::get<10>(result), 1u);
+                    ASSERT_EQ(std::get<11>(result), 0u);
+                    ASSERT_EQ(std::get<12>(result), 0u);
                 }
                 else {
-                    ASSERT_EQ(hud::get<5>(result), 1u);
-                    ASSERT_EQ(hud::get<6>(result), 0u);
-                    ASSERT_EQ(hud::get<7>(result), 0u);
-                    ASSERT_EQ(hud::get<8>(result), 0u);
-                    ASSERT_EQ(hud::get<9>(result), 1u);
-                    ASSERT_EQ(hud::get<10>(result), 1u);
-                    ASSERT_EQ(hud::get<11>(result), 0u);
-                    ASSERT_EQ(hud::get<12>(result), 0u);
+                    ASSERT_EQ(std::get<5>(result), 1u);
+                    ASSERT_EQ(std::get<6>(result), 0u);
+                    ASSERT_EQ(std::get<7>(result), 0u);
+                    ASSERT_EQ(std::get<8>(result), 0u);
+                    ASSERT_EQ(std::get<9>(result), 1u);
+                    ASSERT_EQ(std::get<10>(result), 1u);
+                    ASSERT_EQ(std::get<11>(result), 0u);
+                    ASSERT_EQ(std::get<12>(result), 0u);
                 }
             }
         }
@@ -4375,7 +4375,7 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<Type2, Allocator> hud::move(std::move(moved), Allocator{});
+                hud::array<Type2, Allocator> move(std::move(moved), Allocator{});
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -4412,54 +4412,54 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
             {
                 const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Providing an allocator force the realloation to be done with this allocator
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Providing an allocator force the realloation to be done with this allocator
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test default allocator
@@ -4468,7 +4468,7 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
                             MovedType moved(initializer, copied_extra);
 
                             // Copy the array
-                            hud::array<Type2, Allocator> hud::move(std::move(moved), extra);
+                            hud::array<Type2, Allocator> move(std::move(moved), extra);
 
                             // Ensure we moved all datas in order
                             bool all_values_moved = true;
@@ -4505,48 +4505,48 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // With extra a eallocation is done to allocate with the correct allocator
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // With extra a eallocation is done to allocate with the correct allocator
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
 
@@ -4556,7 +4556,7 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
                             MovedType moved(initializer, copied_extra);
 
                             // Copy the array
-                            hud::array<Type2, Allocator> hud::move(std::move(moved), extra, Allocator{});
+                            hud::array<Type2, Allocator> move(std::move(moved), extra, Allocator{});
 
                             // Ensure we moved all datas in order
                             bool all_values_moved = true;
@@ -4593,48 +4593,48 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Providing an allocator force the realloation to be done with this allocator
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Providing an allocator force the realloation to be done with this allocator
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
             });
@@ -4642,15 +4642,15 @@ TEST(Array, move_construct_bitwise_move_constructible_different_type)
     });
 }
 
-TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
+TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
 {
 
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
-    using type = hud::test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::NonBitwiseCopyConstructibleType;
 
-    using AllocatorOfMovedArray = hud::test::array_allocator<alignof(type)>;
-    using OtherAllocatorOfArray = hud::test::ArrayAllocator2<alignof(type)>;
+    using AllocatorOfMovedArray = hud_test::array_allocator<alignof(type)>;
+    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
@@ -4658,7 +4658,7 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
 
     using MovedType = hud::array<type, AllocatorOfMovedArray>;
 
-    hud::test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
 
         // Test default allocator
         {
@@ -4666,7 +4666,7 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<type, Allocator> hud::move(std::move(moved));
+                hud::array<type, Allocator> move(std::move(moved));
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -4704,48 +4704,48 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -4755,7 +4755,7 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<type, Allocator> hud::move(std::move(moved), Allocator{});
+                hud::array<type, Allocator> move(std::move(moved), Allocator{});
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -4793,54 +4793,54 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test default allocator
@@ -4849,7 +4849,7 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, Allocator> hud::move(std::move(moved), extra);
+                        hud::array<type, Allocator> move(std::move(moved), extra);
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -4887,48 +4887,48 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
                     {
                         const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
-                        ASSERT_EQ(hud::get<8>(result), 0u);
-                        ASSERT_EQ(hud::get<9>(result), 1u);
-                        ASSERT_EQ(hud::get<10>(result), 1u);
-                        ASSERT_EQ(hud::get<11>(result), 0u);
-                        ASSERT_EQ(hud::get<12>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<8>(result), 0u);
+                        ASSERT_EQ(std::get<9>(result), 1u);
+                        ASSERT_EQ(std::get<10>(result), 1u);
+                        ASSERT_EQ(std::get<11>(result), 0u);
+                        ASSERT_EQ(std::get<12>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
-                        ASSERT_EQ(hud::get<8>(result), 0u);
-                        ASSERT_EQ(hud::get<9>(result), 1u);
-                        ASSERT_EQ(hud::get<10>(result), 1u);
-                        ASSERT_EQ(hud::get<11>(result), 0u);
-                        ASSERT_EQ(hud::get<12>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<8>(result), 0u);
+                        ASSERT_EQ(std::get<9>(result), 1u);
+                        ASSERT_EQ(std::get<10>(result), 1u);
+                        ASSERT_EQ(std::get<11>(result), 0u);
+                        ASSERT_EQ(std::get<12>(result), 0u);
                     }
                 }
 
@@ -4938,7 +4938,7 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, Allocator> hud::move(std::move(moved), extra, Allocator{});
+                        hud::array<type, Allocator> move(std::move(moved), extra, Allocator{});
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -4976,48 +4976,48 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
                     {
                         const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
-                        ASSERT_EQ(hud::get<8>(result), 0u);
-                        ASSERT_EQ(hud::get<9>(result), 1u);
-                        ASSERT_EQ(hud::get<10>(result), 1u);
-                        ASSERT_EQ(hud::get<11>(result), 0u);
-                        ASSERT_EQ(hud::get<12>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<8>(result), 0u);
+                        ASSERT_EQ(std::get<9>(result), 1u);
+                        ASSERT_EQ(std::get<10>(result), 1u);
+                        ASSERT_EQ(std::get<11>(result), 0u);
+                        ASSERT_EQ(std::get<12>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
-                        ASSERT_EQ(hud::get<8>(result), 0u);
-                        ASSERT_EQ(hud::get<9>(result), 1u);
-                        ASSERT_EQ(hud::get<10>(result), 1u);
-                        ASSERT_EQ(hud::get<11>(result), 0u);
-                        ASSERT_EQ(hud::get<12>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<8>(result), 0u);
+                        ASSERT_EQ(std::get<9>(result), 1u);
+                        ASSERT_EQ(std::get<10>(result), 1u);
+                        ASSERT_EQ(std::get<11>(result), 0u);
+                        ASSERT_EQ(std::get<12>(result), 0u);
                     }
                 }
             });
@@ -5025,14 +5025,14 @@ TEST(Array, move_construct_non_bitwise_copy_constructible_same_type)
     });
 }
 
-TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
+TEST(array, move_construct_non_bitwise_move_constructible_same_type)
 {
 
 
     /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
-    using type = hud::test::NonBitwiseMoveConstructibleType;
-    using AllocatorOfMovedArray = hud::test::array_allocator<alignof(type)>;
-    using OtherAllocatorOfArray = hud::test::ArrayAllocator2<alignof(type)>;
+    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using AllocatorOfMovedArray = hud_test::array_allocator<alignof(type)>;
+    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
@@ -5040,7 +5040,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
 
     using MovedType = hud::array<type, AllocatorOfMovedArray>;
 
-    hud::test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
         
         // Test default allocator
         {
@@ -5048,7 +5048,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<type, Allocator> hud::move(std::move(moved));
+                hud::array<type, Allocator> move(std::move(moved));
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -5059,7 +5059,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                     }
                     // MSVC call copy constructor instead of move constructor 
                     // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                    if (hud::is_constant_evaluated() && Compilation::is_compiler(hud::compiler_e::msvc)) {
+                    if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
                         if (move[index].copy_constructor_count() != 1u) {
                             all_values_moved = false;
                             break;
@@ -5097,48 +5097,48 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -5148,7 +5148,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<type, Allocator> hud::move(std::move(moved), Allocator{});
+                hud::array<type, Allocator> move(std::move(moved), Allocator{});
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -5159,7 +5159,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                     }
                     // MSVC call copy constructor instead of move constructor 
                     // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                    if (hud::is_constant_evaluated() && Compilation::is_compiler(hud::compiler_e::msvc)) {
+                    if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
                         if (move[index].copy_constructor_count() != 1u) {
                             all_values_moved = false;
                             break;
@@ -5197,54 +5197,54 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
             {
                 const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test default allocator
@@ -5253,7 +5253,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                             MovedType moved(initializer, copied_extra);
 
                             // Copy the array
-                            hud::array<type, Allocator> hud::move(std::move(moved), extra);
+                            hud::array<type, Allocator> move(std::move(moved), extra);
 
                             // Ensure we moved all datas in order
                             bool all_values_moved = true;
@@ -5264,7 +5264,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                                 }
                                 // MSVC call copy constructor instead of move constructor 
                                 // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                                if (hud::is_constant_evaluated() && Compilation::is_compiler(hud::compiler_e::msvc)) {
+                                if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
                                     if (move[index].copy_constructor_count() != 1u) {
                                         all_values_moved = false;
                                         break;
@@ -5302,48 +5302,48 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Always reallocate if types are non bitwise copy constructible types
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Always reallocate if types are non bitwise copy constructible types
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
 
@@ -5353,7 +5353,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                             MovedType moved(initializer, copied_extra);
 
                             // Copy the array
-                            hud::array<type, Allocator> hud::move(std::move(moved), extra, Allocator{});
+                            hud::array<type, Allocator> move(std::move(moved), extra, Allocator{});
 
                             // Ensure we moved all datas in order
                             bool all_values_moved = true;
@@ -5364,7 +5364,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                                 }
                                 // MSVC call copy constructor instead of move constructor 
                                 // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                                if (hud::is_constant_evaluated() && Compilation::is_compiler(hud::compiler_e::msvc)) {
+                                if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
                                     if (move[index].copy_constructor_count() != 1u) {
                                         all_values_moved = false;
                                         break;
@@ -5402,48 +5402,48 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Always reallocate if types are non bitwise copy constructible types
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(hud::get<0>(result));
-                            ASSERT_EQ(hud::get<1>(result), 4u);
-                            ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(hud::get<3>(result));
+                            ASSERT_TRUE(std::get<0>(result));
+                            ASSERT_EQ(std::get<1>(result), 4u);
+                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(hud::get<4>(result));
+                            ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Always reallocate if types are non bitwise copy constructible types
-                            ASSERT_EQ(hud::get<5>(result), 1u);
-                            ASSERT_EQ(hud::get<6>(result), 0u);
-                            ASSERT_EQ(hud::get<7>(result), 0u);
-                            ASSERT_EQ(hud::get<8>(result), 0u);
-                            ASSERT_EQ(hud::get<9>(result), 1u);
-                            ASSERT_EQ(hud::get<10>(result), 1u);
-                            ASSERT_EQ(hud::get<11>(result), 0u);
-                            ASSERT_EQ(hud::get<12>(result), 0u);
+                            ASSERT_EQ(std::get<5>(result), 1u);
+                            ASSERT_EQ(std::get<6>(result), 0u);
+                            ASSERT_EQ(std::get<7>(result), 0u);
+                            ASSERT_EQ(std::get<8>(result), 0u);
+                            ASSERT_EQ(std::get<9>(result), 1u);
+                            ASSERT_EQ(std::get<10>(result), 1u);
+                            ASSERT_EQ(std::get<11>(result), 0u);
+                            ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
             });
@@ -5451,16 +5451,16 @@ TEST(Array, move_construct_non_bitwise_move_constructible_same_type)
     });
 }
 
-TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
+TEST(array, move_construct_non_bitwise_move_constructible_different_type)
 {
 
 
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
-    using Type1 = hud::test::NonBitwiseMoveConstructibleType;
-    using Type2 = hud::test::NonBitwiseMoveConstructibleType2;
-    using AllocatorOfMovedArray = hud::test::array_allocator<alignof(Type1)>;
-    using OtherAllocatorOfArray = hud::test::ArrayAllocator2<alignof(Type2)>;
+    using Type1 = hud_test::NonBitwiseMoveConstructibleType;
+    using Type2 = hud_test::NonBitwiseMoveConstructibleType2;
+    using AllocatorOfMovedArray = hud_test::array_allocator<alignof(Type1)>;
+    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
 
     // Ensure we test with different allocator and types
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
@@ -5469,7 +5469,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
 
     using MovedType = hud::array<Type1, AllocatorOfMovedArray>;
 
-    hud::test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
 
         // Test default allocator
         {
@@ -5477,7 +5477,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<Type2, Allocator> hud::move(std::move(moved));
+                hud::array<Type2, Allocator> move(std::move(moved));
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -5488,7 +5488,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                     }
                     // MSVC call copy constructor instead of move constructor 
                     // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                    if (hud::is_constant_evaluated() && Compilation::is_compiler(hud::compiler_e::msvc)) {
+                    if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
                         if (move[index].copy_constructor_count() != 1u) {
                             all_values_moved = false;
                             break;
@@ -5526,48 +5526,48 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -5577,7 +5577,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                 MovedType moved(initializer, copied_extra);
 
                 // Copy the array
-                hud::array<Type2, Allocator> hud::move(std::move(moved), Allocator{});
+                hud::array<Type2, Allocator> move(std::move(moved), Allocator{});
 
                 // Ensure we moved all datas in order
                 bool all_values_moved = true;
@@ -5588,7 +5588,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                     }
                     // MSVC call copy constructor instead of move constructor 
                     // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                    if (hud::is_constant_evaluated() && Compilation::is_compiler(hud::compiler_e::msvc)) {
+                    if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
                         if (move[index].copy_constructor_count() != 1u) {
                             all_values_moved = false;
                             break;
@@ -5626,54 +5626,54 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(hud::get<0>(result));
-                ASSERT_EQ(hud::get<1>(result), 4u);
-                ASSERT_EQ(hud::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(hud::get<3>(result));
+                ASSERT_TRUE(std::get<0>(result));
+                ASSERT_EQ(std::get<1>(result), 4u);
+                ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(hud::get<4>(result));
+                ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(hud::get<5>(result), 1u);
-                ASSERT_EQ(hud::get<6>(result), 0u);
-                ASSERT_EQ(hud::get<7>(result), 0u);
-                ASSERT_EQ(hud::get<8>(result), 0u);
-                ASSERT_EQ(hud::get<9>(result), 1u);
-                ASSERT_EQ(hud::get<10>(result), 1u);
-                ASSERT_EQ(hud::get<11>(result), 0u);
-                ASSERT_EQ(hud::get<12>(result), 0u);
+                ASSERT_EQ(std::get<5>(result), 1u);
+                ASSERT_EQ(std::get<6>(result), 0u);
+                ASSERT_EQ(std::get<7>(result), 0u);
+                ASSERT_EQ(std::get<8>(result), 0u);
+                ASSERT_EQ(std::get<9>(result), 1u);
+                ASSERT_EQ(std::get<10>(result), 1u);
+                ASSERT_EQ(std::get<11>(result), 0u);
+                ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
         // Test with extra
         {
-            hud::test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
                 []<usize extra>() {
 
                 // Test default allocator
@@ -5682,7 +5682,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<Type2, Allocator> hud::move(std::move(moved), extra);
+                        hud::array<Type2, Allocator> move(std::move(moved), extra);
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -5693,7 +5693,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                             }
                             // MSVC call copy constructor instead of move constructor 
                             // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                            if (hud::is_constant_evaluated() && Compilation::is_compiler(hud::compiler_e::msvc)) {
+                            if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
                                 if (move[index].copy_constructor_count() != 1u) {
                                     all_values_moved = false;
                                     break;
@@ -5731,48 +5731,48 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                     {
                         const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
-                        ASSERT_EQ(hud::get<8>(result), 0u);
-                        ASSERT_EQ(hud::get<9>(result), 1u);
-                        ASSERT_EQ(hud::get<10>(result), 1u);
-                        ASSERT_EQ(hud::get<11>(result), 0u);
-                        ASSERT_EQ(hud::get<12>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<8>(result), 0u);
+                        ASSERT_EQ(std::get<9>(result), 1u);
+                        ASSERT_EQ(std::get<10>(result), 1u);
+                        ASSERT_EQ(std::get<11>(result), 0u);
+                        ASSERT_EQ(std::get<12>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
-                        ASSERT_EQ(hud::get<8>(result), 0u);
-                        ASSERT_EQ(hud::get<9>(result), 1u);
-                        ASSERT_EQ(hud::get<10>(result), 1u);
-                        ASSERT_EQ(hud::get<11>(result), 0u);
-                        ASSERT_EQ(hud::get<12>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<8>(result), 0u);
+                        ASSERT_EQ(std::get<9>(result), 1u);
+                        ASSERT_EQ(std::get<10>(result), 1u);
+                        ASSERT_EQ(std::get<11>(result), 0u);
+                        ASSERT_EQ(std::get<12>(result), 0u);
                     }
                 }
 
@@ -5782,7 +5782,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<Type2, Allocator> hud::move(std::move(moved), extra, Allocator{});
+                        hud::array<Type2, Allocator> move(std::move(moved), extra, Allocator{});
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -5793,7 +5793,7 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                             }
                             // MSVC call copy constructor instead of move constructor 
                             // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                            if (hud::is_constant_evaluated() && Compilation::is_compiler(hud::compiler_e::msvc) ) {
+                            if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc) ) {
                                 if (move[index].copy_constructor_count() != 1u) {
                                     all_values_moved = false;
                                     break;
@@ -5831,48 +5831,48 @@ TEST(Array, move_construct_non_bitwise_move_constructible_different_type)
                     {
                         const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
-                        ASSERT_EQ(hud::get<8>(result), 0u);
-                        ASSERT_EQ(hud::get<9>(result), 1u);
-                        ASSERT_EQ(hud::get<10>(result), 1u);
-                        ASSERT_EQ(hud::get<11>(result), 0u);
-                        ASSERT_EQ(hud::get<12>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<8>(result), 0u);
+                        ASSERT_EQ(std::get<9>(result), 1u);
+                        ASSERT_EQ(std::get<10>(result), 1u);
+                        ASSERT_EQ(std::get<11>(result), 0u);
+                        ASSERT_EQ(std::get<12>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(hud::get<0>(result));
-                        ASSERT_EQ(hud::get<1>(result), 4u);
-                        ASSERT_EQ(hud::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(hud::get<3>(result));
+                        ASSERT_TRUE(std::get<0>(result));
+                        ASSERT_EQ(std::get<1>(result), 4u);
+                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(hud::get<4>(result));
+                        ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(hud::get<5>(result), 1u);
-                        ASSERT_EQ(hud::get<6>(result), 0u);
-                        ASSERT_EQ(hud::get<7>(result), 0u);
-                        ASSERT_EQ(hud::get<8>(result), 0u);
-                        ASSERT_EQ(hud::get<9>(result), 1u);
-                        ASSERT_EQ(hud::get<10>(result), 1u);
-                        ASSERT_EQ(hud::get<11>(result), 0u);
-                        ASSERT_EQ(hud::get<12>(result), 0u);
+                        ASSERT_EQ(std::get<5>(result), 1u);
+                        ASSERT_EQ(std::get<6>(result), 0u);
+                        ASSERT_EQ(std::get<7>(result), 0u);
+                        ASSERT_EQ(std::get<8>(result), 0u);
+                        ASSERT_EQ(std::get<9>(result), 1u);
+                        ASSERT_EQ(std::get<10>(result), 1u);
+                        ASSERT_EQ(std::get<11>(result), 0u);
+                        ASSERT_EQ(std::get<12>(result), 0u);
                     }
                 }
             });

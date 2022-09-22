@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(Memory, default_construct_trivial_type)
+TEST(memory, default_construct_trivial_type)
 {
 
 
@@ -28,7 +28,7 @@ TEST(Memory, default_construct_trivial_type)
     }
 }
 
-TEST(Memory, default_construct_trivial_constructible_type)
+TEST(memory, default_construct_trivial_constructible_type)
 {
 
 
@@ -42,7 +42,7 @@ TEST(Memory, default_construct_trivial_constructible_type)
 
     auto test = []()-> ResultType {
         type* to_construct = hud::memory::allocate_array<type>(1);
-        hud::test::LeakArrayGuard guard(to_construct, 1);
+        hud_test::LeakArrayGuard guard(to_construct, 1);
         hud::memory::default_construct(to_construct);
         return to_construct->value;
     };
@@ -60,7 +60,7 @@ TEST(Memory, default_construct_trivial_constructible_type)
     }
 }
 
-TEST(Memory, default_construct_non_trivial_constructible_type)
+TEST(memory, default_construct_non_trivial_constructible_type)
 {
 
 
@@ -74,7 +74,7 @@ TEST(Memory, default_construct_non_trivial_constructible_type)
 
     auto test = []() -> ResultType {
         type* to_construct = hud::memory::allocate_array<type>(1);
-        hud::test::LeakArrayGuard guard(to_construct, 1);
+        hud_test::LeakArrayGuard guard(to_construct, 1);
         hud::memory::default_construct(to_construct);
         return to_construct->value;
     };
@@ -92,7 +92,7 @@ TEST(Memory, default_construct_non_trivial_constructible_type)
     }
 }
 
-TEST(Memory, default_construct_array_trivial_type)
+TEST(memory, default_construct_array_trivial_type)
 {
 
 
@@ -110,19 +110,19 @@ TEST(Memory, default_construct_array_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 0u);
-        ASSERT_EQ(hud::get<0>(result), 0u);
+        ASSERT_EQ(std::get<0>(result), 0u);
+        ASSERT_EQ(std::get<0>(result), 0u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 0u);
-        ASSERT_EQ(hud::get<0>(result), 0u);
+        ASSERT_EQ(std::get<0>(result), 0u);
+        ASSERT_EQ(std::get<0>(result), 0u);
     }
 }
 
-TEST(Memory, default_construct_array_trivial_constructible_type)
+TEST(memory, default_construct_array_trivial_constructible_type)
 {
 
 
@@ -136,7 +136,7 @@ TEST(Memory, default_construct_array_trivial_constructible_type)
 
     auto test = []() -> ResultType {
         type* to_construct = hud::memory::allocate_array<type>(2);
-        hud::test::LeakArrayGuard guard(to_construct, 2);
+        hud_test::LeakArrayGuard guard(to_construct, 2);
         hud::memory::default_construct_array(to_construct, to_construct + 2);
         return { to_construct[0].value, to_construct[1].value };
     };
@@ -144,19 +144,19 @@ TEST(Memory, default_construct_array_trivial_constructible_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 0);
-        ASSERT_EQ(hud::get<0>(result), 0);
+        ASSERT_EQ(std::get<0>(result), 0);
+        ASSERT_EQ(std::get<0>(result), 0);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 0);
-        ASSERT_EQ(hud::get<0>(result), 0);
+        ASSERT_EQ(std::get<0>(result), 0);
+        ASSERT_EQ(std::get<0>(result), 0);
     }
 }
 
-TEST(Memory, default_construct_array_non_trivial_constructible_type)
+TEST(memory, default_construct_array_non_trivial_constructible_type)
 {
 
 
@@ -170,7 +170,7 @@ TEST(Memory, default_construct_array_non_trivial_constructible_type)
 
     auto test = []() -> ResultType {
         type* to_construct = hud::memory::allocate_array<type>(2);
-        hud::test::LeakArrayGuard guard(to_construct, 2);
+        hud_test::LeakArrayGuard guard(to_construct, 2);
         hud::memory::default_construct_array(to_construct, to_construct + 2);
         return { to_construct[0].value, to_construct[1].value };
     };
@@ -178,14 +178,14 @@ TEST(Memory, default_construct_array_non_trivial_constructible_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15);
-        ASSERT_EQ(hud::get<0>(result), 15);
+        ASSERT_EQ(std::get<0>(result), 15);
+        ASSERT_EQ(std::get<0>(result), 15);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(hud::get<0>(result), 15);
-        ASSERT_EQ(hud::get<0>(result), 15);
+        ASSERT_EQ(std::get<0>(result), 15);
+        ASSERT_EQ(std::get<0>(result), 15);
     }
 }

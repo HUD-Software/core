@@ -5,7 +5,7 @@
 #include <type_traits>
 #include <core/traits/is_bitwise_move_constructible.h>
 
-namespace hud::test {
+namespace hud_test {
 
     /**
     * A move constructible type that is not a bitwise moveable type
@@ -123,7 +123,7 @@ static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleT
         * @param other The NonBitwiseMoveConstructibleType to move
         */
         constexpr NonBitwiseMoveConstructibleType2(NonBitwiseMoveConstructibleType&& other) noexcept
-            : NonBitwiseMoveConstructibleType(std::forward<NonBitwiseMoveConstructibleType>(other)){
+            : NonBitwiseMoveConstructibleType(std::forward<NonBitwiseMoveConstructibleType>(other)) {
         }
     };
     static_assert(std::is_move_constructible_v<NonBitwiseMoveConstructibleType2>);
@@ -239,7 +239,7 @@ static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleT
     };
 
 
-} // namespace hud::test
+} // namespace hud_test
 
 #endif // HD_INC_MISC_NON_BITWISE_MOVE_CONSTRUCTIBLE_TYPE_H
 

@@ -14,7 +14,7 @@ namespace hud {
         : hud::false_type {
     };
     template<typename type_t, typename u_type_t>
-    struct is_swappable<type_t, u_type_t, void_t<decltype(swap(declval<add_lvalue_reference_t<type_t>>(), declval<add_lvalue_reference_t<u_type_t>>()))>>
+    struct is_swappable<type_t, u_type_t, void_t<decltype(swap(declval<hud::add_lvalue_reference_t<type_t>>(), declval<hud::add_lvalue_reference_t<u_type_t>>()))>>
         : hud::true_type {
     };
 

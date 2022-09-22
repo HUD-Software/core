@@ -33,7 +33,7 @@
 #include "../templates/select_deleter_pointer_type.h"
 #include "../templates/default_deleter.h"
 #include "../templates/move.h"
-#include "../templates/hud::forward.h"
+#include "../templates/forward.h"
 #include "../templates/swap.h"
 #include "../templates/less.h"
 
@@ -43,22 +43,22 @@
 
 namespace hud {
 
-    template<typename type_t, typename deleter_t = hud::default_deleter<type_t>>
+    template<typename type_t, typename deleter_type = hud::default_deleter<type_t>>
     class unique_pointer;
 
     namespace details {
 
         /**
-        * deleter_t parameter type.
-        * If deleter_t is a reference, it's passed by value, else by const reference
-        * @tparam deleter_t  The deleter type of the unique_pointer
+        * deleter_type parameter type.
+        * If deleter_type is a reference, it's passed by value, else by const reference
+        * @tparam deleter_type  The deleter type of the unique_pointer
         */
-        template <typename deleter_t>
-        using deleter_param_type = conditional_t<is_reference_v<deleter_t>, deleter_t, add_lvalue_reference_t<add_const_t<deleter_t>>>;
+        template <typename deleter_type>
+        using deleter_param_type = hud::conditional_t<hud::is_reference_v<deleter_type>, deleter_type, hud::add_lvalue_reference_t<hud::add_const_t<deleter_type>>>;
 
         /**
-        * Checks whether a unique_pointer<u_ptr_t, u_deleter_t> is convertible to unique_pointer<type_t, deleter_t>.
-        * Provides the member constant Value which is equal to true, if unique_pointer<u_ptr_t, u_deleter_t> is convertible to unique_pointer<type_t, deleter_t>.
+        * Checks whether a unique_pointer<u_ptr_t, u_deleter_t> is convertible to unique_pointer<type_t, deleter_type>.
+        * Provides the member constant Value which is equal to true, if unique_pointer<u_ptr_t, u_deleter_t> is convertible to unique_pointer<type_t, deleter_type>.
         * Otherwise, Value is equal to false.
         * @tparam unique_pointer_t The unique_pointer<type_t>
         * @tparam u_unique_pointer_t The unique_pointer<u_ptr_t>
@@ -67,12 +67,12 @@ namespace hud {
         struct is_unique_pointer_convertible_to_unique_pointer
             : hud::false_type {
         };
-        template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
-        struct is_unique_pointer_convertible_to_unique_pointer<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
-            : conjunction <
-            is_convertible<typename unique_pointer<u_ptr_t, u_deleter_t>::pointer_type, typename unique_pointer<ptr_t, deleter_t>::pointer_type >,
-            negation<is_array<u_ptr_t>>,
-            conditional_t<is_reference_v<deleter_t>, is_same<deleter_t, u_deleter_t>, is_convertible<u_deleter_t, deleter_t>>
+        template<typename ptr_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
+        struct is_unique_pointer_convertible_to_unique_pointer<unique_pointer<ptr_t, deleter_type>, unique_pointer<u_ptr_t, u_deleter_t>>
+            : hud::conjunction<
+            hud::is_convertible<typename unique_pointer<u_ptr_t, u_deleter_t>::pointer_type, typename unique_pointer<ptr_t, deleter_type>::pointer_type >,
+            hud::negation<hud::is_array<u_ptr_t>>,
+            hud::conditional_t<hud::is_reference_v<deleter_type>, hud::is_same<deleter_type, u_deleter_t>, hud::is_convertible<u_deleter_t, deleter_type>>
             > {
         };
         template<typename unique_pointer_t, typename u_unique_pointer_t>
@@ -87,12 +87,12 @@ namespace hud {
         struct is_unique_pointer_move_assignable_to_unique_pointer
             : hud::false_type {
         };
-        template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
-        struct is_unique_pointer_move_assignable_to_unique_pointer<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
-            : conjunction<
-            is_convertible<typename unique_pointer<u_ptr_t, u_deleter_t>::pointer_type, typename unique_pointer<ptr_t, deleter_t>::pointer_type >,
-            negation<is_array<u_ptr_t>>,
-            is_move_assignable<deleter_t, u_deleter_t>
+        template<typename ptr_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
+        struct is_unique_pointer_move_assignable_to_unique_pointer<unique_pointer<ptr_t, deleter_type>, unique_pointer<u_ptr_t, u_deleter_t>>
+            : hud::conjunction<
+            hud::is_convertible<typename unique_pointer<u_ptr_t, u_deleter_t>::pointer_type, typename unique_pointer<ptr_t, deleter_type>::pointer_type >,
+            hud::negation<hud::is_array<u_ptr_t>>,
+            hud::is_move_assignable<deleter_type, u_deleter_t>
             > {
         };
         template<typename unique_pointer_t, typename u_unique_pointer_t>
@@ -107,13 +107,13 @@ namespace hud {
         struct is_unique_pointer_array_can_be_reset_with
             : hud::false_type {
         };
-        template<typename ptr_t, typename deleter_t, typename u_ptr_t>
-        struct is_unique_pointer_array_can_be_reset_with<unique_pointer<ptr_t[], deleter_t>, u_ptr_t*>
-            : disjunction <
-            is_same<u_ptr_t*, typename unique_pointer<ptr_t[], deleter_t>::pointer_type>,
-            conjunction<
-            is_same<typename unique_pointer<ptr_t[], deleter_t>::pointer_type, typename unique_pointer<ptr_t[], deleter_t>::element_type*>,
-            is_convertible<u_ptr_t(*)[], ptr_t(*)[]>
+        template<typename ptr_t, typename deleter_type, typename u_ptr_t>
+        struct is_unique_pointer_array_can_be_reset_with<unique_pointer<ptr_t[], deleter_type>, u_ptr_t*>
+            : hud::disjunction <
+            hud::is_same<u_ptr_t*, typename unique_pointer<ptr_t[], deleter_type>::pointer_type>,
+            hud::conjunction<
+            hud::is_same<typename unique_pointer<ptr_t[], deleter_type>::pointer_type, typename unique_pointer<ptr_t[], deleter_type>::element_type*>,
+            hud::is_convertible<u_ptr_t(*)[], ptr_t(*)[]>
             >
             > {
         };
@@ -121,15 +121,15 @@ namespace hud {
         static constexpr bool is_unique_pointer_array_can_be_reset_with_v = is_unique_pointer_array_can_be_reset_with<type_t, u_ptr_t>::value;
 
         /**
-        * Checks whether a u_ptr_t* is convertible to unique_pointer<type_t[], deleter_t>.
-        * Provides the member constant Value which is equal to true, if u_ptr_t* is convertible to unique_pointer<type_t, deleter_t>.
+        * Checks whether a u_ptr_t* is convertible to unique_pointer<type_t[], deleter_type>.
+        * Provides the member constant Value which is equal to true, if u_ptr_t* is convertible to unique_pointer<type_t, deleter_type>.
         * Otherwise, Value is equal to false.
         * @tparam unique_pointer_t The unique_pointer<type_t[]>
         * @tparam u_ptr_t The pointer u_ptr_t* used to reset unique_pointer_t
         */
         template<typename unique_pointer_t, typename u_ptr_t>
         struct is_pointer_convertible_to_unique_pointer_array
-            : disjunction< is_unique_pointer_array_can_be_reset_with<unique_pointer_t, u_ptr_t>, is_nullptr<u_ptr_t>> {
+            : hud::disjunction< is_unique_pointer_array_can_be_reset_with<unique_pointer_t, u_ptr_t>, is_nullptr<u_ptr_t>> {
         };
         template<typename unique_pointer_t, typename u_ptr_t>
         static constexpr bool is_pointer_convertible_to_unique_pointer_array_v = is_pointer_convertible_to_unique_pointer_array<unique_pointer_t, u_ptr_t>::value;
@@ -143,13 +143,13 @@ namespace hud {
         struct is_unique_pointer_convertible_to_unique_pointer_array
             : hud::false_type {
         };
-        template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
-        struct is_unique_pointer_convertible_to_unique_pointer_array<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
-            : conjunction<
-            is_array<u_ptr_t>,
-            is_same<typename unique_pointer<ptr_t, deleter_t>::element_type*, typename unique_pointer<ptr_t, deleter_t>::pointer_type>,
-            is_same<typename unique_pointer<u_ptr_t, u_deleter_t>::element_type*, typename unique_pointer<u_ptr_t, u_deleter_t>::pointer_type>,
-            is_convertible<typename unique_pointer<u_ptr_t, u_deleter_t>::element_type(*)[], typename unique_pointer<ptr_t, deleter_t>::element_type(*)[]>
+        template<typename ptr_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
+        struct is_unique_pointer_convertible_to_unique_pointer_array<unique_pointer<ptr_t, deleter_type>, unique_pointer<u_ptr_t, u_deleter_t>>
+            : hud::conjunction<
+            hud::is_array<u_ptr_t>,
+            hud::is_same<typename unique_pointer<ptr_t, deleter_type>::element_type*, typename unique_pointer<ptr_t, deleter_type>::pointer_type>,
+            hud::is_same<typename unique_pointer<u_ptr_t, u_deleter_t>::element_type*, typename unique_pointer<u_ptr_t, u_deleter_t>::pointer_type>,
+            hud::is_convertible<typename unique_pointer<u_ptr_t, u_deleter_t>::element_type(*)[], typename unique_pointer<ptr_t, deleter_type>::element_type(*)[]>
             > {
         };
 
@@ -162,11 +162,11 @@ namespace hud {
         struct is_unique_pointer_array_move_constructible_from_unique_pointer
             : hud::false_type {
         };
-        template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
-        struct is_unique_pointer_array_move_constructible_from_unique_pointer<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
-            : conjunction <
-            is_unique_pointer_convertible_to_unique_pointer_array<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>,
-            conditional_t<is_reference_v<deleter_t>, is_same<deleter_t, u_deleter_t>, is_convertible<u_deleter_t, deleter_t>>
+        template<typename ptr_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
+        struct is_unique_pointer_array_move_constructible_from_unique_pointer<unique_pointer<ptr_t, deleter_type>, unique_pointer<u_ptr_t, u_deleter_t>>
+            : hud::conjunction<
+            is_unique_pointer_convertible_to_unique_pointer_array<unique_pointer<ptr_t, deleter_type>, unique_pointer<u_ptr_t, u_deleter_t>>,
+            hud::conditional_t<hud::is_reference_v<deleter_type>, hud::is_same<deleter_type, u_deleter_t>, hud::is_convertible<u_deleter_t, deleter_type>>
             > {
         };
         template<typename unique_pointer_t, typename u_unique_pointer_t>
@@ -181,11 +181,11 @@ namespace hud {
         struct is_unique_pointer_move_assignable_to_unique_pointer_array
             : hud::false_type {
         };
-        template<typename ptr_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
-        struct is_unique_pointer_move_assignable_to_unique_pointer_array<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>
-            : conjunction<
-            is_unique_pointer_convertible_to_unique_pointer_array<unique_pointer<ptr_t, deleter_t>, unique_pointer<u_ptr_t, u_deleter_t>>,
-            is_move_assignable<deleter_t, u_deleter_t>
+        template<typename ptr_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
+        struct is_unique_pointer_move_assignable_to_unique_pointer_array<unique_pointer<ptr_t, deleter_type>, unique_pointer<u_ptr_t, u_deleter_t>>
+            : hud::conjunction<
+            is_unique_pointer_convertible_to_unique_pointer_array<unique_pointer<ptr_t, deleter_type>, unique_pointer<u_ptr_t, u_deleter_t>>,
+            hud::is_move_assignable<deleter_type, u_deleter_t>
             > {
         };
         template<typename unique_pointer_t, typename u_unique_pointer_t>
@@ -205,14 +205,14 @@ namespace hud {
     public:
 
         /** The deleter type. */
-        using deleter_t = deleter_t;
-        /** The pointer type. Result of select_deleter_pointer_type_t<type_t,deleter_t>*/
-        using pointer_type = select_deleter_pointer_type_t<type_t, deleter_t>;
+        using deleter_type = deleter_t;
+        /** The pointer type. Result of hud::select_deleter_pointer_type_t<<type_t,deleter_type>*/
+        using pointer_type = hud::select_deleter_pointer_type_t<type_t, deleter_type>;
         /** The element pointed by the pointer. */
         using element_type = type_t;
 
-        static_assert(!hud::is_rvalue_reference_v<deleter_t>, "the specified deleter type cannot be an rvalue reference");
-        static_assert(hud::is_convertible_v<type_t*, pointer_type>, "type_t is no convertible to deleter_t::pointer_type");
+        static_assert(!hud::is_rvalue_reference_v<deleter_type>, "the specified deleter type cannot be an rvalue reference");
+        static_assert(hud::is_convertible_v<element_type*, pointer_type>, "element_type is no convertible to deleter_type::pointer_type");
 
     public:
 
@@ -220,9 +220,9 @@ namespace hud {
         * Default constructor that value-initializes the stored pointer and the stored deleter.
         * unique_pointer do not accept throwable default constructible deleter.
         */
-        HD_FORCEINLINE constexpr unique_pointer() noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer() noexcept requires(hud::is_default_constructible_v<deleter_type> && !hud::is_pointer_v<deleter_type>)
             : inner(taginit) {
-            static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
+            static_assert(hud::is_nothrow_default_constructible_v<deleter_type>, "unique_pointer do not accept throwable default constructible deleter_type");
         }
 
         /**
@@ -230,9 +230,9 @@ namespace hud {
         * unique_pointer do not accept throwable default constructible deleter
         * @param pointer The poiner to own
         */
-        HD_FORCEINLINE constexpr explicit unique_pointer(pointer_type pointer) noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr explicit unique_pointer(pointer_type pointer) noexcept requires(hud::is_default_constructible_v<deleter_type> && !hud::is_pointer_v<deleter_type>)
             : inner(pointer, taginit) {
-            static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
+            static_assert(hud::is_nothrow_default_constructible_v<deleter_type>, "unique_pointer do not accept throwable default constructible deleter_type");
         }
 
         /**
@@ -240,9 +240,9 @@ namespace hud {
         * @param pointer The poiner to own
         * @param deleter The deleter used to delete the owned pointer
         */
-        HD_FORCEINLINE constexpr unique_pointer(pointer_type pointer, const deleter_t& deleter) noexcept requires(is_constructible_v<deleter_t, const deleter_t& >)
+        HD_FORCEINLINE constexpr unique_pointer(pointer_type pointer, const deleter_type& deleter) noexcept requires(hud::is_constructible_v<deleter_type, const deleter_type& >)
             : inner(pointer, deleter) {
-            static_assert(is_nothrow_copy_constructible_v<deleter_t>, "unique_pointer do not accept throwable copy constructible deleter_t");
+            static_assert(hud::is_nothrow_copy_constructible_v<deleter_type>, "unique_pointer do not accept throwable copy constructible deleter_type");
         }
 
         /**
@@ -250,9 +250,9 @@ namespace hud {
         * @param pointer The poiner to own
         * @param deleter The deleter used to delete the owned pointer
         */
-        HD_FORCEINLINE constexpr unique_pointer(pointer_type pointer, deleter_t&& deleter) noexcept requires(!is_reference_v<deleter_t>&& is_move_constructible_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer(pointer_type pointer, deleter_type&& deleter) noexcept requires(!hud::is_reference_v<deleter_type>&& hud::is_move_constructible_v<deleter_type>)
             : inner(pointer, hud::move(deleter)) {
-            static_assert(is_nothrow_move_constructible_v<deleter_t>, "unique_pointer do not accept throwable move constructible deleter_t");
+            static_assert(hud::is_nothrow_move_constructible_v<deleter_type>, "unique_pointer do not accept throwable move constructible deleter_type");
         }
 
         /**
@@ -260,22 +260,22 @@ namespace hud {
         * @param pointer The poiner to own
         * @param deleter A reference to a deleter
         */
-        unique_pointer(pointer_type pointer, remove_reference_t<deleter_t>&& deleter) noexcept requires(is_reference_v<deleter_t>&& is_constructible_v<deleter_t, remove_reference_t<deleter_t>>) = delete;
+        unique_pointer(pointer_type pointer, hud::remove_reference_t<deleter_type>&& deleter) noexcept requires(hud::is_reference_v<deleter_type>&& hud::is_constructible_v<deleter_type, hud::remove_reference_t<deleter_type>>) = delete;
 
 
         /** Construct a unique_pointer from a nullptr */
-        HD_FORCEINLINE constexpr unique_pointer(hud::ptr::null) noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer(hud::ptr::null) noexcept requires(hud::is_default_constructible_v<deleter_type> && !hud::is_pointer_v<deleter_type>)
             : inner(taginit) {
-            static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
+            static_assert(hud::is_nothrow_default_constructible_v<deleter_type>, "unique_pointer do not accept throwable default constructible deleter_type");
         }
 
         /**
         * Construct a unique_pointer by stealing another unique_pointer ownership.
         * @param other The unique_pointer to transfert ownership from.
         */
-        HD_FORCEINLINE constexpr unique_pointer(unique_pointer&& other) noexcept requires(is_move_constructible_v<deleter_t>)
-            : inner(other.leak(), hud::forward<deleter_t>(other.deleter())) {
-            static_assert(is_reference_v<deleter_t> ? is_nothrow_move_constructible_v<deleter_t> : true, "unique_pointer do not accept throwable move constructible deleter_t");
+        HD_FORCEINLINE constexpr unique_pointer(unique_pointer&& other) noexcept requires(hud::is_move_constructible_v<deleter_type>)
+            : inner(other.leak(), hud::forward<deleter_type>(other.deleter())) {
+            static_assert(hud::is_reference_v<deleter_type> ? hud::is_nothrow_move_constructible_v<deleter_type> : true, "unique_pointer do not accept throwable move constructible deleter_type");
         }
 
         /**
@@ -287,7 +287,7 @@ namespace hud {
         template<typename u_ptr_t, typename u_deleter_t>
         HD_FORCEINLINE constexpr unique_pointer(unique_pointer<u_ptr_t, u_deleter_t>&& other) noexcept requires(details::is_unique_pointer_convertible_to_unique_pointer_v<unique_pointer, unique_pointer<u_ptr_t, u_deleter_t>>)
             : inner(other.leak(), hud::forward<u_deleter_t>(other.deleter())) {
-            static_assert(is_nothrow_move_constructible_v<deleter_t, u_deleter_t>, "unique_pointer do not accept throwable move constructible deleter_t");
+            static_assert(hud::is_nothrow_move_constructible_v<deleter_type, u_deleter_t>, "unique_pointer do not accept throwable move constructible deleter_type");
         }
 
         /**
@@ -295,12 +295,12 @@ namespace hud {
         * @param other The unique_pointer to transfert ownership from.
         * @return *this
         */
-        constexpr unique_pointer& operator=(unique_pointer&& other) noexcept requires(hud::is_move_assignable_v<deleter_t>) {
-            static_assert(!is_reference_v<deleter_t> ? is_nothrow_move_assignable_v<deleter_t> : true, "unique_pointer do not accept throwable move assignable deleter_t if deleter_t is no a reference");
-            static_assert(is_reference_v<deleter_t> ? IsNothrowCopyAssignableV<remove_reference_t<deleter_t>> : true, "unique_pointer do not accept throwable copy assignable deleter_t if deleter_t is reference)");
+        constexpr unique_pointer& operator=(unique_pointer&& other) noexcept requires(hud::is_move_assignable_v<deleter_type>) {
+            static_assert(!hud::is_reference_v<deleter_type> ? hud::is_nothrow_move_assignable_v<deleter_type> : true, "unique_pointer do not accept throwable move assignable deleter_type if deleter_type is no a reference");
+            static_assert(hud::is_reference_v<deleter_type> ? hud::is_nothrow_copy_assignable_v<hud::remove_reference_t<deleter_type>> : true, "unique_pointer do not accept throwable copy assignable deleter_type if deleter_type is reference)");
 
             reset(other.leak());
-            deleter() = hud::forward<deleter_t>(other.deleter());
+            deleter() = hud::forward<deleter_type>(other.deleter());
             return *this;
         }
 
@@ -313,8 +313,8 @@ namespace hud {
         */
         template<typename u_ptr_t, typename u_deleter_t>
         constexpr unique_pointer& operator=(unique_pointer<u_ptr_t, u_deleter_t>&& other) noexcept requires(details::is_unique_pointer_move_assignable_to_unique_pointer_v<unique_pointer, unique_pointer<u_ptr_t, u_deleter_t>>) {
-            static_assert(!is_reference_v<deleter_t> ? is_nothrow_move_assignable_v<deleter_t> : true, "unique_pointer do not accept throwable move assignable deleter_t if deleter_t is no a reference");
-            static_assert(is_reference_v<deleter_t> ? IsNothrowCopyAssignableV<remove_reference_t<deleter_t>> : true, "unique_pointer do not accept throwable copy assignable deleter_t if deleter_t is reference)");
+            static_assert(!hud::is_reference_v<deleter_type> ? hud::is_nothrow_move_assignable_v<deleter_type> : true, "unique_pointer do not accept throwable move assignable deleter_type if deleter_type is no a reference");
+            static_assert(hud::is_reference_v<deleter_type> ? hud::is_nothrow_copy_assignable_v<hud::remove_reference_t<deleter_type>> : true, "unique_pointer do not accept throwable copy assignable deleter_type if deleter_type is reference)");
 
             reset(other.leak());
             deleter() = hud::forward<u_deleter_t>(other.deleter());
@@ -341,7 +341,7 @@ namespace hud {
         /** Retrieves the owned pointer. */
         [[nodiscard]]
         HD_FORCEINLINE constexpr pointer_type pointer() const noexcept {
-            return get<0>(inner);
+            return hud::get<0>(inner);
         }
 
         /** Check whether the unique_pointer own a pointer. */
@@ -358,7 +358,7 @@ namespace hud {
 
         /** Dereference owned pointer. */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr add_lvalue_reference_t<element_type> operator*() const noexcept {
+        HD_FORCEINLINE constexpr hud::add_lvalue_reference_t<element_type> operator*() const noexcept {
             return *pointer();
         }
 
@@ -370,35 +370,35 @@ namespace hud {
 
         /** Retrieves the deleter. */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr deleter_t& deleter() noexcept {
-            return get<1>(inner);
+        HD_FORCEINLINE constexpr deleter_type& deleter() noexcept {
+            return hud::get<1>(inner);
         }
 
         /** Retrieves a reference to the deleter. */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr const deleter_t& deleter() const noexcept {
-            return get<1>(inner);
+        HD_FORCEINLINE constexpr const deleter_type& deleter() const noexcept {
+            return hud::get<1>(inner);
         }
 
         /** Release the ownership of the pointer and return it without calling the deleter on the owned pointer. */
         [[nodiscard]]
         constexpr pointer_type leak() noexcept {
             pointer_type old = pointer();
-            get<0>(inner) = pointer_type();
+            hud::get<0>(inner) = pointer_type();
             return old;
         }
 
         /** Call the deleter on the owned pointer and optionally take ownership of a new pointer. */
         constexpr void reset(pointer_type ptr) noexcept {
             pointer_type old_ptr = pointer();
-            get<0>(inner) = ptr;
+            hud::get<0>(inner) = ptr;
             deleter()(old_ptr);
         }
 
         /** Call the deleter on the owned pointer and taking no ownership. */
         HD_FORCEINLINE constexpr void reset(hud::ptr::null) noexcept {
             deleter()(pointer());
-            get<0>(inner) = pointer_type();
+            hud::get<0>(inner) = pointer_type();
         }
 
         /** Call the deleter on the owned pointer and taking no ownership. */
@@ -419,7 +419,7 @@ namespace hud {
 
     private:
         /** hud::tuple containing the pointerand the deleter */
-        hud::tuple< pointer_type, deleter_t> inner;
+        hud::tuple< pointer_type, deleter_type> inner;
     };
 
     /**
@@ -431,14 +431,14 @@ namespace hud {
 
     public:
         /** The deleter type. */
-        using deleter_t = deleter_t;
-        /** The pointer type. Result of select_deleter_pointer_type_t<type_t,deleter_t>*/
-        using pointer_type = select_deleter_pointer_type_t<type_t, deleter_t>;
+        using deleter_type = deleter_t;
+        /** The pointer type. Result of hud::select_deleter_pointer_type_t<<type_t,deleter_type>*/
+        using pointer_type = hud::select_deleter_pointer_type_t<type_t, deleter_type>;
         /** The element pointed by the pointer. */
         using element_type = type_t;
 
-        static_assert(!hud::is_rvalue_reference_v<deleter_t>, "the specified deleter type cannot be an rvalue reference");
-        static_assert(hud::is_convertible_v<type_t*, pointer_type>, "type_t is no convertible to deleter_t::pointer_type");
+        static_assert(!hud::is_rvalue_reference_v<deleter_type>, "the specified deleter type cannot be an rvalue reference");
+        static_assert(hud::is_convertible_v<element_type*, pointer_type>, "element_type is no convertible to deleter_type::pointer_type");
 
     public:
 
@@ -446,9 +446,9 @@ namespace hud {
         * Default constructor that value-initializes the stored pointer and the stored deleter.
         * unique_pointer do not accept throwable default constructible deleter.
         */
-        HD_FORCEINLINE constexpr unique_pointer() noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer() noexcept requires(hud::is_default_constructible_v<deleter_type> && !hud::is_pointer_v<deleter_type>)
             : inner(taginit) {
-            static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
+            static_assert(hud::is_nothrow_default_constructible_v<deleter_type>, "unique_pointer do not accept throwable default constructible deleter_type");
         }
 
         /**
@@ -457,9 +457,9 @@ namespace hud {
         * @param pointer The poiner to own
         */
         template<typename u_ptr_t>
-        HD_FORCEINLINE constexpr explicit unique_pointer(u_ptr_t pointer) noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t> && details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
+        HD_FORCEINLINE constexpr explicit unique_pointer(u_ptr_t pointer) noexcept requires(hud::is_default_constructible_v<deleter_type> && !hud::is_pointer_v<deleter_type> && details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
             : inner(pointer, taginit) {
-            static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
+            static_assert(hud::is_nothrow_default_constructible_v<deleter_type>, "unique_pointer do not accept throwable default constructible deleter_type");
         }
 
         /**
@@ -468,9 +468,9 @@ namespace hud {
         * @param deleter The deleter used to delete the owned pointer
         */
         template<typename u_ptr_t>
-        HD_FORCEINLINE constexpr unique_pointer(u_ptr_t pointer, const deleter_t& deleter) noexcept requires(is_constructible_v<deleter_t, const deleter_t& > && details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
+        HD_FORCEINLINE constexpr unique_pointer(u_ptr_t pointer, const deleter_type& deleter) noexcept requires(hud::is_constructible_v<deleter_type, const deleter_type& > && details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
             : inner(pointer, deleter) {
-            static_assert(is_nothrow_copy_constructible_v<deleter_t>, "unique_pointer do not accept throwable copy constructible deleter_t");
+            static_assert(hud::is_nothrow_copy_constructible_v<deleter_type>, "unique_pointer do not accept throwable copy constructible deleter_type");
         }
 
         /**
@@ -479,28 +479,28 @@ namespace hud {
         * @param deleter The deleter used to delete the owned pointer
         */
         template<typename u_ptr_t>
-        HD_FORCEINLINE constexpr unique_pointer(u_ptr_t pointer, deleter_t&& deleter) noexcept requires(!is_reference_v<deleter_t> && is_move_constructible_v<deleter_t>&& details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
+        HD_FORCEINLINE constexpr unique_pointer(u_ptr_t pointer, deleter_type&& deleter) noexcept requires(!hud::is_reference_v<deleter_type> && hud::is_move_constructible_v<deleter_type>&& details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
             : inner(pointer, hud::move(deleter)) {
-            static_assert(is_nothrow_move_constructible_v<deleter_t>, "unique_pointer do not accept throwable move constructible deleter_t");
+            static_assert(hud::is_nothrow_move_constructible_v<deleter_type>, "unique_pointer do not accept throwable move constructible deleter_type");
         }
 
-        /** Do not accept deleter_t is a reference will allow the move of it. */
-        unique_pointer(pointer_type pointer, remove_reference_t<deleter_t>&& deleter) noexcept requires(is_reference_v<deleter_t>&& is_constructible_v<deleter_t, remove_reference_t<deleter_t>>) = delete;
+        /** Do not accept deleter_type is a reference will allow the move of it. */
+        unique_pointer(pointer_type pointer, hud::remove_reference_t<deleter_type>&& deleter) noexcept requires(hud::is_reference_v<deleter_type>&& hud::is_constructible_v<deleter_type, hud::remove_reference_t<deleter_type>>) = delete;
 
 
         /** Construct a unique_pointer from a nullptr. */ 
-        HD_FORCEINLINE constexpr unique_pointer(hud::ptr::null) noexcept requires(hud::is_default_constructible_v<deleter_t> && !is_pointer_v<deleter_t>)
+        HD_FORCEINLINE constexpr unique_pointer(hud::ptr::null) noexcept requires(hud::is_default_constructible_v<deleter_type> && !hud::is_pointer_v<deleter_type>)
             : inner(taginit) {
-            static_assert(is_nothrow_default_constructible_v<deleter_t>, "unique_pointer do not accept throwable default constructible deleter_t");
+            static_assert(hud::is_nothrow_default_constructible_v<deleter_type>, "unique_pointer do not accept throwable default constructible deleter_type");
         }
 
         /**
         * Construct a unique_pointer by stealing another unique_pointer ownership.
         * @param other The unique_pointer to transfert ownership from.
         */
-        HD_FORCEINLINE constexpr unique_pointer(unique_pointer&& other) noexcept requires(is_move_constructible_v<deleter_t>)
-            : inner(other.leak(), hud::forward<deleter_t>(other.deleter())) {
-            static_assert(is_reference_v<deleter_t> ? is_nothrow_move_constructible_v<deleter_t> : true, "unique_pointer do not accept throwable move constructible deleter_t");
+        HD_FORCEINLINE constexpr unique_pointer(unique_pointer&& other) noexcept requires(hud::is_move_constructible_v<deleter_type>)
+            : inner(other.leak(), hud::forward<deleter_type>(other.deleter())) {
+            static_assert(hud::is_reference_v<deleter_type> ? hud::is_nothrow_move_constructible_v<deleter_type> : true, "unique_pointer do not accept throwable move constructible deleter_type");
         }
 
         /**
@@ -512,7 +512,7 @@ namespace hud {
         template<typename u_ptr_t, typename u_deleter_t>
         HD_FORCEINLINE constexpr unique_pointer(unique_pointer<u_ptr_t, u_deleter_t>&& other) noexcept requires(details::is_unique_pointer_array_move_constructible_from_unique_pointer_v<unique_pointer, unique_pointer<u_ptr_t, u_deleter_t>>)
             : inner(other.leak(), hud::forward<u_deleter_t>(other.deleter())) {
-            static_assert(is_nothrow_move_constructible_v<deleter_t, u_deleter_t>, "unique_pointer do not accept throwable move constructible deleter_t");
+            static_assert(hud::is_nothrow_move_constructible_v<deleter_type, u_deleter_t>, "unique_pointer do not accept throwable move constructible deleter_type");
         }
 
         /**
@@ -520,12 +520,12 @@ namespace hud {
         * @param other The unique_pointer to transfert ownership from.
         * @return *this
         */
-        constexpr unique_pointer& operator=(unique_pointer&& other) noexcept requires(hud::is_move_assignable_v<deleter_t>) {
-            static_assert(!is_reference_v<deleter_t> ? is_nothrow_move_assignable_v<deleter_t> : true, "unique_pointer do not accept throwable move assignable deleter_t if deleter_t is no a reference");
-            static_assert(is_reference_v<deleter_t> ? IsNothrowCopyAssignableV<remove_reference_t<deleter_t>> : true, "unique_pointer do not accept throwable copy assignable deleter_t if deleter_t is reference)");
+        constexpr unique_pointer& operator=(unique_pointer&& other) noexcept requires(hud::is_move_assignable_v<deleter_type>) {
+            static_assert(!hud::is_reference_v<deleter_type> ? hud::is_nothrow_move_assignable_v<deleter_type> : true, "unique_pointer do not accept throwable move assignable deleter_type if deleter_type is no a reference");
+            static_assert(hud::is_reference_v<deleter_type> ? hud::is_nothrow_copy_assignable_v<hud::remove_reference_t<deleter_type>> : true, "unique_pointer do not accept throwable copy assignable deleter_type if deleter_type is reference)");
 
             reset(other.leak());
-            deleter() = hud::forward<deleter_t>(other.deleter());
+            deleter() = hud::forward<deleter_type>(other.deleter());
             return *this;
         }
 
@@ -538,8 +538,8 @@ namespace hud {
         */
         template<typename u_ptr_t, typename u_deleter_t>
         constexpr unique_pointer& operator=(unique_pointer<u_ptr_t, u_deleter_t>&& other) noexcept requires(details::is_unique_pointer_move_assignable_to_unique_pointer_array_v<unique_pointer, unique_pointer<u_ptr_t, u_deleter_t>>) {
-            static_assert(!is_reference_v<deleter_t> ? is_nothrow_move_assignable_v<deleter_t> : true, "unique_pointer do not accept throwable move assignable deleter_t if deleter_t is no a reference");
-            static_assert(is_reference_v<deleter_t> ? IsNothrowCopyAssignableV<remove_reference_t<deleter_t>> : true, "unique_pointer do not accept throwable copy assignable deleter_t if deleter_t is reference)");
+            static_assert(!hud::is_reference_v<deleter_type> ? hud::is_nothrow_move_assignable_v<deleter_type> : true, "unique_pointer do not accept throwable move assignable deleter_type if deleter_type is no a reference");
+            static_assert(hud::is_reference_v<deleter_type> ? hud::is_nothrow_copy_assignable_v<hud::remove_reference_t<deleter_type>> : true, "unique_pointer do not accept throwable copy assignable deleter_type if deleter_type is reference)");
 
             reset(other.leak());
             deleter() = hud::forward<u_deleter_t>(other.deleter());
@@ -566,12 +566,12 @@ namespace hud {
         /** Retrieves the owned pointer. */
         [[nodiscard]]
         HD_FORCEINLINE constexpr pointer_type pointer() const noexcept {
-            return get<0>(inner);
+            return hud::get<0>(inner);
         }
 
         /** Retrieves a reference to the element at the given index. */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr add_lvalue_reference_t<type_t> operator[](const usize at) const noexcept {
+        HD_FORCEINLINE constexpr hud::add_lvalue_reference_t<type_t> operator[](const usize at) const noexcept {
             return pointer()[at];
         }
 
@@ -589,21 +589,21 @@ namespace hud {
 
         /** Retrieves the deleter. */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr deleter_t& deleter() noexcept {
-            return get<1>(inner);
+        HD_FORCEINLINE constexpr deleter_type& deleter() noexcept {
+            return hud::get<1>(inner);
         }
 
         /** Retrieves the const deleter. */
         [[nodiscard]]
-        HD_FORCEINLINE constexpr const deleter_t& deleter() const noexcept {
-            return get<1>(inner);
+        HD_FORCEINLINE constexpr const deleter_type& deleter() const noexcept {
+            return hud::get<1>(inner);
         }
 
         /** Release the ownership of the pointer and return it without calling the deleter on the owned pointer. */
         [[nodiscard]]
         constexpr pointer_type leak() noexcept {
             pointer_type old = pointer();
-            get<0>(inner) = pointer_type();
+            hud::get<0>(inner) = pointer_type();
             return old;
         }
 
@@ -611,14 +611,14 @@ namespace hud {
         template<typename u_ptr_t>
         constexpr void reset(u_ptr_t ptr) noexcept requires(details::is_unique_pointer_array_can_be_reset_with_v<unique_pointer, u_ptr_t>) {
             pointer_type old_ptr = pointer();
-            get<0>(inner) = ptr;
+            hud::get<0>(inner) = ptr;
             deleter()(old_ptr);
         }
 
         /** Call the deleter on the owned pointer and taking ownership of nullptr. */
         HD_FORCEINLINE constexpr void reset(hud::ptr::null) noexcept {
             deleter()(pointer());
-            get<0>(inner) = pointer_type();
+            hud::get<0>(inner) = pointer_type();
         }
 
         /** Call the deleter on the owned pointer and taking no ownership. */
@@ -639,21 +639,21 @@ namespace hud {
 
     private:
         /** hud::tuple containing the pointer and the deleter */
-        hud::tuple< pointer_type, deleter_t> inner;
+        hud::tuple< pointer_type, deleter_type> inner;
     };
 
     /**
     * Swap unique_pointer.
     * Same as first.swap(second).
     * @tparam type_t Type of the first unique_pointer's pointer
-    * @tparam deleter_t Type of the first unique_pointer's deleter
+    * @tparam deleter_type Type of the first unique_pointer's deleter
     * @tparam u_ptr_t Type of the second unique_pointer's pointer
     * @tparam u_deleter_t Type of the second unique_pointer's deleter
     * @param first The first to swap
     * @param second The second to swap
     */
-    template<typename type_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
-    constexpr void swap(unique_pointer<type_t, deleter_t>& first, unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
+    template<typename type_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
+    constexpr void swap(unique_pointer<type_t, deleter_type>& first, unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
         first.swap(second);
     }
 
@@ -661,279 +661,279 @@ namespace hud {
     * Swap unique_pointer.
     * Same as first.swap(second)
     * @tparam type_t Type of both unique_pointer's pointer
-    * @tparam deleter_t Type of the both unique_pointer's deleter
+    * @tparam deleter_type Type of the both unique_pointer's deleter
     * @param first The first to swap
     * @param second The second to swap
     */
-    template<typename type_t, typename deleter_t>
-    constexpr void swap(unique_pointer<type_t, deleter_t>& first, unique_pointer<type_t, deleter_t>& second) noexcept {
+    template<typename type_t, typename deleter_type>
+    constexpr void swap(unique_pointer<type_t, deleter_type>& first, unique_pointer<type_t, deleter_type>& second) noexcept {
         first.swap(second);
     }
 
     /**
     * Checks whether two unique_pointer owned the same pointer
     * @tparam type_t Type of the first unique_pointer's pointer
-    * @tparam deleter_t Type of the first unique_pointer's deleter
+    * @tparam deleter_type Type of the first unique_pointer's deleter
     * @tparam u_ptr_t Type of the second unique_pointer's pointer
     * @tparam u_deleter_t Type of the second unique_pointer's deleter
     * @param first The first to compare
     * @param second The second to compare
     * @param true if both pointer are equals, false otherwise
     */
-    template<typename type_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
+    template<typename type_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
     [[nodiscard]]
-    constexpr bool operator==(const unique_pointer<type_t, deleter_t>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
+    constexpr bool operator==(const unique_pointer<type_t, deleter_type>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
         return first.pointer() == second.pointer();
     }
 
     /**
     * Checks whether the unique_pointer don't own pointer.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param pointer The pointer to compare with nullptr
     * @param hud::ptr::null
     * @param true if unique_pointer don't own a pointer, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator==(const unique_pointer<type_t, deleter_t>& pointer, hud::ptr::null) noexcept {
+    constexpr bool operator==(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         return !pointer;
     }
 
     /**
     * Checks whether the unique_pointer don't own pointer.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param hud::ptr::null
     * @param pointer The pointer to compare with nullptr
     * @param true if unique_pointer don't own a pointer, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator==(hud::ptr::null, const unique_pointer<type_t, deleter_t>& pointer) noexcept {
+    constexpr bool operator==(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         return !pointer;
     }
 
     /**
     * Checks whether two unique_pointer owned the different pointers.
     * @tparam type_t Type of the first unique_pointer's pointer
-    * @tparam deleter_t Type of the first unique_pointer's deleter
+    * @tparam deleter_type Type of the first unique_pointer's deleter
     * @tparam u_ptr_t Type of the second unique_pointer's pointer
     * @tparam u_deleter_t Type of the second unique_pointer's deleter
     * @param first The first to compare
     * @param second The second to compare
     * @param true if both pointer are not equals, false otherwise
     */
-    template<typename type_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
+    template<typename type_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
     [[nodiscard]]
-    constexpr bool operator!=(const unique_pointer<type_t, deleter_t>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
+    constexpr bool operator!=(const unique_pointer<type_t, deleter_type>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
         return first.pointer() != second.pointer();
     }
 
     /**
     * Checks whether the unique_pointer own pointer.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param pointer The pointer to check
     * @param hud::ptr::null
     * @param true if unique_pointer own a pointer, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator!=(const unique_pointer<type_t, deleter_t>& pointer, hud::ptr::null) noexcept {
+    constexpr bool operator!=(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         return static_cast<bool>(pointer);
     }
 
     /**
     * Checks whether the unique_pointer own pointer.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param hud::ptr::null
     * @param pointer The pointer to check
     * @param true if unique_pointer own a pointer, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator!=(hud::ptr::null, const unique_pointer<type_t, deleter_t>& pointer) noexcept {
+    constexpr bool operator!=(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         return static_cast<bool>(pointer);
     }
 
     /**
     * Checks whether the first owned unique_pointer address less than the second owned pointer address.
     * @tparam type_t Type of the first unique_pointer's pointer
-    * @tparam deleter_t Type of the first unique_pointer's deleter
+    * @tparam deleter_type Type of the first unique_pointer's deleter
     * @tparam u_ptr_t Type of the second unique_pointer's pointer
     * @tparam u_deleter_t Type of the second unique_pointer's deleter
     * @param first The first to compare
     * @param second The second to compare
     * @return true if first owned pointer address is less than second owned pointer address, false otherwise
     */
-    template<typename type_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
+    template<typename type_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
     [[nodiscard]]
-    bool operator<(const unique_pointer<type_t, deleter_t>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
-        using pointer_type = common_type_t<typename unique_pointer<type_t, deleter_t>::pointer_type, typename unique_pointer<u_ptr_t, u_deleter_t>::pointer_type>;
+    bool operator<(const unique_pointer<type_t, deleter_type>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
+        using pointer_type = common_type_t<typename unique_pointer<type_t, deleter_type>::pointer_type, typename unique_pointer<u_ptr_t, u_deleter_t>::pointer_type>;
         return less<pointer_type>()(first.pointer(), second.pointer());
     }
 
     /**
     * Checks whether the owned pointer address is less than nullptr.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param pointer The pointer to compare
     * @param nullptr
     * @return true if the owned pointer address is less than nullptr, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator<(const unique_pointer<type_t, deleter_t>& pointer, hud::ptr::null) noexcept {
-        using pointer_type = typename unique_pointer<type_t, deleter_t>::pointer_type;
+    constexpr bool operator<(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
+        using pointer_type = typename unique_pointer<type_t, deleter_type>::pointer_type;
         return less<pointer_type>()(pointer.pointer(), nullptr);
     }
 
     /**
     * Checks whether nullptr is less than the owned pointer address.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param nullptr
     * @param pointer The pointer to compare
     * @return true if nullptr is less than the owned pointer address, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator<(hud::ptr::null, const unique_pointer<type_t, deleter_t>& pointer) noexcept {
-        using pointer_type = typename unique_pointer<type_t, deleter_t>::pointer_type;
+    constexpr bool operator<(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
+        using pointer_type = typename unique_pointer<type_t, deleter_type>::pointer_type;
         return less<pointer_type>()(nullptr, pointer.pointer());
     }
 
     /**
     * Checks whether the first owned unique_pointer address greater than the second owned pointer address.
     * @tparam type_t Type of the first unique_pointer's pointer
-    * @tparam deleter_t Type of the first unique_pointer's deleter
+    * @tparam deleter_type Type of the first unique_pointer's deleter
     * @tparam u_ptr_t Type of the second unique_pointer's pointer
     * @tparam u_deleter_t Type of the second unique_pointer's deleter
     * @param first The first to compare
     * @param second The second to compare
     * @return true if first owned pointer address is greater than second owned pointer address, false otherwise
     */
-    template<typename type_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
+    template<typename type_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
     [[nodiscard]]
-    bool operator>(const unique_pointer<type_t, deleter_t>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
+    bool operator>(const unique_pointer<type_t, deleter_type>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
         return second < first;
     }
 
     /**
     * Checks whether the owned pointer address is greater than nullptr.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param pointer The pointer to compare
     * @param nullptr
     * @return true if the owned pointer address is greater than nullptr, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator>(const unique_pointer<type_t, deleter_t>& pointer, hud::ptr::null) noexcept {
+    constexpr bool operator>(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         return nullptr < pointer;
     }
 
     /**
     * Checks whether nullptr is greater than the owned pointer address.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param nullptr
     * @param pointer The pointer to compare
     * @return true if nullptr is greater than the owned pointer address, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator>(hud::ptr::null, const unique_pointer<type_t, deleter_t>& pointer) noexcept {
+    constexpr bool operator>(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         return pointer < nullptr;
     }
 
     /**
     * Checks whether the first owned unique_pointer address less or equal the second owned pointer address.
     * @tparam type_t Type of the first unique_pointer's pointer
-    * @tparam deleter_t Type of the first unique_pointer's deleter
+    * @tparam deleter_type Type of the first unique_pointer's deleter
     * @tparam u_ptr_t Type of the second unique_pointer's pointer
     * @tparam u_deleter_t Type of the second unique_pointer's deleter
     * @param first The first to compare
     * @param second The second to compare
     * @return true if first owned pointer address is less or equal the second owned pointer address, false otherwise
     */
-    template<typename type_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
+    template<typename type_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
     [[nodiscard]]
-    bool operator<=(const unique_pointer<type_t, deleter_t>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
+    bool operator<=(const unique_pointer<type_t, deleter_type>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
         return !(second < first);
     }
 
     /**
     * Checks whether the owned pointer address is less or equal nullptr.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param pointer The pointer to compare
     * @param nullptr
     * @return true if the owned pointer address is less or equal nullptr, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator<=(const unique_pointer<type_t, deleter_t>& pointer, hud::ptr::null) noexcept {
+    constexpr bool operator<=(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         return !(nullptr < pointer);
     }
 
     /**
     * Checks whether nullptr is less or equal the owned pointer address.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param nullptr
     * @param pointer The pointer to compare
     * @return true if nullptr is less or equal the owned pointer address, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator<=(hud::ptr::null, const unique_pointer<type_t, deleter_t>& pointer) noexcept {
+    constexpr bool operator<=(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         return !(pointer < nullptr);
     }
 
     /**
     * Checks whether the first owned unique pointer address compares greater or equal the second owned pointer address.
     * @tparam type_t Type of the first unique_pointer's pointer
-    * @tparam deleter_t Type of the first unique_pointer's deleter
+    * @tparam deleter_type Type of the first unique_pointer's deleter
     * @tparam u_ptr_t Type of the second unique_pointer's pointer
     * @tparam u_deleter_t Type of the second unique_pointer's deleter
     * @param first The first to compare
     * @param second The second to compare
     * @return true if first owned unique pointer address compares greater or equal the second owned pointer address, false otherwise
     */
-    template<typename type_t, typename deleter_t, typename u_ptr_t, typename u_deleter_t>
+    template<typename type_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
     [[nodiscard]]
-    bool operator>=(const unique_pointer<type_t, deleter_t>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
+    bool operator>=(const unique_pointer<type_t, deleter_type>& first, const unique_pointer<u_ptr_t, u_deleter_t>& second) noexcept {
         return !(first < second);
     }
 
     /**
     * Checks whether the owned pointer address is greater or equal nullptr.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param pointer The pointer to compare
     * @param nullptr
     * @return True if the owned pointer address is greater or equal nullptr, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator>=(const unique_pointer<type_t, deleter_t>& pointer, hud::ptr::null) noexcept {
+    constexpr bool operator>=(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         return !(pointer < nullptr);
     }
 
     /**
     * Checks whether nullptr is greater or equal the owned pointer address.
     * @tparam type_t Type of the unique_pointer's pointer
-    * @tparam deleter_t Type of the unique_pointer's deleter
+    * @tparam deleter_type Type of the unique_pointer's deleter
     * @param nullptr
     * @param pointer The pointer to compare
     * @return true if nullptr is greater or equal the owned pointer address, false otherwise
     */
-    template<typename type_t, typename deleter_t>
+    template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator>=(hud::ptr::null, const unique_pointer<type_t, deleter_t>& pointer) noexcept {
+    constexpr bool operator>=(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         return !(nullptr < pointer);
     }
 
@@ -945,7 +945,7 @@ namespace hud {
     * @param args Arguments hud::forward to the type_t constructor
     * @return unique_pointer<type_t> pointing to a object of type type_t construct by passing args arguments to its constructor
     */
-    template<typename type_t, typename... args_t, enable_if_t<negation_v<is_array<type_t>>, i32> = 0 >
+    template<typename type_t, typename... args_t, hud::enable_if_t<negation_v<hud::is_array<type_t>>, i32> = 0 >
     [[nodiscard]]
     constexpr unique_pointer<type_t> make_unique(args_t&&... args) noexcept {
         return unique_pointer<type_t>(new (std::nothrow) type_t(hud::forward<args_t>(args)...));
@@ -958,14 +958,14 @@ namespace hud {
     * @param size Number of type_t to allocate
     * @return unique_pointer<type_t> pointer to an array of type type_t
     */
-    template<typename type_t, enable_if_t<is_unbounded_array_v<type_t>, i32> = 0>
+    template<typename type_t, hud::enable_if_t<hud::is_unbounded_array_v<type_t>, i32> = 0>
     [[nodiscard]]
     unique_pointer<type_t> make_unique(const usize size) noexcept {
-        return unique_pointer<type_t>(new (std::nothrow) remove_extent_t<type_t>[size]());
+        return unique_pointer<type_t>(new (std::nothrow) hud::remove_extent_t<type_t>[size]());
     }
 
     /** Construction of arrays of known bound is disallowed. */
-    template<typename type_t, typename... args_t, enable_if_t<is_bounded_array_v<type_t>> = 0>
+    template<typename type_t, typename... args_t, hud::enable_if_t<hud::is_bounded_array_v<type_t>> = 0>
     void make_unique(args_t&&...) = delete;
 
     /**

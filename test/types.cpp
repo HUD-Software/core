@@ -14,7 +14,7 @@ TEST(Types, size) {
     ASSERT_EQ(sizeof(u64), 8u);
     ASSERT_EQ(sizeof(ansichar), 1u);
 
-    if constexpr (hud::compilation::is_os(hud::EOS::windows)) {
+    if constexpr (hud::compilation::is_os(hud::os_e::windows)) {
         ASSERT_EQ(sizeof(wchar), 2u);
     }
     else {

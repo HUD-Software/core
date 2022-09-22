@@ -14,7 +14,7 @@ namespace hud {
     */
     template<typename derived_t, typename base_t>
     struct is_derived_from
-        : conjunction<
+        : hud::conjunction<
             is_base_of<base_t, derived_t>,
             is_not_same<remove_cv_t<base_t>, remove_cv_t<derived_t>>
         > {

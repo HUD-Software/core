@@ -15,7 +15,7 @@ namespace hud {
     */
     template<typename type_t>
     struct is_trivially_destructible
-        : bool_constant<__is_trivially_destructible(type_t)> {
+        : hud::bool_constant<__is_trivially_destructible(type_t)> {
     };
 
     /** Equivalent of is_trivially_destructible<type_t>::value. */

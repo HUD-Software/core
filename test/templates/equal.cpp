@@ -3,7 +3,7 @@
 namespace {
     struct S {
         constexpr S(i32 val) noexcept 
-            : value(val){
+            : value(val) {
         }
 
         constexpr bool operator==(const S& other) const noexcept {

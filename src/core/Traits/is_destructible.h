@@ -26,7 +26,7 @@ namespace hud {
 #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
     template<typename type_t>
     struct is_destructible
-        : bool_constant<__is_destructible(type_t)> {
+        : hud::bool_constant<__is_destructible(type_t)> {
     };
 #else
 
@@ -49,17 +49,17 @@ namespace hud {
     */
     template<typename type_t>
     struct is_destructible
-        : conditional_t <
-        or_v<
+        : hud::conditional_t <
+        hud::disjunction_v<
         is_void<type_t>,
         is_unbounded_array<type_t>,
         is_function<type_t>
         >,
         hud::false_type, // false if void, unbounded array, or function ignoring cv-qualifiers
-        conditional_t<
-        or_v<is_reference<type_t>, is_scalar<type_t>>,
+        hud::conditional_t<
+        hud::disjunction_v<is_reference<type_t>, is_scalar<type_t>>,
         hud::true_type, // true if reference or scalar
-        details::is_destructor_well_formed<remove_all_extents_t<type_t>> // else check if calling the constructor is well-formed
+        details::is_destructor_well_formed<hud::remove_all_extents_t<type_t>> // else check if calling the constructor is well-formed
         >> {
     };
 

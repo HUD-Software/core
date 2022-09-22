@@ -11,7 +11,7 @@ namespace hud {
     */
     template<typename base_t, typename derived_t>
     struct is_base_of
-        : bool_constant<__is_base_of(base_t, derived_t)> {
+        : hud::bool_constant<__is_base_of(base_t, derived_t)> {
     };
 
     /** Equivalent of is_base_of<base_t, derived_t>::value. */

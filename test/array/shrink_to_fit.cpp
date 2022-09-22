@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(Array, shrink_to_fit_decrease_allocation)
+TEST(array, shrink_to_fit_decrease_allocation)
 {
 
 
-    hud::array<hud::test::NonBitwiseType, hud::test::array_allocator<alignof(hud::test::NonBitwiseType)>> array;
+    hud::array<hud_test::non_bitwise_type, hud_test::array_allocator<alignof(hud_test::non_bitwise_type)>> array;
     ASSERT_EQ(array.data(), nullptr);
     ASSERT_EQ(array.count(), 0u);
     ASSERT_EQ(array.max_count(), 0u);
@@ -29,11 +29,11 @@ TEST(Array, shrink_to_fit_decrease_allocation)
     ASSERT_EQ(array.allocator().free_count(), 1u);
 }
 
-TEST(Array, shrink_to_fit_free_the_array_if_count_is_zero)
+TEST(array, shrink_to_fit_free_the_array_if_count_is_zero)
 {
 
 
-    hud::array<hud::test::NonBitwiseType, hud::test::array_allocator<alignof(hud::test::NonBitwiseType)>> array;
+    hud::array<hud_test::non_bitwise_type, hud_test::array_allocator<alignof(hud_test::non_bitwise_type)>> array;
     ASSERT_EQ(array.data(), nullptr);
     ASSERT_EQ(array.count(), 0u);
     ASSERT_EQ(array.max_count(), 0u);

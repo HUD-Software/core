@@ -55,7 +55,7 @@ namespace hud {
         * @param address The address of the type type_t to default construct
         */
         template<typename type_t, typename... args_t>
-        static constexpr type_t* construct_at(type_t* const address, args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t... >) {
+        static constexpr type_t* construct_at(type_t* const address, args_t&&... args) noexcept requires(hud::is_constructible_v<type_t, args_t... >) {
             static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
             return std::construct_at(address, hud::forward<args_t>(args)...);
         }
@@ -94,7 +94,7 @@ namespace hud {
         * @param args Arguments forward to the type_t constructor
         */
         template<typename type_t, typename... args_t>
-        static constexpr void construct_array_at(type_t*HD_RESTRICT begin, const type_t* HD_RESTRICT const end, args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t... >) {
+        static constexpr void construct_array_at(type_t*HD_RESTRICT begin, const type_t* HD_RESTRICT const end, args_t&&... args) noexcept requires(hud::is_constructible_v<type_t, args_t... >) {
             static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct is not designed to allow throwable constructible type");
             while(begin < end) {
                hud::memory::template construct_at(begin++, hud::forward<args_t>(args)...);
@@ -135,7 +135,7 @@ namespace hud {
         @param address The address of the type type_t to destroy
         */
         template<typename type_t>
-        static constexpr void destroy(type_t& obj) noexcept requires(is_destructible_v<type_t> && !is_pointer_v<type_t>) {
+        static constexpr void destroy(type_t& obj) noexcept requires(is_destructible_v<type_t> && !hud::is_pointer_v<type_t>) {
             if constexpr (!hud::is_trivially_destructible_v<type_t>) {
                 static_assert(hud::is_nothrow_destructible_v<type_t>, "type_t destructor is throwable.hud::memory::destroy is not designed to allow throwable destructible type");
                 obj.~type_t();
@@ -195,7 +195,7 @@ namespace hud {
         * @param count Number of element to copy construct
         */
         template<typename type_t, typename u_type_t>
-        static constexpr void move_or_copy_construct_array(type_t* destination, u_type_t* source, usize count) noexcept requires(hud::is_move_constructible_v<type_t, u_type_t> || is_copy_constructible_v<type_t, u_type_t>) {
+        static constexpr void move_or_copy_construct_array(type_t* destination, u_type_t* source, usize count) noexcept requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) {
             if constexpr (hud::is_move_constructible_v<type_t, u_type_t>) {
                 static_assert(hud::is_nothrow_move_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
             }
@@ -279,7 +279,7 @@ namespace hud {
                 static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable.hud::memory::move_or_copy_assign is not designed to allow throwable copy assignable type");
             }
 
-            if constexpr (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && is_same_size_v<type_t,u_type_t> &&!hud::is_constant_evaluated()) {
+            if constexpr (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && hud::is_same_size_v<type_t,u_type_t> &&!hud::is_constant_evaluated()) {
                hud::memory::move(destination, source, (end_source-source) * sizeof(type_t));
             }
             else {
@@ -301,7 +301,7 @@ namespace hud {
         * @param source Address of the element u_type_t to relocate to destination
         */
         template<typename type_t, typename u_type_t>
-        static constexpr void move_or_copy_construct_then_destroy(type_t* destination, u_type_t&& source) noexcept requires(hud::is_move_constructible_v<type_t, u_type_t> || is_copy_constructible_v<type_t, u_type_t>) {
+        static constexpr void move_or_copy_construct_then_destroy(type_t* destination, u_type_t&& source) noexcept requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) {
            hud::memory::template construct_at(destination, hud::forward<u_type_t>(source));
            hud::memory::template destroy(source);
         }
@@ -319,7 +319,7 @@ namespace hud {
         * @param count Number of element to relocate
         */
         template<typename type_t, typename u_type_t>
-        static constexpr void fast_move_or_copy_construct_array_then_destroy(type_t* destination, u_type_t* source, usize count) noexcept requires((hud::is_move_constructible_v<type_t, u_type_t> || is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>) {
+        static constexpr void fast_move_or_copy_construct_array_then_destroy(type_t* destination, u_type_t* source, usize count) noexcept requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>) {
             // If the source is bitwise copyable and bitwise moveable to destination then we make a copy instead of a move semantic
             // This performs better that using move semantic that we do a memory move instead
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t>) {
@@ -344,7 +344,7 @@ namespace hud {
         * @param count Number of element to relocate
         */
         template<typename type_t, typename u_type_t>
-        static constexpr void move_or_copy_construct_array_then_destroy_backward(type_t* destination, u_type_t* source, const usize count) noexcept requires((hud::is_move_constructible_v<type_t, u_type_t> || is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>) {
+        static constexpr void move_or_copy_construct_array_then_destroy_backward(type_t* destination, u_type_t* source, const usize count) noexcept requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>) {
             if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t>) {
                hud::memory::move(destination, source, count*sizeof(u_type_t));
                hud::memory::template destroy_array(source, count);
@@ -385,7 +385,7 @@ namespace hud {
         */
         template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool equal_array(const lhs_t* left, const rhs_t* right, usize count) noexcept {
-            if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && is_same_size_v<lhs_t, rhs_t>) {
+            if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>) {
                 return hud::memory::compare_equal(left, right, count * sizeof(lhs_t));
             }
             else {
@@ -428,7 +428,7 @@ namespace hud {
         */
         template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool not_equal_array(const lhs_t* left, const rhs_t* right, usize count) noexcept {
-            if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && is_same_size_v<lhs_t,rhs_t>) {
+            if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t,rhs_t>) {
                 return !hud::memory::compare_equal(left, right, count * sizeof(lhs_t));
             }
             else {

@@ -153,7 +153,7 @@ namespace hud {
             * @param args List of args forwarded to the constructed value
             */
             template<typename... args_t>
-            constexpr explicit optional_destructible_base(tag_in_place, args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t...>)
+            constexpr explicit optional_destructible_base(tag_in_place, args_t&&... args) noexcept requires(hud::is_constructible_v<type_t, args_t...>)
                 : some_value(hud::forward<args_t>(args)...)
                 , some(true) {
             }
@@ -191,7 +191,7 @@ namespace hud {
             * @param args List of args forwarded to the constructed value
             */
             template<typename... args_t>
-            constexpr explicit optional_destructible_base(tag_in_place, args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t...>)
+            constexpr explicit optional_destructible_base(tag_in_place, args_t&&... args) noexcept requires(hud::is_constructible_v<type_t, args_t...>)
                 : some_value(hud::forward<args_t>(args)...)
                 , some(true) {
             }
@@ -279,7 +279,7 @@ namespace hud {
         */
         template<typename type_t,
             bool IsCopyAssignTrivial = is_trivially_copy_constructible_v<type_t> && is_trivially_copy_assignable_v<type_t> && hud::is_trivially_destructible_v<type_t>,
-            bool IsCopyAssignDeleted = is_copy_constructible_v<type_t>&& hud::is_copy_assignable_v<type_t>>
+            bool IsCopyAssignDeleted = hud::is_copy_constructible_v<type_t>&& hud::is_copy_assignable_v<type_t>>
         struct optional_copy_assign_base
             : optional_move_base<type_t> {
             using super_type = optional_move_base<type_t>;
@@ -318,7 +318,7 @@ namespace hud {
         */
         template<typename type_t,
             bool IsMoveAssignTrivial = is_trivially_move_assignable_v<type_t> && is_trivially_move_constructible_v<type_t> && hud::is_trivially_destructible_v<type_t>,
-            bool IsMoveAssignDeleted = hud::is_move_constructible_v<type_t>&& is_move_assignable_v<type_t>>
+            bool IsMoveAssignDeleted = hud::is_move_constructible_v<type_t>&& hud::is_move_assignable_v<type_t>>
         struct optional_move_assign_base
             : optional_copy_assign_base<type_t> {
             using super_type = optional_copy_assign_base<type_t>;
@@ -367,13 +367,13 @@ namespace hud {
     } // details
 
     /** Empty class type used to indicate optional type with uninitialized state */
-    struct null_opt {
+    struct nullopt_t {
         struct tag {};
-        explicit constexpr null_opt(tag) {}
+        explicit constexpr nullopt_t(tag) {}
     };
 
     /** Constant used to indicate optional type with uninitialized state. */
-    inline constexpr null_opt nullopt{ null_opt::tag{} };
+    inline constexpr nullopt_t nullopt{ nullopt_t::tag{} };
 
 
     /**
@@ -383,7 +383,7 @@ namespace hud {
     *  - The object is initialized with/assigned from a value of type type_t or another optional that contains a value. 
     * The object does not contain a value in the following conditions:
     *  - The object is default-initialized.
-    *  - The object is initialized with/assigned from a value of type hud::nullopt or an optional object that does not contain a value.
+    *  - The object is initialized with/assigned from a value of type hud::nullopt_t or an optional object that does not contain a value.
     *  - The member function reset() is called. 
     */
     template<typename type_t>
@@ -405,9 +405,9 @@ namespace hud {
 
         /**
         * Construct an optional that does not contain a value
-        * @param null_opt tag that indicate optional type with uninitialized state
+        * @param nullopt_t tag that indicate optional type with uninitialized state
         */
-        constexpr optional(null_opt) noexcept
+        constexpr optional(hud::nullopt_t) noexcept
         {};
 
         /**
@@ -417,7 +417,7 @@ namespace hud {
         * @param args Arguments to forward to the constructor of the value
         */
         template<typename... args_t>
-        constexpr explicit optional(tag_in_place, args_t&&... args) noexcept requires(is_constructible_v<type_t, args_t...>)
+        constexpr explicit optional(tag_in_place, args_t&&... args) noexcept requires(hud::is_constructible_v<type_t, args_t...>)
             : super_type(tag_in_place{}, hud::forward<args_t>(args)...) {
         }
 
@@ -427,7 +427,7 @@ namespace hud {
         * @param value The value to move
         */
         template<typename u_type_t = type_t>
-        explicit(!is_convertible_v<u_type_t&&, type_t>) constexpr optional(u_type_t&& value) noexcept requires(is_constructible_v<type_t, u_type_t&&>&& is_not_same_v<remove_cv_ref_t<u_type_t>, tag_in_place>&& is_not_same_v<u_type_t, optional<type_t>>)
+        explicit(!hud::is_convertible_v<u_type_t&&, type_t>) constexpr optional(u_type_t&& value) noexcept requires(hud::is_constructible_v<type_t, u_type_t&&>&& is_not_same_v<remove_cv_ref_t<u_type_t>, tag_in_place>&& is_not_same_v<u_type_t, optional<type_t>>)
             : super_type(tag_in_place{}, hud::move(value)) {
         }
 
@@ -435,9 +435,9 @@ namespace hud {
         * If the optional contains a value, destroy that value.
         * Otherwise do nothing.
         * This does not contain a value after this call.
-        * @param null_opt The nullopt tag
+        * @param nullopt_t The hud::nullopt_t tag
         */
-        constexpr optional& operator=(null_opt) noexcept {
+        constexpr optional& operator=(hud::nullopt_t) noexcept {
             reset();
             return *this;
         }
@@ -463,11 +463,11 @@ namespace hud {
         */
         template<typename u_type_t = type_t>
         constexpr optional& operator=(u_type_t&& value) noexcept
-            requires(conjunction_v<
+            requires(hud::conjunction_v<
                 is_not_same<remove_cv_ref_t<u_type_t>, optional<type_t>>,
                 is_constructible<type_t, u_type_t>,
                 is_assignable<type_t&, u_type_t>,
-                negation<conjunction<is_scalar<type_t>,is_same<decay_t<u_type_t>, type_t>>>
+                hud::negation<hud::conjunction<is_scalar<type_t>,hud::is_same<hud::decay_t<u_type_t>, type_t>>>
                 >) {
             if (has_value()) {
                 this->some_value = hud::forward<u_type_t>(value);
@@ -491,18 +491,18 @@ namespace hud {
         constexpr optional& operator=(const optional<u_type_t>&other) noexcept
             requires((hud::is_copy_constructible_v<type_t, u_type_t> && hud::is_copy_assignable_v<type_t, u_type_t>) &&
                 !(
-                    is_constructible_v<type_t, optional<u_type_t>&> ||
-                    is_constructible_v<type_t, const optional<u_type_t>&> ||
-                    is_constructible_v<type_t, optional<u_type_t>&&> ||
-                    is_constructible_v < type_t, const optional<u_type_t>&&> ||
-                    is_convertible_v< optional<u_type_t>&, type_t> ||
-                    is_convertible_v<const optional<u_type_t>&, type_t> ||
-                    is_convertible_v<optional<u_type_t>&&, type_t> ||
-                    is_convertible_v<const optional<u_type_t>&&, type_t> ||
-                    is_assignable_v<type_t&, optional<u_type_t>&> ||
-                    is_assignable_v<type_t&, const optional<u_type_t>&> ||
-                    is_assignable_v<type_t&, optional<u_type_t>&&> ||
-                    is_assignable_v<type_t&, const optional<u_type_t>&&>
+                    hud::is_constructible_v<type_t, optional<u_type_t>&> ||
+                    hud::is_constructible_v<type_t, const optional<u_type_t>&> ||
+                    hud::is_constructible_v<type_t, optional<u_type_t>&&> ||
+                    hud::is_constructible_v < type_t, const optional<u_type_t>&&> ||
+                    hud::is_convertible_v< optional<u_type_t>&, type_t> ||
+                    hud::is_convertible_v<const optional<u_type_t>&, type_t> ||
+                    hud::is_convertible_v<optional<u_type_t>&&, type_t> ||
+                    hud::is_convertible_v<const optional<u_type_t>&&, type_t> ||
+                    hud::is_assignable_v<type_t&, optional<u_type_t>&> ||
+                    hud::is_assignable_v<type_t&, const optional<u_type_t>&> ||
+                    hud::is_assignable_v<type_t&, optional<u_type_t>&&> ||
+                    hud::is_assignable_v<type_t&, const optional<u_type_t>&&>
                     )) {
             this->assign(other);
             return *this;
@@ -520,17 +520,17 @@ namespace hud {
         template<typename u_type_t>
         constexpr optional& operator=(optional<u_type_t> && other) noexcept
             requires(
-                conjunction_v<
+                hud::conjunction_v<
                     is_constructible<type_t, u_type_t>, is_assignable<type_t&, u_type_t>,
-                    negation<disjunction<
+                    hud::negation<hud::disjunction<
                         is_constructible<type_t, optional<u_type_t>&>,
                         is_constructible<type_t, const optional<u_type_t>&>,
                         is_constructible<type_t, optional<u_type_t>&&>,
                         is_constructible < type_t, const optional<u_type_t>&&>,
-                        is_convertible< optional<u_type_t>&, type_t>,
-                        is_convertible<const optional<u_type_t>&, type_t>,
-                        is_convertible<optional<u_type_t>&&, type_t>,
-                        is_convertible<const optional<u_type_t>&&, type_t>,
+                        hud::is_convertible< optional<u_type_t>&, type_t>,
+                        hud::is_convertible<const optional<u_type_t>&, type_t>,
+                        hud::is_convertible<optional<u_type_t>&&, type_t>,
+                        hud::is_convertible<const optional<u_type_t>&&, type_t>,
                         is_assignable<type_t&, optional<u_type_t>&>,
                         is_assignable<type_t&, const optional<u_type_t>&>,
                         is_assignable<type_t&, optional<u_type_t>&&>,
@@ -604,7 +604,7 @@ namespace hud {
         [[nodiscard]]
         constexpr type_t value_or(u_type_t&& default_value) const& noexcept {
             static_assert(hud::is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
-            static_assert(is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
+            static_assert(hud::is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
             return has_value() ? value() : static_cast<type_t>(hud::forward<u_type_t>(default_value));
         }
 
@@ -613,7 +613,7 @@ namespace hud {
         [[nodiscard]]
         constexpr type_t value_or(u_type_t&& default_value) && noexcept {
             static_assert(hud::is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
-            static_assert(is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
+            static_assert(hud::is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
             return has_value() ? hud::move(value()) : static_cast<type_t>(hud::forward<u_type_t>(default_value));
         }
 

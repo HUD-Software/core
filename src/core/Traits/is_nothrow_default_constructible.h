@@ -8,7 +8,7 @@ namespace hud {
     /** Checks whether type_t is a default constructible type, and such construction is known not to throw any exception. */
     template <typename type_t>
     struct is_nothrow_default_constructible
-        : bool_constant<__is_nothrow_constructible(type_t)> {
+        : hud::bool_constant<__is_nothrow_constructible(type_t)> {
     };
 
     /** Equivalent of is_nothrow_default_constructible<type_t>::value. */

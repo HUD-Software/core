@@ -18,7 +18,7 @@ namespace hud {
     */
     template<typename type_t>
     struct is_scalar
-        : disjunction< is_arithmetic<type_t>, is_enum<type_t>, is_pointer<type_t>, is_member_pointer<type_t>, is_nullptr<type_t> > {
+        : hud::disjunction< is_arithmetic<type_t>, is_enum<type_t>, is_pointer<type_t>, is_member_pointer<type_t>, is_nullptr<type_t> > {
     };
 
     /** Equivalent of is_scalar<type_t>::value. */

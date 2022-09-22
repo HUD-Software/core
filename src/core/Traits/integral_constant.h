@@ -11,7 +11,7 @@ namespace hud {
         static constexpr type_t value = value;
         /** Type of the wrapped value. */
         using value_type = type_t;
-        /** Type of the integral_constant. */
+        /** Type of the hud::integral_constant. */
         using type = integral_constant;
 
         /** Conversion function. Returns the wrapped value. */
@@ -24,7 +24,7 @@ namespace hud {
         }
     };
 
-    /** integral_constant wraps a static constant boolean value. */
+    /** hud::integral_constant wraps a static constant boolean value. */
     template<bool value>
     using bool_constant = hud::integral_constant<bool, value>;
 

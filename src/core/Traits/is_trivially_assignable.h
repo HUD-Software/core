@@ -8,7 +8,7 @@ namespace hud {
     /** Checks whether u_type_t is a type trivially assignable to type_t. (declval<type_t>() = declval<u_type_t>() is well-formed) */
     template<typename type_t, typename u_type_t>
     struct is_trivially_assignable
-        : bool_constant<__is_trivially_assignable(type_t, u_type_t)> {
+        : hud::bool_constant<__is_trivially_assignable(type_t, u_type_t)> {
     };
 
     /** Equivalent of is_trivially_assignable<type_t, u_type_t>::value. */

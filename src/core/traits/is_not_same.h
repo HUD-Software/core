@@ -13,7 +13,7 @@ namespace hud {
     */
     template<typename type_t, typename u_type_t>
     struct is_not_same
-        : negation<is_same<type_t, u_type_t>> {
+        : hud::negation<hud::is_same<type_t, u_type_t>> {
     };
 
     /** Equivalent of is_not_same<type_t, u_type_t>::value. */

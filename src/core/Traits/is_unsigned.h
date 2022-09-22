@@ -19,7 +19,7 @@ namespace hud {
     };
     template<typename type_t>
     struct is_unsigned<type_t, true>
-        : bool_constant < remove_cv_t<type_t>(0) < remove_cv_t<type_t>(-1) > {
+        : hud::bool_constant < remove_cv_t<type_t>(0) < remove_cv_t<type_t>(-1) > {
     };
 
     /** Equivalent of is_unsigned<type_t>::value. */

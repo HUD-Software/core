@@ -1,11 +1,11 @@
 #include <core/containers/shared_pointer.h>
 
-TEST(SharedPointer_array_safe, default_constructor) {
+TEST(shared_pointer_array_safe, default_constructor) {
 
 
     const auto test = []()
     {
-        SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr;
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr;
         return std::tuple{
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count()
@@ -15,24 +15,24 @@ TEST(SharedPointer_array_safe, default_constructor) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
     }
 }
 
-TEST(SharedPointer_array_safe, param_constructor_nullptr) {
+TEST(shared_pointer_array_safe, param_constructor_nullptr) {
 
 
     const auto test = []()
     {
-        SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr(nullptr);
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(nullptr);
         return std::tuple{
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count()
@@ -42,25 +42,25 @@ TEST(SharedPointer_array_safe, param_constructor_nullptr) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_EQ(hud::get<1>(result), 0u);
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_EQ(std::get<1>(result), 0u);
     }
 }
 
-TEST(SharedPointer_array_safe, param_constructor_same_type) {
+TEST(shared_pointer_array_safe, param_constructor_same_type) {
 
 
     const auto test = []() {
         i32 dtor_count[2] = { 0,0 };
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
-        SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr(type);
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(type);
         return std::tuple{
             shared_ptr.pointer() == type,
             shared_ptr.shared_count() == 1u,
@@ -74,12 +74,12 @@ TEST(SharedPointer_array_safe, param_constructor_same_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -88,23 +88,23 @@ TEST(SharedPointer_array_safe, param_constructor_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_TRUE(hud::get<1>(result));
-//        ASSERT_TRUE(hud::get<2>(result));
-//        ASSERT_TRUE(hud::get<3>(result));
-//        ASSERT_TRUE(hud::get<4>(result));
-//        ASSERT_TRUE(hud::get<5>(result));
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_TRUE(std::get<1>(result));
+//        ASSERT_TRUE(std::get<2>(result));
+//        ASSERT_TRUE(std::get<3>(result));
+//        ASSERT_TRUE(std::get<4>(result));
+//        ASSERT_TRUE(std::get<5>(result));
 //    }
 //#endif
 }
 
-TEST(SharedPointer_array_safe, param_constructor_different_type) {
+TEST(shared_pointer_array_safe, param_constructor_different_type) {
 
 
     const auto test = []() {
         i32 dtor_count[2] = { 0,0 };
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
-        SharedPointer<const hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr(type);
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
+        hud::shared_pointer<const hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(type);
         return std::tuple{
             shared_ptr.pointer() == type,
             shared_ptr.shared_count() == 1u,
@@ -118,12 +118,12 @@ TEST(SharedPointer_array_safe, param_constructor_different_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -132,24 +132,24 @@ TEST(SharedPointer_array_safe, param_constructor_different_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_TRUE(hud::get<1>(result));
-//        ASSERT_TRUE(hud::get<2>(result));
-//        ASSERT_TRUE(hud::get<3>(result));
-//        ASSERT_TRUE(hud::get<4>(result));
-//        ASSERT_TRUE(hud::get<5>(result));
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_TRUE(std::get<1>(result));
+//        ASSERT_TRUE(std::get<2>(result));
+//        ASSERT_TRUE(std::get<3>(result));
+//        ASSERT_TRUE(std::get<4>(result));
+//        ASSERT_TRUE(std::get<5>(result));
 //    }
 //#endif
 }
 
-TEST(SharedPointer_array_safe, copy_constructor_same_type) {
+TEST(shared_pointer_array_safe, copy_constructor_same_type) {
 
 
     const auto test = []() {
         i32 dtor_count[2] = { 0,0 };
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
-        const SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr_to_copy(type);
-        SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr(shared_ptr_to_copy);
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
+        const hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr_to_copy(type);
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(shared_ptr_to_copy);
 
         return std::tuple{
             shared_ptr_to_copy.pointer() == type,
@@ -176,24 +176,24 @@ TEST(SharedPointer_array_safe, copy_constructor_same_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
-        ASSERT_TRUE(hud::get<12>(result));
-        ASSERT_TRUE(hud::get<13>(result));
-        ASSERT_TRUE(hud::get<14>(result));
-        ASSERT_TRUE(hud::get<15>(result));
-        ASSERT_TRUE(hud::get<16>(result));
-        ASSERT_TRUE(hud::get<17>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
+        ASSERT_TRUE(std::get<12>(result));
+        ASSERT_TRUE(std::get<13>(result));
+        ASSERT_TRUE(std::get<14>(result));
+        ASSERT_TRUE(std::get<15>(result));
+        ASSERT_TRUE(std::get<16>(result));
+        ASSERT_TRUE(std::get<17>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -202,36 +202,36 @@ TEST(SharedPointer_array_safe, copy_constructor_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_TRUE(hud::get<1>(result));
-//        ASSERT_TRUE(hud::get<2>(result));
-//        ASSERT_TRUE(hud::get<3>(result));
-//        ASSERT_TRUE(hud::get<4>(result));
-//        ASSERT_TRUE(hud::get<5>(result));
-//        ASSERT_TRUE(hud::get<6>(result));
-//        ASSERT_TRUE(hud::get<7>(result));
-//        ASSERT_TRUE(hud::get<8>(result));
-//        ASSERT_TRUE(hud::get<9>(result));
-//        ASSERT_TRUE(hud::get<10>(result));
-//        ASSERT_TRUE(hud::get<11>(result));
-//        ASSERT_TRUE(hud::get<12>(result));
-//        ASSERT_TRUE(hud::get<13>(result));
-//        ASSERT_TRUE(hud::get<14>(result));
-//        ASSERT_TRUE(hud::get<15>(result));
-//        ASSERT_TRUE(hud::get<16>(result));
-//        ASSERT_TRUE(hud::get<17>(result));
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_TRUE(std::get<1>(result));
+//        ASSERT_TRUE(std::get<2>(result));
+//        ASSERT_TRUE(std::get<3>(result));
+//        ASSERT_TRUE(std::get<4>(result));
+//        ASSERT_TRUE(std::get<5>(result));
+//        ASSERT_TRUE(std::get<6>(result));
+//        ASSERT_TRUE(std::get<7>(result));
+//        ASSERT_TRUE(std::get<8>(result));
+//        ASSERT_TRUE(std::get<9>(result));
+//        ASSERT_TRUE(std::get<10>(result));
+//        ASSERT_TRUE(std::get<11>(result));
+//        ASSERT_TRUE(std::get<12>(result));
+//        ASSERT_TRUE(std::get<13>(result));
+//        ASSERT_TRUE(std::get<14>(result));
+//        ASSERT_TRUE(std::get<15>(result));
+//        ASSERT_TRUE(std::get<16>(result));
+//        ASSERT_TRUE(std::get<17>(result));
 //    }
 //#endif
 }
 
-TEST(SharedPointer_array_safe, copy_constructor_different_type) {
+TEST(shared_pointer_array_safe, copy_constructor_different_type) {
 
 
     const auto test = []() {
         i32 dtor_count[2] = { 0,0 };
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
-        const SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr_to_copy(type);
-        SharedPointer<const hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr(shared_ptr_to_copy);
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
+        const hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr_to_copy(type);
+        hud::shared_pointer<const hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(shared_ptr_to_copy);
 
         return std::tuple{
             shared_ptr_to_copy.pointer() == type,
@@ -258,24 +258,24 @@ TEST(SharedPointer_array_safe, copy_constructor_different_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
-        ASSERT_TRUE(hud::get<12>(result));
-        ASSERT_TRUE(hud::get<13>(result));
-        ASSERT_TRUE(hud::get<14>(result));
-        ASSERT_TRUE(hud::get<15>(result));
-        ASSERT_TRUE(hud::get<16>(result));
-        ASSERT_TRUE(hud::get<17>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
+        ASSERT_TRUE(std::get<12>(result));
+        ASSERT_TRUE(std::get<13>(result));
+        ASSERT_TRUE(std::get<14>(result));
+        ASSERT_TRUE(std::get<15>(result));
+        ASSERT_TRUE(std::get<16>(result));
+        ASSERT_TRUE(std::get<17>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -284,36 +284,36 @@ TEST(SharedPointer_array_safe, copy_constructor_different_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_TRUE(hud::get<1>(result));
-//        ASSERT_TRUE(hud::get<2>(result));
-//        ASSERT_TRUE(hud::get<3>(result));
-//        ASSERT_TRUE(hud::get<4>(result));
-//        ASSERT_TRUE(hud::get<5>(result));
-//        ASSERT_TRUE(hud::get<6>(result));
-//        ASSERT_TRUE(hud::get<7>(result));
-//        ASSERT_TRUE(hud::get<8>(result));
-//        ASSERT_TRUE(hud::get<9>(result));
-//        ASSERT_TRUE(hud::get<10>(result));
-//        ASSERT_TRUE(hud::get<11>(result));
-//        ASSERT_TRUE(hud::get<12>(result));
-//        ASSERT_TRUE(hud::get<13>(result));
-//        ASSERT_TRUE(hud::get<14>(result));
-//        ASSERT_TRUE(hud::get<15>(result));
-//        ASSERT_TRUE(hud::get<16>(result));
-//        ASSERT_TRUE(hud::get<17>(result));
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_TRUE(std::get<1>(result));
+//        ASSERT_TRUE(std::get<2>(result));
+//        ASSERT_TRUE(std::get<3>(result));
+//        ASSERT_TRUE(std::get<4>(result));
+//        ASSERT_TRUE(std::get<5>(result));
+//        ASSERT_TRUE(std::get<6>(result));
+//        ASSERT_TRUE(std::get<7>(result));
+//        ASSERT_TRUE(std::get<8>(result));
+//        ASSERT_TRUE(std::get<9>(result));
+//        ASSERT_TRUE(std::get<10>(result));
+//        ASSERT_TRUE(std::get<11>(result));
+//        ASSERT_TRUE(std::get<12>(result));
+//        ASSERT_TRUE(std::get<13>(result));
+//        ASSERT_TRUE(std::get<14>(result));
+//        ASSERT_TRUE(std::get<15>(result));
+//        ASSERT_TRUE(std::get<16>(result));
+//        ASSERT_TRUE(std::get<17>(result));
 //    }
 //#endif
 }
 
-TEST(SharedPointer_array_safe, move_constructor_same_type) {
+TEST(shared_pointer_array_safe, move_constructor_same_type) {
 
 
     const auto test = []() {
         i32 dtor_count[2] = { 0,0 };
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
-        SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr_to_move(type);
-        SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr(hud::move(shared_ptr_to_move));
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr_to_move(type);
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(hud::move(shared_ptr_to_move));
 
         return std::tuple{
             shared_ptr_to_move.pointer() == nullptr,
@@ -340,24 +340,24 @@ TEST(SharedPointer_array_safe, move_constructor_same_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
-        ASSERT_TRUE(hud::get<12>(result));
-        ASSERT_TRUE(hud::get<13>(result));
-        ASSERT_TRUE(hud::get<14>(result));
-        ASSERT_TRUE(hud::get<15>(result));
-        ASSERT_TRUE(hud::get<16>(result));
-        ASSERT_TRUE(hud::get<17>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
+        ASSERT_TRUE(std::get<12>(result));
+        ASSERT_TRUE(std::get<13>(result));
+        ASSERT_TRUE(std::get<14>(result));
+        ASSERT_TRUE(std::get<15>(result));
+        ASSERT_TRUE(std::get<16>(result));
+        ASSERT_TRUE(std::get<17>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -366,36 +366,36 @@ TEST(SharedPointer_array_safe, move_constructor_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_TRUE(hud::get<1>(result));
-//        ASSERT_TRUE(hud::get<2>(result));
-//        ASSERT_TRUE(hud::get<3>(result));
-//        ASSERT_TRUE(hud::get<4>(result));
-//        ASSERT_TRUE(hud::get<5>(result));
-//        ASSERT_TRUE(hud::get<6>(result));
-//        ASSERT_TRUE(hud::get<7>(result));
-//        ASSERT_TRUE(hud::get<8>(result));
-//        ASSERT_TRUE(hud::get<9>(result));
-//        ASSERT_TRUE(hud::get<10>(result));
-//        ASSERT_TRUE(hud::get<11>(result));
-//        ASSERT_TRUE(hud::get<12>(result));
-//        ASSERT_TRUE(hud::get<13>(result));
-//        ASSERT_TRUE(hud::get<14>(result));
-//        ASSERT_TRUE(hud::get<15>(result));
-//        ASSERT_TRUE(hud::get<16>(result));
-//        ASSERT_TRUE(hud::get<17>(result));
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_TRUE(std::get<1>(result));
+//        ASSERT_TRUE(std::get<2>(result));
+//        ASSERT_TRUE(std::get<3>(result));
+//        ASSERT_TRUE(std::get<4>(result));
+//        ASSERT_TRUE(std::get<5>(result));
+//        ASSERT_TRUE(std::get<6>(result));
+//        ASSERT_TRUE(std::get<7>(result));
+//        ASSERT_TRUE(std::get<8>(result));
+//        ASSERT_TRUE(std::get<9>(result));
+//        ASSERT_TRUE(std::get<10>(result));
+//        ASSERT_TRUE(std::get<11>(result));
+//        ASSERT_TRUE(std::get<12>(result));
+//        ASSERT_TRUE(std::get<13>(result));
+//        ASSERT_TRUE(std::get<14>(result));
+//        ASSERT_TRUE(std::get<15>(result));
+//        ASSERT_TRUE(std::get<16>(result));
+//        ASSERT_TRUE(std::get<17>(result));
 //    }
 //#endif
 }
 
-TEST(SharedPointer_array_safe, move_constructor_different_type) {
+TEST(shared_pointer_array_safe, move_constructor_different_type) {
 
 
     const auto test = []() {
         i32 dtor_count[2] = { 0,0 };
-        hud::test::NonBitwiseType* type = new hud::test::NonBitwiseType[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
-        SharedPointer<hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr_to_move(type);
-        SharedPointer<const hud::test::NonBitwiseType[2], EThreadSafety::safe> shared_ptr(hud::move(shared_ptr_to_move));
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr_to_move(type);
+        hud::shared_pointer<const hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(hud::move(shared_ptr_to_move));
 
         return std::tuple{
             shared_ptr_to_move.pointer() == nullptr,
@@ -422,24 +422,24 @@ TEST(SharedPointer_array_safe, move_constructor_different_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(hud::get<0>(result));
-        ASSERT_TRUE(hud::get<1>(result));
-        ASSERT_TRUE(hud::get<2>(result));
-        ASSERT_TRUE(hud::get<3>(result));
-        ASSERT_TRUE(hud::get<4>(result));
-        ASSERT_TRUE(hud::get<5>(result));
-        ASSERT_TRUE(hud::get<6>(result));
-        ASSERT_TRUE(hud::get<7>(result));
-        ASSERT_TRUE(hud::get<8>(result));
-        ASSERT_TRUE(hud::get<9>(result));
-        ASSERT_TRUE(hud::get<10>(result));
-        ASSERT_TRUE(hud::get<11>(result));
-        ASSERT_TRUE(hud::get<12>(result));
-        ASSERT_TRUE(hud::get<13>(result));
-        ASSERT_TRUE(hud::get<14>(result));
-        ASSERT_TRUE(hud::get<15>(result));
-        ASSERT_TRUE(hud::get<16>(result));
-        ASSERT_TRUE(hud::get<17>(result));
+        ASSERT_TRUE(std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
+        ASSERT_TRUE(std::get<2>(result));
+        ASSERT_TRUE(std::get<3>(result));
+        ASSERT_TRUE(std::get<4>(result));
+        ASSERT_TRUE(std::get<5>(result));
+        ASSERT_TRUE(std::get<6>(result));
+        ASSERT_TRUE(std::get<7>(result));
+        ASSERT_TRUE(std::get<8>(result));
+        ASSERT_TRUE(std::get<9>(result));
+        ASSERT_TRUE(std::get<10>(result));
+        ASSERT_TRUE(std::get<11>(result));
+        ASSERT_TRUE(std::get<12>(result));
+        ASSERT_TRUE(std::get<13>(result));
+        ASSERT_TRUE(std::get<14>(result));
+        ASSERT_TRUE(std::get<15>(result));
+        ASSERT_TRUE(std::get<16>(result));
+        ASSERT_TRUE(std::get<17>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -448,24 +448,24 @@ TEST(SharedPointer_array_safe, move_constructor_different_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(hud::get<0>(result));
-//        ASSERT_TRUE(hud::get<1>(result));
-//        ASSERT_TRUE(hud::get<2>(result));
-//        ASSERT_TRUE(hud::get<3>(result));
-//        ASSERT_TRUE(hud::get<4>(result));
-//        ASSERT_TRUE(hud::get<5>(result));
-//        ASSERT_TRUE(hud::get<6>(result));
-//        ASSERT_TRUE(hud::get<7>(result));
-//        ASSERT_TRUE(hud::get<8>(result));
-//        ASSERT_TRUE(hud::get<9>(result));
-//        ASSERT_TRUE(hud::get<10>(result));
-//        ASSERT_TRUE(hud::get<11>(result));
-//        ASSERT_TRUE(hud::get<12>(result));
-//        ASSERT_TRUE(hud::get<13>(result));
-//        ASSERT_TRUE(hud::get<14>(result));
-//        ASSERT_TRUE(hud::get<15>(result));
-//        ASSERT_TRUE(hud::get<16>(result));
-//        ASSERT_TRUE(hud::get<17>(result));
+//        ASSERT_TRUE(std::get<0>(result));
+//        ASSERT_TRUE(std::get<1>(result));
+//        ASSERT_TRUE(std::get<2>(result));
+//        ASSERT_TRUE(std::get<3>(result));
+//        ASSERT_TRUE(std::get<4>(result));
+//        ASSERT_TRUE(std::get<5>(result));
+//        ASSERT_TRUE(std::get<6>(result));
+//        ASSERT_TRUE(std::get<7>(result));
+//        ASSERT_TRUE(std::get<8>(result));
+//        ASSERT_TRUE(std::get<9>(result));
+//        ASSERT_TRUE(std::get<10>(result));
+//        ASSERT_TRUE(std::get<11>(result));
+//        ASSERT_TRUE(std::get<12>(result));
+//        ASSERT_TRUE(std::get<13>(result));
+//        ASSERT_TRUE(std::get<14>(result));
+//        ASSERT_TRUE(std::get<15>(result));
+//        ASSERT_TRUE(std::get<16>(result));
+//        ASSERT_TRUE(std::get<17>(result));
 //    }
 //#endif
 }

@@ -17,12 +17,12 @@ namespace hud {
     */
     template<typename type_t, typename u_type_t = type_t>
     struct is_move_assignable
-        : is_assignable<add_lvalue_reference_t<type_t>, add_rvalue_reference_t<u_type_t>> {
+        : is_assignable<hud::add_lvalue_reference_t<type_t>, add_rvalue_reference_t<u_type_t>> {
     };
 
-    /** Equivalent of is_move_assignable<type_t, u_type_t>::value. */
+    /** Equivalent of hud::is_move_assignable<type_t, u_type_t>::value. */
     template<typename type_t, typename u_type_t = type_t>
-    inline constexpr bool is_move_assignable_v = is_move_assignable<type_t, u_type_t>::value;
+    inline constexpr bool is_move_assignable_v = hud::is_move_assignable<type_t, u_type_t>::value;
 
 } // namespace hud
 

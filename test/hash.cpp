@@ -2,11 +2,11 @@
 #include <core/hash/crc32.h>
 #include <core/memory.h>
 #include <core/cstring.h>
-#include <crc.h> // Intel Slice-by-8
-#include <city.h> // Google CityHash
+#include <slice_by_8/crc.h> // Intel Slice-by-8
+#include <cityhash/city.h> // Google CityHash
 
-namespace hud::test {
-    static u32 Cityhash_32_result[256] = { 
+namespace hud_test {
+    static u32 city_hash_32_result[256] = { 
         0xdc56d17a, 0xc0a92754, 0x2a1678b6, 0xd7c992e2, 0x616e1132, 0xfe6e37d4,
         0x5145897e, 0xcfea845d, 0xeb0fd2d6, 0x7cd3d6e0, 0x14e52250, 0x931da128,
         0xde42ef1c, 0x8add7404, 0x69976bd0, 0xcacd0542, 0x17aebf87, 0x1e9bcbda,
@@ -51,7 +51,7 @@ namespace hud::test {
         0x696151d2, 0x428f9244, 0x3ef8a0ba, 0xbafc4de5, 0x4ca78146, 0xa87374f5,
         0x4fa36aaf, 0x4967e1ca, 0x6491ed46, 0x966e909f };
 
-    static u64 Cityhash_64_result[256] = { 
+    static u64 city_hash_64_result[256] = { 
         0x9ae16a3b2f90404f, 0xbe6056edf5e94b54, 0xc2a04665ed038d75, 0x94a13d22e9eba49a, 0x82bffd898958e540,
         0xb4bfa9e87732c149, 0x92fdbcd8e94a2333, 0xa2e0bff20db0a6a1, 0xad5a13e1e8e93b98, 0x81371e150e4ad84f,
         0x9b704db2b2d6ffea, 0xf3212b3c1d803add, 0x9fd5df33aefc3d7d, 0xc1c5cf5c853d3c92, 0x4bd9a87bb2bb4671,
@@ -113,9 +113,9 @@ et porttitor lacus tempor.Nulla non libero porta, faucibus ex eleifend, sodales 
 Mauris molestie, dolor non porttitor lobortis, erat nunc fringilla nulla, a consequat justo odio ut lorem.Cras maximus tristique erat, sit amet facilisis urna euismod in.\
 Maecenas sit amet congue magna.Donec nisl mauris, tempus eu mauris eget, iaculis sodales libero.Nulla hendrerit bibendum magna, at egestas leo semper ac.Donec porttitor ut orci id ornare.Praesent id nunc risus.Fusce consequat tortor at enim cursus, sed mattis lorem gravida.Orci varius. ";
 
-TEST(Hash, cityhash_hash32) {
+TEST(hash, cityhash_hash32) {
     // hash32 of nullptr
-    u32 hash_nullptr = hud::Hash::CityHash::hash_32(nullptr, 0);
+    u32 hash_nullptr = hud::hash_algorithm::city_hash::hash_32(nullptr, 0);
     ASSERT_EQ(hash_nullptr, 0XDC56D17A);
     ASSERT_EQ(CityHash32(nullptr, 0), hash_nullptr);
 
@@ -126,35 +126,35 @@ TEST(Hash, cityhash_hash32) {
     for (u8 i = 0; i < hud::u8_max; i++)
     {
         key[i] = static_cast<ansichar>(i);
-        u32 out = hud::Hash::CityHash::hash_32(key, i);
+        u32 out = hud::hash_algorithm::city_hash::hash_32(key, i);
 
         // Ensure we have same result as Google implementation
         ASSERT_EQ(out, CityHash32(reinterpret_cast<const ansichar*>(key), i));
 
-        ASSERT_EQ(hud::test::Cityhash_32_result[i], out);
+        ASSERT_EQ(hud_test::city_hash_32_result[i], out);
     }
 
     // Test with the lipsum
-    const u32 hash = hud::Hash::CityHash::hash_32(lipsum, hud::CString::length(lipsum));
-    ASSERT_EQ(hash, CityHash32(lipsum, hud::CString::length(lipsum)));
+    const u32 hash = hud::hash_algorithm::city_hash::hash_32(lipsum, hud::cstring::length(lipsum));
+    ASSERT_EQ(hash, CityHash32(lipsum, hud::cstring::length(lipsum)));
 }
 
-TEST(Hash, cityhash_hash32_is_usable_in_constexpr)
+TEST(hash, cityhash_hash32_is_usable_in_constexpr)
 {
-    constexpr u32 hash_nullptr = hud::Hash::CityHash::hash_32(nullptr, 0);
+    constexpr u32 hash_nullptr = hud::hash_algorithm::city_hash::hash_32(nullptr, 0);
     ASSERT_EQ(hash_nullptr, 0XDC56D17A);
     ASSERT_EQ(CityHash32(nullptr, 0), hash_nullptr);
 
 
-    constexpr u32 hash_lipsum = hud::Hash::CityHash::hash_32(lipsum, hud::CString::length(lipsum));
+    constexpr u32 hash_lipsum = hud::hash_algorithm::city_hash::hash_32(lipsum, hud::cstring::length(lipsum));
     // Test with the lipsum
-    ASSERT_EQ(hash_lipsum, CityHash32(lipsum, hud::CString::length(lipsum)));
+    ASSERT_EQ(hash_lipsum, CityHash32(lipsum, hud::cstring::length(lipsum)));
 }
 
 
-TEST(Hash, cityhash_hash64) {
+TEST(hash, cityhash_hash64) {
     // hash64 of nullptr
-    ASSERT_EQ(hud::Hash::CityHash::hash_64(nullptr, 0), 0X9AE16A3B2F90404Full);
+    ASSERT_EQ(hud::hash_algorithm::city_hash::hash_64(nullptr, 0), 0X9AE16A3B2F90404Full);
 
     ansichar key[256];
     hud::memory::set_zero(key);
@@ -162,24 +162,24 @@ TEST(Hash, cityhash_hash64) {
     for (usize i = 0; i < 256; i++)
     {
         key[i] = static_cast<i8>(i);
-        u64 out = hud::Hash::CityHash::hash_64(key, i);
-        ASSERT_EQ(hud::test::Cityhash_64_result[i], out);
+        u64 out = hud::hash_algorithm::city_hash::hash_64(key, i);
+        ASSERT_EQ(hud_test::city_hash_64_result[i], out);
     }
 }
 
-TEST(Hash, cityhash_hash64_is_usable_in_constexpr)
+TEST(hash, cityhash_hash64_is_usable_in_constexpr)
 {
-    constexpr u64 hash_nullptr = hud::Hash::CityHash::hash_64(nullptr, 0);
+    constexpr u64 hash_nullptr = hud::hash_algorithm::city_hash::hash_64(nullptr, 0);
     ASSERT_EQ(hash_nullptr, 0x9AE16A3B2F90404Full);
     ASSERT_EQ(CityHash64(nullptr, 0), hash_nullptr);
     
-    constexpr u64 hash_lipsum = hud::Hash::CityHash::hash_64(lipsum, hud::CString::length(lipsum));
+    constexpr u64 hash_lipsum = hud::hash_algorithm::city_hash::hash_64(lipsum, hud::cstring::length(lipsum));
     // Test with the lipsum
-    ASSERT_EQ(hash_lipsum, CityHash64(lipsum, hud::CString::length(lipsum)));
+    ASSERT_EQ(hash_lipsum, CityHash64(lipsum, hud::cstring::length(lipsum)));
 }
 
 
-TEST(Hash, cityhash_hash128) {
+TEST(hash, cityhash_hash128) {
     // hash128 of nullptr
     uint128 hash = CityHash128(nullptr, 0);
     ASSERT_EQ(Uint128Low64(hash), 0x3df09dfc64c09a2bllu );
@@ -192,12 +192,12 @@ TEST(Hash, cityhash_hash128) {
     for (usize i = 0; i < 256; i++)
     {
         key[i] = static_cast<ansichar>(i);
-        u64 out = hud::Hash::CityHash::hash_64(key, i);
-        ASSERT_EQ(hud::test::Cityhash_64_result[i], out);
+        u64 out = hud::hash_algorithm::city_hash::hash_64(key, i);
+        ASSERT_EQ(hud_test::city_hash_64_result[i], out);
     }
 }
 
-TEST(Hash, hash_can_hash_integral)
+TEST(hash, hash_can_hash_integral)
 {
     // Consider compiler just truncate value that are bigger than u32
     ASSERT_EQ(hud::hash(hud::i8_max), static_cast<u32>(hud::i8_max));
@@ -213,7 +213,7 @@ TEST(Hash, hash_can_hash_integral)
     ASSERT_EQ(hud::hash(hud::u64_max), 0xFFFFFFE8u);
 }
 
-TEST(Hash, hash_of_integral_are_usable_in_constexpr)
+TEST(hash, hash_of_integral_are_usable_in_constexpr)
 {
     constexpr u32 hash_vi8 = hud::hash(hud::i8_max);
     ASSERT_EQ(hash_vi8, static_cast<u32>(hud::i8_max));
@@ -240,7 +240,7 @@ TEST(Hash, hash_of_integral_are_usable_in_constexpr)
     ASSERT_EQ(hash_vu64, 0xFFFFFFE8u);
 }
 
-TEST(Hash, hash_can_hash_floating_point)
+TEST(hash, hash_can_hash_floating_point)
 {
     f32 flt32 = 12345.6789f;
     ASSERT_EQ(hud::hash(flt32), static_cast<u32>(0x4640e6b7));
@@ -249,7 +249,7 @@ TEST(Hash, hash_can_hash_floating_point)
 }
 
 
-TEST(Hash, hash_of_floating_point_are_usable_in_constexpr)
+TEST(hash, hash_of_floating_point_are_usable_in_constexpr)
 {
     constexpr f32 flt32 = 12345.6789f;
     constexpr u32 flt32_hash = std::bit_cast<u32>(flt32);
@@ -260,22 +260,22 @@ TEST(Hash, hash_of_floating_point_are_usable_in_constexpr)
     ASSERT_EQ(flt64_hash, static_cast<u32>(0xb82c8fdb));
 }
 
-TEST(Hash, hash_can_hash_c_string)
+TEST(hash, hash_can_hash_c_string)
 {
     static constexpr const ansichar txt[] = "abcdefghijklmnopqrstuvwxyz";
-    ASSERT_EQ(hud::hash(txt, hud::CString::length(txt)), 0xaa02c5c1);
+    ASSERT_EQ(hud::hash(txt, hud::cstring::length(txt)), 0xaa02c5c1);
 
     static constexpr const wchar* wtxt = L"abcdefghijklmnopqrstuvwxyz";
     if constexpr(sizeof(wchar) == 2) {
-        ASSERT_EQ(hud::hash(wtxt, hud::CString::length(wtxt)), 0x891d95cf);
+        ASSERT_EQ(hud::hash(wtxt, hud::cstring::length(wtxt)), 0x891d95cf);
     } else if constexpr (sizeof(wchar) == 4) {
-        ASSERT_EQ(hud::hash(wtxt, hud::CString::length(wtxt)), 0x71002A00);
+        ASSERT_EQ(hud::hash(wtxt, hud::cstring::length(wtxt)), 0x71002A00);
     } else {
         FAIL();
     }
 }
 
-TEST(Hash, hash_can_hash_enumeration)
+TEST(hash, hash_can_hash_enumeration)
 {
     enum class E : u32 { a = hud::u32_max, b = 'a' };
     enum class E2 : u64 { a = hud::u64_max, b = 'a' };
@@ -286,7 +286,7 @@ TEST(Hash, hash_can_hash_enumeration)
     ASSERT_EQ(hud::hash(E2::b), hud::hash(static_cast<u64>('a')));
 }
 
-TEST(Hash, hash_enumeration_are_usable_in_constexpr) 
+TEST(hash, hash_enumeration_are_usable_in_constexpr) 
 {
     enum class E : u32 { a = hud::u32_max, b = 'a' };
     enum class E2 : u64 { a = hud::u64_max, b = 'a' };
@@ -301,21 +301,21 @@ TEST(Hash, hash_enumeration_are_usable_in_constexpr)
     ASSERT_EQ(hash_e2_ab, hud::hash(static_cast<u64>('a')));
 }
 
-TEST(Hash, hash_can_hash_pointers)
+TEST(hash, hash_can_hash_pointers)
 {
     const u32* ptr = nullptr;
     ASSERT_EQ(hud::hash(ptr), reinterpret_cast<uptr>(ptr));
 }
 
-TEST(Hash, crc32)
+TEST(hash, crc32)
 {
-    ASSERT_TRUE(hud::Hash::Crc32::is_lookup_table_values_correct());
+    ASSERT_TRUE(hud::hash_algorithm::crc32::is_lookup_table_values_correct());
 
     u32 runningcrc = ~0u;
     static constexpr const ansichar* txt = "abcdefghijklmnopqrstuvwxyz";
-    const u32 result = hud::Hash::Crc32::hash((const u8*)(txt), hud::CString::length(txt), 0);
+    const u32 result = hud::hash_algorithm::crc32::hash((const u8*)(txt), hud::cstring::length(txt), 0);
     ASSERT_EQ(result, 0x4C2750BDu);
 
     // Ensure we have same result as Intel implementation
-    ASSERT_EQ(result, ~crc32_sb8_64_bit(&runningcrc, (const u8*)(txt), static_cast<uint32_t>(hud::CString::length(txt)), 0, MODE_CONT));
+    ASSERT_EQ(result, ~crc32_sb8_64_bit(&runningcrc, (const u8*)(txt), static_cast<uint32_t>(hud::cstring::length(txt)), 0, MODE_CONT));
 }

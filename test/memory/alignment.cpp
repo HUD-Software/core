@@ -1,6 +1,6 @@
 #include <core/memory.h>
 
-TEST(Memory, align_address)
+TEST(memory, align_address)
 {
 
       
@@ -342,7 +342,7 @@ TEST(Memory, align_address)
 
 }
 
-TEST(Memory, is_address_aligned)
+TEST(memory, is_address_aligned)
 {
 
 
@@ -684,7 +684,7 @@ TEST(Memory, is_address_aligned)
 }
 
 
-TEST(Memory, align_pointer)
+TEST(memory, align_pointer)
 {
 
 
@@ -725,7 +725,7 @@ TEST(Memory, align_pointer)
     ASSERT_EQ(*reinterpret_cast<usize*>((uptr)aligned_pointer - sizeof(usize) - sizeof(void*)), buffer_size);
 }
 
-TEST(Memory, is_pointer_aligned)
+TEST(memory, is_pointer_aligned)
 {
 
 
