@@ -945,10 +945,10 @@ namespace hud {
     * @param args Arguments hud::forward to the type_t constructor
     * @return unique_pointer<type_t> pointing to a object of type type_t construct by passing args arguments to its constructor
     */
-    template<typename type_t, typename... args_t, hud::enable_if_t<negation_v<hud::is_array<type_t>>, i32> = 0 >
+    template<typename type_t, typename... args_t>
     [[nodiscard]]
-    constexpr unique_pointer<type_t> make_unique(args_t&&... args) noexcept {
-        return unique_pointer<type_t>(new (std::nothrow) type_t(hud::forward<args_t>(args)...));
+    constexpr unique_pointer<type_t> make_unique(args_t&&... args) noexcept requires(hud::negation_v<hud::is_array<type_t>>) {
+        return unique_pointer<type_t>(new type_t(hud::forward<args_t>(args)...));
     }
 
     /**
@@ -958,15 +958,15 @@ namespace hud {
     * @param size Number of type_t to allocate
     * @return unique_pointer<type_t> pointer to an array of type type_t
     */
-    template<typename type_t, hud::enable_if_t<hud::is_unbounded_array_v<type_t>, i32> = 0>
+    template<typename type_t>
     [[nodiscard]]
-    unique_pointer<type_t> make_unique(const usize size) noexcept {
-        return unique_pointer<type_t>(new (std::nothrow) hud::remove_extent_t<type_t>[size]());
+    constexpr unique_pointer<type_t> make_unique(const usize size) noexcept requires(hud::is_unbounded_array_v<type_t>) {
+    return unique_pointer<type_t>(new hud::remove_extent_t<type_t>[size]());
     }
 
     /** Construction of arrays of known bound is disallowed. */
-    template<typename type_t, typename... args_t, hud::enable_if_t<hud::is_bounded_array_v<type_t>> = 0>
-    void make_unique(args_t&&...) = delete;
+    template<typename type_t, typename... args_t>
+    void make_unique(args_t&&...) requires(hud::is_bounded_array_v<type_t>) = delete;
 
     /**
     * Hash function for unique_pointer<type_t>
