@@ -30,7 +30,7 @@ namespace {
     }
 }
 
-TEST(Tuple, equal_operator_same_types) {
+TEST(tuple, equal_operator_same_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -65,7 +65,7 @@ TEST(Tuple, equal_operator_same_types) {
     }
 }
 
-TEST(Tuple, equal_operator_different_types) {
+TEST(tuple, equal_operator_different_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -102,7 +102,7 @@ TEST(Tuple, equal_operator_different_types) {
     }
 }
 
-TEST(Tuple, not_equal_operator_same_types) {
+TEST(tuple, not_equal_operator_same_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -137,7 +137,7 @@ TEST(Tuple, not_equal_operator_same_types) {
     }
 }
 
-TEST(Tuple, not_equal_operator_different_types) {
+TEST(tuple, not_equal_operator_different_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -175,7 +175,7 @@ TEST(Tuple, not_equal_operator_different_types) {
 }
 
 
-TEST(Tuple, less_operator_same_types) {
+TEST(tuple, less_operator_same_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -220,7 +220,7 @@ TEST(Tuple, less_operator_same_types) {
 }
 
 
-TEST(Tuple, less_operator_different_types) {
+TEST(tuple, less_operator_different_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -271,7 +271,7 @@ TEST(Tuple, less_operator_different_types) {
     }
 }
 
-TEST(Tuple, less_equal_operator_same_types) {
+TEST(tuple, less_equal_operator_same_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -315,7 +315,7 @@ TEST(Tuple, less_equal_operator_same_types) {
     }
 }
 
-TEST(Tuple, less_equal_operator_different_types) {
+TEST(tuple, less_equal_operator_different_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -365,7 +365,7 @@ TEST(Tuple, less_equal_operator_different_types) {
     }
 }
 
-TEST(Tuple, greater_operator_same_types) {
+TEST(tuple, greater_operator_same_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {
@@ -409,7 +409,7 @@ TEST(Tuple, greater_operator_same_types) {
     }
 }
 
-TEST(Tuple, greater_equal_operator_different_types) {
+TEST(tuple, greater_equal_operator_different_types) {
     using tuple_type = hud::tuple<i32, wchar, Comparable>;
 
     const auto test = []() {

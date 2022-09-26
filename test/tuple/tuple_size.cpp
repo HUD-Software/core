@@ -12,7 +12,7 @@ namespace hud {
     {};
 }
 
-TEST(Tuple, tuple_size) {
+TEST(tuple, tuple_size) {
 
     ASSERT_EQ(hud::tuple_size_v<hud::tuple<>>, 0u);
     ASSERT_EQ((hud::tuple_size_v<hud::tuple<u32, u64, hud::tuple<i32>>>), 3u);

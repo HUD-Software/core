@@ -206,29 +206,11 @@ TEST(memory, move_or_copy_construct_array_then_destroy_backward_non_bitwise_move
     // Constant
     {
         constexpr ResultType result = test();
-
-        // MSVC call copy constructor instead of move constructor 
-        // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-        if constexpr (hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-            ASSERT_EQ(std::get<0>(result), 0u);
-            ASSERT_EQ(std::get<1>(result), 1u);
-        }
-        else {
-            ASSERT_EQ(std::get<0>(result), 1u);
-            ASSERT_EQ(std::get<1>(result), 0u);
-        }
+        ASSERT_EQ(std::get<0>(result), 1u);
+        ASSERT_EQ(std::get<1>(result), 0u);
         ASSERT_EQ(std::get<2>(result), 2);
-
-        // MSVC call copy constructor instead of move constructor 
-        // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-        if constexpr (hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-            ASSERT_EQ(std::get<3>(result), 0u);
-            ASSERT_EQ(std::get<4>(result), 1u);
-        }
-        else {
-            ASSERT_EQ(std::get<3>(result), 1u);
-            ASSERT_EQ(std::get<4>(result), 0u);
-        }
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 0u);
         ASSERT_EQ(std::get<5>(result), 1);
     }
 }
@@ -356,29 +338,11 @@ TEST(memory, move_or_copy_construct_array_then_destroy_backward_non_bitwise_move
     // Constant
     {
         constexpr ResultType result = test();
-
-        // MSVC call copy constructor instead of move constructor 
-        // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-        if constexpr (hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-            ASSERT_EQ(std::get<0>(result), 0u);
-            ASSERT_EQ(std::get<1>(result), 1u);
-        }
-        else {
-            ASSERT_EQ(std::get<0>(result), 1u);
-            ASSERT_EQ(std::get<1>(result), 0u);
-        }
+        ASSERT_EQ(std::get<0>(result), 1u);
+        ASSERT_EQ(std::get<1>(result), 0u);
         ASSERT_EQ(std::get<2>(result), 2);
-
-        // MSVC call copy constructor instead of move constructor 
-        // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-        if constexpr (hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-            ASSERT_EQ(std::get<3>(result), 0u);
-            ASSERT_EQ(std::get<4>(result), 1u);
-        }
-        else {
-            ASSERT_EQ(std::get<3>(result), 1u);
-            ASSERT_EQ(std::get<4>(result), 0u);
-        }
+        ASSERT_EQ(std::get<3>(result), 1u);
+        ASSERT_EQ(std::get<4>(result), 0u);
         ASSERT_EQ(std::get<5>(result), 1);
     }
 }

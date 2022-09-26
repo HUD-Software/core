@@ -323,4 +323,4 @@ FetchContent_MakeAvailable(cityhash)
 target_link_libraries( test_core PRIVATE cityhash )
 
 # Add the executable test
-add_test(NAME test_core COMMAND test_core --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
+add_test(NAME core COMMAND test_core --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)

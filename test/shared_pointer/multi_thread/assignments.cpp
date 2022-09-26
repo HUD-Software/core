@@ -1,4 +1,5 @@
 #include <core/containers/shared_pointer.h>
+
 TEST(shared_pointer_safe, copy_assignement_same_type) {
 
 

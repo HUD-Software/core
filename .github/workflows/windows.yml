@@ -16,6 +16,17 @@ jobs:
         run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64
       - name: Build
         run: cmake.exe --build target --config Release
+      - name: Test
+        run: |
+          cd target
+          ctest -j10 -C Release -T test --output-on-failure
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: Core Test Report      # Name of the check run which will be created
+          path: target/test/test_core_report.xml    # Path to test results
+          reporter: java-junit        # Format of test results
       - name: 
         run: | 
           xcopy target\test\Release release\ /s /y

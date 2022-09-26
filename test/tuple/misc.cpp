@@ -1,14 +1,14 @@
 #include <core/containers/tuple.h>
 #include <core/traits/is_same.h>
 
-TEST(Tuple, sizeof_is_correct) {
+TEST(tuple, sizeof_is_correct) {
     ASSERT_EQ(sizeof(hud::tuple<>), 1u);
     ASSERT_EQ(sizeof(hud::tuple<i32>), 4u);
     ASSERT_EQ(sizeof(hud::tuple<i32, i32>), 8u);
     ASSERT_EQ(sizeof(hud::tuple<i32, i8, i32>), 12u);
 }
 
-TEST(Tuple, make_tuple) {
+TEST(tuple, make_tuple) {
     auto tuple = hud::make_tuple(12, 15.0f, L'w');
     ASSERT_TRUE((hud::is_same_v<decltype(tuple), hud::tuple<i32, f32, wchar>>));
     ASSERT_EQ(hud::get<0>(tuple), 12);
@@ -28,7 +28,7 @@ TEST(Tuple, make_tuple) {
     ASSERT_EQ(hud::get<2>(tuple3), L'w');
 }
 
-TEST(Tuple, get) {
+TEST(tuple, get) {
     const auto test = []() {
         auto tuple = hud::make_tuple(12, 15.0f, L'w');
         return std::tuple{
@@ -65,7 +65,7 @@ TEST(Tuple, get) {
 }
 
 
-TEST(Tuple, tuple_cat) {
+TEST(tuple, tuple_cat) {
     using tuple_type1 = hud::tuple<i32, f32>;
     using tuple_type2 = hud::tuple<ansichar, wchar, char16, hud_test::non_bitwise_type>;
     using tuple_type3 = hud::tuple<u64, f64, hud_test::non_bitwise_type>;

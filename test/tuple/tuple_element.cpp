@@ -33,7 +33,7 @@ namespace hud {
     };
 }
 
-TEST(Tuple, tuple_element) {
+TEST(tuple, tuple_element) {
 
     ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<0, hud::tuple<u32, u64, wchar> >, u32>));
     ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<1, hud::tuple<u32, u64, wchar> >, u64>));

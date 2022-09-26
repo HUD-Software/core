@@ -16,7 +16,7 @@ static constexpr ansichar punc[] = { '!', '\"', '#', '$', '%', '&', '\'', '(', '
 static constexpr ansichar wide_punc[] = { L'!', L'\"', L'#', L'$', L'%', L'&', L'\'', L'(', L')', L'*', L'+', L',', L'-', L'.', L'/', L':', L';' , L'<', L'=', L'>', L'?', L'@', L'[', L'\\', L']', L'^', L'_', L'`', L'{', L'|', L'}', L'~' };
 
 
-TEST(Char, is_pure_ansi)
+TEST(character, is_pure_ansi)
 {
 
 
@@ -33,7 +33,7 @@ TEST(Char, is_pure_ansi)
     }
 }
 
-TEST(Char, is_null)
+TEST(character, is_null)
 {
 
 
@@ -43,7 +43,7 @@ TEST(Char, is_null)
     ASSERT_FALSE(hud::character::is_null(L' '));
 }
 
-TEST(Char, is_alphanumeric) 
+TEST(character, is_alphanumeric) 
 {
 
 
@@ -90,7 +90,7 @@ TEST(Char, is_alphanumeric)
     }
 }   
 
-TEST(Char, is_alphabetic)
+TEST(character, is_alphabetic)
 {
 
 
@@ -138,7 +138,7 @@ TEST(Char, is_alphabetic)
 }
 
 
-TEST(Char, is_lowercase)
+TEST(character, is_lowercase)
 {
 
 
@@ -186,7 +186,7 @@ TEST(Char, is_lowercase)
 }
 
 
-TEST(Char, is_uppercase)
+TEST(character, is_uppercase)
 {
 
 
@@ -233,7 +233,7 @@ TEST(Char, is_uppercase)
     }
 }
 
-TEST(Char, is_digit)
+TEST(character, is_digit)
 {
 
 
@@ -280,7 +280,7 @@ TEST(Char, is_digit)
     }
 }
 
-TEST(Char, is_hexa)
+TEST(character, is_hexa)
 {
 
 
@@ -323,7 +323,7 @@ TEST(Char, is_hexa)
     }
 }
 
-TEST(Char, is_space_or_tab)
+TEST(character, is_space_or_tab)
 {
 
 
@@ -382,7 +382,7 @@ TEST(Char, is_space_or_tab)
 }
 
 
-TEST(Char, is_control)
+TEST(character, is_control)
 {
 
 
@@ -422,7 +422,7 @@ TEST(Char, is_control)
     }
 }
 
-TEST(Char, is_space)
+TEST(character, is_space)
 {
 
 
@@ -495,7 +495,7 @@ TEST(Char, is_space)
     }
 }
 
-TEST(Char, is_punctuation)
+TEST(character, is_punctuation)
 {
 
 
@@ -542,7 +542,7 @@ TEST(Char, is_punctuation)
     }
 }
 
-TEST(Char, to_lowercase)
+TEST(character, to_lowercase)
 {
 
 
@@ -587,7 +587,7 @@ TEST(Char, to_lowercase)
     }
 }
 
-TEST(Char, to_uppercase)
+TEST(character, to_uppercase)
 {
 
 

@@ -489,16 +489,8 @@ TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
             ASSERT_TRUE(std::get<1>(second_element_result));
             ASSERT_EQ(std::get<2>(second_element_result), 2u);
             ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            // MSVC call copy constructor instead of move constructor 
-            // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-            if constexpr (hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                ASSERT_EQ(std::get<4>(second_element_result), 1u);
-                ASSERT_EQ(std::get<5>(second_element_result), 1u);
-            }
-            else {
-                ASSERT_EQ(std::get<4>(second_element_result), 2u);
-                ASSERT_EQ(std::get<5>(second_element_result), 0u);
-            }
+            ASSERT_EQ(std::get<4>(second_element_result), 2u);
+            ASSERT_EQ(std::get<5>(second_element_result), 0u);
             ASSERT_EQ(std::get<6>(second_element_result), 1u);
             ASSERT_EQ(std::get<7>(second_element_result), 0u);
             ASSERT_EQ(std::get<8>(second_element_result), 2u);

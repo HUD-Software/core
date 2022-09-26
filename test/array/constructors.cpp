@@ -5057,15 +5057,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_same_type)
                         all_values_moved = false;
                         break;
                     }
-                    // MSVC call copy constructor instead of move constructor 
-                    // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                    if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                        if (move[index].copy_constructor_count() != 1u) {
-                            all_values_moved = false;
-                            break;
-                        }
-                    }
-                    else if (move[index].move_constructor_count() != 1u) {
+                    if (move[index].move_constructor_count() != 1u) {
                         all_values_moved = false;
                         break;
                     }
@@ -5157,15 +5149,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_same_type)
                         all_values_moved = false;
                         break;
                     }
-                    // MSVC call copy constructor instead of move constructor 
-                    // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                    if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                        if (move[index].copy_constructor_count() != 1u) {
-                            all_values_moved = false;
-                            break;
-                        }
-                    }
-                    else if (move[index].move_constructor_count() != 1u) {
+                    if (move[index].move_constructor_count() != 1u) {
                         all_values_moved = false;
                         break;
                     }
@@ -5262,15 +5246,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_same_type)
                                     all_values_moved = false;
                                     break;
                                 }
-                                // MSVC call copy constructor instead of move constructor 
-                                // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                                if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                                    if (move[index].copy_constructor_count() != 1u) {
-                                        all_values_moved = false;
-                                        break;
-                                    }
-                                }
-                                else if (move[index].move_constructor_count() != 1u) {
+                                if (move[index].move_constructor_count() != 1u) {
                                     all_values_moved = false;
                                     break;
                                 }
@@ -5362,15 +5338,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_same_type)
                                     all_values_moved = false;
                                     break;
                                 }
-                                // MSVC call copy constructor instead of move constructor 
-                                // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                                if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                                    if (move[index].copy_constructor_count() != 1u) {
-                                        all_values_moved = false;
-                                        break;
-                                    }
-                                }
-                                else if (move[index].move_constructor_count() != 1u) {
+                                if (move[index].move_constructor_count() != 1u) {
                                     all_values_moved = false;
                                     break;
                                 }
@@ -5486,15 +5454,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_different_type)
                         all_values_moved = false;
                         break;
                     }
-                    // MSVC call copy constructor instead of move constructor 
-                    // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                    if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                        if (move[index].copy_constructor_count() != 1u) {
-                            all_values_moved = false;
-                            break;
-                        }
-                    }
-                    else if (move[index].move_constructor_count() != 1u) {
+                    if (move[index].move_constructor_count() != 1u) {
                         all_values_moved = false;
                         break;
                     }
@@ -5586,15 +5546,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_different_type)
                         all_values_moved = false;
                         break;
                     }
-                    // MSVC call copy constructor instead of move constructor 
-                    // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                    if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                        if (move[index].copy_constructor_count() != 1u) {
-                            all_values_moved = false;
-                            break;
-                        }
-                    }
-                    else if (move[index].move_constructor_count() != 1u) {
+                    if (move[index].move_constructor_count() != 1u) {
                         all_values_moved = false;
                         break;
                     }
@@ -5691,15 +5643,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_different_type)
                                 all_values_moved = false;
                                 break;
                             }
-                            // MSVC call copy constructor instead of move constructor 
-                            // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                            if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc)) {
-                                if (move[index].copy_constructor_count() != 1u) {
-                                    all_values_moved = false;
-                                    break;
-                                }
-                            }
-                            else if (move[index].move_constructor_count() != 1u) {
+                            if (move[index].move_constructor_count() != 1u) {
                                 all_values_moved = false;
                                 break;
                             }
@@ -5791,15 +5735,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_different_type)
                                 all_values_moved = false;
                                 break;
                             }
-                            // MSVC call copy constructor instead of move constructor 
-                            // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
-                            if (hud::is_constant_evaluated() && hud::compilation::is_compiler(hud::compiler_e::msvc) ) {
-                                if (move[index].copy_constructor_count() != 1u) {
-                                    all_values_moved = false;
-                                    break;
-                                }
-                            }
-                            else if (move[index].move_constructor_count() != 1u) {
+                            if (move[index].move_constructor_count() != 1u) {
                                 all_values_moved = false;
                                 break;
                             }
