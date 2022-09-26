@@ -365,7 +365,7 @@ TEST(memory, compare_less_pointer_to_buffer)
     }
 }
 
-TEST(memory, compare_less_C_array)
+TEST(memory, compare_less_c_array)
 {
 
 
@@ -512,7 +512,7 @@ TEST(memory, compare_greater_pointer_to_buffer)
     }
 }
 
-TEST(memory, compare_greater_C_array)
+TEST(memory, compare_greater_c_array)
 {
 
 
