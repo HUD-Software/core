@@ -27,7 +27,7 @@ TEST(memory, set_zero_pointer_to_buffer) {
     }
 }
 
-TEST(memory, set_zero_C_array) {
+TEST(memory, set_zero_c_array) {
 
 
 

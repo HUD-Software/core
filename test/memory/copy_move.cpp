@@ -30,7 +30,7 @@ TEST(memory, copy_pointer_to_buffer) {
     }
 }
 
-TEST(memory, copy_C_arary) {
+TEST(memory, copy_c_arary) {
 
 
 

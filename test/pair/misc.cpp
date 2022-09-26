@@ -139,14 +139,14 @@ TEST(pair, get_is_usable_with_pair) {
     }
 }
 
-TEST(pair, TupleSize) {
+TEST(pair, tuple_size) {
 
 
     constexpr usize tuple_size = hud::tuple_size_v<hud::pair<u32, u64>>;
     ASSERT_EQ(tuple_size, 2u);
 }
 
-TEST(pair, TupleElement) {
+TEST(pair, tuple_element) {
 
     constexpr bool is_tuple_element_0_same = hud::is_same_v<hud::tuple_element_t<0, hud::pair<u32, u64> >, u32>;
     constexpr bool is_tuple_element_1_same = hud::is_same_v<hud::tuple_element_t<1, hud::pair<u32, u64> >, u64>;
