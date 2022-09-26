@@ -1,7 +1,7 @@
 
 <div align="center">
   <img width="200" height="200" background-color="white" src="https://avatars.githubusercontent.com/u/104791429"/>
-  <p style="color:#2874a6 ;font-size:36px;">Core</p>
+  <h1>Core</h1>
 </div>
 
 ![Windows Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Windows?label=windows%20build%20%26%20test)
