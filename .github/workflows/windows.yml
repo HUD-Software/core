@@ -3,7 +3,7 @@ name: Windows
 on: [push]
 
 jobs:
-  build and tests:
+  build-and-tests:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
