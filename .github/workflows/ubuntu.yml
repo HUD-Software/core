@@ -6,13 +6,15 @@ jobs:
   build-and-tests:
     runs-on: ubuntu-latest
     steps:
+      - name : Clang version
+        run: clang --version
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Set SSH Key
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Generate visual Studio solution
+      - name: Generate Unix Makefiles
         run : cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -Btarget -G "Unix Makefiles"
       - name: Build
         run: cmake --build target --config Release
