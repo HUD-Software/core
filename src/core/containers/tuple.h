@@ -336,9 +336,6 @@ namespace hud {
         };
 
         template<typename... tuples_t>
-        struct tuple_cat {
-
-            template<typename... tuples_t>
             struct tuples_cat_impl {
 
                 /**
@@ -428,6 +425,9 @@ namespace hud {
                     return EmptyTuple();
                 }
             };
+
+            template<typename... tuples_t>
+            struct tuple_cat {
 
             using tuples_cat_impl_type = tuples_cat_impl<hud::decay_t<tuples_t>...>;
             using return_type = typename tuples_cat_impl_type::return_type;
@@ -655,7 +655,7 @@ namespace hud {
         */
         template<typename tuple_t, usize... indices>
         HD_FORCEINLINE constexpr explicit tuple(tuple_t&& tuple, hud::index_sequence<indices...>) noexcept
-            : tuple(hud::get<indices>(hud::forward<tuple_t>(tuple))...) {
+            : super_type(hud::get<indices>(hud::forward<tuple_t>(tuple))...) {
         }
     };
 

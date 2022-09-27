@@ -9,7 +9,7 @@ set( src
 
 #Linux implementations
 if(UNIX AND NOT APPLE)
-set( src ${implementations}
+set( src ${src}
 	os_linux/debugger.cpp
 )
 endif()
@@ -218,7 +218,12 @@ source_group( TREE ${CMAKE_SOURCE_DIR} FILES ${interface} ${src})
 add_library(core STATIC ${interface} ${src})
 
 # Use C++ 20
-set(CMAKE_CXX_STANDARD 20)
+set_target_properties(core
+    PROPERTIES
+        CXX_STANDARD 20
+        CXX_STANDARD_REQUIRED YES
+        CXX_EXTENSIONS NO
+)
 if(MSVC)
 	target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20)
 endif()

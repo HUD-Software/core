@@ -284,8 +284,8 @@ TEST(character, is_hexa)
 {
 
 
-    static constexpr ansichar NoHexa[] = { 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
-    static constexpr wchar WideNoHexa[] = { L'G', L'H', L'I', L'J', L'K', L'L', L'M', L'N', L'O', L'P', L'Q', L'R', L'S', L'type_t', L'U', L'V', L'W', L'X', L'Y', L'Z' };
+    static constexpr ansichar no_hexa[] = { 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+    static constexpr wchar wide_no_hexa[] = { L'G', L'H', L'I', L'J', L'K', L'L', L'M', L'N', L'O', L'P', L'Q', L'R', L'S', L'T', L'U', L'V', L'W', L'X', L'Y', L'Z' };
 
     for (const auto& hexa : hexa) {
         ASSERT_TRUE(hud::character::is_hexa(hexa));
@@ -294,10 +294,10 @@ TEST(character, is_hexa)
         ASSERT_TRUE(hud::character::is_hexa(hexa));
     }
 
-    for (const auto& no_hexa : NoHexa) {
+    for (const auto& no_hexa : no_hexa) {
         ASSERT_FALSE(hud::character::is_hexa(no_hexa));
     }
-    for (const auto& no_hexa : WideNoHexa) {
+    for (const auto& no_hexa : wide_no_hexa) {
         ASSERT_FALSE(hud::character::is_hexa(no_hexa));
     }
 

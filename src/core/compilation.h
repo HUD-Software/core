@@ -17,7 +17,7 @@ namespace hud {
     /** List of supported OS target. */
     enum class os_e {
         windows,
-        gnu_linux,
+        linux,
         unknown,
     };
 
@@ -115,7 +115,7 @@ namespace hud {
             #if defined(HD_OS_WINDOWS)
                 return os_e::windows;
             #elif defined(HD_OS_LINUX)
-                return os_e::gnu_linux;
+                return os_e::linux;
             #else
                 return os_e::unknown;
             #endif

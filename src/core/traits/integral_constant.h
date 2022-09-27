@@ -5,10 +5,10 @@
 namespace hud {
 
     /** Wraps a static constant value of specified type type_t. */
-    template<typename type_t, type_t value>
+    template<typename type_t, type_t type_t_value>
     struct integral_constant {
         /** Wrapped static constexpr value. */
-        static constexpr type_t value = value;
+        static constexpr type_t value = type_t_value;
         /** Type of the wrapped value. */
         using value_type = type_t;
         /** Type of the hud::integral_constant. */

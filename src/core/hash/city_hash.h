@@ -62,7 +62,7 @@
 #pragma once
 #ifndef HD_INC_CORE_HASH_ALGORITHM_CITY_HASH_H
 #define HD_INC_CORE_HASH_ALGORITHM_CITY_HASH_H
-#include "../core/memory.h"
+#include "../memory.h"
 #include "../templates/swap.h"
 #include "../templates/bit_cast.h"
 

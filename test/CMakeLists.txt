@@ -256,7 +256,12 @@ add_executable(test_core
 	uuid.cpp
 )
 
-set(CMAKE_CXX_STANDARD 20)
+set_target_properties(test_core
+    PROPERTIES
+        CXX_STANDARD 20
+        CXX_STANDARD_REQUIRED YES
+        CXX_EXTENSIONS NO
+)
 if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj)
 endif()

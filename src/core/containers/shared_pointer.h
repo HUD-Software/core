@@ -3,8 +3,8 @@
 #define HD_INC_CORE_SHARED_POINTER_H
 #include "../minimal.h"
 #include "../atomics.h"
-#include "Pair.h"
-#include "../Assert.h"
+#include "pair.h"
+#include "../assert.h"
 #include "aligned_buffer.h"
 
 #include "../traits/conjunction.h"
@@ -28,7 +28,7 @@
 #include "../templates/less.h"
 #include "../templates/forward.h"
 #include "../hash.h"
-#include "../Allocators/allocation.h"
+#include "../allocators/allocation.h"
 
 namespace hud {
 

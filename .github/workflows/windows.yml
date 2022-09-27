@@ -27,7 +27,7 @@ jobs:
           name: Core Test Report
           path: target/test/test_core_report.xml
           reporter: java-junit
-      - name: 
+      - name: Release
         run: | 
           xcopy target\test\Release release\ /s /y
           xcopy target\src\Release release\ /s /y
