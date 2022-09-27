@@ -13,13 +13,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Generate visual Studio solution
-        run : /usr/bin/cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++ -Btarget -G "Unix Makefiles"
+        run : cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++ -Btarget -G "Unix Makefiles"
       - name: Build
-        run: /usr/bin/cmake --build target --config Release
+        run: cmake --build target --config Release
       - name: Test
         run: |
           cd target
-          /usr/bin/ctest -j32 -C Release -T test --output-on-failure
+          ctest -j32 -C Release -T test --output-on-failure
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
