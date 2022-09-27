@@ -4,7 +4,7 @@
   <h1>Core</h1>
 </div>
 
-![Windows Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Windows?label=windows%20build%20%26%20test)
+![Windows Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Windows?label=windows%20build%20%26%20test) ![Ubuntu Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Ubuntu?label=ubuntu%20build%20%26%20test)
 
 # Description
 
