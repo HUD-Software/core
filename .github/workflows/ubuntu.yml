@@ -4,10 +4,8 @@ on: [push]
 
 jobs:
   build-and-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - name : Clang version
-        run: clang --version
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Set SSH Key
