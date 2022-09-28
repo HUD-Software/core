@@ -226,6 +226,7 @@ set_target_properties(core
 )
 if(MSVC)
 	target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20)
+	target_link_options(core PRIVATE $<$<CONFIG:Debug>:/PROFILE>)
 endif()
 
 # Include Interface directory to inclusion path

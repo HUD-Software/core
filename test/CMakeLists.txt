@@ -264,6 +264,7 @@ set_target_properties(test_core
 )
 if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj)
+	target_link_options(test_core PRIVATE $<$<CONFIG:Debug>:/PROFILE>)
 endif()
 
 target_precompile_headers(test_core PRIVATE precompiled.h)
