@@ -58,9 +58,9 @@ jobs:
           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" collect test_core.exe -o core -f xml
       - name: Upload to Codecov
         run: |
-        $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
-        .\codecov.exe -f target\test\Debug\core.xml
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
+          .\codecov.exe -f target\test\Debug\core.xml
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
