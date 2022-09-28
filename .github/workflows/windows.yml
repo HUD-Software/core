@@ -54,8 +54,8 @@ jobs:
         run: cmake.exe --build target --config Debug
       - name: Test covering
         run: |
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" instrument test_core.exe
-          "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" collect test_core.exe -o core -f xml
+          &"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" instrument test_core.exe
+          &"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" collect test_core.exe -o core -f xml
       - name: Upload to Codecov
         run: |
           $ProgressPreference = 'SilentlyContinue'
