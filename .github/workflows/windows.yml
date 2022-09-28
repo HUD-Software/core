@@ -52,18 +52,17 @@ jobs:
         run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64
       - name: Build
         run: cmake.exe --build target --config Debug
-      - name: Test covering
-        run: |
-          cd target\test\Debug
-          &"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" instrument test_core.exe
-          &"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" collect test_core.exe -o core -f xml
+      - name: Instrument binary
+        run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "instrument .\target\test\Debug\test_core.exe" -NoNewWindow
+      - name: Collect coverage
+        run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "collect .\target\test\Debug\test_core.exe -o coverage -f xml" -NoNewWindow
       - name: Upload to Codecov
         run: |
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
-          .\codecov.exe -f target\test\Debug\core.xml
+          .\codecov.exe -f target\test\Debug\coverage.xml
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Windows_MSVC_AMD64
-          path: target\test\Debug\core.xml
+          path: target\test\Debug\coverage.xml
