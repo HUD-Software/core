@@ -24,7 +24,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Core Test Report
+          name: Windows Core Test Report
           path: target/test/test_core_report.xml
           reporter: java-junit
       - name: Release
@@ -54,6 +54,7 @@ jobs:
         run: cmake.exe --build target --config Debug
       - name: Test covering
         run: |
+          cd target\test\Debug
           &"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" instrument test_core.exe
           &"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" collect test_core.exe -o core -f xml
       - name: Upload to Codecov

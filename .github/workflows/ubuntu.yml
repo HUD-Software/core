@@ -24,7 +24,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Core Test Report
+          name: Ubuntu Core Test Report
           path: target/test/test_core_report.xml
           reporter: java-junit
       - name: Release
@@ -37,4 +37,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Ubuntu_clang_x86_64
-          path: release\**
+          path: release/**
