@@ -26,9 +26,10 @@ namespace hud::os::windows{
         static void check(const bool condition) noexcept {
             if (condition == false) {
                 break_here();
-                #if defined HD_ABORT_ON_ASSERT
+                #if defined(HD_ABORT_ON_ASSERT)
                 abort();
                 #endif
+            } else {
             }
         }
 

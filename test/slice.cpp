@@ -196,6 +196,18 @@ TEST(slice, byte_count) {
     ASSERT_EQ(slice2.byte_count(), 0u * sizeof(i32));
 }
 
+TEST(slice, is_valid_index) {
+    i32 arr[4] = { 10,20,30,40 };
+    hud::slice<i32> slice(arr, 4);
+    ASSERT_TRUE(slice.is_valid_index(0));
+    ASSERT_TRUE(slice.is_valid_index(1));
+    ASSERT_TRUE(slice.is_valid_index(2));
+    ASSERT_TRUE(slice.is_valid_index(3));
+    ASSERT_FALSE(slice.is_valid_index(4));
+    hud::slice<i32> empty_slice;
+    ASSERT_FALSE(empty_slice.is_valid_index(0));
+}
+
 TEST(slice, sub_slice) {
 
 

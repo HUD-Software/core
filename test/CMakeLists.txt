@@ -243,7 +243,7 @@ add_executable(test_core
 	aligned_heap_allocator.cpp
 	allocation.cpp
 	atomics.cpp
-	char.cpp
+	character.cpp
 	compilation.cpp
 	cstring.cpp
 	hash.cpp
