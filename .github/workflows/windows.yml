@@ -59,8 +59,9 @@ jobs:
       - name: Remove unwanted coverage
         run: |
           $xml = [xml](Get-Content .\target\test\Debug\coverage.xml)
-          $nodes = $xml.SelectNodes("//function[contains(@namespace,'testing')]")
-          foreach($node in $nodes){$node.ParentNode.RemoveChild($node)}
+          foreach($node in $xml.SelectNodes("//function[contains(@namespace,'testing')]")){$node.ParentNode.RemoveChild($node)}
+          foreach($node in $xml.SelectNodes("//function[contains(@namespace,'test_info_')]")){$node.ParentNode.RemoveChild($node)}
+          foreach($node in $xml.SelectNodes("//function[@name='TestBody']")){$node.ParentNode.RemoveChild($node)}
           $xml.Save("$pwd\target\test\Debug\coverage.xml")
       - name: Upload to Codecov
         run: |
