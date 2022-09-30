@@ -1,7 +1,7 @@
 #include <core/containers/unique_pointer.h>
 
 
-namespace {
+namespace hud_test {
     template<typename type_t>
     struct custom_deleter
         : public hud::default_deleter<type_t>
@@ -28,7 +28,7 @@ namespace {
 
     };
 
-    using deleter_type = custom_deleter<hud_test::non_bitwise_type[]>;
+    using deleter_type = hud_test::custom_deleter<hud_test::non_bitwise_type[]>;
 }
 
 TEST(unique_pointer_array, pointer) {
@@ -142,10 +142,10 @@ TEST(unique_pointer_array, operator_array) {
 TEST(unique_pointer_array, deleter) {
     const auto test = []() {
         i32 dtor_counter = 0;
-        deleter_type deleter;
+        hud_test::deleter_type deleter;
         deleter.set_dtor_counter_ptr(&dtor_counter);
-        hud::unique_pointer < hud_test::non_bitwise_type[], deleter_type > p(new hud_test::non_bitwise_type[2]{ {1, nullptr}, {2, nullptr} }, deleter);
-        const hud::unique_pointer<hud_test::non_bitwise_type[], const deleter_type> p_const(new hud_test::non_bitwise_type[2]{ {3, nullptr}, {4, nullptr} }, deleter);
+        hud::unique_pointer < hud_test::non_bitwise_type[], hud_test::deleter_type > p(new hud_test::non_bitwise_type[2]{ {1, nullptr}, {2, nullptr} }, deleter);
+        const hud::unique_pointer<hud_test::non_bitwise_type[], const hud_test::deleter_type> p_const(new hud_test::non_bitwise_type[2]{ {3, nullptr}, {4, nullptr} }, deleter);
         return std::tuple{
             !hud::is_const_v<hud::remove_reference_t<decltype(p.deleter())>>,
             hud::is_const_v<hud::remove_reference_t<decltype(p_const.deleter())>>,

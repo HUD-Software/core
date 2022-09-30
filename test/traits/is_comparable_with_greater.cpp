@@ -1,6 +1,6 @@
 #include <core/traits/is_comparable_with_greater.h>
 
-namespace {
+namespace hud_test {
     enum comp_enum {};
     enum class comp_enum_2 {};
     enum class comp_enum_3 : u8 {};
@@ -302,40 +302,40 @@ TEST(traits, is_comparable_with_greater) {
     ASSERT_TRUE((hud::is_comparable_with_greater_v<char32, char32>));
 
     // enum
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<comp_enum, comp_enum>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum, comp_enum_2>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum, comp_enum_3>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum, comp_enum_4>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<hud_test::comp_enum, hud_test::comp_enum>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum, hud_test::comp_enum_2>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum, hud_test::comp_enum_3>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum, hud_test::comp_enum_4>));
 
     // enum class
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_2, comp_enum>));
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<comp_enum_2, comp_enum_2>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_2, comp_enum_3>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_2, comp_enum_4>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_3, comp_enum>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_3, comp_enum_2>));
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<comp_enum_3, comp_enum_3>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_3, comp_enum_4>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_4, comp_enum>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_4, comp_enum_2>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<comp_enum_4, comp_enum_3>));
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<comp_enum_4, comp_enum_4>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_2, hud_test::comp_enum>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<hud_test::comp_enum_2, hud_test::comp_enum_2>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_2, hud_test::comp_enum_3>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_2, hud_test::comp_enum_4>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_3, hud_test::comp_enum>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_3, hud_test::comp_enum_2>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<hud_test::comp_enum_3, hud_test::comp_enum_3>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_3, hud_test::comp_enum_4>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_4, hud_test::comp_enum>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_4, hud_test::comp_enum_2>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::comp_enum_4, hud_test::comp_enum_3>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<hud_test::comp_enum_4, hud_test::comp_enum_4>));
 
 
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<a, a>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<a, b>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<a, c>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<b, a>));
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<b, b>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<b, c>));
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<c, a>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<c, b>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<c, c>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::a, hud_test::a>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::a, hud_test::b>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::a, hud_test::c>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::b, hud_test::a>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<hud_test::b, hud_test::b>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::b, hud_test::c>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<hud_test::c, hud_test::a>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::c, hud_test::b>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<hud_test::c, hud_test::c>));
 
     //pointers
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, a>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, b>));
-    ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, c>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, hud_test::a>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, hud_test::b>));
+    ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, hud_test::c>));
     ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, void>));
     ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, i8>));
     ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, i16>));
@@ -354,9 +354,9 @@ TEST(traits, is_comparable_with_greater) {
     ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, char16>));
     ASSERT_FALSE((hud::is_comparable_with_greater_v<void*, char32>));
 
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, a*>));
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, b*>));
-    ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, c*>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, hud_test::a*>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, hud_test::b*>));
+    ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, hud_test::c*>));
     ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, void*>));
     ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, i8*>));
     ASSERT_TRUE((hud::is_comparable_with_greater_v<void*, i16*>));

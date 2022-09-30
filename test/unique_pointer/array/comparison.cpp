@@ -1,6 +1,6 @@
 #include <core/containers/unique_pointer.h>
 
-namespace {
+namespace hud_test {
     template<typename type_t>
     struct custom_deleter
         : public hud::default_deleter<type_t>
@@ -31,8 +31,8 @@ TEST(unique_pointer_array, equal_operator) {
 
     const auto test = []() {
         i32* pi = new i32[2]{ 0, 0 };
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p1(pi);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p2(pi);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(pi);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(pi);
         hud::unique_pointer<i32[]> p3(new i32[2]{ 0, 0 });
         hud::unique_pointer<i32[]> p4;
         const auto result = std::tuple{
@@ -84,8 +84,8 @@ TEST(unique_pointer_array, not_equal_operator) {
 
     const auto test = []() {
         i32* pi = new i32[2]{ 0, 0 };
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p1(pi);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p2(pi);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(pi);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(pi);
         hud::unique_pointer<i32[]> p3(new i32[2]{ 0, 0 });
         hud::unique_pointer<i32[]> p4;
         const auto result = std::tuple{
@@ -139,8 +139,8 @@ TEST(unique_pointer_array, less_operator) {
         i32 buf[2];
         i32* ptr1 = &(buf[0]);
         i32* ptr2 = &(buf[1]);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p1(ptr1);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p2(ptr2);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(ptr1);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(ptr2);
         hud::unique_pointer<i32[]> p4;
         if (hud::is_constant_evaluated()) {
             const auto result = std::tuple{
@@ -207,8 +207,8 @@ TEST(unique_pointer_array, less_equal_operator) {
         i32 buf[2];
         i32* ptr1 = &(buf[0]);
         i32* ptr2 = &(buf[1]);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p1(ptr1);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p2(ptr2);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(ptr1);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(ptr2);
         hud::unique_pointer<i32[]> p4;
         if (hud::is_constant_evaluated()) {
             const auto result = std::tuple{
@@ -276,8 +276,8 @@ TEST(unique_pointer_array, greater_operator) {
         i32 buf[2];
         i32* ptr1 = &(buf[0]);
         i32* ptr2 = &(buf[1]);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p1(ptr1);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p2(ptr2);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(ptr1);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(ptr2);
         hud::unique_pointer<i32[]> p4;
         if (hud::is_constant_evaluated()) {
             const auto result = std::tuple{
@@ -345,8 +345,8 @@ TEST(unique_pointer_array, greater_equal_operator) {
         i32 buf[2];
         i32* ptr1 = &(buf[0]);
         i32* ptr2 = &(buf[1]);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p1(ptr1);
-        hud::unique_pointer<i32[], custom_deleter<i32[]>> p2(ptr2);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(ptr1);
+        hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(ptr2);
         hud::unique_pointer<i32[]> p4;
         if (hud::is_constant_evaluated()) {
             const auto result = std::tuple{

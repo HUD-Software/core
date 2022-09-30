@@ -1,6 +1,6 @@
 #include <core/traits/is_assignable.h>
 
-namespace {
+namespace hud_test {
     struct a {};
     struct b {};
     struct c : public a {};
@@ -19,10 +19,10 @@ TEST(traits, is_assignable) {
     ASSERT_FALSE((hud::is_assignable_v<const volatile i32&, const i32>));
     ASSERT_FALSE((hud::is_assignable_v<const i32&, const i32>));
     ASSERT_FALSE((hud::is_assignable_v<const volatile i32&, const volatile i32>));
-    ASSERT_TRUE((hud::is_assignable_v<a, a>)); // a() = a() compile
-    ASSERT_TRUE((hud::is_assignable_v<a&, a>)); // a a ; a = a() compile
-    ASSERT_FALSE((hud::is_assignable_v<const a&, a>)); // const a a ; a = a() do not compile
-    ASSERT_TRUE((hud::is_assignable_v<a, c>)); // a() = c() compile
-    ASSERT_FALSE((hud::is_assignable_v<a, b>)); // a() = b() do not compile
-    ASSERT_TRUE((hud::is_assignable_v<d, b>)); // d() = b() compile
+    ASSERT_TRUE((hud::is_assignable_v<hud_test::a, hud_test::a>)); // hud_test::a() = hud_test::a() compile
+    ASSERT_TRUE((hud::is_assignable_v<hud_test::a&, hud_test::a>)); // hud_test::a hud_test::a ; hud_test::a = hud_test::a() compile
+    ASSERT_FALSE((hud::is_assignable_v<const hud_test::a&, hud_test::a>)); // const hud_test::a hud_test::a ; hud_test::a = hud_test::a() do not compile
+    ASSERT_TRUE((hud::is_assignable_v<hud_test::a, hud_test::c>)); // hud_test::a() = hud_test::c() compile
+    ASSERT_FALSE((hud::is_assignable_v<hud_test::a, hud_test::b>)); // hud_test::a() = hud_test::b() do not compile
+    ASSERT_TRUE((hud::is_assignable_v<hud_test::d, hud_test::b>)); // hud_test::d() = hud_test::b() compile
 }

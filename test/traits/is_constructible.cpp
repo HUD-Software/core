@@ -1,6 +1,6 @@
 #include <core/traits/is_constructible.h>
 
-namespace {
+namespace hud_test {
     struct a {
         i32 a;
     };
@@ -22,30 +22,30 @@ namespace {
     };
 }
 TEST(traits, is_constructible) {
-    ASSERT_TRUE((hud::is_constructible_v<a>));
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::a>));
 #if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG)
     // Bug: Waiting for clang anwser https://github.com/llvm/llvm-project/issues/55974
     // Clang do not implement the Parenthesized initialization of aggregates feature yet
-    ASSERT_FALSE((hud::is_constructible_v < a, i32 >));
+    ASSERT_FALSE((hud::is_constructible_v < hud_test::a, i32 >));
 #else
-    ASSERT_TRUE((hud::is_constructible_v < a, i32 >));
+    ASSERT_TRUE((hud::is_constructible_v < hud_test::a, i32 >));
 #endif
-    ASSERT_FALSE((hud::is_constructible_v<b>));
-    ASSERT_TRUE((hud::is_constructible_v<b, i32>));
-    ASSERT_TRUE((hud::is_constructible_v<b, const i32>));
-    ASSERT_TRUE((hud::is_constructible_v<b, const volatile i32>));
-    ASSERT_TRUE((hud::is_constructible_v<b, f32>)); // Implicit conversion f32 to i32
-    ASSERT_TRUE((hud::is_constructible_v<c>));
+    ASSERT_FALSE((hud::is_constructible_v<hud_test::b>));
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::b, i32>));
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::b, const i32>));
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::b, const volatile i32>));
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::b, f32>)); // Implicit conversion f32 to i32
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::c>));
 #if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG)
 // Bug: Waiting for clang anwser https://github.com/llvm/llvm-project/issues/55974
 // Clang do not implement the Parenthesized initialization of aggregates feature yet
-    ASSERT_FALSE((hud::is_constructible_v<c, a>));
+    ASSERT_FALSE((hud::is_constructible_v<hud_test::c, hud_test::a>));
 #else
-    ASSERT_TRUE((hud::is_constructible_v<c, a>));
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::c, hud_test::a>));
 #endif
-    ASSERT_FALSE((hud::is_constructible_v<d>)); // b Don't have default constructor
-    ASSERT_TRUE((hud::is_constructible_v<d, b>));
-    ASSERT_TRUE((hud::is_constructible_v<d, i32>)); // b is create with i32
-    ASSERT_TRUE((hud::is_constructible_v<e>));
-    ASSERT_TRUE((hud::is_constructible_v<e, a>));
+    ASSERT_FALSE((hud::is_constructible_v<hud_test::d>)); // b Don't have default constructor
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::d, hud_test::b>));
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::d, i32>)); // b is create with i32
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::e>));
+    ASSERT_TRUE((hud::is_constructible_v<hud_test::e, hud_test::a>));
 }

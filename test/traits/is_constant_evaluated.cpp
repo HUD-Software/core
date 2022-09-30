@@ -1,6 +1,6 @@
 #include <core/traits/is_constant_evaluated.h>
 
-namespace {
+namespace hud_test {
     constexpr bool evaluate() {
         if (hud::is_constant_evaluated()) {
             return true;
@@ -10,8 +10,8 @@ namespace {
 }
 
 TEST(traits, is_constant_evaluated) {
-    ASSERT_FALSE(evaluate());
+    ASSERT_FALSE(hud_test::evaluate());
 
-    constexpr bool const_evaluation = evaluate();
+    constexpr bool const_evaluation = hud_test::evaluate();
     ASSERT_TRUE(const_evaluation);
 }

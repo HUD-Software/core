@@ -1,16 +1,16 @@
 #include <core/templates/swap.h>
 
-namespace {
-    struct type_t {
-        type_t() noexcept = default;
-        type_t(const i32 i) noexcept
+namespace hud_test {
+    struct type {
+        type() noexcept = default;
+        type(const i32 i) noexcept
             : inner(i) {
         }
-        type_t(type_t&& other) noexcept
+        type(type&& other) noexcept
             : inner(other.inner) {
             other.inner = 0;
         }
-        type_t& operator=(const type_t& other) noexcept {
+        type& operator=(const type& other) noexcept {
             inner = other.inner;
             return *this;
         }
@@ -28,8 +28,8 @@ TEST(templates, swap_trivial_type) {
 }
 
 TEST(templates, swap_non_rivial_type) {
-    type_t t(2);
-    type_t t1(3);
+    hud_test::type t(2);
+    hud_test::type t1(3);
     hud::swap(t, t1);
     ASSERT_EQ(t.inner, 3);
     ASSERT_EQ(t1.inner, 2);
@@ -51,8 +51,8 @@ TEST(memory, swap_array_trivial_type) {
 }
 
 TEST(memory, swap_array_non_trivial_type) {
-    type_t c[3] = { 1,2,3 };
-    type_t d[3] = { 4,5,6 };
+    hud_test::type c[3] = { 1,2,3 };
+    hud_test::type d[3] = { 4,5,6 };
     hud::swap(c, d);
     ASSERT_EQ(c[0].inner, 4);
     ASSERT_EQ(c[1].inner, 5);

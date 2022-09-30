@@ -1,6 +1,6 @@
 #include <core/traits/underlying_type.h>
 
-namespace {
+namespace hud_test {
     enum e1 {};
     enum class e2 : i8;
     enum class e3 : i16;
@@ -74,75 +74,75 @@ namespace {
 TEST(traits, underlying_type) {
     // MSVC and ClangCL promote the enum an signed int when GCC and Clang promote it to unsigned int
     #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
-        ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e1>, i32>));
+        ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e1>, i32>));
     #else 
-        ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e1>, u32>));
+        ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e1>, u32>));
     #endif
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e2>, i8>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e3>, i16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e4>, i32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e5>, i64>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e6>, u8>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e7>, u16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e8>, u32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e9>, u64>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e10>, ansichar>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e11>, wchar>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e12>, char16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e13>, char32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e14>, iptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e15>, uptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e16>, isize>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e17>, usize>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e2>, i8>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e3>, i16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e4>, i32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e5>, i64>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e6>, u8>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e7>, u16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e8>, u32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e9>, u64>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e10>, ansichar>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e11>, wchar>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e12>, char16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e13>, char32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e14>, iptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e15>, uptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e16>, isize>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e17>, usize>));
 
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e2c>, i8>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e3c>, i16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e4c>, i32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e5c>, i64>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e6c>, u8>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e7c>, u16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e8c>, u32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e9c>, u64>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e10c>, ansichar>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e11c>, wchar>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e12c>, char16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e13c>, char32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e14c>, iptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e15c>, uptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e16c>, isize>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e17c>, usize>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e2c>, i8>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e3c>, i16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e4c>, i32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e5c>, i64>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e6c>, u8>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e7c>, u16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e8c>, u32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e9c>, u64>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e10c>, ansichar>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e11c>, wchar>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e12c>, char16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e13c>, char32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e14c>, iptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e15c>, uptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e16c>, isize>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e17c>, usize>));
 
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e2v>, i8>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e3v>, i16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e4v>, i32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e5v>, i64>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e6v>, u8>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e7v>, u16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e8v>, u32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e9v>, u64>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e10v>, ansichar>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e11v>, wchar>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e12v>, char16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e13v>, char32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e14v>, iptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e15v>, uptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e16v>, isize>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e17v>, usize>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e2v>, i8>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e3v>, i16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e4v>, i32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e5v>, i64>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e6v>, u8>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e7v>, u16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e8v>, u32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e9v>, u64>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e10v>, ansichar>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e11v>, wchar>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e12v>, char16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e13v>, char32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e14v>, iptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e15v>, uptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e16v>, isize>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e17v>, usize>));
 
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e2cv>, i8>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e3cv>, i16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e4cv>, i32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e5cv>, i64>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e6cv>, u8>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e7cv>, u16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e8cv>, u32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e9cv>, u64>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e10cv>, ansichar>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e11cv>, wchar>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e12cv>, char16>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e13cv>, char32>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e14cv>, iptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e15cv>, uptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e16cv>, isize>));
-    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<e17cv>, usize>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e2cv>, i8>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e3cv>, i16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e4cv>, i32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e5cv>, i64>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e6cv>, u8>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e7cv>, u16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e8cv>, u32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e9cv>, u64>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e10cv>, ansichar>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e11cv>, wchar>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e12cv>, char16>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e13cv>, char32>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e14cv>, iptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e15cv>, uptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e16cv>, isize>));
+    ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e17cv>, usize>));
 }

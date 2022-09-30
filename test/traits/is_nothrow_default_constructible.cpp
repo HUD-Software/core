@@ -1,6 +1,6 @@
 #include <core/traits/is_nothrow_default_constructible.h>
 
-namespace {
+namespace hud_test {
     struct a {
         a() noexcept {}
     };
@@ -22,9 +22,9 @@ namespace {
 }
 
 TEST(traits, is_nothrow_default_constructible) {    
-    ASSERT_TRUE((hud::is_nothrow_default_constructible_v<a>));
-    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<b>));
-    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<c>));
-    ASSERT_TRUE((hud::is_nothrow_default_constructible_v<d>));
-    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<e>));
+    ASSERT_TRUE((hud::is_nothrow_default_constructible_v<hud_test::a>));
+    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::b>));
+    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::c>));
+    ASSERT_TRUE((hud::is_nothrow_default_constructible_v<hud_test::d>));
+    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::e>));
 }

@@ -1,6 +1,6 @@
 #include <core/traits/is_same_size.h>
 
-namespace {
+namespace hud_test {
     struct a {};
     struct b {
         i32 a;
@@ -15,10 +15,10 @@ namespace {
 
 TEST(traits, is_same_size) {
     ASSERT_TRUE((hud::is_same_size_v<i32, const i32>));
-    ASSERT_TRUE((hud::is_same_size_v<a, std::tuple<>>));
-    ASSERT_FALSE((hud::is_same_size_v<a, b>));
-    ASSERT_FALSE((hud::is_same_size_v<b, c>));
-    ASSERT_TRUE((hud::is_same_size_v<b, d>));
-    ASSERT_TRUE((hud::is_same_size_v<b, i32>));
-    ASSERT_TRUE((hud::is_same_size_v<b[2], i32[1]>));
+    ASSERT_TRUE((hud::is_same_size_v<hud_test::a, std::tuple<>>));
+    ASSERT_FALSE((hud::is_same_size_v<hud_test::a, hud_test::b>));
+    ASSERT_FALSE((hud::is_same_size_v<hud_test::b, hud_test::c>));
+    ASSERT_TRUE((hud::is_same_size_v<hud_test::b, hud_test::d>));
+    ASSERT_TRUE((hud::is_same_size_v<hud_test::b, i32>));
+    ASSERT_TRUE((hud::is_same_size_v<hud_test::b[2], i32[1]>));
 }

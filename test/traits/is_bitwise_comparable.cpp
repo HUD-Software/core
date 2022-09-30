@@ -1,6 +1,6 @@
 #include <core/traits/is_bitwise_comparable.h>
 
-namespace {
+namespace hud_test {
     struct empty {};
     struct a {
         i32 a;
@@ -432,24 +432,24 @@ TEST(traits, is_bitwise_comparable) {
 
     
 
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<empty, empty>));
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<a, a>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<b, b>));
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<c, c>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<padded, padded>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<padded_2, padded_2>));
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<derived, derived>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<derived_2, derived_2>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<d, d>));
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<comp_e, comp_e>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<f, f>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::empty, hud_test::empty>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::a, hud_test::a>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::b, hud_test::b>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::c, hud_test::c>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::padded, hud_test::padded>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::padded_2, hud_test::padded_2>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::derived, hud_test::derived>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::derived_2, hud_test::derived_2>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::d, hud_test::d>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::comp_e, hud_test::comp_e>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::f, hud_test::f>));
 
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<comp_enum, comp_enum>));
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<comp_enum_2, comp_enum_2>));
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<comp_enum_3, comp_enum_3>));
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<comp_enum_4, comp_enum_4>));
-    ASSERT_TRUE((hud::is_bitwise_comparable_v<comp_enum, comp_enum_2>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<comp_enum, comp_enum_3>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<comp_enum, comp_enum_4>));
-    ASSERT_FALSE((hud::is_bitwise_comparable_v<comp_enum_3, comp_enum_4>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::comp_enum, hud_test::comp_enum>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::comp_enum_2, hud_test::comp_enum_2>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::comp_enum_3, hud_test::comp_enum_3>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::comp_enum_4, hud_test::comp_enum_4>));
+    ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::comp_enum, hud_test::comp_enum_2>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::comp_enum, hud_test::comp_enum_3>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::comp_enum, hud_test::comp_enum_4>));
+    ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::comp_enum_3, hud_test::comp_enum_4>));
 }

@@ -1,6 +1,6 @@
 #include <core/templates/equal.h>
 
-namespace {
+namespace hud_test {
     struct S {
         constexpr S(i32 val) noexcept 
             : value(val) {
@@ -21,9 +21,9 @@ TEST(templates, equal) {
     ASSERT_TRUE(eq(1, 1));
     ASSERT_FALSE(eq(-1, 1));
 
-    hud::equal<S> eq_s;
-    ASSERT_TRUE(eq_s(S{ 1, }, S{ 1 }));
-    ASSERT_FALSE(eq_s(S{ -1 }, S{ 1 }));
+    hud::equal<hud_test::S> eq_s;
+    ASSERT_TRUE(eq_s(hud_test::S{ 1, }, hud_test::S{ 1 }));
+    ASSERT_FALSE(eq_s(hud_test::S{ -1 }, hud_test::S{ 1 }));
 
     hud::equal<i32*> eq_ptr;
     ASSERT_TRUE(eq_ptr(nullptr, nullptr));

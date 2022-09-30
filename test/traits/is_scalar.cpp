@@ -1,13 +1,13 @@
 #include <core/traits/is_scalar.h>
 
-namespace {
+namespace hud_test {
     struct a { void fn() {} };
     enum class e {};
 }
 
 TEST(traits, is_scalar) {
-    ASSERT_FALSE((hud::is_scalar_v<a>));
-    ASSERT_TRUE((hud::is_scalar_v<e>));
+    ASSERT_FALSE((hud::is_scalar_v<hud_test::a>));
+    ASSERT_TRUE((hud::is_scalar_v<hud_test::e>));
     ASSERT_TRUE((hud::is_scalar_v<i8>));
     ASSERT_TRUE((hud::is_scalar_v<i16>));
     ASSERT_TRUE((hud::is_scalar_v<i32>));
@@ -22,7 +22,7 @@ TEST(traits, is_scalar) {
     ASSERT_TRUE((hud::is_scalar_v<usize>));
     ASSERT_TRUE((hud::is_scalar_v<ansichar>));
     ASSERT_TRUE((hud::is_scalar_v<wchar>));
-    ASSERT_TRUE((hud::is_scalar_v<a*>));
-    ASSERT_TRUE((hud::is_scalar_v<decltype(&a::fn)>));
+    ASSERT_TRUE((hud::is_scalar_v<hud_test::a*>));
+    ASSERT_TRUE((hud::is_scalar_v<decltype(&hud_test::a::fn)>));
     ASSERT_FALSE((hud::is_scalar_v<int(int)>));
 }

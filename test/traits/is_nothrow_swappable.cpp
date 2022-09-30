@@ -1,6 +1,6 @@
 #include <core/traits/is_nothrow_swappable.h>
 
-namespace {
+namespace hud_test {
     struct moveable_2;
     struct moveable {
         moveable(moveable&&);
@@ -44,16 +44,16 @@ namespace {
 }
 
 TEST(traits, is_nothrow_swappable) {
-    ASSERT_FALSE(hud::is_nothrow_swappable_v<moveable>);
-    ASSERT_FALSE(hud::is_nothrow_swappable_v<not_moveable>);
+    ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::moveable>);
+    ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::not_moveable>);
 
-    ASSERT_FALSE((hud::is_nothrow_swappable_v<moveable, moveable_2>));
-    ASSERT_FALSE((hud::is_nothrow_swappable_v<not_moveable, not_moveable_2>));
+    ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::moveable, hud_test::moveable_2>));
+    ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::not_moveable, hud_test::not_moveable_2>));
 
 
-    ASSERT_TRUE(hud::is_nothrow_swappable_v<nothrow_moveable>);
-    ASSERT_FALSE(hud::is_nothrow_swappable_v<nothrow_not_moveable>);
+    ASSERT_TRUE(hud::is_nothrow_swappable_v<hud_test::nothrow_moveable>);
+    ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::nothrow_not_moveable>);
 
-    ASSERT_TRUE((hud::is_nothrow_swappable_v<nothrow_moveable, nothrow_moveable_2>));
-    ASSERT_FALSE((hud::is_nothrow_swappable_v<nothrow_not_moveable, nothrow_not_moveable_2>));
+    ASSERT_TRUE((hud::is_nothrow_swappable_v<hud_test::nothrow_moveable, hud_test::nothrow_moveable_2>));
+    ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::nothrow_not_moveable, hud_test::nothrow_not_moveable_2>));
 }

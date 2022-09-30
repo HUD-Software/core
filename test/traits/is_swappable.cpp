@@ -1,6 +1,6 @@
 #include <core/traits/is_swappable.h>
 
-namespace {
+namespace hud_test {
     struct movaeble_2;
     struct movaeble {
         movaeble(movaeble_2&&);
@@ -22,9 +22,9 @@ namespace {
 }
 
 TEST(traits, is_swappable) {
-    ASSERT_TRUE(hud::is_swappable_v<movaeble>);
-    ASSERT_FALSE(hud::is_swappable_v<not_moveable>);
+    ASSERT_TRUE(hud::is_swappable_v<hud_test::movaeble>);
+    ASSERT_FALSE(hud::is_swappable_v<hud_test::not_moveable>);
 
-    ASSERT_TRUE((hud::is_swappable_v<movaeble, movaeble_2>));
-    ASSERT_FALSE((hud::is_swappable_v<not_moveable, not_moveable_2>));
+    ASSERT_TRUE((hud::is_swappable_v<hud_test::movaeble, hud_test::movaeble_2>));
+    ASSERT_FALSE((hud::is_swappable_v<hud_test::not_moveable, hud_test::not_moveable_2>));
 }

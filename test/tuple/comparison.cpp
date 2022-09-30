@@ -1,13 +1,13 @@
 #include <core/containers/tuple.h>
 
-namespace {
-    struct Comparable {
-        constexpr Comparable(i32 j) noexcept
+namespace hud_test {
+    struct comparable {
+        constexpr comparable(i32 j) noexcept
             : i(j) {
         }
 
         [[nodiscard]]
-        constexpr bool operator==(const Comparable& o) const noexcept{
+        constexpr bool operator==(const comparable& o) const noexcept{
             return i == o.i;
         }
         [[nodiscard]]
@@ -15,7 +15,7 @@ namespace {
             return i == o;
         }
         [[nodiscard]]
-        constexpr bool operator<(const Comparable& o) const noexcept {
+        constexpr bool operator<(const comparable& o) const noexcept {
             return i < o.i;
         }
         [[nodiscard]]
@@ -25,21 +25,21 @@ namespace {
         i32 i;
     };
 
-    constexpr bool operator<(const i32& left, const Comparable& right) noexcept {
+    constexpr bool operator<(const i32& left, const comparable& right) noexcept {
         return left < right.i;
     }
 }
 
 TEST(tuple, equal_operator_same_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
             hud::tuple<>{} == hud::tuple<>{},
-            tuple_type{22, L'a', Comparable(33)} == tuple_type{22, L'a', Comparable(33)},
-            tuple_type{ 22, L'a', Comparable(33) } == tuple_type{ 22, L'a', Comparable(44) },
-            tuple_type{ 22, L'a', Comparable(33) } == tuple_type{ 22, L'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } == tuple_type{ 11, L'a', Comparable(33) }
+            tuple_type{22, L'a', hud_test::comparable(33)} == tuple_type{22, L'a', hud_test::comparable(33)},
+            tuple_type{ 22, L'a', hud_test::comparable(33) } == tuple_type{ 22, L'a', hud_test::comparable(44) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } == tuple_type{ 22, L'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } == tuple_type{ 11, L'a', hud_test::comparable(33) }
         };
     };
 
@@ -66,16 +66,16 @@ TEST(tuple, equal_operator_same_types) {
 }
 
 TEST(tuple, equal_operator_different_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
-            tuple_type{22, L'a', Comparable(33)} == hud::tuple<i32, wchar, i32>{22, L'a', 33},
-            tuple_type{ 22, L'a', Comparable(33) } == hud::tuple<i32, wchar, i32>{22, L'a', 44},
-            tuple_type{ 22, L'a', Comparable(33) } == hud::tuple<i32, char16, Comparable>{ 22, u'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } == hud::tuple<i32, char16, Comparable>{ 22, u'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } == hud::tuple<i16, wchar, Comparable>{ (i16)22, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } == hud::tuple<i16, wchar, Comparable>{ (i16)11, L'a', Comparable(33) }
+            tuple_type{22, L'a', hud_test::comparable(33)} == hud::tuple<i32, wchar, i32>{22, L'a', 33},
+            tuple_type{ 22, L'a', hud_test::comparable(33) } == hud::tuple<i32, wchar, i32>{22, L'a', 44},
+            tuple_type{ 22, L'a', hud_test::comparable(33) } == hud::tuple<i32, char16, hud_test::comparable>{ 22, u'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } == hud::tuple<i32, char16, hud_test::comparable>{ 22, u'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } == hud::tuple<i16, wchar, hud_test::comparable>{ (i16)22, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } == hud::tuple<i16, wchar, hud_test::comparable>{ (i16)11, L'a', hud_test::comparable(33) }
         };
     };
 
@@ -103,15 +103,15 @@ TEST(tuple, equal_operator_different_types) {
 }
 
 TEST(tuple, not_equal_operator_same_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
             hud::tuple<>{} != hud::tuple<>{},
-            tuple_type{22, L'a', Comparable(33)} != tuple_type{22, L'a', Comparable(33)},
-            tuple_type{ 22, L'a', Comparable(33) } != tuple_type{ 22, L'a', Comparable(44) },
-            tuple_type{ 22, L'a', Comparable(33) } != tuple_type{ 22, L'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } != tuple_type{ 11, L'a', Comparable(33) }
+            tuple_type{22, L'a', hud_test::comparable(33)} != tuple_type{22, L'a', hud_test::comparable(33)},
+            tuple_type{ 22, L'a', hud_test::comparable(33) } != tuple_type{ 22, L'a', hud_test::comparable(44) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } != tuple_type{ 22, L'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } != tuple_type{ 11, L'a', hud_test::comparable(33) }
         };
     };
 
@@ -138,16 +138,16 @@ TEST(tuple, not_equal_operator_same_types) {
 }
 
 TEST(tuple, not_equal_operator_different_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
-            tuple_type{22, L'a', Comparable(33)} != hud::tuple<i32, wchar, i32>{22, L'a', 33},
-            tuple_type{ 22, L'a', Comparable(33) } != hud::tuple<i32, wchar, i32>{22, L'a', 44},
-            tuple_type{ 22, L'a', Comparable(33) } != hud::tuple<i32, char16, Comparable>{ 22, u'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } != hud::tuple<i32, char16, Comparable>{ 22, u'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } != hud::tuple<i16, wchar, Comparable>{ (i16)22, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } != hud::tuple<i16, wchar, Comparable>{ (i16)11, L'a', Comparable(33) }
+            tuple_type{22, L'a', hud_test::comparable(33)} != hud::tuple<i32, wchar, i32>{22, L'a', 33},
+            tuple_type{ 22, L'a', hud_test::comparable(33) } != hud::tuple<i32, wchar, i32>{22, L'a', 44},
+            tuple_type{ 22, L'a', hud_test::comparable(33) } != hud::tuple<i32, char16, hud_test::comparable>{ 22, u'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } != hud::tuple<i32, char16, hud_test::comparable>{ 22, u'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } != hud::tuple<i16, wchar, hud_test::comparable>{ (i16)22, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } != hud::tuple<i16, wchar, hud_test::comparable>{ (i16)11, L'a', hud_test::comparable(33) }
         };
     };
 
@@ -176,18 +176,18 @@ TEST(tuple, not_equal_operator_different_types) {
 
 
 TEST(tuple, less_operator_same_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
             hud::tuple<>{} < hud::tuple<>{},
-            tuple_type{ 22, L'a', Comparable(33) } < tuple_type{ 22, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < tuple_type{ 22, L'a', Comparable(44) },
-            tuple_type{ 22, L'a', Comparable(33) } < tuple_type{ 22, L'a', Comparable(22) },
-            tuple_type{ 22, L'a', Comparable(33) } < tuple_type{ 22, L'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < tuple_type{ 22, L'\0', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < tuple_type{ 33, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < tuple_type{ 11, L'a', Comparable(33) }
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < tuple_type{ 22, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < tuple_type{ 22, L'a', hud_test::comparable(44) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < tuple_type{ 22, L'a', hud_test::comparable(22) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < tuple_type{ 22, L'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < tuple_type{ 22, L'\0', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < tuple_type{ 33, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < tuple_type{ 11, L'a', hud_test::comparable(33) }
         };
     };
 
@@ -221,21 +221,21 @@ TEST(tuple, less_operator_same_types) {
 
 
 TEST(tuple, less_operator_different_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
 
             hud::tuple<>{} < hud::tuple<>{},
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i32, wchar, i32>{ 22, L'a', 33 },
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i32, wchar, i32>{ 22, L'a', 44 },
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i32, wchar, i32>{ 22, L'a', 22 },
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i32, char16, Comparable>{ 22, u'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i32, char16, Comparable>{ 22, u'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i32, char16, Comparable>{ 22, u'\0', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i16, wchar, Comparable>{ (i16)22, u'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i16, wchar, Comparable>{ (i16)33, u'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } < hud::tuple<i16, wchar, Comparable>{ (i16)11, u'\0', Comparable(33) }
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i32, wchar, i32>{ 22, L'a', 33 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i32, wchar, i32>{ 22, L'a', 44 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i32, wchar, i32>{ 22, L'a', 22 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i32, char16, hud_test::comparable>{ 22, u'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i32, char16, hud_test::comparable>{ 22, u'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i32, char16, hud_test::comparable>{ 22, u'\0', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i16, wchar, hud_test::comparable>{ (i16)22, u'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i16, wchar, hud_test::comparable>{ (i16)33, u'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } < hud::tuple<i16, wchar, hud_test::comparable>{ (i16)11, u'\0', hud_test::comparable(33) }
            
         };
     };
@@ -272,18 +272,18 @@ TEST(tuple, less_operator_different_types) {
 }
 
 TEST(tuple, less_equal_operator_same_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
             hud::tuple<>{} <= hud::tuple<>{},
-            tuple_type{ 22, L'a', Comparable(33) } <= tuple_type{ 22, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= tuple_type{ 22, L'a', Comparable(44) },
-            tuple_type{ 22, L'a', Comparable(33) } <= tuple_type{ 22, L'a', Comparable(22) },
-            tuple_type{ 22, L'a', Comparable(33) } <= tuple_type{ 22, L'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= tuple_type{ 22, L'\0', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= tuple_type{ 33, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= tuple_type{ 11, L'a', Comparable(33) }
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= tuple_type{ 22, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= tuple_type{ 22, L'a', hud_test::comparable(44) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= tuple_type{ 22, L'a', hud_test::comparable(22) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= tuple_type{ 22, L'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= tuple_type{ 22, L'\0', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= tuple_type{ 33, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= tuple_type{ 11, L'a', hud_test::comparable(33) }
         };
     };
 
@@ -316,21 +316,21 @@ TEST(tuple, less_equal_operator_same_types) {
 }
 
 TEST(tuple, less_equal_operator_different_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
 
             hud::tuple<>{} <= hud::tuple<>{},
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i32, wchar, i32>{ 22, L'a', 33 },
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i32, wchar, i32>{ 22, L'a', 44 },
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i32, wchar, i32>{ 22, L'a', 22 },
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i32, char16, Comparable>{ 22, u'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i32, char16, Comparable>{ 22, u'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i32, char16, Comparable>{ 22, u'\0', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i16, wchar, Comparable>{ (i16)22, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i16, wchar, Comparable>{ (i16)33, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } <= hud::tuple<i16, wchar, Comparable>{ (i16)11, L'a', Comparable(33) }
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i32, wchar, i32>{ 22, L'a', 33 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i32, wchar, i32>{ 22, L'a', 44 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i32, wchar, i32>{ 22, L'a', 22 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i32, char16, hud_test::comparable>{ 22, u'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i32, char16, hud_test::comparable>{ 22, u'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i32, char16, hud_test::comparable>{ 22, u'\0', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i16, wchar, hud_test::comparable>{ (i16)22, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i16, wchar, hud_test::comparable>{ (i16)33, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } <= hud::tuple<i16, wchar, hud_test::comparable>{ (i16)11, L'a', hud_test::comparable(33) }
         };
     };
 
@@ -366,18 +366,18 @@ TEST(tuple, less_equal_operator_different_types) {
 }
 
 TEST(tuple, greater_operator_same_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
             hud::tuple<>{} > hud::tuple<>{},
-            tuple_type{ 22, L'a', Comparable(33) } > tuple_type{ 22, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } > tuple_type{ 22, L'a', Comparable(44) },
-            tuple_type{ 22, L'a', Comparable(33) } > tuple_type{ 22, L'a', Comparable(22) },
-            tuple_type{ 22, L'a', Comparable(33) } > tuple_type{ 22, L'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } > tuple_type{ 22, L'\0', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } > tuple_type{ 33, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } > tuple_type{ 11, L'a', Comparable(33) }
+            tuple_type{ 22, L'a', hud_test::comparable(33) } > tuple_type{ 22, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } > tuple_type{ 22, L'a', hud_test::comparable(44) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } > tuple_type{ 22, L'a', hud_test::comparable(22) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } > tuple_type{ 22, L'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } > tuple_type{ 22, L'\0', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } > tuple_type{ 33, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } > tuple_type{ 11, L'a', hud_test::comparable(33) }
         };
     };
 
@@ -410,21 +410,21 @@ TEST(tuple, greater_operator_same_types) {
 }
 
 TEST(tuple, greater_equal_operator_different_types) {
-    using tuple_type = hud::tuple<i32, wchar, Comparable>;
+    using tuple_type = hud::tuple<i32, wchar, hud_test::comparable>;
 
     const auto test = []() {
         return std::tuple{
 
             hud::tuple<>{} >= hud::tuple<>{},
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i32, wchar, i32>{ 22, L'a', 33 },
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i32, wchar, i32>{ 22, L'a', 44 },
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i32, wchar, i32>{ 22, L'a', 22 },
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i32, char16, Comparable>{ 22, u'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i32, char16, Comparable>{ 22, u'b', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i32, char16, Comparable>{ 22, u'\0', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i16, wchar, Comparable>{ (i16)22, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i16, wchar, Comparable>{ (i16)33, L'a', Comparable(33) },
-            tuple_type{ 22, L'a', Comparable(33) } >= hud::tuple<i16, wchar, Comparable>{ (i16)11, L'a', Comparable(33) }
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i32, wchar, i32>{ 22, L'a', 33 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i32, wchar, i32>{ 22, L'a', 44 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i32, wchar, i32>{ 22, L'a', 22 },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i32, char16, hud_test::comparable>{ 22, u'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i32, char16, hud_test::comparable>{ 22, u'b', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i32, char16, hud_test::comparable>{ 22, u'\0', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i16, wchar, hud_test::comparable>{ (i16)22, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i16, wchar, hud_test::comparable>{ (i16)33, L'a', hud_test::comparable(33) },
+            tuple_type{ 22, L'a', hud_test::comparable(33) } >= hud::tuple<i16, wchar, hud_test::comparable>{ (i16)11, L'a', hud_test::comparable(33) }
         };
     };
 

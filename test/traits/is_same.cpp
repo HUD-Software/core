@@ -1,7 +1,7 @@
 #include <core/traits/is_same.h>
 
 
-namespace {
+namespace hud_test {
     typedef int integer_type;
     struct a { int x, y; };
     struct b { int x, y; };
@@ -14,18 +14,18 @@ namespace {
 
 TEST(traits, is_same) {
     ASSERT_FALSE((hud::is_same_v<i32, const i32>));
-    ASSERT_TRUE((hud::is_same_v<i32, integer_type>));
+    ASSERT_TRUE((hud::is_same_v<i32, hud_test::integer_type>));
 
-    ASSERT_TRUE((hud::is_same_v<a, a>));
-    ASSERT_FALSE((hud::is_same_v<const a, a>));
-    ASSERT_FALSE((hud::is_same_v<volatile a, a>));
-    ASSERT_FALSE((hud::is_same_v<const volatile a, a>));
+    ASSERT_TRUE((hud::is_same_v<hud_test::a, hud_test::a>));
+    ASSERT_FALSE((hud::is_same_v<const hud_test::a, hud_test::a>));
+    ASSERT_FALSE((hud::is_same_v<volatile hud_test::a, hud_test::a>));
+    ASSERT_FALSE((hud::is_same_v<const volatile hud_test::a, hud_test::a>));
 
-    ASSERT_FALSE((hud::is_same_v<a, b>));
-    ASSERT_FALSE((hud::is_same_v<a, c>));
-    ASSERT_TRUE((hud::is_same_v<a, d>));
-    ASSERT_TRUE((hud::is_same_v<c, c>));
-    ASSERT_TRUE((hud::is_same_v<is_same_d<a>, is_same_d<a>>));
-    ASSERT_FALSE((hud::is_same_v<is_same_d<a>, is_same_d<c>>));
-    ASSERT_FALSE((hud::is_same_v<is_same_d<a>, is_same_d<b>>));
+    ASSERT_FALSE((hud::is_same_v<hud_test::a, hud_test::b>));
+    ASSERT_FALSE((hud::is_same_v<hud_test::a, hud_test::c>));
+    ASSERT_TRUE((hud::is_same_v<hud_test::a, hud_test::d>));
+    ASSERT_TRUE((hud::is_same_v<hud_test::c, hud_test::c>));
+    ASSERT_TRUE((hud::is_same_v<hud_test::is_same_d<hud_test::a>, hud_test::is_same_d<hud_test::a>>));
+    ASSERT_FALSE((hud::is_same_v<hud_test::is_same_d<hud_test::a>, hud_test::is_same_d<hud_test::c>>));
+    ASSERT_FALSE((hud::is_same_v<hud_test::is_same_d<hud_test::a>, hud_test::is_same_d<hud_test::b>>));
 }

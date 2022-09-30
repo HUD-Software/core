@@ -1,6 +1,6 @@
 #include <core/traits/is_unsigned.h>
 
-namespace {
+namespace hud_test {
     struct a {};
 }
 
@@ -30,5 +30,5 @@ TEST(traits, is_unsigned) {
     #else // HD_OS_LINUX
     ASSERT_FALSE((hud::is_unsigned_v<wchar>));
     #endif
-    ASSERT_FALSE((hud::is_unsigned_v<a>));
+    ASSERT_FALSE((hud::is_unsigned_v<hud_test::a>));
 }

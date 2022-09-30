@@ -1,6 +1,6 @@
 #include <core/traits/make_unsigned.h>
 
-namespace {
+namespace hud_test {
     enum class a;
     enum class B_char : char;
     enum class B_const_char : const char;
@@ -103,39 +103,39 @@ TEST(traits, make_unsigned) {
     ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<isize>, hud::conditional_t< sizeof(void*) == 4, u32, u64>>));
     ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<usize>, hud::conditional_t< sizeof(void*) == 4, u32, u64>>));
 
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<a>, unsigned int>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<B_char>, unsigned char>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<B_const_char>, unsigned char>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<B_volatile_char>, unsigned char>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<B_const_volatile_char>, unsigned char>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<c>, unsigned char>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<d>, unsigned short>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<e>, unsigned int>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<f>, unsigned long>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<g>, unsigned long long>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<h>, unsigned char>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<i>, unsigned short>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<j>, unsigned int >));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<k>, unsigned long >));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<l>, unsigned long long>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<m>, hud::conditional_t< sizeof(wchar_t) == 2, unsigned short, unsigned int> >));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<n>, unsigned short>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<o>, unsigned int>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<p>, unsigned char>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::a>, unsigned int>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::B_char>, unsigned char>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::B_const_char>, unsigned char>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::B_volatile_char>, unsigned char>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::B_const_volatile_char>, unsigned char>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::c>, unsigned char>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::d>, unsigned short>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::e>, unsigned int>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::f>, unsigned long>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::g>, unsigned long long>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::h>, unsigned char>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::i>, unsigned short>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::j>, unsigned int >));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::k>, unsigned long >));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::l>, unsigned long long>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::m>, hud::conditional_t< sizeof(wchar_t) == 2, unsigned short, unsigned int> >));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::n>, unsigned short>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::o>, unsigned int>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::p>, unsigned char>));
                               
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<q>, u8>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<r>, u16>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<s>, u32>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<t>, u64>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<u>, u8>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<v>, u16>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<w>, u32>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<x>, u64>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<y>, u8>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<z>, hud::conditional_t< sizeof(wchar) == 2, u16, u32>>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<a_1>, u16>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<b_1>, u32>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<c_1>, uptr>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<d_1>, hud::conditional_t< sizeof(void*) == 4, u32, u64>>));
-    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<e_1>, hud::conditional_t< sizeof(void*) == 4, u32, u64>>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::q>, u8>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::r>, u16>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::s>, u32>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::t>, u64>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::u>, u8>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::v>, u16>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::w>, u32>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::x>, u64>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::y>, u8>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::z>, hud::conditional_t< sizeof(wchar) == 2, u16, u32>>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::a_1>, u16>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::b_1>, u32>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::c_1>, uptr>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::d_1>, hud::conditional_t< sizeof(void*) == 4, u32, u64>>));
+    ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<hud_test::e_1>, hud::conditional_t< sizeof(void*) == 4, u32, u64>>));
 }

@@ -1,6 +1,6 @@
 #include <core/traits/is_base_of.h>
 
-namespace {
+namespace hud_test {
     class a {};
     class b : a {};
     class c {};
@@ -8,17 +8,17 @@ namespace {
 
 TEST(traits, is_base_of) {
 
-    ASSERT_TRUE((hud::is_base_of_v<a, a>));
-    ASSERT_TRUE((hud::is_base_of_v<a, b>));
-    ASSERT_FALSE((hud::is_base_of_v<a, c>));
-    ASSERT_FALSE((hud::is_base_of_v<b, a>));
-    ASSERT_TRUE((hud::is_base_of_v<b, b>));
-    ASSERT_FALSE((hud::is_base_of_v<b, c>));
-    ASSERT_FALSE((hud::is_base_of_v<c, a>));
-    ASSERT_FALSE((hud::is_base_of_v<c, b>));
-    ASSERT_TRUE((hud::is_base_of_v<c, c>));
+    ASSERT_TRUE((hud::is_base_of_v<hud_test::a, hud_test::a>));
+    ASSERT_TRUE((hud::is_base_of_v<hud_test::a, hud_test::b>));
+    ASSERT_FALSE((hud::is_base_of_v<hud_test::a, hud_test::c>));
+    ASSERT_FALSE((hud::is_base_of_v<hud_test::b, hud_test::a>));
+    ASSERT_TRUE((hud::is_base_of_v<hud_test::b, hud_test::b>));
+    ASSERT_FALSE((hud::is_base_of_v<hud_test::b, hud_test::c>));
+    ASSERT_FALSE((hud::is_base_of_v<hud_test::c, hud_test::a>));
+    ASSERT_FALSE((hud::is_base_of_v<hud_test::c, hud_test::b>));
+    ASSERT_TRUE((hud::is_base_of_v<hud_test::c, hud_test::c>));
 
-    ASSERT_FALSE((hud::is_base_of_v<a*, a*>));
-    ASSERT_FALSE((hud::is_base_of_v<a*, b*>));
-    ASSERT_FALSE((hud::is_base_of_v<a*, c*>));
+    ASSERT_FALSE((hud::is_base_of_v<hud_test::a*, hud_test::a*>));
+    ASSERT_FALSE((hud::is_base_of_v<hud_test::a*, hud_test::b*>));
+    ASSERT_FALSE((hud::is_base_of_v<hud_test::a*, hud_test::c*>));
 }

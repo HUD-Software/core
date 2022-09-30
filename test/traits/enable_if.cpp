@@ -1,6 +1,6 @@
 #include <core/traits/enable_if.h>
 
-namespace {
+namespace hud_test {
     class a {};
 
     template <typename type_t>
@@ -16,7 +16,7 @@ namespace {
 
 TEST(traits, enable_if)
 {
-    ASSERT_TRUE(enable_if_fct_is_integral<i32>());
-    ASSERT_TRUE(enable_if_fct_is_integral<i8>());
-    ASSERT_FALSE(enable_if_fct_is_integral<a>());
+    ASSERT_TRUE(hud_test::enable_if_fct_is_integral<i32>());
+    ASSERT_TRUE(hud_test::enable_if_fct_is_integral<i8>());
+    ASSERT_FALSE(hud_test::enable_if_fct_is_integral<hud_test::a>());
 }

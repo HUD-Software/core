@@ -1,6 +1,6 @@
 #include <core/traits/is_arithmetic.h>
 
-namespace {
+namespace hud_test {
     enum a {};
     class b {};
 }
@@ -19,6 +19,6 @@ TEST(traits, is_arithmetic) {
     ASSERT_TRUE(hud::is_arithmetic_v<wchar>);
     ASSERT_TRUE(hud::is_arithmetic_v<char16>);
     ASSERT_TRUE(hud::is_arithmetic_v<char32>);
-    ASSERT_FALSE(hud::is_arithmetic_v<a>);
-    ASSERT_FALSE(hud::is_arithmetic_v<b>);
+    ASSERT_FALSE(hud::is_arithmetic_v<hud_test::a>);
+    ASSERT_FALSE(hud::is_arithmetic_v<hud_test::b>);
 }

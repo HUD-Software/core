@@ -1,14 +1,14 @@
 #include <core/traits/is_integral.h>
 
-namespace {
+namespace hud_test {
     class a;
     enum class b : u32;
 }
 
 TEST(traits, is_integral) {
 
-    ASSERT_FALSE((hud::is_integral_v<a>));
-    ASSERT_FALSE((hud::is_integral_v<b>));
+    ASSERT_FALSE((hud::is_integral_v<hud_test::a>));
+    ASSERT_FALSE((hud::is_integral_v<hud_test::b>));
     ASSERT_FALSE((hud::is_integral_v<f64>));
     ASSERT_FALSE((hud::is_integral_v<f32>));
 

@@ -61,7 +61,7 @@ jobs:
           $xml = [xml](Get-Content .\target\test\Debug\coverage.xml)
           foreach($node in $xml.SelectNodes("//source_file[contains(@path,'_deps')]")){$node.ParentNode.RemoveChild($node)}
           foreach($node in $xml.SelectNodes("//function[@name='TestBody']")){$node.ParentNode.RemoveChild($node)}
-          foreach($node in $xml.SelectNodes("//function[contains(@namespace,'anonymous-namespace')]")){$node.ParentNode.RemoveChild($node)}
+          foreach($node in $xml.SelectNodes("//function[@namespace='hud_test']")){$node.ParentNode.RemoveChild($node)}
           $xml.Save("$pwd\target\test\Debug\coverage.xml")
       - name: Upload to Codecov
         run: |

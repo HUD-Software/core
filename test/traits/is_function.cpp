@@ -1,6 +1,6 @@
 #include <core/traits/is_function.h>
 
-namespace {
+namespace hud_test {
     int is_function_a(int i) { return i; }
     template<typename>
     struct is_function_pm {};
@@ -21,15 +21,15 @@ namespace {
 }
 
 TEST(traits, is_function) {
-    ASSERT_TRUE((hud::is_function_v<decltype(is_function_a)>));
-    ASSERT_FALSE((hud::is_function_v<decltype(b)>));
-    ASSERT_FALSE((hud::is_function_v<decltype(fct_obj)>));
-    ASSERT_FALSE((hud::is_function_v<c>));
-    ASSERT_FALSE((hud::is_function_v<decltype(c())>));
-    ASSERT_FALSE((hud::is_function_v<d>));
-    ASSERT_TRUE((hud::is_function_v<is_function_pm<decltype(&d::fct)>::type>));
-    ASSERT_TRUE((hud::is_function_v<is_function_pm<decltype(&d::fct2)>::type>));
-    ASSERT_TRUE((hud::is_function_v<is_function_pm<decltype(&d::fct3)>::type>));
-    ASSERT_TRUE((hud::is_function_v<is_function_pm<decltype(&d::fct4)>::type>));
-    ASSERT_FALSE((hud::is_function_v<is_function_pm<decltype(&d::d5)>::type>));
+    ASSERT_TRUE((hud::is_function_v<decltype(hud_test::is_function_a)>));
+    ASSERT_FALSE((hud::is_function_v<decltype(hud_test::b)>));
+    ASSERT_FALSE((hud::is_function_v<decltype(hud_test::fct_obj)>));
+    ASSERT_FALSE((hud::is_function_v<hud_test::c>));
+    ASSERT_FALSE((hud::is_function_v<decltype(hud_test::c())>));
+    ASSERT_FALSE((hud::is_function_v<hud_test::d>));
+    ASSERT_TRUE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct)>::type>));
+    ASSERT_TRUE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct2)>::type>));
+    ASSERT_TRUE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct3)>::type>));
+    ASSERT_TRUE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct4)>::type>));
+    ASSERT_FALSE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::d5)>::type>));
 }

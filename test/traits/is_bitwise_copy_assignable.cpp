@@ -1,6 +1,6 @@
 #include <core/traits/is_bitwise_copy_assignable.h>
 
-namespace {
+namespace hud_test {
     enum comp_enum {};
     enum class comp_enum_2 {};
     enum class comp_enum_3 : u8 {};
@@ -398,34 +398,34 @@ TEST(traits, is_bitwise_copy_assignable)
 
    
 
-    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<comp_enum, comp_enum>));
-    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<comp_enum_2, comp_enum_2>));
-    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<comp_enum_3, comp_enum_3>));
-    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<comp_enum_4, comp_enum_4>));
-    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<comp_enum, comp_enum_2>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<comp_enum, comp_enum_3>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<comp_enum, comp_enum_4>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<comp_enum_3, comp_enum_4>));
+    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<hud_test::comp_enum, hud_test::comp_enum>));
+    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<hud_test::comp_enum_2, hud_test::comp_enum_2>));
+    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<hud_test::comp_enum_3, hud_test::comp_enum_3>));
+    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<hud_test::comp_enum_4, hud_test::comp_enum_4>));
+    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<hud_test::comp_enum, hud_test::comp_enum_2>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::comp_enum, hud_test::comp_enum_3>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::comp_enum, hud_test::comp_enum_4>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::comp_enum_3, hud_test::comp_enum_4>));
 
     ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<i32, i32>));
     ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<i32&, i32>));
     ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<i32[], i32[]>));
     ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<i32[32], i32[32]>));
     ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<i32*, i32*>));
-    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<a, a>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<a, b>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<a, c>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<a, d>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<b, a>));
-    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<b, b>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<b, c>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<b, d>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<c, a>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<c, b>));
-    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<c, c>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<c, d>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<d, a>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<d, b>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<d, c>));
-    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<d, d>));
+    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<hud_test::a, hud_test::a>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::a, hud_test::b>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::a, hud_test::c>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::a, hud_test::d>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::b, hud_test::a>));
+    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<hud_test::b, hud_test::b>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::b, hud_test::c>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::b, hud_test::d>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::c, hud_test::a>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::c, hud_test::b>));
+    ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<hud_test::c, hud_test::c>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::c, hud_test::d>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::d, hud_test::a>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::d, hud_test::b>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::d, hud_test::c>));
+    ASSERT_FALSE((hud::is_bitwise_copy_assignable_v<hud_test::d, hud_test::d>));
 }

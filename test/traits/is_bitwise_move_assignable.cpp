@@ -1,6 +1,6 @@
 #include <core/traits/is_bitwise_move_assignable.h>
 
-namespace {
+namespace hud_test {
 
     enum comp_enum {};
     enum class comp_enum_2 {};
@@ -397,14 +397,14 @@ TEST(traits, is_bitwise_move_assignable) {
 
     
 
-    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<comp_enum, comp_enum>));
-    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<comp_enum_2, comp_enum_2>));
-    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<comp_enum_3, comp_enum_3>));
-    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<comp_enum_4, comp_enum_4>));
-    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<comp_enum, comp_enum_2>));
-    ASSERT_FALSE((hud::is_bitwise_move_assignable_v<comp_enum, comp_enum_3>));
-    ASSERT_FALSE((hud::is_bitwise_move_assignable_v<comp_enum, comp_enum_4>));
-    ASSERT_FALSE((hud::is_bitwise_move_assignable_v<comp_enum_3, comp_enum_4>));
+    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<hud_test::comp_enum, hud_test::comp_enum>));
+    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<hud_test::comp_enum_2, hud_test::comp_enum_2>));
+    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<hud_test::comp_enum_3, hud_test::comp_enum_3>));
+    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<hud_test::comp_enum_4, hud_test::comp_enum_4>));
+    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<hud_test::comp_enum, hud_test::comp_enum_2>));
+    ASSERT_FALSE((hud::is_bitwise_move_assignable_v<hud_test::comp_enum, hud_test::comp_enum_3>));
+    ASSERT_FALSE((hud::is_bitwise_move_assignable_v<hud_test::comp_enum, hud_test::comp_enum_4>));
+    ASSERT_FALSE((hud::is_bitwise_move_assignable_v<hud_test::comp_enum_3, hud_test::comp_enum_4>));
 
 
     ASSERT_TRUE((hud::is_bitwise_move_assignable_v<i32, i32>));
@@ -413,7 +413,7 @@ TEST(traits, is_bitwise_move_assignable) {
     ASSERT_FALSE((hud::is_bitwise_move_assignable_v < i32[32], i32[32] >));
     ASSERT_TRUE((hud::is_bitwise_move_assignable_v<i32*, i32*>));
 
-    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<a, a>));
-    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<b, b>));
-    ASSERT_FALSE((hud::is_bitwise_move_assignable_v<c, c>));
+    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<hud_test::a, hud_test::a>));
+    ASSERT_TRUE((hud::is_bitwise_move_assignable_v<hud_test::b, hud_test::b>));
+    ASSERT_FALSE((hud::is_bitwise_move_assignable_v<hud_test::c, hud_test::c>));
 }

@@ -1,6 +1,6 @@
 #include <core/traits/is_trivially_copyable.h>
 
-namespace {
+namespace hud_test {
     struct a { int i; };
     struct b {
         int i, j;
@@ -19,7 +19,7 @@ TEST(traits, is_trivially_copyable) {
     ASSERT_TRUE((hud::is_trivially_copyable_v<i32[32]>));
     ASSERT_TRUE((hud::is_trivially_copyable_v<i32*>));
 
-    ASSERT_TRUE((hud::is_trivially_copyable_v<a>));
-    ASSERT_FALSE((hud::is_trivially_copyable_v<b>));
-    ASSERT_TRUE((hud::is_trivially_copyable_v<c>));
+    ASSERT_TRUE((hud::is_trivially_copyable_v<hud_test::a>));
+    ASSERT_FALSE((hud::is_trivially_copyable_v<hud_test::b>));
+    ASSERT_TRUE((hud::is_trivially_copyable_v<hud_test::c>));
 }

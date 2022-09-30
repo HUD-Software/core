@@ -1,7 +1,7 @@
 #include <core/templates/less.h>
 
-namespace {
-    struct S {
+namespace hud_test {
+    struct S{
         constexpr S(i32 val) noexcept
             : value(val) {
         }
@@ -23,10 +23,10 @@ TEST(templates, less) {
     ASSERT_FALSE(ls(1, 1));
     ASSERT_TRUE(ls(1, 2));
 
-    hud::less<S> ls_s;
-    ASSERT_FALSE(ls_s(S{ 2 }, S{ 1 }));
-    ASSERT_FALSE(ls_s(S{ 1 }, S{ 1 }));
-    ASSERT_TRUE(ls_s(S{ 1 }, S{ 2 }));
+    hud::less<hud_test::S> ls_s;
+    ASSERT_FALSE(ls_s(hud_test::S{ 2 }, hud_test::S{ 1 }));
+    ASSERT_FALSE(ls_s(hud_test::S{ 1 }, hud_test::S{ 1 }));
+    ASSERT_TRUE(ls_s(hud_test::S{ 1 }, hud_test::S{ 2 }));
 
     hud::less<i32*> ls_ptr;
     ASSERT_FALSE(ls_ptr(nullptr, nullptr));

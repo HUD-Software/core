@@ -1,6 +1,6 @@
 #include <core/templates/less_equal.h>
 
-namespace {
+namespace hud_test {
     struct S {
         constexpr S(i32 val) noexcept
             : value(val) {
@@ -23,10 +23,10 @@ TEST(templates, less_equal) {
     ASSERT_TRUE(le(1, 1));
     ASSERT_TRUE(le(1, 2));
 
-    hud::less_equal<S> le_s;
-    ASSERT_FALSE(le_s(S{ 2 }, S{ 1 }));
-    ASSERT_TRUE(le_s(S{ 1 }, S{ 1 }));
-    ASSERT_TRUE(le_s(S{ 1 }, S{ 2 }));
+    hud::less_equal<hud_test::S> le_s;
+    ASSERT_FALSE(le_s(hud_test::S{ 2 }, hud_test::S{ 1 }));
+    ASSERT_TRUE(le_s(hud_test::S{ 1 }, hud_test::S{ 1 }));
+    ASSERT_TRUE(le_s(hud_test::S{ 1 }, hud_test::S{ 2 }));
 
     hud::less_equal<i32*> le_ptr;
     ASSERT_TRUE(le_ptr(nullptr, nullptr));

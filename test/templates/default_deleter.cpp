@@ -1,6 +1,6 @@
 #include <core/templates/default_deleter.h>
 
-namespace {
+namespace hud_test {
     enum class state {
         uninit,
         construct,
@@ -31,32 +31,32 @@ TEST(templates, default_deleter) {
 
     /** Test DefaultDeleter */
     {
-        ASSERT_EQ(A_state, state::uninit);
-        a* a_ptr = new a;
-        ASSERT_EQ(A_state, state::construct);
-        hud::default_deleter<a> deleter_a;
+        ASSERT_EQ(hud_test::A_state, hud_test::state::uninit);
+        hud_test::a* a_ptr = new hud_test::a;
+        ASSERT_EQ(hud_test::A_state, hud_test::state::construct);
+        hud::default_deleter<hud_test::a> deleter_a;
         deleter_a(a_ptr);
-        ASSERT_EQ(A_state, state::destroyed);
+        ASSERT_EQ(hud_test::A_state, hud_test::state::destroyed);
 
 
-        for (usize cur = 0; cur < array_size; cur++) {
-            ASSERT_EQ(B_state[cur], state::uninit);
+        for (usize cur = 0; cur < hud_test::array_size; cur++) {
+            ASSERT_EQ(hud_test::B_state[cur], hud_test::state::uninit);
         }
     }
 
     /** Test DefaultDeleter Array specialization */
     {
-        b* b_ptr = new b[array_size];
-        for (usize cur = 0; cur < array_size; cur++) {
+        hud_test::b* b_ptr = new hud_test::b[hud_test::array_size];
+        for (usize cur = 0; cur < hud_test::array_size; cur++) {
             b_ptr[cur].set_index(cur);
-            ASSERT_EQ(B_state[cur], state::construct);
+            ASSERT_EQ(hud_test::B_state[cur], hud_test::state::construct);
         }
 
-        hud::default_deleter<b[]> deleter_b;
+        hud::default_deleter<hud_test::b[]> deleter_b;
         deleter_b(b_ptr);
 
-        for (usize cur = 0; cur < array_size; cur++) {
-            ASSERT_EQ(B_state[cur], state::destroyed);
+        for (usize cur = 0; cur < hud_test::array_size; cur++) {
+            ASSERT_EQ(hud_test::B_state[cur], hud_test::state::destroyed);
         }
     }
 

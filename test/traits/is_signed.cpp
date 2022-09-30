@@ -1,6 +1,6 @@
 #include <core/traits/is_signed.h>
 
-namespace {
+namespace hud_test {
     struct a {};
     enum class e : i32 {};
 }
@@ -31,7 +31,7 @@ TEST(traits, is_signed) {
     #else // HD_OS_LINUX
     ASSERT_TRUE((hud::is_signed_v<wchar>));
     #endif
-    ASSERT_FALSE((hud::is_signed_v<a>));
+    ASSERT_FALSE((hud::is_signed_v<hud_test::a>));
 
     ASSERT_FALSE((hud::is_signed_v<const bool>));
     ASSERT_TRUE((hud::is_signed_v<const i8>));
@@ -58,7 +58,7 @@ TEST(traits, is_signed) {
     #else // HD_OS_LINUX
     ASSERT_TRUE((hud::is_signed_v<const wchar>));
     #endif
-    ASSERT_FALSE((hud::is_signed_v<const a>));
+    ASSERT_FALSE((hud::is_signed_v<const hud_test::a>));
 
     ASSERT_FALSE((hud::is_signed_v<volatile bool>));
     ASSERT_TRUE((hud::is_signed_v<volatile i8>));
@@ -85,7 +85,7 @@ TEST(traits, is_signed) {
     #else // HD_OS_LINUX
     ASSERT_TRUE((hud::is_signed_v<volatile wchar>));
     #endif
-    ASSERT_FALSE((hud::is_signed_v<volatile a>));
+    ASSERT_FALSE((hud::is_signed_v<volatile hud_test::a>));
 
     ASSERT_FALSE((hud::is_signed_v<const volatile bool>));
     ASSERT_TRUE((hud::is_signed_v<const volatile i8>));
@@ -112,7 +112,7 @@ TEST(traits, is_signed) {
     #else // HD_OS_LINUX
     ASSERT_TRUE((hud::is_signed_v<const volatile wchar>));
     #endif
-    ASSERT_FALSE((hud::is_signed_v<const volatile a>));
+    ASSERT_FALSE((hud::is_signed_v<const volatile hud_test::a>));
 
-    ASSERT_FALSE((hud::is_signed_v<e>));
+    ASSERT_FALSE((hud::is_signed_v<hud_test::e>));
 }
