@@ -53,9 +53,9 @@ jobs:
       - name: Build
         run: cmake.exe --build target --config Debug
       - name: Instrument binary
-        run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "instrument .\target\test\Debug\test_core.exe -s .\test\code_coverage.runsettings" -NoNewWindow -Wait
+        run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "instrument .\target\test\Debug\test_core.exe" -NoNewWindow -Wait
       - name: Collect coverage
-        run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "collect .\target\test\Debug\test_core.exe  -s .\test\code_coverage.runsettings -o .\target\test\Debug\coverage -f xml" -NoNewWindow -Wait
+        run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "collect .\target\test\Debug\test_core.exe -o .\target\test\Debug\coverage -f xml" -NoNewWindow -Wait
       - name: Remove unwanted coverage
         run: |
           $xml = [xml](Get-Content .\target\test\Debug\coverage.xml)
