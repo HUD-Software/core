@@ -32,19 +32,19 @@ print_help() {
 # Check input parameters
 #========================
 if [ "$2" != "x86_64" ] && [ "$2" != "x86" ]; then
-echo "[arch] is not correct: "$2""
+echo "[arch] is not correct: $2"
 print_help
 exit 1
 fi
 
 if [ "$3" != "GCC" ] && [ "$3" != "Clang" ]; then
-echo "[compiler] is not correct: "$3""
+echo "[compiler] is not correct: $3"
 print_help
 exit 1
 fi
 
 if [ "$4" != "Debug" ] && [ "$4" != "Release" ] && [ "$4" != "DebugOptimized" ]; then
-echo "[config] is not correct: "$4""
+echo "[config] is not correct: $4"
 print_help
 exit 1
 fi
@@ -56,7 +56,7 @@ fi
 if [ "$1" = "Makefile" ]; then
 
 export current_dir=$(pwd)
-export build_dir=$(./setup_build_env.sh Makefile "$2" "$3" "$4")
+export build_dir=$(./setup_build_env.sh Makefile $2 $3 $4)
 if [ $? -eq 0 ]; then
 (
 	cd "$build_dir"

@@ -29,7 +29,7 @@ print_help() {
 # Check input parameters
 #========================
 if [ ! -d "$1" ]; then
-echo "[dir] "$1" do not exist"
+echo "[dir] $1 do not exist"
 print_help
 exit 1
 fi
@@ -42,7 +42,7 @@ exit 1
 fi
 
 if [ "$2" != "x86_64" ] && [ "$2" != "x86" ]; then
-echo "[arch] is not correct: "$2""
+echo "[arch] is not correct: $2"
 print_help
 exit 1
 fi

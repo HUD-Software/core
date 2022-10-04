@@ -53,19 +53,19 @@ exit 1
 fi
 
 if [ "$3" != "x86_64" ] && [ "$3" != "x86" ]; then
-echo "[arch] is not correct: "$3""
+echo "[arch] is not correct: $3"
 print_help
 exit 1
 fi
 
 if [ "$4" != "GCC" ] && [ "$4" != "Clang" ]; then
-echo "[compiler] is not correct: "$4""
+echo "[compiler] is not correct: $4"
 print_help
 exit 1
 fi
 
 if [ "$5" != "Debug" ] && [ "$5" != "Release" ] && [ "$5" != "DebugOptimized" ]; then
-echo "[config] is not correct: "$5""
+echo "[config] is not correct: $5"
 print_help
 exit 1
 fi
