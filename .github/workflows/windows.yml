@@ -72,10 +72,10 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: './target/test/Debug/coverage.cobertura'
+          coverage-reports: './target/test/Debug/coverage.cobertura.xml'
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Windows_MSVC_AMD64
-          path: target\test\Debug\coverage.cobertura
+          path: target\test\Debug\coverage.cobertura.xml
