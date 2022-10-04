@@ -56,26 +56,26 @@ jobs:
         run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "instrument .\target\test\Debug\test_core.exe" -NoNewWindow -Wait
       - name: Collect coverage
         run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "collect .\target\test\Debug\test_core.exe -o .\target\test\Debug\coverage -f cobertura" -NoNewWindow -Wait
-      - name: Remove unwanted coverage
-        run: |
-          $xml = [xml](Get-Content .\target\test\Debug\coverage.xml)
-          foreach($node in $xml.SelectNodes("//source_file[contains(@path,'_deps')]")){$node.ParentNode.RemoveChild($node)}
-          foreach($node in $xml.SelectNodes("//function[@name='TestBody']")){$node.ParentNode.RemoveChild($node)}
-          foreach($node in $xml.SelectNodes("//function[contains(@namespace,'hud_test')]")){$node.ParentNode.RemoveChild($node)}
-          $xml.Save("$pwd\target\test\Debug\coverage.xml")
-      - name: Upload to Codecov
-        run: |
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
-          .\codecov.exe -f target\test\Debug\coverage.xml -t 249d9fec-6c00-453b-a383-6829ce52ec96
+      # - name: Remove unwanted coverage
+      #   run: |
+      #     $xml = [xml](Get-Content .\target\test\Debug\coverage.xml)
+      #     foreach($node in $xml.SelectNodes("//source_file[contains(@path,'_deps')]")){$node.ParentNode.RemoveChild($node)}
+      #     foreach($node in $xml.SelectNodes("//function[@name='TestBody']")){$node.ParentNode.RemoveChild($node)}
+      #     foreach($node in $xml.SelectNodes("//function[contains(@namespace,'hud_test')]")){$node.ParentNode.RemoveChild($node)}
+      #     $xml.Save("$pwd\target\test\Debug\coverage.xml")
+      # - name: Upload to Codecov
+      #   run: |
+      #     $ProgressPreference = 'SilentlyContinue'
+      #     Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
+      #     .\codecov.exe -f target\test\Debug\coverage.xml -t 249d9fec-6c00-453b-a383-6829ce52ec96
       - name: Upload to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: './target/test/Debug/coverage.xml'
+          coverage-reports: './target/test/Debug/coverage.cobertura'
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Windows_MSVC_AMD64
-          path: target\test\Debug\coverage.xml
+          path: target\test\Debug\coverage.cobertura
