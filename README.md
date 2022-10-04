@@ -6,7 +6,7 @@
 
 ![Windows Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Windows?label=windows%20build%20%26%20test) ![Ubuntu Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Ubuntu?label=ubuntu%20build%20%26%20test)
 [![codecov](https://codecov.io/gh/HUD-Software/core/branch/main/graph/badge.svg?token=KDDSR2NG0M)](https://codecov.io/gh/HUD-Software/core)
-
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/8014adeaff854f95b7688b8bed741964)](https://www.codacy.com/gh/HUD-Software/core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HUD-Software/core&amp;utm_campaign=Badge_Grade)
 # Description
 
 `Core` is the heart of the HUD-engine for [HUD-Software](https://github.com/HUD-Software).
