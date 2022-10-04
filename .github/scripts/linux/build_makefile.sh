@@ -48,11 +48,13 @@ fi
 #=========================
 # Build Unix Makefiles
 #=========================
-export current_dir=$(pwd)
-export build_dir=$(./setup_build_env.sh Makefile $1 $2 $3)
+current_dir=$(pwd)
+export current_dir
+build_dir="$(./setup_build_env.sh Makefile "$1" "$2" "$3")"
+export build_dir
 if [ $? -eq 0 ]; then
 (
-	cd "$build_dir"
+	cd "$build_dir" || exit
 	make
 )
 fi

@@ -76,7 +76,7 @@ fi
 # Generate Unix Makefiles
 #=========================
 (
-	cd "$build_dir"
-	cmake $1 -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE
+	cd "$build_dir" || exit
+	cmake $1 -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE"
 )
 exit $?
