@@ -22,7 +22,7 @@ It provides low level C++ features like that is close to C++ STL implmentation:
 `Core` follow the [HUD-Software](https://github.com/HUD-Software) project organisations:
 
 -   `src` directory contains the source and interface of the `Core`
-  - `src/core` directroy contains the interface of the `Core` library. This is the directory that will be included in C++ user code to use the library.
+  -   `src/core` directroy contains the interface of the `Core` library. This is the directory that will be included in C++ user code to use the library.
 -   `test`directory contains the source of all tests of the core in `src`. Code coverage check that `test`cover all `src` code.
 
 ## targets
