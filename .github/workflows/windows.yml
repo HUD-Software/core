@@ -72,7 +72,7 @@ jobs:
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: .\target\test\Debug\coverage.xml
+          coverage-reports: './target/test/Debug/coverage.xml'
       
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
