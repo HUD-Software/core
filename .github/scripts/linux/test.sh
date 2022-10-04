@@ -56,7 +56,7 @@ fi
 if [ "$1" = "Makefile" ]; then
 
 export current_dir=$(pwd)
-export build_dir=$(./setup_build_env.sh Makefile $2 $3 $4)
+export build_dir="$(./setup_build_env.sh Makefile $2 $3 $4)"
 if [ $? -eq 0 ]; then
 (
 	cd "$build_dir"

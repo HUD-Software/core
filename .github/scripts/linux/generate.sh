@@ -40,7 +40,7 @@ print_help() {
 # Check input parameters
 #========================
 if [ ! -d "$1" ]; then
-echo "[dir] "$1" do not exist"
+echo "[dir] $1 do not exist"
 print_help
 exit 1
 fi
@@ -74,7 +74,7 @@ fi
 # Check and call the generate script
 #====================================
 if [ "$2" = "Makefile" ]; then
-$(dirname "$(realpath $0)")/generate_makefile.sh "$1" "$3" "$4" "$5"
+"$(dirname "$(realpath $0)")"/generate_makefile.sh "$1" "$3" "$4" "$5"
 else
 echo "[generator] is not correct"
 print_help
