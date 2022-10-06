@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  quality-analysis:
+  coverage_windows:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
@@ -39,7 +39,6 @@ jobs:
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           coverage-reports: target/test/Debug/coverage.cobertura.xml
-          partial: true
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
