@@ -1,0 +1,9 @@
+---
+engines:
+  cppcheck:
+    enabled: true
+    language: c++
+  duplication:
+    enabled: true
+    exclude_paths:
+    - "test/**"
