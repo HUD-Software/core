@@ -92,8 +92,6 @@ TEST(character, is_alphanumeric)
 
 TEST(character, is_alphabetic)
 {
-
-
     for (const auto& no_alphabetic : digits) {
         ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
     }
