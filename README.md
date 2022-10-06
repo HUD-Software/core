@@ -3,13 +3,9 @@
   <h1>Core</h1>
 </div>
 
-<center>
-
-| Build & test | Quality |
-|:--------------|---------|
-|![Windows Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Windows?label=windows%20build%20%26%20test) <br> ![Ubuntu Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Ubuntu?label=ubuntu%20build%20%26%20test) | [![codecov](https://codecov.io/gh/HUD-Software/core/branch/main/graph/badge.svg?token=KDDSR2NG0M)](https://codecov.io/gh/HUD-Software/core) <br> [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8014adeaff854f95b7688b8bed741964)](https://www.codacy.com/gh/HUD-Software/core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HUD-Software/core&amp;utm_campaign=Badge_Grade) <br> [![CodeQL Analysis](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml/badge.svg?branch=main)](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml) |
-
-</center>
+| Build & test | Quality | Test coverage |
+|:--------------|---------|--------------|
+|![Windows Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Windows?label=windows%20build%20%26%20test) <br> ![Ubuntu Build and test](https://img.shields.io/github/workflow/status/HUD-Software/core/Ubuntu?label=ubuntu%20build%20%26%20test) | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8014adeaff854f95b7688b8bed741964)](https://www.codacy.com/gh/HUD-Software/core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HUD-Software/core&amp;utm_campaign=Badge_Grade) <br> [![CodeQL Analysis](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml/badge.svg?branch=main)](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml) | [![codecov](https://codecov.io/gh/HUD-Software/core/branch/main/graph/badge.svg?token=KDDSR2NG0M)](https://codecov.io/gh/HUD-Software/core) |
 
 # Description
 
