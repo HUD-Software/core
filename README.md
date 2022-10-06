@@ -3,7 +3,7 @@
   <h1>Core</h1>
 </div>
 
-| Build & test | Quality | Test coverage |
+| Build & test | Quality | Coverage |
 |:--------------|---------|--------------|
 |[![Windows build & test](https://github.com/HUD-Software/core/actions/workflows/windows.yml/badge.svg?branch=main)](https://github.com/HUD-Software/core/actions/workflows/windows.yml?label=Windows%20build%20%26%20test) <br> [![Ubuntu build & test](https://github.com/HUD-Software/core/actions/workflows/ubuntu.yml/badge.svg?branch=main)](https://github.com/HUD-Software/core/actions/workflows/ubuntu.yml?label=Ubuntu%20build%20%26%20test) | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8014adeaff854f95b7688b8bed741964)](https://www.codacy.com/gh/HUD-Software/core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HUD-Software/core&amp;utm_campaign=Badge_Grade) <br> [![CodeQL Analysis](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml/badge.svg?branch=main)](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml) | [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/8014adeaff854f95b7688b8bed741964)](https://www.codacy.com/gh/HUD-Software/core/dashboard?utm_source=github.com&utm_medium=referral&utm_content=HUD-Software/core&utm_campaign=Badge_Coverage)|
 
