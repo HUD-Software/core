@@ -8,6 +8,11 @@ project(core
 		LANGUAGES CXX
 )
 
+SET(COVERAGE OFF CACHE BOOL "Set to true to generate code coverage")
+if(MSVC)
+SET(MSVC_CODECOVERAGE_CONSOLE "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console\\Microsoft.CodeCoverage.Console.exe" CACHE STRING "Path to Microsoft.CodeCoverage.Console.exe")
+endif()
+
 add_subdirectory(src)
 
 enable_testing()

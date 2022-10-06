@@ -264,7 +264,17 @@ set_target_properties(test_core
 )
 if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj)
-	target_link_options(test_core PRIVATE $<$<CONFIG:Debug>:/PROFILE>)
+endif()
+
+if(COVERAGE AND MSVC)
+	target_link_options(test_core PRIVATE /PROFILE)
+	add_custom_command(
+		TARGET test_core POST_BUILD
+		COMMENT "Instrument test_core.exe"
+		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} instrument Debug\\test_core.exe
+		COMMENT "Collect test_core.exe"
+		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} collect Debug\\test_core.exe -o Debug\\coverage -f cobertura
+	)
 endif()
 
 target_precompile_headers(test_core PRIVATE precompiled.h)

@@ -15,13 +15,13 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Generate visual Studio solution
-        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64
+        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64 -DCOVERAGE:BOOL=ON
       - name: Build
         run: cmake.exe --build target --config Debug
-      - name: Instrument binary
-        run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "instrument .\target\test\Debug\test_core.exe" -NoNewWindow -Wait
-      - name: Collect coverage
-        run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "collect .\target\test\Debug\test_core.exe -o .\target\test\Debug\coverage -f cobertura" -NoNewWindow -Wait
+      # - name: Instrument binary
+      #   run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "instrument .\target\test\Debug\test_core.exe" -NoNewWindow -Wait
+      # - name: Collect coverage
+      #   run: Start-Process -FilePath "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\CodeCoverage.Console\Microsoft.CodeCoverage.Console.exe" -ArgumentList "collect .\target\test\Debug\test_core.exe -o .\target\test\Debug\coverage -f cobertura" -NoNewWindow -Wait
       # - name: Remove unwanted coverage
       #   run: |
       #     $xml = [xml](Get-Content .\target\test\Debug\coverage.xml)
