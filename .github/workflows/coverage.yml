@@ -34,6 +34,11 @@ jobs:
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
           .\codecov.exe -f target\test\Debug\coverage.cobertura.xml -t 249d9fec-6c00-453b-a383-6829ce52ec96
+      - name: Upload to Codacy
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          coverage-reports: target/test/Debug/coverage.cobertura.xml
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
