@@ -29,11 +29,11 @@ jobs:
       #     foreach($node in $xml.SelectNodes("//function[@name='TestBody']")){$node.ParentNode.RemoveChild($node)}
       #     foreach($node in $xml.SelectNodes("//function[contains(@namespace,'hud_test')]")){$node.ParentNode.RemoveChild($node)}
       #     $xml.Save("$pwd\target\test\Debug\coverage.xml")
-      # - name: Upload to Codecov
-      #   run: |
-      #     $ProgressPreference = 'SilentlyContinue'
-      #     Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
-      #     .\codecov.exe -f target\test\Debug\coverage.cobertura.xml -t 249d9fec-6c00-453b-a383-6829ce52ec96
+      - name: Upload to Codecov
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
+          .\codecov.exe -f target\test\Debug\coverage.cobertura.xml -t 249d9fec-6c00-453b-a383-6829ce52ec96
       - name: Upload to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
