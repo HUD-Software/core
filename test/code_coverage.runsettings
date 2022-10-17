@@ -5,6 +5,7 @@
             <Exclude>
                 <Function>^std::.*</Function>
                 <Function>^testing::.*</Function>
+				<Function>^hud_test::.*</Function>
             </Exclude>
         </Functions>
     </CodeCoverage>
