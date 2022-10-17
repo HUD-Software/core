@@ -7,11 +7,5 @@
                 <Function>^testing::.*</Function>
             </Exclude>
         </Functions>
-<!-- 
-        <Sources>
-            <Exclude>
-                <Source>.*\\_deps\\.*</Source>
-            </Exclude>
-        </Sources> -->
     </CodeCoverage>
 </Configuration>
