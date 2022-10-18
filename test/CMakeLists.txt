@@ -271,8 +271,8 @@ if(COVERAGE AND MSVC)
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Instrument and Collect test_core.exe"
-		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} instrument Debug\\test_core.exe -s ..\\..\\test\\code_coverage.runsettings
-		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} collect Debug\\test_core.exe -o Debug\\coverage -f cobertura -s ..\\..\\test\\code_coverage.runsettings
+		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} instrument Debug\\test_core.exe -s ..\\..\\test\\coverage.runsettings
+		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} collect Debug\\test_core.exe -o Debug\\coverage -f cobertura -s ..\\..\\test\\coverage.runsettings
 	)
 endif()
 
