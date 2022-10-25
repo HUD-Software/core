@@ -18,13 +18,51 @@ jobs:
         run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64 -DCOVERAGE:BOOL=ON
       - name: Build
         run: cmake.exe --build target --config Debug
+      # - name: Upload to Codacy
+      #   uses: codacy/codacy-coverage-reporter-action@v1
+      #   with:
+      #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      #     coverage-reports: target/test/Debug/coverage.msvc.cobertura.xml
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: target\test\Debug\coverage.msvc.cobertura.xml
+
+  coverage_ubuntu:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set SSH Key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Generate visual Studio solution
+        run: cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -Btarget -G "Unix Makefiles" -DCOVERAGE:BOOL=ON
+      - name: Build
+        run: cmake.exe --build target --config Debug
+      # - name: Upload to Codacy
+      #   uses: codacy/codacy-coverage-reporter-action@v1
+      #   with:
+      #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      #     coverage-reports: target/test/Debug/coverage.msvc.cobertura.xml
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: target\test\coverage.clang.cobertura.xml
+
+  upload_coverage:
+    runs-on: ubuntu-22.04
+    needs: [coverage_windows, coverage_ubuntu]
+    steps:
+      - name: Download coverage artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
       - name: Upload to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: target/test/Debug/coverage.cobertura.xml
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: Windows_MSVC_AMD64
-          path: target\test\Debug\coverage.cobertura.xml
+          coverage-reports: 'target/test/Debug/coverage.msvc.cobertura.xml, target\test\coverage.clang.cobertura.xml'

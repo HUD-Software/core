@@ -224,10 +224,14 @@ set_target_properties(core
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
 )
-if(MSVC)
-	target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20)
-	target_link_options(core PRIVATE $<$<CONFIG:Debug>:/PROFILE>)
+
+if(COVERAGE AND MSVC)
+	target_link_options(core PRIVATE /PROFILE)
+elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	target_compile_options(core PRIVATE --coverage)
+	target_link_options(core PRIVATE --coverage)
 endif()
+
 
 # Include Interface directory to inclusion path
 target_include_directories(core PUBLIC .)

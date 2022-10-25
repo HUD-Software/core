@@ -267,12 +267,23 @@ if(MSVC)
 endif()
 
 if(COVERAGE AND MSVC)
+	set(MSVC_CODECOVERAGE_CONSOLE "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console\\Microsoft.CodeCoverage.Console.exe" CACHE STRING "Path to Microsoft.CodeCoverage.Console.exe")
 	target_link_options(test_core PRIVATE /PROFILE)
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Instrument and Collect test_core.exe"
 		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} instrument Debug\\test_core.exe -s ..\\..\\test\\coverage.runsettings
-		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} collect Debug\\test_core.exe -o Debug\\coverage -f cobertura -s ..\\..\\test\\coverage.runsettings
+		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} collect Debug\\test_core.exe -o Debug\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
+	)
+elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	target_compile_options(test_core PRIVATE --coverage)
+	target_link_options(test_core PRIVATE --coverage)
+	add_custom_command(
+		TARGET test_core POST_BUILD
+		COMMENT "Run test_core.exe"
+		COMMAND ./test_core
+		COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --html-details "coverage.clang.cobertura.html" --html-details-syntax-highlighting
+		COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --x "coverage.clang.cobertura.xml"
 	)
 endif()
 
