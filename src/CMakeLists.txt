@@ -224,6 +224,9 @@ set_target_properties(core
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
 )
+if(MSVC)
+	target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20)
+endif()
 
 if(COVERAGE AND MSVC)
 	target_link_options(core PRIVATE /PROFILE)
