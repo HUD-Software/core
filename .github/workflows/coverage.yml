@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: coverage
-          path: target\test\coverage.clang.cobertura.xml
+          path: target/test/coverage.clang.cobertura.xml
 
   upload_coverage:
     runs-on: ubuntu-22.04
@@ -63,8 +63,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: coverage
+      - name: show content
+        run: ls -l
       - name: Upload to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: 'target/test/Debug/coverage.msvc.cobertura.xml, target\test\coverage.clang.cobertura.xml'
+          coverage-reports: 'target/test/Debug/coverage.msvc.cobertura.xml, target/test/coverage.clang.cobertura.xml'
