@@ -41,7 +41,7 @@ jobs:
       - name: Generate visual Studio solution
         run: cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -Btarget -G "Unix Makefiles" -DCOVERAGE:BOOL=ON
       - name: Build
-        run: cmake.exe --build target --config Debug
+        run: cmake --build target --config Debug
       # - name: Upload to Codacy
       #   uses: codacy/codacy-coverage-reporter-action@v1
       #   with:
