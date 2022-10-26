@@ -90,6 +90,7 @@ set( interface
 	core/traits/is_base_of.h
 	core/traits/is_bitwise_comparable.h
 	core/traits/is_bitwise_convertible.h
+	core/traits/is_bitwise_copyable.h
 	core/traits/is_bitwise_copy_assignable.h
 	core/traits/is_bitwise_copy_constructible.h
 	core/traits/is_bitwise_move_assignable.h

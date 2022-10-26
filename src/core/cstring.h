@@ -28,8 +28,8 @@ namespace hud {
         * @param args Depending of the format, list of arguments
         * @return Number of character written, -1 if an error occurred.
         */
-        template<typename T>
-        static i32 format(T* buffer, u32 buffer_size, const T* format, ...) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
+        template<typename type_t>
+        static i32 format(type_t* buffer, u32 buffer_size, const type_t* format, ...) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>) {
             va_list args;
             va_start(args, format);
             i32 count = format_vargs(buffer, buffer_size, format, args);

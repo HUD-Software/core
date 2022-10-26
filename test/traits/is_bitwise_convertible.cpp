@@ -306,7 +306,7 @@ TEST(traits, is_bitwise_convertible) {
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f32, wchar>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f32, char16>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f32, char32>));
-    ASSERT_TRUE((hud::is_bitwise_convertible_v<f32, f32>));
+    ASSERT_FALSE((hud::is_bitwise_convertible_v<f32, f32>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f32, f64>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f32, iptr>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f32, uptr>));
@@ -325,7 +325,7 @@ TEST(traits, is_bitwise_convertible) {
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f64, char16>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f64, char32>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f64, f32>));
-    ASSERT_TRUE((hud::is_bitwise_convertible_v<f64, f64>));
+    ASSERT_FALSE((hud::is_bitwise_convertible_v<f64, f64>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f64, iptr>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<f64, uptr>));
 
@@ -405,19 +405,18 @@ TEST(traits, is_bitwise_convertible) {
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::comp_enum, hud_test::comp_enum_4>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::comp_enum_3, hud_test::comp_enum_4>));
 
-    
 
-    ASSERT_TRUE((hud::is_bitwise_convertible_v<hud_test::a, hud_test::a>));
+    ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::a, hud_test::a>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::a, hud_test::b>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::a, hud_test::c>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::a, hud_test::d>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::b, hud_test::a>));
-    ASSERT_TRUE((hud::is_bitwise_convertible_v<hud_test::b, hud_test::b>));
+    ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::b, hud_test::b>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::b, hud_test::c>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::b, hud_test::d>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::c, hud_test::a>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::c, hud_test::b>));
-    ASSERT_TRUE((hud::is_bitwise_convertible_v<hud_test::c, hud_test::c>));
+    ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::c, hud_test::c>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::c, hud_test::d>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::d, hud_test::a>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<hud_test::d, hud_test::b>));
@@ -426,8 +425,8 @@ TEST(traits, is_bitwise_convertible) {
 
     ASSERT_TRUE((hud::is_bitwise_convertible_v<i32, i32>));
     ASSERT_FALSE((hud::is_bitwise_convertible_v<i32&, i32>));
-    ASSERT_TRUE((hud::is_bitwise_convertible_v<i32[], i32[]>));
-    ASSERT_TRUE((hud::is_bitwise_convertible_v<i32[32], i32[32]>));
+    ASSERT_FALSE((hud::is_bitwise_convertible_v<i32[], i32[]>));
+    ASSERT_FALSE((hud::is_bitwise_convertible_v<i32[32], i32[32]>));
     ASSERT_TRUE((hud::is_bitwise_convertible_v<i32*, i32*>));
     ASSERT_TRUE((hud::is_bitwise_convertible_v<i32*, u32*>));
     ASSERT_TRUE((hud::is_bitwise_convertible_v<i32*, u8*>));

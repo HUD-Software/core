@@ -34,7 +34,7 @@
 #endif 
 
 #define HD_RESTRICT __restrict__ //  Indicates that a symbol is not aliased in the current scope.
-#define __STDC_WANT_LIB_EXT1__ 1 // Enable bounds-checked functions
+#define __STDC_WANT_LIB_EXT1__ 1 // Enable bounds-checked functions ( ISO C Safe Array Functions : memcpy_s, strcpy_s, snwprintf_s, etc... )
 
 #else 
 #error Unsupported compiler for Linux

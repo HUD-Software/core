@@ -8,7 +8,8 @@
 namespace hud {
 
     /**
-    * Check if type_t is TriviallyCopyable and if any two objects of type type_t with the same value have the same object representation,
+    * Check if type_t has unique object representations.
+    * If is TriviallyCopyable and if any two objects of type type_t with the same value have the same object representation,
     * For the purpose of this trait, two arrays have the same value if their elements have the same values,
     * two non-union classes have the same value if their direct subobjects have the same value,
     * and two unions have the same value if they have the same active member and the value of that member are the same.

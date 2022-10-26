@@ -195,11 +195,11 @@ namespace hud::os::common{
         * @param string The string buffer to capitalize
         * @return string pointer
         */
-        template<typename T>
-        static T* to_uppercase(T* string) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>){
-            T* ptr = string;
+        template<typename type_t>
+        static type_t* to_uppercase(type_t* string) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>){
+            type_t* ptr = string;
             while (!character::is_null(*ptr)) {
-                T* cur = ptr++;
+                type_t* cur = ptr++;
                 *cur = character::to_uppercase(*cur);
             }
             return string;
@@ -211,14 +211,14 @@ namespace hud::os::common{
         * @param string_size Size of string buffer in characters.
         * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
-        template<typename T>
-        static bool to_uppercase_safe(T* string, usize string_size) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
+        template<typename type_t>
+        static bool to_uppercase_safe(type_t* string, usize string_size) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>) {
             if (string == nullptr) {
                 return false;
             }
 
             while (string_size-- > 0) {
-                T* cur = string++;
+                type_t* cur = string++;
                 if (character::is_null(*cur)) {
                     return false;
                 }
@@ -233,9 +233,9 @@ namespace hud::os::common{
         * @param count Number of character to capitalize
         * @return string pointer
         */
-        template<typename T>
-        static T* to_uppercase_partial(T* string, usize count) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
-            T* ptr = string;
+        template<typename type_t>
+        static type_t* to_uppercase_partial(type_t* string, usize count) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>) {
+            type_t* ptr = string;
             while (count-- > 0) {
                 *ptr = character::to_uppercase(*ptr);
                 ptr++;
@@ -250,15 +250,15 @@ namespace hud::os::common{
         * @param count Number of character to capitalize
         * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
-        template<typename T>
-        static bool to_uppercase_partial_safe(T* string, usize string_size, usize count) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>){
+        template<typename type_t>
+        static bool to_uppercase_partial_safe(type_t* string, usize string_size, usize count) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>){
             if (string == nullptr || string_size < count) {
                 return false;
             }
 
             const usize not_capatilized_count = string_size - count;
             while (string_size-- > not_capatilized_count) {
-                T* cur = string++;
+                type_t* cur = string++;
                 if (character::is_null(*cur)) {
                     return false;
                 }
@@ -273,9 +273,9 @@ namespace hud::os::common{
         * @param string The string buffer to minimize
         * @return string pointer
         */
-        template<typename T>
-        static HD_FORCEINLINE T* to_lowercase(T* string) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>){
-            T* ptr = string;
+        template<typename type_t>
+        static HD_FORCEINLINE type_t* to_lowercase(type_t* string) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>){
+            type_t* ptr = string;
             while (!character::is_null(*ptr)) {
                 *ptr = character::to_lowercase(*ptr);
                 ptr++;
@@ -289,13 +289,13 @@ namespace hud::os::common{
         * @param string_size Size of string buffer in characters.
         * @return true if minimization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
-        template<typename T>
-        static bool to_lowercase_safe(T* string, usize string_size) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
+        template<typename type_t>
+        static bool to_lowercase_safe(type_t* string, usize string_size) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>) {
             if (string == nullptr) {
                 return false;
             }
 
-            T* ptr = string;
+            type_t* ptr = string;
             while (string_size-- > 0) {
                 if (character::is_null(*ptr)) {
                     return false;
@@ -312,9 +312,9 @@ namespace hud::os::common{
         * @param count Number of character to minimize
         * @return string pointer
         */
-        template<typename T>
-        static T* to_lowercase_partial(T* string, usize count) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
-            T* ptr = string;
+        template<typename type_t>
+        static type_t* to_lowercase_partial(type_t* string, usize count) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>) {
+            type_t* ptr = string;
             while (count-- > 0) {
                 *ptr = character::to_lowercase(*ptr);
                 ptr++;
@@ -329,15 +329,15 @@ namespace hud::os::common{
         * @param count Number of character to capitalize
         * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
-        template< typename T>
-        static bool to_lowercase_partial_safe(T* string, usize string_size, usize count) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
+        template<typename type_t>
+        static bool to_lowercase_partial_safe(type_t* string, usize string_size, usize count) noexcept requires(hud::is_one_of_types_v<type_t, ansichar, wchar>) {
             if (string == nullptr || string_size < count) {
                 return false;
             }
 
             const usize not_minimized_count = string_size - count;
             while (string_size-- > not_minimized_count) {
-                T* cur = string++;
+                type_t* cur = string++;
                 if (character::is_null(*cur)) {
                     return false;
                 }
@@ -473,26 +473,26 @@ namespace hud::os::common{
         protected:
         /**
          * Checks that destination and source pointer are not null
-         * @tparam T Only ansichar or wchar
+         * @tparam type_t Only ansichar or wchar
          * @param destination The destination pointer
          * @param source The source pointer
          */
-        template<typename T> requires(hud::is_one_of_types_v<T, ansichar, wchar>)
-        static HD_FORCEINLINE void check_not_null(T* destination, const T* source) noexcept {
+        template<typename type_t> requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        static HD_FORCEINLINE void check_not_null(type_t* destination, const type_t* source) noexcept {
             check(destination != nullptr);
             check(source != nullptr);
         }
 
         /**
          * Checks that destination and source pointer are not null, and checks that destination_size is large enough to receive source_size
-         * @tparam T Only ansichar or wchar
+         * @tparam type_t Only ansichar or wchar
          * @param destination The destination pointer
          * @param destination_size The size in bytes of the buffer pointed by destination
          * @param source The source pointer
          * @param source_size The size in bytes of the buffer pointed by source
          */
-        template<typename T> requires(hud::is_one_of_types_v<T, ansichar, wchar>)
-        static HD_FORCEINLINE void check_params(T* destination, const usize destination_size, const T* source, const usize source_size) noexcept {
+        template<typename type_t> requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        static HD_FORCEINLINE void check_params(type_t* destination, const usize destination_size, const type_t* source, const usize source_size) noexcept {
             check_not_null(destination, source);
             check(destination_size >= source_size);
         }
