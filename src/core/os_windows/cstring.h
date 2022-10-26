@@ -158,21 +158,6 @@ namespace hud::os::windows{
             return _vsnwprintf(buffer, buffer_size, format, args);
         }
 
-        private:
-        
-        /**
-         * Checks destination and source pointer are not null, and checks that destination_size is large enough to receive source_size
-         * @tparam T Only ansichar or wchar
-         * @param destination The destination pointer
-         * @param destination_size The size in bytes of the buffer pointed by destination
-         * @param source The source pointer
-         * @param source_size The size in bytes of the buffer pointed by source
-         */
-        template<typename T> requires(hud::is_same_v<hud::remove_cv_t<T>, ansichar> || hud::is_same_v<hud::remove_cv_t<T>, wchar>)
-        static HD_FORCEINLINE void check_params(T* destination, const usize destination_size, const T* source, const usize source_size) noexcept {
-            assert_not_null(destination, source);
-            check(destination_size >= source_size);
-        }
     };
 
 } // namespace hud::os::windows

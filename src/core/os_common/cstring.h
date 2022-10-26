@@ -115,7 +115,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE ansichar* copy(ansichar* destination, const ansichar* source) noexcept {
-            assert_not_null(destination, source);
+            check_not_null(destination, source);
             return strcpy(destination, source);
         }
 
@@ -126,7 +126,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE wchar* copy(wchar* destination, const wchar* source) noexcept {
-            assert_not_null(destination, source);
+            check_not_null(destination, source);
             return wcscpy(destination, source);
         }
 
@@ -140,7 +140,7 @@ namespace hud::os::common{
         * @return Destination pointer
         */
         static HD_FORCEINLINE ansichar* copy_partial(ansichar* destination, const ansichar* source, const usize count) noexcept {
-            assert_not_null(destination, source);
+            check_not_null(destination, source);
             return strncpy(destination, source, count);
         }
 
@@ -154,7 +154,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE wchar* copy_partial(wchar* destination, const wchar* source, const usize count) noexcept {
-            assert_not_null(destination, source);
+            check_not_null(destination, source);
             return wcsncpy(destination, source, count);
         }
 
@@ -165,8 +165,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE ansichar* append(ansichar* destination, const ansichar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
+            check_not_null(destination, source);
             return strcat(destination, source);
         }
 
@@ -177,7 +176,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE wchar* append(wchar* destination, const wchar* source) noexcept {
-            assert_not_null(destination, source);
+            check_not_null(destination, source);
             return wcscat(destination, source);
         }
 
@@ -189,7 +188,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE ansichar* append_partial(ansichar* destination, const ansichar* source, const usize count) noexcept {
-            assert_not_null(destination, source);
+            check_not_null(destination, source);
             return strncat(destination, source, count);
         }
 
@@ -663,10 +662,30 @@ namespace hud::os::common{
         }
 
         protected:
+        /**
+         * Checks that destination and source pointer are not null
+         * @tparam T Only ansichar or wchar
+         * @param destination The destination pointer
+         * @param source The source pointer
+         */
         template<typename T> requires(hud::is_same_v<hud::remove_cv_t<T>, ansichar> || hud::is_same_v<hud::remove_cv_t<T>, wchar>)
-        static HD_FORCEINLINE void assert_not_null(T* destination, const T* source) noexcept {
+        static HD_FORCEINLINE void check_not_null(T* destination, const T* source) noexcept {
             check(destination != nullptr);
             check(source != nullptr);
+        }
+
+        /**
+         * Checks that destination and source pointer are not null, and checks that destination_size is large enough to receive source_size
+         * @tparam T Only ansichar or wchar
+         * @param destination The destination pointer
+         * @param destination_size The size in bytes of the buffer pointed by destination
+         * @param source The source pointer
+         * @param source_size The size in bytes of the buffer pointed by source
+         */
+        template<typename T> requires(hud::is_same_v<hud::remove_cv_t<T>, ansichar> || hud::is_same_v<hud::remove_cv_t<T>, wchar>)
+        static HD_FORCEINLINE void check_params(T* destination, const usize destination_size, const T* source, const usize source_size) noexcept {
+            check_not_null(destination, source);
+            check(destination_size >= source_size);
         }
 
     };

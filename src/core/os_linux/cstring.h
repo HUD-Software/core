@@ -20,9 +20,7 @@ namespace hud::os::linux{
         * @return true if copy success, false if an error occured
         */
         static HD_FORCEINLINE bool copy_safe(ansichar* destination, const usize destination_size, const ansichar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             strncpy(destination, source, length(source));
             return true;
         }
@@ -35,9 +33,7 @@ namespace hud::os::linux{
         * @return true if copy success, false if an error occured
         */
         static HD_FORCEINLINE bool copy_safe(wchar* destination, const usize destination_size, const wchar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             wcsncpy(destination, source, length(source)+1);
             return true;
         }
@@ -52,9 +48,7 @@ namespace hud::os::linux{
         * @return true if copy success, false if an error occured
         */
         static HD_FORCEINLINE bool copy_partial_safe(ansichar* destination, const usize destination_size, const ansichar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             check(count <= length(source));
             strncpy(destination, source, count);
             destination[count] = character::ANSI_NULL_CHARACTER;
@@ -71,9 +65,7 @@ namespace hud::os::linux{
         * @return true if copy success, false if an error occured
         */
         static HD_FORCEINLINE bool copy_partial_safe(wchar* destination, const usize destination_size, const wchar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             check(destination_size >= count);
             wcsncpy(destination, source, count);
             destination[count] = character::WIDE_NULL_CHARACTER;
@@ -88,9 +80,7 @@ namespace hud::os::linux{
         * @return true if appends success, false if an error occured
         */
         static HD_FORCEINLINE bool append_safe(ansichar* destination, const usize destination_size, const ansichar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             strcat(destination, source);
             return true;
         }
@@ -102,9 +92,7 @@ namespace hud::os::linux{
         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
         */
         static HD_FORCEINLINE bool append_safe(wchar* destination, const usize destination_size, const wchar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             wcscat(destination, source);
             return true;
         }
@@ -118,9 +106,7 @@ namespace hud::os::linux{
         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
         */
         static HD_FORCEINLINE bool append_partial_safe(ansichar* destination, const usize destination_size, const ansichar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(destination) + 1 + count));
+            check_params(destination, destination_size, source, length(destination) + 1 + count);
             strncat(destination, source, count);
             return true;
         }
@@ -134,9 +120,7 @@ namespace hud::os::linux{
         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
         */
         static HD_FORCEINLINE bool append_partial_safe(wchar* destination, const usize destination_size, const wchar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(destination) + 1 + count));
+            check_params(destination, destination_size, source, length(destination) + 1 + count);
             wcsncat(destination, source, count);
             return true;
         }
