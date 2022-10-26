@@ -420,7 +420,7 @@ namespace hud::os::common{
                 *ptr = character::to_lowercase(*ptr);
                 ptr++;
             }
-            return character::is_null(*string);
+            return character::is_null(*ptr);
         }
 
         /**

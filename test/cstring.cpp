@@ -30,8 +30,6 @@ TEST(cstring, is_pure_ansi) {
 }
 
 TEST(cstring, is_pure_ansi_safe) {
-
-
     for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
         const ansichar text[2] = { cur,'\0' };
         ASSERT_TRUE(hud::cstring::is_pure_ansi_safe(text, 1));
@@ -48,8 +46,6 @@ TEST(cstring, is_pure_ansi_safe) {
 }
 
 TEST(cstring, is_null_or_empty) {
-
-
     static constexpr const ansichar* const no_null_empty = "abc";
     static constexpr const ansichar* const empty = "";
     static constexpr const ansichar* const null = nullptr;
@@ -69,8 +65,6 @@ TEST(cstring, is_null_or_empty) {
 }
 
 TEST(cstring, copy) {
-
-
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
 
@@ -88,8 +82,6 @@ TEST(cstring, copy) {
 }
 
 TEST(cstring, copy_safe) {
-
-
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
 
@@ -126,8 +118,6 @@ TEST(cstring, copy_safe) {
 }
 
 TEST(cstring, copy_partial) {
-
-
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
 
@@ -163,8 +153,6 @@ TEST(cstring, copy_partial) {
 }
 
 TEST(cstring, copy_partial_safe) {
-
-
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
 
@@ -197,8 +185,6 @@ TEST(cstring, copy_partial_safe) {
 }
 
 TEST(cstring, append) {
-
-
     static constexpr const ansichar* const src = "de";
     ansichar dest[6] = { 'a', 'b', 'c', '\0' };
     ASSERT_TRUE(hud::cstring::append(dest, src) == dest);
@@ -219,8 +205,6 @@ TEST(cstring, append) {
 }
 
 TEST(cstring, append_safe) {
-
-
     static constexpr const ansichar* const src = "de";
     ansichar dest[6] = { 'a', 'b', 'c', '\0' };
     ASSERT_TRUE(hud::cstring::append_safe(dest, 6, src));
@@ -245,8 +229,6 @@ TEST(cstring, append_safe) {
 }
 
 TEST(cstring, append_partial) {
-
-
     static constexpr const ansichar* const src = "de";
     ansichar dest[5] = { 'a', 'b', 'c', '\0' };
     ASSERT_TRUE(hud::cstring::append_partial(dest, src, 1) == dest);
@@ -267,8 +249,6 @@ TEST(cstring, append_partial) {
 }
 
 TEST(cstring, append_partial_safe) {
-
-
     static constexpr const ansichar* const src = "de";
     ansichar dest[6] = { 'a', 'b', 'c', '\0' };
     ASSERT_TRUE(hud::cstring::append_partial_safe(dest, 6, src, 1));
@@ -293,8 +273,6 @@ TEST(cstring, append_partial_safe) {
 
 
 TEST(cstring, to_uppercase) {
-
-
     ansichar txt[] = "abc123,;:!";
     ASSERT_TRUE(hud::cstring::to_uppercase(txt) == txt);
     ASSERT_TRUE(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -304,8 +282,6 @@ TEST(cstring, to_uppercase) {
 }
 
 TEST(cstring, to_uppercase_safe) {
-
-
     ansichar txt[] = "abc123,;:!";
     ASSERT_TRUE(hud::cstring::to_uppercase_safe(txt, 10));
     ASSERT_TRUE(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -323,8 +299,6 @@ TEST(cstring, to_uppercase_safe) {
 }
 
 TEST(cstring, to_uppercase_partial) {
-
-
     ansichar txt[] = "abc123,;:!";
     ASSERT_TRUE(hud::cstring::to_uppercase_partial(txt, 2) == txt);
     ASSERT_TRUE(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -334,8 +308,6 @@ TEST(cstring, to_uppercase_partial) {
 }
 
 TEST(cstring, to_uppercase_partial_safe) {
-
-
     ansichar txt[] = "abc123,;:!";
     ASSERT_TRUE(hud::cstring::to_uppercase_partial_safe(txt, 10, 2));
     ASSERT_TRUE(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -355,8 +327,6 @@ TEST(cstring, to_uppercase_partial_safe) {
 
 
 TEST(cstring, to_lowercase) {
-
-
     ansichar txt[] = "ABC123,;:!";
     ASSERT_TRUE(hud::cstring::to_lowercase(txt) == txt);
     ASSERT_TRUE(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -366,8 +336,6 @@ TEST(cstring, to_lowercase) {
 }
 
 TEST(cstring, to_lowercase_safe) {
-
-
     ansichar txt[] = "ABC123,;:!";
     ASSERT_TRUE(hud::cstring::to_lowercase_safe(txt, 10));
     ASSERT_TRUE(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -384,8 +352,6 @@ TEST(cstring, to_lowercase_safe) {
 }
 
 TEST(cstring, to_lowercase_partial) {
-
-
     ansichar txt[] = "ABC123,;:!";
     ASSERT_TRUE(hud::cstring::to_lowercase_partial(txt, 2) == txt);
     ASSERT_TRUE(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -396,8 +362,6 @@ TEST(cstring, to_lowercase_partial) {
 }
 
 TEST(cstring, to_lowercase_partial_safe) {
-
-
     ansichar txt[] = "ABC123,;:!";
     ASSERT_TRUE(hud::cstring::to_lowercase_partial_safe(txt, 10, 2));
     ASSERT_TRUE(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -416,8 +380,6 @@ TEST(cstring, to_lowercase_partial_safe) {
 }
 
 TEST(cstring, equals) {
-
-
     ASSERT_TRUE(hud::cstring::equals("abc", "abc"));
     ASSERT_FALSE(hud::cstring::equals("aBc", "abc"));
     ASSERT_FALSE(hud::cstring::equals("abc", "ab"));
@@ -442,8 +404,6 @@ TEST(cstring, equals_partial) {
 }
 
 TEST(cstring, length) {
-
-
     ASSERT_TRUE(hud::cstring::length("aBc") == 3);
     ASSERT_TRUE(hud::cstring::length(L"aBc") == 3);
     ASSERT_FALSE(hud::cstring::length("aBcd") == 3);
@@ -451,8 +411,6 @@ TEST(cstring, length) {
 }
 
 TEST(cstring, length_safe) {
-
-
     ASSERT_TRUE(hud::cstring::length_safe("aBc", 3) == 3);
     ASSERT_TRUE(hud::cstring::length_safe("aBc", 2) == 2);
     ASSERT_TRUE(hud::cstring::length_safe("aBc", 4) == 3);
@@ -465,8 +423,6 @@ TEST(cstring, length_safe) {
 }
 
 TEST(cstring, find_string) {
-
-
     const ansichar* str = "abcdefcd";
     ASSERT_TRUE(hud::cstring::find_string(str, "cd") == str + 2);
     ASSERT_TRUE(hud::cstring::find_string(str, "fe") == nullptr);
@@ -477,8 +433,6 @@ TEST(cstring, find_string) {
 }
 
 TEST(cstring, find_character) {
-
-
     const ansichar* str = "abcdefcd";
     ASSERT_TRUE(hud::cstring::find_character(str, 'c') == str + 2);
     ASSERT_TRUE(hud::cstring::find_character(str, 'g') == nullptr);
@@ -489,8 +443,6 @@ TEST(cstring, find_character) {
 }
 
 TEST(cstring, format_vargs) {
-
-
     const ansichar* fmt = "Hello %s! %ls time";
     ansichar buffer[256];
     i32 character_count = hud_test::call_format_vargs(buffer, 256, fmt, "World", L"Hammer");
@@ -505,8 +457,6 @@ TEST(cstring, format_vargs) {
 }
 
 TEST(cstring, format) {
-
-
     const ansichar* fmt = "Hello %s! %ls time";
     ansichar buffer[256];
     i32 character_count = hud::cstring::format(buffer, 256, fmt, "World", L"Hammer");
