@@ -12,21 +12,20 @@ namespace hud
 {
 
     /**
-     * Checks whether type_t is a bitwise comparable with u_type_t.
+     * Checks whether type_t is a bitwise comparable with u_type_t. ( Comparable with a bitwise memory compare )
      * There is no good way to detect this, specify this trait for your type to allow bitwise comparison.
      * This traits is specialize with Value equal to true if:
-     * - type_t and u_type_t are pointers or pointers to member function
-     * - type_t and u_type_t are integrals with same size
-     * - type_t and u_type_t are enums with underlying type with same size
+     * - type_t and u_type_t are bitwise convertible
+     * - type_t and u_type_t are the same type and thas_unique_object_representations<type_t> is_standard_layout<type_t> are true
      */
     template <typename type_t, typename u_type_t = type_t>
     struct is_bitwise_comparable
         : hud::disjunction<
               hud::is_bitwise_convertible<type_t, u_type_t>,
-              hud::conjunction< // or if same POD type. POD
+              hud::conjunction< // or if same POD type.
                   hud::is_same<type_t, u_type_t>,
-                  hud::conjunction<has_unique_object_representations<type_t>>,
-                  hud::conjunction<is_standard_layout<type_t>>>>
+                  has_unique_object_representations<type_t>,
+                  is_standard_layout<type_t>>>
     {
     };
 
