@@ -132,7 +132,9 @@ namespace hud::os::linux{
         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
         */
         static HD_FORCEINLINE usize length_safe(const ansichar* string, const usize max_length) noexcept {
-            if(string == nullptr) return 0;
+            if(string == nullptr) {
+                return 0;
+            }
             return strnlen(string, max_length);
         }
 
@@ -143,20 +145,10 @@ namespace hud::os::linux{
         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
         */
         static HD_FORCEINLINE usize length_safe(const wchar* string, const usize max_length) noexcept {
-            if(string == nullptr) return 0;
+            if(string == nullptr) {
+                return 0;
+            }
             return wcsnlen(string, max_length);
-        }
-
-        /**
-        * Write a formatted ansichar to a ansichar buffer (like printf does).
-        * @param buffer The ansichar buffer receiving the formatted string
-        * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
-        * @param format The ansichar containing the format of the string
-        * @param args Depending of the format, list of arguments
-        * @return Number of character written, -1 if an error occurred.
-        */
-        static HD_FORCEINLINE i32 format_vargs(ansichar* buffer, u32 buffer_size, const ansichar* format, va_list args) noexcept {
-            return hud::os::common::cstring::format_vargs(buffer, buffer_size, format, args);
         }
 
         /**

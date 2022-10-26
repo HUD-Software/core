@@ -338,7 +338,7 @@ namespace hud::os::common{
             if (string == nullptr || string_size < count) {
                 return false;
             }
-
+            
             const usize not_capatilized_count = string_size - count;
             while (string_size-- > not_capatilized_count) {
                 wchar* cur = string++;
@@ -389,14 +389,16 @@ namespace hud::os::common{
             if (string == nullptr) {
                 return false;
             }
+
+            ansichar* ptr = string;
             while (string_size-- > 0) {
-                if (character::is_null(*string)) {
+                if (character::is_null(*ptr)) {
                     return false;
                 }
-                *string = character::to_lowercase(*string);
-                string++;
+                *ptr = character::to_lowercase(*ptr);
+                ptr++;
             }
-            return character::is_null(*string);
+            return character::is_null(*ptr);
         }
 
         /**
@@ -406,15 +408,17 @@ namespace hud::os::common{
         * @return true if minimization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
         static bool to_lowercase_safe(wchar* string, usize string_size) noexcept {
-            if (string == 0) {
+            if (string == nullptr) {
                 return false;
             }
+
+            wchar* ptr = string;
             while (string_size-- > 0) {
-                if (character::is_null(*string)) {
+                if (character::is_null(*ptr)) {
                     return false;
                 }
-                *string = character::to_lowercase(*string);
-                string++;
+                *ptr = character::to_lowercase(*ptr);
+                ptr++;
             }
             return character::is_null(*string);
         }

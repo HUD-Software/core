@@ -135,18 +135,6 @@ namespace hud::os::windows{
         }
         
         /**
-        * Write a formatted ansichar to a ansichar buffer (like printf does).
-        * @param buffer The ansichar buffer receiving the formatted string
-        * @param buffer_size The maximum number of character to store in buffer, null-terminator character included
-        * @param format The ansichar containing the format of the string
-        * @param args Depending of the format, list of arguments
-        * @return Number of character written, -1 if an error occurred.
-        */
-        static HD_FORCEINLINE i32 format_vargs(ansichar* buffer, u32 buffer_size, const ansichar* format, va_list args) noexcept {
-            return hud::os::common::cstring::format_vargs(buffer, buffer_size, format, args);
-        }
-
-        /**
         * Write a formatted wchar to a wchar buffer (like printf does).
         * @param buffer The wchar buffer receiving the formatted string
         * @param buffer_size The maximum number of character to store in buffer, null-terminator character included
