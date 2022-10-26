@@ -20,9 +20,7 @@ namespace hud::os::windows{
         * @return true if copy success, false if an error occured
         */
         static HD_FORCEINLINE bool copy_safe(ansichar* destination, const usize destination_size, const ansichar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             return strcpy_s(destination, destination_size, source) == 0;
         }
 
@@ -34,9 +32,7 @@ namespace hud::os::windows{
         * @return true if copy success, false if an error occured
         */
         static HD_FORCEINLINE bool copy_safe(wchar* destination, const usize destination_size, const wchar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             return wcscpy_s(destination, destination_size, source) == 0;
         }
 
@@ -50,9 +46,7 @@ namespace hud::os::windows{
         * @return true if copy success, false if an error occured
         */
         static HD_FORCEINLINE bool copy_partial_safe(ansichar* destination, const usize destination_size, const ansichar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             return strncpy_s(destination, destination_size, source, count) == 0;
         }
 
@@ -66,9 +60,7 @@ namespace hud::os::windows{
         * @return true if copy success, false if an error occured
         */
         static HD_FORCEINLINE bool copy_partial_safe(wchar* destination, const usize destination_size, const wchar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             return wcsncpy_s(destination, destination_size, source, count) == 0;
         }
 
@@ -80,9 +72,7 @@ namespace hud::os::windows{
         * @return true if appends success, false if an error occured
         */
         static HD_FORCEINLINE bool append_safe(ansichar* destination, const usize destination_size, const ansichar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             return strcat_s(destination, destination_size, source) == 0;
         }
 
@@ -94,9 +84,7 @@ namespace hud::os::windows{
         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
         */
         static HD_FORCEINLINE bool append_safe(wchar* destination, const usize destination_size, const wchar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(source) + 1));
+            check_params(destination, destination_size, source, length(source) + 1);
             return wcscat_s(destination, destination_size, source) == 0;
         }
 
@@ -109,9 +97,7 @@ namespace hud::os::windows{
         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
         */
         static HD_FORCEINLINE bool append_partial_safe(ansichar* destination, const usize destination_size, const ansichar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(destination) + 1 + count));
+            check_params(destination, destination_size, source, length(destination) + 1 + count);
             return strncat_s(destination, destination_size, source, count) == 0;
         }
 
@@ -124,9 +110,7 @@ namespace hud::os::windows{
         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
         */
         static HD_FORCEINLINE bool append_partial_safe(wchar* destination, const usize destination_size, const wchar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
-            check(destination_size >= (length(destination) + 1 + count));
+            check_params(destination, destination_size, source, length(destination) + 1 + count);
             return wcsncat_s(destination, destination_size, source, count) == 0;
         }
 
@@ -153,7 +137,7 @@ namespace hud::os::windows{
         /**
         * Write a formatted ansichar to a ansichar buffer (like printf does).
         * @param buffer The ansichar buffer receiving the formatted string
-        * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
+        * @param buffer_size The maximum number of character to store in buffer, null-terminator character included
         * @param format The ansichar containing the format of the string
         * @param args Depending of the format, list of arguments
         * @return Number of character written, -1 if an error occurred.
@@ -165,13 +149,29 @@ namespace hud::os::windows{
         /**
         * Write a formatted wchar to a wchar buffer (like printf does).
         * @param buffer The wchar buffer receiving the formatted string
-        * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
+        * @param buffer_size The maximum number of character to store in buffer, null-terminator character included
         * @param format The wchar containing the format of the string
         * @param args Depending of the format, list of arguments
         * @return Number of character written, -1 if an error occurred.
         */
         static HD_FORCEINLINE i32 format_vargs(wchar* buffer, u32 buffer_size, const wchar* format, va_list args) noexcept {
             return _vsnwprintf(buffer, buffer_size, format, args);
+        }
+
+        private:
+        
+        /**
+         * Checks destination and source pointer are not null, and checks that destination_size is large enough to receive source_size
+         * @tparam T Only ansichar or wchar
+         * @param destination The destination pointer
+         * @param destination_size The size in bytes of the buffer pointed by destination
+         * @param source The source pointer
+         * @param source_size The size in bytes of the buffer pointed by source
+         */
+        template<typename T> requires(hud::is_same_v<hud::remove_cv_t<T>, ansichar> || hud::is_same_v<hud::remove_cv_t<T>, wchar>)
+        static HD_FORCEINLINE void check_params(T* destination, const usize destination_size, const T* source, const usize source_size) noexcept {
+            assert_not_null(destination, source);
+            check(destination_size >= source_size);
         }
     };
 

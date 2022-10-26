@@ -115,8 +115,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE ansichar* copy(ansichar* destination, const ansichar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
+            assert_not_null(destination, source);
             return strcpy(destination, source);
         }
 
@@ -127,8 +126,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE wchar* copy(wchar* destination, const wchar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
+            assert_not_null(destination, source);
             return wcscpy(destination, source);
         }
 
@@ -142,8 +140,7 @@ namespace hud::os::common{
         * @return Destination pointer
         */
         static HD_FORCEINLINE ansichar* copy_partial(ansichar* destination, const ansichar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
+            assert_not_null(destination, source);
             return strncpy(destination, source, count);
         }
 
@@ -157,8 +154,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE wchar* copy_partial(wchar* destination, const wchar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
+            assert_not_null(destination, source);
             return wcsncpy(destination, source, count);
         }
 
@@ -181,8 +177,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE wchar* append(wchar* destination, const wchar* source) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
+            assert_not_null(destination, source);
             return wcscat(destination, source);
         }
 
@@ -194,8 +189,7 @@ namespace hud::os::common{
         * @return destination pointer
         */
         static HD_FORCEINLINE ansichar* append_partial(ansichar* destination, const ansichar* source, const usize count) noexcept {
-            check(destination != nullptr);
-            check(source != nullptr);
+            assert_not_null(destination, source);
             return strncat(destination, source, count);
         }
 
@@ -666,6 +660,13 @@ namespace hud::os::common{
         */
         static HD_FORCEINLINE i32 format_vargs(ansichar* buffer, u32 buffer_size, const ansichar* format, va_list args) noexcept {
             return vsnprintf(buffer, buffer_size, format, args);
+        }
+
+        protected:
+        template<typename T> requires(hud::is_same_v<hud::remove_cv_t<T>, ansichar> || hud::is_same_v<hud::remove_cv_t<T>, wchar>)
+        static HD_FORCEINLINE void assert_not_null(T* destination, const T* source) noexcept {
+            check(destination != nullptr);
+            check(source != nullptr);
         }
 
     };
