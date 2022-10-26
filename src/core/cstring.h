@@ -21,30 +21,15 @@ namespace hud {
         #endif
     {
         /**
-        * Write a formatted ansichar to a ansichar buffer (like printf does).
-        * @param buffer The ansichar buffer receiving the formatted string
-        * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
-        * @param format The ansichar containing the format of the string
+        * Write a formatted string to a string buffer (like printf does).
+        * @param buffer The string buffer receiving the formatted string
+        * @param buffer_size The maximum number of character to store in buffer, null-terminator character included
+        * @param format The string containing the format of the string
         * @param args Depending of the format, list of arguments
         * @return Number of character written, -1 if an error occurred.
         */
-        static i32 format(ansichar* buffer, u32 buffer_size, const ansichar* format, ...) noexcept {
-            va_list args;
-            va_start(args, format);
-            i32 count = format_vargs(buffer, buffer_size, format, args);
-            va_end(args);
-            return count;
-        }
-
-        /**
-        * Write a formatted wchar to a wchar buffer (like printf does).
-        * @param buffer The wchar buffer receiving the formatted string
-        * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
-        * @param format The wchar containing the format of the string
-        * @param args Depending of the format, list of arguments
-        * @return Number of character written, -1 if an error occurred.
-        */
-        static i32 format(wchar* buffer, u32 buffer_size, const wchar* format, ...) noexcept {
+        template<typename T>
+        static i32 format(T* buffer, u32 buffer_size, const T* format, ...) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
             va_list args;
             va_start(args, format);
             i32 count = format_vargs(buffer, buffer_size, format, args);

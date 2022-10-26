@@ -121,7 +121,7 @@ add_executable(test_core
 	traits/extent.cpp
 	traits/has_unique_object_representations.cpp
 	traits/integral_constant.cpp
-	traits/is_any_type_in.cpp
+	traits/is_one_of_types.cpp
 	traits/is_arithmetic.cpp
 	traits/is_array.cpp
 	traits/is_assignable.cpp

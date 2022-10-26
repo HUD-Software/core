@@ -83,7 +83,7 @@ set( interface
 	core/traits/extent.h
 	core/traits/has_unique_object_representations.h
 	core/traits/integral_constant.h
-	core/traits/is_any_type_in.h
+	core/traits/is_one_of_types.h
 	core/traits/is_arithmetic.h
 	core/traits/is_array.h
 	core/traits/is_assignable.h

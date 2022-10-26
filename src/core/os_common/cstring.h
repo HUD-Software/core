@@ -3,6 +3,7 @@
 #define HD_INC_OSABSTRACTIONLAYER_OS_COMMON_CSTRING_H
 #include "../character.h"
 #include "../assert.h"
+#include "../traits/is_one_of_types.h"
 #include <string.h> // strcpy, strcmp, etc...
 #include <wchar.h> // wcscpy, wcscat, etc...
 #include <cstdio>  // vsnprintf
@@ -48,21 +49,7 @@ namespace hud::os::common{
         *         false if the string contains non ansichar character
         */
         static bool is_pure_ansi_safe(const ansichar* string, usize string_size) noexcept {
-            if (string == nullptr) {
-                return false;
-            }
-
-            while (string_size-- > 0) {
-                ansichar cur = *string;
-                if (character::is_null(cur)) {
-                    return true;
-                }
-                if (!character::is_pure_ansi(cur)) {
-                    return false;
-                }
-                string++;
-            }
-            return true;
+            return string != nullptr;
         }
 
         /**
@@ -204,46 +191,34 @@ namespace hud::os::common{
         }
 
         /** 
-        * Convert ansi string to uppercase.
+        * Convert string to uppercase.
         * @param string The string buffer to capitalize
         * @return string pointer
         */
-        static ansichar* to_uppercase(ansichar* string) noexcept {
-            ansichar* ptr = string;
+        template<typename T>
+        static T* to_uppercase(T* string) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>){
+            T* ptr = string;
             while (!character::is_null(*ptr)) {
-                ansichar* cur = ptr++;
-                *cur = character::to_uppercase(*cur);
-            }
-            return string;
-        }
-
-        /** 
-        * Convert wide string to uppercase.
-        * @param string The string buffer to capitalize
-        * @return string pointer
-        */
-        static wchar* to_uppercase(wchar* string) noexcept {
-            wchar* ptr = string;
-            while (!character::is_null(*ptr)) {
-                wchar* cur = ptr++;
+                T* cur = ptr++;
                 *cur = character::to_uppercase(*cur);
             }
             return string;
         }
 
         /**
-        * Convert ansi string to uppercase.
+        * Convert string to uppercase.
         * @param string The string buffer to capitalize
         * @param string_size Size of string buffer in characters.
         * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
-        static bool to_uppercase_safe(ansichar* string, usize string_size) noexcept {
+        template<typename T>
+        static bool to_uppercase_safe(T* string, usize string_size) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
             if (string == nullptr) {
                 return false;
             }
 
             while (string_size-- > 0) {
-                ansichar* cur = string++;
+                T* cur = string++;
                 if (character::is_null(*cur)) {
                     return false;
                 }
@@ -253,34 +228,14 @@ namespace hud::os::common{
         }
 
         /**
-        * Convert wide string to uppercase.
-        * @param string The string buffer to capitalize
-        * @param string_size Size of string buffer in characters.
-        * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
-        */
-        static bool to_uppercase_safe(wchar* string, usize string_size) noexcept {
-            if (string == nullptr) {
-                return false;
-            }
-
-            while (string_size-- > 0) {
-                wchar* cur = string++;
-                if (character::is_null(*cur)) {
-                    return false;
-                }
-                *cur = character::to_uppercase(*cur);
-            }
-            return character::is_null(*string);
-        }
-
-        /**
-        * Convert ansi string to uppercase.
+        * Convert string to uppercase.
         * @param string The string buffer to capitalize
         * @param count Number of character to capitalize
         * @return string pointer
         */
-        static ansichar* to_uppercase_partial(ansichar* string, usize count) noexcept {
-            ansichar* ptr = string;
+        template<typename T>
+        static T* to_uppercase_partial(T* string, usize count) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
+            T* ptr = string;
             while (count-- > 0) {
                 *ptr = character::to_uppercase(*ptr);
                 ptr++;
@@ -289,35 +244,21 @@ namespace hud::os::common{
         }
 
         /**
-        * Convert wide string to uppercase.
-        * @param string The string buffer to capitalize
-        * @param count Number of character to capitalize
-        * @return string pointer
-        */
-        static wchar* to_uppercase_partial(wchar* string, usize count) noexcept {
-            wchar* ptr = string;
-            while (count-- > 0) {
-                *ptr = character::to_uppercase(*ptr);
-                ptr++;
-            }
-            return string;
-        }
-
-        /**
-        * Convert wide string to uppercase and check the given parameters.
+        * Convert string to uppercase and check the given parameters.
         * @param string The string buffer to capitalize
         * @param string_size Size of string buffer in characters.
         * @param count Number of character to capitalize
         * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
-        static bool to_uppercase_partial_safe(ansichar* string, usize string_size, usize count) noexcept {
+        template<typename T>
+        static bool to_uppercase_partial_safe(T* string, usize string_size, usize count) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>){
             if (string == nullptr || string_size < count) {
                 return false;
             }
 
             const usize not_capatilized_count = string_size - count;
             while (string_size-- > not_capatilized_count) {
-                ansichar* cur = string++;
+                T* cur = string++;
                 if (character::is_null(*cur)) {
                     return false;
                 }
@@ -328,36 +269,13 @@ namespace hud::os::common{
         }
 
         /**
-        * Convert wide string to uppercase and check the given parameters.
-        * @param string The string buffer to capitalize
-        * @param string_size Size of string buffer in characters.
-        * @param count Number of character to capitalize
-        * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
-        */
-        static bool to_uppercase_partial_safe(wchar* string, usize string_size, usize count) noexcept {
-            if (string == nullptr || string_size < count) {
-                return false;
-            }
-            
-            const usize not_capatilized_count = string_size - count;
-            while (string_size-- > not_capatilized_count) {
-                wchar* cur = string++;
-                if (character::is_null(*cur)) {
-                    return false;
-                }
-                *cur = character::to_uppercase(*cur);
-            }
-
-            return true;
-        }
-
-        /**
-        * Convert ansi string to lowercase.
+        * Convert string to lowercase.
         * @param string The string buffer to minimize
         * @return string pointer
         */
-        static HD_FORCEINLINE ansichar* to_lowercase(ansichar* string) noexcept {
-            ansichar* ptr = string;
+        template<typename T>
+        static HD_FORCEINLINE T* to_lowercase(T* string) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>){
+            T* ptr = string;
             while (!character::is_null(*ptr)) {
                 *ptr = character::to_lowercase(*ptr);
                 ptr++;
@@ -366,31 +284,18 @@ namespace hud::os::common{
         }
 
         /**
-        * Convert wide string to lowercase
-        * @param string The string buffer to minimize
-        * @return string pointer
-        */
-        static HD_FORCEINLINE wchar* to_lowercase(wchar* string) noexcept {
-            wchar* ptr = string;
-            while (!character::is_null(*ptr)) {
-                *ptr = character::to_lowercase(*ptr);
-                ptr++;
-            }
-            return string;
-        }
-
-        /**
-        * Convert ansi string to lowercase and check the given parameters.
+        * Convert string to lowercase and check the given parameters.
         * @param string The string buffer to minimize
         * @param string_size Size of string buffer in characters.
         * @return true if minimization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
-        static bool to_lowercase_safe(ansichar* string, usize string_size) noexcept {
+        template<typename T>
+        static bool to_lowercase_safe(T* string, usize string_size) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
             if (string == nullptr) {
                 return false;
             }
 
-            ansichar* ptr = string;
+            T* ptr = string;
             while (string_size-- > 0) {
                 if (character::is_null(*ptr)) {
                     return false;
@@ -402,35 +307,14 @@ namespace hud::os::common{
         }
 
         /**
-        * Convert wide string to lowercase and check the given parameters.
-        * @param string The string buffer to minimize
-        * @param string_size Size of string buffer in characters.
-        * @return true if minimization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
-        */
-        static bool to_lowercase_safe(wchar* string, usize string_size) noexcept {
-            if (string == nullptr) {
-                return false;
-            }
-
-            wchar* ptr = string;
-            while (string_size-- > 0) {
-                if (character::is_null(*ptr)) {
-                    return false;
-                }
-                *ptr = character::to_lowercase(*ptr);
-                ptr++;
-            }
-            return character::is_null(*ptr);
-        }
-
-        /**
-        * Convert ansi string to lowercase.
+        * Convert string to lowercase.
         * @param string The string buffer to minimize
         * @param count Number of character to minimize
         * @return string pointer
         */
-        static ansichar* to_lowercase_partial(ansichar* string, usize count) noexcept {
-            ansichar* ptr = string;
+        template<typename T>
+        static T* to_lowercase_partial(T* string, usize count) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
+            T* ptr = string;
             while (count-- > 0) {
                 *ptr = character::to_lowercase(*ptr);
                 ptr++;
@@ -439,60 +323,21 @@ namespace hud::os::common{
         }
 
         /**
-        * Convert wide string to lowercase.
-        * @param string The string buffer to minimize
-        * @param count Number of character to minimize
-        * @return string pointer
-        */
-        static wchar* to_lowercase_partial(wchar* string, usize count) noexcept {
-            wchar* ptr = string;
-            while (count-- > 0) {
-                *ptr = character::to_lowercase(*ptr);
-                ptr++;
-            }
-            return string;
-        }
-
-
-        /**
-        * Convert wide string to uppercase and check the given parameters.
+        * Convert wide to uppercase and check the given parameters.
         * @param string The string buffer to capitalize
         * @param string_size Size of string buffer in characters.
         * @param count Number of character to capitalize
         * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
         */
-        static bool to_lowercase_partial_safe(ansichar* string, usize string_size, usize count) noexcept {
+        template< typename T>
+        static bool to_lowercase_partial_safe(T* string, usize string_size, usize count) noexcept requires(hud::is_one_of_types_v<T, ansichar, wchar>) {
             if (string == nullptr || string_size < count) {
                 return false;
             }
 
             const usize not_minimized_count = string_size - count;
             while (string_size-- > not_minimized_count) {
-                ansichar* cur = string++;
-                if (character::is_null(*cur)) {
-                    return false;
-                }
-                *cur = character::to_lowercase(*cur);
-            }
-
-            return true;
-        }
-
-        /**
-        * Convert wide string to uppercase and check the given parameters.
-        * @param string The string buffer to capitalize
-        * @param string_size Size of string buffer in characters.
-        * @param count Number of character to capitalize
-        * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
-        */
-        static bool to_lowercase_partial_safe(wchar* string, usize string_size, usize count) noexcept {
-            if (string == nullptr || string_size < count) {
-                return false;
-            }
-
-            const usize not_minimized_count = string_size - count;
-            while (string_size-- > not_minimized_count) {
-                wchar* cur = string++;
+                T* cur = string++;
                 if (character::is_null(*cur)) {
                     return false;
                 }
@@ -579,28 +424,8 @@ namespace hud::os::common{
         * @param string_to_find The string to find
         * @return Pointer to the first occurrence of string in another string, nullptr if not found
         */
-        static HD_FORCEINLINE ansichar* find_string(ansichar* const string, const ansichar* const string_to_find) noexcept {
-            return strstr(string, string_to_find);
-        }
-
-        /**
-        * Find a string in another string.
-        * @param string The string to be scanned
-        * @param string_to_find The string to find
-        * @return Pointer to the first occurrence of string in another string, nullptr if not found
-        */
         static HD_FORCEINLINE const ansichar* find_string(const ansichar* const string, const ansichar* const string_to_find) noexcept {
             return strstr(string, string_to_find);
-        }
-
-        /**
-        * Find a string in another string.
-        * @param string The string to be scanned
-        * @param string_to_find The string to find
-        * @return Pointer to the first occurrence of string in another string, nullptr if not found
-        */
-        static HD_FORCEINLINE wchar* find_string(wchar* const string, const wchar* const string_to_find) noexcept {
-            return wcsstr(string, string_to_find);
         }
 
         /**
@@ -619,28 +444,8 @@ namespace hud::os::common{
         * @param character_to_find The string to find
         * @return Pointer to the first occurrence of the character in the string, nullptr if not found
         */
-        static HD_FORCEINLINE ansichar* find_character(ansichar* string, ansichar character_to_find) noexcept {
-            return strchr(string, character_to_find);
-        }
-
-        /**
-        * Find a character in a string.
-        * @param string The string to be scanned
-        * @param character_to_find The string to find
-        * @return Pointer to the first occurrence of the character in the string, nullptr if not found
-        */
         static HD_FORCEINLINE const ansichar* find_character(const ansichar* const string, const ansichar character_to_find) noexcept {
             return strchr(string, character_to_find);
-        }
-
-        /**
-        * Find a character in a string.
-        * @param string The string to be scanned
-        * @param character_to_find The string to find
-        * @return Pointer to the first occurrence of the character in the string, nullptr if not found
-        */
-        static HD_FORCEINLINE wchar* find_character(wchar* const  string, const wchar character_to_find) noexcept {
-            return wcschr(string, character_to_find);
         }
 
         /**
@@ -672,7 +477,7 @@ namespace hud::os::common{
          * @param destination The destination pointer
          * @param source The source pointer
          */
-        template<typename T> requires(hud::is_same_v<hud::remove_cv_t<T>, ansichar> || hud::is_same_v<hud::remove_cv_t<T>, wchar>)
+        template<typename T> requires(hud::is_one_of_types_v<T, ansichar, wchar>)
         static HD_FORCEINLINE void check_not_null(T* destination, const T* source) noexcept {
             check(destination != nullptr);
             check(source != nullptr);
@@ -686,7 +491,7 @@ namespace hud::os::common{
          * @param source The source pointer
          * @param source_size The size in bytes of the buffer pointed by source
          */
-        template<typename T> requires(hud::is_same_v<hud::remove_cv_t<T>, ansichar> || hud::is_same_v<hud::remove_cv_t<T>, wchar>)
+        template<typename T> requires(hud::is_one_of_types_v<T, ansichar, wchar>)
         static HD_FORCEINLINE void check_params(T* destination, const usize destination_size, const T* source, const usize source_size) noexcept {
             check_not_null(destination, source);
             check(destination_size >= source_size);
