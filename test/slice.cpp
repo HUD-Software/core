@@ -208,6 +208,42 @@ TEST(slice, is_valid_index) {
     ASSERT_FALSE(empty_slice.is_valid_index(0));
 }
 
+TEST(slice, is_valid_range) {
+    i32 arr[4] = { 10,20,30,40 };
+    hud::slice<i32> slice(arr, 4);
+
+    // Ranges with 0 elements are valid
+    ASSERT_TRUE(slice.is_valid_range(0, 0));
+    ASSERT_TRUE(slice.is_valid_range(1, 0));
+    ASSERT_TRUE(slice.is_valid_range(2, 0));
+    ASSERT_TRUE(slice.is_valid_range(3, 0));
+    
+    // Ranges with more at least count() elements are valid
+    ASSERT_TRUE(slice.is_valid_range(0, 1));
+    ASSERT_TRUE(slice.is_valid_range(1, 1));
+    ASSERT_TRUE(slice.is_valid_range(2, 1));
+    ASSERT_TRUE(slice.is_valid_range(3, 1));
+    ASSERT_TRUE(slice.is_valid_range(0, 4));
+    ASSERT_TRUE(slice.is_valid_range(1, 3));
+    ASSERT_TRUE(slice.is_valid_range(2, 2));
+    ASSERT_TRUE(slice.is_valid_range(3, 1));
+
+    // Ranges with invalid index are not valid
+    ASSERT_FALSE(slice.is_valid_range(4, 0));
+    ASSERT_FALSE(slice.is_valid_range(4, 1));
+
+    // Ranges with more than count() elements are invalid
+    ASSERT_FALSE(slice.is_valid_range(0, 5));
+    ASSERT_FALSE(slice.is_valid_range(1, 4));
+    ASSERT_FALSE(slice.is_valid_range(2, 2));
+    ASSERT_FALSE(slice.is_valid_range(3, 2));
+
+    // Ranges [0;0] is invalid on empty slice
+    hud::slice<i32> empty_slice;
+    ASSERT_FALSE(empty_slice.is_valid_range(0, 0));
+    
+}
+
 TEST(slice, sub_slice) {
 
 

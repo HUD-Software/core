@@ -70,14 +70,13 @@ namespace hud {
         [[nodiscard]]
         HD_FORCEINLINE constexpr type_t& operator[](const usize index) noexcept {
             check(is_valid_index(index));
-            return *(data() + index);
+            return *data_at(index);
         }
 
         /** Retrieves reference on the element at the given index. */
         [[nodiscard]]
         HD_FORCEINLINE constexpr const type_t& operator[](const usize index) const noexcept {
-            check(is_valid_index(index));
-            return *(data() + index);
+            return const_cast<slice&>(*this)[index];
         }
 
         /** Checks if the slice is empty or not. */
@@ -86,16 +85,29 @@ namespace hud {
             return count_element == 0u;
         }
 
-        /** Retrieves a begin_ptr to the beginning of the sequence. */
+        /** Retrieves a pointer to the beginning of the sequence. */
         [[nodiscard]]
         HD_FORCEINLINE constexpr type_t* data() noexcept {
             return begin_ptr;
         }
 
-        /** Retrieves a begin_ptr to the beginning of the sequence. */
+        /** Retrieves a pointer to the beginning of the sequence. */
         [[nodiscard]]
         HD_FORCEINLINE constexpr const type_t* data() const noexcept {
             return begin_ptr;
+        }
+
+        /** Retrieves a pointer to the the sequence at the given index. */
+        [[nodiscard]]
+        HD_FORCEINLINE constexpr type_t* data_at(const usize index) noexcept {
+            check(is_valid_index(index));
+            return data() + index;
+        }
+
+        /** Retrieves a pointer to the the sequence at the given index. */
+        [[nodiscard]]
+        HD_FORCEINLINE constexpr const type_t* data_at(const usize index) const noexcept {
+            return const_cast<slice&>(*this).data_at(index);
         }
 
         /** Retrieves the number of elements the slice refers to. */
@@ -115,7 +127,13 @@ namespace hud {
         HD_FORCEINLINE constexpr bool is_valid_index(const usize index) const noexcept {
             // When index is unsigned, we don't need to check for negative values
             static_assert(is_unsigned_v<decltype(index)>);
-            return begin_ptr + index < begin_ptr + count_element;
+            return count() - index > 0u;
+        }
+
+        /** Check whether a range from index of countis in valid or not. */
+        [[nodiscard]]
+        HD_FORCEINLINE constexpr bool is_valid_range(const usize start_index, const usize range_count) const noexcept {
+            return is_valid_index(start_index) && (start_index+range_count) <= count();  // Valid if more element is available than required
         }
 
         /**
@@ -126,9 +144,8 @@ namespace hud {
         */
         [[nodiscard]]
         HD_FORCEINLINE constexpr slice sub_slice(const usize first_index, const usize count) noexcept {
-            check(first_index < this->count()); // "sub_slice can't start after the end of the slice"
-            check(first_index + count <= this->count()); // "sub_slice can't end after the end of the slice"
-            return slice(data() + first_index, count);
+            check(is_valid_range(first_index, count));
+            return slice(data_at(first_index), count);
         }
 
         /**
@@ -139,9 +156,7 @@ namespace hud {
         */
         [[nodiscard]]
         HD_FORCEINLINE constexpr const slice sub_slice(const usize first_index, const usize count) const noexcept {
-            check(first_index < this->count()); // "sub_slice can't start after the end of the slice"
-            check(first_index + count <= this->count()); // "sub_slice can't end after the end of the slice"
-            return slice(data() + first_index, count);
+            return const_cast<slice&>(*this).sub_slice(first_index, count);
         }
 
         /** Retrieves an iterator to the beginning of the slice. */
