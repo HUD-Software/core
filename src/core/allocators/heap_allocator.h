@@ -2,17 +2,12 @@
 #ifndef HD_INC_CORE_ALLOCATOR_HEAP_H
 #define HD_INC_CORE_ALLOCATOR_HEAP_H
 #include "../memory.h"
-#include "../traits/is_power_of_two.h"
-#include "allocation.h"
-
+#include "allocator.h"
 namespace hud {
 
     /** Allocator that use the system heap allocation. */
-    struct heap_allocator {
-
-        /** The type of allocation done by this allocator. */
-        template<typename type_t>
-        using allocation_type = allocation<type_t>;
+    struct heap_allocator 
+        : hud::allocator {
 
         /**
         * Allocate memory block with no alignment requirements
@@ -23,10 +18,7 @@ namespace hud {
         template<typename type_t = u8>
         [[nodiscard]]
         constexpr allocation_type<type_t> allocate(const usize count) noexcept {
-            if (count > 0) {
-                return allocation_type<type_t>(memory::allocate_array<type_t>(count), count);
-            }
-            return allocation_type<type_t>{};
+            return count > 0 ? allocation_type<type_t>(memory::allocate_array<type_t>(count), count) : allocation_type<type_t>{};
         }
 
         /**

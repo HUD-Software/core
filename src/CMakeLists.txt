@@ -17,6 +17,7 @@ endif()
 set( interface
 	core/allocators/aligned_heap_allocator.h
 	core/allocators/allocation.h
+	core/allocators/allocator.h
 	core/allocators/heap_allocator.h
 	core/containers/aligned_buffer.h
 	core/containers/array.h

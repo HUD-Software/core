@@ -37,6 +37,6 @@ namespace hud
     template <typename type_t, typename u_type_t>
     inline constexpr bool is_bitwise_convertible_v = is_bitwise_convertible<type_t, u_type_t>::value;
 
-}
+} // namespace hud
 
 #endif // HD_INC_CORE_TRAITS_IS_BITWISE_TYPE_H
