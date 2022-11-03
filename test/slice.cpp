@@ -235,7 +235,7 @@ TEST(slice, is_valid_range) {
     // Ranges with more than count() elements are invalid
     ASSERT_FALSE(slice.is_valid_range(0, 5));
     ASSERT_FALSE(slice.is_valid_range(1, 4));
-    ASSERT_FALSE(slice.is_valid_range(2, 2));
+    ASSERT_FALSE(slice.is_valid_range(2, 3));
     ASSERT_FALSE(slice.is_valid_range(3, 2));
 
     // Ranges [0;0] is invalid on empty slice
