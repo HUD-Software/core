@@ -17,18 +17,22 @@ namespace hud {
     /** Pointer specification for equal. */
     template<typename type_t>
     struct equal<type_t*> {
+        /** Check if lhs == rhs. */
         [[nodiscard]]
-        constexpr bool operator()(type_t* a, type_t* b) const noexcept {
-            return  a == b;
+        constexpr bool operator()(type_t* lhs, type_t* rhs) const noexcept {
+            return  lhs == rhs;
         }
+        /** Check if lhs == nullptr. */
         [[nodiscard]]
-        constexpr bool operator()(type_t* a, hud::ptr::null) const noexcept {
-            return a == nullptr;
+        constexpr bool operator()(type_t* lhs, hud::ptr::null) const noexcept {
+            return lhs == nullptr;
         }
+        /** Check if nullptr == rhs. */
         [[nodiscard]]
-        constexpr bool operator()(hud::ptr::null, type_t* a) const noexcept {
-            return a == nullptr;
+        constexpr bool operator()(hud::ptr::null, type_t* rhs) const noexcept {
+            return rhs == nullptr;
         }
+        /** Check if nullptr == nullptr. */
         [[nodiscard]]
         constexpr bool operator()(hud::ptr::null, hud::ptr::null) const noexcept {
             return true;

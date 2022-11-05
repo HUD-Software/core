@@ -17,18 +17,22 @@ namespace hud {
     /** Pointer specification for less. */
     template<typename type_t>
     struct less<type_t*, type_t*> {
+        /** Check if lhs < rhs. */
         [[nodiscard]]
         bool operator()(type_t* a, type_t* b) const noexcept {
             return a < b;
         }
+        /** Check if lhs < nullptr. */
         [[nodiscard]]
         constexpr bool operator()(type_t*, hud::ptr::null) const noexcept {
-            return false;
+            return false; // Assume nullptr == 0x0;
         }
+        /** Check if nullptr < rhs. */
         [[nodiscard]]
         constexpr bool operator()(hud::ptr::null, type_t* a) const noexcept {
-            return a != nullptr;
+            return a != nullptr; // Assume nullptr == 0x0;
         }
+        /** Check if nullptr < nullptr. */
         [[nodiscard]]
         constexpr bool operator()(hud::ptr::null, hud::ptr::null) const noexcept {
             return false;
