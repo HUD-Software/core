@@ -78,7 +78,7 @@ namespace hud {
         const usize size_1 = static_cast<usize>(last_1 - first_1);
         const usize size_2 = static_cast<usize>(last_2 - first_2);
         const bool size_1_less_than_size_2 = size_1 < size_2;
-        const i32 diff =hud::memory::compare(first_1, first_2, size_1_less_than_size_2 ? size_1 : size_2);
+        const i32 diff = hud::memory::compare(first_1, first_2, size_1_less_than_size_2 ? size_1 : size_2);
         return diff < 0 || (diff == 0 && size_1_less_than_size_2);
     }
 
