@@ -19,8 +19,8 @@ namespace hud {
     struct less<type_t*, type_t*> {
         /** Check if lhs < rhs. */
         [[nodiscard]]
-        bool operator()(type_t* a, type_t* b) const noexcept {
-            return a < b;
+        bool operator()(type_t* lhs, type_t* rhs) const noexcept {
+            return lhs < rhs;
         }
         /** Check if lhs < nullptr. */
         [[nodiscard]]
@@ -29,8 +29,8 @@ namespace hud {
         }
         /** Check if nullptr < rhs. */
         [[nodiscard]]
-        constexpr bool operator()(hud::ptr::null, type_t* a) const noexcept {
-            return a != nullptr; // Assume nullptr == 0x0;
+        constexpr bool operator()(hud::ptr::null, type_t* rhs) const noexcept {
+            return rhs != nullptr; // Assume nullptr == 0x0;
         }
         /** Check if nullptr < nullptr. */
         [[nodiscard]]
