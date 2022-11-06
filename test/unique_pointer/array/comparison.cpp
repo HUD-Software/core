@@ -142,36 +142,20 @@ TEST(unique_pointer_array, less_operator) {
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(ptr1);
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(ptr2);
         hud::unique_pointer<i32[]> p4;
-        if (hud::is_constant_evaluated()) {
-            const auto result = std::tuple{
-                false, // not constexpr p1 < p1,
-                false, // not constexpr p1 < p2,
-                false, // not constexpr p2 < p1,
-                false, // not constexpr p1 < p4,
-                p4 < nullptr,
-                p2 < nullptr,
-                nullptr < p4,
-                nullptr < p2
-            };
-            [[maybe_unused]] auto leak = p1.leak();
-            [[maybe_unused]] auto leak2 = p2.leak();
-            return result;
-        }
-        else {
-            const auto result = std::tuple{
-                p1 < p1,
-                p1 < p2,
-                p2 < p1,
-                p1 < p4,
-                p4 < nullptr,
-                p2 < nullptr,
-                nullptr < p4,
-                nullptr < p2
-            };
-            [[maybe_unused]] auto leak =p1.leak();
-            [[maybe_unused]] auto leak2 =p2.leak();
-            return result;
-        }
+       
+        const auto result = std::tuple{
+            p1 < p1,
+            p1 < p2,
+            p2 < p1,
+            p1 < p4,
+            p4 < nullptr,
+            p2 < nullptr,
+            nullptr < p4,
+            nullptr < p2
+        };
+        [[maybe_unused]] auto leak =p1.leak();
+        [[maybe_unused]] auto leak2 =p2.leak();
+        return result;
     };
 
     // Non constant
@@ -189,16 +173,9 @@ TEST(unique_pointer_array, less_operator) {
 
     // Constant
     {
-        constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
+        //std::unique_pointer::operator< is not constexpr because constexpr pointer order comparison is undefined
     }
+    
 }
 
 TEST(unique_pointer_array, less_equal_operator) {
@@ -210,36 +187,20 @@ TEST(unique_pointer_array, less_equal_operator) {
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(ptr1);
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(ptr2);
         hud::unique_pointer<i32[]> p4;
-        if (hud::is_constant_evaluated()) {
-            const auto result = std::tuple{
-                false, // not constexpr p1 <= p1
-                false, // not constexpr p1 <= p2,
-                false, // not constexpr p2 <= p1,
-                false, // not constexpr p1 <= p4,
-                p4 <= nullptr,
-                p2 <= nullptr,
-                nullptr <= p4,
-                nullptr <= p2
-            };
-            [[maybe_unused]] auto leak = p1.leak();
-            [[maybe_unused]] auto leak2 = p2.leak();
-            return result;
-        }
-        else {
-            const auto result = std::tuple{
-                p1 <= p1,
-                p1 <= p2,
-                p2 <= p1,
-                p1 <= p4,
-                p4 <= nullptr,
-                p2 <= nullptr,
-                nullptr <= p4,
-                nullptr <= p2
-            };
-            [[maybe_unused]] auto leak = p1.leak();
-            [[maybe_unused]] auto leak2 = p2.leak();
-            return result;
-        }
+
+        const auto result = std::tuple{
+            p1 <= p1,
+            p1 <= p2,
+            p2 <= p1,
+            p1 <= p4,
+            p4 <= nullptr,
+            p2 <= nullptr,
+            nullptr <= p4,
+            nullptr <= p2
+        };
+        [[maybe_unused]] auto leak = p1.leak();
+        [[maybe_unused]] auto leak2 = p2.leak();
+        return result;
     };
 
     // Non constant
@@ -257,15 +218,7 @@ TEST(unique_pointer_array, less_equal_operator) {
 
     // Constant
     {
-        constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
+        //std::unique_pointer::operator<= is not constexpr because constexpr pointer order comparison is undefined
     }
 }
 
@@ -279,36 +232,20 @@ TEST(unique_pointer_array, greater_operator) {
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(ptr1);
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(ptr2);
         hud::unique_pointer<i32[]> p4;
-        if (hud::is_constant_evaluated()) {
-            const auto result = std::tuple{
-                false, // not constexpr p1 > p1,
-                false, // not constexpr p1 > p2,
-                false, // not constexpr p2 > p1,
-                false, // not constexpr p1 > p4,
-                p4 > nullptr,
-                p2 > nullptr,
-                nullptr > p4,
-                nullptr > p2
-            };
-            [[maybe_unused]] auto leak = p1.leak();
-            [[maybe_unused]] auto leak2 = p2.leak();
-            return result;
-        }
-        else {
-            const auto result = std::tuple{
-                p1 > p1,
-                p1 > p2,
-                p2 > p1,
-                p1 > p4,
-                p4 > nullptr,
-                p2 > nullptr,
-                nullptr > p4,
-                nullptr > p2
-            };
-            [[maybe_unused]] auto leak = p1.leak();
-            [[maybe_unused]] auto leak2 = p2.leak();
-            return result;
-        }
+        
+        const auto result = std::tuple{
+            p1 > p1,
+            p1 > p2,
+            p2 > p1,
+            p1 > p4,
+            p4 > nullptr,
+            p2 > nullptr,
+            nullptr > p4,
+            nullptr > p2
+        };
+        [[maybe_unused]] auto leak = p1.leak();
+        [[maybe_unused]] auto leak2 = p2.leak();
+        return result;
     };
 
     // Non constant
@@ -326,15 +263,7 @@ TEST(unique_pointer_array, greater_operator) {
 
     // Constant
     {
-        constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
+        //std::unique_pointer::operator> is not constexpr because constexpr pointer order comparison is undefined
     }
 }
 
@@ -348,36 +277,20 @@ TEST(unique_pointer_array, greater_equal_operator) {
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(ptr1);
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(ptr2);
         hud::unique_pointer<i32[]> p4;
-        if (hud::is_constant_evaluated()) {
-            const auto result = std::tuple{
-                false, // not constexpr p1 >= p1,
-                false, // not constexpr p1 >= p2,
-                false, // not constexpr p2 >= p1,
-                false, // not constexpr p1 >= p4,
-                p4 >= nullptr,
-                p2 >= nullptr,
-                nullptr >= p4,
-                nullptr >= p2
-            };
-            [[maybe_unused]] auto leak = p1.leak();
-            [[maybe_unused]] auto leak2 = p2.leak();
-            return result;
-        }
-        else {
-            const auto result = std::tuple{
-                p1 >= p1,
-                p1 >= p2,
-                p2 >= p1,
-                p1 >= p4,
-                p4 >= nullptr,
-                p2 >= nullptr,
-                nullptr >= p4,
-                nullptr >= p2
-            };
-            [[maybe_unused]] auto leak = p1.leak();
-            [[maybe_unused]] auto leak2 = p2.leak();
-            return result;
-        }
+        
+        const auto result = std::tuple{
+            p1 >= p1,
+            p1 >= p2,
+            p2 >= p1,
+            p1 >= p4,
+            p4 >= nullptr,
+            p2 >= nullptr,
+            nullptr >= p4,
+            nullptr >= p2
+        };
+        [[maybe_unused]] auto leak = p1.leak();
+        [[maybe_unused]] auto leak2 = p2.leak();
+        return result;
     };
 
     // Non constant
@@ -393,16 +306,8 @@ TEST(unique_pointer_array, greater_equal_operator) {
         ASSERT_FALSE(std::get<7>(result));
     }
 
-    // Constant
+   // Constant
     {
-        constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
+        //std::unique_pointer::operator>= is not constexpr because constexpr pointer order comparison is undefined
     }
 }

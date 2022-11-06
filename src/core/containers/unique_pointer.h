@@ -785,7 +785,7 @@ namespace hud {
     */
     template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator<(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
+    bool operator<(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         using pointer_type = typename unique_pointer<type_t, deleter_type>::pointer_type;
         return less<pointer_type>()(pointer.pointer(), nullptr);
     }
@@ -800,7 +800,7 @@ namespace hud {
     */
     template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator<(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
+    bool operator<(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         using pointer_type = typename unique_pointer<type_t, deleter_type>::pointer_type;
         return less<pointer_type>()(nullptr, pointer.pointer());
     }
@@ -831,7 +831,7 @@ namespace hud {
     */
     template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator>(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
+    bool operator>(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         return nullptr < pointer;
     }
 
@@ -845,7 +845,7 @@ namespace hud {
     */
     template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator>(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
+    bool operator>(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         return pointer < nullptr;
     }
 
@@ -875,7 +875,7 @@ namespace hud {
     */
     template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator<=(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
+    bool operator<=(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         return !(nullptr < pointer);
     }
 
@@ -889,7 +889,7 @@ namespace hud {
     */
     template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator<=(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
+    bool operator<=(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         return !(pointer < nullptr);
     }
 
@@ -919,7 +919,7 @@ namespace hud {
     */
     template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator>=(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
+    bool operator>=(const unique_pointer<type_t, deleter_type>& pointer, hud::ptr::null) noexcept {
         return !(pointer < nullptr);
     }
 
@@ -933,7 +933,7 @@ namespace hud {
     */
     template<typename type_t, typename deleter_type>
     [[nodiscard]]
-    constexpr bool operator>=(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
+    bool operator>=(hud::ptr::null, const unique_pointer<type_t, deleter_type>& pointer) noexcept {
         return !(nullptr < pointer);
     }
 
