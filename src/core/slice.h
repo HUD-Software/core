@@ -69,7 +69,6 @@ namespace hud {
         /** Retrieves reference on the element at the given index. */
         [[nodiscard]]
         HD_FORCEINLINE constexpr type_t& operator[](const usize index) noexcept {
-            check(is_valid_index(index));
             return *data_at(index);
         }
 
