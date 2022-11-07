@@ -52,7 +52,7 @@ namespace hud
         /** Pre-increment the iterator. */
         constexpr random_access_iterator &operator++() noexcept
         {
-            pointer++;
+            ++pointer;
             return *this;
         }
 
@@ -60,14 +60,14 @@ namespace hud
         constexpr random_access_iterator operator++(i32) noexcept
         {
             random_access_iterator tmp(*this);
-            pointer++;
+            ++pointer;
             return tmp;
         }
 
         /** Pre-decrement the iterator. */
         constexpr random_access_iterator &operator--() noexcept
         {
-            pointer--;
+            --pointer;
             return *this;
         }
 
@@ -75,7 +75,7 @@ namespace hud
         constexpr random_access_iterator operator--(i32) noexcept
         {
             random_access_iterator tmp(*this);
-            pointer--;
+            --pointer;
             return tmp;
         }
 
