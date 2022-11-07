@@ -251,10 +251,10 @@ namespace hud {
         template<typename type_t, typename u_type_t>
         static constexpr void move_or_copy_assign(type_t* destination, u_type_t&& source) noexcept requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>) {
             if constexpr (hud::is_move_assignable_v<type_t, u_type_t>) {
-                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable.hud::memory::move_or_copy_assign is not designed to allow throwable move assignable type");
+                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable. hud::memory::move_or_copy_assign is not designed to allow throwable move assignable type");
             }
             if constexpr (hud::is_copy_assignable_v<type_t, u_type_t>) {
-                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable.hud::memory::move_or_copy_assign is not designed to allow throwable copy assignable type");
+                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign is not designed to allow throwable copy assignable type");
             }
             *destination = hud::forward<u_type_t>(source);
         }
@@ -273,10 +273,10 @@ namespace hud {
         template<typename type_t, typename u_type_t>
         static constexpr void move_or_copy_assign_array(type_t* destination, u_type_t* HD_RESTRICT source, u_type_t const * const HD_RESTRICT end_source) noexcept requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>) {
             if constexpr (hud::is_move_assignable_v<type_t, u_type_t>) {
-                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable.hud::memory::move_or_copy_assign is not designed to allow throwable move assignable type");
+                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable. hud::memory::move_or_copy_assign_array is not designed to allow throwable move assignable type");
             }
             if constexpr (hud::is_copy_assignable_v<type_t, u_type_t>) {
-                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable.hud::memory::move_or_copy_assign is not designed to allow throwable copy assignable type");
+                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign_array is not designed to allow throwable copy assignable type");
             }
 
             if constexpr (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && hud::is_same_size_v<type_t,u_type_t> &&!hud::is_constant_evaluated()) {
