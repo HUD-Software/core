@@ -40,12 +40,12 @@ namespace hud
         using value_type = typename details::select_pointer_type<type_t>::value_type;
 
         /**
-         * Construct a random_access_iterator on the elements, starting at the given index.
+         * Construct a random_access_iterator on the elements, starting at the given start_index.
          * @param elements Pointer to the continuous allocated elements.
-         * @param index Index of the element to reach after the elements in the sequence
+         * @param start_index Index of the element to reach after the elements in the sequence
          */
-        constexpr random_access_iterator(pointer_type elements, const usize index = 0) noexcept
-            : pointer(elements + index)
+        constexpr random_access_iterator(pointer_type elements, const usize start_index = 0) noexcept
+            : pointer(elements + start_index)
         {
         }
 
