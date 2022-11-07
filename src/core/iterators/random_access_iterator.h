@@ -41,11 +41,11 @@ namespace hud
 
         /**
          * Construct a random_access_iterator on the elements, starting at the given start_index.
-         * @param elements Pointer to the continuous allocated elements.
+         * @param first Pointer to the first continuous allocated elements.
          * @param start_index Index of the element to reach after the elements in the sequence
          */
-        constexpr random_access_iterator(pointer_type elements, const usize start_index = 0) noexcept
-            : pointer(elements + start_index)
+        constexpr random_access_iterator(pointer_type first, const usize start_index = 0) noexcept
+            : pointer(first + start_index)
         {
         }
 
