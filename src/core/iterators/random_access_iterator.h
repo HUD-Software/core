@@ -9,7 +9,6 @@ namespace hud
 
     namespace details
     {
-
         template <typename type_t>
         struct select_pointer_type;
 
@@ -33,19 +32,19 @@ namespace hud
      * Specialize for differente random accessible container types like array, c style array etc...
      */
     template <typename type_t>
-    class random_access_iterator
+    requires(hud::is_pointer_v<type_t> || hud::is_bounded_array_v<type_t>) class random_access_iterator
     {
     public:
         using pointer_type = typename details::select_pointer_type<type_t>::pointer_type;
         using value_type = typename details::select_pointer_type<type_t>::value_type;
 
         /**
-         * Construct a random_access_iterator on the elements, starting at the given start_index.
-         * @param first Pointer to the first continuous allocated elements.
-         * @param start_index Index of the element to reach after the elements in the sequence
+         * Construct a random_access_iterator on the elements, starting at the given index.
+         * @param elements Pointer to the continuous allocated elements.
+         * @param index Index of the element to reach after the elements in the sequence
          */
-        constexpr random_access_iterator(pointer_type first, const usize start_index = 0) noexcept
-            : pointer(first + start_index)
+        constexpr random_access_iterator(pointer_type elements, const usize index = 0) noexcept
+            : pointer(elements + index)
         {
         }
 
