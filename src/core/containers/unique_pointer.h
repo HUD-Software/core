@@ -403,11 +403,11 @@ namespace hud
 
     public:
         /** The deleter type. */
-        using deleter_type = typename base_type::deleter_type;
+        using typename base_type::deleter_type;
         /** The pointer type. Result of hud::select_deleter_pointer_type_t<<type_t,deleter_type>*/
-        using pointer_type = typename base_type::pointer_type;
+        using typename base_type::pointer_type;
         /** The element pointed by the pointer. */
-        using element_type = typename base_type::element_type;
+        using typename base_type::element_type;
 
         /**
          * Default constructor that value-initializes the stored pointer and the stored deleter.
@@ -550,11 +550,11 @@ namespace hud
 
     public:
         /** The deleter type. */
-        using deleter_type = typename base_type::deleter_type;
+        using typename base_type::deleter_type;
         /** The pointer type. Result of hud::select_deleter_pointer_type_t<<type_t,deleter_type>*/
-        using pointer_type = typename base_type::pointer_type;
+        using typename base_type::pointer_type;
         /** The element pointed by the pointer. */
-        using element_type = typename base_type::element_type;
+        using typename base_type::element_type;
 
         /**
          * Default constructor that value-initializes the stored pointer and the stored deleter.
