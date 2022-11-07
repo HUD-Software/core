@@ -1,5 +1,6 @@
 #include <core/templates/greater.h>
 
+// LCOV_EXCL_START
 namespace hud_test {
     struct S {
         constexpr S(i32 val) noexcept
@@ -13,6 +14,7 @@ namespace hud_test {
         i32 value;
     };
 }
+// LCOV_EXCL_STOP
 
 
 TEST(templates, greater) {

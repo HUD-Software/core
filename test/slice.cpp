@@ -275,13 +275,6 @@ TEST(slice, sub_slice) {
         ASSERT_EQ(slice.count(), 4u);
         ASSERT_EQ(sub_slice.data(), &arr[0]);
         ASSERT_EQ(sub_slice.count(), 0u);
-
-        // Additional test when iterating on the sub_slice
-        usize idx = 0;
-        for (; idx < sub_slice.count(); idx++) {
-            ASSERT_FALSE(false); // Must be empty sub_slice
-        }
-        ASSERT_EQ(idx, sub_slice.count());
     }
 
     // sub_slice of first part of sequence

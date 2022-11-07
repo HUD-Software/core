@@ -1,6 +1,6 @@
 #include <core/containers/unique_pointer.h>
 
-
+// LCOV_EXCL_START
 namespace hud_test {
     template<typename type_t>
     struct custom_deleter
@@ -30,6 +30,7 @@ namespace hud_test {
 
     using deleter_type = hud_test::custom_deleter<hud_test::non_bitwise_type[]>;
 }
+// LCOV_EXCL_STOP
 
 TEST(unique_pointer_array, pointer) {
 

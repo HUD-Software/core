@@ -126,6 +126,7 @@ TEST(shared_pointer_not_safe, less_operator) {
         i32* buf[2];
 
         // Sort pointer in order
+        // LCOV_EXCL_START
         if (hud::less<i32*>()(ptri_1, ptri_2)) {
             buf[0] = ptri_1;
             buf[1] = ptri_2;
@@ -134,6 +135,7 @@ TEST(shared_pointer_not_safe, less_operator) {
             buf[0] = ptri_2;
             buf[1] = ptri_1;
         }
+        // LCOV_EXCL_STOP
         i32* ptr1 = buf[0];
         i32* ptr2 = buf[1];
 
@@ -215,6 +217,7 @@ TEST(shared_pointer_not_safe, less_equal_operator) {
         i32* buf[2];
 
         // Sort pointer in order
+        // LCOV_EXCL_START
         if (hud::less<i32*>()(ptri_1, ptri_2)) {
             buf[0] = ptri_1;
             buf[1] = ptri_2;
@@ -223,6 +226,7 @@ TEST(shared_pointer_not_safe, less_equal_operator) {
             buf[0] = ptri_2;
             buf[1] = ptri_1;
         }
+        // LCOV_EXCL_STOP
         i32* ptr1 = buf[0];
         i32* ptr2 = buf[1];
 
@@ -304,6 +308,7 @@ TEST(shared_pointer_not_safe, greater_operator) {
         i32* buf[2];
 
         // Sort pointer in order
+        // LCOV_EXCL_START
         if (ptri_1 < ptri_2) {
             buf[0] = ptri_1;
             buf[1] = ptri_2;
@@ -312,6 +317,7 @@ TEST(shared_pointer_not_safe, greater_operator) {
             buf[0] = ptri_2;
             buf[1] = ptri_1;
         }
+        // LCOV_EXCL_STOP
         i32* ptr1 = buf[0];
         i32* ptr2 = buf[1];
 
@@ -393,6 +399,7 @@ TEST(shared_pointer_not_safe, greater_equal_operator) {
         i32* buf[2];
 
         // Sort pointer in order
+        // LCOV_EXCL_START
         if (ptri_1 < ptri_2) {
             buf[0] = ptri_1;
             buf[1] = ptri_2;
@@ -401,6 +408,7 @@ TEST(shared_pointer_not_safe, greater_equal_operator) {
             buf[0] = ptri_2;
             buf[1] = ptri_1;
         }
+        // LCOV_EXCL_STOP
         i32* ptr1 = buf[0];
         i32* ptr2 = buf[1];
 

@@ -1,5 +1,6 @@
 #include <core/traits/is_function.h>
 
+// LCOV_EXCL_START
 namespace hud_test {
     int is_function_a(int i) { return i; }
     template<typename>
@@ -19,6 +20,7 @@ namespace hud_test {
         int d5;
     };
 }
+// LCOV_EXCL_STOP
 
 TEST(traits, is_function) {
     ASSERT_TRUE((hud::is_function_v<decltype(hud_test::is_function_a)>));
