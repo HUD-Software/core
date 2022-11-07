@@ -5,6 +5,5 @@ engines:
     language: c++
   duplication:
     enabled: true
-    minTokenMatch: 20
     exclude_paths:
     - "test/**"
