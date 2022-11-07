@@ -18,11 +18,6 @@ jobs:
         run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64 -DCOVERAGE:BOOL=ON
       - name: Build
         run: cmake.exe --build target --config Debug
-      # - name: Upload to Codacy
-      #   uses: codacy/codacy-coverage-reporter-action@v1
-      #   with:
-      #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      #     coverage-reports: target/test/Debug/coverage.msvc.cobertura.xml
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
@@ -44,11 +39,6 @@ jobs:
         run: cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -Btarget -G "Unix Makefiles" -DCOVERAGE:BOOL=ON
       - name: Build
         run: cmake --build target --config Debug
-      # - name: Upload to Codacy
-      #   uses: codacy/codacy-coverage-reporter-action@v1
-      #   with:
-      #     project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      #     coverage-reports: target/test/Debug/coverage.msvc.cobertura.xml
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:

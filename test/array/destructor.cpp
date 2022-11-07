@@ -19,8 +19,10 @@ TEST(array, destructor_call_elements_destructors)
                 // Ensure element's destructors are not called
                 for (usize index = 0; index < 2; index++) {
                     if (*array[index].ptr() != 0) {
+                        // LCOV_EXCL_START
                         all_destructor_are_not_called = false;
                         break;
+                        // LCOV_EXCL_STOP
                     }
                 }
             }
@@ -29,8 +31,10 @@ TEST(array, destructor_call_elements_destructors)
             bool all_destructor_are_called = true;
             for (usize index = 0; index < 2; index++) {
                 if (dtor_order[index] == 0) {
+                    // LCOV_EXCL_START
                     all_destructor_are_called = false;
                     break;
+                    // LCOV_EXCL_STOP
                 }
             }
 
@@ -69,8 +73,10 @@ TEST(array, destructor_call_elements_destructors)
                 // Ensure element's destructors are not called
                 for (usize index = 0; index < 2; index++) {
                     if (*array[index].ptr() != 0) {
+                        // LCOV_EXCL_START
                         all_destructor_are_not_called = false;
                         break;
+                        // LCOV_EXCL_STOP
                     }
                 }
             }
@@ -79,8 +85,10 @@ TEST(array, destructor_call_elements_destructors)
             bool all_destructor_are_called = true;
             for (usize index = 0; index < 2; index++) {
                 if (dtor_order[index] == 0) {
+                    // LCOV_EXCL_START
                     all_destructor_are_called = false;
                     break;
+                    // LCOV_EXCL_STOP
                 }
             }
 

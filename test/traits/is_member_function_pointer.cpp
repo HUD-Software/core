@@ -1,5 +1,6 @@
 #include <core/traits/is_member_function_pointer.h>
 
+// LCOV_EXCL_START
 namespace hud_test {
     [[maybe_unused]] int i = 0;
     [[maybe_unused]] const int i1 = 0;
@@ -22,6 +23,7 @@ namespace hud_test {
 
     [[maybe_unused]] int is_function_a() { return 0; }
 }
+// LCOV_EXCL_STOP
 
 TEST(traits, is_member_function_pointer) {
     ASSERT_FALSE((hud::is_member_function_pointer_v<hud_test::a*>));
