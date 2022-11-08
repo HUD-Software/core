@@ -27,6 +27,6 @@ namespace hud::os::linux{
         if(found == nullptr) {
             return false;
         }
-        return found[sizeof(TRACERPID)] != 0;
+        return found[sizeof(TRACERPID)-1] != '0';
     }
 }
