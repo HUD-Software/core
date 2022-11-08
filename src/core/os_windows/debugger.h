@@ -24,12 +24,11 @@ namespace hud::os::windows{
         * @param condition The condition to test
         */
         static void check(const bool condition) noexcept {
-            if (condition == false) {
+            if (!condition) {
                 break_here();
                 #if defined(HD_ABORT_ON_ASSERT)
                 abort();
                 #endif
-            } else {
             }
         }
 

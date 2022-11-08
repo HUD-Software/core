@@ -246,6 +246,7 @@ add_executable(test_core
 	character.cpp
 	compilation.cpp
 	cstring.cpp
+	debugger.cpp
 	hash.cpp
 	heap_allocator.cpp
 	main.cpp
