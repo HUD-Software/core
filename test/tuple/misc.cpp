@@ -1,8 +1,12 @@
 #include <core/containers/tuple.h>
 #include <core/traits/is_same.h>
 
+namespace hud_test{
+    struct empty{};
+}
 TEST(tuple, sizeof_is_correct) {
     ASSERT_EQ(sizeof(hud::tuple<>), 1u);
+    ASSERT_EQ(sizeof(hud::tuple<hud_test::empty, hud_test::empty, hud_test::empty>), 1u);
     ASSERT_EQ(sizeof(hud::tuple<i32>), 4u);
     ASSERT_EQ(sizeof(hud::tuple<i32, i32>), 8u);
     ASSERT_EQ(sizeof(hud::tuple<i32, i8, i32>), 12u);
