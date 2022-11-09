@@ -6,7 +6,7 @@ namespace hud_test{
 }
 TEST(tuple, sizeof_is_correct) {
     ASSERT_EQ(sizeof(hud::tuple<>), 1u);
-    ASSERT_EQ(sizeof(hud::tuple<hud_test::empty, hud_test::empty, hud_test::empty>), 1u);
+    ASSERT_EQ(sizeof(hud::tuple<hud_test::empty, hud_test::empty, hud_test::empty>), 3u);
     ASSERT_EQ(sizeof(hud::tuple<i32>), 4u);
     ASSERT_EQ(sizeof(hud::tuple<i32, i32>), 8u);
     ASSERT_EQ(sizeof(hud::tuple<i32, i8, i32>), 12u);
