@@ -81,6 +81,27 @@ TEST(cstring, copy) {
     //ASSERT_TRUE(hud::cstring::copy((wchar*)nullptr, nullptr) == nullptr);
 }
 
+// TEST(cstring, copy_safe_with_nullptr_destination)
+// {
+//     FAIL();
+// }
+// TEST(cstring, copy_safe_with_nullptr_source)
+// {
+//     FAIL();
+// }
+// TEST(cstring, copy_safe_with_destination_size_zero_or_greater_than_isize_max)
+// {
+//     FAIL();
+// }
+// TEST(cstring, copy_safe_with_destination_is_less_or_equal_lenght_safe_source_destination_size)
+// {
+//     FAIL();
+// }
+// TEST(cstring, copy_safe_with_destination_and_source_overlap)
+// {
+//     FAIL();
+// }
+
 TEST(cstring, copy_safe) {
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
@@ -389,8 +410,6 @@ TEST(cstring, equals) {
 }
 
 TEST(cstring, equals_partial) {
-
-
     ASSERT_TRUE(hud::cstring::equals_partial("abc", "abc", 1));
     ASSERT_FALSE(hud::cstring::equals_partial("abc", "bc", 2));
     ASSERT_FALSE(hud::cstring::equals_partial("aBc", "abc", 3));
@@ -408,6 +427,42 @@ TEST(cstring, length) {
     ASSERT_TRUE(hud::cstring::length(L"aBc") == 3);
     ASSERT_FALSE(hud::cstring::length("aBcd") == 3);
     ASSERT_FALSE(hud::cstring::length(L"aBcd") == 3);
+}
+
+TEST(cstring, lenght_safe_with_string_nullptr)
+{   
+    constexpr ansichar* null_string = nullptr;
+    ASSERT_EQ(hud::cstring::length_safe(null_string, 0u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(null_string, 1u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(null_string, hud::cstring::RSIZE_MAX_STR), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(null_string, hud::cstring::RSIZE_MAX_STR+1u), 0u);
+
+    constexpr wchar* null_wstring = nullptr;
+    ASSERT_EQ(hud::cstring::length_safe(null_wstring, 0u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(null_wstring, 1u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(null_wstring, hud::cstring::RSIZE_MAX_STR), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(null_wstring, hud::cstring::RSIZE_MAX_STR+1u), 0u);
+}
+TEST(cstring, lenght_safe_with_max_length_zero)
+{
+    ASSERT_EQ(hud::cstring::length_safe("", 0u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe("a", 0u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe("aBc", 0u), 0u);
+
+    ASSERT_EQ(hud::cstring::length_safe(L"", 0u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(L"a", 0u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(L"aBc", 0u), 0u);
+}
+
+TEST(cstring, lenght_safe_with_max_length_greater_than_RSIZE_MAX_STR)
+{
+    ASSERT_EQ(hud::cstring::length_safe("", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
+    ASSERT_EQ(hud::cstring::length_safe("a", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
+    ASSERT_EQ(hud::cstring::length_safe("aBc", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
+
+    ASSERT_EQ(hud::cstring::length_safe(L"", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
+    ASSERT_EQ(hud::cstring::length_safe(L"a", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
+    ASSERT_EQ(hud::cstring::length_safe(L"aBc", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
 }
 
 TEST(cstring, length_safe) {

@@ -12,6 +12,8 @@
 namespace hud::os::common{
 
     struct cstring {
+        static constexpr u32 RSIZE_MAX_STR{4UL << 10}; // 4KB
+        static constexpr usize RSIZE_MAX{hud::isize_max}; // Maximum secure library integer size
 
         /** 
         * Test whether null-terminated string contains only pure ansi characters.
