@@ -456,13 +456,13 @@ TEST(cstring, lenght_safe_with_max_length_zero)
 
 TEST(cstring, lenght_safe_with_max_length_greater_than_RSIZE_MAX_STR)
 {
-    ASSERT_EQ(hud::cstring::length_safe("", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
-    ASSERT_EQ(hud::cstring::length_safe("a", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
-    ASSERT_EQ(hud::cstring::length_safe("aBc", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
+    ASSERT_EQ(hud::cstring::length_safe("", hud::cstring::RSIZE_MAX_STR+1u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe("a", hud::cstring::RSIZE_MAX_STR+1u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe("aBc", hud::cstring::RSIZE_MAX_STR+1u), 0u);
 
-    ASSERT_EQ(hud::cstring::length_safe(L"", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
-    ASSERT_EQ(hud::cstring::length_safe(L"a", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
-    ASSERT_EQ(hud::cstring::length_safe(L"aBc", hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
+    ASSERT_EQ(hud::cstring::length_safe(L"", hud::cstring::RSIZE_MAX_STR+1u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(L"a", hud::cstring::RSIZE_MAX_STR+1u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(L"aBc", hud::cstring::RSIZE_MAX_STR+1u), 0u);
 }
 
 TEST(cstring, length_safe) {
