@@ -17,6 +17,7 @@
 
 #define HD_RESTRICT __restrict //  Indicates that a symbol is not aliased in the current scope.
 #define NOMINMAX // Do not defines min and max macro
+#undef RSIZE_MAX // MSVC deinfed RSIZE_MAX to (SIZE_MAX >> 1) in limit.h. This is C11 that is not implemented by every compiler. Use hud::cstring::RSIZE_MAX instead.
 
 #else 
 #error Unsupported compiler for Windows
