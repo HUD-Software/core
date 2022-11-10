@@ -30,10 +30,18 @@ namespace hud {
         unknown,
     };
 
-    /** List of all supported endianness */
+    /** List of all supported endianness. */
     enum class endianness_e {
         little,
         big,
+        unknown
+    };
+
+    /** List of all compilation modes. */
+    enum class compilation_mode_e {
+        debug,
+        debug_optimized,
+        release,
         unknown
     };
 
@@ -74,7 +82,7 @@ namespace hud {
             }
         }
 
-        /** Check if for the current compiler */
+        /** Check if for the current compiler. */
         static constexpr bool is_compiler(compiler_e compiler) noexcept {
             return get_compiler() == compiler;
         }
@@ -121,7 +129,7 @@ namespace hud {
             #endif
         }
 
-        /** Check the target OS */
+        /** Check the target OS. */
         static constexpr bool is_os(const os_e os) noexcept {
             return get_os() == os;
         }
@@ -135,7 +143,7 @@ namespace hud {
             #endif
         }
 
-        /** Retrives the endianness of scalar types */
+        /** Retrieves the endianness of scalar types. */
         static constexpr endianness_e get_endianness() noexcept {
             #if defined(HD_LITTLE_ENDIAN)
                 return endianness_e::little;
@@ -146,9 +154,27 @@ namespace hud {
             #endif
         }
 
-        /** Check the endianness of scalar types*/
+        /** Check the endianness of scalar types. */
         static constexpr bool is_endianness(endianness_e endianness) noexcept {
             return get_endianness() == endianness;
+        }
+
+        /** Retrieves the compilation mode. */
+        static constexpr compilation_mode_e get_compilation_mode() noexcept {
+            #if defined(HD_DEBUG)
+            return compilation_mode_e::debug;
+            #elif defined(HD_DEBUGOPTIMIZED)
+            return compilation_mode_e::debug_optimized;
+            #elif defined(HD_RELEASE)
+            return compilation_mode_e::release;
+            #else
+            return compilation_mode_e::unknown;
+            #endif
+        }
+
+        /** Check the compilation mode. */
+        static constexpr bool is_compilation_mode(const hud::compilation_mode_e compilation_mode) noexcept {
+            return get_compilation_mode() == compilation_mode;
         }
     };
 

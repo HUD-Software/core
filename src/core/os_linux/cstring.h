@@ -146,23 +146,23 @@ namespace hud::os::linux
         /**
          * Retrieve the length of a ansi string and check the given parameters.
          * @param string Null-terminated string
-         * @param max_length Maximum number of character to count
+         * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
          * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
          */
         static HD_FORCEINLINE usize length_safe(const ansichar *string, const usize max_length) noexcept
         {
-            return is_safe_length_parameters_valid(string, max_length) ? strnlen(string, max_length) : 0u;
+            return is_safe_length_parameters_valid(string, max_length) ? strnlen(string, max_length > RSIZE_MAX_STR? RSIZE_MAX_STR: max_length) : 0u;
         }
 
-        /**
+        /** 
          * Retrieve the length of a wide string and check the given parameters.
          * @param string Null-terminated string
-         * @param max_length Maximum number of character to count
+         * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
          * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
          */
         static HD_FORCEINLINE usize length_safe(const wchar *string, const usize max_length) noexcept
         {
-            return is_safe_length_parameters_valid(string, max_length) ? wcsnlen(string, max_length) : 0u;
+            return is_safe_length_parameters_valid(string, max_length) ? wcsnlen(string, max_length > RSIZE_MAX_STR? RSIZE_MAX_STR: max_length) : 0u;
         }
 
         /**
@@ -196,11 +196,17 @@ namespace hud::os::linux
          * @return True if parameters are valid, false otherwise
          */
         static bool is_safe_length_parameters_valid(const void *string, const usize max_length){
-            const bool is_string_not_nullptr = string != nullptr;
-            check(is_string_not_nullptr);
-            const bool is_max_length_not_zero = max_length != 0;
-            check(is_max_length_not_zero);
-            return is_string_not_nullptr && is_max_length_not_zero;
+            const bool string_is_nullptr = string == nullptr;
+            const bool max_length_is_zero = max_length == 0;
+            const bool max_length_is_greater_than_RSIZE_MAX_STR = max_length > RSIZE_MAX_STR;
+            if constexpr (hud::compilation::is_assertion_enabled()) {
+                hud::debugger::break_here_if(string_is_nullptr);
+                hud::debugger::break_here_if(max_length_is_zero);
+                hud::debugger::break_here_if(max_length_is_greater_than_RSIZE_MAX_STR);
+            }
+            // We do not add the max_length_is_greater_than_RSIZE_MAX_STR to condition,
+            // the value will be clamped to RSIZE_MAX_STR
+            return !string_is_nullptr && !max_length_is_zero;
         }
     };
 

@@ -14,11 +14,27 @@ namespace hud {
 
     /** Provides debugger operations. */
     #if defined(HD_OS_WINDOWS)
-    using debugger = os::windows::debugger;
+    struct debugger : os::windows::debugger
     #elif defined(HD_OS_LINUX)
-    using debugger = os::linux::debugger;
+    struct debugger : os::linux::debugger
     #endif
-
+    {
+        /** 
+         * Break the debugger if condition is false and if the calling process is being debugged by a user-mode debugger.
+         */
+        static HD_FORCEINLINE void break_here_if(const bool condition) noexcept {
+            if(condition)  {
+                break_here();
+            }
+        }
+        
+        /** Abort the program if condition is true. */
+        static HD_FORCEINLINE void abort_if(const bool condition) noexcept {
+            if(condition) {
+                abort();
+            }
+        }
+    };
 } // namespace hud
 
 

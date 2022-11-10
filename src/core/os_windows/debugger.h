@@ -17,21 +17,6 @@ namespace hud::os::windows{
             return ::IsDebuggerPresent() != 0;
         }
 
-        /**
-        * Causes a breakpoint exception to occur in the current process if condition is false.
-        * This allows the calling thread to signal the debugger to handle the exception.
-        * Not breaking if debugger is not present.
-        * @param condition The condition to test
-        */
-        static void check(const bool condition) noexcept {
-            if (!condition) {
-                break_here();
-                #if defined(HD_ABORT_ON_ASSERT)
-                abort();
-                #endif
-            }
-        }
-
         /** Break the debugger if the calling process is being debugged by a user-mode debugger. */
         static HD_FORCEINLINE void break_here() noexcept {
             if (is_present()) {
