@@ -117,17 +117,17 @@ namespace hud::os::windows{
         /**
         * Retrieve the length of a ansi string and check the given parameters.
         * @param string Null-terminated string
-        * @param max_length Maximum number of character to count
+        * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
         */
         static HD_FORCEINLINE usize length_safe(const ansichar* string, const usize max_length) noexcept {
-            return strnlen_s(string, max_length);
+            return strnlen_s(string, max_length > RSIZE_MAX_STR? RSIZE_MAX_STR: max_length);
         }
 
         /**
         * Retrieve the length of a wide string and check the given parameters.
         * @param string Null-terminated string
-        * @param max_length Maximum number of character to count
+        * @param max_length Maximum number of character to count.Max limit is hud::cstring::RSIZE_MAX_STR
         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
         */
         static HD_FORCEINLINE usize length_safe(const wchar* string, const usize max_length) noexcept {

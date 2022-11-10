@@ -200,9 +200,7 @@ namespace hud::os::linux
             check(is_string_not_nullptr);
             const bool is_max_length_not_zero = max_length != 0;
             check(is_max_length_not_zero);
-            const bool is_max_length_not_to_big = max_length > RSIZE_MAX_STR;
-            check(is_max_length_not_to_big);
-            return is_string_not_nullptr && is_max_length_not_zero && is_max_length_not_to_big;
+            return is_string_not_nullptr && is_max_length_not_zero;
         }
     };
 

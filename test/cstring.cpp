@@ -429,7 +429,7 @@ TEST(cstring, length) {
     ASSERT_FALSE(hud::cstring::length(L"aBcd") == 3);
 }
 
-TEST(cstring, lenght_safe_with_string_nullptr)
+TEST(cstring, length_safe_with_string_nullptr)
 {   
     constexpr ansichar* null_string = nullptr;
     ASSERT_EQ(hud::cstring::length_safe(null_string, 0u), 0u);
@@ -443,7 +443,7 @@ TEST(cstring, lenght_safe_with_string_nullptr)
     ASSERT_EQ(hud::cstring::length_safe(null_wstring, hud::cstring::RSIZE_MAX_STR), 0u);
     ASSERT_EQ(hud::cstring::length_safe(null_wstring, hud::cstring::RSIZE_MAX_STR+1u), 0u);
 }
-TEST(cstring, lenght_safe_with_max_length_zero)
+TEST(cstring, length_safe_with_max_length_zero)
 {
     ASSERT_EQ(hud::cstring::length_safe("", 0u), 0u);
     ASSERT_EQ(hud::cstring::length_safe("a", 0u), 0u);
@@ -454,15 +454,24 @@ TEST(cstring, lenght_safe_with_max_length_zero)
     ASSERT_EQ(hud::cstring::length_safe(L"aBc", 0u), 0u);
 }
 
-TEST(cstring, lenght_safe_with_max_length_greater_than_RSIZE_MAX_STR)
+TEST(cstring, length_safe_with_max_length_greater_than_RSIZE_MAX_STR)
 {
     ASSERT_EQ(hud::cstring::length_safe("", hud::cstring::RSIZE_MAX_STR+1u), 0u);
-    ASSERT_EQ(hud::cstring::length_safe("a", hud::cstring::RSIZE_MAX_STR+1u), 0u);
-    ASSERT_EQ(hud::cstring::length_safe("aBc", hud::cstring::RSIZE_MAX_STR+1u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe("a", hud::cstring::RSIZE_MAX_STR+1u), 1u);
+    ASSERT_EQ(hud::cstring::length_safe("aBc", hud::cstring::RSIZE_MAX_STR+1u), 3u);
 
     ASSERT_EQ(hud::cstring::length_safe(L"", hud::cstring::RSIZE_MAX_STR+1u), 0u);
-    ASSERT_EQ(hud::cstring::length_safe(L"a", hud::cstring::RSIZE_MAX_STR+1u), 0u);
-    ASSERT_EQ(hud::cstring::length_safe(L"aBc", hud::cstring::RSIZE_MAX_STR+1u), 0u);
+    ASSERT_EQ(hud::cstring::length_safe(L"a", hud::cstring::RSIZE_MAX_STR+1u), 1u);
+    ASSERT_EQ(hud::cstring::length_safe(L"aBc", hud::cstring::RSIZE_MAX_STR+2u), 3u);
+}
+
+TEST(cstring, length_safe_without_null_terminated_character)
+{
+    ansichar MAX_STR_WITHOUT_NULL_TERMINATED[hud::cstring::RSIZE_MAX_STR+1u];
+    hud::memory::set(MAX_STR_WITHOUT_NULL_TERMINATED, 'a');
+    ASSERT_EQ(hud::cstring::length_safe(MAX_STR_WITHOUT_NULL_TERMINATED, 3), 3);
+    ASSERT_EQ(hud::cstring::length_safe(MAX_STR_WITHOUT_NULL_TERMINATED, hud::cstring::RSIZE_MAX_STR), hud::cstring::RSIZE_MAX_STR);
+    ASSERT_EQ(hud::cstring::length_safe(MAX_STR_WITHOUT_NULL_TERMINATED, hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
 }
 
 TEST(cstring, length_safe) {
