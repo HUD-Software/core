@@ -9,7 +9,7 @@
         </Functions>
         <Sources>
             <Exclude>
-                <Source>.*\\_deps\\.*</Source>
+                <!-- <Source>.*\\_deps\\.*</Source> -->
             </Exclude>
         </Sources>
     </CodeCoverage>
