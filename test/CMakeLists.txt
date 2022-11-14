@@ -277,8 +277,8 @@ if(COVERAGE AND MSVC)
 		COMMAND ${MSVC_CODECOVERAGE_CONSOLE} collect Debug\\test_core.exe -o Debug\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
 	)
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options(test_core PRIVATE --coverage)
-	target_link_options(test_core PRIVATE --coverage)
+	target_compile_options(test_core PRIVATE --coverage -fno-inline -fno-inline-small-functions -fno-default-inline -O0)
+	target_link_options(test_core PRIVATE --coverage -fno-inline -fno-inline-small-functions -fno-default-inline -O0)
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"

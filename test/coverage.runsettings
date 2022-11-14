@@ -3,8 +3,8 @@
     <CodeCoverage>
         <Functions>
             <Exclude>
-                <Function>.*testing::.*</Function>
-				<Function>.*hud_test::.*</Function> 
+                <!-- <Function>.*testing::.*</Function>
+                <Function>.*hud_test::.*</Function>  -->
             </Exclude>
         </Functions>
         <Sources>
