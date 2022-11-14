@@ -233,8 +233,8 @@ endif()
 if(COVERAGE AND MSVC)
 	target_link_options(core PRIVATE /PROFILE)
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options(core PRIVATE --coverage)
-	target_link_options(core PRIVATE --coverage)
+	target_compile_options(core PRIVATE -fprofile-arcs -ftest-coverage -O0)
+	target_link_options(core PRIVATE -fprofile-arcs -ftest-coverage -O0)
 endif()
 
 
