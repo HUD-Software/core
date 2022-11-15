@@ -283,7 +283,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
 		COMMAND ./test_core
-		COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --html-details "coverage.clang.cobertura.html" --html-details-syntax-highlighting
+		COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --html-details "coverage.clang.cobertura.html" -e ".*/_deps/.*" --html-details-syntax-highlighting
 		COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --xml "coverage.clang.cobertura.xml"
 	)
 endif()
