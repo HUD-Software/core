@@ -60,7 +60,7 @@ jobs:
           # coverage-reports: 'coverage.msvc.cobertura.xml, coverage.clang.cobertura.xml'
           coverage-reports: 'coverage.msvc.cobertura.xml'
       - name: Upload to Codecov
-      - uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3
         with:
           token: 249d9fec-6c00-453b-a383-6829ce52ec96 # not required for public repos
           files: coverage.msvc.cobertura.xml
