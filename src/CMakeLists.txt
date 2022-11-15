@@ -227,7 +227,7 @@ set_target_properties(core
         CXX_EXTENSIONS NO
 )
 if(MSVC)
-	target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20)
+	target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20 /permissive-)
 endif()
 
 if(COVERAGE AND MSVC)
