@@ -264,7 +264,7 @@ set_target_properties(test_core
         CXX_EXTENSIONS NO
 )
 if(MSVC)
-	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive)
+	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj)
 endif()
 
 if(COVERAGE AND MSVC)
