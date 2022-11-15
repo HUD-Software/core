@@ -57,11 +57,12 @@ jobs:
         run: | 
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
-          ./codecov -f coverage.msvc.cobertura.xml -t ${{CODECOV_TOKEN}}
+          ./codecov -f coverage.msvc.cobertura.xml -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          language: 'c++'
           # coverage-reports: 'coverage.msvc.cobertura.xml, coverage.clang.cobertura.xml'
           coverage-reports: 'coverage.msvc.cobertura.xml'
         
