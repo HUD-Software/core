@@ -22,12 +22,12 @@ jobs:
         run: |
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
-          .\codecov.exe -f target\test\Debug\coverage.msvc.xml -t ${{secrets.CODECOV_TOKEN}}
+          .\codecov.exe -f target\test\Debug\coverage.msvc.cobertura.xml -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
           name: coverage
-          path: target\test\Debug\coverage.msvc.xml
+          path: target\test\Debug\coverage.msvc.cobertura.xml
 
   # coverage_ubuntu:
   #   runs-on: ubuntu-22.04

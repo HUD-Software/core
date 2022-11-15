@@ -3,13 +3,13 @@
     <CodeCoverage>
         <Functions>
             <Exclude>
-                <!-- <Function>.*testing::.*</Function>
-                <Function>.*hud_test::.*</Function>  -->
+                <Function>.*testing::.*</Function>
+                <Function>.*hud_test::.*</Function>
             </Exclude>
         </Functions>
         <Sources>
             <Exclude>
-                <!-- <Source>.*\\_deps\\.*</Source> -->
+                <Source>.*\\_deps\\.*</Source>
             </Exclude>
         </Sources>
     </CodeCoverage>
