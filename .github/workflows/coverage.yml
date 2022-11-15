@@ -22,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.1
         with:
           name: coverage
-          path: target\test\Debug\coverage.msvc.cobertura.xml
+          path: target\test\Debug\coverage.msvc.xml
 
   coverage_ubuntu:
     runs-on: ubuntu-22.04
@@ -57,12 +57,12 @@ jobs:
         run: | 
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
-          ./codecov -f coverage.msvc.cobertura.xml -t ${{secrets.CODECOV_TOKEN}}
+          ./codecov -f coverage.msvc.xml -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           language: 'cpp'
           # coverage-reports: 'coverage.msvc.cobertura.xml, coverage.clang.cobertura.xml'
-          coverage-reports: 'coverage.msvc.cobertura.xml'
+          coverage-reports: 'coverage.msvc.xml'
         
