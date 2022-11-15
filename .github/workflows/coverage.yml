@@ -53,14 +53,15 @@ jobs:
         uses: actions/download-artifact@v3.0.1
         with:
           name: coverage
+      - name: Upload to Codecov
+        run: | 
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -f coverage.msvc.cobertura.xml -t ${{CODECOV_TOKEN}}
       - name: Upload to Codacy
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
           # coverage-reports: 'coverage.msvc.cobertura.xml, coverage.clang.cobertura.xml'
           coverage-reports: 'coverage.msvc.cobertura.xml'
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: 249d9fec-6c00-453b-a383-6829ce52ec96 # not required for public repos
-          files: coverage.msvc.cobertura.xml
+        
