@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(memory, construct_at_trival_type)
+GTEST_TEST(memory, construct_at_trival_type)
 {
 
 
@@ -33,7 +33,7 @@ TEST(memory, construct_at_trival_type)
     }
 }
 
-TEST(memory, construct_at_non_trivially_constructible_type)
+GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
 {
 
 
@@ -79,7 +79,7 @@ TEST(memory, construct_at_non_trivially_constructible_type)
     }
 }
 
-TEST(memory, construct_array_at_trival_type)
+GTEST_TEST(memory, construct_array_at_trival_type)
 {
 
 
@@ -120,7 +120,7 @@ TEST(memory, construct_array_at_trival_type)
     }
 }
 
-TEST(memory, construct_array_at_non_trival_type)
+GTEST_TEST(memory, construct_array_at_non_trival_type)
 {
 
 

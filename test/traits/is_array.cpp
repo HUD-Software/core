@@ -4,7 +4,7 @@ namespace hud_test {
     class a {};
 }
 
-TEST(traits, is_array) {
+GTEST_TEST(traits, is_array) {
     ASSERT_FALSE(hud::is_array_v<hud_test::a>);
     ASSERT_FALSE(hud::is_array_v<hud_test::a*>);
     ASSERT_TRUE(hud::is_array_v<hud_test::a[]>);

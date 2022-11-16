@@ -6,7 +6,7 @@ namespace{
     struct c : public a { };
 }
 
-TEST(traits, is_convertible) {
+GTEST_TEST(traits, is_convertible) {
     ASSERT_TRUE((hud::is_convertible_v<i32, i32>));
     ASSERT_TRUE((hud::is_convertible_v<i32, const i32>));
     ASSERT_TRUE((hud::is_convertible_v<i32, const volatile i32>));

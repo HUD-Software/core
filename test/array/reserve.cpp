@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(array, reserve_empty_to_zero_do_nothing_with_non_trivial_type)
+GTEST_TEST(array, reserve_empty_to_zero_do_nothing_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -22,7 +22,7 @@ TEST(array, reserve_empty_to_zero_do_nothing_with_non_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(array, reserve_empty_to_zero_do_nothing_with_trivial_type)
+GTEST_TEST(array, reserve_empty_to_zero_do_nothing_with_trivial_type)
 {
 
     using type = usize;
@@ -43,7 +43,7 @@ TEST(array, reserve_empty_to_zero_do_nothing_with_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(array, reserve_empty_to_size_allocate_only_with_non_trivial_type)
+GTEST_TEST(array, reserve_empty_to_size_allocate_only_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -64,7 +64,7 @@ TEST(array, reserve_empty_to_size_allocate_only_with_non_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(array, reserve_empty_to_size_allocate_only_with_trivial_type)
+GTEST_TEST(array, reserve_empty_to_size_allocate_only_with_trivial_type)
 {
 
     using type = usize;
@@ -85,7 +85,7 @@ TEST(array, reserve_empty_to_size_allocate_only_with_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(array, reserve_non_empty_to_more_size_allocate_only_with_non_trivial_type)
+GTEST_TEST(array, reserve_non_empty_to_more_size_allocate_only_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -154,7 +154,7 @@ TEST(array, reserve_non_empty_to_more_size_allocate_only_with_non_trivial_type)
     ASSERT_EQ(array[1].move_assign_count(), 0u);
 }
 
-TEST(array, reserve_non_empty_to_more_size_allocate_only_with_trivial_type)
+GTEST_TEST(array, reserve_non_empty_to_more_size_allocate_only_with_trivial_type)
 {
 
     using type = usize;
@@ -196,7 +196,7 @@ TEST(array, reserve_non_empty_to_more_size_allocate_only_with_trivial_type)
     ASSERT_EQ(array[1], type(20));
 }
 
-TEST(array, reserve_less_than_max_count_but_more_than_count_do_nothing_with_non_trivial_type)
+GTEST_TEST(array, reserve_less_than_max_count_but_more_than_count_do_nothing_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -266,7 +266,7 @@ TEST(array, reserve_less_than_max_count_but_more_than_count_do_nothing_with_non_
     ASSERT_EQ(array[1].move_assign_count(), 0u);
 }
 
-TEST(array, reserve_less_than_max_count_but_more_than_count_do_nothing_with_trivial_type)
+GTEST_TEST(array, reserve_less_than_max_count_but_more_than_count_do_nothing_with_trivial_type)
 {
 
     using type = usize;
@@ -308,7 +308,7 @@ TEST(array, reserve_less_than_max_count_but_more_than_count_do_nothing_with_triv
     ASSERT_EQ(array[1], type(20));
 }
 
-TEST(array, reserve_less_than_count_do_nothing_with_non_trivial_type)
+GTEST_TEST(array, reserve_less_than_count_do_nothing_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -377,7 +377,7 @@ TEST(array, reserve_less_than_count_do_nothing_with_non_trivial_type)
     ASSERT_EQ(array[1].move_assign_count(), 0u);
 }
 
-TEST(array, reserve_less_than_count_do_nothing_with_trivial_type)
+GTEST_TEST(array, reserve_less_than_count_do_nothing_with_trivial_type)
 {
 
     using type = usize;

@@ -1,7 +1,7 @@
 #include <core/uuid.h>
 
 
-TEST(uuid, create)
+GTEST_TEST(uuid, create)
 {
     hud::uuid guid;
     ASSERT_TRUE(hud::uuid::create(guid));
@@ -21,7 +21,7 @@ TEST(uuid, create)
     ASSERT_NE((guid.a ^ guid2.a) | (guid.b ^ guid2.b) | (guid.c ^ guid2.c) | (guid.d ^ guid2.d), 0u);
 }
 
-TEST(uuid, default_constructor)
+GTEST_TEST(uuid, default_constructor)
 {
     hud::uuid guid;
     ASSERT_EQ(guid.a, 0u);
@@ -30,7 +30,7 @@ TEST(uuid, default_constructor)
     ASSERT_EQ(guid.d, 0u);
 }
 
-TEST(uuid, constructor)
+GTEST_TEST(uuid, constructor)
 {
     hud::uuid guid(1u,2u,3u,4u);
     ASSERT_EQ(guid.a, 1u);
@@ -40,7 +40,7 @@ TEST(uuid, constructor)
 }
 
 
-TEST(uuid, is_valid)
+GTEST_TEST(uuid, is_valid)
 {
     hud::uuid invalid_guid;
     ASSERT_FALSE(invalid_guid.is_valid());
@@ -48,7 +48,7 @@ TEST(uuid, is_valid)
     ASSERT_TRUE(valid_guid.is_valid());
 }
 
-TEST(uuid, reset)
+GTEST_TEST(uuid, reset)
 {
     hud::uuid valid_guid(1u, 2u, 3u, 4u);
     ASSERT_TRUE(valid_guid.is_valid());
@@ -56,7 +56,7 @@ TEST(uuid, reset)
     ASSERT_FALSE(valid_guid.is_valid());
 }
 
-TEST(uuid, assign_operator)
+GTEST_TEST(uuid, assign_operator)
 {
     hud::uuid guid;
     ASSERT_EQ(guid.a, 0u);
@@ -82,7 +82,7 @@ TEST(uuid, assign_operator)
 
 }
 
-TEST(uuid, equal_operator)
+GTEST_TEST(uuid, equal_operator)
 {
     hud::uuid guid;
     ASSERT_TRUE(hud::uuid::create(guid));
@@ -95,7 +95,7 @@ TEST(uuid, equal_operator)
     ASSERT_EQ(guid, guid);
 }
 
-TEST(uuid, not_equal_operator)
+GTEST_TEST(uuid, not_equal_operator)
 {
     hud::uuid guid;
     ASSERT_TRUE(hud::uuid::create(guid));

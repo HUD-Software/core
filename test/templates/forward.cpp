@@ -1,7 +1,7 @@
 #include <core/templates/forward.h>
 #include <core/traits/is_rvalue_reference.h>
 
-TEST(templates, forward) {
+GTEST_TEST(templates, forward) {
 
 
     ASSERT_TRUE(hud::is_rvalue_reference_v<decltype(hud::forward<i32>(i32{})) > );

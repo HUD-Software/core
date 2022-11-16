@@ -2,7 +2,7 @@
 #include "allocators.h"
 #include <core/templates/bit_cast.h>
 
-TEST(array, destructor_call_elements_destructors)
+GTEST_TEST(array, destructor_call_elements_destructors)
 {
 
 

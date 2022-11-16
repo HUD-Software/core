@@ -13,7 +13,7 @@ namespace hud_test {
 
 }
 
-TEST(traits, is_comparable_with_less) {
+GTEST_TEST(traits, is_comparable_with_less) {
 
     // i8
     ASSERT_TRUE((hud::is_comparable_with_less_v<i8, i8>));

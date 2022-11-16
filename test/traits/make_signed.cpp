@@ -38,7 +38,7 @@ namespace hud_test {
     enum class e_1 : usize;
 }
 
-TEST(traits, make_signed) {
+GTEST_TEST(traits, make_signed) {
     ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<char>, signed char>));
     ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<signed char>, signed char>));
     ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<short>, signed short>));

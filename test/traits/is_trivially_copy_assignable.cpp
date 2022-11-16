@@ -10,7 +10,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_trivially_copy_assignable) {
+GTEST_TEST(traits, is_trivially_copy_assignable) {
     ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32>));
     ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32&>));
     ASSERT_FALSE((hud::is_trivially_copy_assignable_v<i32[]>));

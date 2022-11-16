@@ -1,6 +1,6 @@
 #include <core/containers/pair.h>
 
-TEST(pair, operator_equal) {
+GTEST_TEST(pair, operator_equal) {
 
 
     const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
@@ -25,7 +25,7 @@ TEST(pair, operator_equal) {
     }
 }
 
-TEST(pair, operator_not_equal) {
+GTEST_TEST(pair, operator_not_equal) {
 
 
     const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
@@ -51,7 +51,7 @@ TEST(pair, operator_not_equal) {
 }
 
 
-TEST(pair, operator_less) {
+GTEST_TEST(pair, operator_less) {
 
 
     const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
@@ -80,7 +80,7 @@ TEST(pair, operator_less) {
     }
 }
 
-TEST(pair, operator_less_equal) {
+GTEST_TEST(pair, operator_less_equal) {
 
 
     const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
@@ -109,7 +109,7 @@ TEST(pair, operator_less_equal) {
     }
 }
 
-TEST(pair, operator_greater) {
+GTEST_TEST(pair, operator_greater) {
 
 
     const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {
@@ -139,7 +139,7 @@ TEST(pair, operator_greater) {
 }
 
 
-TEST(pair, operator_greater_equal) {
+GTEST_TEST(pair, operator_greater_equal) {
 
 
     const auto test = [](hud::pair<i32, wchar> r, hud::pair<i32, wchar> l) {

@@ -8,7 +8,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_union) {
+GTEST_TEST(traits, is_union) {
     ASSERT_FALSE((hud::is_union_v<i32>));
     ASSERT_FALSE((hud::is_union_v<i32&>));
     ASSERT_FALSE((hud::is_union_v<i32[]>));

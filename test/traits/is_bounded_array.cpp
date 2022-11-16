@@ -1,7 +1,7 @@
 #include <core/traits/is_bounded_array.h>
 
 
-TEST(traits, is_bounded_array) {
+GTEST_TEST(traits, is_bounded_array) {
     ASSERT_FALSE(hud::is_bounded_array_v<i32>);
     ASSERT_FALSE(hud::is_bounded_array_v<i32*>);
     ASSERT_FALSE(hud::is_bounded_array_v<i32&>);

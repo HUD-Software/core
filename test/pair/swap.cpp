@@ -1,6 +1,6 @@
 #include <core/containers/pair.h>
 
-TEST(optional, swap_empty_trivial_type) {
+GTEST_TEST(optional, swap_empty_trivial_type) {
 
 
     // Pair::swap

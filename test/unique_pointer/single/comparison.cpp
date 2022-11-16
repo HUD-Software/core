@@ -27,7 +27,7 @@ namespace hud_test {
     };
 }
 
-TEST(unique_pointer, equal_operator) {
+GTEST_TEST(unique_pointer, equal_operator) {
     
     const auto test = []() {
         i32* pi = new i32(0);
@@ -80,7 +80,7 @@ TEST(unique_pointer, equal_operator) {
 }
 
 
-TEST(unique_pointer, not_equal_operator) {
+GTEST_TEST(unique_pointer, not_equal_operator) {
 
     const auto test = []() {
         i32* pi = new i32(0);
@@ -133,7 +133,7 @@ TEST(unique_pointer, not_equal_operator) {
 }
 
 
-TEST(unique_pointer, less_operator) {
+GTEST_TEST(unique_pointer, less_operator) {
     const auto test = []() {
         i32 buf[2];
         i32* ptr1 = &(buf[0]);
@@ -176,7 +176,7 @@ TEST(unique_pointer, less_operator) {
     }
 }
 
-TEST(unique_pointer, less_equal_operator) {
+GTEST_TEST(unique_pointer, less_equal_operator) {
 
     const auto test = []() {
         i32 buf[2];
@@ -221,7 +221,7 @@ TEST(unique_pointer, less_equal_operator) {
 }
 
 
-TEST(unique_pointer, greater_operator) {
+GTEST_TEST(unique_pointer, greater_operator) {
 
     const auto test = []() {
         i32 buf[2];
@@ -265,7 +265,7 @@ TEST(unique_pointer, greater_operator) {
     }
 }
 
-TEST(unique_pointer, greater_equal_operator) {
+GTEST_TEST(unique_pointer, greater_equal_operator) {
 
     const auto test = []() {
         i32 buf[2];

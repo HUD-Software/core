@@ -16,37 +16,31 @@ static constexpr ansichar punc[] = { '!', '\"', '#', '$', '%', '&', '\'', '(', '
 static constexpr ansichar wide_punc[] = { L'!', L'\"', L'#', L'$', L'%', L'&', L'\'', L'(', L')', L'*', L'+', L',', L'-', L'.', L'/', L':', L';' , L'<', L'=', L'>', L'?', L'@', L'[', L'\\', L']', L'^', L'_', L'`', L'{', L'|', L'}', L'~' };
 
 
-TEST(character, is_pure_ansi)
+// GTEST_TEST(character, is_pure_ansi)
+// {
+//     for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
+//         ASSERT_TRUE(hud::character::is_pure_ansi(cur));
+//     }
+//     for (wchar cur = 0; cur < hud::wchar_max; cur++) {
+//         if (cur <= hud::ansichar_max) {
+//             ASSERT_TRUE(hud::character::is_pure_ansi(cur));
+//         }
+//         else {
+//             ASSERT_FALSE(hud::character::is_pure_ansi(cur));
+//         }
+//     }
+// }
+
+GTEST_TEST(character, is_null)
 {
-
-
-    for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
-        ASSERT_TRUE(hud::character::is_pure_ansi(cur));
-    }
-    for (wchar cur = 0; cur < hud::wchar_max; cur++) {
-        if (cur <= hud::ansichar_max) {
-            ASSERT_TRUE(hud::character::is_pure_ansi(cur));
-        }
-        else {
-            ASSERT_FALSE(hud::character::is_pure_ansi(cur));
-        }
-    }
-}
-
-TEST(character, is_null)
-{
-
-
     ASSERT_TRUE(hud::character::is_null('\0'));
     ASSERT_FALSE(hud::character::is_null(' '));
     ASSERT_TRUE(hud::character::is_null(L'\0'));
     ASSERT_FALSE(hud::character::is_null(L' '));
 }
 
-TEST(character, is_alphanumeric) 
+GTEST_TEST(character, is_alphanumeric) 
 {
-
-
     for (const auto& alphanumeric : digits) {
         ASSERT_TRUE(hud::character::is_alphanumeric(alphanumeric));
     }
@@ -90,7 +84,7 @@ TEST(character, is_alphanumeric)
     }
 }   
 
-TEST(character, is_alphabetic)
+GTEST_TEST(character, is_alphabetic)
 {
     for (const auto& no_alphabetic : digits) {
         ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
@@ -136,10 +130,8 @@ TEST(character, is_alphabetic)
 }
 
 
-TEST(character, is_lowercase)
+GTEST_TEST(character, is_lowercase)
 {
-
-
     for (const auto& no_lowercase : digits) {
         ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
     }
@@ -184,10 +176,8 @@ TEST(character, is_lowercase)
 }
 
 
-TEST(character, is_uppercase)
+GTEST_TEST(character, is_uppercase)
 {
-
-
     for (const auto& no_uppercase : digits) {
         ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
     }
@@ -231,10 +221,8 @@ TEST(character, is_uppercase)
     }
 }
 
-TEST(character, is_digit)
+GTEST_TEST(character, is_digit)
 {
-
-
     for (const auto& digit : digits) {
         ASSERT_TRUE(hud::character::is_digit(digit));
     }
@@ -278,10 +266,8 @@ TEST(character, is_digit)
     }
 }
 
-TEST(character, is_hexa)
+GTEST_TEST(character, is_hexa)
 {
-
-
     static constexpr ansichar no_hexa[] = { 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
     static constexpr wchar wide_no_hexa[] = { L'G', L'H', L'I', L'J', L'K', L'L', L'M', L'N', L'O', L'P', L'Q', L'R', L'S', L'T', L'U', L'V', L'W', L'X', L'Y', L'Z' };
 
@@ -321,10 +307,8 @@ TEST(character, is_hexa)
     }
 }
 
-TEST(character, is_space_or_tab)
+GTEST_TEST(character, is_space_or_tab)
 {
-
-
     for (const auto& no_space_or_tab : digits) {
         ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
     }
@@ -380,10 +364,8 @@ TEST(character, is_space_or_tab)
 }
 
 
-TEST(character, is_control)
+GTEST_TEST(character, is_control)
 {
-
-
     for (const auto& no_control : digits) {
         ASSERT_FALSE(hud::character::is_control(no_control));
     }
@@ -420,10 +402,8 @@ TEST(character, is_control)
     }
 }
 
-TEST(character, is_space)
+GTEST_TEST(character, is_space)
 {
-
-
     static constexpr ansichar Space[] = { ' ', '\x20', '\x09', '\xA', '\xB', '\xC', '\xD' };
     static constexpr wchar WideSpace[] = { L' ', L'\x20', L'\x09', L'\xA', L'\xB', L'\xC', L'\xD' };
 
@@ -493,10 +473,8 @@ TEST(character, is_space)
     }
 }
 
-TEST(character, is_punctuation)
+GTEST_TEST(character, is_punctuation)
 {
-
-
     for (const auto& no_punctuation : digits) {
         ASSERT_FALSE(hud::character::is_punctuation(no_punctuation));
     }
@@ -540,10 +518,8 @@ TEST(character, is_punctuation)
     }
 }
 
-TEST(character, to_lowercase)
+GTEST_TEST(character, to_lowercase)
 {
-
-
     for (const auto& no_tolower : digits) {
         ASSERT_TRUE(hud::character::to_lowercase(no_tolower) == no_tolower);
     }
@@ -585,10 +561,8 @@ TEST(character, to_lowercase)
     }
 }
 
-TEST(character, to_uppercase)
+GTEST_TEST(character, to_uppercase)
 {
-
-
     for (const auto& no_tolower : digits) {
         ASSERT_TRUE(hud::character::to_uppercase(no_tolower) == no_tolower);
     }

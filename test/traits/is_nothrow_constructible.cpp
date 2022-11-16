@@ -9,7 +9,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_nothrow_constructible) {
+GTEST_TEST(traits, is_nothrow_constructible) {
     ASSERT_TRUE((hud::is_nothrow_constructible_v<i32>));
     ASSERT_TRUE((hud::is_nothrow_constructible_v<hud_test::a>));
     ASSERT_FALSE((hud::is_nothrow_constructible_v<hud_test::b>));

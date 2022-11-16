@@ -11,7 +11,7 @@ namespace hud_test {
     struct c { virtual void fn() {} };
 }
 
-TEST(traits, is_bitwise_move_constructible) {
+GTEST_TEST(traits, is_bitwise_move_constructible) {
     // i8
     ASSERT_TRUE((hud::is_bitwise_move_constructible_v<i8, i8>));
     ASSERT_FALSE((hud::is_bitwise_move_constructible_v<i8, i16>));

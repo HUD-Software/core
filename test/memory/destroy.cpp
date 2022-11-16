@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(memory, destroy_trivial_type)
+GTEST_TEST(memory, destroy_trivial_type)
 {
 
 
@@ -29,7 +29,7 @@ TEST(memory, destroy_trivial_type)
     }
 }
 
-TEST(memory, destroy_trivially_destructible_type)
+GTEST_TEST(memory, destroy_trivially_destructible_type)
 {
 
 
@@ -61,7 +61,7 @@ TEST(memory, destroy_trivially_destructible_type)
     }
 }
 
-TEST(memory, destroy_non_trivially_destructible_type)
+GTEST_TEST(memory, destroy_non_trivially_destructible_type)
 {
 
 
@@ -92,7 +92,7 @@ TEST(memory, destroy_non_trivially_destructible_type)
     }
 }
 
-TEST(memory, destroy_array_trivial_type)
+GTEST_TEST(memory, destroy_array_trivial_type)
 {
 
     using type = u32;
@@ -121,7 +121,7 @@ TEST(memory, destroy_array_trivial_type)
     }
 }
 
-TEST(memory, destroy_array_trivially_destructible_type)
+GTEST_TEST(memory, destroy_array_trivially_destructible_type)
 {
 
 
@@ -155,7 +155,7 @@ TEST(memory, destroy_array_trivially_destructible_type)
     }
 }
 
-TEST(memory, destroy_array_non_trivially_destructible_type)
+GTEST_TEST(memory, destroy_array_non_trivially_destructible_type)
 {
 
     

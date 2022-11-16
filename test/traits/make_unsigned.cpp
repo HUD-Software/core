@@ -39,7 +39,7 @@ namespace hud_test {
 }
 
 
-TEST(traits, make_unsigned) {
+GTEST_TEST(traits, make_unsigned) {
     ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<char>, unsigned char>));
     ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<signed char>, unsigned char>));
     ASSERT_TRUE((hud::is_same_v<hud::make_unsigned_t<short>, unsigned short>));

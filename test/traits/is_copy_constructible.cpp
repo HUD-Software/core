@@ -7,7 +7,7 @@ namespace hud_test {
     struct d { d(const c&) noexcept {} };
 }
 
-TEST(traits, is_copy_constructible) {
+GTEST_TEST(traits, is_copy_constructible) {
     ASSERT_TRUE((hud::is_copy_constructible_v<i32>));
     ASSERT_TRUE((hud::is_copy_constructible_v<i32&>));
     ASSERT_TRUE((hud::is_copy_constructible_v<volatile i32>));

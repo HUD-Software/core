@@ -18,7 +18,7 @@ namespace hud_test {
     };
 }
 
-TEST(templates, swap_trivial_type) {
+GTEST_TEST(templates, swap_trivial_type) {
     i32 a = 5;
     i32 b = 32;
     hud::swap(a, b);
@@ -27,7 +27,7 @@ TEST(templates, swap_trivial_type) {
     ASSERT_EQ(b, 5);
 }
 
-TEST(templates, swap_non_rivial_type) {
+GTEST_TEST(templates, swap_non_rivial_type) {
     hud_test::type t(2);
     hud_test::type t1(3);
     hud::swap(t, t1);
@@ -36,7 +36,7 @@ TEST(templates, swap_non_rivial_type) {
 }
 
 
-TEST(memory, swap_array_trivial_type) {
+GTEST_TEST(memory, swap_array_trivial_type) {
     i32 c[3] = { 1,2,3 };
     i32 d[3] = { 4,5,6 };
     hud::swap(c, d);
@@ -50,7 +50,7 @@ TEST(memory, swap_array_trivial_type) {
 
 }
 
-TEST(memory, swap_array_non_trivial_type) {
+GTEST_TEST(memory, swap_array_non_trivial_type) {
     hud_test::type c[3] = { 1,2,3 };
     hud_test::type d[3] = { 4,5,6 };
     hud::swap(c, d);

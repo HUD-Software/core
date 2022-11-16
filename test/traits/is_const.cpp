@@ -1,6 +1,6 @@
 #include <core/traits/is_const.h>
 
-TEST(traits, is_const) {
+GTEST_TEST(traits, is_const) {
     ASSERT_FALSE(hud::is_const_v<int>);
     ASSERT_FALSE(hud::is_const_v<volatile int>);
     ASSERT_TRUE(hud::is_const_v<const int>);

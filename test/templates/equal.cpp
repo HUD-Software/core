@@ -16,7 +16,7 @@ namespace hud_test {
 }
 // LCOV_EXCL_STOP
 
-TEST(templates, equal) {
+GTEST_TEST(templates, equal) {
 
 
     hud::equal<i32> eq;

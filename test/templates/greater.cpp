@@ -17,7 +17,7 @@ namespace hud_test {
 // LCOV_EXCL_STOP
 
 
-TEST(templates, greater) {
+GTEST_TEST(templates, greater) {
 
 
     hud::greater<i32> gr;

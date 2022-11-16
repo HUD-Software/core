@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(memory, fast_move_or_copy_construct_array_then_destroy_trivial_type)
+GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_trivial_type)
 {
 
 
@@ -37,7 +37,7 @@ TEST(memory, fast_move_or_copy_construct_array_then_destroy_trivial_type)
     }
 }
 
-TEST(memory, fast_move_or_copy_construct_array_then_destroy_bitwise_constructible_and_destructible_type)
+GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_bitwise_constructible_and_destructible_type)
 {
 
 
@@ -80,7 +80,7 @@ TEST(memory, fast_move_or_copy_construct_array_then_destroy_bitwise_constructibl
     }
 }
 
-TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_copy_constructible_and_destructible_different_type)
+GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_copy_constructible_and_destructible_different_type)
 {
 
 
@@ -141,7 +141,7 @@ TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_copy_con
     }
 }
 
-TEST(memory, fast_move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_different_type)
+GTEST_TEST(memory, fast_move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_different_type)
 {
 
 
@@ -215,7 +215,7 @@ TEST(memory, fast_move_or_copy_construct_then_destroy_non_bitwise_move_construct
     }
 }
 
-TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_copy_constructible_and_destructible_same_type)
+GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_copy_constructible_and_destructible_same_type)
 {
 
 
@@ -272,7 +272,7 @@ TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_copy_con
     }
 }
 
-TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_move_constructible_and_destructible_same_type)
+GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_move_constructible_and_destructible_same_type)
 {
 
 

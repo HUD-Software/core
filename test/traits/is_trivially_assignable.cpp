@@ -7,7 +7,7 @@ namespace{
     struct d { d& operator= (const d&) { return *this; } };
 }
 
-TEST(traits, is_trivially_assignable) {
+GTEST_TEST(traits, is_trivially_assignable) {
     ASSERT_FALSE((hud::is_trivially_assignable_v<i32, i32>));
     ASSERT_TRUE((hud::is_trivially_assignable_v<i32&, i32>));
     ASSERT_FALSE((hud::is_trivially_assignable_v<i32[], i32[]>));

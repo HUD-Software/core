@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(array, default_constructor_should_allocate_no_memory)
+GTEST_TEST(array, default_constructor_should_allocate_no_memory)
 {
     auto test = []() -> std::tuple<bool, usize, usize> {
         hud::array<hud::u32> array;
@@ -25,7 +25,7 @@ TEST(array, default_constructor_should_allocate_no_memory)
     }
 }
 
-TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_same_type)
+GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_same_type)
 {
 
 
@@ -322,7 +322,7 @@ TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_sa
     });
 }
 
-TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_same_type)
+GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_same_type)
 {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
@@ -694,7 +694,7 @@ TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
     }
 }
 
-TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_different_type)
+GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_different_type)
 {
 
 
@@ -1000,7 +1000,7 @@ TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_di
 
 }
 
-TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_different_type)
+GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_different_type)
 {
 
 
@@ -1373,7 +1373,7 @@ TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructibl
     }
 }
 
-TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_same_type)
+GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_same_type)
 {
 
     using type = i32;
@@ -1648,7 +1648,7 @@ TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_same_t
     }
 }
 
-TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_different_type)
+GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_different_type)
 {
 
     using Type1 = i32;
@@ -1925,7 +1925,7 @@ TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_differ
     }
 }
 
-TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_same_type)
+GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_same_type)
 {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
@@ -2281,7 +2281,7 @@ TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_sa
     }
 }
 
-TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_different_type)
+GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_different_type)
 {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
@@ -2638,7 +2638,7 @@ TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_di
     }
 }
 
-TEST(array, copy_construct_bitwise_copy_constructible_same_type)
+GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
 {
 
 
@@ -2928,7 +2928,7 @@ TEST(array, copy_construct_bitwise_copy_constructible_same_type)
     });
 }
 
-TEST(array, copy_construct_bitwise_copy_constructible_different_type)
+GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
 {
 
     /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
@@ -3228,7 +3228,7 @@ TEST(array, copy_construct_bitwise_copy_constructible_different_type)
     });
 }
 
-TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
+GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
 {
 
 
@@ -3532,7 +3532,7 @@ TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
     });
 }
 
-TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
+GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
 {
 
 
@@ -3835,7 +3835,7 @@ TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
     });
 }
 
-TEST(array, move_construct_bitwise_copy_constructible_same_type)
+GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
 {
 
 
@@ -4234,7 +4234,7 @@ TEST(array, move_construct_bitwise_copy_constructible_same_type)
     });
 }
 
-TEST(array, move_construct_bitwise_move_constructible_different_type)
+GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
 {
 
 
@@ -4642,7 +4642,7 @@ TEST(array, move_construct_bitwise_move_constructible_different_type)
     });
 }
 
-TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
+GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
 {
 
 
@@ -5025,7 +5025,7 @@ TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
     });
 }
 
-TEST(array, move_construct_non_bitwise_move_constructible_same_type)
+GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
 {
 
 
@@ -5419,7 +5419,7 @@ TEST(array, move_construct_non_bitwise_move_constructible_same_type)
     });
 }
 
-TEST(array, move_construct_non_bitwise_move_constructible_different_type)
+GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
 {
 
 

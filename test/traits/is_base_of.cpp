@@ -6,7 +6,7 @@ namespace hud_test {
     class c {};
 }
 
-TEST(traits, is_base_of) {
+GTEST_TEST(traits, is_base_of) {
 
     ASSERT_TRUE((hud::is_base_of_v<hud_test::a, hud_test::a>));
     ASSERT_TRUE((hud::is_base_of_v<hud_test::a, hud_test::b>));

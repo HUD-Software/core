@@ -6,7 +6,7 @@ namespace hud_test {
     enum class c { alpha, beta, gamma };   // scoped enum (c++11-style)
 }
 
-TEST(traits, is_enum) {
+GTEST_TEST(traits, is_enum) {
     ASSERT_FALSE((hud::is_enum_v<i32>));
     ASSERT_TRUE((hud::is_enum_v<hud_test::a>));
     ASSERT_FALSE((hud::is_enum_v<hud_test::b>));

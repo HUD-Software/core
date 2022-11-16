@@ -1,7 +1,7 @@
 #include <core/containers/optional.h>
 #include <core/traits/is_trivially_copy_constructible.h>
 
-TEST(optional, emplace_move_inplace) {
+GTEST_TEST(optional, emplace_move_inplace) {
 
     using type = hud_test::non_bitwise_type;
 
@@ -60,7 +60,7 @@ TEST(optional, emplace_move_inplace) {
     }
 }
 
-TEST(optional, emplace_call_destructor) {
+GTEST_TEST(optional, emplace_call_destructor) {
 
     using type = hud_test::non_bitwise_type;
 
@@ -92,7 +92,7 @@ TEST(optional, emplace_call_destructor) {
         ASSERT_EQ(std::get<1>(result), 0);
     }
 }
-TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible) {
 
     using type = i32;
    
@@ -129,7 +129,7 @@ TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible) {
     }
 }
 
-TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible) {
 
     using type = i32;
 
@@ -170,7 +170,7 @@ TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible) {
     }
 }
 
-TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible) {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
@@ -211,7 +211,7 @@ TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible) {
     }
 }
 
-TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructible) {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
@@ -253,7 +253,7 @@ TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructible) {
     }
 }
 
-TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible) {
 
     using type = i32;
 
@@ -290,7 +290,7 @@ TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible) {
     }
 }
 
-TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible) {
 
     using type = i32;
 
@@ -331,7 +331,7 @@ TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible) {
     }
 }
 
-TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible) {
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
 
@@ -375,7 +375,7 @@ TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible) {
     }
 }
 
-TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructible) {
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
 
@@ -431,7 +431,7 @@ TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructible) {
     }
 }
 
-TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible) {
 
     using type = i32;
 
@@ -468,7 +468,7 @@ TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible) {
     }
 }
 
-TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible) {
 
     using type = i32;
 
@@ -509,7 +509,7 @@ TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible) {
     }
 }
 
-TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible) {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
@@ -549,7 +549,7 @@ TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible) {
     }
 }
 
-TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructible) {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
@@ -598,7 +598,7 @@ TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructible) {
     }
 }
 
-TEST(optional, emplace_by_move_in_empty_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_empty_trivially_move_constructible) {
 
     using type = i32;
 
@@ -635,7 +635,7 @@ TEST(optional, emplace_by_move_in_empty_trivially_move_constructible) {
     }
 }
 
-TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible) {
 
     using type = i32;
 
@@ -676,7 +676,7 @@ TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible) {
     }
 }
 
-TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible) {
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
 
@@ -720,7 +720,7 @@ TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible) {
     }
 }
 
-TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructible) {
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
 

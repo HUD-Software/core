@@ -6,7 +6,7 @@ namespace hud_test {
     struct c { c& operator= (b&&) noexcept { return *this; } };
 }
 
-TEST(traits, is_move_assignable) {
+GTEST_TEST(traits, is_move_assignable) {
     ASSERT_TRUE((hud::is_move_assignable_v<i32>));
     ASSERT_TRUE((hud::is_move_assignable_v<hud_test::a>));
     ASSERT_FALSE((hud::is_move_assignable_v<hud_test::b>));

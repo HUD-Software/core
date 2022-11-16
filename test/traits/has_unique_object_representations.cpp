@@ -26,7 +26,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, HasUniqueObjectRepresentations) {
+GTEST_TEST(traits, HasUniqueObjectRepresentations) {
 
 
     ASSERT_TRUE(hud::has_unique_object_representations_v<i32>);

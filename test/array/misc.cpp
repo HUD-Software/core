@@ -2,12 +2,12 @@
 #include "allocators.h"
 
 
-TEST(array, less_or_equal_size_as_std_vector)
+GTEST_TEST(array, less_or_equal_size_as_std_vector)
 {
     ASSERT_LE(sizeof(hud::array<i32>), sizeof(std::vector<i32>));
 }
 
-TEST(array, count_return_count_of_element)
+GTEST_TEST(array, count_return_count_of_element)
 {
 
     using type = usize;
@@ -34,7 +34,7 @@ TEST(array, count_return_count_of_element)
     }
 }
 
-TEST(array, byte_count_return_count_of_bytes_of_all_elements) {
+GTEST_TEST(array, byte_count_return_count_of_bytes_of_all_elements) {
     using type = usize;
     using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
@@ -59,7 +59,7 @@ TEST(array, byte_count_return_count_of_bytes_of_all_elements) {
     }
 }
 
-TEST(array, max_count_return_allocated_count_of_element) 
+GTEST_TEST(array, max_count_return_allocated_count_of_element) 
 {
 
     using type = usize;
@@ -87,7 +87,7 @@ TEST(array, max_count_return_allocated_count_of_element)
     }
 }
 
-TEST(array, max_byte_count_return_count_of_bytes_of_all_elements) {
+GTEST_TEST(array, max_byte_count_return_count_of_bytes_of_all_elements) {
     using type = usize;
     using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
@@ -113,7 +113,7 @@ TEST(array, max_byte_count_return_count_of_bytes_of_all_elements) {
     }
 }
 
-TEST(array, allocator_return_the_allocator)
+GTEST_TEST(array, allocator_return_the_allocator)
 {
 
     using type = usize;
@@ -129,7 +129,7 @@ TEST(array, allocator_return_the_allocator)
     ASSERT_EQ(array.allocator().id(), allocator.id());
 }
 
-TEST(array, data_return_nullptr_if_array_is_empty) 
+GTEST_TEST(array, data_return_nullptr_if_array_is_empty) 
 {
 
     using type = usize;
@@ -139,7 +139,7 @@ TEST(array, data_return_nullptr_if_array_is_empty)
     ASSERT_EQ(array.data(), nullptr);
 }
 
-TEST(array, data_return_pointer_to_the_first_element_if_array_is_not_empty)
+GTEST_TEST(array, data_return_pointer_to_the_first_element_if_array_is_not_empty)
 {
 
     using type = usize;
@@ -151,7 +151,7 @@ TEST(array, data_return_pointer_to_the_first_element_if_array_is_not_empty)
 }
 
 
-TEST(array, slack_return_zero_if_array_is_empty) 
+GTEST_TEST(array, slack_return_zero_if_array_is_empty) 
 {
 
     using type = usize;
@@ -161,7 +161,7 @@ TEST(array, slack_return_zero_if_array_is_empty)
     ASSERT_EQ(array.slack(), 0u);
 }
 
-TEST(array, slack_return_zero_if_count_equal_max_count_of_non_empty_array)
+GTEST_TEST(array, slack_return_zero_if_count_equal_max_count_of_non_empty_array)
 {
 
     using type = usize;
@@ -173,7 +173,7 @@ TEST(array, slack_return_zero_if_count_equal_max_count_of_non_empty_array)
     ASSERT_EQ(array.slack(), 0u);
 }
 
-TEST(array, slack_return_extra_element_allocated_memory_of_non_empty_array)
+GTEST_TEST(array, slack_return_extra_element_allocated_memory_of_non_empty_array)
 {
 
     using type = usize;
@@ -186,7 +186,7 @@ TEST(array, slack_return_extra_element_allocated_memory_of_non_empty_array)
     ASSERT_EQ(array.slack(), 2u);
 }
 
-TEST(array, is_valid_index_retur_false_for_empty_array)
+GTEST_TEST(array, is_valid_index_retur_false_for_empty_array)
 {
 
     using type = usize;
@@ -204,7 +204,7 @@ TEST(array, is_valid_index_retur_false_for_empty_array)
 
 }
 
-TEST(array, is_valid_index_check_if_an_index_can_be_used_to_acces_an_element)
+GTEST_TEST(array, is_valid_index_check_if_an_index_can_be_used_to_acces_an_element)
 {
 
     using type = usize;
@@ -225,7 +225,7 @@ TEST(array, is_valid_index_check_if_an_index_can_be_used_to_acces_an_element)
 
 }
 
-TEST(array, is_empty_return_if_array_contains_elements_or_not)
+GTEST_TEST(array, is_empty_return_if_array_contains_elements_or_not)
 {
 
     using type = usize;
@@ -245,7 +245,7 @@ TEST(array, is_empty_return_if_array_contains_elements_or_not)
     ASSERT_FALSE(array.is_empty());
 }
 
-TEST(array, operator_indexed_accessor_return_the_element_at_the_given_index)
+GTEST_TEST(array, operator_indexed_accessor_return_the_element_at_the_given_index)
 {
 
     using type = usize;
@@ -266,7 +266,7 @@ TEST(array, operator_indexed_accessor_return_the_element_at_the_given_index)
     }
 }
 
-TEST(array, sub_slice_return_a_slice_on_elements_in_the_array)
+GTEST_TEST(array, sub_slice_return_a_slice_on_elements_in_the_array)
 {
 
     using type = usize;
@@ -289,7 +289,7 @@ TEST(array, sub_slice_return_a_slice_on_elements_in_the_array)
     }
 }
 
-TEST(array, first_return_the_first_element_in_the_array) 
+GTEST_TEST(array, first_return_the_first_element_in_the_array) 
 {
 
     using type = usize;
@@ -308,7 +308,7 @@ TEST(array, first_return_the_first_element_in_the_array)
     }
 }
 
-TEST(array, first_return_the_first_nth_element_in_the_array)
+GTEST_TEST(array, first_return_the_first_nth_element_in_the_array)
 {
 
     using type = usize;
@@ -327,7 +327,7 @@ TEST(array, first_return_the_first_nth_element_in_the_array)
     }
 }
 
-TEST(array, last_return_the_last_element_in_the_array)
+GTEST_TEST(array, last_return_the_last_element_in_the_array)
 {
 
     using type = usize;
@@ -346,7 +346,7 @@ TEST(array, last_return_the_last_element_in_the_array)
     }
 }
 
-TEST(array, last_return_the_last_nth_element_in_the_array)
+GTEST_TEST(array, last_return_the_last_nth_element_in_the_array)
 {
 
     using type = usize;

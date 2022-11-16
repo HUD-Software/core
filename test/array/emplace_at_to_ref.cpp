@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(array, emplace_at_to_ref_can_default_construct_non_trivially_default_constructible_type)
+GTEST_TEST(array, emplace_at_to_ref_can_default_construct_non_trivially_default_constructible_type)
 {
 
     using type = hud_test::default_constructible_type;
@@ -300,7 +300,7 @@ TEST(array, emplace_at_to_ref_can_default_construct_non_trivially_default_constr
     }
 }
 
-TEST(array, emplace_at_to_ref_can_default_construct_trivially_default_constructible_type)
+GTEST_TEST(array, emplace_at_to_ref_can_default_construct_trivially_default_constructible_type)
 {
 
     using type = usize;
@@ -544,7 +544,7 @@ TEST(array, emplace_at_to_ref_can_default_construct_trivially_default_constructi
     }
 }
 
-TEST(array, emplace_at_to_ref_can_construct_non_trivially_constructible_type)
+GTEST_TEST(array, emplace_at_to_ref_can_construct_non_trivially_constructible_type)
 {
 
     using type = hud_test::NonDefaultConstructibleType;
@@ -845,7 +845,7 @@ TEST(array, emplace_at_to_ref_can_construct_non_trivially_constructible_type)
     }
 }
 
-TEST(array, emplace_at_to_ref_can_construct_trivially_constructible_type)
+GTEST_TEST(array, emplace_at_to_ref_can_construct_trivially_constructible_type)
 {
 
     using type = usize;
@@ -1079,7 +1079,7 @@ TEST(array, emplace_at_to_ref_can_construct_trivially_constructible_type)
     }
 }
 
-TEST(array, emplace_at_to_ref_can_copy_construct_non_bitwise_copy_constructible_type)
+GTEST_TEST(array, emplace_at_to_ref_can_copy_construct_non_bitwise_copy_constructible_type)
 {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
@@ -1373,7 +1373,7 @@ TEST(array, emplace_at_to_ref_can_copy_construct_non_bitwise_copy_constructible_
     }
 }
 
-TEST(array, emplace_at_to_ref_can_copy_construct_bitwise_copy_constructible_type)
+GTEST_TEST(array, emplace_at_to_ref_can_copy_construct_bitwise_copy_constructible_type)
 {
 
     using type = usize;
@@ -1633,7 +1633,7 @@ TEST(array, emplace_at_to_ref_can_copy_construct_bitwise_copy_constructible_type
     }
 }
 
-TEST(array, emplace_at_to_ref_can_move_construct_non_bitwise_move_constructible_type)
+GTEST_TEST(array, emplace_at_to_ref_can_move_construct_non_bitwise_move_constructible_type)
 {
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
@@ -1959,7 +1959,7 @@ TEST(array, emplace_at_to_ref_can_move_construct_non_bitwise_move_constructible_
     }
 }
 
-TEST(array, emplace_at_to_ref_can_move_construct_bitwise_move_constructible_type)
+GTEST_TEST(array, emplace_at_to_ref_can_move_construct_bitwise_move_constructible_type)
 {
 
     using type = usize;

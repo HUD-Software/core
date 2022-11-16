@@ -1,6 +1,6 @@
 #include <core/containers/shared_pointer.h>
 
-TEST(shared_pointer_not_safe, default_constructor) {
+GTEST_TEST(shared_pointer_not_safe, default_constructor) {
 
 
     const auto test = []()
@@ -27,7 +27,7 @@ TEST(shared_pointer_not_safe, default_constructor) {
     }
 }
 
-TEST(shared_pointer_not_safe, param_constructor_nullptr) {
+GTEST_TEST(shared_pointer_not_safe, param_constructor_nullptr) {
 
 
     const auto test = []()
@@ -54,7 +54,7 @@ TEST(shared_pointer_not_safe, param_constructor_nullptr) {
     }
 }
 
-TEST(shared_pointer_not_safe, param_constructor_same_type) {
+GTEST_TEST(shared_pointer_not_safe, param_constructor_same_type) {
 
 
     const auto test = [](i32 id) {
@@ -92,7 +92,7 @@ TEST(shared_pointer_not_safe, param_constructor_same_type) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, param_constructor_different_type) {
+GTEST_TEST(shared_pointer_not_safe, param_constructor_different_type) {
 
 
     const auto test = [](i32 id) {
@@ -130,7 +130,7 @@ TEST(shared_pointer_not_safe, param_constructor_different_type) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, copy_constructor_same_type) {
+GTEST_TEST(shared_pointer_not_safe, copy_constructor_same_type) {
 
 
     const auto test = [](i32 id) {
@@ -209,7 +209,7 @@ TEST(shared_pointer_not_safe, copy_constructor_same_type) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, copy_constructor_different_type) {
+GTEST_TEST(shared_pointer_not_safe, copy_constructor_different_type) {
 
 
     const auto test = [](i32 id) {
@@ -289,7 +289,7 @@ TEST(shared_pointer_not_safe, copy_constructor_different_type) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, move_constructor_same_type) {
+GTEST_TEST(shared_pointer_not_safe, move_constructor_same_type) {
 
 
     const auto test = [](i32 id) {
@@ -350,7 +350,7 @@ TEST(shared_pointer_not_safe, move_constructor_same_type) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, move_constructor_different_type) {
+GTEST_TEST(shared_pointer_not_safe, move_constructor_different_type) {
 
 
     const auto test = [](i32 id) {

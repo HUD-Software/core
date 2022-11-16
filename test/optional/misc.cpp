@@ -1,11 +1,11 @@
 #include <core/containers/optional.h>
 #include <optional>
 
-TEST(optional, less_or_equal_size_as_std_optional) {
+GTEST_TEST(optional, less_or_equal_size_as_std_optional) {
     ASSERT_LE(sizeof(hud::optional<i32>), sizeof(std::optional<i32>));
 }
 
-TEST(optional, trivially_copy_constructible_if_type_is_trivially_copy_constructible) {
+GTEST_TEST(optional, trivially_copy_constructible_if_type_is_trivially_copy_constructible) {
 
 
     using type = i32;
@@ -14,7 +14,7 @@ TEST(optional, trivially_copy_constructible_if_type_is_trivially_copy_constructi
     ASSERT_TRUE(hud::is_trivially_copy_constructible_v<hud::optional<type>>);
 }
 
-TEST(optional, not_trivially_copy_constructible_if_type_is_not_trivially_copy_constructible) {
+GTEST_TEST(optional, not_trivially_copy_constructible_if_type_is_not_trivially_copy_constructible) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -23,7 +23,7 @@ TEST(optional, not_trivially_copy_constructible_if_type_is_not_trivially_copy_co
     ASSERT_FALSE(hud::is_trivially_copy_constructible_v<hud::optional<type>>);
 }
 
-TEST(optional, trivially_destructible_if_type_is_trivially_destructible) {
+GTEST_TEST(optional, trivially_destructible_if_type_is_trivially_destructible) {
 
 
     using type = i32;
@@ -32,7 +32,7 @@ TEST(optional, trivially_destructible_if_type_is_trivially_destructible) {
     ASSERT_TRUE(hud::is_trivially_destructible_v<hud::optional<type>>);
 }
 
-TEST(optional, not_trivially_destructible_if_type_is_not_trivially_destructible) {
+GTEST_TEST(optional, not_trivially_destructible_if_type_is_not_trivially_destructible) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -41,7 +41,7 @@ TEST(optional, not_trivially_destructible_if_type_is_not_trivially_destructible)
     ASSERT_FALSE(hud::is_trivially_destructible_v<hud::optional<type>>);
 }
 
-TEST(optional, cast_bool) {
+GTEST_TEST(optional, cast_bool) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -68,7 +68,7 @@ TEST(optional, cast_bool) {
 }
 
 
-TEST(optional, has_value) {
+GTEST_TEST(optional, has_value) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -94,7 +94,7 @@ TEST(optional, has_value) {
     }
 }
 
-TEST(optional, value) {
+GTEST_TEST(optional, value) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -141,7 +141,7 @@ TEST(optional, value) {
     }
 }
 
-TEST(optional, value_or) {
+GTEST_TEST(optional, value_or) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -193,7 +193,7 @@ TEST(optional, value_or) {
 }
 
 
-TEST(optional, operator_arrow) {
+GTEST_TEST(optional, operator_arrow) {
 
 
 
@@ -223,7 +223,7 @@ TEST(optional, operator_arrow) {
     }
 }
 
-TEST(optional, operator_dereference) {
+GTEST_TEST(optional, operator_dereference) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -251,7 +251,7 @@ TEST(optional, operator_dereference) {
         ASSERT_EQ(std::get<1>(result), 456);
     }
 }
-TEST(optional, reset_on_empty_do_nothing) {
+GTEST_TEST(optional, reset_on_empty_do_nothing) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -284,7 +284,7 @@ TEST(optional, reset_on_empty_do_nothing) {
     }
 }
 
-TEST(optional, reset_call_destructor_if_T_is_not_trivially_destructible) {
+GTEST_TEST(optional, reset_call_destructor_if_T_is_not_trivially_destructible) {
 
 
     using type = hud_test::non_bitwise_type;

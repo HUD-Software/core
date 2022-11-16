@@ -5,7 +5,7 @@ namespace hud_test {
     enum class b : u32;
 }
 
-TEST(traits, is_integral) {
+GTEST_TEST(traits, is_integral) {
 
     ASSERT_FALSE((hud::is_integral_v<hud_test::a>));
     ASSERT_FALSE((hud::is_integral_v<hud_test::b>));

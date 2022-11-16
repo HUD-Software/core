@@ -11,7 +11,7 @@ namespace hud_test {
     struct c { bool operator>(const a&) const noexcept; };
 }
 
-TEST(traits, is_comparable_with_greater) {
+GTEST_TEST(traits, is_comparable_with_greater) {
 
     // i8
     ASSERT_TRUE((hud::is_comparable_with_greater_v<i8, i8>));

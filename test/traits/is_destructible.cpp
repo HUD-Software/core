@@ -11,7 +11,7 @@ namespace hud_test {
     struct d { ~d() noexcept {} };
 }
 
-TEST(traits, is_destructible) {
+GTEST_TEST(traits, is_destructible) {
     ASSERT_TRUE((hud::is_destructible_v<i32>));
     ASSERT_TRUE((hud::is_destructible_v<i32&>));
     ASSERT_TRUE((hud::is_destructible_v<i32&&>));

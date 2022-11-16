@@ -4,7 +4,7 @@
 #include <core/traits/is_bitwise_move_assignable.h>
 #include "../misc/leak_guard.h"
 
-TEST(memory, move_or_copy_assign_trivial_type)
+GTEST_TEST(memory, move_or_copy_assign_trivial_type)
 {
 
 
@@ -35,7 +35,7 @@ TEST(memory, move_or_copy_assign_trivial_type)
     }
 }
 
-TEST(memory, move_or_copy_assign_bitwise_assignable_type)
+GTEST_TEST(memory, move_or_copy_assign_bitwise_assignable_type)
 {
 
 
@@ -71,7 +71,7 @@ TEST(memory, move_or_copy_assign_bitwise_assignable_type)
     }
 }
 
-TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_type)
+GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_type)
 {
 
 
@@ -114,7 +114,7 @@ TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_type)
     }
 }
 
-TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_type)
+GTEST_TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_type)
 {
 
 
@@ -163,7 +163,7 @@ TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_type)
     }
 }
 
-TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_same_type)
+GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_same_type)
 {
 
 
@@ -205,7 +205,7 @@ TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_same_type)
     }
 }
 
-TEST(memory, move_or_copy_assign_array_trivial_type)
+GTEST_TEST(memory, move_or_copy_assign_array_trivial_type)
 {
 
 
@@ -240,7 +240,7 @@ TEST(memory, move_or_copy_assign_array_trivial_type)
     }
 }
 
-TEST(memory, move_or_copy_assign_array_bitwise_assignable_type)
+GTEST_TEST(memory, move_or_copy_assign_array_bitwise_assignable_type)
 {
 
 
@@ -278,7 +278,7 @@ TEST(memory, move_or_copy_assign_array_bitwise_assignable_type)
     }
 }
 
-TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_different_type)
+GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_different_type)
 {
 
 
@@ -331,7 +331,7 @@ TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_different_typ
     }
 }
 
-TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_different_type)
+GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_different_type)
 {
 
 
@@ -397,7 +397,7 @@ TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_different_typ
     }
 }
 
-TEST(memory, move_or_copy_assign_array_non_bitwise_copy_constructible_same_type)
+GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_constructible_same_type)
 {
 
 
@@ -448,7 +448,7 @@ TEST(memory, move_or_copy_assign_array_non_bitwise_copy_constructible_same_type)
     }
 }
 
-TEST(memory, move_or_copy_assign_array_non_bitwise_move_constructible_same_type)
+GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_constructible_same_type)
 {
 
 

@@ -2,7 +2,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(memory, allocate)
+GTEST_TEST(memory, allocate)
 {
 
 
@@ -23,7 +23,7 @@ TEST(memory, allocate)
 
 }
 
-TEST(memory, allocate_and_free_are_usable_in_constexpr)
+GTEST_TEST(memory, allocate_and_free_are_usable_in_constexpr)
 {
 
 
@@ -36,7 +36,7 @@ TEST(memory, allocate_and_free_are_usable_in_constexpr)
     ASSERT_TRUE(allocate_const);
 }
 
-TEST(memory, allocate_zero)
+GTEST_TEST(memory, allocate_zero)
 {
 
 
@@ -54,7 +54,7 @@ TEST(memory, allocate_zero)
     ASSERT_EQ(ptr_2, nullptr);
 }
 
-TEST(memory, allocate_align)
+GTEST_TEST(memory, allocate_align)
 {
 
 
@@ -73,7 +73,7 @@ TEST(memory, allocate_align)
     }
 }
 
-TEST(memory, allocate_align_zero)
+GTEST_TEST(memory, allocate_align_zero)
 {
 
 
@@ -94,7 +94,7 @@ TEST(memory, allocate_align_zero)
     }
 }
 
-TEST(memory, free)
+GTEST_TEST(memory, free)
 {
 
 
@@ -106,7 +106,7 @@ TEST(memory, free)
 }
 
 
-TEST(memory, free_align)
+GTEST_TEST(memory, free_align)
 {
 
 
@@ -117,7 +117,7 @@ TEST(memory, free_align)
     hud::memory::free_align(nullptr);
 }
 
-TEST(memory, allocate_align_and_free_align_are_usable_in_consteval)
+GTEST_TEST(memory, allocate_align_and_free_align_are_usable_in_consteval)
 {
 
 
@@ -130,7 +130,7 @@ TEST(memory, allocate_align_and_free_align_are_usable_in_consteval)
     ASSERT_TRUE(allocate_const);
 }
 
-TEST(memory, reallocate)
+GTEST_TEST(memory, reallocate)
 {
 
 
@@ -149,7 +149,7 @@ TEST(memory, reallocate)
     guard.leak();
 }
 
-TEST(memory, reallocate_align)
+GTEST_TEST(memory, reallocate_align)
 {
 
 

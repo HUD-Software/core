@@ -13,7 +13,7 @@ namespace hud_test {
 
 }
 
-TEST(traits, is_bitwise_move_assignable) {
+GTEST_TEST(traits, is_bitwise_move_assignable) {
     // i8
     ASSERT_TRUE((hud::is_bitwise_move_assignable_v<i8, i8>));
     ASSERT_FALSE((hud::is_bitwise_move_assignable_v<i8, i16>));

@@ -9,7 +9,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_assignable) {
+GTEST_TEST(traits, is_assignable) {
     
     ASSERT_FALSE((hud::is_assignable_v<i32, i32>)); // 1 = 1 do not compile
     ASSERT_TRUE((hud::is_assignable_v<i32&, i32>));

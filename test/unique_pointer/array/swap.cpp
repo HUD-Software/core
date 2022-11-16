@@ -1,6 +1,6 @@
 #include <core/containers/unique_pointer.h>
 
-TEST(unique_pointer_array, swap) {
+GTEST_TEST(unique_pointer_array, swap) {
 
     // UniquePointer::swap
     {

@@ -1,6 +1,6 @@
 #include <core/containers/shared_pointer.h>
 
-TEST(shared_pointer_array_safe, equal_operator) {
+GTEST_TEST(shared_pointer_array_safe, equal_operator) {
 
 
     const auto test = []() {
@@ -58,7 +58,7 @@ TEST(shared_pointer_array_safe, equal_operator) {
 //#endif
 }
 
-TEST(shared_pointer_array_safe, not_equal_operator) {
+GTEST_TEST(shared_pointer_array_safe, not_equal_operator) {
 
 
     const auto test = []() {
@@ -116,7 +116,7 @@ TEST(shared_pointer_array_safe, not_equal_operator) {
 //#endif
 }
 
-TEST(shared_pointer_array_safe, less_operator) {
+GTEST_TEST(shared_pointer_array_safe, less_operator) {
 
 
     const auto test = []() {
@@ -208,7 +208,7 @@ TEST(shared_pointer_array_safe, less_operator) {
 }
 
 
-TEST(shared_pointer_array_safe, less_equal_operator) {
+GTEST_TEST(shared_pointer_array_safe, less_equal_operator) {
 
 
     const auto test = []() {
@@ -299,7 +299,7 @@ TEST(shared_pointer_array_safe, less_equal_operator) {
 //#endif
 }
 
-TEST(shared_pointer_array_safe, greater_operator) {
+GTEST_TEST(shared_pointer_array_safe, greater_operator) {
 
 
     const auto test = []() {
@@ -390,7 +390,7 @@ TEST(shared_pointer_array_safe, greater_operator) {
 //#endif
 }
 
-TEST(shared_pointer_array_safe, greater_equal_operator) {
+GTEST_TEST(shared_pointer_array_safe, greater_equal_operator) {
 
 
     const auto test = []() {

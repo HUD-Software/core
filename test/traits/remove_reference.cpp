@@ -1,7 +1,7 @@
 #include <core/traits/remove_reference.h>
 
 
-TEST(traits, remove_reference) {
+GTEST_TEST(traits, remove_reference) {
     ASSERT_TRUE((hud::is_same_v<hud::remove_reference_t<i32>, i32>));
     ASSERT_TRUE((hud::is_same_v<hud::remove_reference_t<i32[]>, i32[]>));
     ASSERT_TRUE((hud::is_same_v<hud::remove_reference_t<i32[10]>, i32[10]>));

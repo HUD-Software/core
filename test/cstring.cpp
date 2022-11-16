@@ -13,39 +13,39 @@ namespace hud_test
     }
 } // namespace hud_test
 
-TEST(cstring, is_pure_ansi) {
-    for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
-        ansichar text[2] = { cur,'\0' };
-        ASSERT_TRUE(hud::cstring::is_pure_ansi(text));
-    }
-    for (wchar cur = 0; cur < hud::wchar_max; cur++) {
-        wchar text[2] = { cur, L'\0' };
-        if (hud::character::is_pure_ansi(cur)) {
-            ASSERT_TRUE(hud::cstring::is_pure_ansi(text));
-        }
-        else {
-            ASSERT_FALSE(hud::cstring::is_pure_ansi(text));
-        }
-    }
-}
+// GTEST_TEST(cstring, is_pure_ansi) {
+//     for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
+//         ansichar text[2] = { cur,'\0' };
+//         ASSERT_TRUE(hud::cstring::is_pure_ansi(text));
+//     }
+//     for (wchar cur = 0; cur < hud::wchar_max; cur++) {
+//         wchar text[2] = { cur, L'\0' };
+//         if (hud::character::is_pure_ansi(cur)) {
+//             ASSERT_TRUE(hud::cstring::is_pure_ansi(text));
+//         }
+//         else {
+//             ASSERT_FALSE(hud::cstring::is_pure_ansi(text));
+//         }
+//     }
+// }
 
-TEST(cstring, is_pure_ansi_safe) {
-    for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
-        const ansichar text[2] = { cur,'\0' };
-        ASSERT_TRUE(hud::cstring::is_pure_ansi_safe(text, 1));
-    }
-    for (wchar cur = 0; cur < hud::wchar_max; cur++) {
-        const wchar text[2] = { cur, L'\0' };
-        if (hud::character::is_pure_ansi(cur)) {
-            ASSERT_TRUE(hud::cstring::is_pure_ansi_safe(text, 1));
-        }
-        else {
-            ASSERT_FALSE(hud::cstring::is_pure_ansi_safe(text, 1));
-        }
-    }
-}
+// GTEST_TEST(cstring, is_pure_ansi_safe) {
+//     for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
+//         const ansichar text[2] = { cur,'\0' };
+//         ASSERT_TRUE(hud::cstring::is_pure_ansi_safe(text, 1));
+//     }
+//     for (wchar cur = 0; cur < hud::wchar_max; cur++) {
+//         const wchar text[2] = { cur, L'\0' };
+//         if (hud::character::is_pure_ansi(cur)) {
+//             ASSERT_TRUE(hud::cstring::is_pure_ansi_safe(text, 1));
+//         }
+//         else {
+//             ASSERT_FALSE(hud::cstring::is_pure_ansi_safe(text, 1));
+//         }
+//     }
+// }
 
-TEST(cstring, is_null_or_empty) {
+GTEST_TEST(cstring, is_null_or_empty) {
     static constexpr const ansichar* const no_null_empty = "abc";
     static constexpr const ansichar* const empty = "";
     static constexpr const ansichar* const null = nullptr;
@@ -64,7 +64,7 @@ TEST(cstring, is_null_or_empty) {
 
 }
 
-TEST(cstring, copy) {
+GTEST_TEST(cstring, copy) {
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
 
@@ -81,28 +81,28 @@ TEST(cstring, copy) {
     //ASSERT_TRUE(hud::cstring::copy((wchar*)nullptr, nullptr) == nullptr);
 }
 
-// TEST(cstring, copy_safe_with_nullptr_destination)
+// GTEST_TEST(cstring, copy_safe_with_nullptr_destination)
 // {
 //     FAIL();
 // }
-// TEST(cstring, copy_safe_with_nullptr_source)
+// GTEST_TEST(cstring, copy_safe_with_nullptr_source)
 // {
 //     FAIL();
 // }
-// TEST(cstring, copy_safe_with_destination_size_zero_or_greater_than_isize_max)
+// GTEST_TEST(cstring, copy_safe_with_destination_size_zero_or_greater_than_isize_max)
 // {
 //     FAIL();
 // }
-// TEST(cstring, copy_safe_with_destination_is_less_or_equal_lenght_safe_source_destination_size)
+// GTEST_TEST(cstring, copy_safe_with_destination_is_less_or_equal_lenght_safe_source_destination_size)
 // {
 //     FAIL();
 // }
-// TEST(cstring, copy_safe_with_destination_and_source_overlap)
+// GTEST_TEST(cstring, copy_safe_with_destination_and_source_overlap)
 // {
 //     FAIL();
 // }
 
-TEST(cstring, copy_safe) {
+GTEST_TEST(cstring, copy_safe) {
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
 
@@ -138,7 +138,7 @@ TEST(cstring, copy_safe) {
     //ASSERT_FALSE(hud::cstring::copy_safe(wide_dest, 3, wide_src)); // No place for null-terminator character
 }
 
-TEST(cstring, copy_partial) {
+GTEST_TEST(cstring, copy_partial) {
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
 
@@ -173,7 +173,7 @@ TEST(cstring, copy_partial) {
     //ASSERT_FALSE(hud::cstring::copy_partial((wchar*)nullptr, nullptr, 2) == nullptr);
 }
 
-TEST(cstring, copy_partial_safe) {
+GTEST_TEST(cstring, copy_partial_safe) {
     static constexpr const ansichar* const src = "abc";
     ansichar dest[4];
 
@@ -205,7 +205,7 @@ TEST(cstring, copy_partial_safe) {
     //ASSERT_FALSE(hud::cstring::copy_partial_safe((wchar*)nullptr, 4, nullptr, 2)); // destination and source are nullptr
 }
 
-TEST(cstring, append) {
+GTEST_TEST(cstring, append) {
     static constexpr const ansichar* const src = "de";
     ansichar dest[6] = { 'a', 'b', 'c', '\0' };
     ASSERT_TRUE(hud::cstring::append(dest, src) == dest);
@@ -225,7 +225,7 @@ TEST(cstring, append) {
     //ASSERT_FALSE(hud::cstring::append((wchar*)nullptr, nullptr));
 }
 
-TEST(cstring, append_safe) {
+GTEST_TEST(cstring, append_safe) {
     static constexpr const ansichar* const src = "de";
     ansichar dest[6] = { 'a', 'b', 'c', '\0' };
     ASSERT_TRUE(hud::cstring::append_safe(dest, 6, src));
@@ -249,7 +249,7 @@ TEST(cstring, append_safe) {
     //ASSERT_FALSE(hud::cstring::append_safe(wide_dest, 1, wide_src)); //  destination is not big enough
 }
 
-TEST(cstring, append_partial) {
+GTEST_TEST(cstring, append_partial) {
     static constexpr const ansichar* const src = "de";
     ansichar dest[5] = { 'a', 'b', 'c', '\0' };
     ASSERT_TRUE(hud::cstring::append_partial(dest, src, 1) == dest);
@@ -269,7 +269,7 @@ TEST(cstring, append_partial) {
     //ASSERT_FALSE(hud::cstring::append_partial((wchar*)nullptr, nullptr, 1));
 }
 
-TEST(cstring, append_partial_safe) {
+GTEST_TEST(cstring, append_partial_safe) {
     static constexpr const ansichar* const src = "de";
     ansichar dest[6] = { 'a', 'b', 'c', '\0' };
     ASSERT_TRUE(hud::cstring::append_partial_safe(dest, 6, src, 1));
@@ -293,7 +293,7 @@ TEST(cstring, append_partial_safe) {
 }
 
 
-TEST(cstring, to_uppercase) {
+GTEST_TEST(cstring, to_uppercase) {
     ansichar txt[] = "abc123,;:!";
     ASSERT_TRUE(hud::cstring::to_uppercase(txt) == txt);
     ASSERT_TRUE(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -302,7 +302,7 @@ TEST(cstring, to_uppercase) {
     ASSERT_TRUE(wide_txt[0] == 'A' && wide_txt[1] == 'B' && wide_txt[2] == 'C' && wide_txt[3] == '1' && wide_txt[4] == '2' && wide_txt[5] == '3' && wide_txt[6] == ',' && wide_txt[7] == ';' && wide_txt[8] == ':' && wide_txt[9] == '!' && wide_txt[10] == '\0');
 }
 
-TEST(cstring, to_uppercase_safe) {
+GTEST_TEST(cstring, to_uppercase_safe) {
     ansichar txt[] = "abc123,;:!";
     ASSERT_TRUE(hud::cstring::to_uppercase_safe(txt, 10));
     ASSERT_TRUE(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -319,7 +319,7 @@ TEST(cstring, to_uppercase_safe) {
 
 }
 
-TEST(cstring, to_uppercase_partial) {
+GTEST_TEST(cstring, to_uppercase_partial) {
     ansichar txt[] = "abc123,;:!";
     ASSERT_TRUE(hud::cstring::to_uppercase_partial(txt, 2) == txt);
     ASSERT_TRUE(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -328,7 +328,7 @@ TEST(cstring, to_uppercase_partial) {
     ASSERT_TRUE(wide_txt[0] == 'A' && wide_txt[1] == 'B' && wide_txt[2] == 'c' && wide_txt[3] == '1' && wide_txt[4] == '2' && wide_txt[5] == '3' && wide_txt[6] == ',' && wide_txt[7] == ';' && wide_txt[8] == ':' && wide_txt[9] == '!' && wide_txt[10] == '\0');
 }
 
-TEST(cstring, to_uppercase_partial_safe) {
+GTEST_TEST(cstring, to_uppercase_partial_safe) {
     ansichar txt[] = "abc123,;:!";
     ASSERT_TRUE(hud::cstring::to_uppercase_partial_safe(txt, 10, 2));
     ASSERT_TRUE(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -347,7 +347,7 @@ TEST(cstring, to_uppercase_partial_safe) {
 }
 
 
-TEST(cstring, to_lowercase) {
+GTEST_TEST(cstring, to_lowercase) {
     ansichar txt[] = "ABC123,;:!";
     ASSERT_TRUE(hud::cstring::to_lowercase(txt) == txt);
     ASSERT_TRUE(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -356,7 +356,7 @@ TEST(cstring, to_lowercase) {
     ASSERT_TRUE(wide_txt[0] == 'a' && wide_txt[1] == 'b' && wide_txt[2] == 'c' && wide_txt[3] == '1' && wide_txt[4] == '2' && wide_txt[5] == '3' && wide_txt[6] == ',' && wide_txt[7] == ';' && wide_txt[8] == ':' && wide_txt[9] == '!' && wide_txt[10] == '\0');
 }
 
-TEST(cstring, to_lowercase_safe) {
+GTEST_TEST(cstring, to_lowercase_safe) {
     ansichar txt[] = "ABC123,;:!";
     ASSERT_TRUE(hud::cstring::to_lowercase_safe(txt, 10));
     ASSERT_TRUE(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -372,7 +372,7 @@ TEST(cstring, to_lowercase_safe) {
     ASSERT_FALSE(hud::cstring::to_lowercase_safe((wchar*)nullptr, 0));
 }
 
-TEST(cstring, to_lowercase_partial) {
+GTEST_TEST(cstring, to_lowercase_partial) {
     ansichar txt[] = "ABC123,;:!";
     ASSERT_TRUE(hud::cstring::to_lowercase_partial(txt, 2) == txt);
     ASSERT_TRUE(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -382,7 +382,7 @@ TEST(cstring, to_lowercase_partial) {
     ASSERT_TRUE(wide_txt[0] == 'a' && wide_txt[1] == 'b' && wide_txt[2] == 'C' && wide_txt[3] == '1' && wide_txt[4] == '2' && wide_txt[5] == '3' && wide_txt[6] == ',' && wide_txt[7] == ';' && wide_txt[8] == ':' && wide_txt[9] == '!' && wide_txt[10] == '\0');
 }
 
-TEST(cstring, to_lowercase_partial_safe) {
+GTEST_TEST(cstring, to_lowercase_partial_safe) {
     ansichar txt[] = "ABC123,;:!";
     ASSERT_TRUE(hud::cstring::to_lowercase_partial_safe(txt, 10, 2));
     ASSERT_TRUE(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -400,7 +400,7 @@ TEST(cstring, to_lowercase_partial_safe) {
     ASSERT_FALSE(hud::cstring::to_lowercase_partial_safe(wide_txt, 12, 11));
 }
 
-TEST(cstring, equals) {
+GTEST_TEST(cstring, equals) {
     ASSERT_TRUE(hud::cstring::equals("abc", "abc"));
     ASSERT_FALSE(hud::cstring::equals("aBc", "abc"));
     ASSERT_FALSE(hud::cstring::equals("abc", "ab"));
@@ -409,7 +409,7 @@ TEST(cstring, equals) {
     ASSERT_FALSE(hud::cstring::equals(L"abc", L"ab"));
 }
 
-TEST(cstring, equals_partial) {
+GTEST_TEST(cstring, equals_partial) {
     ASSERT_TRUE(hud::cstring::equals_partial("abc", "abc", 1));
     ASSERT_FALSE(hud::cstring::equals_partial("abc", "bc", 2));
     ASSERT_FALSE(hud::cstring::equals_partial("aBc", "abc", 3));
@@ -422,14 +422,14 @@ TEST(cstring, equals_partial) {
     ASSERT_TRUE(hud::cstring::equals_partial(L"aBc", L"abc", 1));
 }
 
-TEST(cstring, length) {
+GTEST_TEST(cstring, length) {
     ASSERT_TRUE(hud::cstring::length("aBc") == 3);
     ASSERT_TRUE(hud::cstring::length(L"aBc") == 3);
     ASSERT_FALSE(hud::cstring::length("aBcd") == 3);
     ASSERT_FALSE(hud::cstring::length(L"aBcd") == 3);
 }
 
-TEST(cstring, length_safe_with_string_nullptr)
+GTEST_TEST(cstring, length_safe_with_string_nullptr)
 {   
     constexpr ansichar* null_string = nullptr;
     ASSERT_EQ(hud::cstring::length_safe(null_string, 0u), 0u);
@@ -443,7 +443,7 @@ TEST(cstring, length_safe_with_string_nullptr)
     ASSERT_EQ(hud::cstring::length_safe(null_wstring, hud::cstring::RSIZE_MAX_STR), 0u);
     ASSERT_EQ(hud::cstring::length_safe(null_wstring, hud::cstring::RSIZE_MAX_STR+1u), 0u);
 }
-TEST(cstring, length_safe_with_max_length_zero)
+GTEST_TEST(cstring, length_safe_with_max_length_zero)
 {
     ASSERT_EQ(hud::cstring::length_safe("", 0u), 0u);
     ASSERT_EQ(hud::cstring::length_safe("a", 0u), 0u);
@@ -454,7 +454,7 @@ TEST(cstring, length_safe_with_max_length_zero)
     ASSERT_EQ(hud::cstring::length_safe(L"aBc", 0u), 0u);
 }
 
-TEST(cstring, length_safe_with_max_length_greater_than_RSIZE_MAX_STR)
+GTEST_TEST(cstring, length_safe_with_max_length_greater_than_RSIZE_MAX_STR)
 {
     ASSERT_EQ(hud::cstring::length_safe("", hud::cstring::RSIZE_MAX_STR+1u), 0u);
     ASSERT_EQ(hud::cstring::length_safe("a", hud::cstring::RSIZE_MAX_STR+1u), 1u);
@@ -465,7 +465,7 @@ TEST(cstring, length_safe_with_max_length_greater_than_RSIZE_MAX_STR)
     ASSERT_EQ(hud::cstring::length_safe(L"aBc", hud::cstring::RSIZE_MAX_STR+2u), 3u);
 }
 
-TEST(cstring, length_safe_without_null_terminated_character)
+GTEST_TEST(cstring, length_safe_without_null_terminated_character)
 {
     ansichar MAX_STR_WITHOUT_NULL_TERMINATED[hud::cstring::RSIZE_MAX_STR+1u];
     hud::memory::set(MAX_STR_WITHOUT_NULL_TERMINATED, 'a');
@@ -474,7 +474,7 @@ TEST(cstring, length_safe_without_null_terminated_character)
     ASSERT_EQ(hud::cstring::length_safe(MAX_STR_WITHOUT_NULL_TERMINATED, hud::cstring::RSIZE_MAX_STR+1u), hud::cstring::RSIZE_MAX_STR);
 }
 
-TEST(cstring, length_safe) {
+GTEST_TEST(cstring, length_safe) {
     ASSERT_TRUE(hud::cstring::length_safe("aBc", 3) == 3);
     ASSERT_TRUE(hud::cstring::length_safe("aBc", 2) == 2);
     ASSERT_TRUE(hud::cstring::length_safe("aBc", 4) == 3);
@@ -486,7 +486,7 @@ TEST(cstring, length_safe) {
     ASSERT_TRUE(hud::cstring::length_safe((wchar*)nullptr, 2) == 0);
 }
 
-TEST(cstring, find_string) {
+GTEST_TEST(cstring, find_string) {
     const ansichar* str = "abcdefcd";
     ASSERT_TRUE(hud::cstring::find_string(str, "cd") == str + 2);
     ASSERT_TRUE(hud::cstring::find_string(str, "fe") == nullptr);
@@ -496,7 +496,7 @@ TEST(cstring, find_string) {
     ASSERT_TRUE(hud::cstring::find_string(wide_str, L"fe") == nullptr);
 }
 
-TEST(cstring, find_character) {
+GTEST_TEST(cstring, find_character) {
     const ansichar* str = "abcdefcd";
     ASSERT_TRUE(hud::cstring::find_character(str, 'c') == str + 2);
     ASSERT_TRUE(hud::cstring::find_character(str, 'g') == nullptr);
@@ -506,7 +506,7 @@ TEST(cstring, find_character) {
     ASSERT_TRUE(hud::cstring::find_character(wide_str, 'g') == nullptr);
 }
 
-TEST(cstring, format_vargs) {
+GTEST_TEST(cstring, format_vargs) {
     const ansichar* fmt = "Hello %s! %ls time";
     ansichar buffer[256];
     i32 character_count = hud_test::call_format_vargs(buffer, 256, fmt, "World", L"Hammer");
@@ -520,7 +520,7 @@ TEST(cstring, format_vargs) {
     ASSERT_TRUE(character_count == 24);
 }
 
-TEST(cstring, format) {
+GTEST_TEST(cstring, format) {
     const ansichar* fmt = "Hello %s! %ls time";
     ansichar buffer[256];
     i32 character_count = hud::cstring::format(buffer, 256, fmt, "World", L"Hammer");

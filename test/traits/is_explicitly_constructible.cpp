@@ -15,7 +15,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_explicitly_constructible) {
+GTEST_TEST(traits, is_explicitly_constructible) {
     ASSERT_TRUE((hud::is_explicitly_constructible_v<hud_test::explicit_ctor>));
     ASSERT_TRUE((hud::is_explicitly_constructible_v<hud_test::explicit_ctor, i32>));
     ASSERT_TRUE((hud::is_explicitly_constructible_v<hud_test::explicit_ctor, const hud_test::explicit_ctor&>));

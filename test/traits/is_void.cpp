@@ -4,7 +4,7 @@ namespace hud_test {
     class a {};
 }
 
-TEST(traits, is_void) {
+GTEST_TEST(traits, is_void) {
     ASSERT_FALSE((hud::is_void_v<i32>));
     ASSERT_FALSE((hud::is_void_v<i32&>));
     ASSERT_FALSE((hud::is_void_v<i32[]>));

@@ -7,7 +7,7 @@ namespace hud_test {
     struct d { d(a&&) {} };
 }
 
-TEST(traits, is_trivially_copy_constructible) {
+GTEST_TEST(traits, is_trivially_copy_constructible) {
     ASSERT_TRUE((hud::is_trivially_copy_constructible_v<i32>));
     ASSERT_TRUE((hud::is_trivially_copy_constructible_v<i32&>));
     ASSERT_FALSE((hud::is_trivially_copy_constructible_v<i32[]>));

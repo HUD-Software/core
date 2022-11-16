@@ -12,7 +12,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_nothrow_copy_assignable) {   
+GTEST_TEST(traits, is_nothrow_copy_assignable) {   
     ASSERT_TRUE((hud::is_nothrow_copy_assignable_v<i32>));
     ASSERT_TRUE((hud::is_nothrow_copy_assignable_v<hud_test::a>));
     ASSERT_FALSE((hud::is_nothrow_copy_assignable_v<hud_test::b>));

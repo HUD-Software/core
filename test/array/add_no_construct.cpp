@@ -2,7 +2,7 @@
 #include "allocators.h"
 #include <core/memory.h>
 
-TEST(array, add_no_construct_do_not_call_constructor)
+GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 {
 
     using type = hud_test::NonDefaultConstructibleType;

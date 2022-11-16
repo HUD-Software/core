@@ -13,7 +13,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_same_size) {
+GTEST_TEST(traits, is_same_size) {
     ASSERT_TRUE((hud::is_same_size_v<i32, const i32>));
     ASSERT_TRUE((hud::is_same_size_v<hud_test::a, std::tuple<>>));
     ASSERT_FALSE((hud::is_same_size_v<hud_test::a, hud_test::b>));

@@ -1,7 +1,7 @@
 #include <core/allocators/allocation.h>
 #include <core/templates/swap.h>
 
-TEST(allocation, default_constructor) {
+GTEST_TEST(allocation, default_constructor) {
     // constexpr Allocation() noexcept
     hud::allocation<i32> slice;
     ASSERT_EQ(slice.data(), nullptr);
@@ -9,7 +9,7 @@ TEST(allocation, default_constructor) {
     ASSERT_EQ(slice.count(), 0u);
 }
 
-TEST(allocation, constructor) {
+GTEST_TEST(allocation, constructor) {
     i32 arr[4] = { 10,20,30,40 };
 
     // constexpr Allocation(type_t* first, usize count) noexcept
@@ -19,11 +19,11 @@ TEST(allocation, constructor) {
     ASSERT_EQ(slice.count(), 4u);
 }
 
-TEST(allocation, copy_constructor) {
+GTEST_TEST(allocation, copy_constructor) {
     ASSERT_FALSE((hud::is_copy_constructible_v<hud::allocation<i32>>));
 }
 
-TEST(allocation, move_constructor) {
+GTEST_TEST(allocation, move_constructor) {
     i32 arr[4] = { 10,20,30,40 };
 
     hud::allocation<i32> slice(arr, 4);
@@ -42,11 +42,11 @@ TEST(allocation, move_constructor) {
 }
 
 
-TEST(allocation, copy_assignment) {
+GTEST_TEST(allocation, copy_assignment) {
     ASSERT_FALSE((hud::is_copy_assignable_v<hud::allocation<i32>>));
 }
 
-TEST(allocation, move_assignment) {
+GTEST_TEST(allocation, move_assignment) {
     i32 arr[4] = { 10,20,30,40 };
 
     hud::allocation<i32> slice(arr, 4);
@@ -70,7 +70,7 @@ TEST(allocation, move_assignment) {
     }
 }
 
-TEST(allocation, reset) {
+GTEST_TEST(allocation, reset) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> slice(arr, 4);
     ASSERT_EQ(slice.data(), arr);
@@ -85,7 +85,7 @@ TEST(allocation, reset) {
     ASSERT_EQ(slice.count(), 0u);
 }
 
-TEST(allocation, operator_indexed_accessor) {
+GTEST_TEST(allocation, operator_indexed_accessor) {
     i32 arr[4] = { 10,20,30,40 };
 
     // constexpr hud::add_lvalue_reference_t<type_t> operator[](const index at) noexcept
@@ -109,7 +109,7 @@ TEST(allocation, operator_indexed_accessor) {
     ASSERT_EQ(slice2[3], 40);
 }
 
-TEST(allocation, is_empty) {
+GTEST_TEST(allocation, is_empty) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> slice(arr, 4);
     hud::allocation<i32> empty;
@@ -117,7 +117,7 @@ TEST(allocation, is_empty) {
     ASSERT_TRUE(empty.is_empty());
 }
 
-TEST(allocation, data) {
+GTEST_TEST(allocation, data) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> slice(arr, 4);
     hud::allocation<i32> slice2;
@@ -125,7 +125,7 @@ TEST(allocation, data) {
     ASSERT_EQ(slice2.data(), nullptr);
 }
 
-TEST(allocation, data_at) {
+GTEST_TEST(allocation, data_at) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> slice(arr, 4);
     ASSERT_EQ(slice.data_at(0u), &arr[0]);
@@ -134,7 +134,7 @@ TEST(allocation, data_at) {
     ASSERT_EQ(slice.data_at(3u), &arr[3]);
 }
 
-TEST(allocation, count) {
+GTEST_TEST(allocation, count) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> slice(arr, 4);
     hud::allocation<i32> slice2;
@@ -142,7 +142,7 @@ TEST(allocation, count) {
     ASSERT_EQ(slice2.count(), 0u);
 }
 
-TEST(allocation, byte_count) {
+GTEST_TEST(allocation, byte_count) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> slice(arr, 4);
     hud::allocation<i32> slice2;
@@ -150,7 +150,7 @@ TEST(allocation, byte_count) {
     ASSERT_EQ(slice2.byte_count(), 0u * sizeof(i32));
 }
 
-TEST(allocation, sub_slice) {
+GTEST_TEST(allocation, sub_slice) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> allocation(arr, 4);
     ASSERT_EQ(allocation.data(), &arr[0]);
@@ -214,7 +214,7 @@ TEST(allocation, sub_slice) {
     }
 }
 
-TEST(allocation, to_slice) {
+GTEST_TEST(allocation, to_slice) {
     // to_slice of empty allocation is empty slice
     {
         hud::allocation<i32> allocation(nullptr, 0u);
@@ -239,7 +239,7 @@ TEST(allocation, to_slice) {
     }
 }
 
-TEST(allocation, swap) {
+GTEST_TEST(allocation, swap) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> slice(arr, 4);
     ASSERT_EQ(slice.data(), arr);
@@ -260,7 +260,7 @@ TEST(allocation, swap) {
     ASSERT_EQ(slice.count(), 0u);
 }
 
-TEST(allocation, iterators) {
+GTEST_TEST(allocation, iterators) {
     // constexpr Iterator begin() noexcept
     // constexpr Iterator end() noexcept
     i32 arr[4] = { 10,20,30,40 };
@@ -281,7 +281,7 @@ TEST(allocation, iterators) {
     ASSERT_EQ(slice_const.end() - slice_const.begin(), static_cast<isize>(slice.count()));
 }
 
-TEST(allocation, range_for_loop) {
+GTEST_TEST(allocation, range_for_loop) {
     i32 arr[4] = { 10,20,30,40 };
     hud::allocation<i32> slice(arr, 4);
 

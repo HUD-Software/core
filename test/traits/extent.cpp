@@ -1,7 +1,7 @@
 #include <core/traits/extent.h>
 
 
-TEST(traits, extent) {
+GTEST_TEST(traits, extent) {
     ASSERT_EQ(hud::extent_v<i32>, 0u);
     ASSERT_EQ((hud::extent_v<i32, 1>), 0u);
 

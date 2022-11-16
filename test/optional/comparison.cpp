@@ -1,6 +1,6 @@
 #include <core/containers/optional.h>
 
-TEST(optional, equal_operator) {
+GTEST_TEST(optional, equal_operator) {
 
     
     using type = i32;
@@ -234,7 +234,7 @@ TEST(optional, equal_operator) {
     }
 }
 
-TEST(optional, not_equal_operator) {
+GTEST_TEST(optional, not_equal_operator) {
 
 
     using type = i32;
@@ -468,7 +468,7 @@ TEST(optional, not_equal_operator) {
     }
 }
 
-TEST(optional, less_operator) {
+GTEST_TEST(optional, less_operator) {
 
 
     using type = i32;
@@ -702,7 +702,7 @@ TEST(optional, less_operator) {
     }
 }
 
-TEST(optional, greater_operator) {
+GTEST_TEST(optional, greater_operator) {
 
 
     using type = i32;
@@ -936,7 +936,7 @@ TEST(optional, greater_operator) {
     }
 }
 
-TEST(optional, less_equal_operator) {
+GTEST_TEST(optional, less_equal_operator) {
 
 
     using type = i32;
@@ -1170,7 +1170,7 @@ TEST(optional, less_equal_operator) {
     }
 }
 
-TEST(optional, greater_equal_operator) {
+GTEST_TEST(optional, greater_equal_operator) {
 
 
     using type = i32;

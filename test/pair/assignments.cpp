@@ -2,7 +2,7 @@
 #include <core/traits/is_trivially_copy_assignable.h>
 #include <core/traits/is_copy_assignable.h>
 
-TEST(pair, copy_assign_trivially_copy_assignable_same_type) {
+GTEST_TEST(pair, copy_assign_trivially_copy_assignable_same_type) {
 
 
     using type = i32;
@@ -47,7 +47,7 @@ TEST(pair, copy_assign_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(pair, copy_assign_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(pair, copy_assign_non_trivially_copy_assignable_same_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -125,7 +125,7 @@ TEST(pair, copy_assign_non_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(pair, copy_assign_trivially_copy_assignable_different_type) {
+GTEST_TEST(pair, copy_assign_trivially_copy_assignable_different_type) {
 
 
     using Type1 = i32;
@@ -172,7 +172,7 @@ TEST(pair, copy_assign_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(pair, copy_assign_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(pair, copy_assign_non_trivially_copy_assignable_different_type) {
 
 
     using Type1 = hud_test::non_bitwise_copy_assignable_type_2;
@@ -252,7 +252,7 @@ TEST(pair, copy_assign_non_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(pair, move_assign_trivially_copy_assignable_same_type) {
+GTEST_TEST(pair, move_assign_trivially_copy_assignable_same_type) {
 
 
     using type = i32;
@@ -298,7 +298,7 @@ TEST(pair, move_assign_trivially_copy_assignable_same_type) {
 
 }
 
-TEST(pair, move_assign_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(pair, move_assign_non_trivially_copy_assignable_same_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -376,7 +376,7 @@ TEST(pair, move_assign_non_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(pair, move_assign_trivially_copy_assignable_different_type) {
+GTEST_TEST(pair, move_assign_trivially_copy_assignable_different_type) {
 
 
     using Type1 = i32;
@@ -423,7 +423,7 @@ TEST(pair, move_assign_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(pair, move_assign_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(pair, move_assign_non_trivially_copy_assignable_different_type) {
 
 
     using Type1 = hud_test::non_bitwise_copy_assignable_type_2;
@@ -503,7 +503,7 @@ TEST(pair, move_assign_non_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(pair, move_assign_trivially_move_assignable_same_type) {
+GTEST_TEST(pair, move_assign_trivially_move_assignable_same_type) {
 
 
     using type = i32;
@@ -549,7 +549,7 @@ TEST(pair, move_assign_trivially_move_assignable_same_type) {
 
 }
 
-TEST(pair, move_assign_non_trivially_move_assignable_same_type) {
+GTEST_TEST(pair, move_assign_non_trivially_move_assignable_same_type) {
 
 
     using type = hud_test::NonBitwiseMoveAssignableType;
@@ -654,7 +654,7 @@ TEST(pair, move_assign_non_trivially_move_assignable_same_type) {
     }
 }
 
-TEST(pair, move_assign_trivially_move_assignable_different_type) {
+GTEST_TEST(pair, move_assign_trivially_move_assignable_different_type) {
 
 
     using Type1 = i32;
@@ -701,7 +701,7 @@ TEST(pair, move_assign_trivially_move_assignable_different_type) {
     }
 }
 
-TEST(pair, move_assign_non_trivially_move_assignable_different_type) {
+GTEST_TEST(pair, move_assign_non_trivially_move_assignable_different_type) {
 
 
     using Type1 = hud_test::NonBitwiseMoveAssignableType2;

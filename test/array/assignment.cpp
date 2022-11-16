@@ -2,7 +2,7 @@
 #include "allocators.h"
 #include "../misc/leak_guard.h"
 
-TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
+GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
 {
 
     using type = i32;
@@ -370,7 +370,7 @@ TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)
     }
 }
 
-TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_different_type)
+GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_different_type)
 {
 
     using source_type = i32;
@@ -740,7 +740,7 @@ TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_different_typ
     }
 }
 
-TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type)
+GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -1282,7 +1282,7 @@ TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_same_type
     }
 }
 
-TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different_type)
+GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different_type)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -1827,7 +1827,7 @@ TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_different
     }
 }
 
-TEST(array, assign_std_initializer_list_call_destructor_of_elements)
+GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
 {
 
 
@@ -2311,7 +2311,7 @@ TEST(array, assign_std_initializer_list_call_destructor_of_elements)
     }
 }
 
-TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
+GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
 {
 
     using type = i32;
@@ -2883,7 +2883,7 @@ TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
     }
 }
 
-TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
+GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
 {
 
     using source_type = i32;
@@ -3457,7 +3457,7 @@ TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
     }
 }
 
-TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
+GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -4275,7 +4275,7 @@ TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
     }
 }
 
-TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
+GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -5096,7 +5096,7 @@ TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
     }
 }
 
-TEST(array, assign_array_call_destructor_of_elements)
+GTEST_TEST(array, assign_array_call_destructor_of_elements)
 {
 
 
@@ -5739,7 +5739,7 @@ TEST(array, assign_array_call_destructor_of_elements)
     }
 }
 
-TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
+GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 {
 
     using type = i32;
@@ -6311,7 +6311,7 @@ TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
     }
 }
 
-TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
+GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
 {
 
     using Type1 = i32;
@@ -6399,7 +6399,7 @@ TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
     }
 }
 
-TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
+GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
 {
 
     using type = hud_test::NonBitwiseMoveAssignableType;
@@ -6543,7 +6543,7 @@ TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
     }
 }
 
-TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type)
+GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type)
 {
 
     using Type1 = hud_test::NonBitwiseMoveAssignableType2;
@@ -6690,7 +6690,7 @@ TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type)
     }
 }
 
-TEST(array, move_assign_array_call_destructor_of_elements)
+GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
 {
 
 

@@ -4,7 +4,7 @@ namespace hud_test {
     struct a {};
 }
 
-TEST(traits, is_unsigned) {
+GTEST_TEST(traits, is_unsigned) {
     ASSERT_TRUE((hud::is_unsigned_v<bool>));
     ASSERT_FALSE((hud::is_unsigned_v<i8>));
     ASSERT_FALSE((hud::is_unsigned_v<i16>));

@@ -12,7 +12,7 @@ namespace hud_test {
     struct d { d& operator= (const d&) { return *this; } };
 }
 
-TEST(traits, is_bitwise_convertible) {
+GTEST_TEST(traits, is_bitwise_convertible) {
     // i8
     ASSERT_TRUE((hud::is_bitwise_copyable_v<i8, i8>));
     ASSERT_FALSE((hud::is_bitwise_copyable_v<i8, i16>));

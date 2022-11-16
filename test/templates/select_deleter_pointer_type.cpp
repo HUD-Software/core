@@ -9,7 +9,7 @@ namespace hud_test {
     };
 }
 
-TEST(templates, selectDeleterPointerType)
+GTEST_TEST(templates, selectDeleterPointerType)
 {
     ASSERT_TRUE((hud::is_same_v<hud::select_deleter_pointer_type_t<i32, hud_test::deleter_no_pointer_type>, i32*>) );
     ASSERT_FALSE((hud::is_same_v<hud::select_deleter_pointer_type_t<i32, hud_test::deleter_no_pointer_type>, float*>));

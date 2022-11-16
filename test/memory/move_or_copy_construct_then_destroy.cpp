@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(memory, move_or_copy_construct_then_destroy_trivial_type)
+GTEST_TEST(memory, move_or_copy_construct_then_destroy_trivial_type)
 {
 
 
@@ -33,7 +33,7 @@ TEST(memory, move_or_copy_construct_then_destroy_trivial_type)
     }
 }
 
-TEST(memory, move_or_copy_construct_then_destroy_bitwise_constructible_type)
+GTEST_TEST(memory, move_or_copy_construct_then_destroy_bitwise_constructible_type)
 {
 
 
@@ -70,7 +70,7 @@ TEST(memory, move_or_copy_construct_then_destroy_bitwise_constructible_type)
     }
 }
 
-TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_constructible_and_destructible_different_type)
+GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_constructible_and_destructible_different_type)
 {
 
 
@@ -125,7 +125,7 @@ TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_constructible_
     }
 }
 
-TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_different_type)
+GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_different_type)
 {
 
 
@@ -190,7 +190,7 @@ TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_constructible_
     }
 }
 
-TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_constructible_and_destructible_same_type)
+GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_constructible_and_destructible_same_type)
 {
 
 
@@ -241,7 +241,7 @@ TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_constructible_
     }
 }
 
-TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_same_type)
+GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_same_type)
 {
 
 

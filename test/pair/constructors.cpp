@@ -58,7 +58,7 @@ static_assert(!hud::is_implicitly_constructible_v<explicit_type, explicit_type&&
 static_assert(hud::is_explicitly_constructible_v<explicit_type, explicit_type&&>);
 static_assert(!hud::is_convertible_v<const explicit_type&, explicit_type>);
 
-TEST(pair, default_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_default_constructible) {
+GTEST_TEST(pair, default_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_default_constructible) {
 
 
     static_assert(hud::is_implicitly_default_constructible_v<implicit_type>);
@@ -72,7 +72,7 @@ TEST(pair, default_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_default
 }
 
 
-TEST(pair, param_copy_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_convertible) {
+GTEST_TEST(pair, param_copy_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_convertible) {
 
 
     static_assert(hud::is_convertible_v<const explicit_type&, implicit_type>);
@@ -83,7 +83,7 @@ TEST(pair, param_copy_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_conv
     static_assert(hud::is_explicitly_constructible_v<hud::pair<explicit_type, implicit_type>, i32, const implicit_type&>);
 }
 
-TEST(pair, param_move_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_converible) {
+GTEST_TEST(pair, param_move_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_converible) {
 
 
     static_assert(hud::is_convertible_v<const explicit_type&, implicit_type>);
@@ -94,7 +94,7 @@ TEST(pair, param_move_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_conv
     static_assert(hud::is_explicitly_constructible_v<hud::pair<explicit_type, implicit_type>, i32, implicit_type&&>);
 }
 
-TEST(pair, copy_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_convertible) {
+GTEST_TEST(pair, copy_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_convertible) {
 
 
     static_assert(hud::is_convertible_v<const explicit_type&, implicit_type>);
@@ -112,7 +112,7 @@ TEST(pair, copy_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_convertibl
     static_assert(hud::is_implicitly_copy_constructible_v < hud::pair<implicit_type, implicit_type>, hud::pair<i32, wchar>>);
 }
 
-TEST(pair, move_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_convertible) {
+GTEST_TEST(pair, move_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_convertible) {
 
 
     static_assert(hud::is_convertible_v<explicit_type, implicit_type>);
@@ -132,7 +132,7 @@ TEST(pair, move_constructor_is_explicit_if_T1_or_T2_is_not_implicitly_convertibl
 }
 
 
-TEST(pair, default_constructor_trivial) {
+GTEST_TEST(pair, default_constructor_trivial) {
 
     using Type1 = i32;
     using Type2 = f32;
@@ -163,7 +163,7 @@ TEST(pair, default_constructor_trivial) {
     }
 }
 
-TEST(pair, default_constructor_non_trivial) {
+GTEST_TEST(pair, default_constructor_non_trivial) {
 
     using Type1 = hud_test::non_bitwise_type;
     using Type2 = hud_test::non_bitwise_type;
@@ -229,7 +229,7 @@ TEST(pair, default_constructor_non_trivial) {
     }
 }
 
-TEST(pair, copy_constructor_trivial_type_same_type) {
+GTEST_TEST(pair, copy_constructor_trivial_type_same_type) {
 
     using Type1 = i32;
     using Type2 = f32;
@@ -264,7 +264,7 @@ TEST(pair, copy_constructor_trivial_type_same_type) {
     }
 }
 
-TEST(pair, copy_constructor_non_trivial_type_same_type) {
+GTEST_TEST(pair, copy_constructor_non_trivial_type_same_type) {
 
     using Type1 = hud_test::non_bitwise_type;
     using Type2 = hud_test::non_bitwise_type;
@@ -331,7 +331,7 @@ TEST(pair, copy_constructor_non_trivial_type_same_type) {
     }
 }
 
-TEST(pair, copy_constructor_non_trivial_copy_constructible_type_same_type) {
+GTEST_TEST(pair, copy_constructor_non_trivial_copy_constructible_type_same_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType;
@@ -372,7 +372,7 @@ TEST(pair, copy_constructor_non_trivial_copy_constructible_type_same_type) {
     }
 }
 
-TEST(pair, copy_constructor_trivial_type_different_type) {
+GTEST_TEST(pair, copy_constructor_trivial_type_different_type) {
 
     using Type1 = i64;
     using Type2 = i32;
@@ -410,7 +410,7 @@ TEST(pair, copy_constructor_trivial_type_different_type) {
     }
 }
 
-TEST(pair, copy_constructor_non_trivial_type_different_type) {
+GTEST_TEST(pair, copy_constructor_non_trivial_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
@@ -456,7 +456,7 @@ TEST(pair, copy_constructor_non_trivial_type_different_type) {
     }
 }
            
-TEST(pair, copy_constructor_non_trivial_copy_constructible_type_different_type) {
+GTEST_TEST(pair, copy_constructor_non_trivial_copy_constructible_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
@@ -502,7 +502,7 @@ TEST(pair, copy_constructor_non_trivial_copy_constructible_type_different_type) 
     }
 }
 
-TEST(pair, move_constructor_trivial_type_same_type) {
+GTEST_TEST(pair, move_constructor_trivial_type_same_type) {
 
     using Type1 = i32;
     using Type2 = f32;
@@ -537,7 +537,7 @@ TEST(pair, move_constructor_trivial_type_same_type) {
     }
 }
 
-TEST(pair, move_constructor_non_trivial_type_same_type) {
+GTEST_TEST(pair, move_constructor_non_trivial_type_same_type) {
 
     using Type1 = hud_test::non_bitwise_type;
     using Type2 = hud_test::non_bitwise_type;
@@ -604,7 +604,7 @@ TEST(pair, move_constructor_non_trivial_type_same_type) {
     }
 }
 
-TEST(pair, move_constructor_non_trivial_copy_constructible_type_same_type) {
+GTEST_TEST(pair, move_constructor_non_trivial_copy_constructible_type_same_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType;
@@ -645,7 +645,7 @@ TEST(pair, move_constructor_non_trivial_copy_constructible_type_same_type) {
     }
 }
 
-TEST(pair, move_constructor_non_trivial_move_constructible_type_same_type) {
+GTEST_TEST(pair, move_constructor_non_trivial_move_constructible_type_same_type) {
 
     using Type1 = hud_test::NonBitwiseMoveConstructibleType;
     using Type2 = hud_test::NonBitwiseMoveConstructibleType;
@@ -692,7 +692,7 @@ TEST(pair, move_constructor_non_trivial_move_constructible_type_same_type) {
     }
 }
 
-TEST(pair, move_constructor_trivial_type_different_type) {
+GTEST_TEST(pair, move_constructor_trivial_type_different_type) {
 
     using Type1 = i64;
     using Type2 = i32;
@@ -730,7 +730,7 @@ TEST(pair, move_constructor_trivial_type_different_type) {
     }
 }
 
-TEST(pair, move_constructor_non_trivial_copy_constructible_type_different_type) {
+GTEST_TEST(pair, move_constructor_non_trivial_copy_constructible_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
@@ -776,7 +776,7 @@ TEST(pair, move_constructor_non_trivial_copy_constructible_type_different_type) 
     }
 }
 
-TEST(pair, move_constructor_non_trivial_move_constructible_type_different_type) {
+GTEST_TEST(pair, move_constructor_non_trivial_move_constructible_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseMoveConstructibleType2;
     using Type2 = hud_test::NonBitwiseMoveConstructibleType2;
@@ -828,7 +828,7 @@ TEST(pair, move_constructor_non_trivial_move_constructible_type_different_type) 
     }
 }
 
-TEST(pair, param_copy_constructor_trivial_type_same_type) {
+GTEST_TEST(pair, param_copy_constructor_trivial_type_same_type) {
 
     using Type1 = i32;
     using Type2 = f32;
@@ -862,7 +862,7 @@ TEST(pair, param_copy_constructor_trivial_type_same_type) {
     }
 }
 
-TEST(pair, param_copy_constructor_trivial_type_different_type) {
+GTEST_TEST(pair, param_copy_constructor_trivial_type_different_type) {
 
     using Type1 = i64;
     using Type2 = i32;
@@ -898,7 +898,7 @@ TEST(pair, param_copy_constructor_trivial_type_different_type) {
     }
 }
 
-TEST(pair, param_copy_constructor_non_trivial_type_same_type) {
+GTEST_TEST(pair, param_copy_constructor_non_trivial_type_same_type) {
 
     using Type1 = hud_test::non_bitwise_type;
     using Type2 = hud_test::non_bitwise_type;
@@ -966,7 +966,7 @@ TEST(pair, param_copy_constructor_non_trivial_type_same_type) {
     }
 }
 
-TEST(pair, param_copy_constructor_non_trivial_copy_constructible_type_same_type) {
+GTEST_TEST(pair, param_copy_constructor_non_trivial_copy_constructible_type_same_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType;
@@ -1008,7 +1008,7 @@ TEST(pair, param_copy_constructor_non_trivial_copy_constructible_type_same_type)
     }
 }
 
-TEST(pair, param_copy_constructor_non_trivial_type_different_type) {
+GTEST_TEST(pair, param_copy_constructor_non_trivial_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
@@ -1054,7 +1054,7 @@ TEST(pair, param_copy_constructor_non_trivial_type_different_type) {
     }
 }
 
-TEST(pair, param_copy_constructor_non_trivial_copy_constructible_type_different_type) {
+GTEST_TEST(pair, param_copy_constructor_non_trivial_copy_constructible_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
@@ -1100,7 +1100,7 @@ TEST(pair, param_copy_constructor_non_trivial_copy_constructible_type_different_
     }
 }
 
-TEST(pair, param_move_constructor_trivial_type_same_type) {
+GTEST_TEST(pair, param_move_constructor_trivial_type_same_type) {
 
     using Type1 = i32;
     using Type2 = f32;
@@ -1134,7 +1134,7 @@ TEST(pair, param_move_constructor_trivial_type_same_type) {
     }
 }
 
-TEST(pair, param_move_constructor_non_trivial_type_same_type) {
+GTEST_TEST(pair, param_move_constructor_non_trivial_type_same_type) {
 
     using Type1 = hud_test::non_bitwise_type;
     using Type2 = hud_test::non_bitwise_type;
@@ -1202,7 +1202,7 @@ TEST(pair, param_move_constructor_non_trivial_type_same_type) {
     }
 }
 
-TEST(pair, param_move_constructor_non_trivial_copy_constructible_type_same_type) {
+GTEST_TEST(pair, param_move_constructor_non_trivial_copy_constructible_type_same_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType;
@@ -1244,7 +1244,7 @@ TEST(pair, param_move_constructor_non_trivial_copy_constructible_type_same_type)
     }
 }
 
-TEST(pair, param_move_constructor_non_trivial_move_constructible_type_same_type) {
+GTEST_TEST(pair, param_move_constructor_non_trivial_move_constructible_type_same_type) {
 
     using Type1 = hud_test::NonBitwiseMoveConstructibleType;
     using Type2 = hud_test::NonBitwiseMoveConstructibleType;
@@ -1293,7 +1293,7 @@ TEST(pair, param_move_constructor_non_trivial_move_constructible_type_same_type)
     }
 }
 
-TEST(pair, param_move_constructor_trivial_type_different_type) {
+GTEST_TEST(pair, param_move_constructor_trivial_type_different_type) {
 
     using Type1 = i64;
     using Type2 = i32;
@@ -1329,7 +1329,7 @@ TEST(pair, param_move_constructor_trivial_type_different_type) {
     }
 }
 
-TEST(pair, param_move_constructor_non_trivial_type_different_type) {
+GTEST_TEST(pair, param_move_constructor_non_trivial_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
@@ -1375,7 +1375,7 @@ TEST(pair, param_move_constructor_non_trivial_type_different_type) {
     }
 }
 
-TEST(pair, param_move_constructor_non_trivial_copy_constructible_type_different_type) {
+GTEST_TEST(pair, param_move_constructor_non_trivial_copy_constructible_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
@@ -1421,7 +1421,7 @@ TEST(pair, param_move_constructor_non_trivial_copy_constructible_type_different_
     }
 }
 
-TEST(pair, param_move_constructor_non_trivial_move_constructible_type_different_type) {
+GTEST_TEST(pair, param_move_constructor_non_trivial_move_constructible_type_different_type) {
 
     using Type1 = hud_test::NonBitwiseMoveConstructibleType2;
     using Type2 = hud_test::NonBitwiseMoveConstructibleType2;

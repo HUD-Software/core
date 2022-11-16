@@ -71,7 +71,7 @@ namespace hud_test {
     enum class e17cv : const volatile usize;
 }
 
-TEST(traits, underlying_type) {
+GTEST_TEST(traits, underlying_type) {
     // MSVC and ClangCL promote the enum an signed int when GCC and Clang promote it to unsigned int
     #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
         ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e1>, i32>));

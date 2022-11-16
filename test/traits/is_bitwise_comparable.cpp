@@ -50,7 +50,7 @@ namespace hud_test {
     enum class comp_enum_4 : u64 {};
 }
 
-TEST(traits, is_bitwise_comparable) {
+GTEST_TEST(traits, is_bitwise_comparable) {
     // i8
     ASSERT_TRUE((hud::is_bitwise_comparable_v<i8, i8>));
     ASSERT_FALSE((hud::is_bitwise_comparable_v<i8, i16>));

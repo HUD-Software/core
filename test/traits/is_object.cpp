@@ -4,7 +4,7 @@ namespace hud_test {
     class a {};
 }
 
-TEST(traits, is_object) {
+GTEST_TEST(traits, is_object) {
     ASSERT_TRUE((hud::is_object_v<i32>));
     ASSERT_TRUE((hud::is_object_v<hud_test::a>));
     ASSERT_FALSE((hud::is_object_v<hud_test::a&>));

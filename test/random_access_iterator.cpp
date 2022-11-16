@@ -1,6 +1,6 @@
 #include <core/iterators/random_access_iterator.h>
 
-TEST(random_access_iterator, check_const_correctness) {
+GTEST_TEST(random_access_iterator, check_const_correctness) {
     i32 arr[5] = { 10,20,30,40,50 };
     using array_type = decltype(arr);
     const i32 arr_const[5] = { 10,20,30,40,50 };
@@ -17,7 +17,7 @@ TEST(random_access_iterator, check_const_correctness) {
 }
 
 
-TEST(random_access_iterator, constructor) {
+GTEST_TEST(random_access_iterator, constructor) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -47,7 +47,7 @@ TEST(random_access_iterator, constructor) {
     }
 }
 
-TEST(random_access_iterator, operator_arrow) {
+GTEST_TEST(random_access_iterator, operator_arrow) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -81,7 +81,7 @@ TEST(random_access_iterator, operator_arrow) {
     }
 }
 
-TEST(random_access_iterator, operator_dereference) {
+GTEST_TEST(random_access_iterator, operator_dereference) {
 const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -115,7 +115,7 @@ const auto test = []() {
     }
 }
 
-TEST(random_access_iterator, operator_pre_increment) {
+GTEST_TEST(random_access_iterator, operator_pre_increment) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -214,7 +214,7 @@ TEST(random_access_iterator, operator_pre_increment) {
 }
 
 
-TEST(random_access_iterator, operator_post_increment) {
+GTEST_TEST(random_access_iterator, operator_post_increment) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -312,7 +312,7 @@ TEST(random_access_iterator, operator_post_increment) {
     }
 }
 
-TEST(random_access_iterator, operator_increment_assign) {
+GTEST_TEST(random_access_iterator, operator_increment_assign) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -375,7 +375,7 @@ TEST(random_access_iterator, operator_increment_assign) {
     }
 }
 
-TEST(random_access_iterator, operator_increment) {
+GTEST_TEST(random_access_iterator, operator_increment) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -441,7 +441,7 @@ TEST(random_access_iterator, operator_increment) {
 }
 
 
-TEST(random_access_iterator, operator_pre_decrement) {
+GTEST_TEST(random_access_iterator, operator_pre_decrement) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -540,7 +540,7 @@ TEST(random_access_iterator, operator_pre_decrement) {
 }
 
 
-TEST(random_access_iterator, operator_post_decrement) {
+GTEST_TEST(random_access_iterator, operator_post_decrement) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -638,7 +638,7 @@ TEST(random_access_iterator, operator_post_decrement) {
     }
 }
 
-TEST(random_access_iterator, operator_decrement_assign) {
+GTEST_TEST(random_access_iterator, operator_decrement_assign) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -701,7 +701,7 @@ TEST(random_access_iterator, operator_decrement_assign) {
     }
 }
 
-TEST(random_access_iterator, operator_decrement) {
+GTEST_TEST(random_access_iterator, operator_decrement) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);
@@ -766,7 +766,7 @@ TEST(random_access_iterator, operator_decrement) {
     }
 }
 
-TEST(random_access_iterator, equal_operator) {
+GTEST_TEST(random_access_iterator, equal_operator) {
     const auto test = []() {
         i32 arr[5] = { 10,20,30,40,50 };
         using array_type = decltype(arr);

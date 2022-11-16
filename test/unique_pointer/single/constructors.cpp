@@ -35,7 +35,7 @@ namespace hud_test {
     using deleter_type2 = hud_test::custom_deleter<hud_test::non_bitwise_type>;
 }
 
-TEST(unique_pointer, default_constructor) {
+GTEST_TEST(unique_pointer, default_constructor) {
     const auto test = []() {
         hud::unique_pointer<hud_test::non_bitwise_type> p;
         return p.pointer() == nullptr;
@@ -54,7 +54,7 @@ TEST(unique_pointer, default_constructor) {
     }
 }
 
-TEST(unique_pointer, constructor_with_same_pointer) {
+GTEST_TEST(unique_pointer, constructor_with_same_pointer) {
 
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
@@ -92,7 +92,7 @@ TEST(unique_pointer, constructor_with_same_pointer) {
     }
 }
 
-TEST(unique_pointer, constructor_with_differnt_pointer) {
+GTEST_TEST(unique_pointer, constructor_with_differnt_pointer) {
 
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
@@ -131,7 +131,7 @@ TEST(unique_pointer, constructor_with_differnt_pointer) {
 }
 
 
-TEST(unique_pointer, constructor_with_pointer_and_same_deleter_by_copy) {
+GTEST_TEST(unique_pointer, constructor_with_pointer_and_same_deleter_by_copy) {
     
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
@@ -188,7 +188,7 @@ TEST(unique_pointer, constructor_with_pointer_and_same_deleter_by_copy) {
     }
 }
 
-TEST(unique_pointer, constructor_with_pointer_and_different_deleter_by_copy) {
+GTEST_TEST(unique_pointer, constructor_with_pointer_and_different_deleter_by_copy) {
 
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
@@ -245,7 +245,7 @@ TEST(unique_pointer, constructor_with_pointer_and_different_deleter_by_copy) {
     }
 }
 
-TEST(unique_pointer, constructor_with_pointer_and_same_deleter_by_move) {
+GTEST_TEST(unique_pointer, constructor_with_pointer_and_same_deleter_by_move) {
     const auto test = []() {
         static_assert(hud::is_move_constructible_v<hud_test::deleter_type>);
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
@@ -302,7 +302,7 @@ TEST(unique_pointer, constructor_with_pointer_and_same_deleter_by_move) {
 }
 
 
-TEST(unique_pointer, constructor_with_pointer_and_different_deleter_by_move) {
+GTEST_TEST(unique_pointer, constructor_with_pointer_and_different_deleter_by_move) {
     const auto test = []() {
         static_assert(hud::is_move_constructible_v<hud_test::deleter_type>);
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
@@ -358,7 +358,7 @@ TEST(unique_pointer, constructor_with_pointer_and_different_deleter_by_move) {
     }
 }
 
-TEST(unique_pointer, constructor_with_pointer_and_ref_same_deleter) {
+GTEST_TEST(unique_pointer, constructor_with_pointer_and_ref_same_deleter) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         hud_test::deleter_type deleter;
@@ -429,7 +429,7 @@ TEST(unique_pointer, constructor_with_pointer_and_ref_same_deleter) {
     }
 }
 
-TEST(unique_pointer, constructor_with_pointer_and_ref_different_deleter) {
+GTEST_TEST(unique_pointer, constructor_with_pointer_and_ref_different_deleter) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         hud_test::deleter_type2 deleter;
@@ -500,7 +500,7 @@ TEST(unique_pointer, constructor_with_pointer_and_ref_different_deleter) {
     }
 }
 
-TEST(unique_pointer, constructor_with_nullptr) {
+GTEST_TEST(unique_pointer, constructor_with_nullptr) {
     const auto test = []() {
         hud::unique_pointer<hud_test::non_bitwise_type> p(nullptr);
         return p.pointer() == nullptr;
@@ -519,7 +519,7 @@ TEST(unique_pointer, constructor_with_nullptr) {
     }
 }
 
-TEST(unique_pointer, constructor_with_nullptr_with_deleter) {
+GTEST_TEST(unique_pointer, constructor_with_nullptr_with_deleter) {
     const auto test = []() {
         hud_test::deleter_type deleter;
         hud::unique_pointer<hud_test::non_bitwise_type, hud_test::deleter_type> p(nullptr, deleter);
@@ -540,7 +540,7 @@ TEST(unique_pointer, constructor_with_nullptr_with_deleter) {
 }
 
 
-TEST(unique_pointer, constructor_with_nullptr_with_deleter_ref) {
+GTEST_TEST(unique_pointer, constructor_with_nullptr_with_deleter_ref) {
     const auto test = []() {
         hud_test::deleter_type deleter;
         hud::unique_pointer<hud_test::non_bitwise_type, hud_test::deleter_type&> p(nullptr, deleter);
@@ -561,7 +561,7 @@ TEST(unique_pointer, constructor_with_nullptr_with_deleter_ref) {
 }
 
 
-TEST(unique_pointer, move_constructor_same_type) {
+GTEST_TEST(unique_pointer, move_constructor_same_type) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         hud::unique_pointer<hud_test::non_bitwise_type, hud_test::deleter_type > other(pi);
@@ -616,7 +616,7 @@ TEST(unique_pointer, move_constructor_same_type) {
         ASSERT_TRUE(std::get<11>(result));
     }
 }
-TEST(unique_pointer, move_constructor_same_type_different_deleter) {
+GTEST_TEST(unique_pointer, move_constructor_same_type_different_deleter) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         hud::unique_pointer<hud_test::non_bitwise_type, hud_test::deleter_type2 > other(pi);
@@ -673,7 +673,7 @@ TEST(unique_pointer, move_constructor_same_type_different_deleter) {
 }
 
 
-TEST(unique_pointer, move_constructor_same_type_with_same_deleter_ref) {
+GTEST_TEST(unique_pointer, move_constructor_same_type_with_same_deleter_ref) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         hud_test::deleter_type deleter;
@@ -733,7 +733,7 @@ TEST(unique_pointer, move_constructor_same_type_with_same_deleter_ref) {
     }
 }
 
-TEST(unique_pointer, move_constructor_same_type_with_different_deleter_ref) {
+GTEST_TEST(unique_pointer, move_constructor_same_type_with_different_deleter_ref) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         hud_test::deleter_type2 deleter;
@@ -794,7 +794,7 @@ TEST(unique_pointer, move_constructor_same_type_with_different_deleter_ref) {
 }
 
 
-TEST(unique_pointer, move_constructor_different_type_same_deleter) {
+GTEST_TEST(unique_pointer, move_constructor_different_type_same_deleter) {
     const auto test = []() {
         hud_test::non_bitwise_type2* pi = new hud_test::non_bitwise_type2(123, nullptr);
         hud::unique_pointer<hud_test::non_bitwise_type2, hud_test::deleter_type > other(pi);
@@ -850,7 +850,7 @@ TEST(unique_pointer, move_constructor_different_type_same_deleter) {
     }
 }
 
-TEST(unique_pointer, move_constructor_different_type_different_deleter) {
+GTEST_TEST(unique_pointer, move_constructor_different_type_different_deleter) {
     const auto test = []() {
         hud_test::non_bitwise_type2* pi = new hud_test::non_bitwise_type2(123, nullptr);
         hud::unique_pointer<hud_test::non_bitwise_type2, hud_test::deleter_type2 > other(pi);
@@ -906,7 +906,7 @@ TEST(unique_pointer, move_constructor_different_type_different_deleter) {
     }
 }
 
-TEST(unique_pointer, move_constructor_different_type_with_same_deleter_ref) {
+GTEST_TEST(unique_pointer, move_constructor_different_type_with_same_deleter_ref) {
     const auto test = []() {
         hud_test::non_bitwise_type2* pi = new hud_test::non_bitwise_type2(123, nullptr);
         hud_test::deleter_type deleter;
@@ -963,7 +963,7 @@ TEST(unique_pointer, move_constructor_different_type_with_same_deleter_ref) {
     }
 }
 
-TEST(unique_pointer, move_constructor_different_type_with_dfferent_deleter_ref) {
+GTEST_TEST(unique_pointer, move_constructor_different_type_with_dfferent_deleter_ref) {
     const auto test = []() {
         hud_test::non_bitwise_type2* pi = new hud_test::non_bitwise_type2(123, nullptr);
         hud_test::deleter_type2 deleter;

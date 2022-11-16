@@ -279,12 +279,16 @@ if(COVERAGE AND MSVC)
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options(test_core PRIVATE --coverage)
 	target_link_options(test_core PRIVATE --coverage)
+	message("CMAKE_SOURCE_DIR is" ${CMAKE_SOURCE_DIR})
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
 		COMMAND ./test_core
-		COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --html-details "coverage.clang.cobertura.html" --exclude-directories "\.\./_deps/.*" --html-details-syntax-highlighting
-		COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --xml "coverage.clang.cobertura.xml"
+		# "'\.\./\.\./(test|src)/.*'" : Take files only in test or src directory
+		# "'(GTEST_TEST|\\s*ASSERT_).*'" : Exclude GTEST_TEST and GTEST_ASSERT_
+		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches  --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage.clang.cobertura.html" --html-details-syntax-highlighting
+		#COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --exclude-directories "'.*/target'" --html-details "coverage.clang.cobertura.html" --html-details-syntax-highlighting --exclude-unreachable-branches  --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*ASSERT_).*'"
+		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches  --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml"
 	)
 endif()
 
@@ -300,6 +304,8 @@ target_compile_definitions(
 	UNICODE
 	HD_ABORT_ON_ASSERT
 	HD_GLOBAL_NAMESPACE_TYPES
+	#Don't use TEST() macro from google_test which is a too generic name
+	GTEST_DONT_DEFINE_TEST=1
 	# Debug specific compiler flags
 	$<$<CONFIG:Debug>:HD_DEBUG>
 	# Release specific compiler flags

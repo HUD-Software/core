@@ -1,6 +1,6 @@
 #include <core/containers/shared_pointer.h>
 
-TEST(shared_pointer_not_safe, single_thread_pointer_return_object) {
+GTEST_TEST(shared_pointer_not_safe, single_thread_pointer_return_object) {
 
 
     const auto test = []() {
@@ -28,7 +28,7 @@ TEST(shared_pointer_not_safe, single_thread_pointer_return_object) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, single_thread_empty_pointer_return_nullptr) {
+GTEST_TEST(shared_pointer_not_safe, single_thread_empty_pointer_return_nullptr) {
 
 
     const auto test = []() {
@@ -55,7 +55,7 @@ TEST(shared_pointer_not_safe, single_thread_empty_pointer_return_nullptr) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, single_thread_is_owning) {
+GTEST_TEST(shared_pointer_not_safe, single_thread_is_owning) {
 
 
     const auto test = []() {
@@ -86,7 +86,7 @@ TEST(shared_pointer_not_safe, single_thread_is_owning) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, cast_to_bool) {
+GTEST_TEST(shared_pointer_not_safe, cast_to_bool) {
 
 
     const auto test = []() {
@@ -117,7 +117,7 @@ TEST(shared_pointer_not_safe, cast_to_bool) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, operator_dereference) {
+GTEST_TEST(shared_pointer_not_safe, operator_dereference) {
 
 
     const auto test = []() {
@@ -145,7 +145,7 @@ TEST(shared_pointer_not_safe, operator_dereference) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, operator_arrow) {
+GTEST_TEST(shared_pointer_not_safe, operator_arrow) {
 
 
     const auto test = []() {
@@ -173,7 +173,7 @@ TEST(shared_pointer_not_safe, operator_arrow) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, reset_to_empty) {
+GTEST_TEST(shared_pointer_not_safe, reset_to_empty) {
 
 
     const auto test = []() {
@@ -217,7 +217,7 @@ TEST(shared_pointer_not_safe, reset_to_empty) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, reset_to_nullptr) {
+GTEST_TEST(shared_pointer_not_safe, reset_to_nullptr) {
 
 
     const auto test = []() {
@@ -261,7 +261,7 @@ TEST(shared_pointer_not_safe, reset_to_nullptr) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, reset_to_same_type) {
+GTEST_TEST(shared_pointer_not_safe, reset_to_same_type) {
 
 
     const auto test = []() {
@@ -328,7 +328,7 @@ TEST(shared_pointer_not_safe, reset_to_same_type) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, reset_to_different_type) {
+GTEST_TEST(shared_pointer_not_safe, reset_to_different_type) {
 
 
     const auto test = []() {
@@ -396,7 +396,7 @@ TEST(shared_pointer_not_safe, reset_to_different_type) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, reset_to_empty_should_not_delete_if_other_reference_exists) {
+GTEST_TEST(shared_pointer_not_safe, reset_to_empty_should_not_delete_if_other_reference_exists) {
 
 
     const auto test = []() {
@@ -446,7 +446,7 @@ TEST(shared_pointer_not_safe, reset_to_empty_should_not_delete_if_other_referenc
 //#endif
 }
 
-TEST(shared_pointer_not_safe, reset_to_other_pointer_should_not_delete_if_other_reference_exists) {
+GTEST_TEST(shared_pointer_not_safe, reset_to_other_pointer_should_not_delete_if_other_reference_exists) {
 
 
     const auto test = []() {
@@ -506,7 +506,7 @@ TEST(shared_pointer_not_safe, reset_to_other_pointer_should_not_delete_if_other_
 //#endif
 }
 
-TEST(shared_pointer_not_safe, make_shared) {
+GTEST_TEST(shared_pointer_not_safe, make_shared) {
 
 
     const auto test = []() {
@@ -540,7 +540,7 @@ TEST(shared_pointer_not_safe, make_shared) {
     // constant evaluation do not allowed to reinterpret_cast the storage of the value to a pointer to that value
 }
 
-TEST(shared_pointer_not_safe, hash) {
+GTEST_TEST(shared_pointer_not_safe, hash) {
 
     const auto test = []() {
         hud::shared_pointer<i32> ptr(new i32(123));

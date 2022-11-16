@@ -1,6 +1,6 @@
 #include <core/memory.h>
 
-TEST(memory, set_zero_pointer_to_buffer) {
+GTEST_TEST(memory, set_zero_pointer_to_buffer) {
 
 
 
@@ -27,7 +27,7 @@ TEST(memory, set_zero_pointer_to_buffer) {
     }
 }
 
-TEST(memory, set_zero_c_array) {
+GTEST_TEST(memory, set_zero_c_array) {
 
 
 

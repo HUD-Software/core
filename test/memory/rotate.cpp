@@ -1,6 +1,6 @@
 #include <core/memory.h>
 
-TEST(memory,rotate_left) {
+GTEST_TEST(memory,rotate_left) {
 
 
 
@@ -51,7 +51,7 @@ TEST(memory,rotate_left) {
     }
 }
 
-TEST(memory,rotate_right) {
+GTEST_TEST(memory,rotate_right) {
 
 
     auto test = [](const u32 shift) -> std::tuple<u32, u64> {

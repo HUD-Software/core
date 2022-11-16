@@ -1,7 +1,7 @@
 #include <core/atomics.h>
 #include <atomic>
 
-TEST(atomics, thread_fence)
+GTEST_TEST(atomics, thread_fence)
 {
 
     // Test nothong, just be sure it compile
@@ -13,7 +13,7 @@ TEST(atomics, thread_fence)
     hud::atomics::thread_fence(hud::atomics::memory_order_e::seq_cst);
 }
 
-TEST(atomics, load_integral)
+GTEST_TEST(atomics, load_integral)
 {
 
 
@@ -30,7 +30,7 @@ TEST(atomics, load_integral)
     });
 }
 
-TEST(atomics, load_pointer)
+GTEST_TEST(atomics, load_pointer)
 {
 
 
@@ -47,7 +47,7 @@ TEST(atomics, load_pointer)
     });
 }
 
-TEST(atomics, store_integral)
+GTEST_TEST(atomics, store_integral)
 {
 
     hud_test::for_each_type<i8, u8, i16, u16, i32, u32, i64, u64, usize, isize>()([]<typename type_t>() {
@@ -77,7 +77,7 @@ TEST(atomics, store_integral)
 }
 
 
-TEST(atomics, store_pointer)
+GTEST_TEST(atomics, store_pointer)
 {
 
     hud_test::for_each_type<i8, u8, i16, u16, i32, u32, i64, u64, usize, isize>()([]<typename type_t>() {
@@ -106,7 +106,7 @@ TEST(atomics, store_pointer)
     });
 }
 
-TEST(atomics, compare_and_swap_integral)
+GTEST_TEST(atomics, compare_and_swap_integral)
 {
 
 
@@ -174,7 +174,7 @@ TEST(atomics, compare_and_swap_integral)
 }
 
 
-TEST(atomics, compare_and_swap_pointer)
+GTEST_TEST(atomics, compare_and_swap_pointer)
 {
 
 
@@ -241,7 +241,7 @@ TEST(atomics, compare_and_swap_pointer)
     });
 }
 
-TEST(atomics, compare_and_set_integral)
+GTEST_TEST(atomics, compare_and_set_integral)
 {
 
 
@@ -314,7 +314,7 @@ TEST(atomics, compare_and_set_integral)
     });
 }
 
-TEST(atomics, compare_and_set_pointer)
+GTEST_TEST(atomics, compare_and_set_pointer)
 {
 
 
@@ -387,7 +387,7 @@ TEST(atomics, compare_and_set_pointer)
     });
 }
 
-TEST(atomics, exchange_integral)
+GTEST_TEST(atomics, exchange_integral)
 {
 
 
@@ -425,7 +425,7 @@ TEST(atomics, exchange_integral)
     });
 }
 
-TEST(atomics, exchange_pointer)
+GTEST_TEST(atomics, exchange_pointer)
 {
 
 
@@ -463,7 +463,7 @@ TEST(atomics, exchange_pointer)
     });
 }
 
-TEST(atomics, fetch_add_integral)
+GTEST_TEST(atomics, fetch_add_integral)
 {
 
 
@@ -501,7 +501,7 @@ TEST(atomics, fetch_add_integral)
     });
 }
 
-TEST(atomics, fetch_add_pointer)
+GTEST_TEST(atomics, fetch_add_pointer)
 {
 
 
@@ -539,7 +539,7 @@ TEST(atomics, fetch_add_pointer)
     });
 }
 
-TEST(atomics, fetch_sub_integral)
+GTEST_TEST(atomics, fetch_sub_integral)
 {
 
 
@@ -577,7 +577,7 @@ TEST(atomics, fetch_sub_integral)
     });
 }
 
-TEST(atomics, fetch_sub_pointer)
+GTEST_TEST(atomics, fetch_sub_pointer)
 {
 
 
@@ -615,7 +615,7 @@ TEST(atomics, fetch_sub_pointer)
     });
 }
 
-TEST(atomic, default_constructor_of_integral_do_not_initialize_atomic)
+GTEST_TEST(atomic, default_constructor_of_integral_do_not_initialize_atomic)
 {
 
 
@@ -628,7 +628,7 @@ TEST(atomic, default_constructor_of_integral_do_not_initialize_atomic)
     });
 }
 
-TEST(atomic, default_constructor_of_pointer_do_not_initialize_atomic)
+GTEST_TEST(atomic, default_constructor_of_pointer_do_not_initialize_atomic)
 {
 
 
@@ -641,7 +641,7 @@ TEST(atomic, default_constructor_of_pointer_do_not_initialize_atomic)
     });
 }
 
-TEST(atomic, constructor_of_integral_initialize_atomic_to_value)
+GTEST_TEST(atomic, constructor_of_integral_initialize_atomic_to_value)
 {
 
 
@@ -651,7 +651,7 @@ TEST(atomic, constructor_of_integral_initialize_atomic_to_value)
     });
 }
 
-TEST(atomic, constructor_of_pointer_with_tag_initialize_atomic_to_value)
+GTEST_TEST(atomic, constructor_of_pointer_with_tag_initialize_atomic_to_value)
 {
 
 
@@ -661,7 +661,7 @@ TEST(atomic, constructor_of_pointer_with_tag_initialize_atomic_to_value)
     });
 }
 
-TEST(atomic, cast_to_type_load_and_return_the_integral_value)
+GTEST_TEST(atomic, cast_to_type_load_and_return_the_integral_value)
 {
 
 
@@ -671,7 +671,7 @@ TEST(atomic, cast_to_type_load_and_return_the_integral_value)
     });
 }
 
-TEST(atomic, cast_to_type_load_and_return_the_pointer_value)
+GTEST_TEST(atomic, cast_to_type_load_and_return_the_pointer_value)
 {
 
 
@@ -681,7 +681,7 @@ TEST(atomic, cast_to_type_load_and_return_the_pointer_value)
     });
 }
 
-TEST(atomic, volatile_cast_to_type_load_and_return_the_integral_value)
+GTEST_TEST(atomic, volatile_cast_to_type_load_and_return_the_integral_value)
 {
 
 
@@ -691,7 +691,7 @@ TEST(atomic, volatile_cast_to_type_load_and_return_the_integral_value)
     });
 }
 
-TEST(atomic, volatile_cast_to_type_load_and_return_the_pointer_value)
+GTEST_TEST(atomic, volatile_cast_to_type_load_and_return_the_pointer_value)
 {
 
 
@@ -701,7 +701,7 @@ TEST(atomic, volatile_cast_to_type_load_and_return_the_pointer_value)
     });
 }
 
-TEST(atomic, assign_integral)
+GTEST_TEST(atomic, assign_integral)
 {
 
 
@@ -713,7 +713,7 @@ TEST(atomic, assign_integral)
     });
 }
 
-TEST(atomic, assign_pointer)
+GTEST_TEST(atomic, assign_pointer)
 {
 
 
@@ -725,7 +725,7 @@ TEST(atomic, assign_pointer)
     });
 }
 
-TEST(atomic, volatile_assign_integral)
+GTEST_TEST(atomic, volatile_assign_integral)
 {
 
 
@@ -737,7 +737,7 @@ TEST(atomic, volatile_assign_integral)
     });
 }
 
-TEST(atomic, volatile_assign_pointer)
+GTEST_TEST(atomic, volatile_assign_pointer)
 {
 
 
@@ -750,7 +750,7 @@ TEST(atomic, volatile_assign_pointer)
 }
 
 
-TEST(atomic, store_integral)
+GTEST_TEST(atomic, store_integral)
 {
 
 
@@ -785,7 +785,7 @@ TEST(atomic, store_integral)
     });
 }
 
-TEST(atomic, store_pointer)
+GTEST_TEST(atomic, store_pointer)
 {
 
 
@@ -820,7 +820,7 @@ TEST(atomic, store_pointer)
     });
 }
 
-TEST(atomic, volatile_store_integral)
+GTEST_TEST(atomic, volatile_store_integral)
 {
 
 
@@ -855,7 +855,7 @@ TEST(atomic, volatile_store_integral)
     });
 }
 
-TEST(atomic, volatile_store_pointer)
+GTEST_TEST(atomic, volatile_store_pointer)
 {
 
 
@@ -890,7 +890,7 @@ TEST(atomic, volatile_store_pointer)
     });
 }
 
-TEST(atomic, load_integral)
+GTEST_TEST(atomic, load_integral)
 {
 
 
@@ -907,7 +907,7 @@ TEST(atomic, load_integral)
     });
 }
 
-TEST(atomic, load_pointer)
+GTEST_TEST(atomic, load_pointer)
 {
 
 
@@ -924,7 +924,7 @@ TEST(atomic, load_pointer)
     });
 }
 
-TEST(atomic, volatile_load_integral)
+GTEST_TEST(atomic, volatile_load_integral)
 {
 
 
@@ -941,7 +941,7 @@ TEST(atomic, volatile_load_integral)
     });
 }
 
-TEST(atomic, volatile_load_pointer)
+GTEST_TEST(atomic, volatile_load_pointer)
 {
 
 
@@ -959,7 +959,7 @@ TEST(atomic, volatile_load_pointer)
 }
 
 
-TEST(atomic, exchange_integral)
+GTEST_TEST(atomic, exchange_integral)
 {
 
 
@@ -997,7 +997,7 @@ TEST(atomic, exchange_integral)
     });
 }
 
-TEST(atomic, exchange_pointer)
+GTEST_TEST(atomic, exchange_pointer)
 {
 
 
@@ -1035,7 +1035,7 @@ TEST(atomic, exchange_pointer)
     });
 }
 
-TEST(atomic, volatile_exchange_integral)
+GTEST_TEST(atomic, volatile_exchange_integral)
 {
 
 
@@ -1073,7 +1073,7 @@ TEST(atomic, volatile_exchange_integral)
     });
 }
 
-TEST(atomic, volatile_exchange_pointer)
+GTEST_TEST(atomic, volatile_exchange_pointer)
 {
 
 
@@ -1111,7 +1111,7 @@ TEST(atomic, volatile_exchange_pointer)
     });
 }
 
-TEST(atomic, compare_exchange_integral)
+GTEST_TEST(atomic, compare_exchange_integral)
 {
 
 
@@ -1212,7 +1212,7 @@ TEST(atomic, compare_exchange_integral)
 }
 
 
-TEST(atomic, compare_exchange_pointer)
+GTEST_TEST(atomic, compare_exchange_pointer)
 {
 
 
@@ -1313,7 +1313,7 @@ TEST(atomic, compare_exchange_pointer)
     });
 }
 
-TEST(atomic, volatile_compare_exchange_integral)
+GTEST_TEST(atomic, volatile_compare_exchange_integral)
 {
 
 
@@ -1414,7 +1414,7 @@ TEST(atomic, volatile_compare_exchange_integral)
 }
 
 
-TEST(atomic, volatile_compare_exchange_pointer)
+GTEST_TEST(atomic, volatile_compare_exchange_pointer)
 {
 
 
@@ -1515,7 +1515,7 @@ TEST(atomic, volatile_compare_exchange_pointer)
     });
 }
 
-TEST(atomic, add_integral)
+GTEST_TEST(atomic, add_integral)
 {
 
 
@@ -1553,7 +1553,7 @@ TEST(atomic, add_integral)
     });
 }
 
-TEST(atomic, volatile_add_integral)
+GTEST_TEST(atomic, volatile_add_integral)
 {
 
 
@@ -1591,7 +1591,7 @@ TEST(atomic, volatile_add_integral)
     });
 }
 
-TEST(atomic, fetch_add_integral)
+GTEST_TEST(atomic, fetch_add_integral)
 {
 
 
@@ -1629,7 +1629,7 @@ TEST(atomic, fetch_add_integral)
     });
 }
 
-TEST(atomic, volatile_fetch_add_integral)
+GTEST_TEST(atomic, volatile_fetch_add_integral)
 {
 
 
@@ -1667,7 +1667,7 @@ TEST(atomic, volatile_fetch_add_integral)
     });
 }
 
-TEST(atomic, subtract_integral)
+GTEST_TEST(atomic, subtract_integral)
 {
 
 
@@ -1705,7 +1705,7 @@ TEST(atomic, subtract_integral)
     });
 }
 
-TEST(atomic, volatile_subtract_integral)
+GTEST_TEST(atomic, volatile_subtract_integral)
 {
 
 
@@ -1743,7 +1743,7 @@ TEST(atomic, volatile_subtract_integral)
     });
 }
 
-TEST(atomic, fetch_sub_integral)
+GTEST_TEST(atomic, fetch_sub_integral)
 {
 
 
@@ -1781,7 +1781,7 @@ TEST(atomic, fetch_sub_integral)
     });
 }
 
-TEST(atomic, volatile_fetch_sub_integral)
+GTEST_TEST(atomic, volatile_fetch_sub_integral)
 {
 
 
@@ -1819,7 +1819,7 @@ TEST(atomic, volatile_fetch_sub_integral)
     });
 }
 
-TEST(atomic, increment_integral)
+GTEST_TEST(atomic, increment_integral)
 {
 
 
@@ -1856,7 +1856,7 @@ TEST(atomic, increment_integral)
     });
 }
 
-TEST(atomic, volatile_increment_integral)
+GTEST_TEST(atomic, volatile_increment_integral)
 {
 
 
@@ -1893,7 +1893,7 @@ TEST(atomic, volatile_increment_integral)
     });
 }
 
-TEST(atomic, fetch_increment_integral)
+GTEST_TEST(atomic, fetch_increment_integral)
 {
 
 
@@ -1930,7 +1930,7 @@ TEST(atomic, fetch_increment_integral)
     });
 }
 
-TEST(atomic, volatile_fetch_increment_integral)
+GTEST_TEST(atomic, volatile_fetch_increment_integral)
 {
 
 
@@ -1967,7 +1967,7 @@ TEST(atomic, volatile_fetch_increment_integral)
     });
 }
 
-TEST(atomic, decrement_integral)
+GTEST_TEST(atomic, decrement_integral)
 {
 
 
@@ -2004,7 +2004,7 @@ TEST(atomic, decrement_integral)
     });
 }
 
-TEST(atomic, volatile_decrement_integral)
+GTEST_TEST(atomic, volatile_decrement_integral)
 {
 
 
@@ -2041,7 +2041,7 @@ TEST(atomic, volatile_decrement_integral)
     });
 }
 
-TEST(atomic, fetch_decrement_integral)
+GTEST_TEST(atomic, fetch_decrement_integral)
 {
 
 
@@ -2078,7 +2078,7 @@ TEST(atomic, fetch_decrement_integral)
     });
 }
 
-TEST(atomic, volatile_fetch_decrement_integral)
+GTEST_TEST(atomic, volatile_fetch_decrement_integral)
 {
 
 
@@ -2115,7 +2115,7 @@ TEST(atomic, volatile_fetch_decrement_integral)
     });
 }
 
-TEST(atomic, pre_increment_operator_integral)
+GTEST_TEST(atomic, pre_increment_operator_integral)
 {
 
 
@@ -2128,7 +2128,7 @@ TEST(atomic, pre_increment_operator_integral)
     });
 }
 
-TEST(atomic, volatile_pre_increment_operator_integral)
+GTEST_TEST(atomic, volatile_pre_increment_operator_integral)
 {
 
 
@@ -2142,7 +2142,7 @@ TEST(atomic, volatile_pre_increment_operator_integral)
 }
 
 
-TEST(atomic, post_increment_operator_integral)
+GTEST_TEST(atomic, post_increment_operator_integral)
 {
 
 
@@ -2155,7 +2155,7 @@ TEST(atomic, post_increment_operator_integral)
     });
 }
 
-TEST(atomic, volatile_post_increment_operator_integral)
+GTEST_TEST(atomic, volatile_post_increment_operator_integral)
 {
 
 
@@ -2168,7 +2168,7 @@ TEST(atomic, volatile_post_increment_operator_integral)
     });
 }
 
-TEST(atomic, pre_decrement_operator_integral)
+GTEST_TEST(atomic, pre_decrement_operator_integral)
 {
 
 
@@ -2181,7 +2181,7 @@ TEST(atomic, pre_decrement_operator_integral)
     });
 }
 
-TEST(atomic, volatile_pre_decrement_operator_integral)
+GTEST_TEST(atomic, volatile_pre_decrement_operator_integral)
 {
 
 
@@ -2194,7 +2194,7 @@ TEST(atomic, volatile_pre_decrement_operator_integral)
     });
 }
 
-TEST(atomic, post_decrement_operator_integral)
+GTEST_TEST(atomic, post_decrement_operator_integral)
 {
 
 
@@ -2207,7 +2207,7 @@ TEST(atomic, post_decrement_operator_integral)
     });
 }
 
-TEST(atomic, volatile_post_decrement_operator_integral)
+GTEST_TEST(atomic, volatile_post_decrement_operator_integral)
 {
 
 
@@ -2220,7 +2220,7 @@ TEST(atomic, volatile_post_decrement_operator_integral)
     });
 }
 
-TEST(atomic, increment_equal_operator_integral)
+GTEST_TEST(atomic, increment_equal_operator_integral)
 {
 
 
@@ -2233,7 +2233,7 @@ TEST(atomic, increment_equal_operator_integral)
     });
 }
 
-TEST(atomic, volatile_increment_equal_operator_integral)
+GTEST_TEST(atomic, volatile_increment_equal_operator_integral)
 {
 
 
@@ -2246,7 +2246,7 @@ TEST(atomic, volatile_increment_equal_operator_integral)
     });
 }
 
-TEST(atomic, decrement_equal_operator_integral)
+GTEST_TEST(atomic, decrement_equal_operator_integral)
 {
 
 
@@ -2259,7 +2259,7 @@ TEST(atomic, decrement_equal_operator_integral)
     });
 }
 
-TEST(atomic, volatile_decrement_equal_operator_integral)
+GTEST_TEST(atomic, volatile_decrement_equal_operator_integral)
 {
 
 
@@ -2273,7 +2273,7 @@ TEST(atomic, volatile_decrement_equal_operator_integral)
 }
 
 
-TEST(atomic, add_pointer)
+GTEST_TEST(atomic, add_pointer)
 {
 
 
@@ -2311,7 +2311,7 @@ TEST(atomic, add_pointer)
     });
 }
 
-TEST(atomic, volatile_add_pointer)
+GTEST_TEST(atomic, volatile_add_pointer)
 {
 
 
@@ -2349,7 +2349,7 @@ TEST(atomic, volatile_add_pointer)
     });
 }
 
-TEST(atomic, fetch_add_pointer)
+GTEST_TEST(atomic, fetch_add_pointer)
 {
 
 
@@ -2387,7 +2387,7 @@ TEST(atomic, fetch_add_pointer)
     });
 }
 
-TEST(atomic, volatile_fetch_add_pointer)
+GTEST_TEST(atomic, volatile_fetch_add_pointer)
 {
 
 
@@ -2426,7 +2426,7 @@ TEST(atomic, volatile_fetch_add_pointer)
 }
 
 
-TEST(atomic, subtract_pointer)
+GTEST_TEST(atomic, subtract_pointer)
 {
 
 
@@ -2464,7 +2464,7 @@ TEST(atomic, subtract_pointer)
     });
 }
 
-TEST(atomic, volatile_subtract_pointer)
+GTEST_TEST(atomic, volatile_subtract_pointer)
 {
 
 
@@ -2502,7 +2502,7 @@ TEST(atomic, volatile_subtract_pointer)
     });
 }
 
-TEST(atomic, fetch_sub_pointer)
+GTEST_TEST(atomic, fetch_sub_pointer)
 {
 
 
@@ -2541,7 +2541,7 @@ TEST(atomic, fetch_sub_pointer)
 }
 
 
-TEST(atomic, volatile_fetch_sub_pointer)
+GTEST_TEST(atomic, volatile_fetch_sub_pointer)
 {
 
 
@@ -2579,7 +2579,7 @@ TEST(atomic, volatile_fetch_sub_pointer)
     });
 }
 
-TEST(atomic, increment_pointer)
+GTEST_TEST(atomic, increment_pointer)
 {
 
 
@@ -2616,7 +2616,7 @@ TEST(atomic, increment_pointer)
     });
 }
 
-TEST(atomic, volatile_increment_pointer)
+GTEST_TEST(atomic, volatile_increment_pointer)
 {
 
 
@@ -2653,7 +2653,7 @@ TEST(atomic, volatile_increment_pointer)
     });
 }
 
-TEST(atomic, fetch_increment_pointer)
+GTEST_TEST(atomic, fetch_increment_pointer)
 {
 
 
@@ -2690,7 +2690,7 @@ TEST(atomic, fetch_increment_pointer)
     });
 }
 
-TEST(atomic, volatile_fetch_increment_pointer)
+GTEST_TEST(atomic, volatile_fetch_increment_pointer)
 {
 
 
@@ -2727,7 +2727,7 @@ TEST(atomic, volatile_fetch_increment_pointer)
     });
 }
 
-TEST(atomic, decrement_pointer)
+GTEST_TEST(atomic, decrement_pointer)
 {
 
 
@@ -2764,7 +2764,7 @@ TEST(atomic, decrement_pointer)
     });
 }
 
-TEST(atomic, volatile_decrement_pointer)
+GTEST_TEST(atomic, volatile_decrement_pointer)
 {
 
 
@@ -2801,7 +2801,7 @@ TEST(atomic, volatile_decrement_pointer)
     });
 }
 
-TEST(atomic, fetch_decrement_pointer)
+GTEST_TEST(atomic, fetch_decrement_pointer)
 {
 
 
@@ -2838,7 +2838,7 @@ TEST(atomic, fetch_decrement_pointer)
     });
 }
 
-TEST(atomic, volatile_fetch_decrement_pointer)
+GTEST_TEST(atomic, volatile_fetch_decrement_pointer)
 {
 
 
@@ -2875,7 +2875,7 @@ TEST(atomic, volatile_fetch_decrement_pointer)
     });
 }
 
-TEST(atomic, pre_increment_operator_pointer)
+GTEST_TEST(atomic, pre_increment_operator_pointer)
 {
 
 
@@ -2888,7 +2888,7 @@ TEST(atomic, pre_increment_operator_pointer)
     });
 }
 
-TEST(atomic, volatile_pre_increment_operator_pointer)
+GTEST_TEST(atomic, volatile_pre_increment_operator_pointer)
 {
 
 
@@ -2901,7 +2901,7 @@ TEST(atomic, volatile_pre_increment_operator_pointer)
     });
 }
 
-TEST(atomic, post_increment_operator_pointer)
+GTEST_TEST(atomic, post_increment_operator_pointer)
 {
 
 
@@ -2914,7 +2914,7 @@ TEST(atomic, post_increment_operator_pointer)
     });
 }
 
-TEST(atomic, volatile_post_increment_operator_pointer)
+GTEST_TEST(atomic, volatile_post_increment_operator_pointer)
 {
 
 
@@ -2927,7 +2927,7 @@ TEST(atomic, volatile_post_increment_operator_pointer)
     });
 }
 
-TEST(atomic, pre_decrement_operator_pointer)
+GTEST_TEST(atomic, pre_decrement_operator_pointer)
 {
 
 
@@ -2941,7 +2941,7 @@ TEST(atomic, pre_decrement_operator_pointer)
 }
 
 
-TEST(atomic, volatile_pre_decrement_operator_pointer)
+GTEST_TEST(atomic, volatile_pre_decrement_operator_pointer)
 {
 
 
@@ -2954,7 +2954,7 @@ TEST(atomic, volatile_pre_decrement_operator_pointer)
     });
 }
 
-TEST(atomic, post_decrement_operator_pointer)
+GTEST_TEST(atomic, post_decrement_operator_pointer)
 {
 
 
@@ -2967,7 +2967,7 @@ TEST(atomic, post_decrement_operator_pointer)
     });
 }
 
-TEST(atomic, volatile_post_decrement_operator_pointer)
+GTEST_TEST(atomic, volatile_post_decrement_operator_pointer)
 {
 
 
@@ -2981,7 +2981,7 @@ TEST(atomic, volatile_post_decrement_operator_pointer)
 }
 
 
-TEST(atomic, increment_equal_operator_pointer)
+GTEST_TEST(atomic, increment_equal_operator_pointer)
 {
 
 
@@ -2994,7 +2994,7 @@ TEST(atomic, increment_equal_operator_pointer)
     });
 }
 
-TEST(atomic, volatile_increment_equal_operator_pointer)
+GTEST_TEST(atomic, volatile_increment_equal_operator_pointer)
 {
 
 
@@ -3007,7 +3007,7 @@ TEST(atomic, volatile_increment_equal_operator_pointer)
     });
 }
 
-TEST(atomic, decrement_equal_operator_pointer)
+GTEST_TEST(atomic, decrement_equal_operator_pointer)
 {
 
 

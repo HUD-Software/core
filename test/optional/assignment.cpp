@@ -6,7 +6,7 @@
 #include <optional>
 
 // Nullopt
-TEST(optional, assign_empty_trivial_type_with_nullopt) {
+GTEST_TEST(optional, assign_empty_trivial_type_with_nullopt) {
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
@@ -41,7 +41,7 @@ TEST(optional, assign_empty_trivial_type_with_nullopt) {
     }
 }
 
-TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
+GTEST_TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
 
     using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
@@ -76,7 +76,7 @@ TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
     }
 }
 
-TEST(optional, assign_non_empty_trivial_type_with_nullopt) {
+GTEST_TEST(optional, assign_non_empty_trivial_type_with_nullopt) {
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
@@ -116,7 +116,7 @@ TEST(optional, assign_non_empty_trivial_type_with_nullopt) {
     }
 }
 
-TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
+GTEST_TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
 
     using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
@@ -179,7 +179,7 @@ TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
     }
 }
 
-TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type) {
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
@@ -216,7 +216,7 @@ TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_type) {
 
     using type = i32;
     using OtherType = i16;
@@ -255,7 +255,7 @@ TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_same_type) {
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
@@ -296,7 +296,7 @@ TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_different_type) {
 
     using type = i32;
     using OtherType = i16;
@@ -339,7 +339,7 @@ TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_different_type
     }
 }
 
-TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -399,7 +399,7 @@ TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_type) {
     }*/
 }
 
-TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_different_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -446,7 +446,7 @@ TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_different_type
     }
 }
 
-TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same_type) {
 
     using type = hud_test::non_bitwise_type;
 
@@ -537,7 +537,7 @@ TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same_type)
     }
 }
 
-TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_different_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -599,7 +599,7 @@ TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_different_
     }
 }
 
-TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type) {
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
@@ -636,7 +636,7 @@ TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_type) {
 
     using type = i32;
     using OtherType = i16;
@@ -675,7 +675,7 @@ TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_type) {
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
@@ -716,7 +716,7 @@ TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_different_type) {
 
     using type = i32;
     using OtherType = i16;
@@ -759,7 +759,7 @@ TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_different_type
     }
 }
 
-TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_type) {
     // Current STD specification make it not possible
     // because hud::is_constructible_v<type_t, U> where type_t and U is not move assignable is false
     
@@ -809,7 +809,7 @@ TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_type) {
     //}
 }
 
-TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_different_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -856,7 +856,7 @@ TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_different_type
     }
 }
 
-TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same_type) {
     // Current STD specification make it not possible
     // because hud::is_constructible_v<type_t, U> where type_t and U is not move assignable is false
   
@@ -917,7 +917,7 @@ TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same_type)
     //}
 }
 
-TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_different_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -979,7 +979,7 @@ TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_different_
     }
 }
 
-TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type) {
 
     using type = i32;
     static_assert(hud::is_trivially_move_constructible_v<type>);
@@ -1016,7 +1016,7 @@ TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type) {
     }
 }
 
-TEST(optional, assign_by_move_empty_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_different_type) {
 
     using type = i32;
     using OtherType = i16;
@@ -1055,7 +1055,7 @@ TEST(optional, assign_by_move_empty_trivially_move_assignable_different_type) {
     }
 }
 
-TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_type) {
 
     using type = i32;
     static_assert(hud::is_trivially_move_constructible_v<type>);
@@ -1096,7 +1096,7 @@ TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_type) {
     }
 }
 
-TEST(optional, assign_by_move_non_empty_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_different_type) {
 
     using type = i32;
     using OtherType = i16;
@@ -1139,7 +1139,7 @@ TEST(optional, assign_by_move_non_empty_trivially_move_assignable_different_type
     }
 }
 
-TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_type) {
 
 
     using type = hud_test::NonBitwiseMoveAssignableType;
@@ -1192,7 +1192,7 @@ TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_type) {
     }
 }
 
-TEST(optional, assign_by_move_empty_non_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_different_type) {
 
 
     using type = hud_test::NonBitwiseMoveAssignableType2;
@@ -1245,7 +1245,7 @@ TEST(optional, assign_by_move_empty_non_trivially_move_assignable_different_type
     }
 }
 
-TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same_type) {
 
     using type = hud_test::NonBitwiseMoveAssignableType;
 
@@ -1319,7 +1319,7 @@ TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same_type)
     }
 }
 
-TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_different_type) {
 
 
     using type = hud_test::NonBitwiseMoveAssignableType2;
@@ -1396,7 +1396,7 @@ TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_different_
     }
 }
 
-TEST(optional, copy_assign_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_same_type) {
 
 
     using type = i32;
@@ -1438,7 +1438,7 @@ TEST(optional, copy_assign_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, copy_assign_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_different_type) {
 
 
     using type = i32;
@@ -1481,7 +1481,7 @@ TEST(optional, copy_assign_empty_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -1543,7 +1543,7 @@ TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) {
 
 }
 
-TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -1592,7 +1592,7 @@ TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_type) {
 
 }
 
-TEST(optional, copy_assign_non_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_same_type) {
 
 
     using type = i32;
@@ -1635,7 +1635,7 @@ TEST(optional, copy_assign_non_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, copy_assign_non_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_different_type) {
 
 
     using type = i32;
@@ -1681,7 +1681,7 @@ TEST(optional, copy_assign_non_empty_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -1772,7 +1772,7 @@ TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_different_type) {
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
@@ -1831,7 +1831,7 @@ TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_different_typ
     }
 }
 
-TEST(optional, move_assign_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_same_type) {
 
 
     using type = i32;
@@ -1872,7 +1872,7 @@ TEST(optional, move_assign_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -1919,7 +1919,7 @@ TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type) {
     }
 }
 
-TEST(optional, move_assign_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_different_type) {
 
 
     using type = i32;
@@ -1962,7 +1962,7 @@ TEST(optional, move_assign_empty_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -2010,7 +2010,7 @@ TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(optional, move_assign_empty_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_same_type) {
 
 
     using type = i32;
@@ -2051,7 +2051,7 @@ TEST(optional, move_assign_empty_trivially_move_assignable_same_type) {
     }
 }
 
-TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type) {
 
 
     using type = hud_test::NonBitwiseMoveAssignableType;
@@ -2104,7 +2104,7 @@ TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type) {
     }
 }
 
-TEST(optional, move_assign_empty_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_different_type) {
 
 
     using type = i32;
@@ -2147,7 +2147,7 @@ TEST(optional, move_assign_empty_trivially_move_assignable_different_type) {
     }
 }
 
-TEST(optional, move_assign_empty_non_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_different_type) {
 
 
     using type = hud_test::NonBitwiseMoveAssignableType2;
@@ -2201,7 +2201,7 @@ TEST(optional, move_assign_empty_non_trivially_move_assignable_different_type) {
     }
 }
 
-TEST(optional, move_assign_non_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_same_type) {
 
 
     using type = i32;
@@ -2220,7 +2220,7 @@ TEST(optional, move_assign_non_empty_trivially_copy_assignable_same_type) {
     ASSERT_EQ(option.value(), 456);
 }
 
-TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_same_type) {
 
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -2242,7 +2242,7 @@ TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_same_type) {
     ASSERT_EQ(option.value().copy_constructor_count(), 0u);
 }
 
-TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_type) {
 
 
     using type = i32;
@@ -2290,7 +2290,7 @@ TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_type) {
     }
 }
 
-TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_different_type) {
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
@@ -2349,7 +2349,7 @@ TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_different_typ
     }
 }
 
-TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type) {
 
 
     using type = i32;
@@ -2394,7 +2394,7 @@ TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type) {
     }
 }
 
-TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -2485,7 +2485,7 @@ TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_type) {
     }
 }
 
-TEST(optional, move_assign_non_empty_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_different_type) {
 
 
     using type = i32;
@@ -2531,7 +2531,7 @@ TEST(optional, move_assign_non_empty_trivially_move_assignable_different_type) {
     }
 }
 
-TEST(optional, move_assign_non_empty_non_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_different_type) {
 
     using type = hud_test::NonBitwiseMoveAssignableType2;
     using OtherType = hud_test::NonBitwiseMoveAssignableType;

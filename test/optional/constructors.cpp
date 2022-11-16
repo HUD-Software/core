@@ -2,7 +2,7 @@
 #include <core/traits/is_trivially_default_constructible.h>
 #include <optional>
 
-TEST(optional, default_constructor_trivially_default_constructible_type)
+GTEST_TEST(optional, default_constructor_trivially_default_constructible_type)
 {
 
 
@@ -29,7 +29,7 @@ TEST(optional, default_constructor_trivially_default_constructible_type)
     }
 }
 
-TEST(optional, default_constructor_non_trivially_default_constructible_type)
+GTEST_TEST(optional, default_constructor_non_trivially_default_constructible_type)
 {
 
 
@@ -60,7 +60,7 @@ TEST(optional, default_constructor_non_trivially_default_constructible_type)
 }
 
 
-TEST(optional, nullopt_constructor)
+GTEST_TEST(optional, nullopt_constructor)
 {
 
 
@@ -81,7 +81,7 @@ TEST(optional, nullopt_constructor)
     }
 }
 
-TEST(optional, constructor_in_place_of_non_trivially_constructible_type)
+GTEST_TEST(optional, constructor_in_place_of_non_trivially_constructible_type)
 {
 
 
@@ -118,7 +118,7 @@ TEST(optional, constructor_in_place_of_non_trivially_constructible_type)
     }
 }
 
-TEST(optional, constructor_in_place_of_trivially_constructible_type)
+GTEST_TEST(optional, constructor_in_place_of_trivially_constructible_type)
 {
 
 
@@ -151,7 +151,7 @@ TEST(optional, constructor_in_place_of_trivially_constructible_type)
 
 
 
-TEST(optional, copy_construct_bitwise_copy_constructible_same_type) {
+GTEST_TEST(optional, copy_construct_bitwise_copy_constructible_same_type) {
 
 
     using type = i32;
@@ -190,7 +190,7 @@ TEST(optional, copy_construct_bitwise_copy_constructible_same_type) {
     }
 }
 
-TEST(optional, copy_construct_non_bitwise_copy_constructible_same_type) {
+GTEST_TEST(optional, copy_construct_non_bitwise_copy_constructible_same_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -240,7 +240,7 @@ TEST(optional, copy_construct_non_bitwise_copy_constructible_same_type) {
     }
 }
 
-TEST(optional, trivially_move_constructible_if_type_is_trivially_move_constructible) {
+GTEST_TEST(optional, trivially_move_constructible_if_type_is_trivially_move_constructible) {
 
 
     using type = i32;
@@ -249,7 +249,7 @@ TEST(optional, trivially_move_constructible_if_type_is_trivially_move_constructi
     ASSERT_TRUE(hud::is_trivially_move_constructible_v<hud::optional<type>>);
 }
 
-TEST(optional, not_trivially_move_constructible_if_type_is_not_trivially_move_constructible) {
+GTEST_TEST(optional, not_trivially_move_constructible_if_type_is_not_trivially_move_constructible) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -258,7 +258,7 @@ TEST(optional, not_trivially_move_constructible_if_type_is_not_trivially_move_co
     ASSERT_FALSE(hud::is_trivially_move_constructible_v<hud::optional<type>>);
 }
 
-TEST(optional, move_construct_bitwise_copy_constructible_same_type) {
+GTEST_TEST(optional, move_construct_bitwise_copy_constructible_same_type) {
 
 
     using type = i32;
@@ -299,7 +299,7 @@ TEST(optional, move_construct_bitwise_copy_constructible_same_type) {
     }
 }
 
-TEST(optional, move_construct_non_bitwise_copy_constructible_same_type) {
+GTEST_TEST(optional, move_construct_non_bitwise_copy_constructible_same_type) {
 
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
@@ -351,7 +351,7 @@ TEST(optional, move_construct_non_bitwise_copy_constructible_same_type) {
 
 }
 
-TEST(optional, move_construct_bitwise_move_constructible_same_type) {
+GTEST_TEST(optional, move_construct_bitwise_move_constructible_same_type) {
 
 
     using type = i32;
@@ -390,7 +390,7 @@ TEST(optional, move_construct_bitwise_move_constructible_same_type) {
     }
 }
 
-TEST(optional, move_construct_non_bitwise_move_constructible_same_type) {
+GTEST_TEST(optional, move_construct_non_bitwise_move_constructible_same_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -441,7 +441,7 @@ TEST(optional, move_construct_non_bitwise_move_constructible_same_type) {
     }
 }
 
-TEST(optional, param_constructor_bitwise_copy_constructible_same_type_by_copy) {
+GTEST_TEST(optional, param_constructor_bitwise_copy_constructible_same_type_by_copy) {
 
 
     using type = i32;
@@ -472,7 +472,7 @@ TEST(optional, param_constructor_bitwise_copy_constructible_same_type_by_copy) {
     }
 }
 
-TEST(optional, param_constructor_non_bitwise_copy_constructible_same_type_by_copy) {
+GTEST_TEST(optional, param_constructor_non_bitwise_copy_constructible_same_type_by_copy) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -520,7 +520,7 @@ TEST(optional, param_constructor_non_bitwise_copy_constructible_same_type_by_cop
 }
 
 
-TEST(optional, param_constructor_bitwise_move_constructible_same_type_by_move) {
+GTEST_TEST(optional, param_constructor_bitwise_move_constructible_same_type_by_move) {
 
 
     using type = i32;
@@ -551,7 +551,7 @@ TEST(optional, param_constructor_bitwise_move_constructible_same_type_by_move) {
     }
 }
 
-TEST(optional, param_constructor_non_bitwise_move_constructible_same_type_by_move) {
+GTEST_TEST(optional, param_constructor_non_bitwise_move_constructible_same_type_by_move) {
 
 
     using type = hud_test::non_bitwise_type;

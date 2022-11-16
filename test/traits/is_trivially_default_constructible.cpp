@@ -6,7 +6,7 @@ namespace hud_test {
     struct c { virtual void fn() {} };
 }
 
-TEST(traits, is_trivially_default_constructible) {
+GTEST_TEST(traits, is_trivially_default_constructible) {
     ASSERT_TRUE((hud::is_trivially_default_constructible_v<i32>));
     ASSERT_FALSE((hud::is_trivially_default_constructible_v<i32&>));
     ASSERT_FALSE((hud::is_trivially_default_constructible_v<i32[]>));

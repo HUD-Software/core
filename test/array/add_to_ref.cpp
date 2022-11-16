@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
+GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -205,7 +205,7 @@ TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
     }
 }
 
-TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
+GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
 {
 
     using type = usize;
@@ -394,7 +394,7 @@ TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
     }
 }
 
-TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
+GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
 {
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
@@ -596,7 +596,7 @@ TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_type)
     }
 }
 
-TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
+GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 {
 
     using type = usize;
@@ -781,7 +781,7 @@ TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
     }
 }
 
-TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_type)
+GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_type)
 {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;

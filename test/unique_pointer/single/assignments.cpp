@@ -34,7 +34,7 @@ namespace{
     using deleter_type2 = custom_deleter<hud_test::non_bitwise_type>;
 }
 
-TEST(unique_pointer, assign_by_move_same_type) {
+GTEST_TEST(unique_pointer, assign_by_move_same_type) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         deleter_type other_deleter;
@@ -94,7 +94,7 @@ TEST(unique_pointer, assign_by_move_same_type) {
 }
 
 
-TEST(unique_pointer, assign_by_move_same_type_with_deleter_ref) {
+GTEST_TEST(unique_pointer, assign_by_move_same_type_with_deleter_ref) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         deleter_type other_deleter;
@@ -159,7 +159,7 @@ TEST(unique_pointer, assign_by_move_same_type_with_deleter_ref) {
     }
 }
 
-TEST(unique_pointer, assign_by_move_same_type_with_different_deleter_ref) {
+GTEST_TEST(unique_pointer, assign_by_move_same_type_with_different_deleter_ref) {
     const auto test = []() {
         hud_test::non_bitwise_type* pi = new hud_test::non_bitwise_type(123, nullptr);
         deleter_type2 other_deleter;
@@ -224,7 +224,7 @@ TEST(unique_pointer, assign_by_move_same_type_with_different_deleter_ref) {
     }
 }
 
-TEST(unique_pointer, assign_by_move_different_type) {
+GTEST_TEST(unique_pointer, assign_by_move_different_type) {
     const auto test = []() {
         hud_test::non_bitwise_type2* pi = new hud_test::non_bitwise_type2(123, nullptr);
         deleter_type other_deleter;
@@ -283,7 +283,7 @@ TEST(unique_pointer, assign_by_move_different_type) {
     }
 }
 
-TEST(unique_pointer, assign_by_move_different_type_different_deleter) {
+GTEST_TEST(unique_pointer, assign_by_move_different_type_different_deleter) {
     const auto test = []() {
         hud_test::non_bitwise_type2* pi = new hud_test::non_bitwise_type2(123, nullptr);
         deleter_type2 other_deleter;
@@ -342,7 +342,7 @@ TEST(unique_pointer, assign_by_move_different_type_different_deleter) {
     }
 }
 
-TEST(unique_pointer, assign_by_move_different_type_with_deleter_ref) {
+GTEST_TEST(unique_pointer, assign_by_move_different_type_with_deleter_ref) {
     const auto test = []() {
         hud_test::non_bitwise_type2* pi = new hud_test::non_bitwise_type2(123, nullptr);
         deleter_type other_deleter;
@@ -407,7 +407,7 @@ TEST(unique_pointer, assign_by_move_different_type_with_deleter_ref) {
     }
 }
 
-TEST(unique_pointer, assign_by_move_different_type_with_different_deleter_ref) {
+GTEST_TEST(unique_pointer, assign_by_move_different_type_with_different_deleter_ref) {
     const auto test = []() {
         hud_test::non_bitwise_type2* pi = new hud_test::non_bitwise_type2(123, nullptr);
         deleter_type2 other_deleter;

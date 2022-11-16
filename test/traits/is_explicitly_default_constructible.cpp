@@ -9,7 +9,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_explicitly_default_constructible) {
+GTEST_TEST(traits, is_explicitly_default_constructible) {
     ASSERT_TRUE((hud::is_explicitly_default_constructible_v<hud_test::explicit_ctor>));
     ASSERT_FALSE((hud::is_explicitly_default_constructible_v<hud_test::no_explicit_ctor>));
     ASSERT_FALSE((hud::is_explicitly_default_constructible_v<i32>));

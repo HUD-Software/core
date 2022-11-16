@@ -1,6 +1,6 @@
 #include <core/containers/shared_pointer.h>
 
-TEST(shared_pointer_not_safe, destructor) {
+GTEST_TEST(shared_pointer_not_safe, destructor) {
 
     const auto test = []() {
         i32 dtor_count = 0;

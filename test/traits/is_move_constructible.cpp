@@ -6,7 +6,7 @@ namespace hud_test {
     struct c { c(b&&) noexcept { } };
 }
 
-TEST(traits, is_move_constructible) {
+GTEST_TEST(traits, is_move_constructible) {
     ASSERT_TRUE((hud::is_move_constructible_v<i32>));
     ASSERT_TRUE((hud::is_move_constructible_v<hud_test::a>));
     ASSERT_FALSE((hud::is_move_constructible_v<hud_test::b>));

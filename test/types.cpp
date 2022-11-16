@@ -2,7 +2,7 @@
 #include <core/traits/is_signed.h>
 #include <core/traits/is_unsigned.h>
 
-TEST(types, size) {
+GTEST_TEST(types, size) {
     ASSERT_EQ(sizeof(bool), 1u);
     ASSERT_EQ(sizeof(i8), 1u);
     ASSERT_EQ(sizeof(i16), 2u);
@@ -38,7 +38,7 @@ TEST(types, size) {
 }
 
 
-TEST(types, signed_unsigned) {
+GTEST_TEST(types, signed_unsigned) {
    ASSERT_TRUE(hud::is_unsigned_v<bool>);
    ASSERT_TRUE(hud::is_signed_v<i8>);
    ASSERT_TRUE(hud::is_signed_v<i16>);
@@ -63,7 +63,7 @@ TEST(types, signed_unsigned) {
 }
 
 
-TEST(types, limits) {
+GTEST_TEST(types, limits) {
     ASSERT_EQ(hud::u8_max, std::numeric_limits<u8>::max());
     ASSERT_EQ(hud::u8_min, std::numeric_limits<u8>::min());
     ASSERT_EQ(hud::u16_max, std::numeric_limits<u16>::max());

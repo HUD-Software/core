@@ -1,7 +1,7 @@
 #include <core/traits/negation.h>
 
 
-TEST(traits, negation) {
+GTEST_TEST(traits, negation) {
     ASSERT_TRUE((hud::negation_v<hud::integral_constant<bool, 0>>));
     ASSERT_FALSE((hud::negation_v<hud::integral_constant<bool, 1>>));
     ASSERT_TRUE((hud::negation_v<hud::integral_constant<bool, false>>));

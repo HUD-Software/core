@@ -1,7 +1,7 @@
 #include <core/containers/pair.h>
 #include <core/traits/is_same.h>
 
-TEST(pair, inner_is_correct) {
+GTEST_TEST(pair, inner_is_correct) {
 
 
     using pair_type = hud::pair<i32, u32>;
@@ -13,7 +13,7 @@ TEST(pair, inner_is_correct) {
     ASSERT_TRUE(is_second_same);
 }
 
-TEST(pair, sizeof_pair_is_sizeof_inner_types) {
+GTEST_TEST(pair, sizeof_pair_is_sizeof_inner_types) {
 
 
     using pair_type = hud::pair<i32, u64>;
@@ -21,7 +21,7 @@ TEST(pair, sizeof_pair_is_sizeof_inner_types) {
     ASSERT_EQ(sizeof(pair_type), sizeof(shoud_be) );
 }
 
-TEST(pair, make_pair_create_pair_trivially_constructible) {
+GTEST_TEST(pair, make_pair_create_pair_trivially_constructible) {
 
 
     using type = i32;
@@ -52,7 +52,7 @@ TEST(pair, make_pair_create_pair_trivially_constructible) {
     }
 }
 
-TEST(pair, make_pair_create_pair_non_trivial) {
+GTEST_TEST(pair, make_pair_create_pair_non_trivial) {
 
     using type = hud_test::non_bitwise_type;
     static_assert(hud::is_constructible_v<type, type&&>);
@@ -113,7 +113,7 @@ TEST(pair, make_pair_create_pair_non_trivial) {
     }
 }
 
-TEST(pair, get_is_usable_with_pair) {
+GTEST_TEST(pair, get_is_usable_with_pair) {
 
 
     const auto test = [](i32 t1, i32 t2) {
@@ -139,14 +139,14 @@ TEST(pair, get_is_usable_with_pair) {
     }
 }
 
-TEST(pair, tuple_size) {
+GTEST_TEST(pair, tuple_size) {
 
 
     constexpr usize tuple_size = hud::tuple_size_v<hud::pair<u32, u64>>;
     ASSERT_EQ(tuple_size, 2u);
 }
 
-TEST(pair, tuple_element) {
+GTEST_TEST(pair, tuple_element) {
 
     constexpr bool is_tuple_element_0_same = hud::is_same_v<hud::tuple_element_t<0, hud::pair<u32, u64> >, u32>;
     constexpr bool is_tuple_element_1_same = hud::is_same_v<hud::tuple_element_t<1, hud::pair<u32, u64> >, u64>;

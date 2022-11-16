@@ -8,7 +8,7 @@ namespace hud_test {
     struct E { int m; short a; int b; };
 }
 
-TEST(traits, is_standard_layout) {
+GTEST_TEST(traits, is_standard_layout) {
     ASSERT_TRUE((hud::is_standard_layout_v<hud_test::a>));
     ASSERT_TRUE((hud::is_standard_layout_v<i32>));
     ASSERT_TRUE((hud::is_standard_layout_v<i32[]>));

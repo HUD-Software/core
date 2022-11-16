@@ -10,7 +10,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_nothrow_assignable) {
+GTEST_TEST(traits, is_nothrow_assignable) {
     ASSERT_TRUE((hud::is_nothrow_assignable_v<hud_test::a, hud_test::a>));
     ASSERT_TRUE((hud::is_nothrow_assignable_v<hud_test::b, hud_test::a&>));
     ASSERT_FALSE((hud::is_nothrow_assignable_v<hud_test::b, hud_test::b&>));

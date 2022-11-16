@@ -1,6 +1,6 @@
 #include <core/containers/shared_pointer.h>
 
-TEST(shared_pointer_array_not_safe, swap_with_empty) {
+GTEST_TEST(shared_pointer_array_not_safe, swap_with_empty) {
 
 
     // SharedPointer::swap
@@ -104,7 +104,7 @@ TEST(shared_pointer_array_not_safe, swap_with_empty) {
     }
 }
 
-TEST(shared_pointer_array_not_safe, swap_same_type) {
+GTEST_TEST(shared_pointer_array_not_safe, swap_same_type) {
 
 
     // SharedPointer::swap

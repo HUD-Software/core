@@ -1,6 +1,6 @@
 #include <core/templates/min.h>
 
-TEST(templates, min) {
+GTEST_TEST(templates, min) {
 
 
     ASSERT_TRUE(hud::min(1, 12.0f) == 1);

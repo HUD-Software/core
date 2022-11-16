@@ -4,7 +4,7 @@ namespace hud_test {
     [[maybe_unused]] int* a = 0;
 }
 
-TEST(traits, is_nullptr) {
+GTEST_TEST(traits, is_nullptr) {
     ASSERT_FALSE((hud::is_nullptr_v<decltype(hud_test::a)>));
     ASSERT_FALSE((hud::is_nullptr_v<decltype(0)>));
     ASSERT_FALSE((hud::is_nullptr_v<decltype(&(*hud_test::a))>));

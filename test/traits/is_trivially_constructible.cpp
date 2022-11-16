@@ -6,7 +6,7 @@ namespace hud_test {
     struct c : a { };
 }
 
-TEST(traits, is_trivially_constructible) {
+GTEST_TEST(traits, is_trivially_constructible) {
     ASSERT_TRUE((hud::is_trivially_constructible_v<i32, i32>));
     ASSERT_FALSE((hud::is_trivially_constructible_v<i32&, i32>));
     ASSERT_FALSE((hud::is_trivially_constructible_v<i32[], i32[]>));

@@ -5,7 +5,7 @@ namespace hud_test {
     struct b { ~b() {} };
 }
 
-TEST(traits, is_trivially_destructible) {
+GTEST_TEST(traits, is_trivially_destructible) {
     ASSERT_TRUE((hud::is_trivially_destructible_v<i32>));
     ASSERT_TRUE((hud::is_trivially_destructible_v<i32&>));
     ASSERT_FALSE((hud::is_trivially_destructible_v<i32[]>));

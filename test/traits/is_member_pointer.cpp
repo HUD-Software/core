@@ -25,7 +25,7 @@ namespace hud_test {
     }
 }
 
-TEST(traits, is_member_pointer) {
+GTEST_TEST(traits, is_member_pointer) {
     ASSERT_FALSE((hud::is_member_pointer_v<hud_test::a*>));
     ASSERT_FALSE((hud::is_member_pointer_v<decltype(&hud_test::i)>));
     ASSERT_FALSE((hud::is_member_pointer_v<decltype(&hud_test::i1)>));

@@ -1,7 +1,7 @@
 #include <core/memory.h>
 #include "../misc/leak_guard.h"
 
-TEST(memory, copy_construct_array_trivial_type)
+GTEST_TEST(memory, copy_construct_array_trivial_type)
 {
 
     using type = u32;
@@ -35,7 +35,7 @@ TEST(memory, copy_construct_array_trivial_type)
     }
 }
 
-TEST(memory, copy_construct_array_bitwise_constructible_type)
+GTEST_TEST(memory, copy_construct_array_bitwise_constructible_type)
 {
 
 
@@ -76,7 +76,7 @@ TEST(memory, copy_construct_array_bitwise_constructible_type)
     }
 }
 
-TEST(memory, copy_construct_array_non_bitwise_constructible_different_type)
+GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_different_type)
 {
 
 
@@ -115,7 +115,7 @@ TEST(memory, copy_construct_array_non_bitwise_constructible_different_type)
     }
 }
 
-TEST(memory, copy_construct_array_non_bitwise_constructible_same_type)
+GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_same_type)
 {
 
 

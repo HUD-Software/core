@@ -26,7 +26,7 @@ namespace hud_test {
     };
 }
 
-TEST(templates, default_deleter) {
+GTEST_TEST(templates, default_deleter) {
 
 
     /** Test DefaultDeleter */

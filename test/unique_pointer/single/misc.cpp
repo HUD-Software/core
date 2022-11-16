@@ -32,7 +32,7 @@ namespace hud_test {
 }
 // LCOV_EXCL_STOP
 
-TEST(unique_pointer, pointer) {
+GTEST_TEST(unique_pointer, pointer) {
 
     const auto test = []() {
         i32* ptr = new i32(35);
@@ -61,7 +61,7 @@ TEST(unique_pointer, pointer) {
 }
 
 
-TEST(unique_pointer, is_owning) {
+GTEST_TEST(unique_pointer, is_owning) {
     const auto test = []() {
         i32* ptr = new i32(35);
         hud::unique_pointer<i32> p(ptr);
@@ -88,7 +88,7 @@ TEST(unique_pointer, is_owning) {
     }
 }
 
-TEST(unique_pointer, cast_bool) {
+GTEST_TEST(unique_pointer, cast_bool) {
     const auto test = []() {
         i32* ptr = new i32(35);
         hud::unique_pointer<i32> p(ptr);
@@ -115,7 +115,7 @@ TEST(unique_pointer, cast_bool) {
     }
 }
 
-TEST(unique_pointer, operator_dereference) {
+GTEST_TEST(unique_pointer, operator_dereference) {
     const auto test = []() {
         i32* ptr = new i32(35);
         hud::unique_pointer<i32> p(ptr);
@@ -135,7 +135,7 @@ TEST(unique_pointer, operator_dereference) {
     }
 }
 
-TEST(unique_pointer, operator_arrow) {
+GTEST_TEST(unique_pointer, operator_arrow) {
     const auto test = []() {
         i32* ptr = new i32(35);
         hud::unique_pointer<i32> p(ptr);
@@ -155,7 +155,7 @@ TEST(unique_pointer, operator_arrow) {
     }
 }
 
-TEST(unique_pointer, deleter) {
+GTEST_TEST(unique_pointer, deleter) {
     const auto test = []() {
         i32 dtor_counter = 0;
         hud_test::deleter_type deleter;
@@ -189,7 +189,7 @@ TEST(unique_pointer, deleter) {
     }
 }
 
-TEST(unique_pointer, release) {
+GTEST_TEST(unique_pointer, release) {
     const auto test = []() {
         hud_test::non_bitwise_type* ptr = new hud_test::non_bitwise_type(1, nullptr);
         hud::unique_pointer<hud_test::non_bitwise_type> p(ptr);
@@ -228,7 +228,7 @@ TEST(unique_pointer, release) {
 }
 
 
-TEST(unique_pointer, reset) {
+GTEST_TEST(unique_pointer, reset) {
     const auto test = []() {
         hud_test::non_bitwise_type* ptr = new hud_test::non_bitwise_type(1, nullptr);
         hud::unique_pointer<hud_test::non_bitwise_type> p(ptr);
@@ -268,7 +268,7 @@ TEST(unique_pointer, reset) {
 }
 
 
-TEST(unique_pointer, make_unique) {
+GTEST_TEST(unique_pointer, make_unique) {
     const auto test = []() {
         i32 dtor_count = 0;
         hud::unique_pointer<hud_test::non_bitwise_type> ptr = hud::make_unique<hud_test::non_bitwise_type>(123, &dtor_count);
@@ -288,7 +288,7 @@ TEST(unique_pointer, make_unique) {
     }
 }
 
-TEST(unique_pointer, hash) {
+GTEST_TEST(unique_pointer, hash) {
 
     const auto test = []() {
         hud_test::non_bitwise_type* ptr = new hud_test::non_bitwise_type(1, nullptr);

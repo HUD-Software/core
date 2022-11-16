@@ -1,7 +1,7 @@
 #include <core/slice.h>
 #include <core/templates/swap.h>
 
-TEST(slice, default_constructor) {
+GTEST_TEST(slice, default_constructor) {
 
 
     // constexpr Slice() noexcept
@@ -11,7 +11,7 @@ TEST(slice, default_constructor) {
     ASSERT_EQ(slice.count(), 0u);
 }
 
-TEST(slice, constructor) {
+GTEST_TEST(slice, constructor) {
 
 
     i32 arr[4] = { 10,20,30,40 };
@@ -23,7 +23,7 @@ TEST(slice, constructor) {
     ASSERT_EQ(slice.count(), 4u);
 }
 
-TEST(slice, copy_constructor) {
+GTEST_TEST(slice, copy_constructor) {
 
 
     i32 arr[4] = { 10,20,30,40 };
@@ -43,7 +43,7 @@ TEST(slice, copy_constructor) {
     ASSERT_EQ(slice.count(), 4u);
 }
 
-TEST(slice, move_constructor) {
+GTEST_TEST(slice, move_constructor) {
 
 
     i32 arr[4] = { 10,20,30,40 };
@@ -63,7 +63,7 @@ TEST(slice, move_constructor) {
     ASSERT_EQ(slice.count(), 0u);
 }
 
-TEST(slice, copy_assignment) {
+GTEST_TEST(slice, copy_assignment) {
 
 
     i32 arr[4] = { 10,20,30,40 };
@@ -89,7 +89,7 @@ TEST(slice, copy_assignment) {
     }
 }
 
-TEST(slice, move_assignment) {
+GTEST_TEST(slice, move_assignment) {
  
     
     i32 arr[4] = { 10,20,30,40 };
@@ -115,7 +115,7 @@ TEST(slice, move_assignment) {
     }
 }
 
-TEST(slice, reset) {
+GTEST_TEST(slice, reset) {
  
     
     i32 arr[4] = { 10,20,30,40 };
@@ -132,7 +132,7 @@ TEST(slice, reset) {
     ASSERT_EQ(slice.count(), 0u);
 }
 
-TEST(slice, operator_indexed_accessor) {
+GTEST_TEST(slice, operator_indexed_accessor) {
  
     
     i32 arr[4] = { 10,20,30,40 };
@@ -158,7 +158,7 @@ TEST(slice, operator_indexed_accessor) {
     ASSERT_EQ(slice2[3], 40);
 }
 
-TEST(slice, is_empty) {
+GTEST_TEST(slice, is_empty) {
  
     
     i32 arr[4] = { 10,20,30,40 };
@@ -168,7 +168,7 @@ TEST(slice, is_empty) {
     ASSERT_TRUE(empty.is_empty());
 }
 
-TEST(slice, data) {
+GTEST_TEST(slice, data) {
  
     
     i32 arr[4] = { 10,20,30,40 };
@@ -178,7 +178,7 @@ TEST(slice, data) {
     ASSERT_EQ(slice2.data(), nullptr);
 }
 
-TEST(slice, count) {
+GTEST_TEST(slice, count) {
  
     
     i32 arr[4] = { 10,20,30,40 };
@@ -188,7 +188,7 @@ TEST(slice, count) {
     ASSERT_EQ(slice2.count(), 0u);
 }
 
-TEST(slice, byte_count) {
+GTEST_TEST(slice, byte_count) {
     i32 arr[4] = { 10,20,30,40 };
     hud::slice<i32> slice(arr, 4);
     hud::slice<i32> slice2;
@@ -196,7 +196,7 @@ TEST(slice, byte_count) {
     ASSERT_EQ(slice2.byte_count(), 0u * sizeof(i32));
 }
 
-TEST(slice, is_valid_index) {
+GTEST_TEST(slice, is_valid_index) {
     i32 arr[4] = { 10,20,30,40 };
     hud::slice<i32> slice(arr, 4);
     ASSERT_TRUE(slice.is_valid_index(0));
@@ -208,7 +208,7 @@ TEST(slice, is_valid_index) {
     ASSERT_FALSE(empty_slice.is_valid_index(0));
 }
 
-TEST(slice, is_valid_range) {
+GTEST_TEST(slice, is_valid_range) {
     i32 arr[4] = { 10,20,30,40 };
     hud::slice<i32> slice(arr, 4);
 
@@ -244,7 +244,7 @@ TEST(slice, is_valid_range) {
     
 }
 
-TEST(slice, sub_slice) {
+GTEST_TEST(slice, sub_slice) {
 
 
     i32 arr[4] = { 10,20,30,40 };
@@ -310,7 +310,7 @@ TEST(slice, sub_slice) {
     }
 }
 
-TEST(slice, swap) {
+GTEST_TEST(slice, swap) {
 
 
     i32 arr[4] = { 10,20,30,40 };
@@ -333,7 +333,7 @@ TEST(slice, swap) {
     ASSERT_EQ(slice.count(), 0u);
 }
 
-TEST(slice, iterators) {
+GTEST_TEST(slice, iterators) {
 
 
     // constexpr Iterator begin() noexcept
@@ -356,7 +356,7 @@ TEST(slice, iterators) {
     ASSERT_EQ(slice_const.end() - slice_const.begin(), static_cast<isize>(slice.count()));
 }
 
-TEST(slice, range_for_loop) {
+GTEST_TEST(slice, range_for_loop) {
 
 
     i32 arr[4] = { 10,20,30,40 };

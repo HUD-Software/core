@@ -113,7 +113,7 @@ et porttitor lacus tempor.Nulla non libero porta, faucibus ex eleifend, sodales 
 Mauris molestie, dolor non porttitor lobortis, erat nunc fringilla nulla, a consequat justo odio ut lorem.Cras maximus tristique erat, sit amet facilisis urna euismod in.\
 Maecenas sit amet congue magna.Donec nisl mauris, tempus eu mauris eget, iaculis sodales libero.Nulla hendrerit bibendum magna, at egestas leo semper ac.Donec porttitor ut orci id ornare.Praesent id nunc risus.Fusce consequat tortor at enim cursus, sed mattis lorem gravida.Orci varius. ";
 
-TEST(hash, cityhash_hash32) {
+GTEST_TEST(hash, cityhash_hash32) {
     // hash32 of nullptr
     u32 hash_nullptr = hud::hash_algorithm::city_hash::hash_32(nullptr, 0);
     ASSERT_EQ(hash_nullptr, 0XDC56D17A);
@@ -139,7 +139,7 @@ TEST(hash, cityhash_hash32) {
     ASSERT_EQ(hash, CityHash32(lipsum, hud::cstring::length(lipsum)));
 }
 
-TEST(hash, cityhash_hash32_is_usable_in_constexpr)
+GTEST_TEST(hash, cityhash_hash32_is_usable_in_constexpr)
 {
     constexpr u32 hash_nullptr = hud::hash_algorithm::city_hash::hash_32(nullptr, 0);
     ASSERT_EQ(hash_nullptr, 0XDC56D17A);
@@ -152,7 +152,7 @@ TEST(hash, cityhash_hash32_is_usable_in_constexpr)
 }
 
 
-TEST(hash, cityhash_hash64) {
+GTEST_TEST(hash, cityhash_hash64) {
     // hash64 of nullptr
     ASSERT_EQ(hud::hash_algorithm::city_hash::hash_64(nullptr, 0), 0X9AE16A3B2F90404Full);
 
@@ -167,7 +167,7 @@ TEST(hash, cityhash_hash64) {
     }
 }
 
-TEST(hash, cityhash_hash64_is_usable_in_constexpr)
+GTEST_TEST(hash, cityhash_hash64_is_usable_in_constexpr)
 {
     constexpr u64 hash_nullptr = hud::hash_algorithm::city_hash::hash_64(nullptr, 0);
     ASSERT_EQ(hash_nullptr, 0x9AE16A3B2F90404Full);
@@ -179,7 +179,7 @@ TEST(hash, cityhash_hash64_is_usable_in_constexpr)
 }
 
 
-TEST(hash, cityhash_hash128) {
+GTEST_TEST(hash, cityhash_hash128) {
     // hash128 of nullptr
     uint128 hash = CityHash128(nullptr, 0);
     ASSERT_EQ(Uint128Low64(hash), 0x3df09dfc64c09a2bllu );
@@ -197,7 +197,7 @@ TEST(hash, cityhash_hash128) {
     }
 }
 
-TEST(hash, hash_can_hash_integral)
+GTEST_TEST(hash, hash_can_hash_integral)
 {
     // Consider compiler just truncate value that are bigger than u32
     ASSERT_EQ(hud::hash(hud::i8_max), static_cast<u32>(hud::i8_max));
@@ -213,7 +213,7 @@ TEST(hash, hash_can_hash_integral)
     ASSERT_EQ(hud::hash(hud::u64_max), 0xFFFFFFE8u);
 }
 
-TEST(hash, hash_of_integral_are_usable_in_constexpr)
+GTEST_TEST(hash, hash_of_integral_are_usable_in_constexpr)
 {
     constexpr u32 hash_vi8 = hud::hash(hud::i8_max);
     ASSERT_EQ(hash_vi8, static_cast<u32>(hud::i8_max));
@@ -240,7 +240,7 @@ TEST(hash, hash_of_integral_are_usable_in_constexpr)
     ASSERT_EQ(hash_vu64, 0xFFFFFFE8u);
 }
 
-TEST(hash, hash_can_hash_floating_point)
+GTEST_TEST(hash, hash_can_hash_floating_point)
 {
     f32 flt32 = 12345.6789f;
     ASSERT_EQ(hud::hash(flt32), static_cast<u32>(0x4640e6b7));
@@ -249,7 +249,7 @@ TEST(hash, hash_can_hash_floating_point)
 }
 
 
-TEST(hash, hash_of_floating_point_are_usable_in_constexpr)
+GTEST_TEST(hash, hash_of_floating_point_are_usable_in_constexpr)
 {
     constexpr f32 flt32 = 12345.6789f;
     constexpr u32 flt32_hash = std::bit_cast<u32>(flt32);
@@ -260,7 +260,7 @@ TEST(hash, hash_of_floating_point_are_usable_in_constexpr)
     ASSERT_EQ(flt64_hash, static_cast<u32>(0xb82c8fdb));
 }
 
-TEST(hash, hash_can_hash_c_string)
+GTEST_TEST(hash, hash_can_hash_c_string)
 {
     static constexpr const ansichar txt[] = "abcdefghijklmnopqrstuvwxyz";
     ASSERT_EQ(hud::hash(txt, hud::cstring::length(txt)), 0xaa02c5c1);
@@ -275,7 +275,7 @@ TEST(hash, hash_can_hash_c_string)
     }
 }
 
-TEST(hash, hash_can_hash_enumeration)
+GTEST_TEST(hash, hash_can_hash_enumeration)
 {
     enum class E : u32 { a = hud::u32_max, b = 'a' };
     enum class E2 : u64 { a = hud::u64_max, b = 'a' };
@@ -286,7 +286,7 @@ TEST(hash, hash_can_hash_enumeration)
     ASSERT_EQ(hud::hash(E2::b), hud::hash(static_cast<u64>('a')));
 }
 
-TEST(hash, hash_enumeration_are_usable_in_constexpr) 
+GTEST_TEST(hash, hash_enumeration_are_usable_in_constexpr) 
 {
     enum class E : u32 { a = hud::u32_max, b = 'a' };
     enum class E2 : u64 { a = hud::u64_max, b = 'a' };
@@ -301,13 +301,13 @@ TEST(hash, hash_enumeration_are_usable_in_constexpr)
     ASSERT_EQ(hash_e2_ab, hud::hash(static_cast<u64>('a')));
 }
 
-TEST(hash, hash_can_hash_pointers)
+GTEST_TEST(hash, hash_can_hash_pointers)
 {
     const u32* ptr = nullptr;
     ASSERT_EQ(hud::hash(ptr), reinterpret_cast<uptr>(ptr));
 }
 
-TEST(hash, crc32)
+GTEST_TEST(hash, crc32)
 {
     ASSERT_TRUE(hud::hash_algorithm::crc32::is_lookup_table_values_correct());
 

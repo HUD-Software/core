@@ -14,7 +14,7 @@ namespace hud_test {
 
 }
 
-TEST(traits, is_bitwise_copy_constructible)
+GTEST_TEST(traits, is_bitwise_copy_constructible)
 {
     // i8
     ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i8, i8>));

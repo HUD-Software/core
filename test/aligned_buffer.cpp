@@ -1,6 +1,6 @@
 #include <core/containers/aligned_buffer.h>
 
-TEST(aligned_buffer, default_constructor_should_aligned_buffer_correctly)
+GTEST_TEST(aligned_buffer, default_constructor_should_aligned_buffer_correctly)
 {
 
     using size = std::integer_sequence<int, 1, 2, 3, 4, 5, 6, 7, 8, 9>;

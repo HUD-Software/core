@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(array, remove_at_non_trivial_type)
+GTEST_TEST(array, remove_at_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -285,7 +285,7 @@ TEST(array, remove_at_non_trivial_type)
     }
 }
 
-TEST(array, remove_at_trivial_type)
+GTEST_TEST(array, remove_at_trivial_type)
 {
 
     using type = usize;
@@ -419,7 +419,7 @@ TEST(array, remove_at_trivial_type)
     }
 }
 
-TEST(array, remove_at_shrink_non_trivial_type)
+GTEST_TEST(array, remove_at_shrink_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -700,7 +700,7 @@ TEST(array, remove_at_shrink_non_trivial_type)
     }
 }
 
-TEST(array, remove_at_shrink_trivial_type)
+GTEST_TEST(array, remove_at_shrink_trivial_type)
 {
 
     using type = usize;

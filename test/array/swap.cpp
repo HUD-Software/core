@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(array, swap_empty_array_do_nothing)
+GTEST_TEST(array, swap_empty_array_do_nothing)
 {
 
     using type = usize;
@@ -46,7 +46,7 @@ TEST(array, swap_empty_array_do_nothing)
     ASSERT_EQ(b.allocator().free_count(), 0u);
 }
 
-TEST(array, swap_non_trivial_type)
+GTEST_TEST(array, swap_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -137,7 +137,7 @@ TEST(array, swap_non_trivial_type)
     ASSERT_EQ(b.allocator().free_count(), 0u);
 }
 
-TEST(array, swap_trivial_type)
+GTEST_TEST(array, swap_trivial_type)
 {
 
     using type = usize;

@@ -7,7 +7,7 @@ namespace hud_test {
     class d { virtual void fn() {} };
 }
 
-TEST(traits, is_trivial) {
+GTEST_TEST(traits, is_trivial) {
     ASSERT_TRUE((hud::is_trivial_v<hud_test::a>));
     ASSERT_FALSE((hud::is_trivial_v<hud_test::b>));
     ASSERT_FALSE((hud::is_trivial_v<hud_test::c>));

@@ -1,6 +1,6 @@
 #include <core/templates/lexicographical_compare.h>
 
-TEST(templates, lexicographicalCompare) {
+GTEST_TEST(templates, lexicographicalCompare) {
 
     i32 value[3] = { 1,2,3 };
     i32 value2[3] = { 1,2,4 };

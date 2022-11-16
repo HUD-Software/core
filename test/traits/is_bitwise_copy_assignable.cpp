@@ -13,7 +13,7 @@ namespace hud_test {
 
 }
 
-TEST(traits, is_bitwise_copy_assignable)
+GTEST_TEST(traits, is_bitwise_copy_assignable)
 {
     // i8
     ASSERT_TRUE((hud::is_bitwise_copy_assignable_v<i8, i8>));

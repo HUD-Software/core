@@ -1,6 +1,6 @@
 #include <core/containers/tuple.h>
 
-TEST(tuple, copy_assign_trivially_copy_assignable_same_types) {
+GTEST_TEST(tuple, copy_assign_trivially_copy_assignable_same_types) {
     using tuple_type = hud::tuple<f32, i32, wchar>;
 
     const auto test = []() {
@@ -33,7 +33,7 @@ TEST(tuple, copy_assign_trivially_copy_assignable_same_types) {
     }
 }
 
-TEST(tuple, copy_assign_trivially_copy_assignable_different_types) {
+GTEST_TEST(tuple, copy_assign_trivially_copy_assignable_different_types) {
     using tuple_type = hud::tuple<u64, i32, wchar>;
     using other_tuple_type = hud::tuple<u16, i16, char16>;
 
@@ -67,7 +67,7 @@ TEST(tuple, copy_assign_trivially_copy_assignable_different_types) {
     }
 }
 
-TEST(tuple, copy_assign_non_trivially_copy_assignable_same_types) {
+GTEST_TEST(tuple, copy_assign_non_trivially_copy_assignable_same_types) {
     using tuple_type = hud::tuple<hud_test::non_bitwise_copy_assignable_type ,f32, i32, wchar>;
 
     const auto test = []() {
@@ -109,7 +109,7 @@ TEST(tuple, copy_assign_non_trivially_copy_assignable_same_types) {
     }
 }
 
-TEST(tuple, copy_assign_non_trivially_copy_assignable_different_types) {
+GTEST_TEST(tuple, copy_assign_non_trivially_copy_assignable_different_types) {
     using tuple_type = hud::tuple<hud_test::non_bitwise_copy_assignable_type_2, f32, i32, wchar>;
     using other_tuple_type = hud::tuple<hud_test::non_bitwise_copy_assignable_type, u16, i16, char16>;
 
@@ -152,7 +152,7 @@ TEST(tuple, copy_assign_non_trivially_copy_assignable_different_types) {
     }
 }
 
-TEST(tuple, move_assign_trivially_copy_assignable_same_types) {
+GTEST_TEST(tuple, move_assign_trivially_copy_assignable_same_types) {
     using tuple_type = hud::tuple<f32, i32, wchar>;
 
     const auto test = []() {
@@ -185,7 +185,7 @@ TEST(tuple, move_assign_trivially_copy_assignable_same_types) {
     }
 }
 
-TEST(tuple, move_assign_trivially_copy_assignable_different_types) {
+GTEST_TEST(tuple, move_assign_trivially_copy_assignable_different_types) {
     using tuple_type = hud::tuple<u64, i32, wchar>;
     using other_tuple_type = hud::tuple<u16, i16, char16>;
 
@@ -219,7 +219,7 @@ TEST(tuple, move_assign_trivially_copy_assignable_different_types) {
     }
 }
 
-TEST(tuple, move_assign_non_trivially_copy_assignable_same_types) {
+GTEST_TEST(tuple, move_assign_non_trivially_copy_assignable_same_types) {
     using tuple_type = hud::tuple<hud_test::non_bitwise_copy_assignable_type, f32, i32, wchar>;
 
     const auto test = []() {
@@ -261,7 +261,7 @@ TEST(tuple, move_assign_non_trivially_copy_assignable_same_types) {
     }
 }
 
-TEST(tuple, move_assign_non_trivially_copy_assignable_different_types) {
+GTEST_TEST(tuple, move_assign_non_trivially_copy_assignable_different_types) {
     using tuple_type = hud::tuple<hud_test::non_bitwise_copy_assignable_type_2, f32, i32, wchar>;
     using other_tuple_type = hud::tuple<hud_test::non_bitwise_copy_assignable_type, u16, i16, char16>;
 
@@ -304,7 +304,7 @@ TEST(tuple, move_assign_non_trivially_copy_assignable_different_types) {
     }
 }
 
-TEST(tuple, move_assign_trivially_move_assignable_same_types) {
+GTEST_TEST(tuple, move_assign_trivially_move_assignable_same_types) {
     using tuple_type = hud::tuple<f32, i32, wchar>;
 
     const auto test = []() {
@@ -337,7 +337,7 @@ TEST(tuple, move_assign_trivially_move_assignable_same_types) {
     }
 }
 
-TEST(tuple, move_assign_trivially_move_assignable_different_types) {
+GTEST_TEST(tuple, move_assign_trivially_move_assignable_different_types) {
     using tuple_type = hud::tuple<u64, i32, wchar>;
     using other_tuple_type = hud::tuple<u16, i16, char16>;
 
@@ -371,7 +371,7 @@ TEST(tuple, move_assign_trivially_move_assignable_different_types) {
     }
 }
 
-TEST(tuple, move_assign_non_trivially_move_assignable_same_types) {
+GTEST_TEST(tuple, move_assign_non_trivially_move_assignable_same_types) {
     using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
 
     const auto test = []() {
@@ -419,7 +419,7 @@ TEST(tuple, move_assign_non_trivially_move_assignable_same_types) {
     }
 }
 
-TEST(tuple, move_assign_non_trivially_move_assignable_different_types) {
+GTEST_TEST(tuple, move_assign_non_trivially_move_assignable_different_types) {
     using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType2, f32, i32, wchar>;
     using other_tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, u16, i16, char16>;
 

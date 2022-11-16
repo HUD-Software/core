@@ -41,7 +41,7 @@ namespace hud_test {
     }
 }
 
-TEST(traits, is_trivially_swappable) {
+GTEST_TEST(traits, is_trivially_swappable) {
     ASSERT_TRUE((hud::is_trivially_swappable_v<i8>));
     ASSERT_TRUE((hud::is_trivially_swappable_v<u8>));
     ASSERT_TRUE((hud::is_trivially_swappable_v<i16>));

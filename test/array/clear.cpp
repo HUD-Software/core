@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "allocators.h"
 
-TEST(array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
+GTEST_TEST(array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -36,7 +36,7 @@ TEST(array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
     ASSERT_TRUE(destructor_called[1]);
 }
 
-TEST(array, clear_destroy_but_keep_allocated_memory_with_trivial_type)
+GTEST_TEST(array, clear_destroy_but_keep_allocated_memory_with_trivial_type)
 {
 
     using type = usize;
@@ -66,7 +66,7 @@ TEST(array, clear_destroy_but_keep_allocated_memory_with_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(array, clear_empty_do_nothing_with_non_trivial_type)
+GTEST_TEST(array, clear_empty_do_nothing_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -87,7 +87,7 @@ TEST(array, clear_empty_do_nothing_with_non_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(array, clear_empty_do_nothing_with_trivial_type)
+GTEST_TEST(array, clear_empty_do_nothing_with_trivial_type)
 {
 
     using type = usize;
@@ -108,7 +108,7 @@ TEST(array, clear_empty_do_nothing_with_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_non_trivial_type)
+GTEST_TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -141,7 +141,7 @@ TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_non_trivial_type
     ASSERT_TRUE(destructor_called[1]);
 }
 
-TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_trivial_type)
+GTEST_TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_trivial_type)
 {
 
     using type = usize;
@@ -169,7 +169,7 @@ TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 1u);
 }
 
-TEST(array, clear_shrink_empty_do_nothing_with_non_trivial_type)
+GTEST_TEST(array, clear_shrink_empty_do_nothing_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
@@ -190,7 +190,7 @@ TEST(array, clear_shrink_empty_do_nothing_with_non_trivial_type)
     ASSERT_EQ(array.allocator().free_count(), 0u);
 }
 
-TEST(array, clear_shrink_empty_do_nothing_with_trivial_type)
+GTEST_TEST(array, clear_shrink_empty_do_nothing_with_trivial_type)
 {
 
     using type = usize;

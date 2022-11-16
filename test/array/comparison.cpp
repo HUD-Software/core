@@ -78,7 +78,7 @@ namespace hud {
     {};
 }
 
-TEST(array, equal_operator)
+GTEST_TEST(array, equal_operator)
 {
     /**
     *
@@ -201,7 +201,7 @@ TEST(array, equal_operator)
     ASSERT_TRUE(col_7 == row_7);
 }
 
-TEST(array, not_equal_operator)
+GTEST_TEST(array, not_equal_operator)
 {
     /**
     *
@@ -324,7 +324,7 @@ TEST(array, not_equal_operator)
     ASSERT_FALSE(col_7 != row_7);
 }
 
-TEST(array, less_operator)
+GTEST_TEST(array, less_operator)
 {
     /**
         Testing by resolving the following truth table
@@ -492,7 +492,7 @@ TEST(array, less_operator)
     ASSERT_FALSE(col_9 < row_9);
 }
 
-TEST(array, greater_operator)
+GTEST_TEST(array, greater_operator)
 {
     /**
         Testing by resolving the following truth table
@@ -660,7 +660,7 @@ TEST(array, greater_operator)
     ASSERT_FALSE(col_9 > row_9);
 }
 
-TEST(array, less_equal_operator)
+GTEST_TEST(array, less_equal_operator)
 {
     /**
         Testing by resolving the following truth table
@@ -828,7 +828,7 @@ TEST(array, less_equal_operator)
     ASSERT_TRUE(col_9 <= row_9);
 }
 
-TEST(array, greater_equal_operator)
+GTEST_TEST(array, greater_equal_operator)
 {
     /**
         Testing by resolving the following truth table

@@ -1,6 +1,6 @@
 #include <core/containers/shared_pointer.h>
 
-TEST(shared_pointer_array_not_safe, copy_assignement_same_type) {
+GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_same_type) {
 
 
     const auto test = []() {
@@ -83,7 +83,7 @@ TEST(shared_pointer_array_not_safe, copy_assignement_same_type) {
 //#endif
 }
 
-TEST(shared_pointer_array_not_safe, copy_assignement_different_type) {
+GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_different_type) {
 
 
     const auto test = []() {
@@ -165,7 +165,7 @@ TEST(shared_pointer_array_not_safe, copy_assignement_different_type) {
 //#endif
 }
 
-TEST(shared_pointer_array_not_safe, copy_assignement_an_empty_same_type) {
+GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_an_empty_same_type) {
 
 
     const auto test = []() {
@@ -206,7 +206,7 @@ TEST(shared_pointer_array_not_safe, copy_assignement_an_empty_same_type) {
 //#endif
 }
 
-TEST(shared_pointer_array_not_safe, copy_assignement_nullptr) {
+GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_nullptr) {
 
 
     const auto test = []() {
@@ -246,7 +246,7 @@ TEST(shared_pointer_array_not_safe, copy_assignement_nullptr) {
 //#endif
 }
 
-TEST(shared_pointer_array_not_safe, move_assignement_same_type) {
+GTEST_TEST(shared_pointer_array_not_safe, move_assignement_same_type) {
 
 
     const auto test = []() {
@@ -328,7 +328,7 @@ TEST(shared_pointer_array_not_safe, move_assignement_same_type) {
 //#endif
 }
 
-TEST(shared_pointer_array_not_safe, move_assignement_different_type) {
+GTEST_TEST(shared_pointer_array_not_safe, move_assignement_different_type) {
 
 
     const auto test = []() {
@@ -411,7 +411,7 @@ TEST(shared_pointer_array_not_safe, move_assignement_different_type) {
 //#endif
 }
 
-TEST(shared_pointer_array_not_safe, move_assignement_an_empty_same_type) {
+GTEST_TEST(shared_pointer_array_not_safe, move_assignement_an_empty_same_type) {
 
 
     const auto test = []() {
@@ -449,7 +449,7 @@ TEST(shared_pointer_array_not_safe, move_assignement_an_empty_same_type) {
 //#endif
 }
 
-TEST(shared_pointer_array_not_safe, move_assignement_nullptr) {
+GTEST_TEST(shared_pointer_array_not_safe, move_assignement_nullptr) {
 
 
     const auto test = []() {

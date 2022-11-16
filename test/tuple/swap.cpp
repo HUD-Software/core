@@ -1,6 +1,6 @@
 #include <core/containers/tuple.h>
 
-TEST(tuple, swap_non_trivially_copy_assignable_same_types) {
+GTEST_TEST(tuple, swap_non_trivially_copy_assignable_same_types) {
     using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
 
     const auto test = []() {
@@ -71,7 +71,7 @@ TEST(tuple, swap_non_trivially_copy_assignable_same_types) {
     }
 }
 
-TEST(tuple, swap_non_trivially_copy_assignable_different_types) {
+GTEST_TEST(tuple, swap_non_trivially_copy_assignable_different_types) {
     using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType2, f32, i32, wchar>;
     using other_tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
     const auto test = []() {

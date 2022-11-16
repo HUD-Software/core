@@ -21,7 +21,7 @@ namespace hud_test {
     };
 }
 
-TEST(traits, is_swappable) {
+GTEST_TEST(traits, is_swappable) {
     ASSERT_TRUE(hud::is_swappable_v<hud_test::movaeble>);
     ASSERT_FALSE(hud::is_swappable_v<hud_test::not_moveable>);
 

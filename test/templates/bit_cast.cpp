@@ -1,6 +1,6 @@
 #include <core/templates/bit_cast.h>
 
-TEST(templates, bit_cast) {
+GTEST_TEST(templates, bit_cast) {
 
 
     constexpr f64 f64v = 19880124.0;

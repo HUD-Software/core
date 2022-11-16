@@ -4,7 +4,7 @@ namespace hud_test {
     struct a {};
 }
 
-TEST(traits, apply_cv) {
+GTEST_TEST(traits, apply_cv) {
     ASSERT_TRUE((hud::is_same_v<hud_test::a, hud::apply_cv_t<hud_test::a, false, false>>));
     ASSERT_TRUE((hud::is_same_v<const hud_test::a, hud::apply_cv_t<hud_test::a, true, false>>));
     ASSERT_TRUE((hud::is_same_v<volatile hud_test::a, hud::apply_cv_t<hud_test::a, false, true>>));

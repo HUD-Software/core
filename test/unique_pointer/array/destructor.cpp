@@ -1,6 +1,6 @@
 #include <core/containers/unique_pointer.h>
 
-TEST(unique_pointer_array, destructor) {
+GTEST_TEST(unique_pointer_array, destructor) {
 
     const auto test = []() {
         i32 dtor_count[2] = { 0, 0 };
@@ -28,7 +28,7 @@ TEST(unique_pointer_array, destructor) {
     }
 }
 
-TEST(unique_pointer_array, destructor_after_move) {
+GTEST_TEST(unique_pointer_array, destructor_after_move) {
 
     const auto test = []() {
         i32 dtor_count[2] = { 0, 0 };

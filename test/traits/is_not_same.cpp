@@ -11,7 +11,7 @@ namespace hud_test {
     struct is_same_d {};
 }
 
-TEST(traits, is_not_same) {
+GTEST_TEST(traits, is_not_same) {
     ASSERT_TRUE((hud::is_not_same_v<i32, const i32>));
     ASSERT_FALSE((hud::is_not_same_v<i32, hud_test::integer_type>));
 

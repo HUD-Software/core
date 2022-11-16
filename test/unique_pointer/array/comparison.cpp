@@ -27,13 +27,13 @@ namespace hud_test {
     };
 }
 
-TEST(unique_pointer_array, equal_operator) {
+GTEST_TEST(unique_pointer_array, equal_operator) {
 
     const auto test = []() {
         i32* pi = new i32[2]{ 0, 0 };
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(pi);
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(pi);
-        hud::unique_pointer<i32[]> p3(new i32[2]{ 0, 0 });
+        hud::unique_pointer<i32[]> p3(new (std::nothrow)i32[2]{ 0, 0 });
         hud::unique_pointer<i32[]> p4;
         const auto result = std::tuple{
             p1 == p2,
@@ -80,13 +80,13 @@ TEST(unique_pointer_array, equal_operator) {
 }
 
 
-TEST(unique_pointer_array, not_equal_operator) {
+GTEST_TEST(unique_pointer_array, not_equal_operator) {
 
     const auto test = []() {
         i32* pi = new i32[2]{ 0, 0 };
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(pi);
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(pi);
-        hud::unique_pointer<i32[]> p3(new i32[2]{ 0, 0 });
+        hud::unique_pointer<i32[]> p3(new (std::nothrow)i32[2]{ 0, 0 });
         hud::unique_pointer<i32[]> p4;
         const auto result = std::tuple{
             p1 != p2,
@@ -133,7 +133,7 @@ TEST(unique_pointer_array, not_equal_operator) {
 }
 
 
-TEST(unique_pointer_array, less_operator) {
+GTEST_TEST(unique_pointer_array, less_operator) {
 
     const auto test = []() {
         i32 buf[2];
@@ -178,7 +178,7 @@ TEST(unique_pointer_array, less_operator) {
     
 }
 
-TEST(unique_pointer_array, less_equal_operator) {
+GTEST_TEST(unique_pointer_array, less_equal_operator) {
 
     const auto test = []() {
         i32 buf[2];
@@ -223,7 +223,7 @@ TEST(unique_pointer_array, less_equal_operator) {
 }
 
 
-TEST(unique_pointer_array, greater_operator) {
+GTEST_TEST(unique_pointer_array, greater_operator) {
 
     const auto test = []() {
         i32 buf[2];
@@ -268,7 +268,7 @@ TEST(unique_pointer_array, greater_operator) {
 }
 
 
-TEST(unique_pointer_array, greater_equal_operator) {
+GTEST_TEST(unique_pointer_array, greater_equal_operator) {
 
     const auto test = []() {
         i32 buf[2];

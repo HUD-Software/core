@@ -12,7 +12,7 @@ namespace{
     };
 }
 
-TEST(traits, is_nothrow_move_assignable) {   
+GTEST_TEST(traits, is_nothrow_move_assignable) {   
     ASSERT_TRUE((hud::is_nothrow_move_assignable_v<i32>));
     ASSERT_TRUE((hud::is_nothrow_move_assignable_v<a>));
     ASSERT_FALSE((hud::is_nothrow_move_assignable_v<b>));

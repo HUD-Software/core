@@ -1,7 +1,7 @@
 #include <core/containers/optional.h>
 
 
-TEST(optional, swap_empty_with_empty_trivial_type) {
+GTEST_TEST(optional, swap_empty_with_empty_trivial_type) {
 
 
     using type = i32;
@@ -32,7 +32,7 @@ TEST(optional, swap_empty_with_empty_trivial_type) {
     }
 }
 
-TEST(optional, swap_empty_with_empty_non_trivial_type) {
+GTEST_TEST(optional, swap_empty_with_empty_non_trivial_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -63,7 +63,7 @@ TEST(optional, swap_empty_with_empty_non_trivial_type) {
     }
 }
 
-TEST(optional, swap_empty_with_non_empty_trivial_type) {
+GTEST_TEST(optional, swap_empty_with_non_empty_trivial_type) {
 
 
     using type = i32;
@@ -97,7 +97,7 @@ TEST(optional, swap_empty_with_non_empty_trivial_type) {
     }
 }
 
-TEST(optional, swap_empty_with_non_empty_non_trivial_type) {
+GTEST_TEST(optional, swap_empty_with_non_empty_non_trivial_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -128,7 +128,7 @@ TEST(optional, swap_empty_with_non_empty_non_trivial_type) {
     }
 }
 
-TEST(optional, swap_non_empty_with_non_empty_trivial_type) {
+GTEST_TEST(optional, swap_non_empty_with_non_empty_trivial_type) {
 
 
     using type = i32;
@@ -165,7 +165,7 @@ TEST(optional, swap_non_empty_with_non_empty_trivial_type) {
     }
 }
 
-TEST(optional, swap_non_empty_with_non_empty_non_trivial_type) {
+GTEST_TEST(optional, swap_non_empty_with_non_empty_non_trivial_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -202,7 +202,7 @@ TEST(optional, swap_non_empty_with_non_empty_non_trivial_type) {
     }
 }
 
-TEST(optional, hud_swap_empty_with_empty_trivial_type) {
+GTEST_TEST(optional, hud_swap_empty_with_empty_trivial_type) {
 
 
     using type = i32;
@@ -233,7 +233,7 @@ TEST(optional, hud_swap_empty_with_empty_trivial_type) {
     }
 }
 
-TEST(optional, hud_swap_empty_with_empty_non_trivial_type) {
+GTEST_TEST(optional, hud_swap_empty_with_empty_non_trivial_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -264,7 +264,7 @@ TEST(optional, hud_swap_empty_with_empty_non_trivial_type) {
     }
 }
 
-TEST(optional, hud_swap_empty_with_non_empty_trivial_type) {
+GTEST_TEST(optional, hud_swap_empty_with_non_empty_trivial_type) {
 
 
     using type = i32;
@@ -298,7 +298,7 @@ TEST(optional, hud_swap_empty_with_non_empty_trivial_type) {
     }
 }
 
-TEST(optional, hud_swap_empty_with_non_empty_non_trivial_type) {
+GTEST_TEST(optional, hud_swap_empty_with_non_empty_non_trivial_type) {
 
 
     using type = hud_test::non_bitwise_type;
@@ -329,7 +329,7 @@ TEST(optional, hud_swap_empty_with_non_empty_non_trivial_type) {
     }
 }
 
-TEST(optional, hud_swap_non_empty_with_non_empty_trivial_type) {
+GTEST_TEST(optional, hud_swap_non_empty_with_non_empty_trivial_type) {
 
 
     using type = i32;
@@ -366,7 +366,7 @@ TEST(optional, hud_swap_non_empty_with_non_empty_trivial_type) {
     }
 }
 
-TEST(optional, hud_swap_non_empty_with_non_empty_non_trivial_type) {
+GTEST_TEST(optional, hud_swap_non_empty_with_non_empty_non_trivial_type) {
 
 
     using type = hud_test::non_bitwise_type;

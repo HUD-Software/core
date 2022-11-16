@@ -5,7 +5,7 @@ namespace hud_test {
     enum class e : i32 {};
 }
 
-TEST(traits, is_signed) {
+GTEST_TEST(traits, is_signed) {
     ASSERT_FALSE((hud::is_signed_v<bool>));
     ASSERT_TRUE((hud::is_signed_v<i8>));
     ASSERT_TRUE((hud::is_signed_v<i16>));

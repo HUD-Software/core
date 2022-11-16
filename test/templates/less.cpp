@@ -16,7 +16,7 @@ namespace hud_test {
 }
 // LCOV_EXCL_STOP
 
-TEST(templates, less) {
+GTEST_TEST(templates, less) {
 
 
     hud::less<i32> ls;

@@ -21,7 +21,7 @@ namespace hud_test {
         a mA;
     };
 }
-TEST(traits, is_constructible) {
+GTEST_TEST(traits, is_constructible) {
     ASSERT_TRUE((hud::is_constructible_v<hud_test::a>));
 #if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG)
     // Bug: Waiting for clang anwser https://github.com/llvm/llvm-project/issues/55974

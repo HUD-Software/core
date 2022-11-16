@@ -24,7 +24,7 @@ namespace hud_test {
 }
 
 
-TEST(traits, common_type) {
+GTEST_TEST(traits, common_type) {
     ASSERT_TRUE((hud::is_same_v<hud::common_type_t<i8, i16, i32>, i32>));
     ASSERT_TRUE((hud::is_same_v<hud::common_type_t<f32, f64>, f64>));
     ASSERT_TRUE((hud::is_same_v<hud::common_type_t<hud_test::derived, hud_test::base>, hud_test::base>));

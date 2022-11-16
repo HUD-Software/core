@@ -5,7 +5,7 @@ namespace hud_test {
     enum class e {};
 }
 
-TEST(traits, is_scalar) {
+GTEST_TEST(traits, is_scalar) {
     ASSERT_FALSE((hud::is_scalar_v<hud_test::a>));
     ASSERT_TRUE((hud::is_scalar_v<hud_test::e>));
     ASSERT_TRUE((hud::is_scalar_v<i8>));

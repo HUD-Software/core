@@ -1,7 +1,7 @@
 #include <core/containers/shared_pointer.h>
 #include <core/traits/is_same.h>
 
-TEST(shared_pointer_not_safe, equal_operator) {
+GTEST_TEST(shared_pointer_not_safe, equal_operator) {
 
 
     const auto test = []() {
@@ -59,7 +59,7 @@ TEST(shared_pointer_not_safe, equal_operator) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, not_equal_operator) {
+GTEST_TEST(shared_pointer_not_safe, not_equal_operator) {
 
 
     const auto test = []() {
@@ -117,7 +117,7 @@ TEST(shared_pointer_not_safe, not_equal_operator) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, less_operator) {
+GTEST_TEST(shared_pointer_not_safe, less_operator) {
 
 
     const auto test = []() {
@@ -208,7 +208,7 @@ TEST(shared_pointer_not_safe, less_operator) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, less_equal_operator) {
+GTEST_TEST(shared_pointer_not_safe, less_equal_operator) {
 
 
     const auto test = []() {
@@ -299,7 +299,7 @@ TEST(shared_pointer_not_safe, less_equal_operator) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, greater_operator) {
+GTEST_TEST(shared_pointer_not_safe, greater_operator) {
 
 
     const auto test = []() {
@@ -390,7 +390,7 @@ TEST(shared_pointer_not_safe, greater_operator) {
 //#endif
 }
 
-TEST(shared_pointer_not_safe, greater_equal_operator) {
+GTEST_TEST(shared_pointer_not_safe, greater_equal_operator) {
 
 
     const auto test = []() {

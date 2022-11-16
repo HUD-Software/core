@@ -6,7 +6,7 @@ namespace hud_test {
     struct c { c(int) {} };
 }
 
-TEST(traits, is_default_constructible) {
+GTEST_TEST(traits, is_default_constructible) {
     ASSERT_TRUE((hud::is_default_constructible_v<i32>));
     ASSERT_FALSE((hud::is_default_constructible_v<i32&>));
     ASSERT_TRUE((hud::is_default_constructible_v<volatile i32>));

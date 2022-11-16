@@ -22,7 +22,7 @@ namespace hud_test {
 }
 // LCOV_EXCL_STOP
 
-TEST(traits, is_function) {
+GTEST_TEST(traits, is_function) {
     ASSERT_TRUE((hud::is_function_v<decltype(hud_test::is_function_a)>));
     ASSERT_FALSE((hud::is_function_v<decltype(hud_test::b)>));
     ASSERT_FALSE((hud::is_function_v<decltype(hud_test::fct_obj)>));

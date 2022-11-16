@@ -5,7 +5,7 @@ namespace hud_test {
     class b {};
 }
 
-TEST(traits, is_arithmetic) {
+GTEST_TEST(traits, is_arithmetic) {
     ASSERT_TRUE(hud::is_arithmetic_v<bool>);
     ASSERT_TRUE(hud::is_arithmetic_v<i8>);
     ASSERT_TRUE(hud::is_arithmetic_v<i16>);
