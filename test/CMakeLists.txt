@@ -28,6 +28,9 @@ add_executable(test_core
 	array/search.cpp
 	array/shrink_to_fit.cpp
 	array/swap.cpp
+	hash/city_hash.cpp
+	hash/crc32.cpp
+	hash/hash.cpp
 	memory/alignment.cpp
 	memory/allocation.cpp
 	memory/compare.cpp
@@ -247,7 +250,6 @@ add_executable(test_core
 	compilation.cpp
 	cstring.cpp
 	debugger.cpp
-	hash.cpp
 	heap_allocator.cpp
 	main.cpp
 	precompiled.h
