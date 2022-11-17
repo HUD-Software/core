@@ -2,13 +2,13 @@
 
 
 GTEST_TEST(traits, negation) {
-    ASSERT_TRUE((hud::negation_v<hud::integral_constant<bool, 0>>));
-    ASSERT_FALSE((hud::negation_v<hud::integral_constant<bool, 1>>));
-    ASSERT_TRUE((hud::negation_v<hud::integral_constant<bool, false>>));
-    ASSERT_FALSE((hud::negation_v<hud::integral_constant<bool, true>>));
+    GTEST_ASSERT_TRUE((hud::negation_v<hud::integral_constant<bool, 0>>));
+    GTEST_ASSERT_FALSE((hud::negation_v<hud::integral_constant<bool, 1>>));
+    GTEST_ASSERT_TRUE((hud::negation_v<hud::integral_constant<bool, false>>));
+    GTEST_ASSERT_FALSE((hud::negation_v<hud::integral_constant<bool, true>>));
 
-    ASSERT_TRUE((hud::negation_v<hud::bool_constant<false>>));
-    ASSERT_FALSE((hud::negation_v<hud::bool_constant<true>>));
-    ASSERT_TRUE((hud::negation_v<hud::false_type>));
-    ASSERT_FALSE((hud::negation_v<hud::true_type>));
+    GTEST_ASSERT_TRUE((hud::negation_v<hud::bool_constant<false>>));
+    GTEST_ASSERT_FALSE((hud::negation_v<hud::bool_constant<true>>));
+    GTEST_ASSERT_TRUE((hud::negation_v<hud::false_type>));
+    GTEST_ASSERT_FALSE((hud::negation_v<hud::true_type>));
 }

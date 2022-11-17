@@ -16,15 +16,15 @@ GTEST_TEST(unique_pointer_array, destructor) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 }
 
@@ -45,14 +45,14 @@ GTEST_TEST(unique_pointer_array, destructor_after_move) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 }

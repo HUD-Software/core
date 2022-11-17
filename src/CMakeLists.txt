@@ -228,7 +228,11 @@ set_target_properties(core
 )
 if(MSVC)
 	target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20)
+	#target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20 /EHsc /GR-)
+# elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+# 	target_compile_options( core PRIVATE -fno-cxx-exceptions -fno-rtti)
 endif()
+
 
 if(COVERAGE AND MSVC)
 	target_link_options(core PRIVATE /PROFILE)

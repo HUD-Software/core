@@ -16,7 +16,7 @@ namespace hud_test {
 
 GTEST_TEST(traits, enable_if)
 {
-    ASSERT_TRUE(hud_test::enable_if_fct_is_integral<i32>());
-    ASSERT_TRUE(hud_test::enable_if_fct_is_integral<i8>());
-    ASSERT_FALSE(hud_test::enable_if_fct_is_integral<hud_test::a>());
+    GTEST_ASSERT_TRUE(hud_test::enable_if_fct_is_integral<i32>());
+    GTEST_ASSERT_TRUE(hud_test::enable_if_fct_is_integral<i8>());
+    GTEST_ASSERT_FALSE(hud_test::enable_if_fct_is_integral<hud_test::a>());
 }

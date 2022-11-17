@@ -20,14 +20,14 @@ GTEST_TEST(templates, equal) {
 
 
     hud::equal<i32> eq;
-    ASSERT_TRUE(eq(1, 1));
-    ASSERT_FALSE(eq(-1, 1));
+    GTEST_ASSERT_TRUE(eq(1, 1));
+    GTEST_ASSERT_FALSE(eq(-1, 1));
 
     hud::equal<hud_test::S> eq_s;
-    ASSERT_TRUE(eq_s(hud_test::S{ 1, }, hud_test::S{ 1 }));
-    ASSERT_FALSE(eq_s(hud_test::S{ -1 }, hud_test::S{ 1 }));
+    GTEST_ASSERT_TRUE(eq_s(hud_test::S{ 1, }, hud_test::S{ 1 }));
+    GTEST_ASSERT_FALSE(eq_s(hud_test::S{ -1 }, hud_test::S{ 1 }));
 
     hud::equal<i32*> eq_ptr;
-    ASSERT_TRUE(eq_ptr(nullptr, nullptr));
-    ASSERT_FALSE(eq_ptr(nullptr, reinterpret_cast<i32*>(0x1)));
+    GTEST_ASSERT_TRUE(eq_ptr(nullptr, nullptr));
+    GTEST_ASSERT_FALSE(eq_ptr(nullptr, reinterpret_cast<i32*>(0x1)));
 }

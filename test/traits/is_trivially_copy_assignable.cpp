@@ -11,19 +11,19 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_trivially_copy_assignable) {
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32>));
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32&>));
-    ASSERT_FALSE((hud::is_trivially_copy_assignable_v<i32[]>));
-    ASSERT_FALSE((hud::is_trivially_copy_assignable_v<i32[32]>));
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32*>));
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32, f32>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32&>));
+    GTEST_ASSERT_FALSE((hud::is_trivially_copy_assignable_v<i32[]>));
+    GTEST_ASSERT_FALSE((hud::is_trivially_copy_assignable_v<i32[32]>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32*>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32, f32>));
 
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::a>));
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::a, hud_test::a>));
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::b>));
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::b, hud_test::b>));
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::c>));
-    ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::c, hud_test::c>));
-    ASSERT_FALSE((hud::is_trivially_copy_assignable_v<hud_test::d>));
-    ASSERT_FALSE((hud::is_trivially_copy_assignable_v<hud_test::d, hud_test::a>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::a>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::a, hud_test::a>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::b>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::b, hud_test::b>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::c>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::c, hud_test::c>));
+    GTEST_ASSERT_FALSE((hud::is_trivially_copy_assignable_v<hud_test::d>));
+    GTEST_ASSERT_FALSE((hud::is_trivially_copy_assignable_v<hud_test::d, hud_test::a>));
 }

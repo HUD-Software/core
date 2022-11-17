@@ -10,8 +10,8 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_constant_evaluated) {
-    ASSERT_FALSE(hud_test::evaluate());
+    GTEST_ASSERT_FALSE(hud_test::evaluate());
 
     constexpr bool const_evaluation = hud_test::evaluate();
-    ASSERT_TRUE(const_evaluation);
+    GTEST_ASSERT_TRUE(const_evaluation);
 }

@@ -2,7 +2,7 @@
 #include <optional>
 
 GTEST_TEST(optional, less_or_equal_size_as_std_optional) {
-    ASSERT_LE(sizeof(hud::optional<i32>), sizeof(std::optional<i32>));
+    GTEST_ASSERT_LE(sizeof(hud::optional<i32>), sizeof(std::optional<i32>));
 }
 
 GTEST_TEST(optional, trivially_copy_constructible_if_type_is_trivially_copy_constructible) {
@@ -10,8 +10,8 @@ GTEST_TEST(optional, trivially_copy_constructible_if_type_is_trivially_copy_cons
 
     using type = i32;
 
-    ASSERT_TRUE(hud::is_trivially_copy_constructible_v<type>);
-    ASSERT_TRUE(hud::is_trivially_copy_constructible_v<hud::optional<type>>);
+    GTEST_ASSERT_TRUE(hud::is_trivially_copy_constructible_v<type>);
+    GTEST_ASSERT_TRUE(hud::is_trivially_copy_constructible_v<hud::optional<type>>);
 }
 
 GTEST_TEST(optional, not_trivially_copy_constructible_if_type_is_not_trivially_copy_constructible) {
@@ -19,8 +19,8 @@ GTEST_TEST(optional, not_trivially_copy_constructible_if_type_is_not_trivially_c
 
     using type = hud_test::non_bitwise_type;
 
-    ASSERT_FALSE(hud::is_trivially_copy_constructible_v<type>);
-    ASSERT_FALSE(hud::is_trivially_copy_constructible_v<hud::optional<type>>);
+    GTEST_ASSERT_FALSE(hud::is_trivially_copy_constructible_v<type>);
+    GTEST_ASSERT_FALSE(hud::is_trivially_copy_constructible_v<hud::optional<type>>);
 }
 
 GTEST_TEST(optional, trivially_destructible_if_type_is_trivially_destructible) {
@@ -28,8 +28,8 @@ GTEST_TEST(optional, trivially_destructible_if_type_is_trivially_destructible) {
 
     using type = i32;
 
-    ASSERT_TRUE(hud::is_trivially_destructible_v<type>);
-    ASSERT_TRUE(hud::is_trivially_destructible_v<hud::optional<type>>);
+    GTEST_ASSERT_TRUE(hud::is_trivially_destructible_v<type>);
+    GTEST_ASSERT_TRUE(hud::is_trivially_destructible_v<hud::optional<type>>);
 }
 
 GTEST_TEST(optional, not_trivially_destructible_if_type_is_not_trivially_destructible) {
@@ -37,8 +37,8 @@ GTEST_TEST(optional, not_trivially_destructible_if_type_is_not_trivially_destruc
 
     using type = hud_test::non_bitwise_type;
 
-    ASSERT_FALSE(hud::is_trivially_destructible_v<type>);
-    ASSERT_FALSE(hud::is_trivially_destructible_v<hud::optional<type>>);
+    GTEST_ASSERT_FALSE(hud::is_trivially_destructible_v<type>);
+    GTEST_ASSERT_FALSE(hud::is_trivially_destructible_v<hud::optional<type>>);
 }
 
 GTEST_TEST(optional, cast_bool) {
@@ -55,15 +55,15 @@ GTEST_TEST(optional, cast_bool) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 }
 
@@ -82,15 +82,15 @@ GTEST_TEST(optional, has_value) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 }
 
@@ -125,19 +125,19 @@ GTEST_TEST(optional, value) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -167,28 +167,28 @@ GTEST_TEST(optional, value_or) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_EQ(std::get<0>(result), 456);
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_EQ(std::get<2>(result), 456);
-        ASSERT_EQ(std::get<3>(result), 123);
-        ASSERT_EQ(std::get<4>(result), 456);
-        ASSERT_EQ(std::get<5>(result), 123);
-        ASSERT_EQ(std::get<6>(result), 456);
-        ASSERT_EQ(std::get<7>(result), 123);
+        GTEST_ASSERT_EQ(std::get<0>(result), 456);
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_EQ(std::get<2>(result), 456);
+        GTEST_ASSERT_EQ(std::get<3>(result), 123);
+        GTEST_ASSERT_EQ(std::get<4>(result), 456);
+        GTEST_ASSERT_EQ(std::get<5>(result), 123);
+        GTEST_ASSERT_EQ(std::get<6>(result), 456);
+        GTEST_ASSERT_EQ(std::get<7>(result), 123);
     }
 
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_EQ(std::get<0>(result), 456);
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_EQ(std::get<2>(result), 456);
-        ASSERT_EQ(std::get<3>(result), 123);
-        ASSERT_EQ(std::get<4>(result), 456);
-        ASSERT_EQ(std::get<5>(result), 123);
-        ASSERT_EQ(std::get<6>(result), 456);
-        ASSERT_EQ(std::get<7>(result), 123);
+        GTEST_ASSERT_EQ(std::get<0>(result), 456);
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_EQ(std::get<2>(result), 456);
+        GTEST_ASSERT_EQ(std::get<3>(result), 123);
+        GTEST_ASSERT_EQ(std::get<4>(result), 456);
+        GTEST_ASSERT_EQ(std::get<5>(result), 123);
+        GTEST_ASSERT_EQ(std::get<6>(result), 456);
+        GTEST_ASSERT_EQ(std::get<7>(result), 123);
     }
 }
 
@@ -211,15 +211,15 @@ GTEST_TEST(optional, operator_arrow) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_EQ(std::get<0>(result), 123);
-        ASSERT_EQ(std::get<1>(result), 456);
+        GTEST_ASSERT_EQ(std::get<0>(result), 123);
+        GTEST_ASSERT_EQ(std::get<1>(result), 456);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_EQ(std::get<0>(result), 123);
-        ASSERT_EQ(std::get<1>(result), 456);
+        GTEST_ASSERT_EQ(std::get<0>(result), 123);
+        GTEST_ASSERT_EQ(std::get<1>(result), 456);
     }
 }
 
@@ -240,15 +240,15 @@ GTEST_TEST(optional, operator_dereference) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_EQ(std::get<0>(result), 123);
-        ASSERT_EQ(std::get<1>(result), 456);
+        GTEST_ASSERT_EQ(std::get<0>(result), 123);
+        GTEST_ASSERT_EQ(std::get<1>(result), 456);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_EQ(std::get<0>(result), 123);
-        ASSERT_EQ(std::get<1>(result), 456);
+        GTEST_ASSERT_EQ(std::get<0>(result), 123);
+        GTEST_ASSERT_EQ(std::get<1>(result), 456);
     }
 }
 GTEST_TEST(optional, reset_on_empty_do_nothing) {
@@ -272,15 +272,15 @@ GTEST_TEST(optional, reset_on_empty_do_nothing) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
     }
 }
 
@@ -311,18 +311,18 @@ GTEST_TEST(optional, reset_call_destructor_if_T_is_not_trivially_destructible) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0);
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 1);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0);
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 1);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0);
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 1);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0);
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 1);
     }
 }

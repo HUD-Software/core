@@ -6,12 +6,12 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_trivially_destructible) {
-    ASSERT_TRUE((hud::is_trivially_destructible_v<i32>));
-    ASSERT_TRUE((hud::is_trivially_destructible_v<i32&>));
-    ASSERT_FALSE((hud::is_trivially_destructible_v<i32[]>));
-    ASSERT_TRUE((hud::is_trivially_destructible_v<i32[32]>));
-    ASSERT_TRUE((hud::is_trivially_destructible_v<i32*>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_destructible_v<i32>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_destructible_v<i32&>));
+    GTEST_ASSERT_FALSE((hud::is_trivially_destructible_v<i32[]>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_destructible_v<i32[32]>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_destructible_v<i32*>));
 
-    ASSERT_TRUE((hud::is_trivially_destructible_v<hud_test::a>));
-    ASSERT_FALSE((hud::is_trivially_destructible_v<hud_test::b>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_destructible_v<hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_trivially_destructible_v<hud_test::b>));
 }

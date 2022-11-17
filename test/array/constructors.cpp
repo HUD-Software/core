@@ -11,17 +11,17 @@ GTEST_TEST(array, default_constructor_should_allocate_no_memory)
     // Non Constant
     {
         auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
     }
 }
 
@@ -70,15 +70,15 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                 constexpr type_t raw[element_count] = { 1,2,3,4 };
                 const auto result = test_default_allocator(raw, element_count);
                 // Allocation of 4 i32 should be done
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), element_count);
-                ASSERT_EQ(std::get<2>(result), element_count);
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
                 // Ensure it's not the same memory buffer
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure values are correclty copied
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
             }
 
             // Constant
@@ -87,15 +87,15 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                 constexpr type_t raw[element_count] = { 1,2,3,4 };
                 constexpr auto result = test_default_allocator(raw, element_count);
                 // Allocation of 4 i32 should be done
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), element_count);
-                ASSERT_EQ(std::get<2>(result), element_count);
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
                 // Ensure it's not the same memory buffer
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure values are correclty copied
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
             }
         }
 
@@ -137,19 +137,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                 constexpr type_t raw[element_count] = { 1,2,3,4 };
                 const auto result = test_with_allocator(raw, element_count);
                 // Allocation of 4 i32 should be done
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), element_count);
-                ASSERT_EQ(std::get<2>(result), element_count);
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
                 // Ensure it's not the same memory buffer
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure values are correclty copied
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
@@ -158,19 +158,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                 constexpr type_t raw[element_count] = { 1,2,3,4 };
                 constexpr auto result = test_with_allocator(raw, element_count);
                 // Allocation of 4 i32 should be done
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), element_count);
-                ASSERT_EQ(std::get<2>(result), element_count);
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
                 // Ensure it's not the same memory buffer
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure values are correclty copied
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -212,15 +212,15 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                             constexpr type_t raw[element_count] = { 1,2,3,4 };
                             const auto result = test_default_allocator(raw, element_count);
                             // Allocation of 4 i32 should be done
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), element_count);
-                            ASSERT_EQ(std::get<2>(result), element_count + extra);
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                            GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                             // Ensure it's not the same memory buffer
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure values are correclty copied
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
                         }
 
                         // Constant
@@ -229,15 +229,15 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                             constexpr type_t raw[element_count] = { 1,2,3,4 };
                             constexpr auto result = test_default_allocator(raw, element_count);
                             // Allocation of 4 i32 should be done
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), element_count);
-                            ASSERT_EQ(std::get<2>(result), element_count + extra);
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                            GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                             // Ensure it's not the same memory buffer
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure values are correclty copied
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
                         }
 
                     }
@@ -280,19 +280,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                             constexpr type_t raw[element_count] = { 1,2,3,4 };
                             const auto result = test_with_allocator(raw, element_count);
                             // Allocation of 4 i32 should be done
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), element_count);
-                            ASSERT_EQ(std::get<2>(result), element_count + extra);
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                            GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                             // Ensure it's not the same memory buffer
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure values are correclty copied
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
@@ -302,19 +302,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                             constexpr auto result = test_with_allocator(raw, element_count);
 
                             // Allocation of 4 i32 should be done
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), element_count);
-                            ASSERT_EQ(std::get<2>(result), element_count + extra);
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                            GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                             // Ensure it's not the same memory buffer
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure values are correclty copied
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
             });
@@ -377,18 +377,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
             constexpr type raw[element_count] = { 1,2,3,4 };
             const auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), element_count);
-            ASSERT_EQ(std::get<2>(result), element_count);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+            GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant
@@ -397,18 +397,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
             constexpr type raw[element_count] = { 1,2,3,4 };
             constexpr auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), element_count);
-            ASSERT_EQ(std::get<2>(result), element_count);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+            GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
     }
 
@@ -464,22 +464,22 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
             constexpr type raw[element_count] = { 1,2,3,4 };
             const auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), element_count);
-            ASSERT_EQ(std::get<2>(result), element_count);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+            GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<6>(result), 1u);
-            ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
         }
 
         // Constant
@@ -488,22 +488,22 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
             constexpr type raw[element_count] = { 1,2,3,4 };
             constexpr auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), element_count);
-            ASSERT_EQ(std::get<2>(result), element_count);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+            GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<6>(result), 1u);
-            ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
         }
     }
 
@@ -560,18 +560,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         constexpr type raw[element_count] = { 1,2,3,4 };
                         const auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
                     }
 
                     // Constant
@@ -580,18 +580,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         constexpr type raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
                     }
                 }
 
@@ -648,22 +648,22 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         constexpr type raw[element_count] = { 1,2,3,4 };
                         const auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<6>(result), 1u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
 
                     // Constant
@@ -672,22 +672,22 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         constexpr type raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<6>(result), 1u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
         });
@@ -743,15 +743,15 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                         constexpr U raw[element_count] = { 1,2,3,4 };
                         const auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
                     }
 
                     // Constant
@@ -760,15 +760,15 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                         constexpr U raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
                     }
                 }
 
@@ -810,19 +810,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                         constexpr U raw[element_count] = { 1,2,3,4 };
                         const auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                     }
 
                     // Constant
@@ -831,19 +831,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                         constexpr U raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                     }
                 }
 
@@ -885,15 +885,15 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                                     constexpr U raw[element_count] = { 1,2,3,4 };
                                     const auto result = test_default_allocator(raw, element_count);
                                     // Allocation of 4 i32 should be done
-                                    ASSERT_TRUE(std::get<0>(result));
-                                    ASSERT_EQ(std::get<1>(result), element_count);
-                                    ASSERT_EQ(std::get<2>(result), element_count + extra);
+                                    GTEST_ASSERT_TRUE(std::get<0>(result));
+                                    GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                                    GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                                     // Ensure it's not the same memory buffer
-                                    ASSERT_TRUE(std::get<3>(result));
+                                    GTEST_ASSERT_TRUE(std::get<3>(result));
 
                                     // Ensure values are correclty copied
-                                    ASSERT_TRUE(std::get<4>(result));
+                                    GTEST_ASSERT_TRUE(std::get<4>(result));
                                 }
 
                                 // Constant
@@ -902,15 +902,15 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                                     constexpr U raw[element_count] = { 1,2,3,4 };
                                     constexpr auto result = test_default_allocator(raw, element_count);
                                     // Allocation of 4 i32 should be done
-                                    ASSERT_TRUE(std::get<0>(result));
-                                    ASSERT_EQ(std::get<1>(result), element_count);
-                                    ASSERT_EQ(std::get<2>(result), element_count + extra);
+                                    GTEST_ASSERT_TRUE(std::get<0>(result));
+                                    GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                                    GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                                     // Ensure it's not the same memory buffer
-                                    ASSERT_TRUE(std::get<3>(result));
+                                    GTEST_ASSERT_TRUE(std::get<3>(result));
 
                                     // Ensure values are correclty copied
-                                    ASSERT_TRUE(std::get<4>(result));
+                                    GTEST_ASSERT_TRUE(std::get<4>(result));
                                 }
 
                             }
@@ -953,19 +953,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                                     constexpr U raw[element_count] = { 1,2,3,4 };
                                     const auto result = test_with_allocator(raw, element_count);
                                     // Allocation of 4 i32 should be done
-                                    ASSERT_TRUE(std::get<0>(result));
-                                    ASSERT_EQ(std::get<1>(result), element_count);
-                                    ASSERT_EQ(std::get<2>(result), element_count + extra);
+                                    GTEST_ASSERT_TRUE(std::get<0>(result));
+                                    GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                                    GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                                     // Ensure it's not the same memory buffer
-                                    ASSERT_TRUE(std::get<3>(result));
+                                    GTEST_ASSERT_TRUE(std::get<3>(result));
 
                                     // Ensure values are correclty copied
-                                    ASSERT_TRUE(std::get<4>(result));
+                                    GTEST_ASSERT_TRUE(std::get<4>(result));
 
                                     // Ensure we are allocating only one time
-                                    ASSERT_EQ(std::get<5>(result), 1u);
-                                    ASSERT_EQ(std::get<6>(result), 0u);
+                                    GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                                 }
 
                                 // Constant
@@ -975,19 +975,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                                     constexpr auto result = test_with_allocator(raw, element_count);
 
                                     // Allocation of 4 i32 should be done
-                                    ASSERT_TRUE(std::get<0>(result));
-                                    ASSERT_EQ(std::get<1>(result), element_count);
-                                    ASSERT_EQ(std::get<2>(result), element_count + extra);
+                                    GTEST_ASSERT_TRUE(std::get<0>(result));
+                                    GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                                    GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                                     // Ensure it's not the same memory buffer
-                                    ASSERT_TRUE(std::get<3>(result));
+                                    GTEST_ASSERT_TRUE(std::get<3>(result));
 
                                     // Ensure values are correclty copied
-                                    ASSERT_TRUE(std::get<4>(result));
+                                    GTEST_ASSERT_TRUE(std::get<4>(result));
 
                                     // Ensure we are allocating only one time
-                                    ASSERT_EQ(std::get<5>(result), 1u);
-                                    ASSERT_EQ(std::get<6>(result), 0u);
+                                    GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                                 }
                             }
                     });
@@ -996,7 +996,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
         });
     });
 
-    ASSERT_EQ(at_least_one_copy_tested, true);
+    GTEST_ASSERT_EQ(at_least_one_copy_tested, true);
 
 }
 
@@ -1056,18 +1056,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
             constexpr Type1 raw[element_count] = { 1,2,3,4 };
             const auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), element_count);
-            ASSERT_EQ(std::get<2>(result), element_count);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+            GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant
@@ -1076,18 +1076,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
             constexpr Type1 raw[element_count] = { 1,2,3,4 };
             constexpr auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), element_count);
-            ASSERT_EQ(std::get<2>(result), element_count);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+            GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
     }
 
@@ -1143,22 +1143,22 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
             constexpr Type1 raw[element_count] = { 1,2,3,4 };
             const auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), element_count);
-            ASSERT_EQ(std::get<2>(result), element_count);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+            GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<6>(result), 1u);
-            ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
         }
 
         // Constant
@@ -1167,22 +1167,22 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
             constexpr Type1 raw[element_count] = { 1,2,3,4 };
             constexpr auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), element_count);
-            ASSERT_EQ(std::get<2>(result), element_count);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+            GTEST_ASSERT_EQ(std::get<2>(result), element_count);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<6>(result), 1u);
-            ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
         }
     }
 
@@ -1239,18 +1239,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         constexpr Type1 raw[element_count] = { 1,2,3,4 };
                         const auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
                     }
 
                     // Constant
@@ -1259,18 +1259,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         constexpr Type1 raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
                     }
                 }
 
@@ -1327,22 +1327,22 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         constexpr Type1 raw[element_count] = { 1,2,3,4 };
                         const auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<6>(result), 1u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
 
                     // Constant
@@ -1351,22 +1351,22 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         constexpr Type1 raw[element_count] = { 1,2,3,4 };
                         constexpr auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), element_count);
-                        ASSERT_EQ(std::get<2>(result), element_count + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), element_count);
+                        GTEST_ASSERT_EQ(std::get<2>(result), element_count + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<6>(result), 1u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
         });
@@ -1411,30 +1411,30 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
         {
             const auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
         }
     }
 
@@ -1474,38 +1474,38 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
         {
             const auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         }
     }
 
@@ -1545,30 +1545,30 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                     {
                         const auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
                     }
 
                 }
@@ -1609,19 +1609,19 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                     {
                         const auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                     }
 
                     // Constant
@@ -1629,19 +1629,19 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                         constexpr auto result = test_with_allocator({ 1,2,3,4 });
 
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                     }
                 }
         });
@@ -1688,30 +1688,30 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
         {
             const auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
         }
     }
 
@@ -1751,38 +1751,38 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
         {
             const auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         }
     }
 
@@ -1822,30 +1822,30 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                     {
                         const auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
                     }
 
                 }
@@ -1886,19 +1886,19 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                     {
                         const auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                     }
 
                     // Constant
@@ -1906,19 +1906,19 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                         constexpr auto result = test_with_allocator({ 1,2,3,4 });
 
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                     }
                 }
         });
@@ -1978,36 +1978,36 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
         {
             const auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
     }
 
@@ -2061,44 +2061,44 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
         {
             const auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<6>(result), 1u);
-            ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<6>(result), 1u);
-            ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
         }
     }
 
@@ -2153,36 +2153,36 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                     {
                         const auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
                     }
                 }
 
@@ -2237,44 +2237,44 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                     {
                         const auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<6>(result), 1u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<6>(result), 1u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
         });
@@ -2335,36 +2335,36 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
         {
             const auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
     }
 
@@ -2418,44 +2418,44 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
         {
             const auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<6>(result), 1u);
-            ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 1,2,3,4 });
             // Allocation of 4 i32 should be done
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u);
 
             // Ensure it's not the same memory buffer
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure values are correclty copied in order
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure the copy constructor are called
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<6>(result), 1u);
-            ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
         }
     }
 
@@ -2510,36 +2510,36 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                     {
                         const auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
                     }
                 }
 
@@ -2594,44 +2594,44 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                     {
                         const auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<6>(result), 1u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_with_allocator({ 1,2,3,4 });
                         // Allocation of 4 i32 should be done
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + extra);
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + extra);
 
                         // Ensure it's not the same memory buffer
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure values are correclty copied in order
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure the copy constructor are called
-                        ASSERT_TRUE(std::get<5>(result));
+                        GTEST_ASSERT_TRUE(std::get<5>(result));
 
                         // Ensure we are allocating only one time
-                        ASSERT_EQ(std::get<6>(result), 1u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
         });
@@ -2686,34 +2686,34 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
         {
             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
             // Ensure we copy all datas in order
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u + 1u);
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure the copy data is not the same memory of the copied data
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
             // Ensure we copy all datas in order
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u + 1u);
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure the copy data is not the same memory of the copied data
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         }
 
 
@@ -2752,34 +2752,34 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
         {
             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
             // Ensure we copy all datas in order
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u + 1u);
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure the copy data is not the same memory of the copied data
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         }
 
         // Constant
         {
             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
             // Ensure we copy all datas in order
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 4u);
-            ASSERT_EQ(std::get<2>(result), 4u + 1u);
-            ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+            GTEST_ASSERT_TRUE(std::get<3>(result));
 
             // Ensure the copy data is not the same memory of the copied data
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
 
             // Ensure we are allocating only one time
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         }
 
 
@@ -2825,34 +2825,34 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -2893,34 +2893,34 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
             });
@@ -2983,34 +2983,34 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3052,34 +3052,34 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3125,34 +3125,34 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -3193,34 +3193,34 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
             });
@@ -3283,34 +3283,34 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3352,34 +3352,34 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_wtih_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_wtih_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3426,34 +3426,34 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -3496,34 +3496,34 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -3588,34 +3588,34 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3657,34 +3657,34 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
             {
                 const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
             }
         }
 
@@ -3731,34 +3731,34 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
 
@@ -3800,34 +3800,34 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                         }
                     }
             });
@@ -3895,36 +3895,36 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
                 // Bitwise copyable with same type should just stole the pointer without reallocating
                 // If allocator are not the same, a reallocation is done to allocate with the correct allocator
                 if (std::is_same_v<AllocatorOfMovedArray, Allocator>) {
-                    ASSERT_EQ(std::get<5>(result), 0u);
-                    ASSERT_EQ(std::get<6>(result), 0u);
-                    ASSERT_EQ(std::get<7>(result), 0u);
-                    ASSERT_EQ(std::get<8>(result), 1u);
-                    ASSERT_EQ(std::get<9>(result), 1u);
-                    ASSERT_EQ(std::get<10>(result), 0u);
-                    ASSERT_EQ(std::get<11>(result), 0u);
-                    ASSERT_EQ(std::get<12>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<8>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<10>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                 }
                 else {
-                    ASSERT_EQ(std::get<5>(result), 1u);
-                    ASSERT_EQ(std::get<6>(result), 0u);
-                    ASSERT_EQ(std::get<7>(result), 0u);
-                    ASSERT_EQ(std::get<8>(result), 0u);
-                    ASSERT_EQ(std::get<9>(result), 1u);
-                    ASSERT_EQ(std::get<10>(result), 1u);
-                    ASSERT_EQ(std::get<11>(result), 0u);
-                    ASSERT_EQ(std::get<12>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                 }
             }
 
@@ -3932,36 +3932,36 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
                 // Bitwise copyable with same type should just stole the pointer without reallocating
                 // If allocator are not the same, a reallocation is done to allocate with the correct allocator
                 if (std::is_same_v<AllocatorOfMovedArray, Allocator>) {
-                    ASSERT_EQ(std::get<5>(result), 0u);
-                    ASSERT_EQ(std::get<6>(result), 0u);
-                    ASSERT_EQ(std::get<7>(result), 0u);
-                    ASSERT_EQ(std::get<8>(result), 1u);
-                    ASSERT_EQ(std::get<9>(result), 1u);
-                    ASSERT_EQ(std::get<10>(result), 0u);
-                    ASSERT_EQ(std::get<11>(result), 0u);
-                    ASSERT_EQ(std::get<12>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<8>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<10>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                 }
                 else {
-                    ASSERT_EQ(std::get<5>(result), 1u);
-                    ASSERT_EQ(std::get<6>(result), 0u);
-                    ASSERT_EQ(std::get<7>(result), 0u);
-                    ASSERT_EQ(std::get<8>(result), 0u);
-                    ASSERT_EQ(std::get<9>(result), 1u);
-                    ASSERT_EQ(std::get<10>(result), 1u);
-                    ASSERT_EQ(std::get<11>(result), 0u);
-                    ASSERT_EQ(std::get<12>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                 }
             }
         }
@@ -4009,46 +4009,46 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -4101,46 +4101,46 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we allocate and free the moved array and just allocate the new array once
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we allocate and free the moved array and just allocate the new array once
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
 
@@ -4187,46 +4187,46 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we allocate and free the moved array and just allocate the new array once
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we allocate and free the moved array and just allocate the new array once
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
             });
@@ -4297,36 +4297,36 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Bitwise moveable with same type should just stole the pointer without reallocating
                 // If allocator are not the same, a reallocation is done to allocate with the correct allocator
                 if (std::is_same_v<AllocatorOfMovedArray, Allocator>) {
-                    ASSERT_EQ(std::get<5>(result), 0u);
-                    ASSERT_EQ(std::get<6>(result), 0u);
-                    ASSERT_EQ(std::get<7>(result), 0u);
-                    ASSERT_EQ(std::get<8>(result), 1u);
-                    ASSERT_EQ(std::get<9>(result), 1u);
-                    ASSERT_EQ(std::get<10>(result), 0u);
-                    ASSERT_EQ(std::get<11>(result), 0u);
-                    ASSERT_EQ(std::get<12>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<8>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<10>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                 }
                 else {
-                    ASSERT_EQ(std::get<5>(result), 1u);
-                    ASSERT_EQ(std::get<6>(result), 0u);
-                    ASSERT_EQ(std::get<7>(result), 0u);
-                    ASSERT_EQ(std::get<8>(result), 0u);
-                    ASSERT_EQ(std::get<9>(result), 1u);
-                    ASSERT_EQ(std::get<10>(result), 1u);
-                    ASSERT_EQ(std::get<11>(result), 0u);
-                    ASSERT_EQ(std::get<12>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                 }
             }
 
@@ -4334,37 +4334,37 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // We move bitwise move constructible of different type, we can't just still the buffer
                 // ( Can't reinterpret_cast the pointer in constant evaluated fonction) so we have an allocation , move and free, always!
                 // Allocator is move only if allocator are the same
                 if (std::is_same_v<AllocatorOfMovedArray, Allocator>) {
-                    ASSERT_EQ(std::get<5>(result), 1u);
-                    ASSERT_EQ(std::get<6>(result), 0u);
-                    ASSERT_EQ(std::get<7>(result), 0u);
-                    ASSERT_EQ(std::get<8>(result), 1u);
-                    ASSERT_EQ(std::get<9>(result), 1u);
-                    ASSERT_EQ(std::get<10>(result), 1u);
-                    ASSERT_EQ(std::get<11>(result), 0u);
-                    ASSERT_EQ(std::get<12>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<8>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                 }
                 else {
-                    ASSERT_EQ(std::get<5>(result), 1u);
-                    ASSERT_EQ(std::get<6>(result), 0u);
-                    ASSERT_EQ(std::get<7>(result), 0u);
-                    ASSERT_EQ(std::get<8>(result), 0u);
-                    ASSERT_EQ(std::get<9>(result), 1u);
-                    ASSERT_EQ(std::get<10>(result), 1u);
-                    ASSERT_EQ(std::get<11>(result), 0u);
-                    ASSERT_EQ(std::get<12>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                    GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                    GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                 }
             }
         }
@@ -4412,48 +4412,48 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
             {
                 const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Providing an allocator force the realloation to be done with this allocator
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Providing an allocator force the realloation to be done with this allocator
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -4505,48 +4505,48 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // With extra a eallocation is done to allocate with the correct allocator
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // With extra a eallocation is done to allocate with the correct allocator
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
 
@@ -4593,48 +4593,48 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Providing an allocator force the realloation to be done with this allocator
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Providing an allocator force the realloation to be done with this allocator
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
             });
@@ -4704,48 +4704,48 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -4793,48 +4793,48 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
             {
                 const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -4887,48 +4887,48 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
                     {
                         const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
-                        ASSERT_EQ(std::get<8>(result), 0u);
-                        ASSERT_EQ(std::get<9>(result), 1u);
-                        ASSERT_EQ(std::get<10>(result), 1u);
-                        ASSERT_EQ(std::get<11>(result), 0u);
-                        ASSERT_EQ(std::get<12>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
-                        ASSERT_EQ(std::get<8>(result), 0u);
-                        ASSERT_EQ(std::get<9>(result), 1u);
-                        ASSERT_EQ(std::get<10>(result), 1u);
-                        ASSERT_EQ(std::get<11>(result), 0u);
-                        ASSERT_EQ(std::get<12>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                     }
                 }
 
@@ -4976,48 +4976,48 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
                     {
                         const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
-                        ASSERT_EQ(std::get<8>(result), 0u);
-                        ASSERT_EQ(std::get<9>(result), 1u);
-                        ASSERT_EQ(std::get<10>(result), 1u);
-                        ASSERT_EQ(std::get<11>(result), 0u);
-                        ASSERT_EQ(std::get<12>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
-                        ASSERT_EQ(std::get<8>(result), 0u);
-                        ASSERT_EQ(std::get<9>(result), 1u);
-                        ASSERT_EQ(std::get<10>(result), 1u);
-                        ASSERT_EQ(std::get<11>(result), 0u);
-                        ASSERT_EQ(std::get<12>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                     }
                 }
             });
@@ -5089,48 +5089,48 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -5181,48 +5181,48 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
             {
                 const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -5278,48 +5278,48 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
                         {
                             const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Always reallocate if types are non bitwise copy constructible types
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Always reallocate if types are non bitwise copy constructible types
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
 
@@ -5370,48 +5370,48 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
                         {
                             const auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Always reallocate if types are non bitwise copy constructible types
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
 
                         // Constant
                         {
                             constexpr auto result = test_with_allocator({ 0,1,2,3 }, 1u);
                             // Ensure we copy all datas in order
-                            ASSERT_TRUE(std::get<0>(result));
-                            ASSERT_EQ(std::get<1>(result), 4u);
-                            ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                            ASSERT_TRUE(std::get<3>(result));
+                            GTEST_ASSERT_TRUE(std::get<0>(result));
+                            GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                            GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                            GTEST_ASSERT_TRUE(std::get<3>(result));
 
                             // Ensure the copy data is not the same memory of the copied data
-                            ASSERT_TRUE(std::get<4>(result));
+                            GTEST_ASSERT_TRUE(std::get<4>(result));
 
                             // Ensure we are allocating only one time of not
                             // Always reallocate if types are non bitwise copy constructible types
-                            ASSERT_EQ(std::get<5>(result), 1u);
-                            ASSERT_EQ(std::get<6>(result), 0u);
-                            ASSERT_EQ(std::get<7>(result), 0u);
-                            ASSERT_EQ(std::get<8>(result), 0u);
-                            ASSERT_EQ(std::get<9>(result), 1u);
-                            ASSERT_EQ(std::get<10>(result), 1u);
-                            ASSERT_EQ(std::get<11>(result), 0u);
-                            ASSERT_EQ(std::get<12>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                            GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                         }
                     }
             });
@@ -5486,48 +5486,48 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -5578,48 +5578,48 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
             {
                 const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
 
             // Constant
             {
                 constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                 // Ensure we copy all datas in order
-                ASSERT_TRUE(std::get<0>(result));
-                ASSERT_EQ(std::get<1>(result), 4u);
-                ASSERT_EQ(std::get<2>(result), 4u + 1u);
-                ASSERT_TRUE(std::get<3>(result));
+                GTEST_ASSERT_TRUE(std::get<0>(result));
+                GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u);
+                GTEST_ASSERT_TRUE(std::get<3>(result));
 
                 // Ensure the copy data is not the same memory of the copied data
-                ASSERT_TRUE(std::get<4>(result));
+                GTEST_ASSERT_TRUE(std::get<4>(result));
 
                 // Ensure we are allocating only one time of not
                 // Always reallocate if types are non bitwise copy constructible types
-                ASSERT_EQ(std::get<5>(result), 1u);
-                ASSERT_EQ(std::get<6>(result), 0u);
-                ASSERT_EQ(std::get<7>(result), 0u);
-                ASSERT_EQ(std::get<8>(result), 0u);
-                ASSERT_EQ(std::get<9>(result), 1u);
-                ASSERT_EQ(std::get<10>(result), 1u);
-                ASSERT_EQ(std::get<11>(result), 0u);
-                ASSERT_EQ(std::get<12>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                GTEST_ASSERT_EQ(std::get<12>(result), 0u);
             }
         }
 
@@ -5675,48 +5675,48 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
                     {
                         const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
-                        ASSERT_EQ(std::get<8>(result), 0u);
-                        ASSERT_EQ(std::get<9>(result), 1u);
-                        ASSERT_EQ(std::get<10>(result), 1u);
-                        ASSERT_EQ(std::get<11>(result), 0u);
-                        ASSERT_EQ(std::get<12>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
-                        ASSERT_EQ(std::get<8>(result), 0u);
-                        ASSERT_EQ(std::get<9>(result), 1u);
-                        ASSERT_EQ(std::get<10>(result), 1u);
-                        ASSERT_EQ(std::get<11>(result), 0u);
-                        ASSERT_EQ(std::get<12>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                     }
                 }
 
@@ -5767,48 +5767,48 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
                     {
                         const auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
-                        ASSERT_EQ(std::get<8>(result), 0u);
-                        ASSERT_EQ(std::get<9>(result), 1u);
-                        ASSERT_EQ(std::get<10>(result), 1u);
-                        ASSERT_EQ(std::get<11>(result), 0u);
-                        ASSERT_EQ(std::get<12>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                     }
 
                     // Constant
                     {
                         constexpr auto result = test_default_allocator({ 0,1,2,3 }, 1u);
                         // Ensure we copy all datas in order
-                        ASSERT_TRUE(std::get<0>(result));
-                        ASSERT_EQ(std::get<1>(result), 4u);
-                        ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
-                        ASSERT_TRUE(std::get<3>(result));
+                        GTEST_ASSERT_TRUE(std::get<0>(result));
+                        GTEST_ASSERT_EQ(std::get<1>(result), 4u);
+                        GTEST_ASSERT_EQ(std::get<2>(result), 4u + 1u + extra);
+                        GTEST_ASSERT_TRUE(std::get<3>(result));
 
                         // Ensure the copy data is not the same memory of the copied data
-                        ASSERT_TRUE(std::get<4>(result));
+                        GTEST_ASSERT_TRUE(std::get<4>(result));
 
                         // Ensure we are allocating only one time of not
                         // Always reallocate if types are non bitwise copy constructible types
-                        ASSERT_EQ(std::get<5>(result), 1u);
-                        ASSERT_EQ(std::get<6>(result), 0u);
-                        ASSERT_EQ(std::get<7>(result), 0u);
-                        ASSERT_EQ(std::get<8>(result), 0u);
-                        ASSERT_EQ(std::get<9>(result), 1u);
-                        ASSERT_EQ(std::get<10>(result), 1u);
-                        ASSERT_EQ(std::get<11>(result), 0u);
-                        ASSERT_EQ(std::get<12>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<9>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<10>(result), 1u);
+                        GTEST_ASSERT_EQ(std::get<11>(result), 0u);
+                        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
                     }
                 }
             });

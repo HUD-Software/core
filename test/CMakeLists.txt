@@ -265,6 +265,9 @@ set_target_properties(test_core
 )
 if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj)
+	#target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /EHsc /GR-)
+# elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+# 	target_compile_options( test_core PRIVATE -fno-cxx-exceptions -fno-rtti)
 endif()
 
 if(COVERAGE AND MSVC)
@@ -285,9 +288,9 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		COMMENT "Run test_core.exe"
 		COMMAND ./test_core
 		# "'\.\./\.\./(test|src)/.*'" : Take files only in test or src directory
-		# "'(GTEST_TEST|\\s*ASSERT_).*'" : Exclude GTEST_TEST and GTEST_ASSERT_
-		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches  --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage.clang.cobertura.html" --html-details-syntax-highlighting
-		#COMMAND gcovr -r ${CMAKE_SOURCE_DIR} --gcov-executable "llvm-cov gcov" --exclude-directories "'.*/target'" --html-details "coverage.clang.cobertura.html" --html-details-syntax-highlighting --exclude-unreachable-branches  --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*ASSERT_).*'"
+		# "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" : Exclude GTEST_TEST and GTEST_ASSERT_
+		COMMAND mkdir "coverage_html"
+		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches  --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting
 		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches  --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml"
 	)
 endif()
@@ -304,8 +307,16 @@ target_compile_definitions(
 	UNICODE
 	HD_ABORT_ON_ASSERT
 	HD_GLOBAL_NAMESPACE_TYPES
-	#Don't use TEST() macro from google_test which is a too generic name
+	#Don't use TEST() ans ASSERT_*() macro from google_test which is a too generic name
 	GTEST_DONT_DEFINE_TEST=1
+	GTEST_DONT_DEFINE_ASSERT_TRUE=1
+	GTEST_DONT_DEFINE_ASSERT_FALSE=1
+	GTEST_DONT_DEFINE_ASSERT_EQ=1
+	GTEST_DONT_DEFINE_ASSERT_NE=1
+	GTEST_DONT_DEFINE_ASSERT_LE=1
+	GTEST_DONT_DEFINE_ASSERT_LT=1
+	GTEST_DONT_DEFINE_ASSERT_GE=1
+	GTEST_DONT_DEFINE_ASSERT_GT=1
 	# Debug specific compiler flags
 	$<$<CONFIG:Debug>:HD_DEBUG>
 	# Release specific compiler flags

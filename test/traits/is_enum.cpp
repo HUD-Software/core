@@ -7,9 +7,9 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_enum) {
-    ASSERT_FALSE((hud::is_enum_v<i32>));
-    ASSERT_TRUE((hud::is_enum_v<hud_test::a>));
-    ASSERT_FALSE((hud::is_enum_v<hud_test::b>));
-    ASSERT_TRUE((hud::is_enum_v<hud_test::c>));
-    ASSERT_TRUE((hud::is_enum_v<decltype(hud_test::c::alpha)>));
+    GTEST_ASSERT_FALSE((hud::is_enum_v<i32>));
+    GTEST_ASSERT_TRUE((hud::is_enum_v<hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_enum_v<hud_test::b>));
+    GTEST_ASSERT_TRUE((hud::is_enum_v<hud_test::c>));
+    GTEST_ASSERT_TRUE((hud::is_enum_v<decltype(hud_test::c::alpha)>));
 }

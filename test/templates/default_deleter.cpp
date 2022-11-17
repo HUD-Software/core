@@ -31,16 +31,16 @@ GTEST_TEST(templates, default_deleter) {
 
     /** Test DefaultDeleter */
     {
-        ASSERT_EQ(hud_test::A_state, hud_test::state::uninit);
+        GTEST_ASSERT_EQ(hud_test::A_state, hud_test::state::uninit);
         hud_test::a* a_ptr = new hud_test::a;
-        ASSERT_EQ(hud_test::A_state, hud_test::state::construct);
+        GTEST_ASSERT_EQ(hud_test::A_state, hud_test::state::construct);
         hud::default_deleter<hud_test::a> deleter_a;
         deleter_a(a_ptr);
-        ASSERT_EQ(hud_test::A_state, hud_test::state::destroyed);
+        GTEST_ASSERT_EQ(hud_test::A_state, hud_test::state::destroyed);
 
 
         for (usize cur = 0; cur < hud_test::array_size; cur++) {
-            ASSERT_EQ(hud_test::B_state[cur], hud_test::state::uninit);
+            GTEST_ASSERT_EQ(hud_test::B_state[cur], hud_test::state::uninit);
         }
     }
 
@@ -49,14 +49,14 @@ GTEST_TEST(templates, default_deleter) {
         hud_test::b* b_ptr = new hud_test::b[hud_test::array_size];
         for (usize cur = 0; cur < hud_test::array_size; cur++) {
             b_ptr[cur].set_index(cur);
-            ASSERT_EQ(hud_test::B_state[cur], hud_test::state::construct);
+            GTEST_ASSERT_EQ(hud_test::B_state[cur], hud_test::state::construct);
         }
 
         hud::default_deleter<hud_test::b[]> deleter_b;
         deleter_b(b_ptr);
 
         for (usize cur = 0; cur < hud_test::array_size; cur++) {
-            ASSERT_EQ(hud_test::B_state[cur], hud_test::state::destroyed);
+            GTEST_ASSERT_EQ(hud_test::B_state[cur], hud_test::state::destroyed);
         }
     }
 

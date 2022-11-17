@@ -17,12 +17,12 @@ GTEST_TEST(shared_pointer_not_safe, destructor) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(result);
+        GTEST_ASSERT_TRUE(result);
     }
 
     // Constant
     {
         const auto result = test();
-        ASSERT_TRUE(result);
+        GTEST_ASSERT_TRUE(result);
     }
 }

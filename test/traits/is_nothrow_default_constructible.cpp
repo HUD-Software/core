@@ -22,9 +22,9 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_nothrow_default_constructible) {    
-    ASSERT_TRUE((hud::is_nothrow_default_constructible_v<hud_test::a>));
-    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::b>));
-    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::c>));
-    ASSERT_TRUE((hud::is_nothrow_default_constructible_v<hud_test::d>));
-    ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::e>));
+    GTEST_ASSERT_TRUE((hud::is_nothrow_default_constructible_v<hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::b>));
+    GTEST_ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::c>));
+    GTEST_ASSERT_TRUE((hud::is_nothrow_default_constructible_v<hud_test::d>));
+    GTEST_ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::e>));
 }

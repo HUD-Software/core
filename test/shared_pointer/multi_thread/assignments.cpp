@@ -33,23 +33,23 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_same_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 2u);
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 0u);
-        ASSERT_EQ(std::get<5>(result), 0u);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 0u);
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_EQ(std::get<9>(result), 2u);
-        ASSERT_EQ(std::get<10>(result), 123);
-        ASSERT_EQ(std::get<11>(result), 1u);
-        ASSERT_EQ(std::get<12>(result), 0u);
-        ASSERT_EQ(std::get<13>(result), 0u);
-        ASSERT_EQ(std::get<14>(result), 0u);
-        ASSERT_EQ(std::get<15>(result), 0u);
-        ASSERT_EQ(std::get<16>(result), 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_EQ(std::get<9>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<10>(result), 123);
+        GTEST_ASSERT_EQ(std::get<11>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<13>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<14>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<15>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<16>(result), 0);
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -58,23 +58,23 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_same_type) {
    /* #if !defined(HD_COMPILER_MSVC)
     {
         constexpr auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 2u);
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 0u);
-        ASSERT_EQ(std::get<5>(result), 0u);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 0u);
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_EQ(std::get<9>(result), 2u);
-        ASSERT_EQ(std::get<10>(result), 123);
-        ASSERT_EQ(std::get<11>(result), 1u);
-        ASSERT_EQ(std::get<12>(result), 0u);
-        ASSERT_EQ(std::get<13>(result), 0u);
-        ASSERT_EQ(std::get<14>(result), 0u);
-        ASSERT_EQ(std::get<15>(result), 0u);
-        ASSERT_EQ(std::get<16>(result), 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_EQ(std::get<9>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<10>(result), 123);
+        GTEST_ASSERT_EQ(std::get<11>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<13>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<14>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<15>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<16>(result), 0);
     }
     #endif*/
 }
@@ -112,23 +112,23 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_different_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 2u);
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 0u);
-        ASSERT_EQ(std::get<5>(result), 0u);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 0u);
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_EQ(std::get<9>(result), 2u);
-        ASSERT_EQ(std::get<10>(result), 123);
-        ASSERT_EQ(std::get<11>(result), 1u);
-        ASSERT_EQ(std::get<12>(result), 0u);
-        ASSERT_EQ(std::get<13>(result), 0u);
-        ASSERT_EQ(std::get<14>(result), 0u);
-        ASSERT_EQ(std::get<15>(result), 0u);
-        ASSERT_EQ(std::get<16>(result), 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_EQ(std::get<9>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<10>(result), 123);
+        GTEST_ASSERT_EQ(std::get<11>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<12>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<13>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<14>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<15>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<16>(result), 0);
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -137,23 +137,23 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_different_type) {
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 2u);
-            ASSERT_EQ(std::get<2>(result), 123);
-            ASSERT_EQ(std::get<3>(result), 1u);
-            ASSERT_EQ(std::get<4>(result), 0u);
-            ASSERT_EQ(std::get<5>(result), 0u);
-            ASSERT_EQ(std::get<6>(result), 0u);
-            ASSERT_EQ(std::get<7>(result), 0u);
-            ASSERT_TRUE(std::get<8>(result));
-            ASSERT_EQ(std::get<9>(result), 2u);
-            ASSERT_EQ(std::get<10>(result), 123);
-            ASSERT_EQ(std::get<11>(result), 1u);
-            ASSERT_EQ(std::get<12>(result), 0u);
-            ASSERT_EQ(std::get<13>(result), 0u);
-            ASSERT_EQ(std::get<14>(result), 0u);
-            ASSERT_EQ(std::get<15>(result), 0u);
-            ASSERT_EQ(std::get<16>(result), 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 2u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 123);
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_TRUE(std::get<8>(result));
+            GTEST_ASSERT_EQ(std::get<9>(result), 2u);
+            GTEST_ASSERT_EQ(std::get<10>(result), 123);
+            GTEST_ASSERT_EQ(std::get<11>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<12>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<13>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<14>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<15>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<16>(result), 0);
         }
     #endif*/
 }
@@ -177,9 +177,9 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_an_empty_same_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 1);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -188,9 +188,9 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_an_empty_same_type) {
    /* #if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 0u);
-            ASSERT_EQ(std::get<2>(result), 1);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 1);
         }
     #endif*/
 }
@@ -213,9 +213,9 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_nullptr) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 1);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -224,9 +224,9 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_nullptr) {
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 0u);
-            ASSERT_EQ(std::get<2>(result), 1);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 1);
         }
     #endif*/
 }
@@ -258,17 +258,17 @@ GTEST_TEST(shared_pointer_safe, move_assignement_same_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 123);
-        ASSERT_EQ(std::get<5>(result), 1u);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 0u);
-        ASSERT_EQ(std::get<8>(result), 0u);
-        ASSERT_EQ(std::get<9>(result), 0u);
-        ASSERT_EQ(std::get<10>(result), 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 123);
+        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<9>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<10>(result), 0);
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -277,17 +277,17 @@ GTEST_TEST(shared_pointer_safe, move_assignement_same_type) {
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 0u);
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_EQ(std::get<3>(result), 1u);
-            ASSERT_EQ(std::get<4>(result), 123);
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
-            ASSERT_EQ(std::get<7>(result), 0u);
-            ASSERT_EQ(std::get<8>(result), 0u);
-            ASSERT_EQ(std::get<9>(result), 0u);
-            ASSERT_EQ(std::get<10>(result), 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(result), 123);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<9>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<10>(result), 0);
         }
     #endif*/
 }
@@ -319,17 +319,17 @@ GTEST_TEST(shared_pointer_safe, move_assignement_different_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 123);
-        ASSERT_EQ(std::get<5>(result), 1u);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 0u);
-        ASSERT_EQ(std::get<8>(result), 0u);
-        ASSERT_EQ(std::get<9>(result), 0u);
-        ASSERT_EQ(std::get<10>(result), 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 123);
+        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<9>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<10>(result), 0);
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -338,17 +338,17 @@ GTEST_TEST(shared_pointer_safe, move_assignement_different_type) {
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 0u);
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_EQ(std::get<3>(result), 1u);
-            ASSERT_EQ(std::get<4>(result), 123);
-            ASSERT_EQ(std::get<5>(result), 1u);
-            ASSERT_EQ(std::get<6>(result), 0u);
-            ASSERT_EQ(std::get<7>(result), 0u);
-            ASSERT_EQ(std::get<8>(result), 0u);
-            ASSERT_EQ(std::get<9>(result), 0u);
-            ASSERT_EQ(std::get<10>(result), 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(result), 123);
+            GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<8>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<9>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<10>(result), 0);
         }
     #endif*/
 }
@@ -372,9 +372,9 @@ GTEST_TEST(shared_pointer_safe, move_assignement_an_empty_same_type) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 1);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -383,9 +383,9 @@ GTEST_TEST(shared_pointer_safe, move_assignement_an_empty_same_type) {
    /* #if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 0u);
-            ASSERT_EQ(std::get<2>(result), 1);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 1);
         }
     #endif*/
 }
@@ -408,9 +408,9 @@ GTEST_TEST(shared_pointer_safe, move_assignement_nullptr) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 1);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -419,9 +419,9 @@ GTEST_TEST(shared_pointer_safe, move_assignement_nullptr) {
    /* #if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_EQ(std::get<1>(result), 0u);
-            ASSERT_EQ(std::get<2>(result), 1);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 1);
         }
     #endif*/
 }

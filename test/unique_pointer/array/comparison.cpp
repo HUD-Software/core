@@ -33,7 +33,8 @@ GTEST_TEST(unique_pointer_array, equal_operator) {
         i32* pi = new i32[2]{ 0, 0 };
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(pi);
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(pi);
-        hud::unique_pointer<i32[]> p3(new (std::nothrow)i32[2]{ 0, 0 });
+        i32* other_new = new i32[2]{ 0, 0 };
+        hud::unique_pointer<i32[]> p3(other_new);
         hud::unique_pointer<i32[]> p4;
         const auto result = std::tuple{
             p1 == p2,
@@ -53,29 +54,29 @@ GTEST_TEST(unique_pointer_array, equal_operator) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_FALSE(std::get<8>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<8>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_FALSE(std::get<8>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<8>(result));
     }
 }
 
@@ -86,7 +87,7 @@ GTEST_TEST(unique_pointer_array, not_equal_operator) {
         i32* pi = new i32[2]{ 0, 0 };
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p1(pi);
         hud::unique_pointer<i32[], hud_test::custom_deleter<i32[]>> p2(pi);
-        hud::unique_pointer<i32[]> p3(new (std::nothrow)i32[2]{ 0, 0 });
+        hud::unique_pointer<i32[]> p3(new i32[2]{ 0, 0 });
         hud::unique_pointer<i32[]> p4;
         const auto result = std::tuple{
             p1 != p2,
@@ -106,29 +107,29 @@ GTEST_TEST(unique_pointer_array, not_equal_operator) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
     }
 }
 
@@ -161,14 +162,14 @@ GTEST_TEST(unique_pointer_array, less_operator) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
     }
 
     // Constant
@@ -206,14 +207,14 @@ GTEST_TEST(unique_pointer_array, less_equal_operator) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
     }
 
     // Constant
@@ -251,14 +252,14 @@ GTEST_TEST(unique_pointer_array, greater_operator) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
     }
 
     // Constant
@@ -296,14 +297,14 @@ GTEST_TEST(unique_pointer_array, greater_equal_operator) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
     }
 
    // Constant

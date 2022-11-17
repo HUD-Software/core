@@ -14,11 +14,11 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_same_size) {
-    ASSERT_TRUE((hud::is_same_size_v<i32, const i32>));
-    ASSERT_TRUE((hud::is_same_size_v<hud_test::a, std::tuple<>>));
-    ASSERT_FALSE((hud::is_same_size_v<hud_test::a, hud_test::b>));
-    ASSERT_FALSE((hud::is_same_size_v<hud_test::b, hud_test::c>));
-    ASSERT_TRUE((hud::is_same_size_v<hud_test::b, hud_test::d>));
-    ASSERT_TRUE((hud::is_same_size_v<hud_test::b, i32>));
-    ASSERT_TRUE((hud::is_same_size_v<hud_test::b[2], i32[1]>));
+    GTEST_ASSERT_TRUE((hud::is_same_size_v<i32, const i32>));
+    GTEST_ASSERT_TRUE((hud::is_same_size_v<hud_test::a, std::tuple<>>));
+    GTEST_ASSERT_FALSE((hud::is_same_size_v<hud_test::a, hud_test::b>));
+    GTEST_ASSERT_FALSE((hud::is_same_size_v<hud_test::b, hud_test::c>));
+    GTEST_ASSERT_TRUE((hud::is_same_size_v<hud_test::b, hud_test::d>));
+    GTEST_ASSERT_TRUE((hud::is_same_size_v<hud_test::b, i32>));
+    GTEST_ASSERT_TRUE((hud::is_same_size_v<hud_test::b[2], i32[1]>));
 }

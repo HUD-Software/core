@@ -163,11 +163,11 @@ GTEST_TEST(tuple, default_constructor_uninit) {
     using tuple_type4 = hud::tuple<hud_test::explicit_default_constructible, hud_test::implicit_default_constructible>;
     using tuple_type5 = hud::tuple<hud_test::explicit_default_constructible, i32>;
 
-    ASSERT_EQ(hud::tuple_size_v<tuple_type>, 0u);
-    ASSERT_EQ(hud::tuple_size_v<tuple_type2>, 3u);
-    ASSERT_EQ(hud::tuple_size_v<tuple_type3>, 3u);
-    ASSERT_EQ(hud::tuple_size_v<tuple_type4>, 2u);
-    ASSERT_EQ(hud::tuple_size_v<tuple_type5>, 2u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type>, 0u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type2>, 3u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type3>, 3u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type4>, 2u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type5>, 2u);
 
     // Non constant
     {
@@ -176,63 +176,63 @@ GTEST_TEST(tuple, default_constructor_uninit) {
         tuple_type2* tuple2 = hud::memory::allocate_array<tuple_type2>(1);
         hud::memory::set(tuple2, sizeof(tuple_type2), 0xFF);
         hud::memory::construct_at(tuple2);
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(*tuple2)), i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(*tuple2)), i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(*tuple2)), i32&>));
-        ASSERT_NE((hud::get<0>(*tuple2)), i32{});
-        ASSERT_NE((hud::get<1>(*tuple2)), i32{});
-        ASSERT_NE((hud::get<2>(*tuple2)), i32{});
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(*tuple2)), i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(*tuple2)), i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(*tuple2)), i32&>));
+        GTEST_ASSERT_NE((hud::get<0>(*tuple2)), i32{});
+        GTEST_ASSERT_NE((hud::get<1>(*tuple2)), i32{});
+        GTEST_ASSERT_NE((hud::get<2>(*tuple2)), i32{});
         hud::memory::destroy_array(tuple2, 1);
         hud::memory::free(tuple2);
 
         tuple_type3* tuple3 = hud::memory::allocate_array<tuple_type3>(1);
         hud::memory::set(tuple3, sizeof(tuple_type3), 0xFF);
         hud::memory::construct_at(tuple3);
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(*tuple3)), i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(*tuple3)), f32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(*tuple3)), wchar&>));
-        ASSERT_NE((hud::get<0>(*tuple3)), i32{});
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(*tuple3)), i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(*tuple3)), f32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(*tuple3)), wchar&>));
+        GTEST_ASSERT_NE((hud::get<0>(*tuple3)), i32{});
 
         // Is nan always return false with clang in release with fast math enabled
         // See: https://clang.llvm.org/docs/UsersManual.html#cmdoption-ffast-math
         #if defined(HD_COMPILER_CLANG) && defined(HD_RELEASE) && defined(__FAST_MATH__)
-        ASSERT_FALSE(isnan(hud::get<1>(*tuple3)));
+        GTEST_ASSERT_FALSE(isnan(hud::get<1>(*tuple3)));
         #else
-        ASSERT_TRUE(isnan(hud::get<1>(*tuple3)));
+        GTEST_ASSERT_TRUE(isnan(hud::get<1>(*tuple3)));
         #endif
-        ASSERT_NE((hud::get<2>(*tuple3)), wchar{});
+        GTEST_ASSERT_NE((hud::get<2>(*tuple3)), wchar{});
         hud::memory::destroy_array(tuple3, 1);
         hud::memory::free(tuple3);
 
         tuple_type4* tuple4 = hud::memory::allocate_array<tuple_type4>(1);
         hud::memory::set(tuple4, sizeof(tuple_type4), 0xFF);
         hud::memory::construct_at(tuple4);
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(*tuple4)), hud_test::explicit_default_constructible&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(*tuple4)), hud_test::implicit_default_constructible&>));
-        ASSERT_EQ((hud::get<0>(*tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(*tuple4).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(*tuple4).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(*tuple4).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(*tuple4).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(*tuple4).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(*tuple4).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(*tuple4).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(*tuple4).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(*tuple4).move_constructor_count()), 0u);
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(*tuple4)), hud_test::explicit_default_constructible&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(*tuple4)), hud_test::implicit_default_constructible&>));
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple4).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple4).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple4).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple4).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(*tuple4).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(*tuple4).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(*tuple4).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(*tuple4).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(*tuple4).move_constructor_count()), 0u);
         hud::memory::destroy_array(tuple4, 1);
         hud::memory::free(tuple4);
 
         tuple_type5* tuple5 = hud::memory::allocate_array<tuple_type5>(1);
         hud::memory::set(tuple5, sizeof(tuple_type5), 0xFF);
         hud::memory::construct_at(tuple5);
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(*tuple5)), hud_test::explicit_default_constructible&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(*tuple5)), i32&>));
-        ASSERT_EQ((hud::get<0>(*tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(*tuple5).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(*tuple5).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(*tuple5).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(*tuple5).move_constructor_count()), 0u);
-        ASSERT_NE(hud::get<1>(*tuple5), i32{});
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(*tuple5)), hud_test::explicit_default_constructible&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(*tuple5)), i32&>));
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple5).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple5).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple5).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(*tuple5).move_constructor_count()), 0u);
+        GTEST_ASSERT_NE(hud::get<1>(*tuple5), i32{});
         hud::memory::destroy_array(tuple5, 1);
         hud::memory::free(tuple5);
 
@@ -242,7 +242,7 @@ GTEST_TEST(tuple, default_constructor_uninit) {
     // Non empty uninit constexpr tuple is not possible because constexpr need initialized value
     {
         [[maybe_unused]] constexpr tuple_type tuple;
-        ASSERT_EQ(hud::tuple_size_v<tuple_type>, 0u);
+        GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type>, 0u);
     }
 }
 
@@ -253,11 +253,11 @@ GTEST_TEST(tuple, default_constructor_init) {
     using tuple_type4 = hud::tuple<hud_test::explicit_default_constructible, hud_test::implicit_default_constructible>;
     using tuple_type5 = hud::tuple<hud_test::explicit_default_constructible, i32>;
 
-    ASSERT_EQ(hud::tuple_size_v<tuple_type>, 0u);
-    ASSERT_EQ(hud::tuple_size_v<tuple_type2>, 3u);
-    ASSERT_EQ(hud::tuple_size_v<tuple_type3>, 3u);
-    ASSERT_EQ(hud::tuple_size_v<tuple_type4>, 2u);
-    ASSERT_EQ(hud::tuple_size_v<tuple_type5>, 2u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type>, 0u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type2>, 3u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type3>, 3u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type4>, 2u);
+    GTEST_ASSERT_EQ(hud::tuple_size_v<tuple_type5>, 2u);
 
     // Non constant
     {
@@ -265,44 +265,44 @@ GTEST_TEST(tuple, default_constructor_init) {
         [[maybe_unused]] tuple_type tuple1;
 
         tuple_type2 tuple2{ hud::taginit };
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple2)), i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple2)), i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(tuple2)), i32&>));
-        ASSERT_EQ((hud::get<0>(tuple2)), i32{});
-        ASSERT_EQ((hud::get<1>(tuple2)), i32{});
-        ASSERT_EQ((hud::get<2>(tuple2)), i32{});
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple2)), i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple2)), i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(tuple2)), i32&>));
+        GTEST_ASSERT_EQ((hud::get<0>(tuple2)), i32{});
+        GTEST_ASSERT_EQ((hud::get<1>(tuple2)), i32{});
+        GTEST_ASSERT_EQ((hud::get<2>(tuple2)), i32{});
 
         tuple_type3 tuple3{ hud::taginit };
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple3)), i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple3)), f32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(tuple3)), wchar&>));
-        ASSERT_EQ((hud::get<0>(tuple3)), i32{});
-        ASSERT_EQ((hud::get<1>(tuple3)), f32{});
-        ASSERT_EQ((hud::get<2>(tuple3)), wchar{});
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple3)), i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple3)), f32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(tuple3)), wchar&>));
+        GTEST_ASSERT_EQ((hud::get<0>(tuple3)), i32{});
+        GTEST_ASSERT_EQ((hud::get<1>(tuple3)), f32{});
+        GTEST_ASSERT_EQ((hud::get<2>(tuple3)), wchar{});
 
         tuple_type4 tuple4{ hud::taginit };
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple4)), hud_test::explicit_default_constructible&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple4)), hud_test::implicit_default_constructible&>));
-        ASSERT_EQ((hud::get<0>(tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple4).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple4).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple4).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple4).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple4).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(tuple4).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(tuple4).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple4).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple4).move_constructor_count()), 0u);
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple4)), hud_test::explicit_default_constructible&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple4)), hud_test::implicit_default_constructible&>));
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).move_constructor_count()), 0u);
 
         tuple_type5 tuple5{ hud::taginit };
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple5)), hud_test::explicit_default_constructible&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple5)), i32&>));
-        ASSERT_EQ((hud::get<0>(tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple5).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple5).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple5).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple5).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple5)), i32{});
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple5)), hud_test::explicit_default_constructible&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple5)), i32&>));
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple5)), i32{});
     }
 
     // Constant
@@ -310,69 +310,69 @@ GTEST_TEST(tuple, default_constructor_init) {
         [[maybe_unused]] constexpr tuple_type tuple1;
 
         constexpr tuple_type2 tuple2{ hud::taginit };
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple2)), const i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple2)), const i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(tuple2)), const i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple2)), const i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple2)), const i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(tuple2)), const i32&>));
 
-        ASSERT_EQ((hud::get<0>(tuple2)), i32{});
-        ASSERT_EQ((hud::get<1>(tuple2)), i32{});
-        ASSERT_EQ((hud::get<2>(tuple2)), i32{});
+        GTEST_ASSERT_EQ((hud::get<0>(tuple2)), i32{});
+        GTEST_ASSERT_EQ((hud::get<1>(tuple2)), i32{});
+        GTEST_ASSERT_EQ((hud::get<2>(tuple2)), i32{});
 
         constexpr tuple_type3 tuple3{ hud::taginit };
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple3)), const i32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple3)), const f32&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(tuple3)), const wchar&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple3)), const i32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple3)), const f32&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<2>(tuple3)), const wchar&>));
 
-        ASSERT_EQ((hud::get<0>(tuple3)), i32{});
-        ASSERT_EQ((hud::get<1>(tuple3)), f32{});
-        ASSERT_EQ((hud::get<2>(tuple3)), wchar{});
+        GTEST_ASSERT_EQ((hud::get<0>(tuple3)), i32{});
+        GTEST_ASSERT_EQ((hud::get<1>(tuple3)), f32{});
+        GTEST_ASSERT_EQ((hud::get<2>(tuple3)), wchar{});
 
         constexpr tuple_type4 tuple4{ hud::taginit };
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple4)), const hud_test::explicit_default_constructible&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple4)), const hud_test::implicit_default_constructible&>));
-        ASSERT_EQ((hud::get<0>(tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple4).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple4).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple4).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple4).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple4).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(tuple4).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(tuple4).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple4).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple4).move_constructor_count()), 0u);
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple4)), const hud_test::explicit_default_constructible&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple4)), const hud_test::implicit_default_constructible&>));
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple4).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple4).move_constructor_count()), 0u);
 
         constexpr tuple_type5 tuple5{ hud::taginit };
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple5)), const hud_test::explicit_default_constructible&>));
-        ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple5)), const i32&>));
-        ASSERT_EQ((hud::get<0>(tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple5).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple5).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple5).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple5).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple5)), i32{});
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple5)), const hud_test::explicit_default_constructible&>));
+        GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<1>(tuple5)), const i32&>));
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple5).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple5)), i32{});
     }
 }
 
 GTEST_TEST(tuple, default_constructor_explicit_types) {
     using tuple_type = hud::tuple<hud_test::explicit_default_constructible, hud_test::explicit_default_constructible>;
 
-    ASSERT_TRUE(hud::is_explicitly_default_constructible_v<tuple_type>);
+    GTEST_ASSERT_TRUE(hud::is_explicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
         // No init for empty tuple
         tuple_type tuple;
 
-        ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
     }
 
     // Constant
@@ -380,39 +380,39 @@ GTEST_TEST(tuple, default_constructor_explicit_types) {
         // No init for empty tuple
         constexpr tuple_type tuple;
 
-        ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
     }
 }
 
 GTEST_TEST(tuple, default_constructor_implicit_types) {
     using tuple_type = hud::tuple<hud_test::implicit_default_constructible, hud_test::implicit_default_constructible>;
 
-    ASSERT_TRUE(hud::is_implicitly_default_constructible_v<tuple_type>);
+    GTEST_ASSERT_TRUE(hud::is_implicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
         // No init for empty tuple
         tuple_type tuple;
 
-        ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
     }
 
     // Constant
@@ -420,39 +420,39 @@ GTEST_TEST(tuple, default_constructor_implicit_types) {
         // No init for empty tuple
         constexpr tuple_type tuple;
 
-        ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
     }
 }
 
 GTEST_TEST(tuple, default_constructor_mix_implicit_explicit_types) {
     using tuple_type = hud::tuple<hud_test::implicit_default_constructible, hud_test::explicit_default_constructible>;
 
-    ASSERT_TRUE(hud::is_explicitly_default_constructible_v<tuple_type>);
+    GTEST_ASSERT_TRUE(hud::is_explicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
         // No init for empty tuple
         tuple_type tuple;
 
-        ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
     }
 
     // Constant
@@ -460,31 +460,31 @@ GTEST_TEST(tuple, default_constructor_mix_implicit_explicit_types) {
         // No init for empty tuple
         constexpr tuple_type tuple;
 
-        ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
-        ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<0>(tuple).move_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).default_constructor_count()), 1u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).copy_constructor_count()), 0u);
+        GTEST_ASSERT_EQ((hud::get<1>(tuple).move_constructor_count()), 0u);
     }
 }
 
 GTEST_TEST(tuple, default_constructor_is_explicit_if_at_least_one_type_is_explicitly_default_constructible) {
-    ASSERT_FALSE(hud::is_explicitly_default_constructible_v<hud::tuple<>>);
-    ASSERT_FALSE((hud::is_explicitly_default_constructible_v<hud::tuple<i32, f32, wchar>>));
-    ASSERT_FALSE((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::implicit_default_constructible, hud_test::implicit_default_constructible>>));
-    ASSERT_TRUE((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::implicit_default_constructible, hud_test::explicit_default_constructible>>));
-    ASSERT_TRUE((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::explicit_default_constructible, hud_test::explicit_default_constructible>>));
+    GTEST_ASSERT_FALSE(hud::is_explicitly_default_constructible_v<hud::tuple<>>);
+    GTEST_ASSERT_FALSE((hud::is_explicitly_default_constructible_v<hud::tuple<i32, f32, wchar>>));
+    GTEST_ASSERT_FALSE((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::implicit_default_constructible, hud_test::implicit_default_constructible>>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::implicit_default_constructible, hud_test::explicit_default_constructible>>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::explicit_default_constructible, hud_test::explicit_default_constructible>>));
 }
 
 GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible&, const hud_test::explicitly_copy_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible&, const hud_test::explicitly_copy_constructible&>));
     
     const auto test = []() {
         const hud_test::explicitly_copy_constructible obj1(1);
@@ -500,26 +500,26 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_different_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible&, const hud_test::explicitly_copy_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible&, const hud_test::explicitly_copy_constructible&>));
 
     const auto test = []() {
         const hud_test::explicitly_copy_constructible obj1(1);
@@ -535,26 +535,26 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible&, const hud_test::implicitly_copy_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible&, const hud_test::implicitly_copy_constructible&>));
 
     const auto test = []() {
         const hud_test::implicitly_copy_constructible obj1(1);
@@ -570,26 +570,26 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_different_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible&, const hud_test::implicitly_copy_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible&, const hud_test::implicitly_copy_constructible&>));
 
     const auto test = []() {
         const hud_test::implicitly_copy_constructible obj1(1);
@@ -605,26 +605,26 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible&, const hud_test::explicitly_copy_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible&, const hud_test::explicitly_copy_constructible&>));
 
     const auto test = []() {
         const hud_test::implicitly_copy_constructible obj1(1);
@@ -640,26 +640,26 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_same_ty
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_different_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible&, const hud_test::explicitly_copy_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible&, const hud_test::explicitly_copy_constructible&>));
 
     const auto test = []() {
         const hud_test::implicitly_copy_constructible obj1(1);
@@ -676,26 +676,26 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_differe
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible&&, hud_test::explicitly_copy_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible&&, hud_test::explicitly_copy_constructible&&>));
 
     const auto test = []() {
         hud_test::explicitly_copy_constructible obj1(1);
@@ -711,26 +711,26 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_different_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible&&, hud_test::explicitly_copy_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible&&, hud_test::explicitly_copy_constructible&&>));
 
     const auto test = []() {
         hud_test::explicitly_copy_constructible obj1(1);
@@ -746,26 +746,26 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible&&, hud_test::implicitly_copy_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible&&, hud_test::implicitly_copy_constructible&&>));
 
     const auto test = []() {
         hud_test::implicitly_copy_constructible obj1(1);
@@ -781,26 +781,26 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_different_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible&&, hud_test::implicitly_copy_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible&&, hud_test::implicitly_copy_constructible&&>));
 
     const auto test = []() {
         hud_test::implicitly_copy_constructible obj1(1);
@@ -816,26 +816,26 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible&&, hud_test::explicitly_copy_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible&&, hud_test::explicitly_copy_constructible&&>));
 
     const auto test = []() {
         hud_test::implicitly_copy_constructible obj1(1);
@@ -851,26 +851,26 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_same_ty
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_different_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible&&, hud_test::explicitly_copy_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible&&, hud_test::explicitly_copy_constructible&&>));
 
     const auto test = []() {
         hud_test::implicitly_copy_constructible obj1(1);
@@ -886,26 +886,26 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_differe
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible&&, hud_test::explicitly_move_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible&&, hud_test::explicitly_move_constructible&&>));
 
     const auto test = []() {
         hud_test::explicitly_move_constructible obj1(1);
@@ -923,30 +923,30 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_different_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible&&, hud_test::explicitly_move_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible&&, hud_test::explicitly_move_constructible&&>));
 
     const auto test = []() {
         hud_test::explicitly_move_constructible obj1(1);
@@ -964,30 +964,30 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible&&, hud_test::implicitly_move_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible&&, hud_test::implicitly_move_constructible&&>));
 
     const auto test = []() {
         hud_test::implicitly_move_constructible obj1(1);
@@ -1005,30 +1005,30 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_different_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible&&, hud_test::implicitly_move_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible&&, hud_test::implicitly_move_constructible&&>));
 
     const auto test = []() {
         hud_test::implicitly_move_constructible obj1(1);
@@ -1046,30 +1046,30 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible&&, hud_test::explicitly_move_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible&&, hud_test::explicitly_move_constructible&&>));
 
     const auto test = []() {
         hud_test::implicitly_move_constructible obj1(1);
@@ -1087,30 +1087,30 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_same_ty
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
 GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_different_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible&&, hud_test::explicitly_move_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible&&, hud_test::explicitly_move_constructible&&>));
 
     const auto test = []() {
         hud_test::implicitly_move_constructible obj1(1);
@@ -1128,23 +1128,23 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_differe
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
@@ -1153,7 +1153,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const pair_type&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const pair_type&>));
 
     const auto test = []() {
         const pair_type pair{ 1,2 };
@@ -1169,19 +1169,19 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
 }
@@ -1191,7 +1191,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_different_types
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const pair_type&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const pair_type&>));
 
     const auto test = []() {
         const pair_type pair{1,2};
@@ -1207,19 +1207,19 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_different_types
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1228,7 +1228,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, const pair_type&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, const pair_type&>));
 
     const auto test = []() {
         const pair_type pair{ 1,2 };
@@ -1244,19 +1244,19 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1265,7 +1265,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_different_types
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, const pair_type&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, const pair_type&>));
 
     const auto test = []() {
         const pair_type pair{ 1,2 };
@@ -1281,19 +1281,19 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_different_types
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1302,7 +1302,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyabl
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const pair_type&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const pair_type&>));
 
     const auto test = []() {
         const pair_type pair{ 1,2 };
@@ -1318,19 +1318,19 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyabl
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1339,7 +1339,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyabl
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const pair_type&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const pair_type&>));
 
     const auto test = []() {
         const pair_type pair{ 1,2 };
@@ -1355,19 +1355,19 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyabl
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1376,7 +1376,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1392,19 +1392,19 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
 }
@@ -1414,7 +1414,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_different_types
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1430,19 +1430,19 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_different_types
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1451,7 +1451,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1467,19 +1467,19 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1488,7 +1488,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_different_types
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1504,19 +1504,19 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_different_types
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1525,7 +1525,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyabl
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1541,19 +1541,19 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyabl
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1562,7 +1562,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyabl
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1578,19 +1578,19 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyabl
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1599,7 +1599,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
 
-   // ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
+   // GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
     static_assert((hud::is_explicitly_move_constructible_v<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>));
     static_assert((hud::details::is_pair_explicitly_move_constructible_to_tuple_v< pair_type, tuple_type>));
     const auto test = []() {
@@ -1618,23 +1618,23 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
 }
@@ -1644,7 +1644,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_different_types
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1662,23 +1662,23 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_different_types
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
@@ -1687,7 +1687,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_same_types) {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1705,23 +1705,23 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
@@ -1730,7 +1730,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_different_types
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1748,23 +1748,23 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_different_types
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
@@ -1773,7 +1773,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveabl
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1791,23 +1791,23 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveabl
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
@@ -1816,7 +1816,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveabl
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, pair_type&&>));
 
     const auto test = []() {
         pair_type pair{ 1,2 };
@@ -1834,30 +1834,30 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveabl
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
 GTEST_TEST(tuple, copy_constructor_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible&, const hud_test::implicitly_copy_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible&, const hud_test::implicitly_copy_constructible&>));
 
     const auto test = []() {
         const tuple_type to_copy{ 1,2 };
@@ -1873,19 +1873,19 @@ GTEST_TEST(tuple, copy_constructor_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -1893,7 +1893,7 @@ GTEST_TEST(tuple, copy_constructor_copyable_different_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
     using other_tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible&, const hud_test::implicitly_copy_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible&, const hud_test::implicitly_copy_constructible&>));
 
     const auto test = []() {
         const other_tuple_type to_copy{ 1,2 };
@@ -1909,26 +1909,26 @@ GTEST_TEST(tuple, copy_constructor_copyable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, copy_constructor_moveable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible&, const hud_test::explicitly_move_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible&, const hud_test::explicitly_move_constructible&>));
 
     const auto test = []() {
         const tuple_type to_copy{ 1,2 };
@@ -1946,23 +1946,23 @@ GTEST_TEST(tuple, copy_constructor_moveable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
@@ -1970,7 +1970,7 @@ GTEST_TEST(tuple, copy_constructor_moveable_different_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
     using other_tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible&, const hud_test::implicitly_move_constructible&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible&, const hud_test::implicitly_move_constructible&>));
 
     const auto test = []() {
         const other_tuple_type to_copy{ 1,2 };
@@ -1988,30 +1988,30 @@ GTEST_TEST(tuple, copy_constructor_moveable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
 GTEST_TEST(tuple, move_constructor_copyable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible&&, hud_test::implicitly_copy_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible&&, hud_test::implicitly_copy_constructible&&>));
 
     const auto test = []() {
         tuple_type to_copy{ 1,2 };
@@ -2027,19 +2027,19 @@ GTEST_TEST(tuple, move_constructor_copyable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -2047,7 +2047,7 @@ GTEST_TEST(tuple, move_constructor_copyable_different_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
     using other_tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible&&, hud_test::implicitly_copy_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible&&, hud_test::implicitly_copy_constructible&&>));
 
     const auto test = []() {
         other_tuple_type to_copy{ 1,2 };
@@ -2063,26 +2063,26 @@ GTEST_TEST(tuple, move_constructor_copyable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
 GTEST_TEST(tuple, move_constructor_moveable_same_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible&&, hud_test::implicitly_move_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible&&, hud_test::implicitly_move_constructible&&>));
 
     const auto test = []() {
         tuple_type to_copy{ 1,2 };
@@ -2100,23 +2100,23 @@ GTEST_TEST(tuple, move_constructor_moveable_same_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
@@ -2124,7 +2124,7 @@ GTEST_TEST(tuple, move_constructor_moveable_different_types) {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
     using other_tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible&&, hud_test::implicitly_move_constructible&&>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible&&, hud_test::implicitly_move_constructible&&>));
 
     const auto test = []() {
         other_tuple_type to_copy{ 1,2 };
@@ -2142,22 +2142,22 @@ GTEST_TEST(tuple, move_constructor_moveable_different_types) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }

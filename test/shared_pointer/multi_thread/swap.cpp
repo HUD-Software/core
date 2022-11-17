@@ -28,11 +28,11 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty) {
         // Non constant
         {
             const auto result = test();
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_TRUE(std::get<1>(result));
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_TRUE(std::get<3>(result));
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
         }
 
         // Constant is not available with thread safe SharedPointer
@@ -41,11 +41,11 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty) {
 /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_TRUE(std::get<1>(result));
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_TRUE(std::get<3>(result));
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
         }
 #endif*/
     }
@@ -75,11 +75,11 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty) {
         // Non constant
         {
             const auto result = test();
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_TRUE(std::get<1>(result));
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_TRUE(std::get<3>(result));
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
         }
 
         // Constant is not available with thread safe SharedPointer
@@ -88,11 +88,11 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty) {
 /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_TRUE(std::get<1>(result));
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_TRUE(std::get<3>(result));
-            ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
         }
 #endif*/
     }
@@ -128,12 +128,12 @@ GTEST_TEST(shared_pointer_safe, swap_same_type) {
         // Non constant
         {
             const auto result = test();
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_TRUE(std::get<1>(result));
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_TRUE(std::get<3>(result));
-            ASSERT_TRUE(std::get<4>(result));
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant is not available with thread safe SharedPointer
@@ -142,12 +142,12 @@ GTEST_TEST(shared_pointer_safe, swap_same_type) {
 /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_TRUE(std::get<1>(result));
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_TRUE(std::get<3>(result));
-            ASSERT_TRUE(std::get<4>(result));
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
 #endif*/
     }
@@ -179,12 +179,12 @@ GTEST_TEST(shared_pointer_safe, swap_same_type) {
         // Non constant
         {
             const auto result = test();
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_TRUE(std::get<1>(result));
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_TRUE(std::get<3>(result));
-            ASSERT_TRUE(std::get<4>(result));
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
 
         // Constant is not available with thread safe SharedPointer
@@ -193,12 +193,12 @@ GTEST_TEST(shared_pointer_safe, swap_same_type) {
 /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
-            ASSERT_TRUE(std::get<0>(result));
-            ASSERT_TRUE(std::get<1>(result));
-            ASSERT_TRUE(std::get<2>(result));
-            ASSERT_TRUE(std::get<3>(result));
-            ASSERT_TRUE(std::get<4>(result));
-            ASSERT_TRUE(std::get<5>(result));
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+            GTEST_ASSERT_TRUE(std::get<4>(result));
+            GTEST_ASSERT_TRUE(std::get<5>(result));
         }
 #endif*/
     }

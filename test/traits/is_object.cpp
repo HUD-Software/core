@@ -5,10 +5,10 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_object) {
-    ASSERT_TRUE((hud::is_object_v<i32>));
-    ASSERT_TRUE((hud::is_object_v<hud_test::a>));
-    ASSERT_FALSE((hud::is_object_v<hud_test::a&>));
-    ASSERT_TRUE((hud::is_object_v<hud_test::a*>));
-    ASSERT_FALSE((hud::is_object_v<i32(i32)>));
-    ASSERT_TRUE((hud::is_object_v<i32(*)(i32)>));
+    GTEST_ASSERT_TRUE((hud::is_object_v<i32>));
+    GTEST_ASSERT_TRUE((hud::is_object_v<hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_object_v<hud_test::a&>));
+    GTEST_ASSERT_TRUE((hud::is_object_v<hud_test::a*>));
+    GTEST_ASSERT_FALSE((hud::is_object_v<i32(i32)>));
+    GTEST_ASSERT_TRUE((hud::is_object_v<i32(*)(i32)>));
 }

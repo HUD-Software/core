@@ -18,13 +18,13 @@ GTEST_TEST(memory, default_construct_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(result, 0u);
+        GTEST_ASSERT_EQ(result, 0u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(result, 0u);
+        GTEST_ASSERT_EQ(result, 0u);
     }
 }
 
@@ -50,13 +50,13 @@ GTEST_TEST(memory, default_construct_trivial_constructible_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(result, 0);
+        GTEST_ASSERT_EQ(result, 0);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(result, 0);
+        GTEST_ASSERT_EQ(result, 0);
     }
 }
 
@@ -82,13 +82,13 @@ GTEST_TEST(memory, default_construct_non_trivial_constructible_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(result, 15);
+        GTEST_ASSERT_EQ(result, 15);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(result, 15);
+        GTEST_ASSERT_EQ(result, 15);
     }
 }
 
@@ -110,15 +110,15 @@ GTEST_TEST(memory, default_construct_array_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 0u);
-        ASSERT_EQ(std::get<0>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 0u);
-        ASSERT_EQ(std::get<0>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
     }
 }
 
@@ -144,15 +144,15 @@ GTEST_TEST(memory, default_construct_array_trivial_constructible_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 0);
-        ASSERT_EQ(std::get<0>(result), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 0);
-        ASSERT_EQ(std::get<0>(result), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0);
     }
 }
 
@@ -178,14 +178,14 @@ GTEST_TEST(memory, default_construct_array_non_trivial_constructible_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 15);
-        ASSERT_EQ(std::get<0>(result), 15);
+        GTEST_ASSERT_EQ(std::get<0>(result), 15);
+        GTEST_ASSERT_EQ(std::get<0>(result), 15);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 15);
-        ASSERT_EQ(std::get<0>(result), 15);
+        GTEST_ASSERT_EQ(std::get<0>(result), 15);
+        GTEST_ASSERT_EQ(std::get<0>(result), 15);
     }
 }

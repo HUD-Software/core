@@ -13,10 +13,10 @@ namespace{
 }
 
 GTEST_TEST(traits, is_nothrow_move_assignable) {   
-    ASSERT_TRUE((hud::is_nothrow_move_assignable_v<i32>));
-    ASSERT_TRUE((hud::is_nothrow_move_assignable_v<a>));
-    ASSERT_FALSE((hud::is_nothrow_move_assignable_v<b>));
-    ASSERT_TRUE((hud::is_nothrow_move_assignable_v<c>));
-    ASSERT_TRUE((hud::is_nothrow_move_assignable_v<c, a>));
-    ASSERT_FALSE((hud::is_nothrow_move_assignable_v<c, b>));
+    GTEST_ASSERT_TRUE((hud::is_nothrow_move_assignable_v<i32>));
+    GTEST_ASSERT_TRUE((hud::is_nothrow_move_assignable_v<a>));
+    GTEST_ASSERT_FALSE((hud::is_nothrow_move_assignable_v<b>));
+    GTEST_ASSERT_TRUE((hud::is_nothrow_move_assignable_v<c>));
+    GTEST_ASSERT_TRUE((hud::is_nothrow_move_assignable_v<c, a>));
+    GTEST_ASSERT_FALSE((hud::is_nothrow_move_assignable_v<c, b>));
 }

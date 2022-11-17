@@ -19,17 +19,17 @@ GTEST_TEST(memory, construct_at_trival_type)
     // Non constant
     {
         u32 result = test_no_param();
-        ASSERT_EQ(result, 0u);
+        GTEST_ASSERT_EQ(result, 0u);
         result = test_param();
-        ASSERT_EQ(result, 15u);
+        GTEST_ASSERT_EQ(result, 15u);
     }
 
     // Constant
     {
         constexpr u32 result_no_param = test_no_param();
-        ASSERT_EQ(result_no_param, 0u);
+        GTEST_ASSERT_EQ(result_no_param, 0u);
         constexpr u32 result_param = test_param();
-        ASSERT_EQ(result_param, 15u);
+        GTEST_ASSERT_EQ(result_param, 15u);
     }
 }
 
@@ -65,17 +65,17 @@ GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
     // Non constant
     {
         ResultType result_no_param = test_no_param();
-        ASSERT_EQ(result_no_param, 0);
+        GTEST_ASSERT_EQ(result_no_param, 0);
         ResultType result_param = test_param();
-        ASSERT_EQ(result_param, 15);
+        GTEST_ASSERT_EQ(result_param, 15);
     }
 
     // Constant
     {
         constexpr ResultType result_no_param = test_no_param();
-        ASSERT_EQ(result_no_param, 0);
+        GTEST_ASSERT_EQ(result_no_param, 0);
         constexpr ResultType result_param = test_param();
-        ASSERT_EQ(result_param, 15);
+        GTEST_ASSERT_EQ(result_param, 15);
     }
 }
 
@@ -102,21 +102,21 @@ GTEST_TEST(memory, construct_array_at_trival_type)
     // Non constant
     {
         ResultType result_no_param = test_no_param();
-        ASSERT_EQ(std::get<0>(result_no_param), 0u);
-        ASSERT_EQ(std::get<1>(result_no_param), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result_no_param), 0u);
+        GTEST_ASSERT_EQ(std::get<1>(result_no_param), 0u);
         ResultType result_param = test_param();
-        ASSERT_EQ(std::get<0>(result_param), 15u);
-        ASSERT_EQ(std::get<1>(result_param), 15u);
+        GTEST_ASSERT_EQ(std::get<0>(result_param), 15u);
+        GTEST_ASSERT_EQ(std::get<1>(result_param), 15u);
     }
 
     // Constant
     {
         constexpr ResultType result_no_param = test_no_param();
-        ASSERT_EQ(std::get<0>(result_no_param), 0u);
-        ASSERT_EQ(std::get<1>(result_no_param), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result_no_param), 0u);
+        GTEST_ASSERT_EQ(std::get<1>(result_no_param), 0u);
         constexpr ResultType result_param = test_param();
-        ASSERT_EQ(std::get<0>(result_param), 15u);
-        ASSERT_EQ(std::get<1>(result_param), 15u);
+        GTEST_ASSERT_EQ(std::get<0>(result_param), 15u);
+        GTEST_ASSERT_EQ(std::get<1>(result_param), 15u);
     }
 }
 
@@ -153,20 +153,20 @@ GTEST_TEST(memory, construct_array_at_non_trival_type)
     // Non constant
     {
         ResultType result_no_param = test_no_param();
-        ASSERT_EQ(std::get<0>(result_no_param), 0);
-        ASSERT_EQ(std::get<1>(result_no_param), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_no_param), 0);
+        GTEST_ASSERT_EQ(std::get<1>(result_no_param), 0);
         ResultType result_param = test_param();
-        ASSERT_EQ(std::get<0>(result_param), 15);
-        ASSERT_EQ(std::get<1>(result_param), 15);
+        GTEST_ASSERT_EQ(std::get<0>(result_param), 15);
+        GTEST_ASSERT_EQ(std::get<1>(result_param), 15);
     }
 
     // Constant
     {
         constexpr ResultType result_no_param = test_no_param();
-        ASSERT_EQ(std::get<0>(result_no_param), 0);
-        ASSERT_EQ(std::get<1>(result_no_param), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_no_param), 0);
+        GTEST_ASSERT_EQ(std::get<1>(result_no_param), 0);
         constexpr ResultType result_param = test_param();
-        ASSERT_EQ(std::get<0>(result_param), 15);
-        ASSERT_EQ(std::get<1>(result_param), 15);
+        GTEST_ASSERT_EQ(std::get<0>(result_param), 15);
+        GTEST_ASSERT_EQ(std::get<1>(result_param), 15);
     }
 }

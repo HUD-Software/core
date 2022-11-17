@@ -25,32 +25,32 @@ namespace hud_test {
 
 
 GTEST_TEST(traits, common_type) {
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<i8, i16, i32>, i32>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<f32, f64>, f64>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<hud_test::derived, hud_test::base>, hud_test::base>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const hud_test::derived, hud_test::base>, hud_test::base>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const hud_test::derived, const hud_test::base>, hud_test::base>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<hud_test::derived*, hud_test::base*>, hud_test::base*>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const hud_test::derived*, hud_test::base*>, const hud_test::base*>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const hud_test::derived*, hud_test::derived*, const hud_test::base*>, const hud_test::base*>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<hud_test::derived*, const hud_test::base*>,const hud_test::base*>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const i32, volatile i32>, i32>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<i32[], i32*>, i32*>));
-    ASSERT_TRUE((hud::is_same_v<hud::common_type_t<i32[], const i32[32], i32*>, const i32*>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<i8, i16, i32>, i32>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<f32, f64>, f64>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<hud_test::derived, hud_test::base>, hud_test::base>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const hud_test::derived, hud_test::base>, hud_test::base>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const hud_test::derived, const hud_test::base>, hud_test::base>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<hud_test::derived*, hud_test::base*>, hud_test::base*>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const hud_test::derived*, hud_test::base*>, const hud_test::base*>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const hud_test::derived*, hud_test::derived*, const hud_test::base*>, const hud_test::base*>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<hud_test::derived*, const hud_test::base*>,const hud_test::base*>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<const i32, volatile i32>, i32>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<i32[], i32*>, i32*>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::common_type_t<i32[], const i32[32], i32*>, const i32*>));
 
 
-    ASSERT_TRUE((hud_test::has_common_type_v<i8, i16, i32>));
-    ASSERT_TRUE((hud_test::has_common_type_v<f32, f64>));
-    ASSERT_TRUE((hud_test::has_common_type_v<hud_test::derived, hud_test::base>));
-    ASSERT_TRUE((hud_test::has_common_type_v<const hud_test::derived, hud_test::base>));
-    ASSERT_TRUE((hud_test::has_common_type_v<const hud_test::derived, const hud_test::base>));
-    ASSERT_TRUE((hud_test::has_common_type_v<hud_test::derived*, hud_test::base*>));
-    ASSERT_TRUE((hud_test::has_common_type_v<const hud_test::derived*, hud_test::base*>));
-    ASSERT_TRUE((hud_test::has_common_type_v<const hud_test::derived*, hud_test::derived*, const hud_test::base*>));
-    ASSERT_TRUE((hud_test::has_common_type_v<hud_test::derived*, const hud_test::base*>));
-    ASSERT_TRUE((hud_test::has_common_type_v<const i32, volatile i32>));
-    ASSERT_TRUE((hud_test::has_common_type_v<i32[], i32*>));
-    ASSERT_TRUE((hud_test::has_common_type_v<i32[], const i32[32], i32*>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<i8, i16, i32>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<f32, f64>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<hud_test::derived, hud_test::base>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<const hud_test::derived, hud_test::base>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<const hud_test::derived, const hud_test::base>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<hud_test::derived*, hud_test::base*>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<const hud_test::derived*, hud_test::base*>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<const hud_test::derived*, hud_test::derived*, const hud_test::base*>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<hud_test::derived*, const hud_test::base*>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<const i32, volatile i32>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<i32[], i32*>));
+    GTEST_ASSERT_TRUE((hud_test::has_common_type_v<i32[], const i32[32], i32*>));
 
-    ASSERT_FALSE((hud_test::has_common_type_v<i8, i16, i32, hud_test::derived>));
+    GTEST_ASSERT_FALSE((hud_test::has_common_type_v<i8, i16, i32, hud_test::derived>));
 }

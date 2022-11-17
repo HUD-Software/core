@@ -10,10 +10,10 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_explicitly_copy_constructible) {
-    ASSERT_TRUE((hud::is_explicitly_copy_constructible_v<hud_test::explicit_ctor>));
-    ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<hud_test::no_explicit_ctor>));
-    ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<i32>));
-    ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<const i32>));
-    ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<volatile i32>));
-    ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<const volatile i32>));
+    GTEST_ASSERT_TRUE((hud::is_explicitly_copy_constructible_v<hud_test::explicit_ctor>));
+    GTEST_ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<hud_test::no_explicit_ctor>));
+    GTEST_ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<i32>));
+    GTEST_ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<const i32>));
+    GTEST_ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<volatile i32>));
+    GTEST_ASSERT_FALSE((hud::is_explicitly_copy_constructible_v<const volatile i32>));
 }

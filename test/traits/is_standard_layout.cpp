@@ -9,13 +9,13 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_standard_layout) {
-    ASSERT_TRUE((hud::is_standard_layout_v<hud_test::a>));
-    ASSERT_TRUE((hud::is_standard_layout_v<i32>));
-    ASSERT_TRUE((hud::is_standard_layout_v<i32[]>));
-    ASSERT_TRUE((hud::is_standard_layout_v<i32[3]>));
-    ASSERT_TRUE((hud::is_standard_layout_v<i32*>));
-    ASSERT_FALSE((hud::is_standard_layout_v<hud_test::b>));
-    ASSERT_FALSE((hud::is_standard_layout_v<hud_test::c>));
-    ASSERT_FALSE((hud::is_standard_layout_v<hud_test::d>));
-    ASSERT_TRUE((hud::is_standard_layout_v<hud_test::E>));
+    GTEST_ASSERT_TRUE((hud::is_standard_layout_v<hud_test::a>));
+    GTEST_ASSERT_TRUE((hud::is_standard_layout_v<i32>));
+    GTEST_ASSERT_TRUE((hud::is_standard_layout_v<i32[]>));
+    GTEST_ASSERT_TRUE((hud::is_standard_layout_v<i32[3]>));
+    GTEST_ASSERT_TRUE((hud::is_standard_layout_v<i32*>));
+    GTEST_ASSERT_FALSE((hud::is_standard_layout_v<hud_test::b>));
+    GTEST_ASSERT_FALSE((hud::is_standard_layout_v<hud_test::c>));
+    GTEST_ASSERT_FALSE((hud::is_standard_layout_v<hud_test::d>));
+    GTEST_ASSERT_TRUE((hud::is_standard_layout_v<hud_test::E>));
 }

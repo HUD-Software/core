@@ -47,21 +47,21 @@ GTEST_TEST(tuple, equal_operator_same_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
     }
 }
 
@@ -82,23 +82,23 @@ GTEST_TEST(tuple, equal_operator_different_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
     }
 }
 
@@ -119,21 +119,21 @@ GTEST_TEST(tuple, not_equal_operator_same_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
     }
 }
 
@@ -154,23 +154,23 @@ GTEST_TEST(tuple, not_equal_operator_different_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 }
 
@@ -195,27 +195,27 @@ GTEST_TEST(tuple, less_operator_same_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
     }
 }
 
@@ -243,31 +243,31 @@ GTEST_TEST(tuple, less_operator_different_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_FALSE(std::get<9>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_FALSE(std::get<9>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_FALSE(std::get<9>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_FALSE(std::get<9>(result));
     }
 }
 
@@ -291,27 +291,27 @@ GTEST_TEST(tuple, less_equal_operator_same_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_FALSE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_FALSE(std::get<7>(result));
     }
 }
 
@@ -337,31 +337,31 @@ GTEST_TEST(tuple, less_equal_operator_different_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_FALSE(std::get<9>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_FALSE(std::get<9>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_FALSE(std::get<9>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_FALSE(std::get<9>(result));
     }
 }
 
@@ -385,27 +385,27 @@ GTEST_TEST(tuple, greater_operator_same_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_FALSE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_FALSE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_FALSE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_FALSE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
     }
 }
 
@@ -431,30 +431,30 @@ GTEST_TEST(tuple, greater_equal_operator_different_types) {
     // Non constant 
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_FALSE(std::get<8>(result));
-        ASSERT_TRUE(std::get<9>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<8>(result));
+        GTEST_ASSERT_TRUE(std::get<9>(result));
     }
 
     // Constant 
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_FALSE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_FALSE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_FALSE(std::get<8>(result));
-        ASSERT_TRUE(std::get<9>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_FALSE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_FALSE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_FALSE(std::get<8>(result));
+        GTEST_ASSERT_TRUE(std::get<9>(result));
     }
 }

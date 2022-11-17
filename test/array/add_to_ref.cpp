@@ -53,27 +53,27 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 0u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 1u);
-            ASSERT_EQ(std::get<7>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 0u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 0u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
-            ASSERT_EQ(std::get<8>(second_element_result), 2u);
-            ASSERT_EQ(std::get<9>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<8>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<9>(second_element_result), 1u);
         }
 
         // Constant
@@ -82,27 +82,27 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 0u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 1u);
-            ASSERT_EQ(std::get<7>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 0u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 0u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
-            ASSERT_EQ(std::get<8>(second_element_result), 2u);
-            ASSERT_EQ(std::get<9>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<8>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<9>(second_element_result), 1u);
         }
     }
 
@@ -151,27 +151,27 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 0u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 1u);
-            ASSERT_EQ(std::get<7>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 0u);
-            ASSERT_EQ(std::get<5>(second_element_result), 1u);
-            ASSERT_EQ(std::get<6>(second_element_result), 0u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
-            ASSERT_EQ(std::get<8>(second_element_result), 1u);
-            ASSERT_EQ(std::get<9>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<8>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<9>(second_element_result), 0u);
         }
 
         // Constant
@@ -180,27 +180,27 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 0u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 1u);
-            ASSERT_EQ(std::get<7>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 0u);
-            ASSERT_EQ(std::get<5>(second_element_result), 1u);
-            ASSERT_EQ(std::get<6>(second_element_result), 0u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
-            ASSERT_EQ(std::get<8>(second_element_result), 1u);
-            ASSERT_EQ(std::get<9>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<8>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<9>(second_element_result), 0u);
         }
     }
 }
@@ -255,24 +255,24 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 2u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
 
         // Constant
@@ -281,24 +281,24 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 2u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
     }
 
@@ -346,24 +346,24 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
 
         // Constant
@@ -372,24 +372,24 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
     }
 }
@@ -445,27 +445,27 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 0u);
-            ASSERT_EQ(std::get<6>(first_element_result), 1u);
-            ASSERT_EQ(std::get<7>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 2u);
-            ASSERT_EQ(std::get<5>(second_element_result), 0u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
-            ASSERT_EQ(std::get<8>(second_element_result), 2u);
-            ASSERT_EQ(std::get<9>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<8>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<9>(second_element_result), 1u);
         }
 
         // Constant
@@ -474,27 +474,27 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 0u);
-            ASSERT_EQ(std::get<6>(first_element_result), 1u);
-            ASSERT_EQ(std::get<7>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 2u);
-            ASSERT_EQ(std::get<5>(second_element_result), 0u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
-            ASSERT_EQ(std::get<8>(second_element_result), 2u);
-            ASSERT_EQ(std::get<9>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<8>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<9>(second_element_result), 1u);
         }
     }
 
@@ -542,27 +542,27 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 0u);
-            ASSERT_EQ(std::get<6>(first_element_result), 1u);
-            ASSERT_EQ(std::get<7>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 0u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
-            ASSERT_EQ(std::get<8>(second_element_result), 1u);
-            ASSERT_EQ(std::get<9>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<8>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<9>(second_element_result), 0u);
         }
 
         // Constant
@@ -571,27 +571,27 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 0u);
-            ASSERT_EQ(std::get<6>(first_element_result), 1u);
-            ASSERT_EQ(std::get<7>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 0u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
-            ASSERT_EQ(std::get<8>(second_element_result), 1u);
-            ASSERT_EQ(std::get<9>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_EQ(std::get<8>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<9>(second_element_result), 0u);
         }
     }
 }
@@ -644,24 +644,24 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 2u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
 
         // Constant
@@ -670,24 +670,24 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 2u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
     }
 
@@ -733,24 +733,24 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
 
         // Constant
@@ -759,24 +759,24 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 2u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
     }
 }
@@ -830,24 +830,24 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 2u);
-            ASSERT_EQ(std::get<5>(second_element_result), 1u);
-            ASSERT_EQ(std::get<6>(second_element_result), 2u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
 
         // Constant
@@ -856,24 +856,24 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 1u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 2u);
-            ASSERT_EQ(std::get<5>(second_element_result), 1u);
-            ASSERT_EQ(std::get<6>(second_element_result), 2u);
-            ASSERT_EQ(std::get<7>(second_element_result), 1u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 1u);
         }
     }
 
@@ -920,24 +920,24 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 1u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
 
         // Constant
@@ -946,24 +946,24 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
-            ASSERT_TRUE(std::get<0>(first_element_result));
-            ASSERT_TRUE(std::get<1>(first_element_result));
-            ASSERT_EQ(std::get<2>(first_element_result), 1u);
-            ASSERT_EQ(std::get<3>(first_element_result), 2u);
-            ASSERT_EQ(std::get<4>(first_element_result), 1u);
-            ASSERT_EQ(std::get<5>(first_element_result), 1u);
-            ASSERT_EQ(std::get<6>(first_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(first_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(first_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(first_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(first_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
-            ASSERT_TRUE(std::get<0>(second_element_result));
-            ASSERT_TRUE(std::get<1>(second_element_result));
-            ASSERT_EQ(std::get<2>(second_element_result), 2u);
-            ASSERT_EQ(std::get<3>(second_element_result), 2u);
-            ASSERT_EQ(std::get<4>(second_element_result), 1u);
-            ASSERT_EQ(std::get<5>(second_element_result), 1u);
-            ASSERT_EQ(std::get<6>(second_element_result), 1u);
-            ASSERT_EQ(std::get<7>(second_element_result), 0u);
+            GTEST_ASSERT_TRUE(std::get<0>(second_element_result));
+            GTEST_ASSERT_TRUE(std::get<1>(second_element_result));
+            GTEST_ASSERT_EQ(std::get<2>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(second_element_result), 2u);
+            GTEST_ASSERT_EQ(std::get<4>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<5>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<6>(second_element_result), 1u);
+            GTEST_ASSERT_EQ(std::get<7>(second_element_result), 0u);
         }
     }
 }

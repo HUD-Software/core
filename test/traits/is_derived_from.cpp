@@ -6,8 +6,8 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_derived_from) {
-    ASSERT_FALSE((hud::is_derived_from_v<hud_test::a, hud_test::a>));
-    ASSERT_FALSE((hud::is_derived_from_v<hud_test::a, hud_test::b>));
-    ASSERT_TRUE((hud::is_derived_from_v<hud_test::b, hud_test::a>));
-    ASSERT_FALSE((hud::is_derived_from_v<hud_test::b, hud_test::b>));
+    GTEST_ASSERT_FALSE((hud::is_derived_from_v<hud_test::a, hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_derived_from_v<hud_test::a, hud_test::b>));
+    GTEST_ASSERT_TRUE((hud::is_derived_from_v<hud_test::b, hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_derived_from_v<hud_test::b, hud_test::b>));
 }

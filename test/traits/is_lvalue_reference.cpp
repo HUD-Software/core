@@ -2,7 +2,7 @@
 
 
 GTEST_TEST(traits, is_lvalue_reference) {
-    ASSERT_FALSE(hud::is_lvalue_reference_v<i32>);
-    ASSERT_TRUE(hud::is_lvalue_reference_v<i32&>);
-    ASSERT_FALSE(hud::is_lvalue_reference_v<i32&&>);
+    GTEST_ASSERT_FALSE(hud::is_lvalue_reference_v<i32>);
+    GTEST_ASSERT_TRUE(hud::is_lvalue_reference_v<i32&>);
+    GTEST_ASSERT_FALSE(hud::is_lvalue_reference_v<i32&&>);
 }

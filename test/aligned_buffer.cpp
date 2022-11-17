@@ -8,7 +8,7 @@ GTEST_TEST(aligned_buffer, default_constructor_should_aligned_buffer_correctly)
     hud_test::for_each_value<size>()([]<int size>() {
         hud_test::for_each_value<align>()([]<int alignement>() {
             hud::aligned_buffer<size, alignement> buffer;
-            ASSERT_TRUE(hud::memory::is_pointer_aligned(buffer.pointer(), alignement));
+            GTEST_ASSERT_TRUE(hud::memory::is_pointer_aligned(buffer.pointer(), alignement));
         });
     });
 }   

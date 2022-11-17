@@ -13,17 +13,17 @@ GTEST_TEST(memory, set_zero_pointer_to_buffer) {
     // Non constant
     {
         std::tuple<u8, u8, u8> result = test();
-        ASSERT_EQ(std::get<0>(result), 0u);
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
     }
 
     // Constant
     {
         constexpr std::tuple<u8, u8, u8> result = test();
-        ASSERT_EQ(std::get<0>(result), 0u);
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
     }
 }
 
@@ -40,16 +40,16 @@ GTEST_TEST(memory, set_zero_c_array) {
     // Non constant
     {
         std::tuple<u8, u8, u8> result = test();
-        ASSERT_EQ(std::get<0>(result), 0u);
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
     }
 
     // Constant
     {
         constexpr std::tuple<u8, u8, u8> result = test();
-        ASSERT_EQ(std::get<0>(result), 0u);
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
     }
 }

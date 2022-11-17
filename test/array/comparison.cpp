@@ -128,77 +128,77 @@ GTEST_TEST(array, equal_operator)
     hud::array<d> row_7({ d{1},d{3} });
 
     // Verify the truth table
-    ASSERT_TRUE(col_0 == row_0);
-    ASSERT_FALSE(col_0 == row_1);
-    ASSERT_FALSE(col_0 == row_2);
-    ASSERT_FALSE(col_0 == row_3);
-    ASSERT_FALSE(col_0 == row_4);
-    ASSERT_FALSE(col_0 == row_5);
-    ASSERT_FALSE(col_0 == row_6);
-    ASSERT_FALSE(col_0 == row_7);
+    GTEST_ASSERT_TRUE(col_0 == row_0);
+    GTEST_ASSERT_FALSE(col_0 == row_1);
+    GTEST_ASSERT_FALSE(col_0 == row_2);
+    GTEST_ASSERT_FALSE(col_0 == row_3);
+    GTEST_ASSERT_FALSE(col_0 == row_4);
+    GTEST_ASSERT_FALSE(col_0 == row_5);
+    GTEST_ASSERT_FALSE(col_0 == row_6);
+    GTEST_ASSERT_FALSE(col_0 == row_7);
 
-    ASSERT_FALSE(col_1 == row_0);
-    ASSERT_TRUE(col_1 == row_1);
-    ASSERT_FALSE(col_1 == row_2);
-    ASSERT_FALSE(col_1 == row_3);
-    ASSERT_FALSE(col_1 == row_4);
-    ASSERT_FALSE(col_1 == row_5);
-    ASSERT_FALSE(col_1 == row_6);
-    ASSERT_FALSE(col_1 == row_7);
+    GTEST_ASSERT_FALSE(col_1 == row_0);
+    GTEST_ASSERT_TRUE(col_1 == row_1);
+    GTEST_ASSERT_FALSE(col_1 == row_2);
+    GTEST_ASSERT_FALSE(col_1 == row_3);
+    GTEST_ASSERT_FALSE(col_1 == row_4);
+    GTEST_ASSERT_FALSE(col_1 == row_5);
+    GTEST_ASSERT_FALSE(col_1 == row_6);
+    GTEST_ASSERT_FALSE(col_1 == row_7);
 
-    ASSERT_FALSE(col_2 == row_0);
-    ASSERT_FALSE(col_2 == row_1);
-    ASSERT_TRUE(col_2 == row_2);
-    ASSERT_FALSE(col_2 == row_3);
-    ASSERT_TRUE(col_2 == row_4);
-    ASSERT_FALSE(col_2 == row_5);
-    ASSERT_TRUE(col_2 == row_6);
-    ASSERT_FALSE(col_2 == row_7);
+    GTEST_ASSERT_FALSE(col_2 == row_0);
+    GTEST_ASSERT_FALSE(col_2 == row_1);
+    GTEST_ASSERT_TRUE(col_2 == row_2);
+    GTEST_ASSERT_FALSE(col_2 == row_3);
+    GTEST_ASSERT_TRUE(col_2 == row_4);
+    GTEST_ASSERT_FALSE(col_2 == row_5);
+    GTEST_ASSERT_TRUE(col_2 == row_6);
+    GTEST_ASSERT_FALSE(col_2 == row_7);
 
-    ASSERT_FALSE(col_3 == row_0);
-    ASSERT_FALSE(col_3 == row_1);
-    ASSERT_FALSE(col_3 == row_2);
-    ASSERT_TRUE(col_3 == row_3);
-    ASSERT_FALSE(col_3 == row_4);
-    ASSERT_TRUE(col_3 == row_5);
-    ASSERT_FALSE(col_3 == row_6);
-    ASSERT_TRUE(col_3 == row_7);
+    GTEST_ASSERT_FALSE(col_3 == row_0);
+    GTEST_ASSERT_FALSE(col_3 == row_1);
+    GTEST_ASSERT_FALSE(col_3 == row_2);
+    GTEST_ASSERT_TRUE(col_3 == row_3);
+    GTEST_ASSERT_FALSE(col_3 == row_4);
+    GTEST_ASSERT_TRUE(col_3 == row_5);
+    GTEST_ASSERT_FALSE(col_3 == row_6);
+    GTEST_ASSERT_TRUE(col_3 == row_7);
 
-    ASSERT_FALSE(col_4 == row_0);
-    ASSERT_FALSE(col_4 == row_1);
-    ASSERT_TRUE(col_4 == row_2);
-    ASSERT_FALSE(col_4 == row_3);
-    ASSERT_TRUE(col_4 == row_4);
-    ASSERT_FALSE(col_4 == row_5);
-    //ASSERT_FALSE(col_4 == row_6);  // c not comparable with d
-    //ASSERT_FALSE(col_4 == row_7);  // c not comparable with d
+    GTEST_ASSERT_FALSE(col_4 == row_0);
+    GTEST_ASSERT_FALSE(col_4 == row_1);
+    GTEST_ASSERT_TRUE(col_4 == row_2);
+    GTEST_ASSERT_FALSE(col_4 == row_3);
+    GTEST_ASSERT_TRUE(col_4 == row_4);
+    GTEST_ASSERT_FALSE(col_4 == row_5);
+    //GTEST_ASSERT_FALSE(col_4 == row_6);  // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_4 == row_7);  // c not comparable with d
 
-    ASSERT_FALSE(col_5 == row_0);
-    ASSERT_FALSE(col_5 == row_1);
-    ASSERT_FALSE(col_5 == row_2);
-    ASSERT_TRUE(col_5 == row_3);
-    ASSERT_FALSE(col_5 == row_4);
-    ASSERT_TRUE(col_5 == row_5);
+    GTEST_ASSERT_FALSE(col_5 == row_0);
+    GTEST_ASSERT_FALSE(col_5 == row_1);
+    GTEST_ASSERT_FALSE(col_5 == row_2);
+    GTEST_ASSERT_TRUE(col_5 == row_3);
+    GTEST_ASSERT_FALSE(col_5 == row_4);
+    GTEST_ASSERT_TRUE(col_5 == row_5);
     //Assert::IsFalse(col_5 == row_6); // c not comparable with d
     //Assert::IsFalse(col_5 == row_7); // c not comparable with d
 
-    ASSERT_FALSE(col_6 == row_0);
-    ASSERT_FALSE(col_6 == row_1);
-    ASSERT_TRUE(col_6 == row_2);
-    ASSERT_FALSE(col_6 == row_3);
-    //ASSERT_FALSE(col_6 == row_4); // d not comparable with c
-    //ASSERT_FALSE(col_6 == row_5); // d not comparable with c
-    ASSERT_TRUE(col_6 == row_6);
-    ASSERT_FALSE(col_6 == row_7);
+    GTEST_ASSERT_FALSE(col_6 == row_0);
+    GTEST_ASSERT_FALSE(col_6 == row_1);
+    GTEST_ASSERT_TRUE(col_6 == row_2);
+    GTEST_ASSERT_FALSE(col_6 == row_3);
+    //GTEST_ASSERT_FALSE(col_6 == row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_6 == row_5); // d not comparable with c
+    GTEST_ASSERT_TRUE(col_6 == row_6);
+    GTEST_ASSERT_FALSE(col_6 == row_7);
 
-    ASSERT_FALSE(col_7 == row_0);
-    ASSERT_FALSE(col_7 == row_1);
-    ASSERT_FALSE(col_7 == row_2);
-    ASSERT_TRUE(col_7 == row_3);
-    //ASSERT_FALSE(col_7 == row_4); // d not comparable with c
-    //ASSERT_FALSE(col_7 == row_5); // d not comparable with c
-    ASSERT_FALSE(col_7 == row_6);
-    ASSERT_TRUE(col_7 == row_7);
+    GTEST_ASSERT_FALSE(col_7 == row_0);
+    GTEST_ASSERT_FALSE(col_7 == row_1);
+    GTEST_ASSERT_FALSE(col_7 == row_2);
+    GTEST_ASSERT_TRUE(col_7 == row_3);
+    //GTEST_ASSERT_FALSE(col_7 == row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_7 == row_5); // d not comparable with c
+    GTEST_ASSERT_FALSE(col_7 == row_6);
+    GTEST_ASSERT_TRUE(col_7 == row_7);
 }
 
 GTEST_TEST(array, not_equal_operator)
@@ -251,77 +251,77 @@ GTEST_TEST(array, not_equal_operator)
     hud::array<d> row_7({ d{1},d{3} });
 
     // Verify the truth table
-    ASSERT_FALSE(col_0 != row_0);
-    ASSERT_TRUE(col_0 != row_1);
-    ASSERT_TRUE(col_0 != row_2);
-    ASSERT_TRUE(col_0 != row_3);
-    ASSERT_TRUE(col_0 != row_4);
-    ASSERT_TRUE(col_0 != row_5);
-    ASSERT_TRUE(col_0 != row_6);
-    ASSERT_TRUE(col_0 != row_7);
+    GTEST_ASSERT_FALSE(col_0 != row_0);
+    GTEST_ASSERT_TRUE(col_0 != row_1);
+    GTEST_ASSERT_TRUE(col_0 != row_2);
+    GTEST_ASSERT_TRUE(col_0 != row_3);
+    GTEST_ASSERT_TRUE(col_0 != row_4);
+    GTEST_ASSERT_TRUE(col_0 != row_5);
+    GTEST_ASSERT_TRUE(col_0 != row_6);
+    GTEST_ASSERT_TRUE(col_0 != row_7);
 
-    ASSERT_TRUE(col_1 != row_0);
-    ASSERT_FALSE(col_1 != row_1);
-    ASSERT_TRUE(col_1 != row_2);
-    ASSERT_TRUE(col_1 != row_3);
-    ASSERT_TRUE(col_1 != row_4);
-    ASSERT_TRUE(col_1 != row_5);
-    ASSERT_TRUE(col_1 != row_6);
-    ASSERT_TRUE(col_1 != row_7);
+    GTEST_ASSERT_TRUE(col_1 != row_0);
+    GTEST_ASSERT_FALSE(col_1 != row_1);
+    GTEST_ASSERT_TRUE(col_1 != row_2);
+    GTEST_ASSERT_TRUE(col_1 != row_3);
+    GTEST_ASSERT_TRUE(col_1 != row_4);
+    GTEST_ASSERT_TRUE(col_1 != row_5);
+    GTEST_ASSERT_TRUE(col_1 != row_6);
+    GTEST_ASSERT_TRUE(col_1 != row_7);
 
-    ASSERT_TRUE(col_2 != row_0);
-    ASSERT_TRUE(col_2 != row_1);
-    ASSERT_FALSE(col_2 != row_2);
-    ASSERT_TRUE(col_2 != row_3);
-    ASSERT_FALSE(col_2 != row_4);
-    ASSERT_TRUE(col_2 != row_5);
-    ASSERT_FALSE(col_2 != row_6);
-    ASSERT_TRUE(col_2 != row_7);
+    GTEST_ASSERT_TRUE(col_2 != row_0);
+    GTEST_ASSERT_TRUE(col_2 != row_1);
+    GTEST_ASSERT_FALSE(col_2 != row_2);
+    GTEST_ASSERT_TRUE(col_2 != row_3);
+    GTEST_ASSERT_FALSE(col_2 != row_4);
+    GTEST_ASSERT_TRUE(col_2 != row_5);
+    GTEST_ASSERT_FALSE(col_2 != row_6);
+    GTEST_ASSERT_TRUE(col_2 != row_7);
 
-    ASSERT_TRUE(col_3 != row_0);
-    ASSERT_TRUE(col_3 != row_1);
-    ASSERT_TRUE(col_3 != row_2);
-    ASSERT_FALSE(col_3 != row_3);
-    ASSERT_TRUE(col_3 != row_4);
-    ASSERT_FALSE(col_3 != row_5);
-    ASSERT_TRUE(col_3 != row_6);
-    ASSERT_FALSE(col_3 != row_7);
+    GTEST_ASSERT_TRUE(col_3 != row_0);
+    GTEST_ASSERT_TRUE(col_3 != row_1);
+    GTEST_ASSERT_TRUE(col_3 != row_2);
+    GTEST_ASSERT_FALSE(col_3 != row_3);
+    GTEST_ASSERT_TRUE(col_3 != row_4);
+    GTEST_ASSERT_FALSE(col_3 != row_5);
+    GTEST_ASSERT_TRUE(col_3 != row_6);
+    GTEST_ASSERT_FALSE(col_3 != row_7);
 
-    ASSERT_TRUE(col_4 != row_0);
-    ASSERT_TRUE(col_4 != row_1);
-    ASSERT_FALSE(col_4 != row_2);
-    ASSERT_TRUE(col_4 != row_3);
-    ASSERT_FALSE(col_4 != row_4);
-    ASSERT_TRUE(col_4 != row_5);
-    //ASSERT_FALSE(col_4 != row_6);  // c not comparable with d
-    //ASSERT_FALSE(col_4 != row_7);  // c not comparable with d
+    GTEST_ASSERT_TRUE(col_4 != row_0);
+    GTEST_ASSERT_TRUE(col_4 != row_1);
+    GTEST_ASSERT_FALSE(col_4 != row_2);
+    GTEST_ASSERT_TRUE(col_4 != row_3);
+    GTEST_ASSERT_FALSE(col_4 != row_4);
+    GTEST_ASSERT_TRUE(col_4 != row_5);
+    //GTEST_ASSERT_FALSE(col_4 != row_6);  // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_4 != row_7);  // c not comparable with d
 
-    ASSERT_TRUE(col_5 != row_0);
-    ASSERT_TRUE(col_5 != row_1);
-    ASSERT_TRUE(col_5 != row_2);
-    ASSERT_FALSE(col_5 != row_3);
-    ASSERT_TRUE(col_5 != row_4);
-    ASSERT_FALSE(col_5 != row_5);
-    //ASSERT_FALSE(col_5 != row_6); // c not comparable with d
-    //ASSERT_FALSE(col_5 != row_7); // c not comparable with d
+    GTEST_ASSERT_TRUE(col_5 != row_0);
+    GTEST_ASSERT_TRUE(col_5 != row_1);
+    GTEST_ASSERT_TRUE(col_5 != row_2);
+    GTEST_ASSERT_FALSE(col_5 != row_3);
+    GTEST_ASSERT_TRUE(col_5 != row_4);
+    GTEST_ASSERT_FALSE(col_5 != row_5);
+    //GTEST_ASSERT_FALSE(col_5 != row_6); // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_5 != row_7); // c not comparable with d
 
-    ASSERT_TRUE(col_6 != row_0);
-    ASSERT_TRUE(col_6 != row_1);
-    ASSERT_FALSE(col_6 != row_2);
-    ASSERT_TRUE(col_6 != row_3);
-    //ASSERT_FALSE(col_6 != row_4); // d not comparable with c
-    //ASSERT_FALSE(col_6 != row_5); // d not comparable with c
-    ASSERT_FALSE(col_6 != row_6);
-    ASSERT_TRUE(col_6 != row_7);
+    GTEST_ASSERT_TRUE(col_6 != row_0);
+    GTEST_ASSERT_TRUE(col_6 != row_1);
+    GTEST_ASSERT_FALSE(col_6 != row_2);
+    GTEST_ASSERT_TRUE(col_6 != row_3);
+    //GTEST_ASSERT_FALSE(col_6 != row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_6 != row_5); // d not comparable with c
+    GTEST_ASSERT_FALSE(col_6 != row_6);
+    GTEST_ASSERT_TRUE(col_6 != row_7);
 
-    ASSERT_TRUE(col_7 != row_0);
-    ASSERT_TRUE(col_7 != row_1);
-    ASSERT_TRUE(col_7 != row_2);
-    ASSERT_FALSE(col_7 != row_3);
-    //ASSERT_FALSE(col_7 != row_4); // d not comparable with c
-    //ASSERT_FALSE(col_7 != row_5); // d not comparable with c
-    ASSERT_TRUE(col_7 != row_6);
-    ASSERT_FALSE(col_7 != row_7);
+    GTEST_ASSERT_TRUE(col_7 != row_0);
+    GTEST_ASSERT_TRUE(col_7 != row_1);
+    GTEST_ASSERT_TRUE(col_7 != row_2);
+    GTEST_ASSERT_FALSE(col_7 != row_3);
+    //GTEST_ASSERT_FALSE(col_7 != row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_7 != row_5); // d not comparable with c
+    GTEST_ASSERT_TRUE(col_7 != row_6);
+    GTEST_ASSERT_FALSE(col_7 != row_7);
 }
 
 GTEST_TEST(array, less_operator)
@@ -381,115 +381,115 @@ GTEST_TEST(array, less_operator)
     hud::array<u8> row_9({ u8(1), u8(2) });
 
     // Verify the truth table
-    ASSERT_FALSE(col_0 < row_0);
-    ASSERT_TRUE(col_0 < row_1);
-    ASSERT_TRUE(col_0 < row_2);
-    ASSERT_TRUE(col_0 < row_3);
-    ASSERT_TRUE(col_0 < row_4);
-    ASSERT_TRUE(col_0 < row_5);
-    ASSERT_TRUE(col_0 < row_6);
-    ASSERT_TRUE(col_0 < row_7);
-    ASSERT_TRUE(col_0 < row_8);
-    ASSERT_TRUE(col_0 < row_9);
+    GTEST_ASSERT_FALSE(col_0 < row_0);
+    GTEST_ASSERT_TRUE(col_0 < row_1);
+    GTEST_ASSERT_TRUE(col_0 < row_2);
+    GTEST_ASSERT_TRUE(col_0 < row_3);
+    GTEST_ASSERT_TRUE(col_0 < row_4);
+    GTEST_ASSERT_TRUE(col_0 < row_5);
+    GTEST_ASSERT_TRUE(col_0 < row_6);
+    GTEST_ASSERT_TRUE(col_0 < row_7);
+    GTEST_ASSERT_TRUE(col_0 < row_8);
+    GTEST_ASSERT_TRUE(col_0 < row_9);
 
-    ASSERT_FALSE(col_1 < row_0);
-    ASSERT_FALSE(col_1 < row_1);
-    ASSERT_TRUE(col_1 < row_2);
-    ASSERT_TRUE(col_1 < row_3);
-    ASSERT_TRUE(col_1 < row_4);
-    ASSERT_TRUE(col_1 < row_5);
-    ASSERT_TRUE(col_1 < row_6);
-    ASSERT_TRUE(col_1 < row_7);
-    ASSERT_FALSE(col_1 < row_8);
-    ASSERT_TRUE(col_1 < row_9);
+    GTEST_ASSERT_FALSE(col_1 < row_0);
+    GTEST_ASSERT_FALSE(col_1 < row_1);
+    GTEST_ASSERT_TRUE(col_1 < row_2);
+    GTEST_ASSERT_TRUE(col_1 < row_3);
+    GTEST_ASSERT_TRUE(col_1 < row_4);
+    GTEST_ASSERT_TRUE(col_1 < row_5);
+    GTEST_ASSERT_TRUE(col_1 < row_6);
+    GTEST_ASSERT_TRUE(col_1 < row_7);
+    GTEST_ASSERT_FALSE(col_1 < row_8);
+    GTEST_ASSERT_TRUE(col_1 < row_9);
 
-    ASSERT_FALSE(col_2 < row_0);
-    ASSERT_FALSE(col_2 < row_1);
-    ASSERT_FALSE(col_2 < row_2);
-    ASSERT_TRUE(col_2 < row_3);
-    ASSERT_FALSE(col_2 < row_4);
-    ASSERT_TRUE(col_2 < row_5);
-    ASSERT_FALSE(col_2 < row_6);
-    ASSERT_TRUE(col_2 < row_7);
-    ASSERT_FALSE(col_2 < row_8);
-    ASSERT_FALSE(col_2 < row_9);
+    GTEST_ASSERT_FALSE(col_2 < row_0);
+    GTEST_ASSERT_FALSE(col_2 < row_1);
+    GTEST_ASSERT_FALSE(col_2 < row_2);
+    GTEST_ASSERT_TRUE(col_2 < row_3);
+    GTEST_ASSERT_FALSE(col_2 < row_4);
+    GTEST_ASSERT_TRUE(col_2 < row_5);
+    GTEST_ASSERT_FALSE(col_2 < row_6);
+    GTEST_ASSERT_TRUE(col_2 < row_7);
+    GTEST_ASSERT_FALSE(col_2 < row_8);
+    GTEST_ASSERT_FALSE(col_2 < row_9);
 
-    ASSERT_FALSE(col_3 < row_0);
-    ASSERT_FALSE(col_3 < row_1);
-    ASSERT_FALSE(col_3 < row_2);
-    ASSERT_FALSE(col_3 < row_3);
-    ASSERT_FALSE(col_3 < row_4);
-    ASSERT_FALSE(col_3 < row_5);
-    ASSERT_FALSE(col_3 < row_6);
-    ASSERT_FALSE(col_3 < row_7);
-    ASSERT_FALSE(col_3 < row_8);
-    ASSERT_FALSE(col_3 < row_9);
+    GTEST_ASSERT_FALSE(col_3 < row_0);
+    GTEST_ASSERT_FALSE(col_3 < row_1);
+    GTEST_ASSERT_FALSE(col_3 < row_2);
+    GTEST_ASSERT_FALSE(col_3 < row_3);
+    GTEST_ASSERT_FALSE(col_3 < row_4);
+    GTEST_ASSERT_FALSE(col_3 < row_5);
+    GTEST_ASSERT_FALSE(col_3 < row_6);
+    GTEST_ASSERT_FALSE(col_3 < row_7);
+    GTEST_ASSERT_FALSE(col_3 < row_8);
+    GTEST_ASSERT_FALSE(col_3 < row_9);
 
-    ASSERT_FALSE(col_4 < row_0);
-    ASSERT_FALSE(col_4 < row_1);
-    ASSERT_FALSE(col_4 < row_2);
-    ASSERT_TRUE(col_4 < row_3);
-    ASSERT_FALSE(col_4 < row_4);
-    ASSERT_TRUE(col_4 < row_5);
-    //ASSERT_FALSE(col_4 < row_6);  // c not comparable with d
-    //ASSERT_FALSE(col_4 < row_7);  // c not comparable with d
-    ASSERT_FALSE(col_4 < row_8);
-    ASSERT_FALSE(col_4 < row_9);
+    GTEST_ASSERT_FALSE(col_4 < row_0);
+    GTEST_ASSERT_FALSE(col_4 < row_1);
+    GTEST_ASSERT_FALSE(col_4 < row_2);
+    GTEST_ASSERT_TRUE(col_4 < row_3);
+    GTEST_ASSERT_FALSE(col_4 < row_4);
+    GTEST_ASSERT_TRUE(col_4 < row_5);
+    //GTEST_ASSERT_FALSE(col_4 < row_6);  // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_4 < row_7);  // c not comparable with d
+    GTEST_ASSERT_FALSE(col_4 < row_8);
+    GTEST_ASSERT_FALSE(col_4 < row_9);
 
-    ASSERT_FALSE(col_5 < row_0);
-    ASSERT_FALSE(col_5 < row_1);
-    ASSERT_FALSE(col_5 < row_2);
-    ASSERT_FALSE(col_5 < row_3);
-    ASSERT_FALSE(col_5 < row_4);
-    ASSERT_FALSE(col_5 < row_5);
-    //ASSERT_FALSE(col_5 < row_6); // c not comparable with d
-    //ASSERT_FALSE(col_5 < row_7); // c not comparable with d
-    ASSERT_FALSE(col_5 < row_8);
-    ASSERT_FALSE(col_5 < row_9);
+    GTEST_ASSERT_FALSE(col_5 < row_0);
+    GTEST_ASSERT_FALSE(col_5 < row_1);
+    GTEST_ASSERT_FALSE(col_5 < row_2);
+    GTEST_ASSERT_FALSE(col_5 < row_3);
+    GTEST_ASSERT_FALSE(col_5 < row_4);
+    GTEST_ASSERT_FALSE(col_5 < row_5);
+    //GTEST_ASSERT_FALSE(col_5 < row_6); // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_5 < row_7); // c not comparable with d
+    GTEST_ASSERT_FALSE(col_5 < row_8);
+    GTEST_ASSERT_FALSE(col_5 < row_9);
 
-    ASSERT_FALSE(col_6 < row_0);
-    ASSERT_FALSE(col_6 < row_1);
-    ASSERT_FALSE(col_6 < row_2);
-    ASSERT_TRUE(col_6 < row_3);
-    //ASSERT_FALSE(col_6 < row_4); // d not comparable with c
-    //ASSERT_FALSE(col_6 < row_5); // d not comparable with c
-    ASSERT_FALSE(col_6 < row_6);
-    ASSERT_TRUE(col_6 < row_7);
-    ASSERT_FALSE(col_6 < row_8);
-    ASSERT_FALSE(col_6 < row_9);
+    GTEST_ASSERT_FALSE(col_6 < row_0);
+    GTEST_ASSERT_FALSE(col_6 < row_1);
+    GTEST_ASSERT_FALSE(col_6 < row_2);
+    GTEST_ASSERT_TRUE(col_6 < row_3);
+    //GTEST_ASSERT_FALSE(col_6 < row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_6 < row_5); // d not comparable with c
+    GTEST_ASSERT_FALSE(col_6 < row_6);
+    GTEST_ASSERT_TRUE(col_6 < row_7);
+    GTEST_ASSERT_FALSE(col_6 < row_8);
+    GTEST_ASSERT_FALSE(col_6 < row_9);
 
-    ASSERT_FALSE(col_7 < row_0);
-    ASSERT_FALSE(col_7 < row_1);
-    ASSERT_FALSE(col_7 < row_2);
-    ASSERT_FALSE(col_7 < row_3);
-    //ASSERT_FALSE(col_7 < row_4); // d not comparable with c
-    //ASSERT_FALSE(col_7 < row_5); // d not comparable with c
-    ASSERT_FALSE(col_7 < row_6);
-    ASSERT_FALSE(col_7 < row_7);
-    ASSERT_FALSE(col_7 < row_8);
-    ASSERT_FALSE(col_7 < row_9);
+    GTEST_ASSERT_FALSE(col_7 < row_0);
+    GTEST_ASSERT_FALSE(col_7 < row_1);
+    GTEST_ASSERT_FALSE(col_7 < row_2);
+    GTEST_ASSERT_FALSE(col_7 < row_3);
+    //GTEST_ASSERT_FALSE(col_7 < row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_7 < row_5); // d not comparable with c
+    GTEST_ASSERT_FALSE(col_7 < row_6);
+    GTEST_ASSERT_FALSE(col_7 < row_7);
+    GTEST_ASSERT_FALSE(col_7 < row_8);
+    GTEST_ASSERT_FALSE(col_7 < row_9);
 
-    ASSERT_FALSE(col_8 < row_0);
-    ASSERT_FALSE(col_8 < row_1);
-    ASSERT_TRUE(col_8 < row_2);
-    ASSERT_TRUE(col_8 < row_3);
-    ASSERT_TRUE(col_8 < row_4);
-    ASSERT_TRUE(col_8 < row_5);
-    ASSERT_TRUE(col_8 < row_6);
-    ASSERT_TRUE(col_8 < row_7);
-    ASSERT_FALSE(col_8 < row_8);
-    ASSERT_TRUE(col_8 < row_9);
+    GTEST_ASSERT_FALSE(col_8 < row_0);
+    GTEST_ASSERT_FALSE(col_8 < row_1);
+    GTEST_ASSERT_TRUE(col_8 < row_2);
+    GTEST_ASSERT_TRUE(col_8 < row_3);
+    GTEST_ASSERT_TRUE(col_8 < row_4);
+    GTEST_ASSERT_TRUE(col_8 < row_5);
+    GTEST_ASSERT_TRUE(col_8 < row_6);
+    GTEST_ASSERT_TRUE(col_8 < row_7);
+    GTEST_ASSERT_FALSE(col_8 < row_8);
+    GTEST_ASSERT_TRUE(col_8 < row_9);
 
-    ASSERT_FALSE(col_9 < row_0);
-    ASSERT_FALSE(col_9 < row_1);
-    ASSERT_FALSE(col_9 < row_2);
-    ASSERT_TRUE(col_9 < row_3);
-    ASSERT_FALSE(col_9 < row_4);
-    ASSERT_TRUE(col_9 < row_5);
-    ASSERT_FALSE(col_9 < row_6);
-    ASSERT_TRUE(col_9 < row_7);
-    ASSERT_FALSE(col_9 < row_8);
-    ASSERT_FALSE(col_9 < row_9);
+    GTEST_ASSERT_FALSE(col_9 < row_0);
+    GTEST_ASSERT_FALSE(col_9 < row_1);
+    GTEST_ASSERT_FALSE(col_9 < row_2);
+    GTEST_ASSERT_TRUE(col_9 < row_3);
+    GTEST_ASSERT_FALSE(col_9 < row_4);
+    GTEST_ASSERT_TRUE(col_9 < row_5);
+    GTEST_ASSERT_FALSE(col_9 < row_6);
+    GTEST_ASSERT_TRUE(col_9 < row_7);
+    GTEST_ASSERT_FALSE(col_9 < row_8);
+    GTEST_ASSERT_FALSE(col_9 < row_9);
 }
 
 GTEST_TEST(array, greater_operator)
@@ -549,115 +549,115 @@ GTEST_TEST(array, greater_operator)
     hud::array<u8> row_9({ u8(1), u8(2) });
 
     // Verify the truth table
-    ASSERT_FALSE(col_0 > row_0);
-    ASSERT_FALSE(col_0 > row_1);
-    ASSERT_FALSE(col_0 > row_2);
-    ASSERT_FALSE(col_0 > row_3);
-    ASSERT_FALSE(col_0 > row_4);
-    ASSERT_FALSE(col_0 > row_5);
-    ASSERT_FALSE(col_0 > row_6);
-    ASSERT_FALSE(col_0 > row_7);
-    ASSERT_FALSE(col_0 > row_8);
-    ASSERT_FALSE(col_0 > row_9);
+    GTEST_ASSERT_FALSE(col_0 > row_0);
+    GTEST_ASSERT_FALSE(col_0 > row_1);
+    GTEST_ASSERT_FALSE(col_0 > row_2);
+    GTEST_ASSERT_FALSE(col_0 > row_3);
+    GTEST_ASSERT_FALSE(col_0 > row_4);
+    GTEST_ASSERT_FALSE(col_0 > row_5);
+    GTEST_ASSERT_FALSE(col_0 > row_6);
+    GTEST_ASSERT_FALSE(col_0 > row_7);
+    GTEST_ASSERT_FALSE(col_0 > row_8);
+    GTEST_ASSERT_FALSE(col_0 > row_9);
 
-    ASSERT_TRUE(col_1 > row_0);
-    ASSERT_FALSE(col_1 > row_1);
-    ASSERT_FALSE(col_1 > row_2);
-    ASSERT_FALSE(col_1 > row_3);
-    ASSERT_FALSE(col_1 > row_4);
-    ASSERT_FALSE(col_1 > row_5);
-    ASSERT_FALSE(col_1 > row_6);
-    ASSERT_FALSE(col_1 > row_7);
-    ASSERT_FALSE(col_1 > row_8);
-    ASSERT_FALSE(col_1 > row_9);
+    GTEST_ASSERT_TRUE(col_1 > row_0);
+    GTEST_ASSERT_FALSE(col_1 > row_1);
+    GTEST_ASSERT_FALSE(col_1 > row_2);
+    GTEST_ASSERT_FALSE(col_1 > row_3);
+    GTEST_ASSERT_FALSE(col_1 > row_4);
+    GTEST_ASSERT_FALSE(col_1 > row_5);
+    GTEST_ASSERT_FALSE(col_1 > row_6);
+    GTEST_ASSERT_FALSE(col_1 > row_7);
+    GTEST_ASSERT_FALSE(col_1 > row_8);
+    GTEST_ASSERT_FALSE(col_1 > row_9);
 
-    ASSERT_TRUE(col_2 > row_0);
-    ASSERT_TRUE(col_2 > row_1);
-    ASSERT_FALSE(col_2 > row_2);
-    ASSERT_FALSE(col_2 > row_3);
-    ASSERT_FALSE(col_2 > row_4);
-    ASSERT_FALSE(col_2 > row_5);
-    ASSERT_FALSE(col_2 > row_6);
-    ASSERT_FALSE(col_2 > row_7);
-    ASSERT_TRUE(col_2 > row_8);
-    ASSERT_FALSE(col_2 > row_9);
+    GTEST_ASSERT_TRUE(col_2 > row_0);
+    GTEST_ASSERT_TRUE(col_2 > row_1);
+    GTEST_ASSERT_FALSE(col_2 > row_2);
+    GTEST_ASSERT_FALSE(col_2 > row_3);
+    GTEST_ASSERT_FALSE(col_2 > row_4);
+    GTEST_ASSERT_FALSE(col_2 > row_5);
+    GTEST_ASSERT_FALSE(col_2 > row_6);
+    GTEST_ASSERT_FALSE(col_2 > row_7);
+    GTEST_ASSERT_TRUE(col_2 > row_8);
+    GTEST_ASSERT_FALSE(col_2 > row_9);
 
-    ASSERT_TRUE(col_3 > row_0);
-    ASSERT_TRUE(col_3 > row_1);
-    ASSERT_TRUE(col_3 > row_2);
-    ASSERT_FALSE(col_3 > row_3);
-    ASSERT_TRUE(col_3 > row_4);
-    ASSERT_FALSE(col_3 > row_5);
-    ASSERT_TRUE(col_3 > row_6);
-    ASSERT_FALSE(col_3 > row_7);
-    ASSERT_TRUE(col_3 > row_8);
-    ASSERT_TRUE(col_3 > row_9);
+    GTEST_ASSERT_TRUE(col_3 > row_0);
+    GTEST_ASSERT_TRUE(col_3 > row_1);
+    GTEST_ASSERT_TRUE(col_3 > row_2);
+    GTEST_ASSERT_FALSE(col_3 > row_3);
+    GTEST_ASSERT_TRUE(col_3 > row_4);
+    GTEST_ASSERT_FALSE(col_3 > row_5);
+    GTEST_ASSERT_TRUE(col_3 > row_6);
+    GTEST_ASSERT_FALSE(col_3 > row_7);
+    GTEST_ASSERT_TRUE(col_3 > row_8);
+    GTEST_ASSERT_TRUE(col_3 > row_9);
 
-    ASSERT_TRUE(col_4 > row_0);
-    ASSERT_TRUE(col_4 > row_1);
-    ASSERT_FALSE(col_4 > row_2);
-    ASSERT_FALSE(col_4 > row_3);
-    ASSERT_FALSE(col_4 > row_4);
-    ASSERT_FALSE(col_4 > row_5);
-    //ASSERT_FALSE(col_4 > row_6);  // c not comparable with d
-    //ASSERT_FALSE(col_4 > row_7);  // c not comparable with d
-    ASSERT_TRUE(col_4 > row_8);
-    ASSERT_FALSE(col_4 > row_9);
+    GTEST_ASSERT_TRUE(col_4 > row_0);
+    GTEST_ASSERT_TRUE(col_4 > row_1);
+    GTEST_ASSERT_FALSE(col_4 > row_2);
+    GTEST_ASSERT_FALSE(col_4 > row_3);
+    GTEST_ASSERT_FALSE(col_4 > row_4);
+    GTEST_ASSERT_FALSE(col_4 > row_5);
+    //GTEST_ASSERT_FALSE(col_4 > row_6);  // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_4 > row_7);  // c not comparable with d
+    GTEST_ASSERT_TRUE(col_4 > row_8);
+    GTEST_ASSERT_FALSE(col_4 > row_9);
 
-    ASSERT_TRUE(col_5 > row_0);
-    ASSERT_TRUE(col_5 > row_1);
-    ASSERT_TRUE(col_5 > row_2);
-    ASSERT_FALSE(col_5 > row_3);
-    ASSERT_TRUE(col_5 > row_4);
-    ASSERT_FALSE(col_5 > row_5);
-    //ASSERT_FALSE(col_5 > row_6); // c not comparable with d
-    //ASSERT_FALSE(col_5 > row_7); // c not comparable with d
-    ASSERT_TRUE(col_5 > row_8);
-    ASSERT_TRUE(col_5 > row_9);
+    GTEST_ASSERT_TRUE(col_5 > row_0);
+    GTEST_ASSERT_TRUE(col_5 > row_1);
+    GTEST_ASSERT_TRUE(col_5 > row_2);
+    GTEST_ASSERT_FALSE(col_5 > row_3);
+    GTEST_ASSERT_TRUE(col_5 > row_4);
+    GTEST_ASSERT_FALSE(col_5 > row_5);
+    //GTEST_ASSERT_FALSE(col_5 > row_6); // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_5 > row_7); // c not comparable with d
+    GTEST_ASSERT_TRUE(col_5 > row_8);
+    GTEST_ASSERT_TRUE(col_5 > row_9);
 
-    ASSERT_TRUE(col_6 > row_0);
-    ASSERT_TRUE(col_6 > row_1);
-    ASSERT_FALSE(col_6 > row_2);
-    ASSERT_FALSE(col_6 > row_3);
-    //ASSERT_FALSE(col_6 > row_4); // d not comparable with c
-    //ASSERT_FALSE(col_6 > row_5); // d not comparable with c
-    ASSERT_FALSE(col_6 > row_6);
-    ASSERT_FALSE(col_6 > row_7);
-    ASSERT_TRUE(col_6 > row_8);
-    ASSERT_FALSE(col_6 > row_9);
+    GTEST_ASSERT_TRUE(col_6 > row_0);
+    GTEST_ASSERT_TRUE(col_6 > row_1);
+    GTEST_ASSERT_FALSE(col_6 > row_2);
+    GTEST_ASSERT_FALSE(col_6 > row_3);
+    //GTEST_ASSERT_FALSE(col_6 > row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_6 > row_5); // d not comparable with c
+    GTEST_ASSERT_FALSE(col_6 > row_6);
+    GTEST_ASSERT_FALSE(col_6 > row_7);
+    GTEST_ASSERT_TRUE(col_6 > row_8);
+    GTEST_ASSERT_FALSE(col_6 > row_9);
 
-    ASSERT_TRUE(col_7 > row_0);
-    ASSERT_TRUE(col_7 > row_1);
-    ASSERT_TRUE(col_7 > row_2);
-    ASSERT_FALSE(col_7 > row_3);
-    //ASSERT_FALSE(col_7 > row_4); // d not comparable with c
-    //ASSERT_FALSE(col_7 > row_5); // d not comparable with c
-    ASSERT_TRUE(col_7 > row_6);
-    ASSERT_FALSE(col_7 > row_7);
-    ASSERT_TRUE(col_7 > row_8);
-    ASSERT_TRUE(col_7 > row_9);
+    GTEST_ASSERT_TRUE(col_7 > row_0);
+    GTEST_ASSERT_TRUE(col_7 > row_1);
+    GTEST_ASSERT_TRUE(col_7 > row_2);
+    GTEST_ASSERT_FALSE(col_7 > row_3);
+    //GTEST_ASSERT_FALSE(col_7 > row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_7 > row_5); // d not comparable with c
+    GTEST_ASSERT_TRUE(col_7 > row_6);
+    GTEST_ASSERT_FALSE(col_7 > row_7);
+    GTEST_ASSERT_TRUE(col_7 > row_8);
+    GTEST_ASSERT_TRUE(col_7 > row_9);
 
-    ASSERT_TRUE(col_8 > row_0);
-    ASSERT_FALSE(col_8 > row_1);
-    ASSERT_FALSE(col_8 > row_2);
-    ASSERT_FALSE(col_8 > row_3);
-    ASSERT_FALSE(col_8 > row_4);
-    ASSERT_FALSE(col_8 > row_5);
-    ASSERT_FALSE(col_8 > row_6);
-    ASSERT_FALSE(col_8 > row_7);
-    ASSERT_FALSE(col_8 > row_8);
-    ASSERT_FALSE(col_8 > row_9);
+    GTEST_ASSERT_TRUE(col_8 > row_0);
+    GTEST_ASSERT_FALSE(col_8 > row_1);
+    GTEST_ASSERT_FALSE(col_8 > row_2);
+    GTEST_ASSERT_FALSE(col_8 > row_3);
+    GTEST_ASSERT_FALSE(col_8 > row_4);
+    GTEST_ASSERT_FALSE(col_8 > row_5);
+    GTEST_ASSERT_FALSE(col_8 > row_6);
+    GTEST_ASSERT_FALSE(col_8 > row_7);
+    GTEST_ASSERT_FALSE(col_8 > row_8);
+    GTEST_ASSERT_FALSE(col_8 > row_9);
 
-    ASSERT_TRUE(col_9 > row_0);
-    ASSERT_TRUE(col_9 > row_1);
-    ASSERT_FALSE(col_9 > row_2);
-    ASSERT_FALSE(col_9 > row_3);
-    ASSERT_FALSE(col_9 > row_4);
-    ASSERT_FALSE(col_9 > row_5);
-    ASSERT_FALSE(col_9 > row_6);
-    ASSERT_FALSE(col_9 > row_7);
-    ASSERT_TRUE(col_9 > row_8);
-    ASSERT_FALSE(col_9 > row_9);
+    GTEST_ASSERT_TRUE(col_9 > row_0);
+    GTEST_ASSERT_TRUE(col_9 > row_1);
+    GTEST_ASSERT_FALSE(col_9 > row_2);
+    GTEST_ASSERT_FALSE(col_9 > row_3);
+    GTEST_ASSERT_FALSE(col_9 > row_4);
+    GTEST_ASSERT_FALSE(col_9 > row_5);
+    GTEST_ASSERT_FALSE(col_9 > row_6);
+    GTEST_ASSERT_FALSE(col_9 > row_7);
+    GTEST_ASSERT_TRUE(col_9 > row_8);
+    GTEST_ASSERT_FALSE(col_9 > row_9);
 }
 
 GTEST_TEST(array, less_equal_operator)
@@ -717,115 +717,115 @@ GTEST_TEST(array, less_equal_operator)
     hud::array<u8> row_9({ u8(1), u8(2) });
 
     // Verify the truth table
-    ASSERT_TRUE(col_0 <= row_0);
-    ASSERT_TRUE(col_0 <= row_1);
-    ASSERT_TRUE(col_0 <= row_2);
-    ASSERT_TRUE(col_0 <= row_3);
-    ASSERT_TRUE(col_0 <= row_4);
-    ASSERT_TRUE(col_0 <= row_5);
-    ASSERT_TRUE(col_0 <= row_6);
-    ASSERT_TRUE(col_0 <= row_7);
-    ASSERT_TRUE(col_0 <= row_8);
-    ASSERT_TRUE(col_0 <= row_9);
+    GTEST_ASSERT_TRUE(col_0 <= row_0);
+    GTEST_ASSERT_TRUE(col_0 <= row_1);
+    GTEST_ASSERT_TRUE(col_0 <= row_2);
+    GTEST_ASSERT_TRUE(col_0 <= row_3);
+    GTEST_ASSERT_TRUE(col_0 <= row_4);
+    GTEST_ASSERT_TRUE(col_0 <= row_5);
+    GTEST_ASSERT_TRUE(col_0 <= row_6);
+    GTEST_ASSERT_TRUE(col_0 <= row_7);
+    GTEST_ASSERT_TRUE(col_0 <= row_8);
+    GTEST_ASSERT_TRUE(col_0 <= row_9);
 
-    ASSERT_FALSE(col_1 <= row_0);
-    ASSERT_TRUE(col_1 <= row_1);
-    ASSERT_TRUE(col_1 <= row_2);
-    ASSERT_TRUE(col_1 <= row_3);
-    ASSERT_TRUE(col_1 <= row_4);
-    ASSERT_TRUE(col_1 <= row_5);
-    ASSERT_TRUE(col_1 <= row_6);
-    ASSERT_TRUE(col_1 <= row_7);
-    ASSERT_TRUE(col_1 <= row_8);
-    ASSERT_TRUE(col_1 <= row_9);
+    GTEST_ASSERT_FALSE(col_1 <= row_0);
+    GTEST_ASSERT_TRUE(col_1 <= row_1);
+    GTEST_ASSERT_TRUE(col_1 <= row_2);
+    GTEST_ASSERT_TRUE(col_1 <= row_3);
+    GTEST_ASSERT_TRUE(col_1 <= row_4);
+    GTEST_ASSERT_TRUE(col_1 <= row_5);
+    GTEST_ASSERT_TRUE(col_1 <= row_6);
+    GTEST_ASSERT_TRUE(col_1 <= row_7);
+    GTEST_ASSERT_TRUE(col_1 <= row_8);
+    GTEST_ASSERT_TRUE(col_1 <= row_9);
 
-    ASSERT_FALSE(col_2 <= row_0);
-    ASSERT_FALSE(col_2 <= row_1);
-    ASSERT_TRUE(col_2 <= row_2);
-    ASSERT_TRUE(col_2 <= row_3);
-    ASSERT_TRUE(col_2 <= row_4);
-    ASSERT_TRUE(col_2 <= row_5);
-    ASSERT_TRUE(col_2 <= row_6);
-    ASSERT_TRUE(col_2 <= row_7);
-    ASSERT_FALSE(col_2 <= row_8);
-    ASSERT_TRUE(col_2 <= row_9);
+    GTEST_ASSERT_FALSE(col_2 <= row_0);
+    GTEST_ASSERT_FALSE(col_2 <= row_1);
+    GTEST_ASSERT_TRUE(col_2 <= row_2);
+    GTEST_ASSERT_TRUE(col_2 <= row_3);
+    GTEST_ASSERT_TRUE(col_2 <= row_4);
+    GTEST_ASSERT_TRUE(col_2 <= row_5);
+    GTEST_ASSERT_TRUE(col_2 <= row_6);
+    GTEST_ASSERT_TRUE(col_2 <= row_7);
+    GTEST_ASSERT_FALSE(col_2 <= row_8);
+    GTEST_ASSERT_TRUE(col_2 <= row_9);
 
-    ASSERT_FALSE(col_3 <= row_0);
-    ASSERT_FALSE(col_3 <= row_1);
-    ASSERT_FALSE(col_3 <= row_2);
-    ASSERT_TRUE(col_3 <= row_3);
-    ASSERT_FALSE(col_3 <= row_4);
-    ASSERT_TRUE(col_3 <= row_5);
-    ASSERT_FALSE(col_3 <= row_6);
-    ASSERT_TRUE(col_3 <= row_7);
-    ASSERT_FALSE(col_3 <= row_8);
-    ASSERT_FALSE(col_3 <= row_9);
+    GTEST_ASSERT_FALSE(col_3 <= row_0);
+    GTEST_ASSERT_FALSE(col_3 <= row_1);
+    GTEST_ASSERT_FALSE(col_3 <= row_2);
+    GTEST_ASSERT_TRUE(col_3 <= row_3);
+    GTEST_ASSERT_FALSE(col_3 <= row_4);
+    GTEST_ASSERT_TRUE(col_3 <= row_5);
+    GTEST_ASSERT_FALSE(col_3 <= row_6);
+    GTEST_ASSERT_TRUE(col_3 <= row_7);
+    GTEST_ASSERT_FALSE(col_3 <= row_8);
+    GTEST_ASSERT_FALSE(col_3 <= row_9);
 
-    ASSERT_FALSE(col_4 <= row_0);
-    ASSERT_FALSE(col_4 <= row_1);
-    ASSERT_TRUE(col_4 <= row_2);
-    ASSERT_TRUE(col_4 <= row_3);
-    ASSERT_TRUE(col_4 <= row_4);
-    ASSERT_TRUE(col_4 <= row_5);
-    //ASSERT_FALSE(col_4 <= row_6);  // c not comparable with d
-    //ASSERT_FALSE(col_4 <= row_7);  // c not comparable with d
-    ASSERT_FALSE(col_4 <= row_8);
-    ASSERT_TRUE(col_4 <= row_9);
+    GTEST_ASSERT_FALSE(col_4 <= row_0);
+    GTEST_ASSERT_FALSE(col_4 <= row_1);
+    GTEST_ASSERT_TRUE(col_4 <= row_2);
+    GTEST_ASSERT_TRUE(col_4 <= row_3);
+    GTEST_ASSERT_TRUE(col_4 <= row_4);
+    GTEST_ASSERT_TRUE(col_4 <= row_5);
+    //GTEST_ASSERT_FALSE(col_4 <= row_6);  // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_4 <= row_7);  // c not comparable with d
+    GTEST_ASSERT_FALSE(col_4 <= row_8);
+    GTEST_ASSERT_TRUE(col_4 <= row_9);
 
-    ASSERT_FALSE(col_5 <= row_0);
-    ASSERT_FALSE(col_5 <= row_1);
-    ASSERT_FALSE(col_5 <= row_2);
-    ASSERT_TRUE(col_5 <= row_3);
-    ASSERT_FALSE(col_5 <= row_4);
-    ASSERT_TRUE(col_5 <= row_5);
-    //ASSERT_FALSE(col_5 <= row_6); // c not comparable with d
-    //ASSERT_FALSE(col_5 <= row_7); // c not comparable with d
-    ASSERT_FALSE(col_5 <= row_8);
-    ASSERT_FALSE(col_5 <= row_9);
+    GTEST_ASSERT_FALSE(col_5 <= row_0);
+    GTEST_ASSERT_FALSE(col_5 <= row_1);
+    GTEST_ASSERT_FALSE(col_5 <= row_2);
+    GTEST_ASSERT_TRUE(col_5 <= row_3);
+    GTEST_ASSERT_FALSE(col_5 <= row_4);
+    GTEST_ASSERT_TRUE(col_5 <= row_5);
+    //GTEST_ASSERT_FALSE(col_5 <= row_6); // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_5 <= row_7); // c not comparable with d
+    GTEST_ASSERT_FALSE(col_5 <= row_8);
+    GTEST_ASSERT_FALSE(col_5 <= row_9);
 
-    ASSERT_FALSE(col_6 <= row_0);
-    ASSERT_FALSE(col_6 <= row_1);
-    ASSERT_TRUE(col_6 <= row_2);
-    ASSERT_TRUE(col_6 <= row_3);
-    //ASSERT_FALSE(col_6 <= row_4); // d not comparable with c
-    //ASSERT_FALSE(col_6 <= row_5); // d not comparable with c
-    ASSERT_TRUE(col_6 <= row_6);
-    ASSERT_TRUE(col_6 <= row_7);
-    ASSERT_FALSE(col_6 <= row_8);
-    ASSERT_TRUE(col_6 <= row_9);
+    GTEST_ASSERT_FALSE(col_6 <= row_0);
+    GTEST_ASSERT_FALSE(col_6 <= row_1);
+    GTEST_ASSERT_TRUE(col_6 <= row_2);
+    GTEST_ASSERT_TRUE(col_6 <= row_3);
+    //GTEST_ASSERT_FALSE(col_6 <= row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_6 <= row_5); // d not comparable with c
+    GTEST_ASSERT_TRUE(col_6 <= row_6);
+    GTEST_ASSERT_TRUE(col_6 <= row_7);
+    GTEST_ASSERT_FALSE(col_6 <= row_8);
+    GTEST_ASSERT_TRUE(col_6 <= row_9);
 
-    ASSERT_FALSE(col_7 <= row_0);
-    ASSERT_FALSE(col_7 <= row_1);
-    ASSERT_FALSE(col_7 <= row_2);
-    ASSERT_TRUE(col_7 <= row_3);
-    //ASSERT_FALSE(col_7 <= row_4); // d not comparable with c
-    //ASSERT_FALSE(col_7 <= row_5); // d not comparable with c
-    ASSERT_FALSE(col_7 <= row_6);
-    ASSERT_TRUE(col_7 <= row_7);
-    ASSERT_FALSE(col_7 <= row_8);
-    ASSERT_FALSE(col_7 <= row_9);
+    GTEST_ASSERT_FALSE(col_7 <= row_0);
+    GTEST_ASSERT_FALSE(col_7 <= row_1);
+    GTEST_ASSERT_FALSE(col_7 <= row_2);
+    GTEST_ASSERT_TRUE(col_7 <= row_3);
+    //GTEST_ASSERT_FALSE(col_7 <= row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_7 <= row_5); // d not comparable with c
+    GTEST_ASSERT_FALSE(col_7 <= row_6);
+    GTEST_ASSERT_TRUE(col_7 <= row_7);
+    GTEST_ASSERT_FALSE(col_7 <= row_8);
+    GTEST_ASSERT_FALSE(col_7 <= row_9);
 
-    ASSERT_FALSE(col_8 <= row_0);
-    ASSERT_TRUE(col_8 <= row_1);
-    ASSERT_TRUE(col_8 <= row_2);
-    ASSERT_TRUE(col_8 <= row_3);
-    ASSERT_TRUE(col_8 <= row_4);
-    ASSERT_TRUE(col_8 <= row_5);
-    ASSERT_TRUE(col_8 <= row_6);
-    ASSERT_TRUE(col_8 <= row_7);
-    ASSERT_TRUE(col_8 <= row_8);
-    ASSERT_TRUE(col_8 <= row_9);
+    GTEST_ASSERT_FALSE(col_8 <= row_0);
+    GTEST_ASSERT_TRUE(col_8 <= row_1);
+    GTEST_ASSERT_TRUE(col_8 <= row_2);
+    GTEST_ASSERT_TRUE(col_8 <= row_3);
+    GTEST_ASSERT_TRUE(col_8 <= row_4);
+    GTEST_ASSERT_TRUE(col_8 <= row_5);
+    GTEST_ASSERT_TRUE(col_8 <= row_6);
+    GTEST_ASSERT_TRUE(col_8 <= row_7);
+    GTEST_ASSERT_TRUE(col_8 <= row_8);
+    GTEST_ASSERT_TRUE(col_8 <= row_9);
 
-    ASSERT_FALSE(col_9 <= row_0);
-    ASSERT_FALSE(col_9 <= row_1);
-    ASSERT_TRUE(col_9 <= row_2);
-    ASSERT_TRUE(col_9 <= row_3);
-    ASSERT_TRUE(col_9 <= row_4);
-    ASSERT_TRUE(col_9 <= row_5);
-    ASSERT_TRUE(col_9 <= row_6);
-    ASSERT_TRUE(col_9 <= row_7);
-    ASSERT_FALSE(col_9 <= row_8);
-    ASSERT_TRUE(col_9 <= row_9);
+    GTEST_ASSERT_FALSE(col_9 <= row_0);
+    GTEST_ASSERT_FALSE(col_9 <= row_1);
+    GTEST_ASSERT_TRUE(col_9 <= row_2);
+    GTEST_ASSERT_TRUE(col_9 <= row_3);
+    GTEST_ASSERT_TRUE(col_9 <= row_4);
+    GTEST_ASSERT_TRUE(col_9 <= row_5);
+    GTEST_ASSERT_TRUE(col_9 <= row_6);
+    GTEST_ASSERT_TRUE(col_9 <= row_7);
+    GTEST_ASSERT_FALSE(col_9 <= row_8);
+    GTEST_ASSERT_TRUE(col_9 <= row_9);
 }
 
 GTEST_TEST(array, greater_equal_operator)
@@ -886,113 +886,113 @@ GTEST_TEST(array, greater_equal_operator)
     hud::array<u8> row_9({ u8(1), u8(2) });
 
     // Verify the truth table
-    ASSERT_TRUE(col_0 >= row_0);
-    ASSERT_FALSE(col_0 >= row_1);
-    ASSERT_FALSE(col_0 >= row_2);
-    ASSERT_FALSE(col_0 >= row_3);
-    ASSERT_FALSE(col_0 >= row_4);
-    ASSERT_FALSE(col_0 >= row_5);
-    ASSERT_FALSE(col_0 >= row_6);
-    ASSERT_FALSE(col_0 >= row_7);
-    ASSERT_FALSE(col_0 >= row_8);
-    ASSERT_FALSE(col_0 >= row_9);
+    GTEST_ASSERT_TRUE(col_0 >= row_0);
+    GTEST_ASSERT_FALSE(col_0 >= row_1);
+    GTEST_ASSERT_FALSE(col_0 >= row_2);
+    GTEST_ASSERT_FALSE(col_0 >= row_3);
+    GTEST_ASSERT_FALSE(col_0 >= row_4);
+    GTEST_ASSERT_FALSE(col_0 >= row_5);
+    GTEST_ASSERT_FALSE(col_0 >= row_6);
+    GTEST_ASSERT_FALSE(col_0 >= row_7);
+    GTEST_ASSERT_FALSE(col_0 >= row_8);
+    GTEST_ASSERT_FALSE(col_0 >= row_9);
 
-    ASSERT_TRUE(col_1 >= row_0);
-    ASSERT_TRUE(col_1 >= row_1);
-    ASSERT_FALSE(col_1 >= row_2);
-    ASSERT_FALSE(col_1 >= row_3);
-    ASSERT_FALSE(col_1 >= row_4);
-    ASSERT_FALSE(col_1 >= row_5);
-    ASSERT_FALSE(col_1 >= row_6);
-    ASSERT_FALSE(col_1 >= row_7);
-    ASSERT_TRUE(col_1 >= row_8);
-    ASSERT_FALSE(col_1 >= row_9);
+    GTEST_ASSERT_TRUE(col_1 >= row_0);
+    GTEST_ASSERT_TRUE(col_1 >= row_1);
+    GTEST_ASSERT_FALSE(col_1 >= row_2);
+    GTEST_ASSERT_FALSE(col_1 >= row_3);
+    GTEST_ASSERT_FALSE(col_1 >= row_4);
+    GTEST_ASSERT_FALSE(col_1 >= row_5);
+    GTEST_ASSERT_FALSE(col_1 >= row_6);
+    GTEST_ASSERT_FALSE(col_1 >= row_7);
+    GTEST_ASSERT_TRUE(col_1 >= row_8);
+    GTEST_ASSERT_FALSE(col_1 >= row_9);
 
-    ASSERT_TRUE(col_2 >= row_0);
-    ASSERT_TRUE(col_2 >= row_1);
-    ASSERT_TRUE(col_2 >= row_2);
-    ASSERT_FALSE(col_2 >= row_3);
-    ASSERT_TRUE(col_2 >= row_4);
-    ASSERT_FALSE(col_2 >= row_5);
-    ASSERT_TRUE(col_2 >= row_6);
-    ASSERT_FALSE(col_2 >= row_7);
-    ASSERT_TRUE(col_2 >= row_8);
-    ASSERT_TRUE(col_2 >= row_9);
+    GTEST_ASSERT_TRUE(col_2 >= row_0);
+    GTEST_ASSERT_TRUE(col_2 >= row_1);
+    GTEST_ASSERT_TRUE(col_2 >= row_2);
+    GTEST_ASSERT_FALSE(col_2 >= row_3);
+    GTEST_ASSERT_TRUE(col_2 >= row_4);
+    GTEST_ASSERT_FALSE(col_2 >= row_5);
+    GTEST_ASSERT_TRUE(col_2 >= row_6);
+    GTEST_ASSERT_FALSE(col_2 >= row_7);
+    GTEST_ASSERT_TRUE(col_2 >= row_8);
+    GTEST_ASSERT_TRUE(col_2 >= row_9);
 
-    ASSERT_TRUE(col_3 >= row_0);
-    ASSERT_TRUE(col_3 >= row_1);
-    ASSERT_TRUE(col_3 >= row_2);
-    ASSERT_TRUE(col_3 >= row_3);
-    ASSERT_TRUE(col_3 >= row_4);
-    ASSERT_TRUE(col_3 >= row_5);
-    ASSERT_TRUE(col_3 >= row_6);
-    ASSERT_TRUE(col_3 >= row_7);
-    ASSERT_TRUE(col_3 >= row_8);
-    ASSERT_TRUE(col_3 >= row_9);
+    GTEST_ASSERT_TRUE(col_3 >= row_0);
+    GTEST_ASSERT_TRUE(col_3 >= row_1);
+    GTEST_ASSERT_TRUE(col_3 >= row_2);
+    GTEST_ASSERT_TRUE(col_3 >= row_3);
+    GTEST_ASSERT_TRUE(col_3 >= row_4);
+    GTEST_ASSERT_TRUE(col_3 >= row_5);
+    GTEST_ASSERT_TRUE(col_3 >= row_6);
+    GTEST_ASSERT_TRUE(col_3 >= row_7);
+    GTEST_ASSERT_TRUE(col_3 >= row_8);
+    GTEST_ASSERT_TRUE(col_3 >= row_9);
 
-    ASSERT_TRUE(col_4 >= row_0);
-    ASSERT_TRUE(col_4 >= row_1);
-    ASSERT_TRUE(col_4 >= row_2);
-    ASSERT_FALSE(col_4 >= row_3);
-    ASSERT_TRUE(col_4 >= row_4);
-    ASSERT_FALSE(col_4 >= row_5);
-    //ASSERT_FALSE(col_4 >= row_6);  // c not comparable with d
-    //ASSERT_FALSE(col_4 >= row_7);  // c not comparable with d
-    ASSERT_TRUE(col_4 >= row_8);
-    ASSERT_TRUE(col_4 >= row_9);
+    GTEST_ASSERT_TRUE(col_4 >= row_0);
+    GTEST_ASSERT_TRUE(col_4 >= row_1);
+    GTEST_ASSERT_TRUE(col_4 >= row_2);
+    GTEST_ASSERT_FALSE(col_4 >= row_3);
+    GTEST_ASSERT_TRUE(col_4 >= row_4);
+    GTEST_ASSERT_FALSE(col_4 >= row_5);
+    //GTEST_ASSERT_FALSE(col_4 >= row_6);  // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_4 >= row_7);  // c not comparable with d
+    GTEST_ASSERT_TRUE(col_4 >= row_8);
+    GTEST_ASSERT_TRUE(col_4 >= row_9);
 
-    ASSERT_TRUE(col_5 >= row_0);
-    ASSERT_TRUE(col_5 >= row_1);
-    ASSERT_TRUE(col_5 >= row_2);
-    ASSERT_TRUE(col_5 >= row_3);
-    ASSERT_TRUE(col_5 >= row_4);
-    ASSERT_TRUE(col_5 >= row_5);
-    //ASSERT_FALSE(col_5 >= row_6); // c not comparable with d
-    //ASSERT_FALSE(col_5 >= row_7); // c not comparable with d
-    ASSERT_TRUE(col_5 >= row_8);
-    ASSERT_TRUE(col_5 >= row_9);
+    GTEST_ASSERT_TRUE(col_5 >= row_0);
+    GTEST_ASSERT_TRUE(col_5 >= row_1);
+    GTEST_ASSERT_TRUE(col_5 >= row_2);
+    GTEST_ASSERT_TRUE(col_5 >= row_3);
+    GTEST_ASSERT_TRUE(col_5 >= row_4);
+    GTEST_ASSERT_TRUE(col_5 >= row_5);
+    //GTEST_ASSERT_FALSE(col_5 >= row_6); // c not comparable with d
+    //GTEST_ASSERT_FALSE(col_5 >= row_7); // c not comparable with d
+    GTEST_ASSERT_TRUE(col_5 >= row_8);
+    GTEST_ASSERT_TRUE(col_5 >= row_9);
 
-    ASSERT_TRUE(col_6 >= row_0);
-    ASSERT_TRUE(col_6 >= row_1);
-    ASSERT_TRUE(col_6 >= row_2);
-    ASSERT_FALSE(col_6 >= row_3);
-    //ASSERT_FALSE(col_6 >= row_4); // d not comparable with c
-    //ASSERT_FALSE(col_6 >= row_5); // d not comparable with c
-    ASSERT_TRUE(col_6 >= row_6);
-    ASSERT_FALSE(col_6 >= row_7);
-    ASSERT_TRUE(col_6 >= row_8);
-    ASSERT_TRUE(col_6 >= row_9);
+    GTEST_ASSERT_TRUE(col_6 >= row_0);
+    GTEST_ASSERT_TRUE(col_6 >= row_1);
+    GTEST_ASSERT_TRUE(col_6 >= row_2);
+    GTEST_ASSERT_FALSE(col_6 >= row_3);
+    //GTEST_ASSERT_FALSE(col_6 >= row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_6 >= row_5); // d not comparable with c
+    GTEST_ASSERT_TRUE(col_6 >= row_6);
+    GTEST_ASSERT_FALSE(col_6 >= row_7);
+    GTEST_ASSERT_TRUE(col_6 >= row_8);
+    GTEST_ASSERT_TRUE(col_6 >= row_9);
 
-    ASSERT_TRUE(col_7 >= row_0);
-    ASSERT_TRUE(col_7 >= row_1);
-    ASSERT_TRUE(col_7 >= row_2);
-    ASSERT_TRUE(col_7 >= row_3);
-    //ASSERT_FALSE(col_7 >= row_4); // d not comparable with c
-    //ASSERT_FALSE(col_7 >= row_5); // d not comparable with c
-    ASSERT_TRUE(col_7 >= row_6);
-    ASSERT_TRUE(col_7 >= row_7);
-    ASSERT_TRUE(col_7 >= row_8);
-    ASSERT_TRUE(col_7 >= row_9);
+    GTEST_ASSERT_TRUE(col_7 >= row_0);
+    GTEST_ASSERT_TRUE(col_7 >= row_1);
+    GTEST_ASSERT_TRUE(col_7 >= row_2);
+    GTEST_ASSERT_TRUE(col_7 >= row_3);
+    //GTEST_ASSERT_FALSE(col_7 >= row_4); // d not comparable with c
+    //GTEST_ASSERT_FALSE(col_7 >= row_5); // d not comparable with c
+    GTEST_ASSERT_TRUE(col_7 >= row_6);
+    GTEST_ASSERT_TRUE(col_7 >= row_7);
+    GTEST_ASSERT_TRUE(col_7 >= row_8);
+    GTEST_ASSERT_TRUE(col_7 >= row_9);
 
-    ASSERT_TRUE(col_8 >= row_0);
-    ASSERT_TRUE(col_8 >= row_1);
-    ASSERT_FALSE(col_8 >= row_2);
-    ASSERT_FALSE(col_8 >= row_3);
-    ASSERT_FALSE(col_8 >= row_4);
-    ASSERT_FALSE(col_8 >= row_5);
-    ASSERT_FALSE(col_8 >= row_6);
-    ASSERT_FALSE(col_8 >= row_7);
-    ASSERT_TRUE(col_8 >= row_8);
-    ASSERT_FALSE(col_8 >= row_9);
+    GTEST_ASSERT_TRUE(col_8 >= row_0);
+    GTEST_ASSERT_TRUE(col_8 >= row_1);
+    GTEST_ASSERT_FALSE(col_8 >= row_2);
+    GTEST_ASSERT_FALSE(col_8 >= row_3);
+    GTEST_ASSERT_FALSE(col_8 >= row_4);
+    GTEST_ASSERT_FALSE(col_8 >= row_5);
+    GTEST_ASSERT_FALSE(col_8 >= row_6);
+    GTEST_ASSERT_FALSE(col_8 >= row_7);
+    GTEST_ASSERT_TRUE(col_8 >= row_8);
+    GTEST_ASSERT_FALSE(col_8 >= row_9);
 
-    ASSERT_TRUE(col_9 >= row_0);
-    ASSERT_TRUE(col_9 >= row_1);
-    ASSERT_TRUE(col_9 >= row_2);
-    ASSERT_FALSE(col_9 >= row_3);
-    ASSERT_TRUE(col_9 >= row_4);
-    ASSERT_FALSE(col_9 >= row_5);
-    ASSERT_TRUE(col_9 >= row_6);
-    ASSERT_FALSE(col_9 >= row_7);
-    ASSERT_TRUE(col_9 >= row_8);
-    ASSERT_TRUE(col_9 >= row_9);
+    GTEST_ASSERT_TRUE(col_9 >= row_0);
+    GTEST_ASSERT_TRUE(col_9 >= row_1);
+    GTEST_ASSERT_TRUE(col_9 >= row_2);
+    GTEST_ASSERT_FALSE(col_9 >= row_3);
+    GTEST_ASSERT_TRUE(col_9 >= row_4);
+    GTEST_ASSERT_FALSE(col_9 >= row_5);
+    GTEST_ASSERT_TRUE(col_9 >= row_6);
+    GTEST_ASSERT_FALSE(col_9 >= row_7);
+    GTEST_ASSERT_TRUE(col_9 >= row_8);
+    GTEST_ASSERT_TRUE(col_9 >= row_9);
 }

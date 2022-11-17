@@ -34,29 +34,29 @@ GTEST_TEST(optional, emplace_move_inplace) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 0u);
-        ASSERT_EQ(std::get<5>(result), 0u);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 0u);
-        ASSERT_EQ(std::get<8>(result), 0);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<8>(result), 0);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 0u);
-        ASSERT_EQ(std::get<5>(result), 0u);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 0u);
-        ASSERT_EQ(std::get<8>(result), 0);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<5>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<8>(result), 0);
     }
 }
 
@@ -81,15 +81,15 @@ GTEST_TEST(optional, emplace_call_destructor) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_EQ(std::get<0>(result), 1);
-        ASSERT_EQ(std::get<1>(result), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_EQ(std::get<0>(result), 1);
-        ASSERT_EQ(std::get<1>(result), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0);
     }
 }
 GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible) {
@@ -115,17 +115,17 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -154,19 +154,19 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible) 
     // Non constant
     {
         const auto result = test(123,456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -195,19 +195,19 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible) 
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
     }
 }
 
@@ -237,19 +237,19 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructib
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -276,17 +276,17 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -315,19 +315,19 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible) 
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -357,21 +357,21 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible) 
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 0u);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
-        ASSERT_EQ(std::get<4>(result), 0u);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
     }
 }
 
@@ -407,27 +407,27 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructib
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_EQ(std::get<2>(result), 0u);
-        ASSERT_EQ(std::get<3>(result), 0u);
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_EQ(std::get<5>(result), 456);
-        ASSERT_EQ(std::get<6>(result), 1u);
-        ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_EQ(std::get<5>(result), 456);
+        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_EQ(std::get<2>(result), 0u);
-        ASSERT_EQ(std::get<3>(result), 0u);
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_EQ(std::get<5>(result), 456);
-        ASSERT_EQ(std::get<6>(result), 1u);
-        ASSERT_EQ(std::get<7>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_EQ(std::get<5>(result), 456);
+        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
     }
 }
 
@@ -454,17 +454,17 @@ GTEST_TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -493,19 +493,19 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible) 
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -533,19 +533,19 @@ GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible) 
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 1u);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
     }
 }
 
@@ -578,23 +578,23 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructib
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_EQ(std::get<2>(result), 0u);
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_EQ(std::get<4>(result), 456);
-        ASSERT_EQ(std::get<5>(result), 1u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_EQ(std::get<4>(result), 456);
+        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_EQ(std::get<2>(result), 0u);
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_EQ(std::get<4>(result), 456);
-        ASSERT_EQ(std::get<5>(result), 1u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_EQ(std::get<4>(result), 456);
+        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
     }
 }
 
@@ -621,17 +621,17 @@ GTEST_TEST(optional, emplace_by_move_in_empty_trivially_move_constructible) {
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
     }
 }
 
@@ -660,19 +660,19 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible) 
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_EQ(std::get<3>(result), 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 }
 
@@ -702,21 +702,21 @@ GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible) 
     // Non constant
     {
         const auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 0u);
-        ASSERT_EQ(std::get<4>(result), 1u);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123);
-        ASSERT_FALSE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_EQ(std::get<2>(result), 123);
-        ASSERT_EQ(std::get<3>(result), 0u);
-        ASSERT_EQ(std::get<4>(result), 1u);
+        GTEST_ASSERT_FALSE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 123);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
     }
 }
 
@@ -752,26 +752,26 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructib
     // Non constant
     {
         const auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_EQ(std::get<2>(result), 0u);
-        ASSERT_EQ(std::get<3>(result), 0u);
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_EQ(std::get<5>(result), 456);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 1u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_EQ(std::get<5>(result), 456);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
     }
 
     // Constant
     {
         constexpr auto result = test(123, 456);
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 123);
-        ASSERT_EQ(std::get<2>(result), 0u);
-        ASSERT_EQ(std::get<3>(result), 0u);
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_EQ(std::get<5>(result), 456);
-        ASSERT_EQ(std::get<6>(result), 0u);
-        ASSERT_EQ(std::get<7>(result), 1u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_EQ(std::get<5>(result), 456);
+        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
     }
 }

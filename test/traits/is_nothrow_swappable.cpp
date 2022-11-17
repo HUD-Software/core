@@ -44,16 +44,16 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_nothrow_swappable) {
-    ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::moveable>);
-    ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::not_moveable>);
+    GTEST_ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::moveable>);
+    GTEST_ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::not_moveable>);
 
-    ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::moveable, hud_test::moveable_2>));
-    ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::not_moveable, hud_test::not_moveable_2>));
+    GTEST_ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::moveable, hud_test::moveable_2>));
+    GTEST_ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::not_moveable, hud_test::not_moveable_2>));
 
 
-    ASSERT_TRUE(hud::is_nothrow_swappable_v<hud_test::nothrow_moveable>);
-    ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::nothrow_not_moveable>);
+    GTEST_ASSERT_TRUE(hud::is_nothrow_swappable_v<hud_test::nothrow_moveable>);
+    GTEST_ASSERT_FALSE(hud::is_nothrow_swappable_v<hud_test::nothrow_not_moveable>);
 
-    ASSERT_TRUE((hud::is_nothrow_swappable_v<hud_test::nothrow_moveable, hud_test::nothrow_moveable_2>));
-    ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::nothrow_not_moveable, hud_test::nothrow_not_moveable_2>));
+    GTEST_ASSERT_TRUE((hud::is_nothrow_swappable_v<hud_test::nothrow_moveable, hud_test::nothrow_moveable_2>));
+    GTEST_ASSERT_FALSE((hud::is_nothrow_swappable_v<hud_test::nothrow_not_moveable, hud_test::nothrow_not_moveable_2>));
 }

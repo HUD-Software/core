@@ -7,13 +7,13 @@ GTEST_TEST(random_access_iterator, check_const_correctness) {
     using const_array_type = decltype(arr_const);
 
     hud::random_access_iterator<array_type> it(arr);
-    ASSERT_FALSE(hud::is_const_v<decltype(*it)>);
+    GTEST_ASSERT_FALSE(hud::is_const_v<decltype(*it)>);
 
     hud::random_access_iterator<const_array_type> it_const(arr_const);
-    ASSERT_TRUE(hud::is_const_v<hud::remove_reference_t<decltype(*it_const)>>);
+    GTEST_ASSERT_TRUE(hud::is_const_v<hud::remove_reference_t<decltype(*it_const)>>);
 
     hud::random_access_iterator<const_array_type> it_const_2(arr);
-    ASSERT_TRUE(hud::is_const_v<hud::remove_reference_t<decltype(*it_const_2)>>);
+    GTEST_ASSERT_TRUE(hud::is_const_v<hud::remove_reference_t<decltype(*it_const_2)>>);
 }
 
 
@@ -35,15 +35,15 @@ GTEST_TEST(random_access_iterator, constructor) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
     }
 }
 
@@ -65,19 +65,19 @@ GTEST_TEST(random_access_iterator, operator_arrow) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -99,19 +99,19 @@ const auto test = []() {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 }
 
@@ -159,28 +159,28 @@ GTEST_TEST(random_access_iterator, operator_pre_increment) {
         const auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
-        ASSERT_TRUE(std::get<4>(mutable_it));
-        ASSERT_TRUE(std::get<5>(mutable_it));
-        ASSERT_TRUE(std::get<6>(mutable_it));
-        ASSERT_TRUE(std::get<7>(mutable_it));
-        ASSERT_TRUE(std::get<8>(mutable_it));
-        ASSERT_TRUE(std::get<9>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<4>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<5>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<6>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<7>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<8>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<9>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
-        ASSERT_TRUE(std::get<4>(const_it));
-        ASSERT_TRUE(std::get<5>(const_it));
-        ASSERT_TRUE(std::get<6>(const_it));
-        ASSERT_TRUE(std::get<7>(const_it));
-        ASSERT_TRUE(std::get<8>(const_it));
-        ASSERT_TRUE(std::get<9>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<4>(const_it));
+        GTEST_ASSERT_TRUE(std::get<5>(const_it));
+        GTEST_ASSERT_TRUE(std::get<6>(const_it));
+        GTEST_ASSERT_TRUE(std::get<7>(const_it));
+        GTEST_ASSERT_TRUE(std::get<8>(const_it));
+        GTEST_ASSERT_TRUE(std::get<9>(const_it));
     }
 
     // Constant
@@ -188,28 +188,28 @@ GTEST_TEST(random_access_iterator, operator_pre_increment) {
         constexpr auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
-        ASSERT_TRUE(std::get<4>(mutable_it));
-        ASSERT_TRUE(std::get<5>(mutable_it));
-        ASSERT_TRUE(std::get<6>(mutable_it));
-        ASSERT_TRUE(std::get<7>(mutable_it));
-        ASSERT_TRUE(std::get<8>(mutable_it));
-        ASSERT_TRUE(std::get<9>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<4>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<5>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<6>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<7>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<8>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<9>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
-        ASSERT_TRUE(std::get<4>(const_it));
-        ASSERT_TRUE(std::get<5>(const_it));
-        ASSERT_TRUE(std::get<6>(const_it));
-        ASSERT_TRUE(std::get<7>(const_it));
-        ASSERT_TRUE(std::get<8>(const_it));
-        ASSERT_TRUE(std::get<9>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<4>(const_it));
+        GTEST_ASSERT_TRUE(std::get<5>(const_it));
+        GTEST_ASSERT_TRUE(std::get<6>(const_it));
+        GTEST_ASSERT_TRUE(std::get<7>(const_it));
+        GTEST_ASSERT_TRUE(std::get<8>(const_it));
+        GTEST_ASSERT_TRUE(std::get<9>(const_it));
     }
 }
 
@@ -258,28 +258,28 @@ GTEST_TEST(random_access_iterator, operator_post_increment) {
         const auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
-        ASSERT_TRUE(std::get<4>(mutable_it));
-        ASSERT_TRUE(std::get<5>(mutable_it));
-        ASSERT_TRUE(std::get<6>(mutable_it));
-        ASSERT_TRUE(std::get<7>(mutable_it));
-        ASSERT_TRUE(std::get<8>(mutable_it));
-        ASSERT_TRUE(std::get<9>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<4>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<5>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<6>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<7>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<8>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<9>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
-        ASSERT_TRUE(std::get<4>(const_it));
-        ASSERT_TRUE(std::get<5>(const_it));
-        ASSERT_TRUE(std::get<6>(const_it));
-        ASSERT_TRUE(std::get<7>(const_it));
-        ASSERT_TRUE(std::get<8>(const_it));
-        ASSERT_TRUE(std::get<9>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<4>(const_it));
+        GTEST_ASSERT_TRUE(std::get<5>(const_it));
+        GTEST_ASSERT_TRUE(std::get<6>(const_it));
+        GTEST_ASSERT_TRUE(std::get<7>(const_it));
+        GTEST_ASSERT_TRUE(std::get<8>(const_it));
+        GTEST_ASSERT_TRUE(std::get<9>(const_it));
     }
 
     // Constant
@@ -287,28 +287,28 @@ GTEST_TEST(random_access_iterator, operator_post_increment) {
         constexpr auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
-        ASSERT_TRUE(std::get<4>(mutable_it));
-        ASSERT_TRUE(std::get<5>(mutable_it));
-        ASSERT_TRUE(std::get<6>(mutable_it));
-        ASSERT_TRUE(std::get<7>(mutable_it));
-        ASSERT_TRUE(std::get<8>(mutable_it));
-        ASSERT_TRUE(std::get<9>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<4>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<5>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<6>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<7>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<8>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<9>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
-        ASSERT_TRUE(std::get<4>(const_it));
-        ASSERT_TRUE(std::get<5>(const_it));
-        ASSERT_TRUE(std::get<6>(const_it));
-        ASSERT_TRUE(std::get<7>(const_it));
-        ASSERT_TRUE(std::get<8>(const_it));
-        ASSERT_TRUE(std::get<9>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<4>(const_it));
+        GTEST_ASSERT_TRUE(std::get<5>(const_it));
+        GTEST_ASSERT_TRUE(std::get<6>(const_it));
+        GTEST_ASSERT_TRUE(std::get<7>(const_it));
+        GTEST_ASSERT_TRUE(std::get<8>(const_it));
+        GTEST_ASSERT_TRUE(std::get<9>(const_it));
     }
 }
 
@@ -345,16 +345,16 @@ GTEST_TEST(random_access_iterator, operator_increment_assign) {
         const auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
     }
 
     // Constant
@@ -362,16 +362,16 @@ GTEST_TEST(random_access_iterator, operator_increment_assign) {
         constexpr auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
     }
 }
 
@@ -410,16 +410,16 @@ GTEST_TEST(random_access_iterator, operator_increment) {
         const auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
     }
 
     // Constant
@@ -427,16 +427,16 @@ GTEST_TEST(random_access_iterator, operator_increment) {
         constexpr auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
     }
 }
 
@@ -485,28 +485,28 @@ GTEST_TEST(random_access_iterator, operator_pre_decrement) {
         const auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
-        ASSERT_TRUE(std::get<4>(mutable_it));
-        ASSERT_TRUE(std::get<5>(mutable_it));
-        ASSERT_TRUE(std::get<6>(mutable_it));
-        ASSERT_TRUE(std::get<7>(mutable_it));
-        ASSERT_TRUE(std::get<8>(mutable_it));
-        ASSERT_TRUE(std::get<9>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<4>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<5>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<6>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<7>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<8>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<9>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
-        ASSERT_TRUE(std::get<4>(const_it));
-        ASSERT_TRUE(std::get<5>(const_it));
-        ASSERT_TRUE(std::get<6>(const_it));
-        ASSERT_TRUE(std::get<7>(const_it));
-        ASSERT_TRUE(std::get<8>(const_it));
-        ASSERT_TRUE(std::get<9>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<4>(const_it));
+        GTEST_ASSERT_TRUE(std::get<5>(const_it));
+        GTEST_ASSERT_TRUE(std::get<6>(const_it));
+        GTEST_ASSERT_TRUE(std::get<7>(const_it));
+        GTEST_ASSERT_TRUE(std::get<8>(const_it));
+        GTEST_ASSERT_TRUE(std::get<9>(const_it));
     }
 
     // Constant
@@ -514,28 +514,28 @@ GTEST_TEST(random_access_iterator, operator_pre_decrement) {
         constexpr auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
-        ASSERT_TRUE(std::get<4>(mutable_it));
-        ASSERT_TRUE(std::get<5>(mutable_it));
-        ASSERT_TRUE(std::get<6>(mutable_it));
-        ASSERT_TRUE(std::get<7>(mutable_it));
-        ASSERT_TRUE(std::get<8>(mutable_it));
-        ASSERT_TRUE(std::get<9>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<4>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<5>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<6>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<7>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<8>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<9>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
-        ASSERT_TRUE(std::get<4>(const_it));
-        ASSERT_TRUE(std::get<5>(const_it));
-        ASSERT_TRUE(std::get<6>(const_it));
-        ASSERT_TRUE(std::get<7>(const_it));
-        ASSERT_TRUE(std::get<8>(const_it));
-        ASSERT_TRUE(std::get<9>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<4>(const_it));
+        GTEST_ASSERT_TRUE(std::get<5>(const_it));
+        GTEST_ASSERT_TRUE(std::get<6>(const_it));
+        GTEST_ASSERT_TRUE(std::get<7>(const_it));
+        GTEST_ASSERT_TRUE(std::get<8>(const_it));
+        GTEST_ASSERT_TRUE(std::get<9>(const_it));
     }
 }
 
@@ -584,28 +584,28 @@ GTEST_TEST(random_access_iterator, operator_post_decrement) {
         const auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
-        ASSERT_TRUE(std::get<4>(mutable_it));
-        ASSERT_TRUE(std::get<5>(mutable_it));
-        ASSERT_TRUE(std::get<6>(mutable_it));
-        ASSERT_TRUE(std::get<7>(mutable_it));
-        ASSERT_TRUE(std::get<8>(mutable_it));
-        ASSERT_TRUE(std::get<9>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<4>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<5>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<6>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<7>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<8>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<9>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
-        ASSERT_TRUE(std::get<4>(const_it));
-        ASSERT_TRUE(std::get<5>(const_it));
-        ASSERT_TRUE(std::get<6>(const_it));
-        ASSERT_TRUE(std::get<7>(const_it));
-        ASSERT_TRUE(std::get<8>(const_it));
-        ASSERT_TRUE(std::get<9>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<4>(const_it));
+        GTEST_ASSERT_TRUE(std::get<5>(const_it));
+        GTEST_ASSERT_TRUE(std::get<6>(const_it));
+        GTEST_ASSERT_TRUE(std::get<7>(const_it));
+        GTEST_ASSERT_TRUE(std::get<8>(const_it));
+        GTEST_ASSERT_TRUE(std::get<9>(const_it));
     }
 
     // Constant
@@ -613,28 +613,28 @@ GTEST_TEST(random_access_iterator, operator_post_decrement) {
         constexpr auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
-        ASSERT_TRUE(std::get<4>(mutable_it));
-        ASSERT_TRUE(std::get<5>(mutable_it));
-        ASSERT_TRUE(std::get<6>(mutable_it));
-        ASSERT_TRUE(std::get<7>(mutable_it));
-        ASSERT_TRUE(std::get<8>(mutable_it));
-        ASSERT_TRUE(std::get<9>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<4>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<5>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<6>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<7>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<8>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<9>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
-        ASSERT_TRUE(std::get<4>(const_it));
-        ASSERT_TRUE(std::get<5>(const_it));
-        ASSERT_TRUE(std::get<6>(const_it));
-        ASSERT_TRUE(std::get<7>(const_it));
-        ASSERT_TRUE(std::get<8>(const_it));
-        ASSERT_TRUE(std::get<9>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<4>(const_it));
+        GTEST_ASSERT_TRUE(std::get<5>(const_it));
+        GTEST_ASSERT_TRUE(std::get<6>(const_it));
+        GTEST_ASSERT_TRUE(std::get<7>(const_it));
+        GTEST_ASSERT_TRUE(std::get<8>(const_it));
+        GTEST_ASSERT_TRUE(std::get<9>(const_it));
     }
 }
 
@@ -671,16 +671,16 @@ GTEST_TEST(random_access_iterator, operator_decrement_assign) {
         const auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
     }
 
     // Constant
@@ -688,16 +688,16 @@ GTEST_TEST(random_access_iterator, operator_decrement_assign) {
         constexpr auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
     }
 }
 
@@ -736,16 +736,16 @@ GTEST_TEST(random_access_iterator, operator_decrement) {
         const auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
     }
 
     // Constant
@@ -753,16 +753,16 @@ GTEST_TEST(random_access_iterator, operator_decrement) {
         constexpr auto result = test();
 
         const auto& mutable_it = std::get<0>(result);
-        ASSERT_TRUE(std::get<0>(mutable_it));
-        ASSERT_TRUE(std::get<1>(mutable_it));
-        ASSERT_TRUE(std::get<2>(mutable_it));
-        ASSERT_TRUE(std::get<3>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<0>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<1>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<2>(mutable_it));
+        GTEST_ASSERT_TRUE(std::get<3>(mutable_it));
 
         const auto& const_it = std::get<1>(result);
-        ASSERT_TRUE(std::get<0>(const_it));
-        ASSERT_TRUE(std::get<1>(const_it));
-        ASSERT_TRUE(std::get<2>(const_it));
-        ASSERT_TRUE(std::get<3>(const_it));
+        GTEST_ASSERT_TRUE(std::get<0>(const_it));
+        GTEST_ASSERT_TRUE(std::get<1>(const_it));
+        GTEST_ASSERT_TRUE(std::get<2>(const_it));
+        GTEST_ASSERT_TRUE(std::get<3>(const_it));
     }
 }
 
@@ -786,19 +786,19 @@ GTEST_TEST(random_access_iterator, equal_operator) {
     {
         const auto result = test();
 
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
 
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_FALSE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_FALSE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_FALSE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_FALSE(std::get<3>(result));
     }
 }

@@ -21,15 +21,15 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 15u);
-        ASSERT_EQ(std::get<1>(result), 15u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 15u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 15u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 15u);
-        ASSERT_EQ(std::get<1>(result), 15u);
+        GTEST_ASSERT_EQ(std::get<0>(result), 15u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 15u);
     }
 }
 
@@ -58,15 +58,15 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_bitwise_constructible_typ
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 15);
-        ASSERT_EQ(std::get<1>(result), 15);
+        GTEST_ASSERT_EQ(std::get<0>(result), 15);
+        GTEST_ASSERT_EQ(std::get<1>(result), 15);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 15);
-        ASSERT_EQ(std::get<1>(result), 15);
+        GTEST_ASSERT_EQ(std::get<0>(result), 15);
+        GTEST_ASSERT_EQ(std::get<1>(result), 15);
     }
 }
 
@@ -113,15 +113,15 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_construc
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 1);
-        ASSERT_EQ(std::get<1>(result), 1);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1);
+        GTEST_ASSERT_EQ(std::get<1>(result), 1);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 1);
-        ASSERT_EQ(std::get<1>(result), 1);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1);
+        GTEST_ASSERT_EQ(std::get<1>(result), 1);
     }
 }
 
@@ -176,17 +176,17 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_construc
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 1u);
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 1);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 1u);
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 1);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 1);
     }
 }
 
@@ -229,15 +229,15 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_construc
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 1u);
-        ASSERT_EQ(std::get<1>(result), 1);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 1);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 1u);
-        ASSERT_EQ(std::get<1>(result), 1);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 1);
     }
 }
 
@@ -293,16 +293,16 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_construc
     // Non constant
     {
         ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 1u);
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 1);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 1);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        ASSERT_EQ(std::get<0>(result), 1u);
-        ASSERT_EQ(std::get<1>(result), 0u);
-        ASSERT_EQ(std::get<2>(result), 1);
+        GTEST_ASSERT_EQ(std::get<0>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 1);
     }
 }

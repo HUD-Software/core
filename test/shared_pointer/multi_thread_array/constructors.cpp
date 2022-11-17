@@ -15,15 +15,15 @@ GTEST_TEST(shared_pointer_array_safe, default_constructor) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     }
 }
 
@@ -42,15 +42,15 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_nullptr) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_EQ(std::get<1>(result), 0u);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     }
 }
 
@@ -74,12 +74,12 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_same_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -88,12 +88,12 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(std::get<0>(result));
-//        ASSERT_TRUE(std::get<1>(result));
-//        ASSERT_TRUE(std::get<2>(result));
-//        ASSERT_TRUE(std::get<3>(result));
-//        ASSERT_TRUE(std::get<4>(result));
-//        ASSERT_TRUE(std::get<5>(result));
+//        GTEST_ASSERT_TRUE(std::get<0>(result));
+//        GTEST_ASSERT_TRUE(std::get<1>(result));
+//        GTEST_ASSERT_TRUE(std::get<2>(result));
+//        GTEST_ASSERT_TRUE(std::get<3>(result));
+//        GTEST_ASSERT_TRUE(std::get<4>(result));
+//        GTEST_ASSERT_TRUE(std::get<5>(result));
 //    }
 //#endif
 }
@@ -118,12 +118,12 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_different_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -132,12 +132,12 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_different_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(std::get<0>(result));
-//        ASSERT_TRUE(std::get<1>(result));
-//        ASSERT_TRUE(std::get<2>(result));
-//        ASSERT_TRUE(std::get<3>(result));
-//        ASSERT_TRUE(std::get<4>(result));
-//        ASSERT_TRUE(std::get<5>(result));
+//        GTEST_ASSERT_TRUE(std::get<0>(result));
+//        GTEST_ASSERT_TRUE(std::get<1>(result));
+//        GTEST_ASSERT_TRUE(std::get<2>(result));
+//        GTEST_ASSERT_TRUE(std::get<3>(result));
+//        GTEST_ASSERT_TRUE(std::get<4>(result));
+//        GTEST_ASSERT_TRUE(std::get<5>(result));
 //    }
 //#endif
 }
@@ -176,24 +176,24 @@ GTEST_TEST(shared_pointer_array_safe, copy_constructor_same_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_TRUE(std::get<9>(result));
-        ASSERT_TRUE(std::get<10>(result));
-        ASSERT_TRUE(std::get<11>(result));
-        ASSERT_TRUE(std::get<12>(result));
-        ASSERT_TRUE(std::get<13>(result));
-        ASSERT_TRUE(std::get<14>(result));
-        ASSERT_TRUE(std::get<15>(result));
-        ASSERT_TRUE(std::get<16>(result));
-        ASSERT_TRUE(std::get<17>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_TRUE(std::get<9>(result));
+        GTEST_ASSERT_TRUE(std::get<10>(result));
+        GTEST_ASSERT_TRUE(std::get<11>(result));
+        GTEST_ASSERT_TRUE(std::get<12>(result));
+        GTEST_ASSERT_TRUE(std::get<13>(result));
+        GTEST_ASSERT_TRUE(std::get<14>(result));
+        GTEST_ASSERT_TRUE(std::get<15>(result));
+        GTEST_ASSERT_TRUE(std::get<16>(result));
+        GTEST_ASSERT_TRUE(std::get<17>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -202,24 +202,24 @@ GTEST_TEST(shared_pointer_array_safe, copy_constructor_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(std::get<0>(result));
-//        ASSERT_TRUE(std::get<1>(result));
-//        ASSERT_TRUE(std::get<2>(result));
-//        ASSERT_TRUE(std::get<3>(result));
-//        ASSERT_TRUE(std::get<4>(result));
-//        ASSERT_TRUE(std::get<5>(result));
-//        ASSERT_TRUE(std::get<6>(result));
-//        ASSERT_TRUE(std::get<7>(result));
-//        ASSERT_TRUE(std::get<8>(result));
-//        ASSERT_TRUE(std::get<9>(result));
-//        ASSERT_TRUE(std::get<10>(result));
-//        ASSERT_TRUE(std::get<11>(result));
-//        ASSERT_TRUE(std::get<12>(result));
-//        ASSERT_TRUE(std::get<13>(result));
-//        ASSERT_TRUE(std::get<14>(result));
-//        ASSERT_TRUE(std::get<15>(result));
-//        ASSERT_TRUE(std::get<16>(result));
-//        ASSERT_TRUE(std::get<17>(result));
+//        GTEST_ASSERT_TRUE(std::get<0>(result));
+//        GTEST_ASSERT_TRUE(std::get<1>(result));
+//        GTEST_ASSERT_TRUE(std::get<2>(result));
+//        GTEST_ASSERT_TRUE(std::get<3>(result));
+//        GTEST_ASSERT_TRUE(std::get<4>(result));
+//        GTEST_ASSERT_TRUE(std::get<5>(result));
+//        GTEST_ASSERT_TRUE(std::get<6>(result));
+//        GTEST_ASSERT_TRUE(std::get<7>(result));
+//        GTEST_ASSERT_TRUE(std::get<8>(result));
+//        GTEST_ASSERT_TRUE(std::get<9>(result));
+//        GTEST_ASSERT_TRUE(std::get<10>(result));
+//        GTEST_ASSERT_TRUE(std::get<11>(result));
+//        GTEST_ASSERT_TRUE(std::get<12>(result));
+//        GTEST_ASSERT_TRUE(std::get<13>(result));
+//        GTEST_ASSERT_TRUE(std::get<14>(result));
+//        GTEST_ASSERT_TRUE(std::get<15>(result));
+//        GTEST_ASSERT_TRUE(std::get<16>(result));
+//        GTEST_ASSERT_TRUE(std::get<17>(result));
 //    }
 //#endif
 }
@@ -258,24 +258,24 @@ GTEST_TEST(shared_pointer_array_safe, copy_constructor_different_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_TRUE(std::get<9>(result));
-        ASSERT_TRUE(std::get<10>(result));
-        ASSERT_TRUE(std::get<11>(result));
-        ASSERT_TRUE(std::get<12>(result));
-        ASSERT_TRUE(std::get<13>(result));
-        ASSERT_TRUE(std::get<14>(result));
-        ASSERT_TRUE(std::get<15>(result));
-        ASSERT_TRUE(std::get<16>(result));
-        ASSERT_TRUE(std::get<17>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_TRUE(std::get<9>(result));
+        GTEST_ASSERT_TRUE(std::get<10>(result));
+        GTEST_ASSERT_TRUE(std::get<11>(result));
+        GTEST_ASSERT_TRUE(std::get<12>(result));
+        GTEST_ASSERT_TRUE(std::get<13>(result));
+        GTEST_ASSERT_TRUE(std::get<14>(result));
+        GTEST_ASSERT_TRUE(std::get<15>(result));
+        GTEST_ASSERT_TRUE(std::get<16>(result));
+        GTEST_ASSERT_TRUE(std::get<17>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -284,24 +284,24 @@ GTEST_TEST(shared_pointer_array_safe, copy_constructor_different_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(std::get<0>(result));
-//        ASSERT_TRUE(std::get<1>(result));
-//        ASSERT_TRUE(std::get<2>(result));
-//        ASSERT_TRUE(std::get<3>(result));
-//        ASSERT_TRUE(std::get<4>(result));
-//        ASSERT_TRUE(std::get<5>(result));
-//        ASSERT_TRUE(std::get<6>(result));
-//        ASSERT_TRUE(std::get<7>(result));
-//        ASSERT_TRUE(std::get<8>(result));
-//        ASSERT_TRUE(std::get<9>(result));
-//        ASSERT_TRUE(std::get<10>(result));
-//        ASSERT_TRUE(std::get<11>(result));
-//        ASSERT_TRUE(std::get<12>(result));
-//        ASSERT_TRUE(std::get<13>(result));
-//        ASSERT_TRUE(std::get<14>(result));
-//        ASSERT_TRUE(std::get<15>(result));
-//        ASSERT_TRUE(std::get<16>(result));
-//        ASSERT_TRUE(std::get<17>(result));
+//        GTEST_ASSERT_TRUE(std::get<0>(result));
+//        GTEST_ASSERT_TRUE(std::get<1>(result));
+//        GTEST_ASSERT_TRUE(std::get<2>(result));
+//        GTEST_ASSERT_TRUE(std::get<3>(result));
+//        GTEST_ASSERT_TRUE(std::get<4>(result));
+//        GTEST_ASSERT_TRUE(std::get<5>(result));
+//        GTEST_ASSERT_TRUE(std::get<6>(result));
+//        GTEST_ASSERT_TRUE(std::get<7>(result));
+//        GTEST_ASSERT_TRUE(std::get<8>(result));
+//        GTEST_ASSERT_TRUE(std::get<9>(result));
+//        GTEST_ASSERT_TRUE(std::get<10>(result));
+//        GTEST_ASSERT_TRUE(std::get<11>(result));
+//        GTEST_ASSERT_TRUE(std::get<12>(result));
+//        GTEST_ASSERT_TRUE(std::get<13>(result));
+//        GTEST_ASSERT_TRUE(std::get<14>(result));
+//        GTEST_ASSERT_TRUE(std::get<15>(result));
+//        GTEST_ASSERT_TRUE(std::get<16>(result));
+//        GTEST_ASSERT_TRUE(std::get<17>(result));
 //    }
 //#endif
 }
@@ -340,24 +340,24 @@ GTEST_TEST(shared_pointer_array_safe, move_constructor_same_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_TRUE(std::get<9>(result));
-        ASSERT_TRUE(std::get<10>(result));
-        ASSERT_TRUE(std::get<11>(result));
-        ASSERT_TRUE(std::get<12>(result));
-        ASSERT_TRUE(std::get<13>(result));
-        ASSERT_TRUE(std::get<14>(result));
-        ASSERT_TRUE(std::get<15>(result));
-        ASSERT_TRUE(std::get<16>(result));
-        ASSERT_TRUE(std::get<17>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_TRUE(std::get<9>(result));
+        GTEST_ASSERT_TRUE(std::get<10>(result));
+        GTEST_ASSERT_TRUE(std::get<11>(result));
+        GTEST_ASSERT_TRUE(std::get<12>(result));
+        GTEST_ASSERT_TRUE(std::get<13>(result));
+        GTEST_ASSERT_TRUE(std::get<14>(result));
+        GTEST_ASSERT_TRUE(std::get<15>(result));
+        GTEST_ASSERT_TRUE(std::get<16>(result));
+        GTEST_ASSERT_TRUE(std::get<17>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -366,24 +366,24 @@ GTEST_TEST(shared_pointer_array_safe, move_constructor_same_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(std::get<0>(result));
-//        ASSERT_TRUE(std::get<1>(result));
-//        ASSERT_TRUE(std::get<2>(result));
-//        ASSERT_TRUE(std::get<3>(result));
-//        ASSERT_TRUE(std::get<4>(result));
-//        ASSERT_TRUE(std::get<5>(result));
-//        ASSERT_TRUE(std::get<6>(result));
-//        ASSERT_TRUE(std::get<7>(result));
-//        ASSERT_TRUE(std::get<8>(result));
-//        ASSERT_TRUE(std::get<9>(result));
-//        ASSERT_TRUE(std::get<10>(result));
-//        ASSERT_TRUE(std::get<11>(result));
-//        ASSERT_TRUE(std::get<12>(result));
-//        ASSERT_TRUE(std::get<13>(result));
-//        ASSERT_TRUE(std::get<14>(result));
-//        ASSERT_TRUE(std::get<15>(result));
-//        ASSERT_TRUE(std::get<16>(result));
-//        ASSERT_TRUE(std::get<17>(result));
+//        GTEST_ASSERT_TRUE(std::get<0>(result));
+//        GTEST_ASSERT_TRUE(std::get<1>(result));
+//        GTEST_ASSERT_TRUE(std::get<2>(result));
+//        GTEST_ASSERT_TRUE(std::get<3>(result));
+//        GTEST_ASSERT_TRUE(std::get<4>(result));
+//        GTEST_ASSERT_TRUE(std::get<5>(result));
+//        GTEST_ASSERT_TRUE(std::get<6>(result));
+//        GTEST_ASSERT_TRUE(std::get<7>(result));
+//        GTEST_ASSERT_TRUE(std::get<8>(result));
+//        GTEST_ASSERT_TRUE(std::get<9>(result));
+//        GTEST_ASSERT_TRUE(std::get<10>(result));
+//        GTEST_ASSERT_TRUE(std::get<11>(result));
+//        GTEST_ASSERT_TRUE(std::get<12>(result));
+//        GTEST_ASSERT_TRUE(std::get<13>(result));
+//        GTEST_ASSERT_TRUE(std::get<14>(result));
+//        GTEST_ASSERT_TRUE(std::get<15>(result));
+//        GTEST_ASSERT_TRUE(std::get<16>(result));
+//        GTEST_ASSERT_TRUE(std::get<17>(result));
 //    }
 //#endif
 }
@@ -422,24 +422,24 @@ GTEST_TEST(shared_pointer_array_safe, move_constructor_different_type) {
     // Non constant
     {
         const auto result = test();
-        ASSERT_TRUE(std::get<0>(result));
-        ASSERT_TRUE(std::get<1>(result));
-        ASSERT_TRUE(std::get<2>(result));
-        ASSERT_TRUE(std::get<3>(result));
-        ASSERT_TRUE(std::get<4>(result));
-        ASSERT_TRUE(std::get<5>(result));
-        ASSERT_TRUE(std::get<6>(result));
-        ASSERT_TRUE(std::get<7>(result));
-        ASSERT_TRUE(std::get<8>(result));
-        ASSERT_TRUE(std::get<9>(result));
-        ASSERT_TRUE(std::get<10>(result));
-        ASSERT_TRUE(std::get<11>(result));
-        ASSERT_TRUE(std::get<12>(result));
-        ASSERT_TRUE(std::get<13>(result));
-        ASSERT_TRUE(std::get<14>(result));
-        ASSERT_TRUE(std::get<15>(result));
-        ASSERT_TRUE(std::get<16>(result));
-        ASSERT_TRUE(std::get<17>(result));
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+        GTEST_ASSERT_TRUE(std::get<4>(result));
+        GTEST_ASSERT_TRUE(std::get<5>(result));
+        GTEST_ASSERT_TRUE(std::get<6>(result));
+        GTEST_ASSERT_TRUE(std::get<7>(result));
+        GTEST_ASSERT_TRUE(std::get<8>(result));
+        GTEST_ASSERT_TRUE(std::get<9>(result));
+        GTEST_ASSERT_TRUE(std::get<10>(result));
+        GTEST_ASSERT_TRUE(std::get<11>(result));
+        GTEST_ASSERT_TRUE(std::get<12>(result));
+        GTEST_ASSERT_TRUE(std::get<13>(result));
+        GTEST_ASSERT_TRUE(std::get<14>(result));
+        GTEST_ASSERT_TRUE(std::get<15>(result));
+        GTEST_ASSERT_TRUE(std::get<16>(result));
+        GTEST_ASSERT_TRUE(std::get<17>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -448,24 +448,24 @@ GTEST_TEST(shared_pointer_array_safe, move_constructor_different_type) {
 //#if !defined(HD_COMPILER_MSVC)
 //    {
 //        constexpr auto result = test();
-//        ASSERT_TRUE(std::get<0>(result));
-//        ASSERT_TRUE(std::get<1>(result));
-//        ASSERT_TRUE(std::get<2>(result));
-//        ASSERT_TRUE(std::get<3>(result));
-//        ASSERT_TRUE(std::get<4>(result));
-//        ASSERT_TRUE(std::get<5>(result));
-//        ASSERT_TRUE(std::get<6>(result));
-//        ASSERT_TRUE(std::get<7>(result));
-//        ASSERT_TRUE(std::get<8>(result));
-//        ASSERT_TRUE(std::get<9>(result));
-//        ASSERT_TRUE(std::get<10>(result));
-//        ASSERT_TRUE(std::get<11>(result));
-//        ASSERT_TRUE(std::get<12>(result));
-//        ASSERT_TRUE(std::get<13>(result));
-//        ASSERT_TRUE(std::get<14>(result));
-//        ASSERT_TRUE(std::get<15>(result));
-//        ASSERT_TRUE(std::get<16>(result));
-//        ASSERT_TRUE(std::get<17>(result));
+//        GTEST_ASSERT_TRUE(std::get<0>(result));
+//        GTEST_ASSERT_TRUE(std::get<1>(result));
+//        GTEST_ASSERT_TRUE(std::get<2>(result));
+//        GTEST_ASSERT_TRUE(std::get<3>(result));
+//        GTEST_ASSERT_TRUE(std::get<4>(result));
+//        GTEST_ASSERT_TRUE(std::get<5>(result));
+//        GTEST_ASSERT_TRUE(std::get<6>(result));
+//        GTEST_ASSERT_TRUE(std::get<7>(result));
+//        GTEST_ASSERT_TRUE(std::get<8>(result));
+//        GTEST_ASSERT_TRUE(std::get<9>(result));
+//        GTEST_ASSERT_TRUE(std::get<10>(result));
+//        GTEST_ASSERT_TRUE(std::get<11>(result));
+//        GTEST_ASSERT_TRUE(std::get<12>(result));
+//        GTEST_ASSERT_TRUE(std::get<13>(result));
+//        GTEST_ASSERT_TRUE(std::get<14>(result));
+//        GTEST_ASSERT_TRUE(std::get<15>(result));
+//        GTEST_ASSERT_TRUE(std::get<16>(result));
+//        GTEST_ASSERT_TRUE(std::get<17>(result));
 //    }
 //#endif
 }

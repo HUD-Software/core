@@ -21,55 +21,55 @@ GTEST_TEST(memory, compare_pointer_to_buffer) {
     // Non constant
     {
         std::tuple<i32, i32, i32, i32> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_EQ(std::get<0>(result_buf), 0);
-        ASSERT_GT(std::get<1>(result_buf), 0);
-        ASSERT_EQ(std::get<2>(result_buf), 0);
-        ASSERT_LE(std::get<3>(result_buf), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_buf), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf), 0);
+        GTEST_ASSERT_EQ(std::get<2>(result_buf), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf), 0);
 
         std::tuple<i32, i32, i32, i32> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_LE(std::get<0>(result_buf_2), 0);
-        ASSERT_EQ(std::get<1>(result_buf_2), 0);
-        ASSERT_LE(std::get<2>(result_buf_2), 0);
-        ASSERT_LE(std::get<3>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<0>(result_buf_2), 0);
+        GTEST_ASSERT_EQ(std::get<1>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<2>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf_2), 0);
 
         std::tuple<i32, i32, i32, i32> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_EQ(std::get<0>(result_buf_3), 0);
-        ASSERT_GT(std::get<1>(result_buf_3), 0);
-        ASSERT_EQ(std::get<2>(result_buf_3), 0);
-        ASSERT_LE(std::get<3>(result_buf_3), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_buf_3), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf_3), 0);
+        GTEST_ASSERT_EQ(std::get<2>(result_buf_3), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf_3), 0);
 
         std::tuple<i32, i32, i32, i32> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_GT(std::get<0>(result_buf_4), 0);
-        ASSERT_GT(std::get<1>(result_buf_4), 0);
-        ASSERT_GT(std::get<2>(result_buf_4), 0);
-        ASSERT_EQ(std::get<3>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<0>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<2>(result_buf_4), 0);
+        GTEST_ASSERT_EQ(std::get<3>(result_buf_4), 0);
     }
 
     // Constant
     {
         constexpr std::tuple<i32, i32, i32, i32> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_EQ(std::get<0>(result_buf), 0);
-        ASSERT_GT(std::get<1>(result_buf), 0);
-        ASSERT_EQ(std::get<2>(result_buf), 0);
-        ASSERT_LE(std::get<3>(result_buf), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_buf), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf), 0);
+        GTEST_ASSERT_EQ(std::get<2>(result_buf), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf), 0);
 
         constexpr std::tuple<i32, i32, i32, i32> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_LE(std::get<0>(result_buf_2), 0);
-        ASSERT_EQ(std::get<1>(result_buf_2), 0);
-        ASSERT_LE(std::get<2>(result_buf_2), 0);
-        ASSERT_LE(std::get<3>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<0>(result_buf_2), 0);
+        GTEST_ASSERT_EQ(std::get<1>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<2>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf_2), 0);
 
         constexpr std::tuple<i32, i32, i32, i32> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_EQ(std::get<0>(result_buf_3), 0);
-        ASSERT_GT(std::get<1>(result_buf_3), 0);
-        ASSERT_EQ(std::get<2>(result_buf_3), 0);
-        ASSERT_LE(std::get<3>(result_buf_3), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_buf_3), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf_3), 0);
+        GTEST_ASSERT_EQ(std::get<2>(result_buf_3), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf_3), 0);
 
         constexpr std::tuple<i32, i32, i32, i32> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_GT(std::get<0>(result_buf_4), 0);
-        ASSERT_GT(std::get<1>(result_buf_4), 0);
-        ASSERT_GT(std::get<2>(result_buf_4), 0);
-        ASSERT_EQ(std::get<3>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<0>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<2>(result_buf_4), 0);
+        GTEST_ASSERT_EQ(std::get<3>(result_buf_4), 0);
     }
 }
 
@@ -94,55 +94,55 @@ GTEST_TEST(memory, compare_C_buffer) {
     // Non constant
     {
         std::tuple<i32, i32, i32, i32> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_EQ(std::get<0>(result_buf), 0);
-        ASSERT_GT(std::get<1>(result_buf), 0);
-        ASSERT_EQ(std::get<2>(result_buf), 0);
-        ASSERT_LE(std::get<3>(result_buf), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_buf), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf), 0);
+        GTEST_ASSERT_EQ(std::get<2>(result_buf), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf), 0);
 
         std::tuple<i32, i32, i32, i32> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_LE(std::get<0>(result_buf_2), 0);
-        ASSERT_EQ(std::get<1>(result_buf_2), 0);
-        ASSERT_LE(std::get<2>(result_buf_2), 0);
-        ASSERT_LE(std::get<3>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<0>(result_buf_2), 0);
+        GTEST_ASSERT_EQ(std::get<1>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<2>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf_2), 0);
 
         std::tuple<i32, i32, i32, i32> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_EQ(std::get<0>(result_buf_3), 0);
-        ASSERT_GT(std::get<1>(result_buf_3), 0);
-        ASSERT_EQ(std::get<2>(result_buf_3), 0);
-        ASSERT_LE(std::get<3>(result_buf_3), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_buf_3), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf_3), 0);
+        GTEST_ASSERT_EQ(std::get<2>(result_buf_3), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf_3), 0);
 
         std::tuple<i32, i32, i32, i32> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_GT(std::get<0>(result_buf_4), 0);
-        ASSERT_GT(std::get<1>(result_buf_4), 0);
-        ASSERT_GT(std::get<2>(result_buf_4), 0);
-        ASSERT_EQ(std::get<3>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<0>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<2>(result_buf_4), 0);
+        GTEST_ASSERT_EQ(std::get<3>(result_buf_4), 0);
     }
 
     // Constant
     {
         constexpr std::tuple<i32, i32, i32, i32> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_EQ(std::get<0>(result_buf), 0);
-        ASSERT_GT(std::get<1>(result_buf), 0);
-        ASSERT_EQ(std::get<2>(result_buf), 0);
-        ASSERT_LE(std::get<3>(result_buf), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_buf), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf), 0);
+        GTEST_ASSERT_EQ(std::get<2>(result_buf), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf), 0);
 
         constexpr std::tuple<i32, i32, i32, i32> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_LE(std::get<0>(result_buf_2), 0);
-        ASSERT_EQ(std::get<1>(result_buf_2), 0);
-        ASSERT_LE(std::get<2>(result_buf_2), 0);
-        ASSERT_LE(std::get<3>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<0>(result_buf_2), 0);
+        GTEST_ASSERT_EQ(std::get<1>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<2>(result_buf_2), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf_2), 0);
 
         constexpr std::tuple<i32, i32, i32, i32> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_EQ(std::get<0>(result_buf_3), 0);
-        ASSERT_GT(std::get<1>(result_buf_3), 0);
-        ASSERT_EQ(std::get<2>(result_buf_3), 0);
-        ASSERT_LE(std::get<3>(result_buf_3), 0);
+        GTEST_ASSERT_EQ(std::get<0>(result_buf_3), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf_3), 0);
+        GTEST_ASSERT_EQ(std::get<2>(result_buf_3), 0);
+        GTEST_ASSERT_LE(std::get<3>(result_buf_3), 0);
 
         constexpr std::tuple<i32, i32, i32, i32> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_GT(std::get<0>(result_buf_4), 0);
-        ASSERT_GT(std::get<1>(result_buf_4), 0);
-        ASSERT_GT(std::get<2>(result_buf_4), 0);
-        ASSERT_EQ(std::get<3>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<0>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<1>(result_buf_4), 0);
+        GTEST_ASSERT_GT(std::get<2>(result_buf_4), 0);
+        GTEST_ASSERT_EQ(std::get<3>(result_buf_4), 0);
     }
 }
 
@@ -167,55 +167,55 @@ GTEST_TEST(memory, compare_equal_pointer_to_buffer)
     // Non constant
     {
         std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf));
-        ASSERT_FALSE(std::get<1>(result_buf));
-        ASSERT_TRUE(std::get<2>(result_buf));
-        ASSERT_FALSE(std::get<3>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf));
 
         std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_2));
-        ASSERT_TRUE(std::get<1>(result_buf_2));
-        ASSERT_FALSE(std::get<2>(result_buf_2));
-        ASSERT_FALSE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_2));
 
         std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_3));
-        ASSERT_FALSE(std::get<1>(result_buf_3));
-        ASSERT_TRUE(std::get<2>(result_buf_3));
-        ASSERT_FALSE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_3));
 
         std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_4));
-        ASSERT_FALSE(std::get<1>(result_buf_4));
-        ASSERT_FALSE(std::get<2>(result_buf_4));
-        ASSERT_TRUE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_4));
     }
 
     // Constant
     {
         constexpr std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf));
-        ASSERT_FALSE(std::get<1>(result_buf));
-        ASSERT_TRUE(std::get<2>(result_buf));
-        ASSERT_FALSE(std::get<3>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_2));
-        ASSERT_TRUE(std::get<1>(result_buf_2));
-        ASSERT_FALSE(std::get<2>(result_buf_2));
-        ASSERT_FALSE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_2));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_3));
-        ASSERT_FALSE(std::get<1>(result_buf_3));
-        ASSERT_TRUE(std::get<2>(result_buf_3));
-        ASSERT_FALSE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_3));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_4));
-        ASSERT_FALSE(std::get<1>(result_buf_4));
-        ASSERT_FALSE(std::get<2>(result_buf_4));
-        ASSERT_TRUE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_4));
     }
 }
 
@@ -240,55 +240,55 @@ GTEST_TEST(memory, compare_equal_C_buffer)
     // Non constant
     {
         std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf));
-        ASSERT_FALSE(std::get<1>(result_buf));
-        ASSERT_TRUE(std::get<2>(result_buf));
-        ASSERT_FALSE(std::get<3>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf));
 
         std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_2));
-        ASSERT_TRUE(std::get<1>(result_buf_2));
-        ASSERT_FALSE(std::get<2>(result_buf_2));
-        ASSERT_FALSE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_2));
 
         std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_3));
-        ASSERT_FALSE(std::get<1>(result_buf_3));
-        ASSERT_TRUE(std::get<2>(result_buf_3));
-        ASSERT_FALSE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_3));
 
         std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_4));
-        ASSERT_FALSE(std::get<1>(result_buf_4));
-        ASSERT_FALSE(std::get<2>(result_buf_4));
-        ASSERT_TRUE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_4));
     }
 
     // Constant
     {
         constexpr std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf));
-        ASSERT_FALSE(std::get<1>(result_buf));
-        ASSERT_TRUE(std::get<2>(result_buf));
-        ASSERT_FALSE(std::get<3>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_2));
-        ASSERT_TRUE(std::get<1>(result_buf_2));
-        ASSERT_FALSE(std::get<2>(result_buf_2));
-        ASSERT_FALSE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_2));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_3));
-        ASSERT_FALSE(std::get<1>(result_buf_3));
-        ASSERT_TRUE(std::get<2>(result_buf_3));
-        ASSERT_FALSE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_3));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_4));
-        ASSERT_FALSE(std::get<1>(result_buf_4));
-        ASSERT_FALSE(std::get<2>(result_buf_4));
-        ASSERT_TRUE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_4));
     }
 }
 
@@ -313,55 +313,55 @@ GTEST_TEST(memory, compare_less_pointer_to_buffer)
     // Non constant
     {
         std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf));
-        ASSERT_FALSE(std::get<1>(result_buf));
-        ASSERT_FALSE(std::get<2>(result_buf));
-        ASSERT_TRUE(std::get<3>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf));
 
         std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_2));
-        ASSERT_FALSE(std::get<1>(result_buf_2));
-        ASSERT_TRUE(std::get<2>(result_buf_2));
-        ASSERT_TRUE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_2));
 
         std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_3));
-        ASSERT_FALSE(std::get<1>(result_buf_3));
-        ASSERT_FALSE(std::get<2>(result_buf_3));
-        ASSERT_TRUE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_3));
 
         std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_4));
-        ASSERT_FALSE(std::get<1>(result_buf_4));
-        ASSERT_FALSE(std::get<2>(result_buf_4));
-        ASSERT_FALSE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_4));
     }
 
     // Constant
     {
         constexpr std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf));
-        ASSERT_FALSE(std::get<1>(result_buf));
-        ASSERT_FALSE(std::get<2>(result_buf));
-        ASSERT_TRUE(std::get<3>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_2));
-        ASSERT_FALSE(std::get<1>(result_buf_2));
-        ASSERT_TRUE(std::get<2>(result_buf_2));
-        ASSERT_TRUE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_2));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_3));
-        ASSERT_FALSE(std::get<1>(result_buf_3));
-        ASSERT_FALSE(std::get<2>(result_buf_3));
-        ASSERT_TRUE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_3));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_4));
-        ASSERT_FALSE(std::get<1>(result_buf_4));
-        ASSERT_FALSE(std::get<2>(result_buf_4));
-        ASSERT_FALSE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_4));
     }
 }
 
@@ -386,55 +386,55 @@ GTEST_TEST(memory, compare_less_c_array)
     // Non constant
     {
         std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf));
-        ASSERT_FALSE(std::get<1>(result_buf));
-        ASSERT_FALSE(std::get<2>(result_buf));
-        ASSERT_TRUE(std::get<3>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf));
 
         std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_2));
-        ASSERT_FALSE(std::get<1>(result_buf_2));
-        ASSERT_TRUE(std::get<2>(result_buf_2));
-        ASSERT_TRUE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_2));
 
         std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_3));
-        ASSERT_FALSE(std::get<1>(result_buf_3));
-        ASSERT_FALSE(std::get<2>(result_buf_3));
-        ASSERT_TRUE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_3));
 
         std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_4));
-        ASSERT_FALSE(std::get<1>(result_buf_4));
-        ASSERT_FALSE(std::get<2>(result_buf_4));
-        ASSERT_FALSE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_4));
     }
 
     // Constant
     {
         constexpr std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf));
-        ASSERT_FALSE(std::get<1>(result_buf));
-        ASSERT_FALSE(std::get<2>(result_buf));
-        ASSERT_TRUE(std::get<3>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_2));
-        ASSERT_FALSE(std::get<1>(result_buf_2));
-        ASSERT_TRUE(std::get<2>(result_buf_2));
-        ASSERT_TRUE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_2));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_3));
-        ASSERT_FALSE(std::get<1>(result_buf_3));
-        ASSERT_FALSE(std::get<2>(result_buf_3));
-        ASSERT_TRUE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<3>(result_buf_3));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_4));
-        ASSERT_FALSE(std::get<1>(result_buf_4));
-        ASSERT_FALSE(std::get<2>(result_buf_4));
-        ASSERT_FALSE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_4));
     }
 }
 
@@ -460,55 +460,55 @@ GTEST_TEST(memory, compare_greater_pointer_to_buffer)
     // Non constant
     {
         std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf));
-        ASSERT_TRUE(std::get<1>(result_buf));
-        ASSERT_FALSE(std::get<2>(result_buf));
-        ASSERT_FALSE(std::get<3>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf));
 
         std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_2));
-        ASSERT_FALSE(std::get<1>(result_buf_2));
-        ASSERT_FALSE(std::get<2>(result_buf_2));
-        ASSERT_FALSE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_2));
 
         std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_3));
-        ASSERT_TRUE(std::get<1>(result_buf_3));
-        ASSERT_FALSE(std::get<2>(result_buf_3));
-        ASSERT_FALSE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_3));
 
         std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_4));
-        ASSERT_TRUE(std::get<1>(result_buf_4));
-        ASSERT_TRUE(std::get<2>(result_buf_4));
-        ASSERT_FALSE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_4));
     }
 
     // Constant
     {
         constexpr std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf));
-        ASSERT_TRUE(std::get<1>(result_buf));
-        ASSERT_FALSE(std::get<2>(result_buf));
-        ASSERT_FALSE(std::get<3>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_2));
-        ASSERT_FALSE(std::get<1>(result_buf_2));
-        ASSERT_FALSE(std::get<2>(result_buf_2));
-        ASSERT_FALSE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_2));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_3));
-        ASSERT_TRUE(std::get<1>(result_buf_3));
-        ASSERT_FALSE(std::get<2>(result_buf_3));
-        ASSERT_FALSE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_3));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_4));
-        ASSERT_TRUE(std::get<1>(result_buf_4));
-        ASSERT_TRUE(std::get<2>(result_buf_4));
-        ASSERT_FALSE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_4));
     }
 }
 
@@ -533,54 +533,54 @@ GTEST_TEST(memory, compare_greater_c_array)
     // Non constant
     {
         std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf));
-        ASSERT_TRUE(std::get<1>(result_buf));
-        ASSERT_FALSE(std::get<2>(result_buf));
-        ASSERT_FALSE(std::get<3>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf));
 
         std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_2));
-        ASSERT_FALSE(std::get<1>(result_buf_2));
-        ASSERT_FALSE(std::get<2>(result_buf_2));
-        ASSERT_FALSE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_2));
 
         std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_3));
-        ASSERT_TRUE(std::get<1>(result_buf_3));
-        ASSERT_FALSE(std::get<2>(result_buf_3));
-        ASSERT_FALSE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_3));
 
         std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_4));
-        ASSERT_TRUE(std::get<1>(result_buf_4));
-        ASSERT_TRUE(std::get<2>(result_buf_4));
-        ASSERT_FALSE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_4));
     }
 
     // Constant
     {
         constexpr std::tuple<bool, bool, bool, bool> result_buf = test(buf, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf));
-        ASSERT_TRUE(std::get<1>(result_buf));
-        ASSERT_FALSE(std::get<2>(result_buf));
-        ASSERT_FALSE(std::get<3>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_2 = test(buf_2, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_2));
-        ASSERT_FALSE(std::get<1>(result_buf_2));
-        ASSERT_FALSE(std::get<2>(result_buf_2));
-        ASSERT_FALSE(std::get<3>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<1>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_2));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_2));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_3 = test(buf_3, buf, buf_2, buf_3, buf_4);
-        ASSERT_FALSE(std::get<0>(result_buf_3));
-        ASSERT_TRUE(std::get<1>(result_buf_3));
-        ASSERT_FALSE(std::get<2>(result_buf_3));
-        ASSERT_FALSE(std::get<3>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<0>(result_buf_3));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<2>(result_buf_3));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_3));
 
         constexpr std::tuple<bool, bool, bool, bool> result_buf_4 = test(buf_4, buf, buf_2, buf_3, buf_4);
-        ASSERT_TRUE(std::get<0>(result_buf_4));
-        ASSERT_TRUE(std::get<1>(result_buf_4));
-        ASSERT_TRUE(std::get<2>(result_buf_4));
-        ASSERT_FALSE(std::get<3>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<0>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<1>(result_buf_4));
+        GTEST_ASSERT_TRUE(std::get<2>(result_buf_4));
+        GTEST_ASSERT_FALSE(std::get<3>(result_buf_4));
     }
 }

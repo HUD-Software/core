@@ -29,29 +29,29 @@ namespace hud_test {
 GTEST_TEST(traits, HasUniqueObjectRepresentations) {
 
 
-    ASSERT_TRUE(hud::has_unique_object_representations_v<i32>);
-    ASSERT_TRUE(hud::has_unique_object_representations_v<i32*>);
-    ASSERT_FALSE(hud::has_unique_object_representations_v<i32&>);
-    ASSERT_TRUE(hud::has_unique_object_representations_v<i32[]>);
-    ASSERT_TRUE(hud::has_unique_object_representations_v<i32[][2]>);
-    ASSERT_TRUE(hud::has_unique_object_representations_v<i32[2]>);
-    ASSERT_TRUE(hud::has_unique_object_representations_v<i32[2][2]>);
-    ASSERT_FALSE(hud::has_unique_object_representations_v<hud::void_t<>>);
-    ASSERT_FALSE(hud::has_unique_object_representations_v<f32>);
-    ASSERT_FALSE(hud::has_unique_object_representations_v<f64>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32*>);
+    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<i32&>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32[]>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32[][2]>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32[2]>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32[2][2]>);
+    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud::void_t<>>);
+    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<f32>);
+    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<f64>);
 
     
-    ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::empty>);
-    ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::a>);
-    ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::b>);
-    ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::c>);
+    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::empty>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::a>);
+    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::b>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::c>);
 
     
-    ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::padded>);
+    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::padded>);
 
     
-    ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::derived>);
+    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::derived>);
 
     
-    ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::derived2>);
+    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::derived2>);
 }

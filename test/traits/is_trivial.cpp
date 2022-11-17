@@ -8,8 +8,8 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_trivial) {
-    ASSERT_TRUE((hud::is_trivial_v<hud_test::a>));
-    ASSERT_FALSE((hud::is_trivial_v<hud_test::b>));
-    ASSERT_FALSE((hud::is_trivial_v<hud_test::c>));
-    ASSERT_FALSE((hud::is_trivial_v<hud_test::d>));
+    GTEST_ASSERT_TRUE((hud::is_trivial_v<hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_trivial_v<hud_test::b>));
+    GTEST_ASSERT_FALSE((hud::is_trivial_v<hud_test::c>));
+    GTEST_ASSERT_FALSE((hud::is_trivial_v<hud_test::d>));
 }

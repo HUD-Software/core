@@ -12,22 +12,22 @@ namespace hud_test {
 }
 
 GTEST_TEST(traits, is_destructible) {
-    ASSERT_TRUE((hud::is_destructible_v<i32>));
-    ASSERT_TRUE((hud::is_destructible_v<i32&>));
-    ASSERT_TRUE((hud::is_destructible_v<i32&&>));
-    ASSERT_TRUE((hud::is_destructible_v<volatile i32>));
-    ASSERT_TRUE((hud::is_destructible_v<const i32>));
-    ASSERT_TRUE((hud::is_destructible_v<const volatile i32>));
-    ASSERT_TRUE((hud::is_destructible_v<hud_test::a>));
-    ASSERT_FALSE((hud::is_destructible_v<hud_test::b>));
-    ASSERT_FALSE((hud::is_destructible_v<hud_test::c>));
-    ASSERT_FALSE((hud::is_destructible_v<void>));
-    ASSERT_FALSE((hud::is_destructible_v<const void>));
-    ASSERT_FALSE((hud::is_destructible_v<volatile void>));
-    ASSERT_FALSE((hud::is_destructible_v<const volatile void>));
-    ASSERT_FALSE((hud::is_destructible_v<i32[]>));
-    ASSERT_FALSE((hud::is_destructible_v<const i32[]>));
-    ASSERT_FALSE((hud::is_destructible_v<volatile i32[]>));
-    ASSERT_FALSE((hud::is_destructible_v<const volatile i32[]>));
+    GTEST_ASSERT_TRUE((hud::is_destructible_v<i32>));
+    GTEST_ASSERT_TRUE((hud::is_destructible_v<i32&>));
+    GTEST_ASSERT_TRUE((hud::is_destructible_v<i32&&>));
+    GTEST_ASSERT_TRUE((hud::is_destructible_v<volatile i32>));
+    GTEST_ASSERT_TRUE((hud::is_destructible_v<const i32>));
+    GTEST_ASSERT_TRUE((hud::is_destructible_v<const volatile i32>));
+    GTEST_ASSERT_TRUE((hud::is_destructible_v<hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<hud_test::b>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<hud_test::c>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<void>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<const void>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<volatile void>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<const volatile void>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<i32[]>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<const i32[]>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<volatile i32[]>));
+    GTEST_ASSERT_FALSE((hud::is_destructible_v<const volatile i32[]>));
 
 }
