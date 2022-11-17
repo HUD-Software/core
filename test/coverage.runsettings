@@ -12,5 +12,8 @@
                 <Source>.*\\_deps\\.*</Source>
             </Exclude>
         </Sources>
+        <EnableStaticNativeInstrumentation>True</EnableStaticNativeInstrumentation>
+        <EnableDynamicNativeInstrumentation>False</EnableDynamicNativeInstrumentation>
+        <EnableStaticNativeInstrumentationRestore>True</EnableStaticNativeInstrumentationRestore>
     </CodeCoverage>
 </Configuration>
