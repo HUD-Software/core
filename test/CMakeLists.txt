@@ -266,7 +266,7 @@ set_target_properties(test_core
         CXX_EXTENSIONS NO
 )
 if(MSVC)
-	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive-)
+	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /Os)
 	#target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /EHsc /GR-)
 # elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 # 	target_compile_options( test_core PRIVATE -fno-cxx-exceptions -fno-rtti)

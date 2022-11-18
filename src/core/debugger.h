@@ -19,15 +19,18 @@ namespace hud {
     struct debugger : os::linux::debugger
     #endif
     {
-        /** 
-         * Break the debugger if condition is false and if the calling process is being debugged by a user-mode debugger.
-         */
+        /** Break the debugger if condition is false and if the calling process is being debugged by a user-mode debugger. */
         static HD_FORCEINLINE void break_here_if(const bool condition) noexcept {
             if(condition)  {
                 break_here();
             }
         }
         
+        /** Abort the program. */
+        static HD_FORCEINLINE void abort() noexcept {
+            ::abort();
+        }
+
         /** Abort the program if condition is true. */
         static HD_FORCEINLINE void abort_if(const bool condition) noexcept {
             if(condition) {
