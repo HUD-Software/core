@@ -108,7 +108,7 @@ namespace hud::os::common{
         [[nodiscard]]
         static constexpr type_t* allocate_array(const usize count) noexcept requires(is_not_same_v<type_t, void>) {
             const usize allocation_size = count * sizeof(type_t);
-            if (hud::is_constant_evaluated()) {
+            if (std::is_constant_evaluated()) {
                 // Usage of std::allocator.allocate is allowed in constexpr dynamic allocation. 
                 // The allocation should be freed with std::allocator<type_t>().deallocate in the same constexpr expression
                 return std::allocator<type_t>().allocate(count);
