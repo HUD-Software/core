@@ -425,3 +425,75 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_nullptr) {
 //    }
 //#endif
 }
+
+GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_shared_pointer)
+{
+    const auto test = [](i32 id)
+    {
+       i32 dtor_count = 0;
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
+        shared_ptr = shared_ptr;
+        return std::tuple{
+            shared_ptr.pointer() == type,
+            shared_ptr.shared_count(),
+            dtor_count
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test(123);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0);
+    }
+
+    // Constant is not available with thread safe SharedPointer
+    // Not working under with msvc
+    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
+    /*#if !defined(HD_COMPILER_MSVC)
+        {
+            constexpr auto result = test(123);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_EQ(std::get<1>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<2>(result), 0);
+        }
+    #endif*/
+}
+
+GTEST_TEST(shared_pointer_not_safe, move_assignement_same_shared_pointer)
+{
+    const auto test = [](i32 id)
+    {
+       i32 dtor_count = 0;
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
+        hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
+        shared_ptr = hud::move(shared_ptr);
+        return std::tuple{
+            shared_ptr.pointer() == type,
+            shared_ptr.shared_count(),
+            dtor_count
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test(123);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<2>(result), 0);
+    }
+
+    // Constant is not available with thread safe SharedPointer
+    // Not working under with msvc
+    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
+    /* #if !defined(HD_COMPILER_MSVC)
+         {
+             constexpr auto result = test(123);
+             GTEST_ASSERT_TRUE(std::get<0>(result));
+             GTEST_ASSERT_EQ(std::get<1>(result), 1u);
+             GTEST_ASSERT_EQ(std::get<2>(result), 0);
+         }
+     #endif*/
+}

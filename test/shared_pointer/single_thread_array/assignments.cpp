@@ -434,6 +434,7 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_an_empty_same_type) {
         GTEST_ASSERT_TRUE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
@@ -445,6 +446,7 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_an_empty_same_type) {
 //        GTEST_ASSERT_TRUE(std::get<0>(result));
 //        GTEST_ASSERT_TRUE(std::get<1>(result));
 //        GTEST_ASSERT_TRUE(std::get<2>(result));
+//        GTEST_ASSERT_TRUE(std::get<3>(result));
 //    }
 //#endif
 }
@@ -456,7 +458,8 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_nullptr) {
         i32 dtor_count[2] = { 0,0 };
         hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
         hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr(type);
-        shared_ptr = hud::move(nullptr);
+        hud::shared_pointer<hud_test::non_bitwise_type[2]> empty;
+        shared_ptr = hud::move(empty);
         return std::tuple{
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count() == 0u,
@@ -471,6 +474,7 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_nullptr) {
         GTEST_ASSERT_TRUE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
     }
 
     // Constant
@@ -482,6 +486,86 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_nullptr) {
 //        GTEST_ASSERT_TRUE(std::get<0>(result));
 //        GTEST_ASSERT_TRUE(std::get<1>(result));
 //        GTEST_ASSERT_TRUE(std::get<2>(result));
+//        GTEST_ASSERT_TRUE(std::get<3>(result));
 //    }
 //#endif
+}
+
+
+GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_same_shared_pointer)
+{
+    const auto test = [](i32 id)
+    {
+          i32 dtor_count[2] = { 0,0 };
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(type);
+        shared_ptr = shared_ptr;
+        return std::tuple{
+            shared_ptr.pointer() == type,
+            shared_ptr.shared_count() == 1u,
+            dtor_count[0] == 0,
+            dtor_count[1] == 0
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test(123);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+    }
+
+    // Constant is not available with thread safe SharedPointer
+    // Not working under with msvc
+    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
+    /*#if !defined(HD_COMPILER_MSVC)
+        {
+            constexpr auto result = test(123);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+        }
+    #endif*/
+}
+
+GTEST_TEST(shared_pointer_array_not_safe, move_assignement_same_shared_pointer)
+{
+    const auto test = [](i32 id)
+    {
+        i32 dtor_count[2] = { 0,0 };
+        hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type[2]{ {1, &dtor_count[0]},{2, &dtor_count[1]} };
+        hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(type);
+        shared_ptr = hud::move(shared_ptr);
+        return std::tuple{
+            shared_ptr.pointer() == type,
+            shared_ptr.shared_count() == 1u,
+            dtor_count[0] == 0,
+            dtor_count[1] == 0
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test(123);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_TRUE(std::get<3>(result));
+    }
+
+    // Constant is not available with thread safe SharedPointer
+    // Not working under with msvc
+    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
+    /* #if !defined(HD_COMPILER_MSVC)
+         {
+            constexpr auto result = test(123);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_TRUE(std::get<2>(result));
+            GTEST_ASSERT_TRUE(std::get<3>(result));
+         }
+     #endif*/
 }
