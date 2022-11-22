@@ -1009,7 +1009,7 @@ namespace hud
     template <typename type_t>
     [[nodiscard]] constexpr unique_pointer<type_t> make_unique(const usize size) noexcept requires(hud::is_unbounded_array_v<type_t>)
     {
-        return unique_pointer<type_t>(new hud::remove_extent_t<type_t>[size]());
+        return unique_pointer<type_t>(new (std::nothrow) hud::remove_extent_t<type_t>[size]());
     }
 
     /** Construction of arrays of known bound is disallowed. */
