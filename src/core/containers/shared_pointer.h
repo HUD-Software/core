@@ -30,6 +30,30 @@
 #include "../hash.h"
 #include "../allocators/allocation.h"
 
+
+/*
+@startuml
+class reference_controller_base<thread_safety_e> {
+u32 shared_count
+u32 weak_count
+}
+class reference_controller_with_deleter<T, thread_safety_e, deleter> {
+ T* pointer
+}
+class reference_controller_no_deleter<T, thread_safety_e, deleter> {
+ [sizeof(T)] buffer
+}
+class shared_reference_controller<thread_safety_e>
+class shared_pointer<T>
+
+reference_controller_base <|-- reference_controller_with_deleter
+reference_controller_base <|-- reference_controller_no_deleter
+
+shared_reference_controller o- reference_controller_base
+shared_pointer *- shared_reference_controller
+@enduml
+
+*/
 namespace hud {
 
     /**
@@ -43,10 +67,9 @@ namespace hud {
         not_safe
     };
 
-    /** Forward declation, default thread safety is not safe. */
+    /** Forward declaration, default thread safety is not safe. */
     template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe>
     class shared_pointer;
-
 
     namespace details {
 
@@ -84,17 +107,25 @@ namespace hud {
             }
 
             /** 
-            * Acquire a shared reference increment the shared counter of a reference_controller_base by 1.
-            * @controller The reference_controller_base to decrement shared counter
+            * Increment the shared counter of a reference_controller_base by 1.
+            * @param controller The reference_controller_base
             */
             static constexpr void acquire_sharedref(reference_controller_base* controller) noexcept {
                 ++(controller->shared_count);
+            }
+            
+            /**
+            * Increment the weak counter of a reference_controller_base by 1.
+            * @param controller The reference_controller_base
+            */
+            static constexpr void acquire_weakref(reference_controller_base* controller) noexcept {
+                ++(controller->weak_count);
             }
 
             /**
             * Release a shared reference decrement the shared counter of a reference_controller_base by 1.
             * If the shared reference count is decremented to 0 the object is destroyed then the weak counter is released.
-            * @controller The reference_controller_base to decrement shared counter
+            * @param controller The reference_controller_base to decrement shared counter
             */
             static constexpr void release_sharedref(reference_controller_base* controller) noexcept {
                 check(controller->shared_count > 0u);
@@ -165,17 +196,25 @@ namespace hud {
             }
 
             /**
-            * Acquire a shared reference increment the shared counter of a reference_controller_base by 1.
-            * @controller The reference_controller_base to increment shared counter
+            * Increment the shared counter of a reference_controller_base by 1.
+            * @param controller The reference_controller_base
             */
             static void acquire_sharedref(reference_controller_base* controller) noexcept {
                 controller->shared_count.increment();
             }
 
             /**
+            * Increment the weak counter of a reference_controller_base by 1.
+            * @param controller The reference_controller_base
+            */
+            static void acquire_weakref(reference_controller_base* controller) noexcept {
+                controller->weak_count.increment();
+            }
+
+            /**
             * Release a shared reference decrement the shared counter of a reference_controller_base by 1.
             * If the shared reference count is decremented to 0 the object is destroyed then the weak counter is released.
-            * @controller The reference_controller_base to decrement shared counter
+            * @param controller The reference_controller_base to decrement shared counter
             */
             static void release_sharedref(reference_controller_base* controller) noexcept {
                 check(controller->shared_count.load() > 0u);
@@ -192,7 +231,7 @@ namespace hud {
             /**
             * Release a weak reference decrement the weak counter of a reference_controller_base by 1.
             * If the weak reference count is decremented to 0 the controller is deleted.
-            * @controller The reference_controller_base to decrement shared counter
+            * @param controller The reference_controller_base to decrement shared counter
             */
             static void release_weakref(reference_controller_base* controller) noexcept {
                 check(controller->weak_count.load() > 0u);
@@ -329,30 +368,34 @@ namespace hud {
             allocation<type_t> allocation;
         };
 
+        template<thread_safety_e thread_safety>
+        class weak_reference_controller;
+
         /**
-        * The reference controller use to count reference of a shared_pointer and WeakPointer.
+        * The reference controller use to count reference of a shared_pointer.
         * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
         */
         template<thread_safety_e thread_safety>
-        class reference_controller {
+        class shared_reference_controller {
 
         public:
             /**  reference_controller_base syntax sugar. */
             using reference_controller_base_type = reference_controller_base<thread_safety>;
+            
         public:
             /** Default constrcutor. */
-            constexpr reference_controller() noexcept = default;
+            constexpr shared_reference_controller() noexcept = default;
 
-            /** Construct a reference_controller by sharing ownership of the controller to control. */
-            constexpr explicit reference_controller(reference_controller_base_type* controller_base) noexcept
+            /** Construct a shared_reference_controller by sharing ownership of the controller to control. */
+            constexpr explicit shared_reference_controller(reference_controller_base_type* controller_base) noexcept
                 : controller(controller_base) {
             }
 
             /**
-            * Construct a reference_controller by sharing the ownership the controller and acquire a shared reference on it.
-            * @param other The other reference_controller to copy
+            * Construct a shared_reference_controller by sharing the ownership the controller and acquire a shared reference on it.
+            * @param other The other shared_reference_controller to copy
             */
-            constexpr reference_controller(const reference_controller& other) noexcept
+            constexpr shared_reference_controller(const shared_reference_controller& other) noexcept
                 : controller(other.controller) {
 
                 // Increment the counter if the copied reference controller have a associated object
@@ -362,21 +405,33 @@ namespace hud {
             }
 
             /**
-            * Construct a reference_controller by stealing the controller.
-            * @param other The other reference_controller to move
+            * Construct a shared_reference_controller by stealing the controller.
+            * @param other The other shared_reference_controller to move
             */
-            constexpr reference_controller(reference_controller&& other) noexcept
+            constexpr shared_reference_controller(shared_reference_controller&& other) noexcept
                 : controller(other.controller) {
                 other.controller = nullptr;
             }
 
             /**
-            * Assigns the reference_controller by sharing the controller and acquire a shared reference on 
+             * Construct a shared_reference_controller from a weak_reference_controller and acquire a shared reference on it
+             * 
+             */
+            constexpr shared_reference_controller(const weak_reference_controller<thread_safety>& other) noexcept
+                : controller(other.controller) {
+
+                if(controller != nullptr) {
+                    reference_controller_base_type::acquire_sharedref(controller);
+                }
+            }
+
+            /**
+            * Assigns the shared_reference_controller by sharing the controller and acquire a shared reference on 
             * the newly shared controller before releasing a shared reference on the old one.
-            * @param other The other reference_controller to copy
+            * @param other The other shared_reference_controller to copy
             * @return *this
             */
-            constexpr reference_controller& operator=(const reference_controller& other) noexcept {
+            constexpr shared_reference_controller& operator=(const shared_reference_controller& other) noexcept {
                 // Do not take into account if we assign if the same controller
                 if (controller != other.controller) {
                     // We take acquire a reference on the copied controller
@@ -394,11 +449,11 @@ namespace hud {
             }
 
             /**
-            * Assigns the reference_controller by stealing the controller before releasing a shared reference on the old one.
-            * @param other The other reference_controller to copy
+            * Assigns the shared_reference_controller by stealing the controller before releasing a shared reference on the old one.
+            * @param other The other shared_reference_controller to copy
             * @return *this
             */
-            constexpr reference_controller& operator=(reference_controller&& other) noexcept {
+            constexpr shared_reference_controller& operator=(shared_reference_controller&& other) noexcept {
                 // Do not take into account if we assign if the same controller
                 if (controller != other.controller) {
 
@@ -416,7 +471,7 @@ namespace hud {
             }
 
             /** Destructor. Release a shared reference on the owned controller. */
-            constexpr ~reference_controller() {
+            constexpr ~shared_reference_controller() {
                 if (controller != nullptr) {
                     reference_controller_base_type::release_sharedref(controller);
                 }
@@ -427,6 +482,46 @@ namespace hud {
             constexpr u32 shared_count() const noexcept {
                 return controller != nullptr ? controller->get_shared_count() : 0u;
             }
+        private:
+            template<thread_safety_e> friend class weak_reference_controller;
+            
+        private:
+            /** Pointer to the owned reference_controller_base_type. */
+            reference_controller_base_type* controller = nullptr;
+        };
+
+         /**
+        * The reference controller use to count reference of a weak_pointer.
+        * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
+        */
+        template<thread_safety_e thread_safety>
+        class weak_reference_controller {
+        public:
+            /**  reference_controller_base syntax sugar. */
+            using reference_controller_base_type = reference_controller_base<thread_safety>;
+
+            /**
+            * Construct a weak_reference_controller by sharing the ownership the controller and acquire a shared reference on it.
+            * @param other The other shared_reference_controller to copy
+            */
+            constexpr weak_reference_controller(const shared_reference_controller<thread_safety>& other) noexcept
+                : controller(other.controller) {
+
+                // Increment the counter if the copied reference controller have a associated object
+                if (controller != nullptr) {
+                    reference_controller_base_type::acquire_weakref(controller);
+                }
+            }
+
+            /** Destructor. Release a weak reference on the owned controller. */
+            constexpr ~weak_reference_controller() {
+                if (controller != nullptr) {
+                    reference_controller_base_type::release_weakref(controller);
+                }
+            }
+
+        private:
+            template<thread_safety_e> friend class shared_reference_controller;
 
         private:
             /** Pointer to the owned reference_controller_base_type. */
@@ -461,7 +556,39 @@ namespace hud {
         static constexpr bool is_pointer_compatible_v<u_type_t[extent], volatile u_type_t[]> = true;
         template<typename u_type_t, usize extent>
         static constexpr bool is_pointer_compatible_v<u_type_t[extent], const volatile u_type_t[]> = true;
-}
+    }
+
+
+    template<typename type_t, hud::thread_safety_e thread_safety = hud::thread_safety_e::not_safe>
+    class weak_pointer {
+    public:
+        /** Internal pointer type representation. */
+        using pointer_type = hud::remove_extent_t<type_t>*;
+
+        /** Default constructor. */
+        constexpr weak_pointer() noexcept = default;
+
+        /** Construct a weak_pointer from a shared_pointer */
+        template<typename u_type_t>
+        constexpr weak_pointer(const hud::shared_pointer<u_type_t>& shared) noexcept requires(details::is_convertible_v<u_type_t,type_t>)
+            : inner(shared.inner) {
+        }
+
+        /* */
+        [[nodiscard]]
+        hud::shared_pointer<type_t> lock() const noexcept {
+            return hud::shared_pointer<type_t>(*this);
+        }
+
+    private:
+        template<typename u_type_t, thread_safety_e> friend class shared_pointer;
+
+    private:
+        /** Pair containing pointer, deleter and shared reference counter. */
+        using inner_type = hud::pair< pointer_type, details::weak_reference_controller<thread_safety>>;
+        inner_type inner;
+    };
+
 
     /**
     * shared_pointer is a smart pointer that share a owning pointer with other shared_pointer.
@@ -527,6 +654,11 @@ namespace hud {
         constexpr shared_pointer(shared_pointer<u_type_t, thread_safety>&& other) noexcept requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(hud::move(other.inner)) {
             get<0>(other.inner) = nullptr;
+        }
+
+        template<typename u_type_t>
+        constexpr shared_pointer(const hud::weak_pointer<u_type_t>& weak) noexcept 
+            : inner(weak.inner) {
         }
 
         /** Assign the shared_pointer by stealing the ownership of the other shared_pointer. */
@@ -650,10 +782,11 @@ namespace hud {
         }
 
     private:
-        /** Friend with other owing pointer types */
+        /** Friend with other owning pointer types */
         template<typename u_type_t, thread_safety_e> friend class shared_pointer;
         template<typename u_type_t, thread_safety_e thread_safety_1, typename... args_t> friend shared_pointer<u_type_t, thread_safety_1> make_shared(args_t&&... args) noexcept requires(!is_array_v<u_type_t>);
         template<typename u_type_t, thread_safety_e thread_safety_1> friend shared_pointer<u_type_t, thread_safety_1> make_shared(usize count) noexcept requires(hud::is_unbounded_array_v<u_type_t>);
+        template<typename u_type_t, thread_safety_e> friend class weak_pointer;
 
         /**
         * Construct a shared_pointer form a reference_controller_no_deleter.
@@ -666,10 +799,9 @@ namespace hud {
 
     private:
         /** Pair containing pointer, deleter and shared reference counter. */
-        using inner_type = hud::pair< pointer_type, details::reference_controller<thread_safety>>;
+        using inner_type = hud::pair< pointer_type, details::shared_reference_controller<thread_safety>>;
         inner_type inner;
     };
-
 
     /**
     * Swap shared_pointer.
