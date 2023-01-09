@@ -337,7 +337,7 @@ message("Fetching HUD-Software/google-test...")
 include(FetchContent)
 FetchContent_Declare(
 	google_test 
-	GIT_REPOSITORY  git@github.com:HUD-Software/google-test.git
+	GIT_REPOSITORY  https://github.com/HUD-Software/google-test.git
 	GIT_TAG         5306f1a0e51f6001c624588fafdb646bb377866c
 )
 FetchContent_MakeAvailable(google_test)
@@ -349,7 +349,7 @@ message("Fetching HUD-Software/slice-by-8...")
 include(FetchContent)
 FetchContent_Declare(
     slice_by_8 
-    GIT_REPOSITORY  git@github.com:HUD-Software/slice-by-8.git
+    GIT_REPOSITORY  https://github.com/HUD-Software/slice-by-8.git
     GIT_TAG         536f6c5a297ff6263c56944c9bb04358f5b0d7da
 )
 FetchContent_MakeAvailable(slice_by_8)
@@ -361,7 +361,7 @@ message("Fetching HUD-Software/cityhash...")
 include(FetchContent)
 FetchContent_Declare(
     cityhash
-    GIT_REPOSITORY  git@github.com:HUD-Software/cityhash.git
+    GIT_REPOSITORY  https://github.com/HUD-Software/cityhash.git
     GIT_TAG         01bb23df43fecd290b398c2e4314dff4c0dc0672
 )
 FetchContent_MakeAvailable(cityhash)
