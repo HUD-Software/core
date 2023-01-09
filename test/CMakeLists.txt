@@ -242,6 +242,7 @@ add_executable(test_core
 	unique_pointer/single/destructor.cpp
 	unique_pointer/single/misc.cpp
 	unique_pointer/single/swap.cpp
+	weak_pointer/single_thread/constructors.cpp
 	aligned_buffer.cpp
 	aligned_heap_allocator.cpp
 	allocation.cpp
