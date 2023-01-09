@@ -500,6 +500,9 @@ namespace hud {
             /**  reference_controller_base syntax sugar. */
             using reference_controller_base_type = reference_controller_base<thread_safety>;
 
+            /** Default constrcutor. */
+            constexpr weak_reference_controller() noexcept = default;
+
             /**
             * Construct a weak_reference_controller by sharing the ownership the controller and acquire a shared reference on it.
             * @param other The other shared_reference_controller to copy
@@ -568,15 +571,23 @@ namespace hud {
         /** Default constructor. */
         constexpr weak_pointer() noexcept = default;
 
-        /** Construct a weak_pointer from a shared_pointer */
+        /** Construct a weak_pointer from a shared_pointer. */
         template<typename u_type_t>
-        constexpr weak_pointer(const hud::shared_pointer<u_type_t>& shared) noexcept requires(details::is_convertible_v<u_type_t,type_t>)
+        constexpr weak_pointer(const hud::shared_pointer<u_type_t>& shared) noexcept requires(details::is_pointer_compatible_v<u_type_t,type_t>)
             : inner(shared.inner) {
         }
 
-        /* */
+        constexpr weak_pointer(const weak_pointer& other) noexcept 
+            : inner(other.inner) {
+        }
+
+        template<typename u_type_t>
+        constexpr weak_pointer(const weak_pointer<u_type_t, thread_safety>& other) noexcept requires(details::is_pointer_compatible_v<u_type_t,type_t>)
+            : inner(other.inner) {
+        }
+        /* Retrives a share_pointer that add the weak_pointer a owner. */
         [[nodiscard]]
-        hud::shared_pointer<type_t> lock() const noexcept {
+        constexpr hud::shared_pointer<type_t> lock() const noexcept {
             return hud::shared_pointer<type_t>(*this);
         }
 

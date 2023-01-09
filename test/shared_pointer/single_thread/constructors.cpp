@@ -1,8 +1,6 @@
 #include <core/containers/shared_pointer.h>
 
 GTEST_TEST(shared_pointer_not_safe, default_constructor) {
-
-
     const auto test = []()
     {
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
@@ -28,8 +26,6 @@ GTEST_TEST(shared_pointer_not_safe, default_constructor) {
 }
 
 GTEST_TEST(shared_pointer_not_safe, param_constructor_nullptr) {
-
-
     const auto test = []()
     {
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(nullptr);
@@ -55,8 +51,6 @@ GTEST_TEST(shared_pointer_not_safe, param_constructor_nullptr) {
 }
 
 GTEST_TEST(shared_pointer_not_safe, param_constructor_same_type) {
-
-
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
         hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
@@ -93,8 +87,6 @@ GTEST_TEST(shared_pointer_not_safe, param_constructor_same_type) {
 }
 
 GTEST_TEST(shared_pointer_not_safe, param_constructor_different_type) {
-
-
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
         hud_test::non_bitwise_type2* type = new hud_test::non_bitwise_type2(id, &dtor_count);
@@ -131,8 +123,6 @@ GTEST_TEST(shared_pointer_not_safe, param_constructor_different_type) {
 }
 
 GTEST_TEST(shared_pointer_not_safe, copy_constructor_same_type) {
-
-
     const auto test = [](i32 id) {
         i32 dtor_count = 0;
         hud_test::non_bitwise_type* type = new hud_test::non_bitwise_type(id, &dtor_count);
