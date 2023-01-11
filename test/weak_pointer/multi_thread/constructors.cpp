@@ -1,4 +1,4 @@
-#include <core/containers/weak_pointer.h>
+#include <core/containers/shared_pointer.h>
 
 #include <memory>
 
