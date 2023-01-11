@@ -600,20 +600,30 @@ namespace hud {
             : inner(shared.inner) {
         }
 
+        /** Construct a weak_pointer by copying it. */
         constexpr weak_pointer(const weak_pointer& other) noexcept 
             : inner(other.inner) {
         }
 
+        /** Construct a weak_pointer by copying it.
+        * @tparam u_type_t Type of the other weak_pointer's pointer to copy. Must be compatible with type_t
+        * @param other The weak_pointer to copy
+        */
         template<typename u_type_t>
         constexpr weak_pointer(const weak_pointer<u_type_t, thread_safety>& other) noexcept requires(details::is_pointer_compatible_v<u_type_t,type_t>)
             : inner(other.inner) {
         }
 
+        /** Construct a weak_pointer by stealing the pointer. */
         constexpr  weak_pointer(weak_pointer&& other) noexcept 
             : inner(hud::move(other.inner)){
             get<0>(other.inner) = nullptr;
         }
 
+        /** Construct a weak_pointer by moving another weak_pointer.
+        * @tparam u_type_t Type of the other weak_pointer's pointer to move. Must be compatible with type_t
+        * @param other The weak_pointer to move
+        */
         template<typename u_type_t>
         constexpr weak_pointer(weak_pointer<u_type_t, thread_safety>&& other) noexcept requires(details::is_pointer_compatible_v<u_type_t,type_t>)
             : inner(hud::move(other.inner)) {
