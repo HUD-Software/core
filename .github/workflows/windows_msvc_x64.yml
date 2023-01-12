@@ -1,0 +1,41 @@
+name: Windows build & test
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-tests:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set SSH Key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Generate visual Studio solution
+        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64
+      - name: Build
+        run: cmake.exe --build target --config Release
+      - name: Test
+        run: |
+          cd target
+          ctest -j10 -C Release -T test --output-on-failure
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Windows Core Test Report
+          path: target/test/test_core_report.xml
+          reporter: java-junit
+      - name: Release
+        run: |
+          xcopy target\test\Release release\ /s /y
+          xcopy target\src\Release release\ /s /y
+          xcopy src\core release\core\ /s /y
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: windows_msvc_x64
+          path: release\**
