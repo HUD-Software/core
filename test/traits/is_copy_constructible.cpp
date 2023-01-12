@@ -1,15 +1,28 @@
 #include <core/traits/is_copy_constructible.h>
 
-namespace hud_test {
-    struct a { };
-    struct b { b(b&&) noexcept {} };
-    struct c { c(const c&) noexcept {} };
-    struct d { d(const c&) noexcept {} };
+namespace hud_test
+{
+    struct a
+    {
+    };
+    struct b
+    {
+        b(b &&) noexcept {}
+    };
+    struct c
+    {
+        c(const c &) noexcept {}
+    };
+    struct d
+    {
+        d(const c &) noexcept {}
+    };
 }
 
-GTEST_TEST(traits, is_copy_constructible) {
+GTEST_TEST(traits, is_copy_constructible)
+{
     GTEST_ASSERT_TRUE((hud::is_copy_constructible_v<i32>));
-    GTEST_ASSERT_TRUE((hud::is_copy_constructible_v<i32&>));
+    GTEST_ASSERT_TRUE((hud::is_copy_constructible_v<i32 &>));
     GTEST_ASSERT_TRUE((hud::is_copy_constructible_v<volatile i32>));
     GTEST_ASSERT_TRUE((hud::is_copy_constructible_v<const i32>));
     GTEST_ASSERT_TRUE((hud::is_copy_constructible_v<const volatile i32>));

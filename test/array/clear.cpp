@@ -7,10 +7,10 @@ GTEST_TEST(array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
     using type = hud_test::non_bitwise_type;
     using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
-    i32 destructor_called[2] = { false, false };
+    i32 destructor_called[2] = {false, false};
     array_type array;
     array.reserve(2);
-    const type* const buffer = array.data();
+    const type *const buffer = array.data();
     array.emplace_back(10, &destructor_called[0]);
     array.emplace_back(20, &destructor_called[1]);
 
@@ -44,7 +44,7 @@ GTEST_TEST(array, clear_destroy_but_keep_allocated_memory_with_trivial_type)
 
     array_type array;
     array.reserve(2);
-    const type* const buffer = array.data();
+    const type *const buffer = array.data();
     array.emplace_back(10);
     array.emplace_back(20);
 
@@ -114,7 +114,7 @@ GTEST_TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_non_trivia
     using type = hud_test::non_bitwise_type;
     using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
-    i32 destructor_called[2] = { false, false };
+    i32 destructor_called[2] = {false, false};
     array_type array;
     array.reserve(2);
     array.emplace_back(10, &destructor_called[0]);

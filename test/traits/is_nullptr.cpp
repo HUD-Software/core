@@ -1,10 +1,12 @@
 #include <core/traits/is_nullptr.h>
 
-namespace hud_test {
-    [[maybe_unused]] int* a = 0;
+namespace hud_test
+{
+    [[maybe_unused]] int *a = 0;
 }
 
-GTEST_TEST(traits, is_nullptr) {
+GTEST_TEST(traits, is_nullptr)
+{
     GTEST_ASSERT_FALSE((hud::is_nullptr_v<decltype(hud_test::a)>));
     GTEST_ASSERT_FALSE((hud::is_nullptr_v<decltype(0)>));
     GTEST_ASSERT_FALSE((hud::is_nullptr_v<decltype(&(*hud_test::a))>));

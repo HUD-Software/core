@@ -130,7 +130,9 @@ GTEST_TEST(array, find_first_index_by_predicate_non_trivial_type)
     array_type array;
 
     // Empty find return nothing
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element.id() == 10; }), hud::index_none);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element.id() == 10; }),
+                    hud::index_none);
 
     array.emplace_back(10, nullptr);
     array.emplace_back(20, nullptr);
@@ -143,12 +145,24 @@ GTEST_TEST(array, find_first_index_by_predicate_non_trivial_type)
     array.emplace_back(40, nullptr);
     array.emplace_back(50, nullptr);
 
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element.id() == 10; }), 0u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element.id() == 20; }), 1u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element.id() == 30; }), 2u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element.id() == 40; }), 3u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element.id() == 50; }), 4u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element.id() == 0; }), hud::index_none);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element.id() == 10; }),
+                    0u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element.id() == 20; }),
+                    1u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element.id() == 30; }),
+                    2u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element.id() == 40; }),
+                    3u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element.id() == 50; }),
+                    4u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element.id() == 0; }),
+                    hud::index_none);
 }
 
 GTEST_TEST(array, find_first_index_by_predicate_trivial_type)
@@ -160,7 +174,9 @@ GTEST_TEST(array, find_first_index_by_predicate_trivial_type)
     array_type array;
 
     // Empty find return nothing
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element == 10u; }), hud::index_none);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element == 10u; }),
+                    hud::index_none);
 
     array.emplace_back(10);
     array.emplace_back(20);
@@ -173,12 +189,24 @@ GTEST_TEST(array, find_first_index_by_predicate_trivial_type)
     array.emplace_back(40);
     array.emplace_back(50);
 
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element == 10u; }), 0u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element == 20u; }), 1u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element == 30u; }), 2u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element == 40u; }), 3u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element == 50u; }), 4u);
-    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type& element) { return element == 0u; }), hud::index_none);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element == 10u; }),
+                    0u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element == 20u; }),
+                    1u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element == 30u; }),
+                    2u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element == 40u; }),
+                    3u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element == 50u; }),
+                    4u);
+    GTEST_ASSERT_EQ(array.find_first_index_by_predicate([](const type &element)
+                                                        { return element == 0u; }),
+                    hud::index_none);
 }
 
 GTEST_TEST(array, find_last_index_by_predicate_non_trivial_type)
@@ -190,7 +218,9 @@ GTEST_TEST(array, find_last_index_by_predicate_non_trivial_type)
     array_type array;
 
     // Empty find return nothing
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element.id() == 10; }), hud::index_none);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element.id() == 10; }),
+                    hud::index_none);
 
     array.emplace_back(10, nullptr);
     array.emplace_back(20, nullptr);
@@ -203,12 +233,24 @@ GTEST_TEST(array, find_last_index_by_predicate_non_trivial_type)
     array.emplace_back(40, nullptr);
     array.emplace_back(50, nullptr);
 
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element.id() == 10; }), 5u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element.id() == 20; }), 6u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element.id() == 30; }), 7u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element.id() == 40; }), 8u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element.id() == 50; }), 9u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element.id() == 0; }), hud::index_none);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element.id() == 10; }),
+                    5u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element.id() == 20; }),
+                    6u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element.id() == 30; }),
+                    7u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element.id() == 40; }),
+                    8u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element.id() == 50; }),
+                    9u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element.id() == 0; }),
+                    hud::index_none);
 }
 
 GTEST_TEST(array, find_last_index_by_predicate_trivial_type)
@@ -220,7 +262,9 @@ GTEST_TEST(array, find_last_index_by_predicate_trivial_type)
     array_type array;
 
     // Empty find return nothing
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element == 10u; }), hud::index_none);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element == 10u; }),
+                    hud::index_none);
 
     array.emplace_back(10);
     array.emplace_back(20);
@@ -233,12 +277,24 @@ GTEST_TEST(array, find_last_index_by_predicate_trivial_type)
     array.emplace_back(40);
     array.emplace_back(50);
 
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element == 10u; }), 5u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element == 20u; }), 6u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element == 30u; }), 7u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element == 40u; }), 8u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element == 50u; }), 9u);
-    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type& element) { return element == 0u; }), hud::index_none);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element == 10u; }),
+                    5u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element == 20u; }),
+                    6u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element == 30u; }),
+                    7u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element == 40u; }),
+                    8u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element == 50u; }),
+                    9u);
+    GTEST_ASSERT_EQ(array.find_last_index_by_predicate([](const type &element)
+                                                       { return element == 0u; }),
+                    hud::index_none);
 }
 
 GTEST_TEST(array, contains_non_trivial_type)
@@ -310,7 +366,8 @@ GTEST_TEST(array, contains_by_predicate_non_trivial_type)
     array_type array;
 
     // Empty find return nothing
-    GTEST_ASSERT_FALSE(array.contains_by_predicate([](const type& element) { return element.id() == 10; }));
+    GTEST_ASSERT_FALSE(array.contains_by_predicate([](const type &element)
+                                                   { return element.id() == 10; }));
 
     array.emplace_back(10, nullptr);
     array.emplace_back(20, nullptr);
@@ -323,12 +380,18 @@ GTEST_TEST(array, contains_by_predicate_non_trivial_type)
     array.emplace_back(40, nullptr);
     array.emplace_back(50, nullptr);
 
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element.id() == 10; }));
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element.id() == 20; }));
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element.id() == 30; }));
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element.id() == 40; }));
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element.id() == 50; }));
-    GTEST_ASSERT_FALSE(array.contains_by_predicate([](const type& element) {return element.id() == 0; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element.id() == 10; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element.id() == 20; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element.id() == 30; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element.id() == 40; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element.id() == 50; }));
+    GTEST_ASSERT_FALSE(array.contains_by_predicate([](const type &element)
+                                                   { return element.id() == 0; }));
 }
 
 GTEST_TEST(array, contains_by_predicate_trivial_type)
@@ -340,7 +403,8 @@ GTEST_TEST(array, contains_by_predicate_trivial_type)
     array_type array;
 
     // Empty find return nothing
-    GTEST_ASSERT_FALSE(array.contains_by_predicate([](const type& element) { return element == 10u; }));
+    GTEST_ASSERT_FALSE(array.contains_by_predicate([](const type &element)
+                                                   { return element == 10u; }));
 
     array.emplace_back(10);
     array.emplace_back(20);
@@ -353,10 +417,16 @@ GTEST_TEST(array, contains_by_predicate_trivial_type)
     array.emplace_back(40);
     array.emplace_back(50);
 
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element == 10u; }));
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element == 20u; }));
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element == 30u; }));
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element == 40u; }));
-    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type& element) {return element == 50u; }));
-    GTEST_ASSERT_FALSE(array.contains_by_predicate([](const type& element) {return element == 0u; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element == 10u; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element == 20u; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element == 30u; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element == 40u; }));
+    GTEST_ASSERT_TRUE(array.contains_by_predicate([](const type &element)
+                                                  { return element == 50u; }));
+    GTEST_ASSERT_FALSE(array.contains_by_predicate([](const type &element)
+                                                   { return element == 0u; }));
 }

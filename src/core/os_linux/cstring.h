@@ -151,10 +151,10 @@ namespace hud::os::linux
          */
         static HD_FORCEINLINE usize length_safe(const ansichar *string, const usize max_length) noexcept
         {
-            return is_safe_length_parameters_valid(string, max_length) ? strnlen(string, max_length > RSIZE_MAX_STR? RSIZE_MAX_STR: max_length) : 0u;
+            return is_safe_length_parameters_valid(string, max_length) ? strnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
         }
 
-        /** 
+        /**
          * Retrieve the length of a wide string and check the given parameters.
          * @param string Null-terminated string
          * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
@@ -162,7 +162,7 @@ namespace hud::os::linux
          */
         static HD_FORCEINLINE usize length_safe(const wchar *string, const usize max_length) noexcept
         {
-            return is_safe_length_parameters_valid(string, max_length) ? wcsnlen(string, max_length > RSIZE_MAX_STR? RSIZE_MAX_STR: max_length) : 0u;
+            return is_safe_length_parameters_valid(string, max_length) ? wcsnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
         }
 
         /**
@@ -174,32 +174,34 @@ namespace hud::os::linux
          * @return Number of character written, -1 if an error occurred.
          */
         using hud::os::common::cstring::format_vargs;
-        
+
         /**
-        * Write a formatted wchar to a wchar buffer (like printf does).
-        * @param buffer The wchar buffer receiving the formatted string
-        * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
-        * @param format The wchar containing the format of the string
-        * @param args Depending of the format, list of arguments
-        * @return Number of character written, -1 if an error occurred.
-        */
-        static HD_FORCEINLINE i32 format_vargs(wchar* buffer, u32 buffer_size, const wchar* format, va_list args) noexcept {
+         * Write a formatted wchar to a wchar buffer (like printf does).
+         * @param buffer The wchar buffer receiving the formatted string
+         * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
+         * @param format The wchar containing the format of the string
+         * @param args Depending of the format, list of arguments
+         * @return Number of character written, -1 if an error occurred.
+         */
+        static HD_FORCEINLINE i32 format_vargs(wchar *buffer, u32 buffer_size, const wchar *format, va_list args) noexcept
+        {
             return vswprintf(buffer, buffer_size, format, args);
         }
 
-        private:
-        
+    private:
         /**
          * Check that parameters given to safe_length are valid
          * @param string Null-terminated string
          * @param max_length Maximum number of character to count
          * @return True if parameters are valid, false otherwise
          */
-        static bool is_safe_length_parameters_valid(const void *string, const usize max_length){
+        static bool is_safe_length_parameters_valid(const void *string, const usize max_length)
+        {
             const bool string_is_nullptr = string == nullptr;
             const bool max_length_is_zero = max_length == 0;
             const bool max_length_is_greater_than_RSIZE_MAX_STR = max_length > RSIZE_MAX_STR;
-            if constexpr (hud::compilation::is_assertion_enabled()) {
+            if constexpr (hud::compilation::is_assertion_enabled())
+            {
                 hud::debugger::break_here_if(string_is_nullptr);
                 hud::debugger::break_here_if(max_length_is_zero);
                 hud::debugger::break_here_if(max_length_is_greater_than_RSIZE_MAX_STR);

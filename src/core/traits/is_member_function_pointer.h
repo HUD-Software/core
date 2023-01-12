@@ -4,20 +4,23 @@
 #include "integral_constant.h"
 #include "is_function.h"
 
-namespace hud {
+namespace hud
+{
 
     /**  Checks whether type_t is a non-static member function pointer. */
     template <typename type_t>
     struct is_member_function_pointer
-        : hud::false_type {
+        : hud::false_type
+    {
     };
-    template<typename type_t, typename class_t>
+    template <typename type_t, typename class_t>
     struct is_member_function_pointer<type_t class_t::*>
-        : is_function<type_t> {
+        : is_function<type_t>
+    {
     };
 
     /** Equivalent of is_member_function_pointer<type_t>::value. */
-    template<typename type_t>
+    template <typename type_t>
     inline constexpr bool is_member_function_pointer_v = is_member_function_pointer<type_t>::value;
 
 } // namespace hud

@@ -4,16 +4,18 @@
 #include "is_same.h"
 #include "remove_cv.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Checks whether type_t is a bool type. */
-    template<typename type_t>
+    template <typename type_t>
     struct is_bool
-        : hud::is_same<remove_cv_t<type_t>, bool> {
+        : hud::is_same<remove_cv_t<type_t>, bool>
+    {
     };
 
     /** Equivalent of is_bool<type_t>::value. */
-    template<typename type_t>
+    template <typename type_t>
     inline constexpr bool is_bool_v = is_bool<type_t>::value;
 
 } // namespace hud

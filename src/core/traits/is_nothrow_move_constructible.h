@@ -4,12 +4,14 @@
 #include "is_nothrow_constructible.h"
 #include "add_rvalue_reference.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Checks whether type_t is move constructible type from u_type_t, and such construction is known not to throw any exception. */
     template <typename type_t, typename u_type_t = type_t>
     struct is_nothrow_move_constructible
-        : is_nothrow_constructible<type_t, add_rvalue_reference_t<u_type_t>> {
+        : is_nothrow_constructible<type_t, add_rvalue_reference_t<u_type_t>>
+    {
     };
 
     /** Checks whether u_type_t is move constructible type from V, and such construction is known not to throw any exception. */

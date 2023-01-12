@@ -3,16 +3,19 @@
 #define HD_INC_CORE_TRAITS_IS_UNBOUNDED_ARRAY_H
 #include "integral_constant.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Checks whether type_t is a unbounded array type. */
-    template<typename type_t>
-    struct is_unbounded_array 
-        : hud::false_type {
+    template <typename type_t>
+    struct is_unbounded_array
+        : hud::false_type
+    {
     };
-    template<typename type_t>
+    template <typename type_t>
     struct is_unbounded_array<type_t[]>
-        : hud::true_type {
+        : hud::true_type
+    {
     };
 
     /** Equivalent of is_unbounded_array<type_t>::value. */

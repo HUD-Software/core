@@ -11,42 +11,43 @@
 #error Targeted OS not supported
 #endif
 
-namespace hud {
-    #if defined(HD_OS_WINDOWS)
+namespace hud
+{
+#if defined(HD_OS_WINDOWS)
     using types = os::windows::types;
-    #elif defined(HD_OS_LINUX)
+#elif defined(HD_OS_LINUX)
     using types = os::linux::types;
-    #endif
+#endif
 
     // Unsigned common types
-    using u8 = types::u8;    // 8 bits unsigned integer
-    using u16 = types::u16;  // 16 bits unsigned integer
-    using u32 = types::u32;  // 32 bits unsigned integer
-    using u64 = types::u64;  // 64 bits unsigned integer
-    
+    using u8 = types::u8;   // 8 bits unsigned integer
+    using u16 = types::u16; // 16 bits unsigned integer
+    using u32 = types::u32; // 32 bits unsigned integer
+    using u64 = types::u64; // 64 bits unsigned integer
+
     // Signed common types
-    using i8 = types::i8;     // 8 bits signed integer
-    using i16 = types::i16;   // 16 bits signed integer
-    using i32 = types::i32;   // 32 bits signed integer
-    using i64 = types::i64;   // 64 bits signed integer
+    using i8 = types::i8;   // 8 bits signed integer
+    using i16 = types::i16; // 16 bits signed integer
+    using i32 = types::i32; // 32 bits signed integer
+    using i64 = types::i64; // 64 bits signed integer
 
     // characteracter common types
     using ansichar = types::ansichar; // 8 bits character
-    using wchar = types::wchar; // Platform dependent size bits wide character
+    using wchar = types::wchar;       // Platform dependent size bits wide character
     using char16 = types::char16;     // 16 bits character type
     using char32 = types::char32;     // 32 bits character type
 
     // Floating point types
-    using f32 = types::f32;   // 32 bits f32 (IEEE 754)
-    using f64 = types::f64;   // 64 bits f32 (IEEE 754)
+    using f32 = types::f32; // 32 bits f32 (IEEE 754)
+    using f64 = types::f64; // 64 bits f32 (IEEE 754)
 
     // Pointer types
     using uptr = types::uptr; // unsigned integer same size as a pointer
-    using iptr = types::iptr;   // signed integer same size as a pointer
+    using iptr = types::iptr; // signed integer same size as a pointer
 
     // Size types
-    using usize = types::usize;   // sizeof operator compatible value
-    using isize = types::isize;   // signed integer representing a valid pointer subtraction operation
+    using usize = types::usize; // sizeof operator compatible value
+    using isize = types::isize; // signed integer representing a valid pointer subtraction operation
 
     // Pointer types
     using ptr = types::ptr; // contains pointer types
@@ -93,7 +94,7 @@ namespace hud {
 
     static inline constexpr usize index_min = types::usize_min;
     static inline constexpr usize index_max = types::usize_max - 1;
-    static inline constexpr usize index_none = static_cast<usize>(- 1);
+    static inline constexpr usize index_none = static_cast<usize>(-1);
 
 } // namespace hud
 
@@ -155,7 +156,6 @@ static_assert(is_signed(hud::isize) && !is_unsigned(hud::isize), "hud::usize is 
 #undef is_unsigned
 #undef is_signed
 
-
 // Statically check for type min-max
 static_assert(hud::u8_max == 0xFF, "u8_max != 0xFF");
 static_assert(hud::u8_min == 0x00, "u8_min != 0x00");
@@ -186,7 +186,6 @@ static_assert(hud::wchar_max == hud::i32_max, "wchar_max != i32_max");
 static_assert(hud::wchar_min == hud::i32_min, "wchar_max != hud::i32_min");
 #endif
 
-
 static_assert(hud::f32_max == 3.402823466e+38F, "f32_max!= 3.402823466e+38F");
 static_assert(hud::f32_min == 1.175494351e-38F, "f32_min!= 1.175494351e-38F");
 static_assert(hud::f64_max == 1.7976931348623158e+308, "f64_max!= 1.7976931348623158e+308");
@@ -212,41 +211,40 @@ static_assert(hud::isize_max == 9223372036854775807, "isize_max!= 92233720368547
 static_assert(hud::isize_min == (-9223372036854775807 - 1), "isize_min!= 0");
 #endif
 
-
 // Redefine types in the global namespace if requested
 #if defined(HD_GLOBAL_NAMESPACE_TYPES)
-    // Unsigned common types
-    using u8 = hud::u8;    // 8 bits unsigned integer
-    using u16 = hud::u16;  // 16 bits unsigned integer
-    using u32 = hud::u32;  // 32 bits unsigned integer
-    using u64 = hud::u64;  // 64 bits unsigned integer
+// Unsigned common types
+using u8 = hud::u8;   // 8 bits unsigned integer
+using u16 = hud::u16; // 16 bits unsigned integer
+using u32 = hud::u32; // 32 bits unsigned integer
+using u64 = hud::u64; // 64 bits unsigned integer
 
-    // Signed common types
-    using i8 = hud::i8;     // 8 bits signed integer
-    using i16 = hud::i16;   // 16 bits signed integer
-    using i32 = hud::i32;   // 32 bits signed integer
-    using i64 = hud::i64;   // 64 bits signed integer
+// Signed common types
+using i8 = hud::i8;   // 8 bits signed integer
+using i16 = hud::i16; // 16 bits signed integer
+using i32 = hud::i32; // 32 bits signed integer
+using i64 = hud::i64; // 64 bits signed integer
 
-    // characteracter common types
-    using ansichar = hud::ansichar; // 8 bits character
-    using wchar = hud::wchar; // Platform dependent size bits wide character
-    using char16 = hud::char16;     // 16 bits character type
-    using char32 = hud::char32;     // 32 bits character type
+// characteracter common types
+using ansichar = hud::ansichar; // 8 bits character
+using wchar = hud::wchar;       // Platform dependent size bits wide character
+using char16 = hud::char16;     // 16 bits character type
+using char32 = hud::char32;     // 32 bits character type
 
-    // Floating point types
-    using f32 = hud::f32;   // 32 bits f32 (IEEE 754)
-    using f64 = hud::f64;   // 64 bits f32 (IEEE 754)
+// Floating point types
+using f32 = hud::f32; // 32 bits f32 (IEEE 754)
+using f64 = hud::f64; // 64 bits f32 (IEEE 754)
 
-    // Pointer types
-    using uptr = hud::uptr; // unsigned integer same size as a pointer
-    using iptr = hud::iptr;   // signed integer same size as a pointer
+// Pointer types
+using uptr = hud::uptr; // unsigned integer same size as a pointer
+using iptr = hud::iptr; // signed integer same size as a pointer
 
-    // Size types
-    using usize = hud::usize;   // sizeof operator compatible value
-    using isize = hud::isize;   // signed integer representing a valid pointer subtraction operation
+// Size types
+using usize = hud::usize; // sizeof operator compatible value
+using isize = hud::isize; // signed integer representing a valid pointer subtraction operation
 
-    // Pointer types
-    using ptr = hud::ptr; // contains pointer types
+// Pointer types
+using ptr = hud::ptr; // contains pointer types
 
 #endif
 

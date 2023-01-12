@@ -4,14 +4,15 @@
 GTEST_TEST(memory, construct_at_trival_type)
 {
 
-
-    auto test_no_param = []() -> u32 {
+    auto test_no_param = []() -> u32
+    {
         u32 to_construct;
         hud::memory::construct_at(&to_construct);
         return to_construct;
-    }; 
-    
-    auto test_param = []() -> u32 {
+    };
+
+    auto test_param = []() -> u32
+    {
         u32 to_construct;
         hud::memory::construct_at(&to_construct, 15);
         return to_construct;
@@ -36,12 +37,13 @@ GTEST_TEST(memory, construct_at_trival_type)
 GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
 {
 
-
-    struct c {
+    struct c
+    {
         i32 value = 0;
         c() = default;
         constexpr c(i32 val) noexcept
-            : value(val) {
+            : value(val)
+        {
         }
     };
     using type = c;
@@ -49,15 +51,17 @@ GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
     static_assert(!hud::is_trivially_constructible_v<type>);
     static_assert(!hud::is_trivially_constructible_v<type, i32>);
 
-    auto test_no_param = []() -> ResultType {
-        type* to_construct = hud::memory::allocate_array<type>(1);
+    auto test_no_param = []() -> ResultType
+    {
+        type *to_construct = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard(to_construct, 1);
         hud::memory::construct_at(to_construct);
         return to_construct->value;
     };
 
-    auto test_param = []() -> ResultType {
-        type* to_construct = hud::memory::allocate_array<type>(1);
+    auto test_param = []() -> ResultType
+    {
+        type *to_construct = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard(to_construct, 1);
         hud::memory::construct_at(to_construct, 15);
         return to_construct->value;
@@ -82,22 +86,23 @@ GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
 GTEST_TEST(memory, construct_array_at_trival_type)
 {
 
-
     using type = u32;
     using ResultType = std::tuple<u32, u32>;
     static_assert(hud::is_trivially_constructible_v<type>);
     static_assert(hud::is_trivially_constructible_v<type, u32>);
 
-    auto test_no_param = []() -> ResultType {
+    auto test_no_param = []() -> ResultType
+    {
         type to_construct[2];
         hud::memory::construct_array_at(to_construct, to_construct + 2);
-        return { to_construct[0], to_construct[1] };
+        return {to_construct[0], to_construct[1]};
     };
 
-    auto test_param = []() -> ResultType {
+    auto test_param = []() -> ResultType
+    {
         type to_construct[2];
-        hud::memory::construct_array_at(to_construct, to_construct+2, 15u);
-        return { to_construct[0], to_construct[1] };
+        hud::memory::construct_array_at(to_construct, to_construct + 2, 15u);
+        return {to_construct[0], to_construct[1]};
     };
     // Non constant
     {
@@ -123,12 +128,13 @@ GTEST_TEST(memory, construct_array_at_trival_type)
 GTEST_TEST(memory, construct_array_at_non_trival_type)
 {
 
-
-    struct c {
+    struct c
+    {
         i32 value = 0;
         c() = default;
         constexpr c(i32 val) noexcept
-            : value(val) {
+            : value(val)
+        {
         }
     };
     using type = c;
@@ -136,18 +142,20 @@ GTEST_TEST(memory, construct_array_at_non_trival_type)
     static_assert(!hud::is_trivially_constructible_v<type>);
     static_assert(!hud::is_trivially_constructible_v<type, i32>);
 
-    auto test_no_param = []() -> ResultType {
-        type* to_construct = hud::memory::allocate_array<type>(2);
+    auto test_no_param = []() -> ResultType
+    {
+        type *to_construct = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard(to_construct, 2);
-        hud::memory::construct_array_at(to_construct, to_construct +2);
-        return { to_construct[0].value, to_construct[1].value };
+        hud::memory::construct_array_at(to_construct, to_construct + 2);
+        return {to_construct[0].value, to_construct[1].value};
     };
-    
-    auto test_param = []() -> ResultType {
-        type* to_construct = hud::memory::allocate_array<type>(2);
+
+    auto test_param = []() -> ResultType
+    {
+        type *to_construct = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard(to_construct, 2);
-        hud::memory::construct_array_at(to_construct, to_construct+2, 15);
-        return { to_construct[0].value, to_construct[1].value };
+        hud::memory::construct_array_at(to_construct, to_construct + 2, 15);
+        return {to_construct[0].value, to_construct[1].value};
     };
 
     // Non constant

@@ -4,33 +4,36 @@
 #include "conditional.h"
 #include "integral_constant.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Performs the logical conjunction of the type traits type_t..., effectively performing a logical AND on the sequence of traits. */
-    template< typename... >
+    template <typename...>
     struct conjunction;
 
-    template<>
+    template <>
     struct hud::conjunction<>
-        : hud::true_type {
+        : hud::true_type
+    {
         // Empty is true
     };
 
-    template<typename type_t>
+    template <typename type_t>
     struct hud::conjunction<type_t>
-        : type_t {
+        : type_t
+    {
         // Only 1 boolean, evaluate without conditional
     };
 
-    template<typename type_t, typename... rest_t>
+    template <typename type_t, typename... rest_t>
     struct hud::conjunction<type_t, rest_t...>
-        : hud::conditional_t<type_t::value, hud::conjunction<rest_t...>, type_t> {
+        : hud::conditional_t<type_t::value, hud::conjunction<rest_t...>, type_t>
+    {
         // If type_t is true evaluate next, else type_t is false
     };
 
-
     /** Equivalent of hud::conjunction<type_t...>::value. */
-    template<typename... type_t>
+    template <typename... type_t>
     inline constexpr bool conjunction_v = hud::conjunction<type_t...>::value;
 
 } // namespace hud

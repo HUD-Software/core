@@ -11,13 +11,14 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
 
     // With reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
             const type element_to_copy;
 
             // Add one element
             const usize index_0 = array.add(element_to_copy);
-            const auto first_element_result = std::tuple { 
+            const auto first_element_result = std::tuple{
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -25,11 +26,10 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array[0].copy_assign_count(),
                 array[0].copy_constructor_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
             // Add another element
             const usize index_1 = array.add(element_to_copy);
-            const auto second_element_result = std::tuple {
+            const auto second_element_result = std::tuple{
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -39,12 +39,10 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array[1].copy_assign_count(),
                 array[1].copy_constructor_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
-            return std::tuple {
-                 first_element_result,
-                 second_element_result
-            };
+                array.allocator().free_count()};
+            return std::tuple{
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -108,7 +106,8 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
 
     // Without reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
             array.reserve(2);
             const type element_to_copy;
@@ -140,9 +139,8 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array.allocator().free_count(),
             };
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -214,9 +212,10 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
 
     // With reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
-            
+
             // Add one element
             const type element_to_copy_0(1u);
             const usize index_0 = array.add(element_to_copy_0);
@@ -244,9 +243,8 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
                 array.allocator().free_count(),
             };
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -304,7 +302,8 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
 
     // Without reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
             array.reserve(2);
 
@@ -318,8 +317,7 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
                 array.max_count(),
                 array[0],
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
 
             // Add another element
             const type element_to_copy_1(2u);
@@ -332,12 +330,10 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
                 array[0],
                 array[1],
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -404,7 +400,8 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
 
     // With reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
 
             // Add one element
@@ -434,9 +431,8 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
                 array.allocator().free_count(),
             };
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -500,7 +496,8 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
 
     // Without reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
             array.reserve(2);
 
@@ -531,9 +528,8 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
                 array.allocator().free_count(),
             };
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -605,7 +601,8 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
 
     // With reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
 
             // Add one element
@@ -633,9 +630,8 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
                 array.allocator().free_count(),
             };
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -693,7 +689,8 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
 
     // Without reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
             array.reserve(2);
 
@@ -706,8 +703,7 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
                 array.max_count(),
                 array[0],
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
 
             // Add another element
             const usize index_1 = array.add(2u);
@@ -719,12 +715,10 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
                 array[0],
                 array[1],
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -791,7 +785,8 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
 
     // With reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
             const type element;
 
@@ -819,9 +814,8 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
                 array.allocator().free_count(),
             };
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant
@@ -879,7 +873,8 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
 
     // Without reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
             array.reserve(2);
 
@@ -909,9 +904,8 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
                 array.allocator().free_count(),
             };
             return std::tuple{
-                 first_element_result,
-                 second_element_result
-            };
+                first_element_result,
+                second_element_result};
         };
 
         // Non Constant

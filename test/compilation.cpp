@@ -1,7 +1,8 @@
 #include <core/compilation.h>
 #include <core/cstring.h>
 
-GTEST_TEST(compilation, get_compiler) {
+GTEST_TEST(compilation, get_compiler)
+{
 #if defined(HD_COMPILER_CLANG_CL)
     GTEST_ASSERT_EQ(hud::compilation::get_compiler(), hud::compiler_e::clang_cl);
 #elif defined(HD_COMPILER_MSVC)
@@ -13,7 +14,8 @@ GTEST_TEST(compilation, get_compiler) {
 #endif
 }
 
-GTEST_TEST(compilation, get_compiler_name) {
+GTEST_TEST(compilation, get_compiler_name)
+{
 #if defined(HD_COMPILER_CLANG_CL)
     GTEST_ASSERT_TRUE(hud::cstring::equals(hud::compilation::get_compiler_name(), "Clang-cl"));
 #elif defined(HD_COMPILER_MSVC)
@@ -25,7 +27,8 @@ GTEST_TEST(compilation, get_compiler_name) {
 #endif
 }
 
-GTEST_TEST(compilation, is_targeting_64bits) {
+GTEST_TEST(compilation, is_targeting_64bits)
+{
 #if defined(HD_TARGET_X64)
     GTEST_ASSERT_TRUE(hud::compilation::is_targeting_64bits());
 #elif defined(HD_TARGET_X86)
@@ -35,7 +38,8 @@ GTEST_TEST(compilation, is_targeting_64bits) {
 #endif
 }
 
-GTEST_TEST(compilation, get_cpu_instruction_set) {
+GTEST_TEST(compilation, get_cpu_instruction_set)
+{
 #if defined(HD_TARGET_X64)
     GTEST_ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::x64);
 #elif defined(HD_TARGET_X86)
@@ -49,7 +53,8 @@ GTEST_TEST(compilation, get_cpu_instruction_set) {
 #endif
 }
 
-GTEST_TEST(compilation, is_cpu_instruction_set) {
+GTEST_TEST(compilation, is_cpu_instruction_set)
+{
 #if defined(HD_TARGET_X64)
     GTEST_ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::x64));
 #elif defined(HD_TARGET_X86)
@@ -63,7 +68,8 @@ GTEST_TEST(compilation, is_cpu_instruction_set) {
 #endif
 }
 
-GTEST_TEST(compilation, get_os) {
+GTEST_TEST(compilation, get_os)
+{
 #if defined(HD_OS_WINDOWS)
     GTEST_ASSERT_EQ(hud::compilation::get_os(), hud::os_e::windows);
 #elif defined(HD_OS_LINUX)
@@ -73,7 +79,8 @@ GTEST_TEST(compilation, get_os) {
 #endif
 }
 
-GTEST_TEST(compilation, is_assertion_enabled) {
+GTEST_TEST(compilation, is_assertion_enabled)
+{
 #if defined(HD_DEBUG) || defined(HD_DEBUGOPTIMIZED)
     GTEST_ASSERT_TRUE(hud::compilation::is_assertion_enabled());
 #elif defined(HD_RELEASE)
@@ -83,7 +90,8 @@ GTEST_TEST(compilation, is_assertion_enabled) {
 #endif
 }
 
-GTEST_TEST(compilation, get_endianness) {
+GTEST_TEST(compilation, get_endianness)
+{
 #if defined(HD_LITTLE_ENDIAN)
     GTEST_ASSERT_EQ(hud::compilation::get_endianness(), hud::endianness_e::little);
 #elif defined(HD_BIG_ENDIAN)
@@ -93,7 +101,8 @@ GTEST_TEST(compilation, get_endianness) {
 #endif
 }
 
-GTEST_TEST(compilation, is_endianness) {
+GTEST_TEST(compilation, is_endianness)
+{
 #if defined(HD_LITTLE_ENDIAN)
     GTEST_ASSERT_TRUE(hud::compilation::is_endianness(hud::endianness_e::little));
 #elif defined(HD_BIG_ENDIAN)

@@ -9,11 +9,12 @@ GTEST_TEST(memory, copy_construct_array_trivial_type)
 
     static_assert(std::is_trivially_copy_constructible_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         type dest[2];
-        type src[2] = { 15, 32 };
+        type src[2] = {15, 32};
         hud::memory::copy_construct_array(dest, src, 2);
-        return { dest[0], dest[1], src[0], src[1] };
+        return {dest[0], dest[1], src[0], src[1]};
     };
 
     // Non constant
@@ -38,8 +39,8 @@ GTEST_TEST(memory, copy_construct_array_trivial_type)
 GTEST_TEST(memory, copy_construct_array_bitwise_constructible_type)
 {
 
-
-    struct c {
+    struct c
+    {
         i32 i;
     };
     using type = c;
@@ -47,14 +48,15 @@ GTEST_TEST(memory, copy_construct_array_bitwise_constructible_type)
 
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         type dest[2], src[2];
         dest[0].i = 0;
         dest[1].i = 0;
         src[0].i = 15;
         src[1].i = 32;
         hud::memory::copy_construct_array(dest, src, 2);
-        return { dest[0].i, dest[1].i, src[0].i, src[1].i };
+        return {dest[0].i, dest[1].i, src[0].i, src[1].i};
     };
 
     // Non constant
@@ -79,7 +81,6 @@ GTEST_TEST(memory, copy_construct_array_bitwise_constructible_type)
 GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_different_type)
 {
 
-
     using source_type = hud_test::NonBitwiseCopyConstructibleType3;
     using destination_type = hud_test::NonBitwiseCopyConstructibleType4;
     using ResultType = std::tuple<i32, i32>;
@@ -87,17 +88,17 @@ GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_different_type
     static_assert(hud::is_copy_constructible_v<destination_type, source_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<destination_type, source_type>);
 
-    auto test = []() -> ResultType {
-
+    auto test = []() -> ResultType
+    {
         i32 ctor_index = 0;
-        source_type* src = hud::memory::allocate_array<source_type>(2);
+        source_type *src = hud::memory::allocate_array<source_type>(2);
         hud_test::LeakArrayGuard guard_src(src, 2);
         hud::memory::construct_array_at(src, src + 2, &ctor_index);
 
-        destination_type* dest = hud::memory::allocate_array<destination_type>(2);
+        destination_type *dest = hud::memory::allocate_array<destination_type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::copy_construct_array(dest, src, 2);
-        return { dest[0].ctor_order() , dest[1].ctor_order() };
+        return {dest[0].ctor_order(), dest[1].ctor_order()};
     };
 
     // Non constant
@@ -118,24 +119,24 @@ GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_different_type
 GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_same_type)
 {
 
-
     using type = hud_test::NonBitwiseCopyConstructibleType4;
     using ResultType = std::tuple<u32, i32, u32, i32>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         i32 ctor_index = 0;
-        type* src = hud::memory::allocate_array<type>(2);
+        type *src = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_src(src, 2);
         hud::memory::construct_array_at(src, src + 2, &ctor_index);
-        type* dest = hud::memory::allocate_array<type>(2);
+        type *dest = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::copy_construct_array(dest, src, 2);
-        return { dest[0].copy_constructor_count(),
-                 dest[0].ctor_order(),
-                 dest[1].copy_constructor_count(),
-                 dest[1].ctor_order() };
+        return {dest[0].copy_constructor_count(),
+                dest[0].ctor_order(),
+                dest[1].copy_constructor_count(),
+                dest[1].ctor_order()};
     };
 
     // Non constant

@@ -4,31 +4,38 @@
 
 #if !defined(HD_OS_LINUX)
 #error This file must be included only when targetting Linux OS
-#endif 
+#endif
 
-namespace hud::os::linux{
+namespace hud::os::linux
+{
 
-    struct debugger {
+    struct debugger
+    {
 
         /** Checks whether the calling process is being debugged by a user-mode debugger. */
         static bool is_present() noexcept;
 
         /** Break the debugger if the calling process is being debugged by a user-mode debugger. */
-        static HD_FORCEINLINE void break_here() noexcept {
-            if (is_present()) {
-               if constexpr(hud::compilation::is_compiler(compiler_e::clang)) {
+        static HD_FORCEINLINE void break_here() noexcept
+        {
+            if (is_present())
+            {
+                if constexpr (hud::compilation::is_compiler(compiler_e::clang))
+                {
                     __builtin_debugtrap();
-               } else {
-                    #if defined(HD_TARGET_X86_FAMILY)
+                }
+                else
+                {
+#if defined(HD_TARGET_X86_FAMILY)
                     __asm__("int $3");
-                    #elif defined(HD_TARGET_ARM_FAMILY)
+#elif defined(HD_TARGET_ARM_FAMILY)
                     __builtin_trap();
-                    #endif
-               }
+#endif
+                }
             }
         }
     };
 
-} //namespace hud::os::windows
+} // namespace hud::os::windows
 
-#endif /* HD_INC_CORE_OS_LINUX_DEBUGGER_H */ 
+#endif /* HD_INC_CORE_OS_LINUX_DEBUGGER_H */

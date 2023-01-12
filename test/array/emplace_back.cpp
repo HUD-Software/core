@@ -10,7 +10,8 @@ GTEST_TEST(array, emplace_back_can_default_construct_non_trivially_default_const
     static_assert(hud::is_default_constructible_v<type>);
 
     // test with reallocation
-    for (usize element_count = 0; element_count < 5; element_count++) {
+    for (usize element_count = 0; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -19,7 +20,8 @@ GTEST_TEST(array, emplace_back_can_default_construct_non_trivially_default_const
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace default construct element
             GTEST_ASSERT_EQ(array.emplace_back(), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -34,7 +36,8 @@ GTEST_TEST(array, emplace_back_can_default_construct_non_trivially_default_const
     }
 
     // test with no reallocation
-    for (usize element_count = 1; element_count < 5; element_count++) {
+    for (usize element_count = 1; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -50,7 +53,8 @@ GTEST_TEST(array, emplace_back_can_default_construct_non_trivially_default_const
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace default construct element
             GTEST_ASSERT_EQ(array.emplace_back(), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -73,7 +77,8 @@ GTEST_TEST(array, emplace_back_can_default_construct_trivially_default_construct
     static_assert(hud::is_trivially_default_constructible_v<type>);
 
     // test with reallocation
-    for (usize element_count = 0; element_count < 5; element_count++) {
+    for (usize element_count = 0; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -82,7 +87,8 @@ GTEST_TEST(array, emplace_back_can_default_construct_trivially_default_construct
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace default construct element
             GTEST_ASSERT_EQ(array.emplace_back(), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -97,7 +103,8 @@ GTEST_TEST(array, emplace_back_can_default_construct_trivially_default_construct
     }
 
     // test with no reallocation
-    for (usize element_count = 1; element_count < 5; element_count++) {
+    for (usize element_count = 1; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -113,7 +120,8 @@ GTEST_TEST(array, emplace_back_can_default_construct_trivially_default_construct
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace default construct element
             GTEST_ASSERT_EQ(array.emplace_back(), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -137,7 +145,8 @@ GTEST_TEST(array, emplace_back_can_construct_non_trivially_constructible_type)
     static_assert(hud::is_constructible_v<type, usize>);
 
     // test with reallocation
-    for (usize element_count = 0; element_count < 5; element_count++) {
+    for (usize element_count = 0; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -146,7 +155,8 @@ GTEST_TEST(array, emplace_back_can_construct_non_trivially_constructible_type)
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace default construct element
             GTEST_ASSERT_EQ(array.emplace_back(static_cast<i32>(index)), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -161,9 +171,9 @@ GTEST_TEST(array, emplace_back_can_construct_non_trivially_constructible_type)
         }
     }
 
-
     // test with no reallocation
-    for (usize element_count = 1; element_count < 5; element_count++) {
+    for (usize element_count = 1; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -179,7 +189,8 @@ GTEST_TEST(array, emplace_back_can_construct_non_trivially_constructible_type)
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace default construct element
             GTEST_ASSERT_EQ(array.emplace_back(static_cast<i32>(index)), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -203,7 +214,8 @@ GTEST_TEST(array, emplace_back_can_construct_trivially_constructible_type)
     static_assert(hud::is_trivially_constructible_v<type, usize>);
 
     // test with reallocation
-    for (usize element_count = 0; element_count < 5; element_count++) {
+    for (usize element_count = 0; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -212,7 +224,8 @@ GTEST_TEST(array, emplace_back_can_construct_trivially_constructible_type)
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace default construct element
             GTEST_ASSERT_EQ(array.emplace_back(index), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -226,9 +239,9 @@ GTEST_TEST(array, emplace_back_can_construct_trivially_constructible_type)
         }
     }
 
-
     // test with no reallocation
-    for (usize element_count = 1; element_count < 5; element_count++) {
+    for (usize element_count = 1; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -244,7 +257,8 @@ GTEST_TEST(array, emplace_back_can_construct_trivially_constructible_type)
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace default construct element
             GTEST_ASSERT_EQ(array.emplace_back(index), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -268,7 +282,8 @@ GTEST_TEST(array, emplace_back_can_copy_construct_non_bitwise_copy_constructible
     static_assert(hud::is_copy_constructible_v<type>);
 
     // test with reallocation
-    for (usize element_count = 0; element_count < 5; element_count++) {
+    for (usize element_count = 0; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -277,7 +292,8 @@ GTEST_TEST(array, emplace_back_can_copy_construct_non_bitwise_copy_constructible
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct a list of elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             const type element_to_copy(index);
             GTEST_ASSERT_EQ(element_to_copy.copy_constructor_count(), 0u);
 
@@ -295,9 +311,9 @@ GTEST_TEST(array, emplace_back_can_copy_construct_non_bitwise_copy_constructible
         }
     }
 
-
     // test with no reallocation
-    for (usize element_count = 1; element_count < 5; element_count++) {
+    for (usize element_count = 1; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -313,7 +329,8 @@ GTEST_TEST(array, emplace_back_can_copy_construct_non_bitwise_copy_constructible
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace copy construct a list of elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             const type element_to_copy(index);
             GTEST_ASSERT_EQ(element_to_copy.copy_constructor_count(), 0u);
 
@@ -340,7 +357,8 @@ GTEST_TEST(array, emplace_back_can_copy_construct_bitwise_copy_constructible_typ
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
 
     // test with reallocation
-    for (usize element_count = 0; element_count < 5; element_count++) {
+    for (usize element_count = 0; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -349,7 +367,8 @@ GTEST_TEST(array, emplace_back_can_copy_construct_bitwise_copy_constructible_typ
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct a list of elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             const type element_to_copy(index);
 
             // Emplace copy construct element
@@ -365,9 +384,9 @@ GTEST_TEST(array, emplace_back_can_copy_construct_bitwise_copy_constructible_typ
         }
     }
 
-
     // test with no reallocation
-    for (usize element_count = 1; element_count < 5; element_count++) {
+    for (usize element_count = 1; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -383,7 +402,8 @@ GTEST_TEST(array, emplace_back_can_copy_construct_bitwise_copy_constructible_typ
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace copy construct a list of elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             const type element_to_copy(index);
 
             // Emplace copy construct element
@@ -409,7 +429,8 @@ GTEST_TEST(array, emplace_back_can_move_construct_non_bitwise_move_constructible
     static_assert(hud::is_move_constructible_v<type>);
 
     // test with reallocation
-    for (usize element_count = 0; element_count < 5; element_count++) {
+    for (usize element_count = 0; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -418,7 +439,8 @@ GTEST_TEST(array, emplace_back_can_move_construct_non_bitwise_move_constructible
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct a list of elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             type element_to_move(index);
             GTEST_ASSERT_EQ(element_to_move.move_constructor_count(), 0u);
 
@@ -437,7 +459,8 @@ GTEST_TEST(array, emplace_back_can_move_construct_non_bitwise_move_constructible
     }
 
     // test with no reallocation
-    for (usize element_count = 1; element_count < 5; element_count++) {
+    for (usize element_count = 1; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -453,7 +476,8 @@ GTEST_TEST(array, emplace_back_can_move_construct_non_bitwise_move_constructible
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace copy construct a list of elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             type element_to_move(index);
             GTEST_ASSERT_EQ(element_to_move.move_constructor_count(), 0u);
 
@@ -480,7 +504,8 @@ GTEST_TEST(array, emplace_back_can_move_construct_bitwise_move_constructible_typ
     static_assert(hud::is_bitwise_move_constructible_v<type>);
 
     // test with reallocation
-    for (usize element_count = 0; element_count < 5; element_count++) {
+    for (usize element_count = 0; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -489,7 +514,8 @@ GTEST_TEST(array, emplace_back_can_move_construct_bitwise_move_constructible_typ
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace default construct a list of elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
             // Emplace copy construct element
             GTEST_ASSERT_EQ(array.emplace_back(type(index)), index);
             GTEST_ASSERT_NE(array.data(), nullptr);
@@ -504,7 +530,8 @@ GTEST_TEST(array, emplace_back_can_move_construct_bitwise_move_constructible_typ
     }
 
     // test with no reallocation
-    for (usize element_count = 1; element_count < 5; element_count++) {
+    for (usize element_count = 1; element_count < 5; element_count++)
+    {
         array_type array;
         GTEST_ASSERT_EQ(array.data(), nullptr);
         GTEST_ASSERT_EQ(array.count(), 0u);
@@ -520,7 +547,8 @@ GTEST_TEST(array, emplace_back_can_move_construct_bitwise_move_constructible_typ
         GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
         // Emplace copy construct a list of elements
-        for (usize index = 0; index < element_count; index++) {
+        for (usize index = 0; index < element_count; index++)
+        {
 
             // Emplace copy construct element
             GTEST_ASSERT_EQ(array.emplace_back(type(index)), index);

@@ -1,11 +1,13 @@
 #include <core/containers/tuple.h>
 
-GTEST_TEST(tuple, swap_non_trivially_copy_assignable_same_types) {
+GTEST_TEST(tuple, swap_non_trivially_copy_assignable_same_types)
+{
     using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
 
-    const auto test = []() {
-        tuple_type tuple_a{ 1, 12.0f, 123, L'c' };
-        tuple_type tuple_b{ 2, 36.0f, 568, L'p' };
+    const auto test = []()
+    {
+        tuple_type tuple_a{1, 12.0f, 123, L'c'};
+        tuple_type tuple_b{2, 36.0f, 568, L'p'};
         hud::swap(tuple_a, tuple_b);
         return std::tuple{
             hud::get<0>(tuple_a).id() == 2,
@@ -47,7 +49,6 @@ GTEST_TEST(tuple, swap_non_trivially_copy_assignable_same_types) {
         GTEST_ASSERT_TRUE(std::get<14>(result));
         GTEST_ASSERT_TRUE(std::get<15>(result));
     }
-
 
     // Non constant
     {
@@ -71,12 +72,14 @@ GTEST_TEST(tuple, swap_non_trivially_copy_assignable_same_types) {
     }
 }
 
-GTEST_TEST(tuple, swap_non_trivially_copy_assignable_different_types) {
+GTEST_TEST(tuple, swap_non_trivially_copy_assignable_different_types)
+{
     using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType2, f32, i32, wchar>;
     using other_tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
-    const auto test = []() {
-        tuple_type tuple_a{ 1, 12.0f, 123, L'c' };
-        other_tuple_type tuple_b{ 2, 36.0f, 568, L'p' };
+    const auto test = []()
+    {
+        tuple_type tuple_a{1, 12.0f, 123, L'c'};
+        other_tuple_type tuple_b{2, 36.0f, 568, L'p'};
         hud::swap(tuple_a, tuple_b);
         return std::tuple{
             hud::get<0>(tuple_a).id() == 2,
@@ -118,7 +121,6 @@ GTEST_TEST(tuple, swap_non_trivially_copy_assignable_different_types) {
         GTEST_ASSERT_TRUE(std::get<14>(result));
         GTEST_ASSERT_TRUE(std::get<15>(result));
     }
-
 
     // Non constant
     {

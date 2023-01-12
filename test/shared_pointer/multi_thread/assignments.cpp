@@ -394,8 +394,7 @@ GTEST_TEST(shared_pointer_safe, move_assignement_nullptr)
         return std::tuple{
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count
-            };
+            dtor_count};
     };
 
     // Non constant

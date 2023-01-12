@@ -1,81 +1,87 @@
 #include <core/containers/array.h>
 
-
-namespace hud_test {
-    struct c {
+namespace hud_test
+{
+    struct c
+    {
         hud::i32 value;
     };
 
-    struct d {
+    struct d
+    {
         hud::i32 value;
     };
 
     // Equals
-    [[nodiscard]]
-    constexpr bool operator==(const d& left, const d& right) noexcept {
+    [[nodiscard]] constexpr bool operator==(const d &left, const d &right) noexcept
+    {
         return left.value == right.value;
     }
-    [[nodiscard]]
-    constexpr bool operator==(const d& left, const hud::i32& right) noexcept {
+    [[nodiscard]] constexpr bool operator==(const d &left, const hud::i32 &right) noexcept
+    {
         return left.value == right;
     }
-    [[nodiscard]]
-    constexpr bool operator==(const hud::i32& left, const d& right) noexcept {
+    [[nodiscard]] constexpr bool operator==(const hud::i32 &left, const d &right) noexcept
+    {
         return left == right.value;
     }
 
     // Not equals
-    [[nodiscard]]
-    constexpr bool operator!=(const d& left, const d& right) noexcept {
+    [[nodiscard]] constexpr bool operator!=(const d &left, const d &right) noexcept
+    {
         return left.value != right.value;
     }
-    [[nodiscard]]
-    constexpr bool operator!=(const d& left, const hud::i32& right) noexcept {
+    [[nodiscard]] constexpr bool operator!=(const d &left, const hud::i32 &right) noexcept
+    {
         return left.value != right;
     }
-    [[nodiscard]]
-    constexpr bool operator!=(const hud::i32& left, const d& right) noexcept {
+    [[nodiscard]] constexpr bool operator!=(const hud::i32 &left, const d &right) noexcept
+    {
         return left != right.value;
     }
 
     // Less
-    [[nodiscard]]
-    constexpr bool operator<(const c& left, const c& right) noexcept {
+    [[nodiscard]] constexpr bool operator<(const c &left, const c &right) noexcept
+    {
         return left.value < right.value;
     }
-    [[nodiscard]]
-    constexpr bool operator<(const c& left, const hud::i32& right) noexcept {
+    [[nodiscard]] constexpr bool operator<(const c &left, const hud::i32 &right) noexcept
+    {
         return left.value < right;
     }
-    [[nodiscard]]
-    constexpr bool operator<(const hud::i32& left, const c& right) noexcept {
+    [[nodiscard]] constexpr bool operator<(const hud::i32 &left, const c &right) noexcept
+    {
         return left < right.value;
     }
 
-    [[nodiscard]]
-    constexpr bool operator<(const d& left, const d& right) noexcept {
+    [[nodiscard]] constexpr bool operator<(const d &left, const d &right) noexcept
+    {
         return left.value < right.value;
     }
-    [[nodiscard]]
-    constexpr bool operator<(const d& left, const hud::i32& right) noexcept {
+    [[nodiscard]] constexpr bool operator<(const d &left, const hud::i32 &right) noexcept
+    {
         return left.value < right;
     }
-    [[nodiscard]]
-    constexpr bool operator<(const hud::i32& left, const d& right) noexcept {
+    [[nodiscard]] constexpr bool operator<(const hud::i32 &left, const d &right) noexcept
+    {
         return left < right.value;
     }
 }
 
-namespace hud {
-    template<>
-    struct is_bitwise_comparable<hud_test::c,hud_test::c> : hud::true_type
-    {};
-    template<>
+namespace hud
+{
+    template <>
+    struct is_bitwise_comparable<hud_test::c, hud_test::c> : hud::true_type
+    {
+    };
+    template <>
     struct is_bitwise_comparable<hud_test::c, i32> : hud::true_type
-    {};
-    template<>
+    {
+    };
+    template <>
     struct is_bitwise_comparable<i32, hud_test::c> : hud::true_type
-    {};
+    {
+    };
 }
 
 GTEST_TEST(array, equal_operator)
@@ -112,20 +118,20 @@ GTEST_TEST(array, equal_operator)
 
     hud::array<i32> col_0;
     hud::array<i32> row_0;
-    hud::array<i32> col_1({ 1 });
-    hud::array<i32> row_1({ 1 });
-    hud::array<i32> col_2({ 1,2 });
-    hud::array<i32> row_2({ 1,2 });
-    hud::array<i32> col_3({ 1,3 });
-    hud::array<i32> row_3({ 1,3 });
-    hud::array<c> col_4({ c{1},c{2} });
-    hud::array<c> row_4({ c{1},c{2} });
-    hud::array<c> col_5({ c{1},c{3} });
-    hud::array<c> row_5({ c{1},c{3} });
-    hud::array<d> col_6({ d{1},d{2} });
-    hud::array<d> row_6({ d{1},d{2} });
-    hud::array<d> col_7({ d{1},d{3} });
-    hud::array<d> row_7({ d{1},d{3} });
+    hud::array<i32> col_1({1});
+    hud::array<i32> row_1({1});
+    hud::array<i32> col_2({1, 2});
+    hud::array<i32> row_2({1, 2});
+    hud::array<i32> col_3({1, 3});
+    hud::array<i32> row_3({1, 3});
+    hud::array<c> col_4({c{1}, c{2}});
+    hud::array<c> row_4({c{1}, c{2}});
+    hud::array<c> col_5({c{1}, c{3}});
+    hud::array<c> row_5({c{1}, c{3}});
+    hud::array<d> col_6({d{1}, d{2}});
+    hud::array<d> row_6({d{1}, d{2}});
+    hud::array<d> col_7({d{1}, d{3}});
+    hud::array<d> row_7({d{1}, d{3}});
 
     // Verify the truth table
     GTEST_ASSERT_TRUE(col_0 == row_0);
@@ -170,8 +176,8 @@ GTEST_TEST(array, equal_operator)
     GTEST_ASSERT_FALSE(col_4 == row_3);
     GTEST_ASSERT_TRUE(col_4 == row_4);
     GTEST_ASSERT_FALSE(col_4 == row_5);
-    //GTEST_ASSERT_FALSE(col_4 == row_6);  // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_4 == row_7);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 == row_6);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 == row_7);  // c not comparable with d
 
     GTEST_ASSERT_FALSE(col_5 == row_0);
     GTEST_ASSERT_FALSE(col_5 == row_1);
@@ -179,15 +185,15 @@ GTEST_TEST(array, equal_operator)
     GTEST_ASSERT_TRUE(col_5 == row_3);
     GTEST_ASSERT_FALSE(col_5 == row_4);
     GTEST_ASSERT_TRUE(col_5 == row_5);
-    //Assert::IsFalse(col_5 == row_6); // c not comparable with d
-    //Assert::IsFalse(col_5 == row_7); // c not comparable with d
+    // Assert::IsFalse(col_5 == row_6); // c not comparable with d
+    // Assert::IsFalse(col_5 == row_7); // c not comparable with d
 
     GTEST_ASSERT_FALSE(col_6 == row_0);
     GTEST_ASSERT_FALSE(col_6 == row_1);
     GTEST_ASSERT_TRUE(col_6 == row_2);
     GTEST_ASSERT_FALSE(col_6 == row_3);
-    //GTEST_ASSERT_FALSE(col_6 == row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_6 == row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 == row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 == row_5); // d not comparable with c
     GTEST_ASSERT_TRUE(col_6 == row_6);
     GTEST_ASSERT_FALSE(col_6 == row_7);
 
@@ -195,8 +201,8 @@ GTEST_TEST(array, equal_operator)
     GTEST_ASSERT_FALSE(col_7 == row_1);
     GTEST_ASSERT_FALSE(col_7 == row_2);
     GTEST_ASSERT_TRUE(col_7 == row_3);
-    //GTEST_ASSERT_FALSE(col_7 == row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_7 == row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 == row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 == row_5); // d not comparable with c
     GTEST_ASSERT_FALSE(col_7 == row_6);
     GTEST_ASSERT_TRUE(col_7 == row_7);
 }
@@ -235,20 +241,20 @@ GTEST_TEST(array, not_equal_operator)
 
     hud::array<i32> col_0;
     hud::array<i32> row_0;
-    hud::array<i32> col_1({ 1 });
-    hud::array<i32> row_1({ 1 });
-    hud::array<i32> col_2({ 1,2 });
-    hud::array<i32> row_2({ 1,2 });
-    hud::array<i32> col_3({ 1,3 });
-    hud::array<i32> row_3({ 1,3 });
-    hud::array<c> col_4({ c{1},c{2} });
-    hud::array<c> row_4({ c{1},c{2} });
-    hud::array<c> col_5({ c{1},c{3} });
-    hud::array<c> row_5({ c{1},c{3} });
-    hud::array<d> col_6({ d{1},d{2} });
-    hud::array<d> row_6({ d{1},d{2} });
-    hud::array<d> col_7({ d{1},d{3} });
-    hud::array<d> row_7({ d{1},d{3} });
+    hud::array<i32> col_1({1});
+    hud::array<i32> row_1({1});
+    hud::array<i32> col_2({1, 2});
+    hud::array<i32> row_2({1, 2});
+    hud::array<i32> col_3({1, 3});
+    hud::array<i32> row_3({1, 3});
+    hud::array<c> col_4({c{1}, c{2}});
+    hud::array<c> row_4({c{1}, c{2}});
+    hud::array<c> col_5({c{1}, c{3}});
+    hud::array<c> row_5({c{1}, c{3}});
+    hud::array<d> col_6({d{1}, d{2}});
+    hud::array<d> row_6({d{1}, d{2}});
+    hud::array<d> col_7({d{1}, d{3}});
+    hud::array<d> row_7({d{1}, d{3}});
 
     // Verify the truth table
     GTEST_ASSERT_FALSE(col_0 != row_0);
@@ -293,8 +299,8 @@ GTEST_TEST(array, not_equal_operator)
     GTEST_ASSERT_TRUE(col_4 != row_3);
     GTEST_ASSERT_FALSE(col_4 != row_4);
     GTEST_ASSERT_TRUE(col_4 != row_5);
-    //GTEST_ASSERT_FALSE(col_4 != row_6);  // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_4 != row_7);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 != row_6);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 != row_7);  // c not comparable with d
 
     GTEST_ASSERT_TRUE(col_5 != row_0);
     GTEST_ASSERT_TRUE(col_5 != row_1);
@@ -302,15 +308,15 @@ GTEST_TEST(array, not_equal_operator)
     GTEST_ASSERT_FALSE(col_5 != row_3);
     GTEST_ASSERT_TRUE(col_5 != row_4);
     GTEST_ASSERT_FALSE(col_5 != row_5);
-    //GTEST_ASSERT_FALSE(col_5 != row_6); // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_5 != row_7); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 != row_6); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 != row_7); // c not comparable with d
 
     GTEST_ASSERT_TRUE(col_6 != row_0);
     GTEST_ASSERT_TRUE(col_6 != row_1);
     GTEST_ASSERT_FALSE(col_6 != row_2);
     GTEST_ASSERT_TRUE(col_6 != row_3);
-    //GTEST_ASSERT_FALSE(col_6 != row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_6 != row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 != row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 != row_5); // d not comparable with c
     GTEST_ASSERT_FALSE(col_6 != row_6);
     GTEST_ASSERT_TRUE(col_6 != row_7);
 
@@ -318,8 +324,8 @@ GTEST_TEST(array, not_equal_operator)
     GTEST_ASSERT_TRUE(col_7 != row_1);
     GTEST_ASSERT_TRUE(col_7 != row_2);
     GTEST_ASSERT_FALSE(col_7 != row_3);
-    //GTEST_ASSERT_FALSE(col_7 != row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_7 != row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 != row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 != row_5); // d not comparable with c
     GTEST_ASSERT_TRUE(col_7 != row_6);
     GTEST_ASSERT_FALSE(col_7 != row_7);
 }
@@ -361,24 +367,24 @@ GTEST_TEST(array, less_operator)
 
     hud::array<i32> col_0;
     hud::array<i32> row_0;
-    hud::array<i32> col_1({ 1 });
-    hud::array<i32> row_1({ 1 });
-    hud::array<i32> col_2({ 1,2 });
-    hud::array<i32> row_2({ 1,2 });
-    hud::array<i32> col_3({ 1,3 });
-    hud::array<i32> row_3({ 1,3 });
-    hud::array<c> col_4({ c{1}, c{2} });
-    hud::array<c> row_4({ c{1}, c{2} });
-    hud::array<c> col_5({ c{1}, c{3} });
-    hud::array<c> row_5({ c{1}, c{3} });
-    hud::array<d> col_6({ d{1}, d{2} });
-    hud::array<d> row_6({ d{1}, d{2} });
-    hud::array<d> col_7({ d{1}, d{3} });
-    hud::array<d> row_7({ d{1}, d{3} });
-    hud::array<u8> col_8({ u8(1) });
-    hud::array<u8> row_8({ u8(1) });
-    hud::array<u8> col_9({ u8(1), u8(2) });
-    hud::array<u8> row_9({ u8(1), u8(2) });
+    hud::array<i32> col_1({1});
+    hud::array<i32> row_1({1});
+    hud::array<i32> col_2({1, 2});
+    hud::array<i32> row_2({1, 2});
+    hud::array<i32> col_3({1, 3});
+    hud::array<i32> row_3({1, 3});
+    hud::array<c> col_4({c{1}, c{2}});
+    hud::array<c> row_4({c{1}, c{2}});
+    hud::array<c> col_5({c{1}, c{3}});
+    hud::array<c> row_5({c{1}, c{3}});
+    hud::array<d> col_6({d{1}, d{2}});
+    hud::array<d> row_6({d{1}, d{2}});
+    hud::array<d> col_7({d{1}, d{3}});
+    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<u8> col_8({u8(1)});
+    hud::array<u8> row_8({u8(1)});
+    hud::array<u8> col_9({u8(1), u8(2)});
+    hud::array<u8> row_9({u8(1), u8(2)});
 
     // Verify the truth table
     GTEST_ASSERT_FALSE(col_0 < row_0);
@@ -431,8 +437,8 @@ GTEST_TEST(array, less_operator)
     GTEST_ASSERT_TRUE(col_4 < row_3);
     GTEST_ASSERT_FALSE(col_4 < row_4);
     GTEST_ASSERT_TRUE(col_4 < row_5);
-    //GTEST_ASSERT_FALSE(col_4 < row_6);  // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_4 < row_7);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 < row_6);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 < row_7);  // c not comparable with d
     GTEST_ASSERT_FALSE(col_4 < row_8);
     GTEST_ASSERT_FALSE(col_4 < row_9);
 
@@ -442,8 +448,8 @@ GTEST_TEST(array, less_operator)
     GTEST_ASSERT_FALSE(col_5 < row_3);
     GTEST_ASSERT_FALSE(col_5 < row_4);
     GTEST_ASSERT_FALSE(col_5 < row_5);
-    //GTEST_ASSERT_FALSE(col_5 < row_6); // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_5 < row_7); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 < row_6); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 < row_7); // c not comparable with d
     GTEST_ASSERT_FALSE(col_5 < row_8);
     GTEST_ASSERT_FALSE(col_5 < row_9);
 
@@ -451,8 +457,8 @@ GTEST_TEST(array, less_operator)
     GTEST_ASSERT_FALSE(col_6 < row_1);
     GTEST_ASSERT_FALSE(col_6 < row_2);
     GTEST_ASSERT_TRUE(col_6 < row_3);
-    //GTEST_ASSERT_FALSE(col_6 < row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_6 < row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 < row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 < row_5); // d not comparable with c
     GTEST_ASSERT_FALSE(col_6 < row_6);
     GTEST_ASSERT_TRUE(col_6 < row_7);
     GTEST_ASSERT_FALSE(col_6 < row_8);
@@ -462,8 +468,8 @@ GTEST_TEST(array, less_operator)
     GTEST_ASSERT_FALSE(col_7 < row_1);
     GTEST_ASSERT_FALSE(col_7 < row_2);
     GTEST_ASSERT_FALSE(col_7 < row_3);
-    //GTEST_ASSERT_FALSE(col_7 < row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_7 < row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 < row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 < row_5); // d not comparable with c
     GTEST_ASSERT_FALSE(col_7 < row_6);
     GTEST_ASSERT_FALSE(col_7 < row_7);
     GTEST_ASSERT_FALSE(col_7 < row_8);
@@ -529,24 +535,24 @@ GTEST_TEST(array, greater_operator)
 
     hud::array<i32> col_0;
     hud::array<i32> row_0;
-    hud::array<i32> col_1({ 1 });
-    hud::array<i32> row_1({ 1 });
-    hud::array<i32> col_2({ 1,2 });
-    hud::array<i32> row_2({ 1,2 });
-    hud::array<i32> col_3({ 1,3 });
-    hud::array<i32> row_3({ 1,3 });
-    hud::array<c> col_4({ c{1}, c{2} });
-    hud::array<c> row_4({ c{1}, c{2} });
-    hud::array<c> col_5({ c{1}, c{3} });
-    hud::array<c> row_5({ c{1}, c{3} });
-    hud::array<d> col_6({ d{1}, d{2} });
-    hud::array<d> row_6({ d{1}, d{2} });
-    hud::array<d> col_7({ d{1}, d{3} });
-    hud::array<d> row_7({ d{1}, d{3} });
-    hud::array<u8> col_8({ u8(1) });
-    hud::array<u8> row_8({ u8(1) });
-    hud::array<u8> col_9({ u8(1), u8(2) });
-    hud::array<u8> row_9({ u8(1), u8(2) });
+    hud::array<i32> col_1({1});
+    hud::array<i32> row_1({1});
+    hud::array<i32> col_2({1, 2});
+    hud::array<i32> row_2({1, 2});
+    hud::array<i32> col_3({1, 3});
+    hud::array<i32> row_3({1, 3});
+    hud::array<c> col_4({c{1}, c{2}});
+    hud::array<c> row_4({c{1}, c{2}});
+    hud::array<c> col_5({c{1}, c{3}});
+    hud::array<c> row_5({c{1}, c{3}});
+    hud::array<d> col_6({d{1}, d{2}});
+    hud::array<d> row_6({d{1}, d{2}});
+    hud::array<d> col_7({d{1}, d{3}});
+    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<u8> col_8({u8(1)});
+    hud::array<u8> row_8({u8(1)});
+    hud::array<u8> col_9({u8(1), u8(2)});
+    hud::array<u8> row_9({u8(1), u8(2)});
 
     // Verify the truth table
     GTEST_ASSERT_FALSE(col_0 > row_0);
@@ -599,8 +605,8 @@ GTEST_TEST(array, greater_operator)
     GTEST_ASSERT_FALSE(col_4 > row_3);
     GTEST_ASSERT_FALSE(col_4 > row_4);
     GTEST_ASSERT_FALSE(col_4 > row_5);
-    //GTEST_ASSERT_FALSE(col_4 > row_6);  // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_4 > row_7);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 > row_6);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 > row_7);  // c not comparable with d
     GTEST_ASSERT_TRUE(col_4 > row_8);
     GTEST_ASSERT_FALSE(col_4 > row_9);
 
@@ -610,8 +616,8 @@ GTEST_TEST(array, greater_operator)
     GTEST_ASSERT_FALSE(col_5 > row_3);
     GTEST_ASSERT_TRUE(col_5 > row_4);
     GTEST_ASSERT_FALSE(col_5 > row_5);
-    //GTEST_ASSERT_FALSE(col_5 > row_6); // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_5 > row_7); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 > row_6); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 > row_7); // c not comparable with d
     GTEST_ASSERT_TRUE(col_5 > row_8);
     GTEST_ASSERT_TRUE(col_5 > row_9);
 
@@ -619,8 +625,8 @@ GTEST_TEST(array, greater_operator)
     GTEST_ASSERT_TRUE(col_6 > row_1);
     GTEST_ASSERT_FALSE(col_6 > row_2);
     GTEST_ASSERT_FALSE(col_6 > row_3);
-    //GTEST_ASSERT_FALSE(col_6 > row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_6 > row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 > row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 > row_5); // d not comparable with c
     GTEST_ASSERT_FALSE(col_6 > row_6);
     GTEST_ASSERT_FALSE(col_6 > row_7);
     GTEST_ASSERT_TRUE(col_6 > row_8);
@@ -630,8 +636,8 @@ GTEST_TEST(array, greater_operator)
     GTEST_ASSERT_TRUE(col_7 > row_1);
     GTEST_ASSERT_TRUE(col_7 > row_2);
     GTEST_ASSERT_FALSE(col_7 > row_3);
-    //GTEST_ASSERT_FALSE(col_7 > row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_7 > row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 > row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 > row_5); // d not comparable with c
     GTEST_ASSERT_TRUE(col_7 > row_6);
     GTEST_ASSERT_FALSE(col_7 > row_7);
     GTEST_ASSERT_TRUE(col_7 > row_8);
@@ -697,24 +703,24 @@ GTEST_TEST(array, less_equal_operator)
 
     hud::array<i32> col_0;
     hud::array<i32> row_0;
-    hud::array<i32> col_1({ 1 });
-    hud::array<i32> row_1({ 1 });
-    hud::array<i32> col_2({ 1,2 });
-    hud::array<i32> row_2({ 1,2 });
-    hud::array<i32> col_3({ 1,3 });
-    hud::array<i32> row_3({ 1,3 });
-    hud::array<c> col_4({ c{1}, c{2} });
-    hud::array<c> row_4({ c{1}, c{2} });
-    hud::array<c> col_5({ c{1}, c{3} });
-    hud::array<c> row_5({ c{1}, c{3} });
-    hud::array<d> col_6({ d{1}, d{2} });
-    hud::array<d> row_6({ d{1}, d{2} });
-    hud::array<d> col_7({ d{1}, d{3} });
-    hud::array<d> row_7({ d{1}, d{3} });
-    hud::array<u8> col_8({ u8(1) });
-    hud::array<u8> row_8({ u8(1) });
-    hud::array<u8> col_9({ u8(1), u8(2) });
-    hud::array<u8> row_9({ u8(1), u8(2) });
+    hud::array<i32> col_1({1});
+    hud::array<i32> row_1({1});
+    hud::array<i32> col_2({1, 2});
+    hud::array<i32> row_2({1, 2});
+    hud::array<i32> col_3({1, 3});
+    hud::array<i32> row_3({1, 3});
+    hud::array<c> col_4({c{1}, c{2}});
+    hud::array<c> row_4({c{1}, c{2}});
+    hud::array<c> col_5({c{1}, c{3}});
+    hud::array<c> row_5({c{1}, c{3}});
+    hud::array<d> col_6({d{1}, d{2}});
+    hud::array<d> row_6({d{1}, d{2}});
+    hud::array<d> col_7({d{1}, d{3}});
+    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<u8> col_8({u8(1)});
+    hud::array<u8> row_8({u8(1)});
+    hud::array<u8> col_9({u8(1), u8(2)});
+    hud::array<u8> row_9({u8(1), u8(2)});
 
     // Verify the truth table
     GTEST_ASSERT_TRUE(col_0 <= row_0);
@@ -767,8 +773,8 @@ GTEST_TEST(array, less_equal_operator)
     GTEST_ASSERT_TRUE(col_4 <= row_3);
     GTEST_ASSERT_TRUE(col_4 <= row_4);
     GTEST_ASSERT_TRUE(col_4 <= row_5);
-    //GTEST_ASSERT_FALSE(col_4 <= row_6);  // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_4 <= row_7);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 <= row_6);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 <= row_7);  // c not comparable with d
     GTEST_ASSERT_FALSE(col_4 <= row_8);
     GTEST_ASSERT_TRUE(col_4 <= row_9);
 
@@ -778,8 +784,8 @@ GTEST_TEST(array, less_equal_operator)
     GTEST_ASSERT_TRUE(col_5 <= row_3);
     GTEST_ASSERT_FALSE(col_5 <= row_4);
     GTEST_ASSERT_TRUE(col_5 <= row_5);
-    //GTEST_ASSERT_FALSE(col_5 <= row_6); // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_5 <= row_7); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 <= row_6); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 <= row_7); // c not comparable with d
     GTEST_ASSERT_FALSE(col_5 <= row_8);
     GTEST_ASSERT_FALSE(col_5 <= row_9);
 
@@ -787,8 +793,8 @@ GTEST_TEST(array, less_equal_operator)
     GTEST_ASSERT_FALSE(col_6 <= row_1);
     GTEST_ASSERT_TRUE(col_6 <= row_2);
     GTEST_ASSERT_TRUE(col_6 <= row_3);
-    //GTEST_ASSERT_FALSE(col_6 <= row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_6 <= row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 <= row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 <= row_5); // d not comparable with c
     GTEST_ASSERT_TRUE(col_6 <= row_6);
     GTEST_ASSERT_TRUE(col_6 <= row_7);
     GTEST_ASSERT_FALSE(col_6 <= row_8);
@@ -798,8 +804,8 @@ GTEST_TEST(array, less_equal_operator)
     GTEST_ASSERT_FALSE(col_7 <= row_1);
     GTEST_ASSERT_FALSE(col_7 <= row_2);
     GTEST_ASSERT_TRUE(col_7 <= row_3);
-    //GTEST_ASSERT_FALSE(col_7 <= row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_7 <= row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 <= row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 <= row_5); // d not comparable with c
     GTEST_ASSERT_FALSE(col_7 <= row_6);
     GTEST_ASSERT_TRUE(col_7 <= row_7);
     GTEST_ASSERT_FALSE(col_7 <= row_8);
@@ -860,30 +866,29 @@ GTEST_TEST(array, greater_equal_operator)
     ---------------------------------------------------------------------------------------------------------------------------------
     */
 
-
     using c = hud_test::c;
     using d = hud_test::d;
 
     hud::array<i32> col_0;
     hud::array<i32> row_0;
-    hud::array<i32> col_1({ 1 });
-    hud::array<i32> row_1({ 1 });
-    hud::array<i32> col_2({ 1,2 });
-    hud::array<i32> row_2({ 1,2 });
-    hud::array<i32> col_3({ 1,3 });
-    hud::array<i32> row_3({ 1,3 });
-    hud::array<c> col_4({ c{1}, c{2} });
-    hud::array<c> row_4({ c{1}, c{2} });
-    hud::array<c> col_5({ c{1}, c{3} });
-    hud::array<c> row_5({ c{1}, c{3} });
-    hud::array<d> col_6({ d{1}, d{2} });
-    hud::array<d> row_6({ d{1}, d{2} });
-    hud::array<d> col_7({ d{1}, d{3} });
-    hud::array<d> row_7({ d{1}, d{3} });
-    hud::array<u8> col_8({ u8(1) });
-    hud::array<u8> row_8({ u8(1) });
-    hud::array<u8> col_9({ u8(1), u8(2) });
-    hud::array<u8> row_9({ u8(1), u8(2) });
+    hud::array<i32> col_1({1});
+    hud::array<i32> row_1({1});
+    hud::array<i32> col_2({1, 2});
+    hud::array<i32> row_2({1, 2});
+    hud::array<i32> col_3({1, 3});
+    hud::array<i32> row_3({1, 3});
+    hud::array<c> col_4({c{1}, c{2}});
+    hud::array<c> row_4({c{1}, c{2}});
+    hud::array<c> col_5({c{1}, c{3}});
+    hud::array<c> row_5({c{1}, c{3}});
+    hud::array<d> col_6({d{1}, d{2}});
+    hud::array<d> row_6({d{1}, d{2}});
+    hud::array<d> col_7({d{1}, d{3}});
+    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<u8> col_8({u8(1)});
+    hud::array<u8> row_8({u8(1)});
+    hud::array<u8> col_9({u8(1), u8(2)});
+    hud::array<u8> row_9({u8(1), u8(2)});
 
     // Verify the truth table
     GTEST_ASSERT_TRUE(col_0 >= row_0);
@@ -936,8 +941,8 @@ GTEST_TEST(array, greater_equal_operator)
     GTEST_ASSERT_FALSE(col_4 >= row_3);
     GTEST_ASSERT_TRUE(col_4 >= row_4);
     GTEST_ASSERT_FALSE(col_4 >= row_5);
-    //GTEST_ASSERT_FALSE(col_4 >= row_6);  // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_4 >= row_7);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 >= row_6);  // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_4 >= row_7);  // c not comparable with d
     GTEST_ASSERT_TRUE(col_4 >= row_8);
     GTEST_ASSERT_TRUE(col_4 >= row_9);
 
@@ -947,8 +952,8 @@ GTEST_TEST(array, greater_equal_operator)
     GTEST_ASSERT_TRUE(col_5 >= row_3);
     GTEST_ASSERT_TRUE(col_5 >= row_4);
     GTEST_ASSERT_TRUE(col_5 >= row_5);
-    //GTEST_ASSERT_FALSE(col_5 >= row_6); // c not comparable with d
-    //GTEST_ASSERT_FALSE(col_5 >= row_7); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 >= row_6); // c not comparable with d
+    // GTEST_ASSERT_FALSE(col_5 >= row_7); // c not comparable with d
     GTEST_ASSERT_TRUE(col_5 >= row_8);
     GTEST_ASSERT_TRUE(col_5 >= row_9);
 
@@ -956,8 +961,8 @@ GTEST_TEST(array, greater_equal_operator)
     GTEST_ASSERT_TRUE(col_6 >= row_1);
     GTEST_ASSERT_TRUE(col_6 >= row_2);
     GTEST_ASSERT_FALSE(col_6 >= row_3);
-    //GTEST_ASSERT_FALSE(col_6 >= row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_6 >= row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 >= row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_6 >= row_5); // d not comparable with c
     GTEST_ASSERT_TRUE(col_6 >= row_6);
     GTEST_ASSERT_FALSE(col_6 >= row_7);
     GTEST_ASSERT_TRUE(col_6 >= row_8);
@@ -967,8 +972,8 @@ GTEST_TEST(array, greater_equal_operator)
     GTEST_ASSERT_TRUE(col_7 >= row_1);
     GTEST_ASSERT_TRUE(col_7 >= row_2);
     GTEST_ASSERT_TRUE(col_7 >= row_3);
-    //GTEST_ASSERT_FALSE(col_7 >= row_4); // d not comparable with c
-    //GTEST_ASSERT_FALSE(col_7 >= row_5); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 >= row_4); // d not comparable with c
+    // GTEST_ASSERT_FALSE(col_7 >= row_5); // d not comparable with c
     GTEST_ASSERT_TRUE(col_7 >= row_6);
     GTEST_ASSERT_TRUE(col_7 >= row_7);
     GTEST_ASSERT_TRUE(col_7 >= row_8);

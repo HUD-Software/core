@@ -1,21 +1,22 @@
 #include <core/containers/optional.h>
 #include <core/traits/is_trivially_copy_constructible.h>
 
-GTEST_TEST(optional, emplace_move_inplace) {
+GTEST_TEST(optional, emplace_move_inplace)
+{
 
     using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_move_constructible_v<type>);
-    static_assert(hud::is_constructible_v<type, i32, i32*>);
+    static_assert(hud::is_constructible_v<type, i32, i32 *>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         i32 destructor_count;
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
 
-        
         option.emplace(value, &destructor_count);
 
         return std::tuple{
@@ -27,8 +28,7 @@ GTEST_TEST(optional, emplace_move_inplace) {
             option.value().copy_assign_count(),
             option.value().move_constructor_count(),
             option.value().copy_constructor_count(),
-            destructor_count
-        };
+            destructor_count};
     };
 
     // Non constant
@@ -60,22 +60,24 @@ GTEST_TEST(optional, emplace_move_inplace) {
     }
 }
 
-GTEST_TEST(optional, emplace_call_destructor) {
+GTEST_TEST(optional, emplace_call_destructor)
+{
 
     using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_move_constructible_v<type>);
-    static_assert(hud::is_constructible_v<type, i32, i32*>);
+    static_assert(hud::is_constructible_v<type, i32, i32 *>);
 
-    const auto test = [](const i32 value) {
-        i32 destructor_count{ 0 };
-        i32 other_destructor_count{ 0 };
-        hud::optional<type> option{ hud::in_place, value, &destructor_count };
+    const auto test = [](const i32 value)
+    {
+        i32 destructor_count{0};
+        i32 other_destructor_count{0};
+        hud::optional<type> option{hud::in_place, value, &destructor_count};
 
         option.emplace(value, &other_destructor_count);
 
-        return std::tuple{ destructor_count, other_destructor_count };
+        return std::tuple{destructor_count, other_destructor_count};
     };
 
     // Non constant
@@ -92,13 +94,15 @@ GTEST_TEST(optional, emplace_call_destructor) {
         GTEST_ASSERT_EQ(std::get<1>(result), 0);
     }
 }
-GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible)
+{
 
     using type = i32;
-   
+
     static_assert(hud::is_trivially_copy_constructible_v<type>);
 
-    const auto test = [](const type value) {
+    const auto test = [](const type value)
+    {
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
@@ -108,8 +112,7 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible) {
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -129,14 +132,16 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible) {
     }
 }
 
-GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_copy_constructible_v<type>);
 
-    const auto test = [](const type before, const type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, const type after)
+    {
+        hud::optional<type> option{before};
 
         const bool has_value_before = option.has_value();
         const type value_before = option.value();
@@ -147,13 +152,12 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible) 
             has_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
     {
-        const auto result = test(123,456);
+        const auto result = test(123, 456);
         GTEST_ASSERT_TRUE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 123);
         GTEST_ASSERT_TRUE(std::get<2>(result));
@@ -170,18 +174,20 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible) 
     }
 }
 
-GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible)
+{
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
-        
-        const type other{ value };
+
+        const type other{value};
         option.emplace(other);
 
         return std::tuple{
@@ -211,27 +217,28 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible) 
     }
 }
 
-GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructible)
+{
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
 
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ hud::in_place, before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{hud::in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
 
-        const type other{ after };
+        const type other{after};
         option.emplace(other);
 
         return std::tuple{
             has_value_before,
             value_before,
             option.has_value(),
-            option.value().id()
-        };
+            option.value().id()};
     };
 
     // Non constant
@@ -253,13 +260,15 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructib
     }
 }
 
-GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_move_constructible_v<type>);
 
-    const auto test = [](const type value) {
+    const auto test = [](const type value)
+    {
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
@@ -269,8 +278,7 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible) {
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -290,14 +298,16 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible) {
     }
 }
 
-GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_move_constructible_v<type>);
 
-    const auto test = [](const type before, const type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, const type after)
+    {
+        hud::optional<type> option{before};
 
         const bool has_value_before = option.has_value();
         const type value_before = option.value();
@@ -308,8 +318,7 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible) 
             has_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -331,18 +340,20 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible) 
     }
 }
 
-GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible)
+{
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
 
-        const type other{ value };
+        const type other{value};
         option.emplace(other);
 
         return std::tuple{
@@ -375,21 +386,23 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible) 
     }
 }
 
-GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructible)
+{
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
 
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ hud::in_place, before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{hud::in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 copy_ctor_count_before = option.value().copy_constructor_count();
         const u32 move_ctor_count_before = option.value().move_constructor_count();
 
-        const type other{ after };
+        const type other{after};
         option.emplace(other);
 
         return std::tuple{
@@ -400,8 +413,7 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructib
             option.has_value(),
             option.value().id(),
             option.value().copy_constructor_count(),
-            option.value().move_constructor_count()
-        };
+            option.value().move_constructor_count()};
     };
 
     // Non constant
@@ -431,13 +443,15 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructib
     }
 }
 
-GTEST_TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_copy_constructible_v<type>);
 
-    const auto test = [](type value) {
+    const auto test = [](type value)
+    {
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
@@ -447,8 +461,7 @@ GTEST_TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible) {
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -468,14 +481,16 @@ GTEST_TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible) {
     }
 }
 
-GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_copy_constructible_v<type>);
 
-    const auto test = [](const type before, type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, type after)
+    {
+        hud::optional<type> option{before};
 
         const bool has_value_before = option.has_value();
         const type value_before = option.value();
@@ -486,8 +501,7 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible) 
             has_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -509,17 +523,19 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible) 
     }
 }
 
-GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible)
+{
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
 
-        type other{ value };
+        type other{value};
         option.emplace(hud::move(other));
 
         return std::tuple{
@@ -549,20 +565,22 @@ GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible) 
     }
 }
 
-GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructible)
+{
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
 
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ hud::in_place, before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{hud::in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 ctor_before = option.value().copy_constructor_count();
 
-        type other{ after };
+        type other{after};
         option.emplace(hud::move(other));
 
         return std::tuple{
@@ -571,8 +589,7 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructib
             ctor_before,
             option.has_value(),
             option.value().id(),
-            option.value().copy_constructor_count()
-        };
+            option.value().copy_constructor_count()};
     };
 
     // Non constant
@@ -598,13 +615,15 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructib
     }
 }
 
-GTEST_TEST(optional, emplace_by_move_in_empty_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_empty_trivially_move_constructible)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_move_constructible_v<type>);
 
-    const auto test = [](const type value) {
+    const auto test = [](const type value)
+    {
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
@@ -614,8 +633,7 @@ GTEST_TEST(optional, emplace_by_move_in_empty_trivially_move_constructible) {
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -635,14 +653,16 @@ GTEST_TEST(optional, emplace_by_move_in_empty_trivially_move_constructible) {
     }
 }
 
-GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_move_constructible_v<type>);
 
-    const auto test = [](const type before, type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, type after)
+    {
+        hud::optional<type> option{before};
 
         const bool has_value_before = option.has_value();
         const type value_before = option.value();
@@ -653,8 +673,7 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible) 
             has_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -676,18 +695,20 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible) 
     }
 }
 
-GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible)
+{
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
 
         const bool has_value_before = option.has_value();
 
-        type other{ value };
+        type other{value};
         option.emplace(hud::move(other));
 
         return std::tuple{
@@ -720,21 +741,23 @@ GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible) 
     }
 }
 
-GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructible) {
+GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructible)
+{
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
 
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ hud::in_place, before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{hud::in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 copy_ctor_count_before = option.value().copy_constructor_count();
         const u32 move_ctor_count_before = option.value().move_constructor_count();
 
-        type other{ after };
+        type other{after};
         option.emplace(hud::move(other));
 
         return std::tuple{
@@ -745,8 +768,7 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructib
             option.has_value(),
             option.value().id(),
             option.value().copy_constructor_count(),
-            option.value().move_constructor_count()
-        };
+            option.value().move_constructor_count()};
     };
 
     // Non constant

@@ -66,10 +66,11 @@
 #include "../templates/swap.h"
 #include "../templates/bit_cast.h"
 
-namespace hud::hash_algorithm{
+namespace hud::hash_algorithm
+{
 
-
-    namespace details {
+    namespace details
+    {
         /** Prime number used by CityHash */
         static constexpr u64 K0 = 0xc3a5c85c97cb3127ULL;
         static constexpr u64 K1 = 0xb492b66fbe98f273ULL;
@@ -80,40 +81,45 @@ namespace hud::hash_algorithm{
         static constexpr u32 C2 = 0x1b873593;
 
         /** Unsigned 128 bits value */
-        struct u128 {
+        struct u128
+        {
             u64 low;
             u64 high;
         };
 
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
-        static constexpr u32 unaligned_load32(const ansichar* buffer) {
+        static constexpr u32 unaligned_load32(const ansichar *buffer)
+        {
             ansichar result[sizeof(u32)];
             hud::memory::copy(result, buffer, sizeof(u32));
             return hud::bit_cast<u32>(result);
         }
 
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
-        static constexpr u64 unaligned_load64(const ansichar* buffer) {
+        static constexpr u64 unaligned_load64(const ansichar *buffer)
+        {
             ansichar result[sizeof(u64)];
             hud::memory::copy(result, buffer, sizeof(u64));
             return hud::bit_cast<u64>(result);
         }
 
         /**
-        * Performs CityHash64 shift and mix
-        * @param value The value
-        * @param The shift and mixed value
-        */
-        static constexpr u64 shift_mix(u64 value) noexcept {
+         * Performs CityHash64 shift and mix
+         * @param value The value
+         * @param The shift and mixed value
+         */
+        static constexpr u64 shift_mix(u64 value) noexcept
+        {
             return value ^ (value >> 47);
         }
 
         /**
-        * Performs a 32 bits murmur3 avalanche mix hash
-        * @param key The key to mix
-        * @return The resulting value
-        */
-        static constexpr u32 avalanche_mixer(u32 key) noexcept {
+         * Performs a 32 bits murmur3 avalanche mix hash
+         * @param key The key to mix
+         * @return The resulting value
+         */
+        static constexpr u32 avalanche_mixer(u32 key) noexcept
+        {
             key ^= key >> 16;
             key *= 0x85ebca6b;
             key ^= key >> 13;
@@ -123,12 +129,13 @@ namespace hud::hash_algorithm{
         }
 
         /**
-        * Combine two 32 bits value with murmur3
-        * @param a The first value to combine
-        * @param b The second value to combine
-        * @return The combined value
-        */
-        constexpr u32 combine(u32 a, u32 b) noexcept {
+         * Combine two 32 bits value with murmur3
+         * @param a The first value to combine
+         * @param b The second value to combine
+         * @return The combined value
+         */
+        constexpr u32 combine(u32 a, u32 b) noexcept
+        {
             a *= C1;
             a = hud::memory::rotate_left(a, 15);
             a *= C2;
@@ -138,81 +145,86 @@ namespace hud::hash_algorithm{
         }
 
         /**
-        * Performs a load of 32 bits into an aligned memory from a unaligned memory
-        * @param buffer The possibly unaligned memory
-        * @return The 32 bits aligned memory
-        */
-        static constexpr u32 fetch_32(const ansichar* buffer) noexcept {
-            if constexpr (compilation::is_endianness(endianness_e::big)) {
+         * Performs a load of 32 bits into an aligned memory from a unaligned memory
+         * @param buffer The possibly unaligned memory
+         * @return The 32 bits aligned memory
+         */
+        static constexpr u32 fetch_32(const ansichar *buffer) noexcept
+        {
+            if constexpr (compilation::is_endianness(endianness_e::big))
+            {
                 return hud::memory::reverse(unaligned_load32(buffer));
             }
-            else {
+            else
+            {
                 return unaligned_load32(buffer);
             }
         }
 
         /**
-        * Performs a load of 32 bits into an aligned memory from a unaligned memory
-        * @param buffer The possibly unaligned memory
-        * @return The 32 bits aligned memory
-        */
-        static constexpr u64 fetch_64(const ansichar* buffer) noexcept {
-            if constexpr (compilation::is_endianness(endianness_e::big)) {
+         * Performs a load of 32 bits into an aligned memory from a unaligned memory
+         * @param buffer The possibly unaligned memory
+         * @return The 32 bits aligned memory
+         */
+        static constexpr u64 fetch_64(const ansichar *buffer) noexcept
+        {
+            if constexpr (compilation::is_endianness(endianness_e::big))
+            {
                 return hud::memory::reverse(unaligned_load64(buffer));
             }
-            else {
+            else
+            {
                 return unaligned_load64(buffer);
             }
         }
 
         /**
-        * Retrives the 32 bits hash value for a key with length between 0 and 4 bytes included
-        * @param key The key to hash
-        * @param length The length of the key
-        * @return The hash of the key
-        */
-        static constexpr u32 hash_32_len_0_to_4(const ansichar* key, usize length) noexcept {
+         * Retrives the 32 bits hash value for a key with length between 0 and 4 bytes included
+         * @param key The key to hash
+         * @param length The length of the key
+         * @return The hash of the key
+         */
+        static constexpr u32 hash_32_len_0_to_4(const ansichar *key, usize length) noexcept
+        {
             u32 b = 0;
             u32 c = 9;
-            for (usize i = 0; i < length; i++) {
+            for (usize i = 0; i < length; i++)
+            {
                 u8 v = static_cast<u8>(key[i]);
                 b = b * C1 + v;
                 c ^= b;
             }
             return avalanche_mixer(
                 combine(b,
-                    combine(static_cast<u32>(length), c)
-                )
-            );
+                        combine(static_cast<u32>(length), c)));
         }
 
         /**
-        * Retrives the 32 bits hash value for a key with length between 5 and 12 bytes included
-        * @param key The key to hash
-        * @param length The length of the key
-        * @return The hash of the key
-        */
-        static constexpr u32 hash_32_len_5_to_12(const ansichar* key, usize length) noexcept {
+         * Retrives the 32 bits hash value for a key with length between 5 and 12 bytes included
+         * @param key The key to hash
+         * @param length The length of the key
+         * @return The hash of the key
+         */
+        static constexpr u32 hash_32_len_5_to_12(const ansichar *key, usize length) noexcept
+        {
             u32 a = static_cast<u32>(length), b = static_cast<u32>(length) * 5, c = 9, d = b;
             a += fetch_32(key);
             b += fetch_32(key + length - 4);
             c += fetch_32(key + ((length >> 1) & 4));
             return avalanche_mixer(
                 combine(c,
-                    combine(b,
-                        combine(a, d)
-                    )
-                )
-            );
+                        combine(b,
+                                combine(a, d))));
         }
 
         /**
-        * Retrives the 32 bits hash value for a key with length between 13 and 24 bytes included
-        * @param key The key to hash
-        * @param length The length of the key
-        * @return The hash of the key
-        */
-        static constexpr u32 hash_32_len_13_to_24(const ansichar* key, usize length) noexcept {
+         * Retrives the 32 bits hash value for a key with length between 13 and 24 bytes included
+         * @param key The key to hash
+         * @param length The length of the key
+         * @return The hash of the key
+         */
+        static constexpr u32 hash_32_len_13_to_24(const ansichar *key, usize length) noexcept
+        {
             u32 a = fetch_32(key - 4 + (length >> 1));
             u32 b = fetch_32(key + 4);
             u32 c = fetch_32(key + length - 8);
@@ -223,27 +235,22 @@ namespace hud::hash_algorithm{
 
             return avalanche_mixer(
                 combine(f,
-                    combine(e,
-                        combine(d,
-                            combine(c,
-                                combine(b,
-                                    combine(a, h)
-                                )
-                            )
-                        )
-                    )
-                )
-            );
+                        combine(e,
+                                combine(d,
+                                        combine(c,
+                                                combine(b,
+                                                        combine(a, h)))))));
         }
 
         /**
-        * Retrives the 64 bits hash value of 2 values with a multiplier
-        * @param value1 The first value
-        * @param value2 The second value
-        * @param multiplier The multiplier
-        * @return Value1 combined with Value2
-        */
-        static constexpr u64 hash_64_len_16(u64 value1, u64 value2, u64 multiplier) noexcept {
+         * Retrives the 64 bits hash value of 2 values with a multiplier
+         * @param value1 The first value
+         * @param value2 The second value
+         * @param multiplier The multiplier
+         * @return Value1 combined with Value2
+         */
+        static constexpr u64 hash_64_len_16(u64 value1, u64 value2, u64 multiplier) noexcept
+        {
             // Murmur-inspired hashing.
             u64 a = (value1 ^ value2) * multiplier;
             a ^= (a >> 47);
@@ -254,13 +261,15 @@ namespace hud::hash_algorithm{
         }
 
         /**
-        * Retrives the 64 bits hash value for a key with length between 0 and 16 bytes included
-        * @param key The key to hash
-        * @param length The length of the key
-        * @return The hash of the key
-        */
-        static constexpr u64 hash_64_len_0_to_16(const ansichar* key, usize length) noexcept {
-            if (length >= 8) {
+         * Retrives the 64 bits hash value for a key with length between 0 and 16 bytes included
+         * @param key The key to hash
+         * @param length The length of the key
+         * @return The hash of the key
+         */
+        static constexpr u64 hash_64_len_0_to_16(const ansichar *key, usize length) noexcept
+        {
+            if (length >= 8)
+            {
                 u64 mul = K2 + length * 2;
                 u64 a = fetch_64(key) + K2;
                 u64 b = fetch_64(key + length - 8);
@@ -268,12 +277,14 @@ namespace hud::hash_algorithm{
                 u64 d = (hud::memory::rotate_right(a, 25) + b) * mul;
                 return hash_64_len_16(c, d, mul);
             }
-            if (length >= 4) {
+            if (length >= 4)
+            {
                 u64 mul = K2 + length * 2;
                 u64 a = fetch_32(key);
                 return hash_64_len_16(length + (a << 3), fetch_32(key + length - 4), mul);
             }
-            if (length > 0) {
+            if (length > 0)
+            {
                 u8 a = static_cast<u8>(key[0]);
                 u8 b = static_cast<u8>(key[length >> 1]);
                 u8 c = static_cast<u8>(key[length - 1]);
@@ -285,28 +296,30 @@ namespace hud::hash_algorithm{
         }
 
         /**
-        * Retrives the 64 bits hash value for a key with length between 17 and 32 bytes included
-        * @param key The key to hash
-        * @param length The length of the key
-        * @return The hash of the key
-        */
-        static constexpr u64 hash_64_len_17_to_32(const ansichar* key, usize length) noexcept {
+         * Retrives the 64 bits hash value for a key with length between 17 and 32 bytes included
+         * @param key The key to hash
+         * @param length The length of the key
+         * @return The hash of the key
+         */
+        static constexpr u64 hash_64_len_17_to_32(const ansichar *key, usize length) noexcept
+        {
             u64 mul = K2 + length * 2;
             u64 a = fetch_64(key) * K1;
             u64 b = fetch_64(key + 8);
             u64 c = fetch_64(key + length - 8) * mul;
             u64 d = fetch_64(key + length - 16) * K2;
             return hash_64_len_16(hud::memory::rotate_right(a + b, 43) + hud::memory::rotate_right(c, 30) + d,
-                a + hud::memory::rotate_right(b + K2, 18) + c, mul);
+                                  a + hud::memory::rotate_right(b + K2, 18) + c, mul);
         }
 
         /**
-        * Retrives the 64 bits hash value for a key with length between 33 and 64 bytes included
-        * @param key The key to hash
-        * @param length The length of the key
-        * @return The hash of the key
-        */
-        static constexpr u64 hash_64_len_33_to_64(const ansichar* key, usize len) noexcept {
+         * Retrives the 64 bits hash value for a key with length between 33 and 64 bytes included
+         * @param key The key to hash
+         * @param length The length of the key
+         * @return The hash of the key
+         */
+        static constexpr u64 hash_64_len_33_to_64(const ansichar *key, usize len) noexcept
+        {
             u64 mul = K2 + len * 2;
             u64 a = fetch_64(key) * K2;
             u64 b = fetch_64(key + 8);
@@ -328,11 +341,12 @@ namespace hud::hash_algorithm{
         }
 
         /**
-        * Retrives the 64 bits hash value form a 128 bits hash
-        * @param hash The 128bits hash
-        * @return The 64 bits hash
-        */
-        static constexpr u64 hash_128_to_64(const u128& hash) noexcept {
+         * Retrives the 64 bits hash value form a 128 bits hash
+         * @param hash The 128bits hash
+         * @return The 64 bits hash
+         */
+        static constexpr u64 hash_128_to_64(const u128 &hash) noexcept
+        {
             // Murmur-inspired hashing.
             const u64 kMul = 0x9ddfea08eb382d69ULL;
             u64 a = (hash.low ^ hash.high) * kMul;
@@ -344,84 +358,86 @@ namespace hud::hash_algorithm{
         }
 
         /**
-        * Performs hash of 128 bits
-        * @param low The 64 bits low value
-        * @param high The 64 bits high value
-        * @return The 64 bits hash
-        */
-        static constexpr u64 hash_64_len_16(u64 low, u64 high) noexcept {
-            return hash_128_to_64(u128{ low, high });
+         * Performs hash of 128 bits
+         * @param low The 64 bits low value
+         * @param high The 64 bits high value
+         * @return The 64 bits hash
+         */
+        static constexpr u64 hash_64_len_16(u64 low, u64 high) noexcept
+        {
+            return hash_128_to_64(u128{low, high});
         }
 
-
         /**
-        * Performs a 128 bits hash for 48 bytes. Quick and dirty.
-        * Callers do best to use "random-looking" values for a and b.
-        * @param w 8 bytes to hash
-        * @param x 8 bytes to hash
-        * @param y 8 bytes to hash
-        * @param z 8 bytes to hash
-        * @param a 8 bytes to hash
-        * @param b 8 bytes to hash
-        * @return 128 bits hash of 48 bytes
-        */
-        static constexpr u128 weak_hash_len_32_with_seeds(u64 w, u64 x, u64 y, u64 z, u64 a, u64 b) noexcept {
+         * Performs a 128 bits hash for 48 bytes. Quick and dirty.
+         * Callers do best to use "random-looking" values for a and b.
+         * @param w 8 bytes to hash
+         * @param x 8 bytes to hash
+         * @param y 8 bytes to hash
+         * @param z 8 bytes to hash
+         * @param a 8 bytes to hash
+         * @param b 8 bytes to hash
+         * @return 128 bits hash of 48 bytes
+         */
+        static constexpr u128 weak_hash_len_32_with_seeds(u64 w, u64 x, u64 y, u64 z, u64 a, u64 b) noexcept
+        {
             a += w;
             b = hud::memory::rotate_right(b + a + z, 21);
             u64 c = a;
             a += x;
             a += y;
             b += hud::memory::rotate_right(a, 44);
-            return u128{ a + z, b + c };
+            return u128{a + z, b + c};
         }
 
         /**
-        * Performs a 128 bits hash for 48 bytes. Quick and dirty.
-        * Return a 16-byte hash for key[0] ... key[31], a, and b.
-        * @param key 32 bytes
-        * @param a 8 bytes
-        * @param b 8 bytes
-        * @return 128 bits hash of 48 bytes
-        */
-        static constexpr u128 weak_hash_len_32_with_seeds(const ansichar* key, u64 a, u64 b) noexcept {
+         * Performs a 128 bits hash for 48 bytes. Quick and dirty.
+         * Return a 16-byte hash for key[0] ... key[31], a, and b.
+         * @param key 32 bytes
+         * @param a 8 bytes
+         * @param b 8 bytes
+         * @return 128 bits hash of 48 bytes
+         */
+        static constexpr u128 weak_hash_len_32_with_seeds(const ansichar *key, u64 a, u64 b) noexcept
+        {
             return weak_hash_len_32_with_seeds(fetch_64(key),
-                fetch_64(key + 8),
-                fetch_64(key + 16),
-                fetch_64(key + 24),
-                a,
-                b);
+                                               fetch_64(key + 8),
+                                               fetch_64(key + 16),
+                                               fetch_64(key + 24),
+                                               a,
+                                               b);
         }
 
     }
 
-    struct city_hash {
+    struct city_hash
+    {
 
         /**
-        * Combine two 32 bits value with murmur3
-        * @param a The first value to combine
-        * @param b The second value to combine
-        * @return The 32 bits combined value
-        */
-        [[nodiscard]]
-        static constexpr u32 combine(u32 a, u32 b) noexcept {
+         * Combine two 32 bits value with murmur3
+         * @param a The first value to combine
+         * @param b The second value to combine
+         * @return The 32 bits combined value
+         */
+        [[nodiscard]] static constexpr u32 combine(u32 a, u32 b) noexcept
+        {
             return details::combine(a, b);
         }
 
         /**
-        * Performs a 32 bytes hash of a buffer using cityhash algorithm
-        * @param buffer The buffer to hash
-        * @param length Length of the key in bytes
-        * @return The 32 bits hash of the key
-        */
-        [[nodiscard]]
-        static constexpr u32 hash_32(const ansichar* buffer, usize length) noexcept {
-            if (length <= 24) {
-                return length <= 12 ?
-                    (length <= 4 ? details::hash_32_len_0_to_4(buffer, length) : details::hash_32_len_5_to_12(buffer, length)) :
-                    details::hash_32_len_13_to_24(buffer, length);
+         * Performs a 32 bytes hash of a buffer using cityhash algorithm
+         * @param buffer The buffer to hash
+         * @param length Length of the key in bytes
+         * @return The 32 bits hash of the key
+         */
+        [[nodiscard]] static constexpr u32 hash_32(const ansichar *buffer, usize length) noexcept
+        {
+            if (length <= 24)
+            {
+                return length <= 12 ? (length <= 4 ? details::hash_32_len_0_to_4(buffer, length) : details::hash_32_len_5_to_12(buffer, length)) : details::hash_32_len_13_to_24(buffer, length);
             }
 
-            //length > 24
+            // length > 24
             u32 h = static_cast<u32>(length), g = details::C1 * static_cast<u32>(length), f = g;
             u32 a0 = hud::memory::rotate_right(details::fetch_32(buffer + length - 4) * details::C1, 17) * details::C2;
             u32 a1 = hud::memory::rotate_right(details::fetch_32(buffer + length - 8) * details::C1, 17) * details::C2;
@@ -444,7 +460,8 @@ namespace hud::hash_algorithm{
             f = hud::memory::rotate_right(f, 19);
             f = f * 5 + 0xe6546b64;
             usize iters = (length - 1) / 20;
-            do {
+            do
+            {
                 u32 a0_ = hud::memory::rotate_right(details::fetch_32(buffer) * details::C1, 17) * details::C2;
                 u32 a1_ = details::fetch_32(buffer + 4);
                 u32 a2_ = hud::memory::rotate_right(details::fetch_32(buffer + 8) * details::C1, 17) * details::C2;
@@ -485,22 +502,26 @@ namespace hud::hash_algorithm{
         }
 
         /**
-        * Performs a 64 bytes hash of a buffer using cityhash algorithm
-        * @param buffer The buffer to hash
-        * @param length Length of the key in bytes
-        * @return The 64 bits hash of the buffer
-        */
-        [[nodiscard]]
-        static constexpr u64 hash_64(const ansichar* buffer, usize length) noexcept {
-            if (length <= 32) {
-                if (length <= 16) {
+         * Performs a 64 bytes hash of a buffer using cityhash algorithm
+         * @param buffer The buffer to hash
+         * @param length Length of the key in bytes
+         * @return The 64 bits hash of the buffer
+         */
+        [[nodiscard]] static constexpr u64 hash_64(const ansichar *buffer, usize length) noexcept
+        {
+            if (length <= 32)
+            {
+                if (length <= 16)
+                {
                     return details::hash_64_len_0_to_16(buffer, length);
                 }
-                else {
+                else
+                {
                     return details::hash_64_len_17_to_32(buffer, length);
                 }
             }
-            else if (length <= 64) {
+            else if (length <= 64)
+            {
                 return details::hash_64_len_33_to_64(buffer, length);
             }
 
@@ -515,7 +536,8 @@ namespace hud::hash_algorithm{
 
             // Decrease len to the nearest multiple of 64, and operate on 64-byte chunks.
             length = (length - 1) & ~static_cast<usize>(63);
-            do {
+            do
+            {
                 x = hud::memory::rotate_right(x + y + v.low + details::fetch_64(buffer + 8), 37) * details::K1;
                 y = hud::memory::rotate_right(y + v.high + details::fetch_64(buffer + 48), 42) * details::K1;
                 x ^= w.high;
@@ -528,7 +550,7 @@ namespace hud::hash_algorithm{
                 length -= 64;
             } while (length != 0);
             return details::hash_64_len_16(details::hash_64_len_16(v.low, w.low) + details::shift_mix(y) * details::K1 + z,
-                details::hash_64_len_16(v.high, w.high) + x);
+                                           details::hash_64_len_16(v.high, w.high) + x);
         }
     };
 

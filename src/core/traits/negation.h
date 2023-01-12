@@ -4,20 +4,23 @@
 #include "integral_constant.h"
 #include "conditional.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Performs the logical negation of value member of type_t. */
-    template<typename type_t, bool = type_t::value>
+    template <typename type_t, bool = type_t::value>
     struct negation
-        : hud::false_type {
+        : hud::false_type
+    {
     };
-    template<typename type_t>
+    template <typename type_t>
     struct hud::negation<type_t, false>
-        : hud::true_type {
+        : hud::true_type
+    {
     };
 
     /** Equivalent of hud::negation<type_t>::value. */
-    template<typename type_t>
+    template <typename type_t>
     inline constexpr bool negation_v = hud::negation<type_t>::value;
 
 } // namespace hud

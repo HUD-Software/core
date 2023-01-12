@@ -3,13 +3,15 @@
 #define HUD_INC_OSLAYER_STRING_H
 #include "array.h"
 
-namespace hud {
+namespace hud
+{
 
     /**
     ASCII slice for the string class
     */
-    struct ascii_slice {
-        
+    struct ascii_slice
+    {
+
     public:
         slice<u8> slice;
     };
@@ -17,7 +19,8 @@ namespace hud {
     /**
     UTF-8 slice for the string class
     */
-    struct utf8_slice {
+    struct utf8_slice
+    {
 
     public:
         slice<u8> slice;
@@ -27,7 +30,8 @@ namespace hud {
     string representation
     Internally it's just an array of bytes.
     */
-    class string {
+    class string
+    {
 
     public:
         /**
@@ -35,7 +39,6 @@ namespace hud {
         */
         explicit constexpr string() noexcept = default;
 
-        
     private:
         array<u8> bytes_array; // array of bytes representing the string
     };

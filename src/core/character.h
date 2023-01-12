@@ -10,14 +10,15 @@
 #error Targeted OS not supported
 #endif
 
-namespace hud {
+namespace hud
+{
 
-    /** Provides character operations. */
-    #if defined(HD_OS_WINDOWS)
+/** Provides character operations. */
+#if defined(HD_OS_WINDOWS)
     using character = os::windows::character;
-    #elif defined(HD_OS_LINUX)
+#elif defined(HD_OS_LINUX)
     using character = os::linux::character;
-    #endif
+#endif
 
 } // namespace hud
 

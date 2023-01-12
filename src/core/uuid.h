@@ -10,17 +10,18 @@
 #error Targeted OS not supported
 #endif
 
-namespace hud {
+namespace hud
+{
 
-    /** Provides UUID operations. */
-    #if defined(HD_OS_WINDOWS)
+/** Provides UUID operations. */
+#if defined(HD_OS_WINDOWS)
     using uuid = os::windows::uuid;
-    #elif defined(HD_OS_LINUX)
+#elif defined(HD_OS_LINUX)
     using uuid = os::linux::uuid;
-    #else
-    #error Unsupported platform
-    #endif
+#else
+#error Unsupported platform
+#endif
 
-} // namespace hud 
+} // namespace hud
 
 #endif // HD_INC_CORE_UUID_H

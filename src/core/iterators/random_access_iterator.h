@@ -32,7 +32,8 @@ namespace hud
      * Specialize for differente random accessible container types like array, c style array etc...
      */
     template <typename type_t>
-    requires(hud::is_pointer_v<type_t> || hud::is_bounded_array_v<type_t>) class random_access_iterator
+        requires(hud::is_pointer_v<type_t> || hud::is_bounded_array_v<type_t>)
+    class random_access_iterator
     {
     public:
         using pointer_type = typename details::select_pointer_type<type_t>::pointer_type;

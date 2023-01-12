@@ -1,7 +1,8 @@
 #include <core/templates/integer_sequence.h>
 
-GTEST_TEST(templates, integer_sequence) {
-    
+GTEST_TEST(templates, integer_sequence)
+{
+
     hud::integer_sequence<i32, 1, 2, 3, 16, 32> seq;
     GTEST_ASSERT_EQ(seq.size(), 5u);
 

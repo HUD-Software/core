@@ -185,7 +185,6 @@ GTEST_TEST(array, reserve_non_empty_to_more_size_allocate_only_with_trivial_type
     GTEST_ASSERT_EQ(array[0], type(10));
     GTEST_ASSERT_EQ(array[1], type(20));
 
-
     array.reserve(4);
     GTEST_ASSERT_NE(array.data(), nullptr);
     GTEST_ASSERT_EQ(array.count(), 2u);
@@ -241,7 +240,7 @@ GTEST_TEST(array, reserve_less_than_max_count_but_more_than_count_do_nothing_wit
     GTEST_ASSERT_EQ(array[1].copy_assign_count(), 0u);
     GTEST_ASSERT_EQ(array[1].move_assign_count(), 0u);
 
-    // Reserve less but more than 
+    // Reserve less but more than
     array.reserve(2);
     GTEST_ASSERT_NE(array.data(), nullptr);
     GTEST_ASSERT_EQ(array.count(), 2u);
@@ -297,7 +296,7 @@ GTEST_TEST(array, reserve_less_than_max_count_but_more_than_count_do_nothing_wit
     GTEST_ASSERT_EQ(array[0], type(10));
     GTEST_ASSERT_EQ(array[1], type(20));
 
-    // Reserve less but more than 
+    // Reserve less but more than
     array.reserve(2);
     GTEST_ASSERT_NE(array.data(), nullptr);
     GTEST_ASSERT_EQ(array.count(), 2u);

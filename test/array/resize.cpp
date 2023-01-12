@@ -14,7 +14,7 @@ GTEST_TEST(array, resize_empty_to_zero_do_nothing_with_non_trivial_type)
     GTEST_ASSERT_EQ(array.allocator().allocation_count(), 0u);
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
-    //Resize 0 do nothing
+    // Resize 0 do nothing
     array.resize(0);
     GTEST_ASSERT_EQ(array.data(), nullptr);
     GTEST_ASSERT_EQ(array.count(), 0u);
@@ -36,7 +36,7 @@ GTEST_TEST(array, resize_empty_to_zero_do_nothing_with_trivial_type)
     GTEST_ASSERT_EQ(array.allocator().allocation_count(), 0u);
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
-    //Resize 0 do nothing
+    // Resize 0 do nothing
     array.resize(0);
     GTEST_ASSERT_EQ(array.data(), nullptr);
     GTEST_ASSERT_EQ(array.count(), 0u);
@@ -66,7 +66,8 @@ GTEST_TEST(array, resize_empty_to_more_size_non_trivial_type)
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element.id(), 0);
         GTEST_ASSERT_EQ(element.destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(element.constructor_count(), 0u);
@@ -98,7 +99,8 @@ GTEST_TEST(array, resize_empty_to_more_size_trivial_type)
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element, type());
     }
 }
@@ -124,7 +126,8 @@ GTEST_TEST(array, resize_non_empty_to_more_size_non_trivial_type)
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element.id(), 0);
         GTEST_ASSERT_EQ(element.destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(element.constructor_count(), 0u);
@@ -136,7 +139,8 @@ GTEST_TEST(array, resize_non_empty_to_more_size_non_trivial_type)
 
     array.resize(4);
     // Should move already present
-    for (usize index = 0; index < 2; index++) {
+    for (usize index = 0; index < 2; index++)
+    {
         GTEST_ASSERT_EQ(array[index].id(), 0);
         GTEST_ASSERT_EQ(array[index].destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(array[index].constructor_count(), 0u);
@@ -146,7 +150,8 @@ GTEST_TEST(array, resize_non_empty_to_more_size_non_trivial_type)
         GTEST_ASSERT_EQ(array[index].move_assign_count(), 0u);
     }
     // Should default construct newly added
-    for (usize index = 2; index < 4; index++) {
+    for (usize index = 2; index < 4; index++)
+    {
         GTEST_ASSERT_EQ(array[index].id(), 0);
         GTEST_ASSERT_EQ(array[index].destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(array[index].constructor_count(), 0u);
@@ -178,7 +183,8 @@ GTEST_TEST(array, resize_non_empty_to_more_size_trivial_type)
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element, type());
     }
 
@@ -195,7 +201,6 @@ GTEST_TEST(array, resize_non_empty_to_more_size_trivial_type)
     // Should default construct new element
     GTEST_ASSERT_EQ(array[2], type());
     GTEST_ASSERT_EQ(array[3], type());
-
 }
 
 GTEST_TEST(array, resize_non_empty_to_same_size_do_nothing_with_non_trivial_type)
@@ -219,7 +224,8 @@ GTEST_TEST(array, resize_non_empty_to_same_size_do_nothing_with_non_trivial_type
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element.id(), 0);
         GTEST_ASSERT_EQ(element.destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(element.constructor_count(), 0u);
@@ -238,7 +244,8 @@ GTEST_TEST(array, resize_non_empty_to_same_size_do_nothing_with_non_trivial_type
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element.id(), 0);
         GTEST_ASSERT_EQ(element.destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(element.constructor_count(), 0u);
@@ -270,7 +277,8 @@ GTEST_TEST(array, resize_non_empty_to_same_size_do_nothing_with_trivial_type)
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element, type());
     }
     // Change value to ensure resize keep values
@@ -311,7 +319,8 @@ GTEST_TEST(array, resize_when_enough_memory_do_not_allocate_but_construct_in_pla
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element.id(), 0);
         GTEST_ASSERT_EQ(element.destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(element.constructor_count(), 0u);
@@ -330,7 +339,8 @@ GTEST_TEST(array, resize_when_enough_memory_do_not_allocate_but_construct_in_pla
     GTEST_ASSERT_EQ(array.allocator().free_count(), 1u);
 
     // Should move element to new memory
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element.id(), 0);
         GTEST_ASSERT_EQ(element.destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(element.constructor_count(), 0u);
@@ -347,7 +357,8 @@ GTEST_TEST(array, resize_when_enough_memory_do_not_allocate_but_construct_in_pla
     GTEST_ASSERT_EQ(array.allocator().allocation_count(), 2u);
     GTEST_ASSERT_EQ(array.allocator().free_count(), 1u);
     // Should not touch already present elements
-    for (usize index = 0; index < 2; index++) {
+    for (usize index = 0; index < 2; index++)
+    {
         GTEST_ASSERT_EQ(array[index].id(), 0);
         GTEST_ASSERT_EQ(array[index].destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(array[index].constructor_count(), 0u);
@@ -357,7 +368,8 @@ GTEST_TEST(array, resize_when_enough_memory_do_not_allocate_but_construct_in_pla
         GTEST_ASSERT_EQ(array[index].move_assign_count(), 0u);
     }
     // Should default construct newnly added element
-    for (usize index = 2; index < 4; index++) {
+    for (usize index = 2; index < 4; index++)
+    {
         GTEST_ASSERT_EQ(array[index].id(), 0);
         GTEST_ASSERT_EQ(array[index].destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(array[index].constructor_count(), 0u);
@@ -389,7 +401,8 @@ GTEST_TEST(array, resize_when_enough_memory_do_not_allocate_but_construct_in_pla
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element, type());
     }
     // Change value to ensure resize keep values
@@ -407,7 +420,6 @@ GTEST_TEST(array, resize_when_enough_memory_do_not_allocate_but_construct_in_pla
     // Reserve should not change the values
     array[0] = type(10);
     array[1] = type(20);
-
 
     array.resize(4);
     GTEST_ASSERT_NE(array.data(), nullptr);
@@ -446,7 +458,8 @@ GTEST_TEST(array, resize_less_than_count_destroy_elements_but_not_reallocate_wit
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element.id(), 0);
         GTEST_ASSERT_EQ(element.destructor_counter(), nullptr);
         GTEST_ASSERT_EQ(element.constructor_count(), 0u);
@@ -499,7 +512,8 @@ GTEST_TEST(array, resize_less_than_count_destroy_elements_but_not_reallocate_wit
     GTEST_ASSERT_EQ(array.allocator().free_count(), 0u);
 
     // Should default construct
-    for (const type& element : array) {
+    for (const type &element : array)
+    {
         GTEST_ASSERT_EQ(element, type());
     }
     // Change values to check the element at index 1 is correctly destroy while index 0 is not modify

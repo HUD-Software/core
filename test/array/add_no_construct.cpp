@@ -11,7 +11,8 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 
     // test with reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
 
             // Insert one element without constructing it
@@ -22,13 +23,13 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.count(),
                 array.max_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
 
             // Construct only in constant_evaluated
             // Constant evaluation do not allowed to access non initialized memory
-            if (hud::is_constant_evaluated()) {
-                hud::memory::construct_array_at(array.data(), array.data()+2, hud::i32_max);
+            if (hud::is_constant_evaluated())
+            {
+                hud::memory::construct_array_at(array.data(), array.data() + 2, hud::i32_max);
             }
 
             // Insert one element without constructing it
@@ -39,13 +40,11 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.count(),
                 array.max_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
 
             return std::tuple{
                 result_0,
-                result_1
-            };
+                result_1};
         };
 
         // Non constant
@@ -89,10 +88,10 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
         }
     }
 
-
     // test without reallocation
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             array_type array;
             array.reserve(5);
 
@@ -104,12 +103,12 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.count(),
                 array.max_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
 
             // Construct only in constant_evaluated
             // Constant evaluation do not allowed to access non initialized memory
-            if (hud::is_constant_evaluated()) {
+            if (hud::is_constant_evaluated())
+            {
                 hud::memory::construct_array_at(array.data(), array.data() + 2, hud::i32_max);
             }
 
@@ -121,13 +120,11 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.count(),
                 array.max_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
 
             return std::tuple{
                 result_0,
-                result_1
-            };
+                result_1};
         };
 
         // Non constant

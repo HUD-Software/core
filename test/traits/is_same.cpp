@@ -1,18 +1,29 @@
 #include <core/traits/is_same.h>
 
-
-namespace hud_test {
+namespace hud_test
+{
     typedef int integer_type;
-    struct a { int x, y; };
-    struct b { int x, y; };
-    struct c : public a {};
+    struct a
+    {
+        int x, y;
+    };
+    struct b
+    {
+        int x, y;
+    };
+    struct c : public a
+    {
+    };
     typedef a d;
 
-    template<typename type_t>
-    struct is_same_d {};
+    template <typename type_t>
+    struct is_same_d
+    {
+    };
 }
 
-GTEST_TEST(traits, is_same) {
+GTEST_TEST(traits, is_same)
+{
     GTEST_ASSERT_FALSE((hud::is_same_v<i32, const i32>));
     GTEST_ASSERT_TRUE((hud::is_same_v<i32, hud_test::integer_type>));
 

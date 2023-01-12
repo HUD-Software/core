@@ -1,11 +1,17 @@
 #include <core/traits/is_arithmetic.h>
 
-namespace hud_test {
-    enum a {};
-    class b {};
+namespace hud_test
+{
+    enum a
+    {
+    };
+    class b
+    {
+    };
 }
 
-GTEST_TEST(traits, is_arithmetic) {
+GTEST_TEST(traits, is_arithmetic)
+{
     GTEST_ASSERT_TRUE(hud::is_arithmetic_v<bool>);
     GTEST_ASSERT_TRUE(hud::is_arithmetic_v<i8>);
     GTEST_ASSERT_TRUE(hud::is_arithmetic_v<i16>);

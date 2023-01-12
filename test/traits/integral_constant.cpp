@@ -1,7 +1,8 @@
 #include <core/traits/integral_constant.h>
 
-GTEST_TEST(traits, integral_constant) {
-    
+GTEST_TEST(traits, integral_constant)
+{
+
     using ict = hud::integral_constant<bool, true>;
     ict ic_bool_true;
     GTEST_ASSERT_TRUE(ic_bool_true.value);

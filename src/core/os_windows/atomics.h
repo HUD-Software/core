@@ -2,7 +2,7 @@
 #ifndef HD_INC_CORE_OS_WINDOWS_ATOMICS_H
 #define HD_INC_CORE_OS_WINDOWS_ATOMICS_H
 
-#if defined(HD_TARGET_X86) |  defined(HD_TARGET_X64)
+#if defined(HD_TARGET_X86) | defined(HD_TARGET_X64)
 #include "atomics_intel.h"
 #endif
 
@@ -10,11 +10,13 @@
 #error This file must be included only when targetting Windows OS
 #endif
 
+namespace hud::os::windows
+{
 
-namespace hud::os::windows{
-    
-#if defined(HD_TARGET_X86) |  defined(HD_TARGET_X64)
-    struct atomics : public atomics_intel{};
+#if defined(HD_TARGET_X86) | defined(HD_TARGET_X64)
+    struct atomics : public atomics_intel
+    {
+    };
 #endif
 
 } // namespace hud

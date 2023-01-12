@@ -1,14 +1,14 @@
 #include <core/memory.h>
 
-GTEST_TEST(memory, copy_pointer_to_buffer) {
+GTEST_TEST(memory, copy_pointer_to_buffer)
+{
 
-
-
-    auto test = []()  -> std::tuple<u8, u8, u8, bool> {
-        u8 buf[3] = { 0,0,0 };
-        u8 buf_2[3] = { 2,4,8 };
-        u8* dest = hud::memory::copy(buf, buf_2, 2 * sizeof(u8));
-        return { buf[0], buf[1], buf[2], dest == buf };
+    auto test = []() -> std::tuple<u8, u8, u8, bool>
+    {
+        u8 buf[3] = {0, 0, 0};
+        u8 buf_2[3] = {2, 4, 8};
+        u8 *dest = hud::memory::copy(buf, buf_2, 2 * sizeof(u8));
+        return {buf[0], buf[1], buf[2], dest == buf};
     };
 
     // Non constant
@@ -30,15 +30,15 @@ GTEST_TEST(memory, copy_pointer_to_buffer) {
     }
 }
 
-GTEST_TEST(memory, copy_c_arary) {
+GTEST_TEST(memory, copy_c_arary)
+{
 
-
-
-    auto test = []() -> std::tuple<u8, u8, u8, bool> {
-        u8 buf[3] = { 0,0,0 };
-        u8 buf_2[3] = { 2,4,8 };
-        u8* dest = hud::memory::copy(buf, buf_2);
-        return { buf[0], buf[1], buf[2], dest == buf };
+    auto test = []() -> std::tuple<u8, u8, u8, bool>
+    {
+        u8 buf[3] = {0, 0, 0};
+        u8 buf_2[3] = {2, 4, 8};
+        u8 *dest = hud::memory::copy(buf, buf_2);
+        return {buf[0], buf[1], buf[2], dest == buf};
     };
 
     // Non constant
@@ -60,36 +60,37 @@ GTEST_TEST(memory, copy_c_arary) {
     }
 }
 
-GTEST_TEST(memory, move_pointer_to_buffer) {
+GTEST_TEST(memory, move_pointer_to_buffer)
+{
 
-
-    auto test = [](u32 index_dest, u32 index_src) -> std::tuple<u8, u8, u8, u8> {
-        u8 buf[4] = { 2, 4, 8, 16 };
+    auto test = [](u32 index_dest, u32 index_src) -> std::tuple<u8, u8, u8, u8>
+    {
+        u8 buf[4] = {2, 4, 8, 16};
         hud::memory::move(buf + index_dest, buf + index_src, std::min(4 - index_src, 4 - index_dest) * sizeof(u8));
-        return { buf[0], buf[1], buf[2], buf[3] };
+        return {buf[0], buf[1], buf[2], buf[3]};
     };
 
     // Non constant
     {
-        std::tuple<u8, u8, u8, u8> result_00 = test(0,0);
+        std::tuple<u8, u8, u8, u8> result_00 = test(0, 0);
         GTEST_ASSERT_EQ(std::get<0>(result_00), 2);
         GTEST_ASSERT_EQ(std::get<1>(result_00), 4);
         GTEST_ASSERT_EQ(std::get<2>(result_00), 8);
         GTEST_ASSERT_EQ(std::get<3>(result_00), 16);
 
-        std::tuple<u8, u8, u8, u8> result_01 = test(0,1);
+        std::tuple<u8, u8, u8, u8> result_01 = test(0, 1);
         GTEST_ASSERT_EQ(std::get<0>(result_01), 4);
         GTEST_ASSERT_EQ(std::get<1>(result_01), 8);
         GTEST_ASSERT_EQ(std::get<2>(result_01), 16);
         GTEST_ASSERT_EQ(std::get<3>(result_01), 16);
 
-        std::tuple<u8, u8, u8, u8> result_02 = test(0,2);
+        std::tuple<u8, u8, u8, u8> result_02 = test(0, 2);
         GTEST_ASSERT_EQ(std::get<0>(result_02), 8);
         GTEST_ASSERT_EQ(std::get<1>(result_02), 16);
         GTEST_ASSERT_EQ(std::get<2>(result_02), 8);
         GTEST_ASSERT_EQ(std::get<3>(result_02), 16);
 
-        std::tuple<u8, u8, u8, u8> result_03 = test(0,3);
+        std::tuple<u8, u8, u8, u8> result_03 = test(0, 3);
         GTEST_ASSERT_EQ(std::get<0>(result_03), 16);
         GTEST_ASSERT_EQ(std::get<1>(result_03), 4);
         GTEST_ASSERT_EQ(std::get<2>(result_03), 8);

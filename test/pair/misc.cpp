@@ -1,11 +1,11 @@
 #include <core/containers/pair.h>
 #include <core/traits/is_same.h>
 
-GTEST_TEST(pair, inner_is_correct) {
-
+GTEST_TEST(pair, inner_is_correct)
+{
 
     using pair_type = hud::pair<i32, u32>;
-    
+
     bool is_first_same = hud::is_same_v<pair_type::first_type, i32>;
     GTEST_ASSERT_TRUE(is_first_same);
 
@@ -13,31 +13,35 @@ GTEST_TEST(pair, inner_is_correct) {
     GTEST_ASSERT_TRUE(is_second_same);
 }
 
-GTEST_TEST(pair, sizeof_pair_is_sizeof_inner_types) {
-
+GTEST_TEST(pair, sizeof_pair_is_sizeof_inner_types)
+{
 
     using pair_type = hud::pair<i32, u64>;
-    struct shoud_be { i32 f; u64 s; };
-    GTEST_ASSERT_EQ(sizeof(pair_type), sizeof(shoud_be) );
+    struct shoud_be
+    {
+        i32 f;
+        u64 s;
+    };
+    GTEST_ASSERT_EQ(sizeof(pair_type), sizeof(shoud_be));
 }
 
-GTEST_TEST(pair, make_pair_create_pair_trivially_constructible) {
-
+GTEST_TEST(pair, make_pair_create_pair_trivially_constructible)
+{
 
     using type = i32;
-    static_assert(hud::is_trivially_constructible_v<type, type&&>);
+    static_assert(hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type&& t1, type&& t2) {
+    const auto test = [](type &&t1, type &&t2)
+    {
         const auto pair = hud::make_pair(t1, t2);
         return std::tuple{
             pair.first,
-            pair.second
-        };
+            pair.second};
     };
-    
+
     // Non constant
     {
-        const auto result = test(123,456);
+        const auto result = test(123, 456);
 
         GTEST_ASSERT_EQ(std::get<0>(result), 123);
         GTEST_ASSERT_EQ(std::get<1>(result), 456);
@@ -52,13 +56,15 @@ GTEST_TEST(pair, make_pair_create_pair_trivially_constructible) {
     }
 }
 
-GTEST_TEST(pair, make_pair_create_pair_non_trivial) {
+GTEST_TEST(pair, make_pair_create_pair_non_trivial)
+{
 
     using type = hud_test::non_bitwise_type;
-    static_assert(hud::is_constructible_v<type, type&&>);
-    static_assert(!hud::is_trivially_constructible_v<type, type&&>);
+    static_assert(hud::is_constructible_v<type, type &&>);
+    static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type&& t1, type&& t2) {
+    const auto test = [](type &&t1, type &&t2)
+    {
         const auto pair = hud::make_pair(hud::forward<type>(t1), hud::forward<type>(t2));
         return std::tuple{
             pair.first.id(),
@@ -78,7 +84,7 @@ GTEST_TEST(pair, make_pair_create_pair_non_trivial) {
 
     // Non constant
     {
-        const auto result = test(type{ 123, nullptr }, type{ 456, nullptr });
+        const auto result = test(type{123, nullptr}, type{456, nullptr});
 
         GTEST_ASSERT_EQ(std::get<0>(result), 123);
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
@@ -96,7 +102,7 @@ GTEST_TEST(pair, make_pair_create_pair_non_trivial) {
 
     // Constant
     {
-        constexpr auto result = test(type{ 123, nullptr }, type{ 456, nullptr });
+        constexpr auto result = test(type{123, nullptr}, type{456, nullptr});
 
         GTEST_ASSERT_EQ(std::get<0>(result), 123);
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
@@ -113,15 +119,15 @@ GTEST_TEST(pair, make_pair_create_pair_non_trivial) {
     }
 }
 
-GTEST_TEST(pair, get_is_usable_with_pair) {
+GTEST_TEST(pair, get_is_usable_with_pair)
+{
 
-
-    const auto test = [](i32 t1, i32 t2) {
+    const auto test = [](i32 t1, i32 t2)
+    {
         const auto pair = hud::make_pair(t1, t2);
         return std::tuple{
             hud::get<0>(pair),
-            hud::get<1>(pair)
-        };
+            hud::get<1>(pair)};
     };
 
     // Non constant
@@ -139,17 +145,18 @@ GTEST_TEST(pair, get_is_usable_with_pair) {
     }
 }
 
-GTEST_TEST(pair, tuple_size) {
-
+GTEST_TEST(pair, tuple_size)
+{
 
     constexpr usize tuple_size = hud::tuple_size_v<hud::pair<u32, u64>>;
     GTEST_ASSERT_EQ(tuple_size, 2u);
 }
 
-GTEST_TEST(pair, tuple_element) {
+GTEST_TEST(pair, tuple_element)
+{
 
-    constexpr bool is_tuple_element_0_same = hud::is_same_v<hud::tuple_element_t<0, hud::pair<u32, u64> >, u32>;
-    constexpr bool is_tuple_element_1_same = hud::is_same_v<hud::tuple_element_t<1, hud::pair<u32, u64> >, u64>;
+    constexpr bool is_tuple_element_0_same = hud::is_same_v<hud::tuple_element_t<0, hud::pair<u32, u64>>, u32>;
+    constexpr bool is_tuple_element_1_same = hud::is_same_v<hud::tuple_element_t<1, hud::pair<u32, u64>>, u64>;
     GTEST_ASSERT_TRUE(is_tuple_element_0_same);
     GTEST_ASSERT_TRUE(is_tuple_element_1_same);
 }

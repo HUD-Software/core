@@ -1,10 +1,14 @@
 #include <core/traits/is_unsigned.h>
 
-namespace hud_test {
-    struct a {};
+namespace hud_test
+{
+    struct a
+    {
+    };
 }
 
-GTEST_TEST(traits, is_unsigned) {
+GTEST_TEST(traits, is_unsigned)
+{
     GTEST_ASSERT_TRUE((hud::is_unsigned_v<bool>));
     GTEST_ASSERT_FALSE((hud::is_unsigned_v<i8>));
     GTEST_ASSERT_FALSE((hud::is_unsigned_v<i16>));
@@ -25,10 +29,10 @@ GTEST_TEST(traits, is_unsigned) {
     GTEST_ASSERT_TRUE((hud::is_unsigned_v<char16>));
     GTEST_ASSERT_TRUE((hud::is_unsigned_v<char32>));
     GTEST_ASSERT_FALSE((hud::is_unsigned_v<ansichar>));
-    #if defined(HD_OS_WINDOWS)
+#if defined(HD_OS_WINDOWS)
     GTEST_ASSERT_TRUE((hud::is_unsigned_v<wchar>));
-    #else // HD_OS_LINUX
+#else // HD_OS_LINUX
     GTEST_ASSERT_FALSE((hud::is_unsigned_v<wchar>));
-    #endif
+#endif
     GTEST_ASSERT_FALSE((hud::is_unsigned_v<hud_test::a>));
 }

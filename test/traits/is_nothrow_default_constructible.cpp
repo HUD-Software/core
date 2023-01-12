@@ -1,27 +1,34 @@
 #include <core/traits/is_nothrow_default_constructible.h>
 
-namespace hud_test {
-    struct a {
+namespace hud_test
+{
+    struct a
+    {
         a() noexcept {}
     };
-    struct b {
+    struct b
+    {
         b() noexcept(false) {}
     };
 
-    struct c {
+    struct c
+    {
         c() { throw 20; }
     };
-    struct d {
+    struct d
+    {
         d() noexcept : c() {}
         c c;
     };
-    struct e {
+    struct e
+    {
         e() : c() {}
         c c;
     };
 }
 
-GTEST_TEST(traits, is_nothrow_default_constructible) {    
+GTEST_TEST(traits, is_nothrow_default_constructible)
+{
     GTEST_ASSERT_TRUE((hud::is_nothrow_default_constructible_v<hud_test::a>));
     GTEST_ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::b>));
     GTEST_ASSERT_FALSE((hud::is_nothrow_default_constructible_v<hud_test::c>));

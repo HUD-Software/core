@@ -1,11 +1,12 @@
 #include <core/containers/shared_pointer.h>
 
-GTEST_TEST(shared_pointer_not_safe, swap_with_empty) {
-
+GTEST_TEST(shared_pointer_not_safe, swap_with_empty)
+{
 
     // SharedPointer::swap
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             i32 dtor_count = 0;
             auto ptr = new hud_test::non_bitwise_type(1, &dtor_count);
             hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(ptr);
@@ -20,10 +21,8 @@ GTEST_TEST(shared_pointer_not_safe, swap_with_empty) {
                 is_pointer_correct,
                 shared_count_before == 1u,
                 shared_ptr.pointer() == nullptr,
-                shared_ptr.shared_count() == 0u 
-            };
+                shared_ptr.shared_count() == 0u};
         };
-
 
         // Non constant
         {
@@ -38,21 +37,22 @@ GTEST_TEST(shared_pointer_not_safe, swap_with_empty) {
         // Constant
         // Not working under with msvc
         // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//        {
-//            constexpr auto result = test();
-//            GTEST_ASSERT_TRUE(std::get<0>(result));
-//            GTEST_ASSERT_TRUE(std::get<1>(result));
-//            GTEST_ASSERT_TRUE(std::get<2>(result));
-//            GTEST_ASSERT_TRUE(std::get<3>(result));
-//            GTEST_ASSERT_TRUE(std::get<4>(result));
-//        }
-//#endif
+        // #if !defined(HD_COMPILER_MSVC)
+        //         {
+        //             constexpr auto result = test();
+        //             GTEST_ASSERT_TRUE(std::get<0>(result));
+        //             GTEST_ASSERT_TRUE(std::get<1>(result));
+        //             GTEST_ASSERT_TRUE(std::get<2>(result));
+        //             GTEST_ASSERT_TRUE(std::get<3>(result));
+        //             GTEST_ASSERT_TRUE(std::get<4>(result));
+        //         }
+        // #endif
     }
 
     // hud::swap
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             i32 dtor_count = 0;
             auto ptr = new hud_test::non_bitwise_type(1, &dtor_count);
             hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(ptr);
@@ -67,10 +67,8 @@ GTEST_TEST(shared_pointer_not_safe, swap_with_empty) {
                 is_pointer_correct,
                 shared_count_before == 1u,
                 shared_ptr.pointer() == nullptr,
-                shared_ptr.shared_count() == 0u
-            };
+                shared_ptr.shared_count() == 0u};
         };
-
 
         // Non constant
         {
@@ -85,25 +83,26 @@ GTEST_TEST(shared_pointer_not_safe, swap_with_empty) {
         // Constant
         // Not working under with msvc
         // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//        {
-//            constexpr auto result = test();
-//            GTEST_ASSERT_TRUE(std::get<0>(result));
-//            GTEST_ASSERT_TRUE(std::get<1>(result));
-//            GTEST_ASSERT_TRUE(std::get<2>(result));
-//            GTEST_ASSERT_TRUE(std::get<3>(result));
-//            GTEST_ASSERT_TRUE(std::get<4>(result));
-//        }
-//#endif
+        // #if !defined(HD_COMPILER_MSVC)
+        //         {
+        //             constexpr auto result = test();
+        //             GTEST_ASSERT_TRUE(std::get<0>(result));
+        //             GTEST_ASSERT_TRUE(std::get<1>(result));
+        //             GTEST_ASSERT_TRUE(std::get<2>(result));
+        //             GTEST_ASSERT_TRUE(std::get<3>(result));
+        //             GTEST_ASSERT_TRUE(std::get<4>(result));
+        //         }
+        // #endif
     }
 }
 
-GTEST_TEST(shared_pointer_not_safe, swap_same_type) {
-
+GTEST_TEST(shared_pointer_not_safe, swap_same_type)
+{
 
     // SharedPointer::swap
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             i32 dtor_count = 0;
             i32 dtor_count_1 = 0;
 
@@ -120,10 +119,8 @@ GTEST_TEST(shared_pointer_not_safe, swap_same_type) {
                 shared_ptr.pointer() == ptr2,
                 shared_ptr.shared_count() == 1u,
                 shared_ptr_2.pointer() == ptr,
-                shared_ptr_2.shared_count() == 1u
-            };
+                shared_ptr_2.shared_count() == 1u};
         };
-
 
         // Non constant
         {
@@ -139,22 +136,23 @@ GTEST_TEST(shared_pointer_not_safe, swap_same_type) {
         // Constant
         // Not working under with msvc
         // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//        {
-//            constexpr auto result = test();
-//            GTEST_ASSERT_TRUE(std::get<0>(result));
-//            GTEST_ASSERT_TRUE(std::get<1>(result));
-//            GTEST_ASSERT_TRUE(std::get<2>(result));
-//            GTEST_ASSERT_TRUE(std::get<3>(result));
-//            GTEST_ASSERT_TRUE(std::get<4>(result));
-//            GTEST_ASSERT_TRUE(std::get<5>(result));
-//        }
-//#endif
+        // #if !defined(HD_COMPILER_MSVC)
+        //         {
+        //             constexpr auto result = test();
+        //             GTEST_ASSERT_TRUE(std::get<0>(result));
+        //             GTEST_ASSERT_TRUE(std::get<1>(result));
+        //             GTEST_ASSERT_TRUE(std::get<2>(result));
+        //             GTEST_ASSERT_TRUE(std::get<3>(result));
+        //             GTEST_ASSERT_TRUE(std::get<4>(result));
+        //             GTEST_ASSERT_TRUE(std::get<5>(result));
+        //         }
+        // #endif
     }
 
     // hud::swap
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             i32 dtor_count = 0;
             i32 dtor_count_1 = 0;
 
@@ -171,10 +169,8 @@ GTEST_TEST(shared_pointer_not_safe, swap_same_type) {
                 shared_ptr.pointer() == ptr2,
                 shared_ptr.shared_count() == 1u,
                 shared_ptr_2.pointer() == ptr,
-                shared_ptr_2.shared_count() == 1u
-            };
+                shared_ptr_2.shared_count() == 1u};
         };
-
 
         // Non constant
         {
@@ -185,21 +181,21 @@ GTEST_TEST(shared_pointer_not_safe, swap_same_type) {
             GTEST_ASSERT_TRUE(std::get<3>(result));
             GTEST_ASSERT_TRUE(std::get<4>(result));
             GTEST_ASSERT_TRUE(std::get<5>(result));
-    }
+        }
 
         // Constant
         // Not working under with msvc
         // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//        {
-//            constexpr auto result = test();
-//            GTEST_ASSERT_TRUE(std::get<0>(result));
-//            GTEST_ASSERT_TRUE(std::get<1>(result));
-//            GTEST_ASSERT_TRUE(std::get<2>(result));
-//            GTEST_ASSERT_TRUE(std::get<3>(result));
-//            GTEST_ASSERT_TRUE(std::get<4>(result));
-//            GTEST_ASSERT_TRUE(std::get<5>(result));
-//        }
-//#endif
+        // #if !defined(HD_COMPILER_MSVC)
+        //         {
+        //             constexpr auto result = test();
+        //             GTEST_ASSERT_TRUE(std::get<0>(result));
+        //             GTEST_ASSERT_TRUE(std::get<1>(result));
+        //             GTEST_ASSERT_TRUE(std::get<2>(result));
+        //             GTEST_ASSERT_TRUE(std::get<3>(result));
+        //             GTEST_ASSERT_TRUE(std::get<4>(result));
+        //             GTEST_ASSERT_TRUE(std::get<5>(result));
+        //         }
+        // #endif
     }
 }

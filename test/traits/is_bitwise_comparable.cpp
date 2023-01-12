@@ -1,56 +1,78 @@
 #include <core/traits/is_bitwise_comparable.h>
 
-namespace hud_test {
-    struct empty {};
-    struct a {
+namespace hud_test
+{
+    struct empty
+    {
+    };
+    struct a
+    {
         i32 a;
     };
-    struct b {
+    struct b
+    {
         i32 a;
         f32 f;
     };
-    struct c {
+    struct c
+    {
         i32 a;
         i16 f;
         i16 g;
     };
-    struct padded {
+    struct padded
+    {
         u8 p;
         // Padding of 3 bytes
         u32 a;
     };
-    struct padded_2 {
+    struct padded_2
+    {
         u32 p;
         u16 a;
         // Padding of 2 bytes
     };
-    struct  derived : a {};
-    struct  derived_2 : a {
+    struct derived : a
+    {
+    };
+    struct derived_2 : a
+    {
         virtual void fn() {}
     };
-    struct d {
-        bool operator==(const d&) { return true; }
+    struct d
+    {
+        bool operator==(const d &) { return true; }
     };
 
-
-    struct f {
+    struct f
+    {
         i32 a;
         short b;
-        bool operator==(const f&) { return true; }
+        bool operator==(const f &) { return true; }
     };
 
-    struct comp_e {
+    struct comp_e
+    {
         i32 a;
-        bool operator==(const comp_e&) { return true; }
+        bool operator==(const comp_e &) { return true; }
     };
 
-    enum comp_enum {};
-    enum class comp_enum_2 {};
-    enum class comp_enum_3 : u8 {};
-    enum class comp_enum_4 : u64 {};
+    enum comp_enum
+    {
+    };
+    enum class comp_enum_2
+    {
+    };
+    enum class comp_enum_3 : u8
+    {
+    };
+    enum class comp_enum_4 : u64
+    {
+    };
 }
 
-GTEST_TEST(traits, is_bitwise_comparable) {
+GTEST_TEST(traits, is_bitwise_comparable)
+{
     // i8
     GTEST_ASSERT_TRUE((hud::is_bitwise_comparable_v<i8, i8>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_comparable_v<i8, i16>));
@@ -266,7 +288,7 @@ GTEST_TEST(traits, is_bitwise_comparable) {
 #else
     GTEST_ASSERT_FALSE((hud::is_bitwise_comparable_v<wchar, u16>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_comparable_v<wchar, u32>));
-#endif    
+#endif
     GTEST_ASSERT_FALSE((hud::is_bitwise_comparable_v<wchar, u64>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_comparable_v<wchar, ansichar>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_comparable_v<wchar, wchar>));
@@ -429,8 +451,6 @@ GTEST_TEST(traits, is_bitwise_comparable) {
     GTEST_ASSERT_FALSE((hud::is_bitwise_comparable_v<uptr, f64>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_comparable_v<uptr, iptr>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_comparable_v<uptr, uptr>));
-
-    
 
     GTEST_ASSERT_FALSE((hud::is_bitwise_comparable_v<hud_test::empty, hud_test::empty>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_comparable_v<hud_test::a, hud_test::a>));

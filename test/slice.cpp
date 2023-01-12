@@ -1,8 +1,8 @@
 #include <core/slice.h>
 #include <core/templates/swap.h>
 
-GTEST_TEST(slice, default_constructor) {
-
+GTEST_TEST(slice, default_constructor)
+{
 
     // constexpr Slice() noexcept
     hud::slice<i32> slice;
@@ -11,10 +11,10 @@ GTEST_TEST(slice, default_constructor) {
     GTEST_ASSERT_EQ(slice.count(), 0u);
 }
 
-GTEST_TEST(slice, constructor) {
+GTEST_TEST(slice, constructor)
+{
 
-
-    i32 arr[4] = { 10,20,30,40 };
+    i32 arr[4] = {10, 20, 30, 40};
 
     // constexpr Slice(type_t* first, usize count) noexcept
     hud::slice<i32> slice(arr, 4);
@@ -23,10 +23,10 @@ GTEST_TEST(slice, constructor) {
     GTEST_ASSERT_EQ(slice.count(), 4u);
 }
 
-GTEST_TEST(slice, copy_constructor) {
+GTEST_TEST(slice, copy_constructor)
+{
 
-
-    i32 arr[4] = { 10,20,30,40 };
+    i32 arr[4] = {10, 20, 30, 40};
 
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_EQ(slice.data(), arr);
@@ -43,10 +43,10 @@ GTEST_TEST(slice, copy_constructor) {
     GTEST_ASSERT_EQ(slice.count(), 4u);
 }
 
-GTEST_TEST(slice, move_constructor) {
+GTEST_TEST(slice, move_constructor)
+{
 
-
-    i32 arr[4] = { 10,20,30,40 };
+    i32 arr[4] = {10, 20, 30, 40};
 
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_EQ(slice.data(), arr);
@@ -63,10 +63,10 @@ GTEST_TEST(slice, move_constructor) {
     GTEST_ASSERT_EQ(slice.count(), 0u);
 }
 
-GTEST_TEST(slice, copy_assignment) {
+GTEST_TEST(slice, copy_assignment)
+{
 
-
-    i32 arr[4] = { 10,20,30,40 };
+    i32 arr[4] = {10, 20, 30, 40};
 
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_EQ(slice.data(), arr);
@@ -89,10 +89,10 @@ GTEST_TEST(slice, copy_assignment) {
     }
 }
 
-GTEST_TEST(slice, move_assignment) {
- 
-    
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, move_assignment)
+{
+
+    i32 arr[4] = {10, 20, 30, 40};
 
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_EQ(slice.data(), arr);
@@ -115,10 +115,10 @@ GTEST_TEST(slice, move_assignment) {
     }
 }
 
-GTEST_TEST(slice, reset) {
- 
-    
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, reset)
+{
+
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_EQ(slice.data(), arr);
     GTEST_ASSERT_FALSE(slice.is_empty());
@@ -132,10 +132,10 @@ GTEST_TEST(slice, reset) {
     GTEST_ASSERT_EQ(slice.count(), 0u);
 }
 
-GTEST_TEST(slice, operator_indexed_accessor) {
- 
-    
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, operator_indexed_accessor)
+{
+
+    i32 arr[4] = {10, 20, 30, 40};
 
     // constexpr hud::add_lvalue_reference_t<type_t> operator[](const index at) noexcept
     hud::slice<i32> slice(arr, 4);
@@ -158,46 +158,48 @@ GTEST_TEST(slice, operator_indexed_accessor) {
     GTEST_ASSERT_EQ(slice2[3], 40);
 }
 
-GTEST_TEST(slice, is_empty) {
- 
-    
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, is_empty)
+{
+
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     hud::slice<i32> empty;
     GTEST_ASSERT_FALSE(slice.is_empty());
     GTEST_ASSERT_TRUE(empty.is_empty());
 }
 
-GTEST_TEST(slice, data) {
- 
-    
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, data)
+{
+
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     hud::slice<i32> slice2;
     GTEST_ASSERT_EQ(slice.data(), &arr[0]);
     GTEST_ASSERT_EQ(slice2.data(), nullptr);
 }
 
-GTEST_TEST(slice, count) {
- 
-    
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, count)
+{
+
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     hud::slice<i32> slice2;
     GTEST_ASSERT_EQ(slice.count(), 4u);
     GTEST_ASSERT_EQ(slice2.count(), 0u);
 }
 
-GTEST_TEST(slice, byte_count) {
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, byte_count)
+{
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     hud::slice<i32> slice2;
     GTEST_ASSERT_EQ(slice.byte_count(), 4u * sizeof(i32));
     GTEST_ASSERT_EQ(slice2.byte_count(), 0u * sizeof(i32));
 }
 
-GTEST_TEST(slice, is_valid_index) {
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, is_valid_index)
+{
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_TRUE(slice.is_valid_index(0));
     GTEST_ASSERT_TRUE(slice.is_valid_index(1));
@@ -208,8 +210,9 @@ GTEST_TEST(slice, is_valid_index) {
     GTEST_ASSERT_FALSE(empty_slice.is_valid_index(0));
 }
 
-GTEST_TEST(slice, is_valid_range) {
-    i32 arr[4] = { 10,20,30,40 };
+GTEST_TEST(slice, is_valid_range)
+{
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
 
     // Ranges with 0 elements are valid
@@ -217,7 +220,7 @@ GTEST_TEST(slice, is_valid_range) {
     GTEST_ASSERT_TRUE(slice.is_valid_range(1, 0));
     GTEST_ASSERT_TRUE(slice.is_valid_range(2, 0));
     GTEST_ASSERT_TRUE(slice.is_valid_range(3, 0));
-    
+
     // Ranges with more at least count() elements are valid
     GTEST_ASSERT_TRUE(slice.is_valid_range(0, 1));
     GTEST_ASSERT_TRUE(slice.is_valid_range(1, 1));
@@ -241,13 +244,12 @@ GTEST_TEST(slice, is_valid_range) {
     // Ranges [0;0] is invalid on empty slice
     hud::slice<i32> empty_slice;
     GTEST_ASSERT_FALSE(empty_slice.is_valid_range(0, 0));
-    
 }
 
-GTEST_TEST(slice, sub_slice) {
+GTEST_TEST(slice, sub_slice)
+{
 
-
-    i32 arr[4] = { 10,20,30,40 };
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_EQ(slice.data(), &arr[0]);
     GTEST_ASSERT_EQ(slice.count(), 4u);
@@ -262,7 +264,8 @@ GTEST_TEST(slice, sub_slice) {
 
         // Additional test when iterating on the sub_slice
         usize idx = 0;
-        for (; idx < sub_slice.count(); idx++) {
+        for (; idx < sub_slice.count(); idx++)
+        {
             GTEST_ASSERT_EQ(&sub_slice[idx], &slice[idx]);
         }
         GTEST_ASSERT_EQ(idx, 4u);
@@ -287,7 +290,8 @@ GTEST_TEST(slice, sub_slice) {
 
         // Additional test when iterating on the sub_slice
         usize idx = 0;
-        for (; idx < sub_slice.count(); idx++) {
+        for (; idx < sub_slice.count(); idx++)
+        {
             GTEST_ASSERT_EQ(&sub_slice[idx], &slice[idx]);
         }
         GTEST_ASSERT_EQ(idx, 2u);
@@ -303,17 +307,18 @@ GTEST_TEST(slice, sub_slice) {
 
         // Additional test when iterating on the sub_slice
         usize idx = 0;
-        for (; idx < sub_slice.count(); idx++) {
+        for (; idx < sub_slice.count(); idx++)
+        {
             GTEST_ASSERT_EQ(&sub_slice[idx], &slice[idx + slice.count() / 2]);
         }
         GTEST_ASSERT_EQ(idx, 2u);
     }
 }
 
-GTEST_TEST(slice, swap) {
+GTEST_TEST(slice, swap)
+{
 
-
-    i32 arr[4] = { 10,20,30,40 };
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_EQ(slice.data(), arr);
     GTEST_ASSERT_FALSE(slice.is_empty());
@@ -323,7 +328,7 @@ GTEST_TEST(slice, swap) {
     GTEST_ASSERT_TRUE(slice2.is_empty());
     GTEST_ASSERT_EQ(slice2.count(), 0u);
 
-    // constexpr void swap(Slice& other) noexcept 
+    // constexpr void swap(Slice& other) noexcept
     hud::swap(slice, slice2);
     GTEST_ASSERT_EQ(slice2.data(), arr);
     GTEST_ASSERT_FALSE(slice2.is_empty());
@@ -333,12 +338,12 @@ GTEST_TEST(slice, swap) {
     GTEST_ASSERT_EQ(slice.count(), 0u);
 }
 
-GTEST_TEST(slice, iterators) {
-
+GTEST_TEST(slice, iterators)
+{
 
     // constexpr Iterator begin() noexcept
     // constexpr Iterator end() noexcept
-    i32 arr[4] = { 10,20,30,40 };
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
     GTEST_ASSERT_EQ(slice.begin(), &arr[0]);
     GTEST_ASSERT_EQ(slice.end(), &arr[4]);
@@ -356,17 +361,18 @@ GTEST_TEST(slice, iterators) {
     GTEST_ASSERT_EQ(slice_const.end() - slice_const.begin(), static_cast<isize>(slice.count()));
 }
 
-GTEST_TEST(slice, range_for_loop) {
+GTEST_TEST(slice, range_for_loop)
+{
 
-
-    i32 arr[4] = { 10,20,30,40 };
+    i32 arr[4] = {10, 20, 30, 40};
     hud::slice<i32> slice(arr, 4);
 
     i32 result[4];
     i32 index = 0;
     // constexpr Iterator begin() noexcept
     // constexpr Iterator end() noexcept
-    for (auto& value : slice) {
+    for (auto &value : slice)
+    {
         result[index++] = value;
     }
     GTEST_ASSERT_EQ(result[0], arr[0]);
@@ -374,13 +380,14 @@ GTEST_TEST(slice, range_for_loop) {
     GTEST_ASSERT_EQ(result[2], arr[2]);
     GTEST_ASSERT_EQ(result[3], arr[3]);
 
-    const hud::slice<i32>& slice_const = slice;
+    const hud::slice<i32> &slice_const = slice;
     index = 0;
     hud::memory::set_zero(result);
 
     // constexpr ConstIterator begin() const noexcept
     // constexpr ConstIterator end() const noexcept
-    for (auto& value : slice_const) {
+    for (auto &value : slice_const)
+    {
         result[index++] = value;
     }
     GTEST_ASSERT_EQ(result[0], arr[0]);

@@ -1,7 +1,7 @@
 #include <core/templates/bit_cast.h>
 
-GTEST_TEST(templates, bit_cast) {
-
+GTEST_TEST(templates, bit_cast)
+{
 
     constexpr f64 f64v = 19880124.0;
     constexpr auto u64v = hud::bit_cast<u64>(f64v);

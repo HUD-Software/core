@@ -1,16 +1,17 @@
 #include <core/templates/lexicographical_compare.h>
 
-GTEST_TEST(templates, lexicographicalCompare) {
+GTEST_TEST(templates, lexicographicalCompare)
+{
 
-    i32 value[3] = { 1,2,3 };
-    i32 value2[3] = { 1,2,4 };
-    i32 value3[3] = { 1,2,5 };
-    i32 value4[4] = { 1,2,3,5 };
+    i32 value[3] = {1, 2, 3};
+    i32 value2[3] = {1, 2, 4};
+    i32 value3[3] = {1, 2, 5};
+    i32 value4[4] = {1, 2, 3, 5};
 
-    i8 value_i8[3] = { 1,2,3 };
-    i8 value2_i8[3] = { 1,2,4 };
-    i8 value3_i8[3] = { 1,2,5 };
-    i8 value4_i8[4] = { 1,2,3,5 };
+    i8 value_i8[3] = {1, 2, 3};
+    i8 value2_i8[3] = {1, 2, 4};
+    i8 value3_i8[3] = {1, 2, 5};
+    i8 value4_i8[4] = {1, 2, 3, 5};
 
     // bool lexicographical_compare(It1 first_1, It1 last_1, It2 first_2, It2 last_2)
     GTEST_ASSERT_FALSE(hud::lexicographical_compare(value, value + 3, value, value + 3));
@@ -33,7 +34,7 @@ GTEST_TEST(templates, lexicographicalCompare) {
     GTEST_ASSERT_TRUE(hud::lexicographical_compare(value4, value4 + 4, value3, value3 + 3));
     GTEST_ASSERT_FALSE(hud::lexicographical_compare(value4, value4 + 4, value4, value4 + 4));
 
-    // bool lexicographical_compare(It1* first_1, It1* last_1, It2* first_2, It2* last_2) noexcept requires(sizeof(It1) == 1 && sizeof(It2) == 1) 
+    // bool lexicographical_compare(It1* first_1, It1* last_1, It2* first_2, It2* last_2) noexcept requires(sizeof(It1) == 1 && sizeof(It2) == 1)
     GTEST_ASSERT_FALSE(hud::lexicographical_compare(value_i8, value_i8 + 3, value_i8, value_i8 + 3));
     GTEST_ASSERT_TRUE(hud::lexicographical_compare(value_i8, value_i8 + 3, value2_i8, value2_i8 + 3));
     GTEST_ASSERT_TRUE(hud::lexicographical_compare(value_i8, value_i8 + 3, value3_i8, value3_i8 + 3));
@@ -84,7 +85,6 @@ GTEST_TEST(templates, lexicographicalCompare) {
     GTEST_ASSERT_FALSE(hud::lexicographical_compare(value2_i8, value2_i8));
     GTEST_ASSERT_TRUE(hud::lexicographical_compare(value2_i8, value3_i8));
 
-
     GTEST_ASSERT_FALSE(hud::lexicographical_compare(value3_i8, value_i8));
     GTEST_ASSERT_FALSE(hud::lexicographical_compare(value3_i8, value2_i8));
     GTEST_ASSERT_FALSE(hud::lexicographical_compare(value3_i8, value3_i8));
@@ -98,5 +98,4 @@ GTEST_TEST(templates, lexicographicalCompare) {
     GTEST_ASSERT_FALSE(hud::lexicographical_compare(value4_i8, value_i8));
     GTEST_ASSERT_TRUE(hud::lexicographical_compare(value4_i8, value2_i8));
     GTEST_ASSERT_TRUE(hud::lexicographical_compare(value4_i8, value3_i8));
-
 }

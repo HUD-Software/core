@@ -1,15 +1,19 @@
 #include <core/traits/is_void.h>
 
-namespace hud_test {
-    class a {};
+namespace hud_test
+{
+    class a
+    {
+    };
 }
 
-GTEST_TEST(traits, is_void) {
+GTEST_TEST(traits, is_void)
+{
     GTEST_ASSERT_FALSE((hud::is_void_v<i32>));
-    GTEST_ASSERT_FALSE((hud::is_void_v<i32&>));
+    GTEST_ASSERT_FALSE((hud::is_void_v<i32 &>));
     GTEST_ASSERT_FALSE((hud::is_void_v<i32[]>));
     GTEST_ASSERT_FALSE((hud::is_void_v<i32[32]>));
-    GTEST_ASSERT_FALSE((hud::is_void_v<i32*>));
+    GTEST_ASSERT_FALSE((hud::is_void_v<i32 *>));
 
     GTEST_ASSERT_TRUE((hud::is_void_v<void>));
     GTEST_ASSERT_TRUE((hud::is_void_v<const void>));

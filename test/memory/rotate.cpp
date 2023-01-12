@@ -1,11 +1,12 @@
 #include <core/memory.h>
 
-GTEST_TEST(memory,rotate_left) {
-    auto test = [](const u32 shift) -> std::tuple<u32, u64> {
+GTEST_TEST(memory, rotate_left)
+{
+    auto test = [](const u32 shift) -> std::tuple<u32, u64>
+    {
         return {
             hud::memory::rotate_left(0xFF00FFAB, shift),
-            hud::memory::rotate_left(0xAB00FF00FF00FFAB, shift)
-        };
+            hud::memory::rotate_left(0xAB00FF00FF00FFAB, shift)};
     };
 
     // Non constant
@@ -47,12 +48,13 @@ GTEST_TEST(memory,rotate_left) {
     }
 }
 
-GTEST_TEST(memory,rotate_right) {
-    auto test = [](const u32 shift) -> std::tuple<u32, u64> {
+GTEST_TEST(memory, rotate_right)
+{
+    auto test = [](const u32 shift) -> std::tuple<u32, u64>
+    {
         return {
             hud::memory::rotate_right(0xFF00FFAB, shift),
-            hud::memory::rotate_right(0xAB00FF00FF00FFAB, shift)
-        };
+            hud::memory::rotate_right(0xAB00FF00FF00FFAB, shift)};
     };
 
     // Non constant

@@ -5,12 +5,14 @@
 #include "add_lvalue_reference.h"
 #include "add_rvalue_reference.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Checks whether type_t is move assignable type from u_type_t, and such construction is known not to throw any exception. */
     template <typename type_t, typename u_type_t = type_t>
     struct is_nothrow_move_assignable
-        : is_nothrow_assignable<hud::add_lvalue_reference_t<type_t>, add_rvalue_reference_t<u_type_t>> {
+        : is_nothrow_assignable<hud::add_lvalue_reference_t<type_t>, add_rvalue_reference_t<u_type_t>>
+    {
     };
 
     /** Equivalent of is_nothrow_move_assignable<type_t,u_type_t>::value. */

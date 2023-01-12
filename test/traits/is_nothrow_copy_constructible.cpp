@@ -1,18 +1,24 @@
 #include <core/traits/is_nothrow_copy_constructible.h>
 
-namespace hud_test {
-    struct a { };
-    struct b {
-        b(const b&) {}
+namespace hud_test
+{
+    struct a
+    {
     };
-    struct c {
-        c(const c&) noexcept {}
-        c(const b&) noexcept {}
-        c(const a&) {}
+    struct b
+    {
+        b(const b &) {}
+    };
+    struct c
+    {
+        c(const c &) noexcept {}
+        c(const b &) noexcept {}
+        c(const a &) {}
     };
 }
 
-GTEST_TEST(traits, is_nothrow_copy_constructible) {
+GTEST_TEST(traits, is_nothrow_copy_constructible)
+{
     GTEST_ASSERT_TRUE((hud::is_nothrow_copy_constructible_v<i32>));
     GTEST_ASSERT_TRUE((hud::is_nothrow_copy_constructible_v<hud_test::a>));
     GTEST_ASSERT_FALSE((hud::is_nothrow_copy_constructible_v<hud_test::b>));

@@ -1,16 +1,34 @@
 #include <core/traits/is_comparable_with_less_equal.h>
-namespace hud_test {
-    enum comp_enum {};
-    enum class comp_enum_2 {};
-    enum class comp_enum_3 : u8 {};
-    enum class comp_enum_4 : u64 {};
+namespace hud_test
+{
+    enum comp_enum
+    {
+    };
+    enum class comp_enum_2
+    {
+    };
+    enum class comp_enum_3 : u8
+    {
+    };
+    enum class comp_enum_4 : u64
+    {
+    };
 
-    struct a {};
-    struct b { bool operator<=(const b&) const noexcept; };
-    struct c { bool operator<=(const a&) const noexcept; };
+    struct a
+    {
+    };
+    struct b
+    {
+        bool operator<=(const b &) const noexcept;
+    };
+    struct c
+    {
+        bool operator<=(const a &) const noexcept;
+    };
 }
 
-GTEST_TEST(traits, is_comparable_with_less_equal) {
+GTEST_TEST(traits, is_comparable_with_less_equal)
+{
 
     // i8
     GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<i8, i8>));
@@ -330,46 +348,45 @@ GTEST_TEST(traits, is_comparable_with_less_equal) {
     GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<hud_test::c, hud_test::b>));
     GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<hud_test::c, hud_test::c>));
 
-    //pointers
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, hud_test::a>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, hud_test::b>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, hud_test::c>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, void>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, i8>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, i16>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, i32>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, i64>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, iptr>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, u8>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, u16>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, u32>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, u64>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, uptr>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, f32>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, f64>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, ansichar>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, wchar>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, char16>));
-    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void*, char32>));
+    // pointers
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, hud_test::a>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, hud_test::b>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, hud_test::c>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, void>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, i8>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, i16>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, i32>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, i64>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, iptr>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, u8>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, u16>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, u32>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, u64>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, uptr>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, f32>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, f64>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, ansichar>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, wchar>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, char16>));
+    GTEST_ASSERT_FALSE((hud::is_comparable_with_less_equal_v<void *, char32>));
 
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, hud_test::a*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, hud_test::b*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, hud_test::c*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, void*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, i8*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, i16*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, i32*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, i64*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, iptr*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, u8*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, u16*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, u32*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, u64*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, uptr*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, f32*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, f64*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, ansichar*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, wchar*>));
-    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void*, char16*>));
-
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, hud_test::a *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, hud_test::b *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, hud_test::c *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, void *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, i8 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, i16 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, i32 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, i64 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, iptr *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, u8 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, u16 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, u32 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, u64 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, uptr *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, f32 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, f64 *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, ansichar *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, wchar *>));
+    GTEST_ASSERT_TRUE((hud::is_comparable_with_less_equal_v<void *, char16 *>));
 }

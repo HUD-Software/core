@@ -1,8 +1,10 @@
 #include <core/containers/unique_pointer.h>
 
-GTEST_TEST(unique_pointer, destructor) {
+GTEST_TEST(unique_pointer, destructor)
+{
 
-    const auto test = []() {
+    const auto test = []()
+    {
         i32 dtor_count = 0;
         {
             hud::unique_pointer<hud_test::non_bitwise_type> ptr(new hud_test::non_bitwise_type(123, &dtor_count));
@@ -23,9 +25,11 @@ GTEST_TEST(unique_pointer, destructor) {
     }
 }
 
-GTEST_TEST(unique_pointer, destructor_after_move) {
+GTEST_TEST(unique_pointer, destructor_after_move)
+{
 
-    const auto test = []() {
+    const auto test = []()
+    {
         i32 dtor_count = 0;
         {
             hud::unique_pointer<hud_test::non_bitwise_type> ptr(new hud_test::non_bitwise_type(123, &dtor_count));

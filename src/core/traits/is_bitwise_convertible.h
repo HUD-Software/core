@@ -18,7 +18,7 @@ namespace hud
      * - type_t and type_t are pointers or pointer's to member
      * - type_t and type_t are the same type and
      *   - type_t and type_t are both integral or enum. This assume two's-complement
-    */
+     */
     template <typename type_t, typename u_type_t>
     struct is_bitwise_convertible
         : hud::disjunction<

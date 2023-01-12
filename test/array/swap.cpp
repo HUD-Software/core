@@ -52,7 +52,7 @@ GTEST_TEST(array, swap_non_trivial_type)
     using type = hud_test::non_bitwise_type;
     using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
-    i32 a_destructor_called[2] = { false, false };
+    i32 a_destructor_called[2] = {false, false};
     array_type a;
     a.reserve(4);
     a.emplace_back(10, &a_destructor_called[0]);
@@ -68,7 +68,7 @@ GTEST_TEST(array, swap_non_trivial_type)
     GTEST_ASSERT_EQ(a.allocator().allocation_count(), 1u);
     GTEST_ASSERT_EQ(a.allocator().free_count(), 0u);
 
-    i32 b_destructor_called[3] = { false, false, false };
+    i32 b_destructor_called[3] = {false, false, false};
     array_type b;
     b.reserve(5);
     b.emplace_back(100, &b_destructor_called[0]);
@@ -110,7 +110,6 @@ GTEST_TEST(array, swap_non_trivial_type)
     GTEST_ASSERT_EQ(*b[1].destructor_counter(), 0);
     GTEST_ASSERT_EQ(b.allocator().allocation_count(), 1u);
     GTEST_ASSERT_EQ(b.allocator().free_count(), 0u);
-
 
     swap(a, b);
 
@@ -189,7 +188,6 @@ GTEST_TEST(array, swap_trivial_type)
     GTEST_ASSERT_EQ(b[1], 20u);
     GTEST_ASSERT_EQ(b.allocator().allocation_count(), 1u);
     GTEST_ASSERT_EQ(b.allocator().free_count(), 0u);
-
 
     swap(a, b);
 

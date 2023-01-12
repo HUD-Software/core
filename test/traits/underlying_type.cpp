@@ -1,7 +1,10 @@
 #include <core/traits/underlying_type.h>
 
-namespace hud_test {
-    enum e1 {};
+namespace hud_test
+{
+    enum e1
+    {
+    };
     enum class e2 : i8;
     enum class e3 : i16;
     enum class e4 : i32;
@@ -71,13 +74,14 @@ namespace hud_test {
     enum class e17cv : const volatile usize;
 }
 
-GTEST_TEST(traits, underlying_type) {
-    // MSVC and ClangCL promote the enum an signed int when GCC and Clang promote it to unsigned int
-    #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
-        GTEST_ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e1>, i32>));
-    #else 
-        GTEST_ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e1>, u32>));
-    #endif
+GTEST_TEST(traits, underlying_type)
+{
+// MSVC and ClangCL promote the enum an signed int when GCC and Clang promote it to unsigned int
+#if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e1>, i32>));
+#else
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e1>, u32>));
+#endif
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e2>, i8>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e3>, i16>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::underlying_type_t<hud_test::e4>, i32>));

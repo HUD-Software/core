@@ -5,13 +5,15 @@
 
 #if !defined(HD_OS_WINDOWS)
 #error This file must be included only when targetting Windows OS
-#endif 
+#endif
 
-namespace hud::os::windows{
+namespace hud::os::windows
+{
 
-    struct character 
-    : public os::common::character 
-    {};
+    struct character
+        : public os::common::character
+    {
+    };
 
 } // namespace hud::os::windows
 

@@ -3,9 +3,10 @@
 
 GTEST_TEST(array, default_constructor_should_allocate_no_memory)
 {
-    auto test = []() -> std::tuple<bool, usize, usize> {
+    auto test = []() -> std::tuple<bool, usize, usize>
+    {
         hud::array<hud::u32> array;
-        return { array.data() == nullptr, array.count(), array.max_count() };
+        return {array.data() == nullptr, array.count(), array.max_count()};
     };
 
     // Non Constant
@@ -28,10 +29,10 @@ GTEST_TEST(array, default_constructor_should_allocate_no_memory)
 GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_same_type)
 {
 
-
     using TypeList = std::tuple<i8, i16, i32, i64, u8, u16, u32, u64, uptr, iptr, usize, isize>;
 
-    hud_test::for_each_type<TypeList>()([]<typename type_t>() noexcept {
+    hud_test::for_each_type<TypeList>()([]<typename type_t>() noexcept
+                                        {
 
         static_assert(hud::is_bitwise_copy_constructible_v<type_t>);
 
@@ -318,8 +319,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                         }
                     }
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_same_type)
@@ -330,13 +330,16 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
     // test with default allocator no extra
     {
-        auto test_default_allocator = [](const type* raw, usize element_count) {
+        auto test_default_allocator = [](const type *raw, usize element_count)
+        {
             hud::array<type> array(raw, element_count);
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
-            for (usize index = 0; index < element_count; index++) {
-                if (array[index].id() != raw[index].id()) {
+            for (usize index = 0; index < element_count; index++)
+            {
+                if (array[index].id() != raw[index].id())
+                {
                     all_values_copied_in_order = false;
                     break;
                 }
@@ -344,10 +347,12 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
             // Ensure the copy constructor are called
             bool all_copy_constructor_are_called = true;
-            for (usize index = 0; index < element_count; index++) {
+            for (usize index = 0; index < element_count; index++)
+            {
                 // Ensure we call the copy constructor and the id is correctly copied
                 if (array[index].copy_constructor_count() != 1u ||
-                    array[index].id() != raw[index].id()) {
+                    array[index].id() != raw[index].id())
+                {
                     all_copy_constructor_are_called = false;
                     break;
                 }
@@ -374,7 +379,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
         // Non Constant
         {
             constexpr usize element_count = 4;
-            constexpr type raw[element_count] = { 1,2,3,4 };
+            constexpr type raw[element_count] = {1, 2, 3, 4};
             const auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -394,7 +399,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
         // Constant
         {
             constexpr usize element_count = 4;
-            constexpr type raw[element_count] = { 1,2,3,4 };
+            constexpr type raw[element_count] = {1, 2, 3, 4};
             constexpr auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -414,13 +419,16 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
     // test with allocator no extra
     {
-        auto test_with_allocator = [](const type* raw, usize element_count) {
+        auto test_with_allocator = [](const type *raw, usize element_count)
+        {
             hud::array<type, hud_test::array_allocator<alignof(type)>> array(raw, element_count, hud_test::array_allocator<alignof(type)>{});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
-            for (usize index = 0; index < element_count; index++) {
-                if (array[index].id() != raw[index].id()) {
+            for (usize index = 0; index < element_count; index++)
+            {
+                if (array[index].id() != raw[index].id())
+                {
                     all_values_copied_in_order = false;
                     break;
                 }
@@ -428,10 +436,12 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
             // Ensure the copy constructor are called
             bool all_copy_constructor_are_called = true;
-            for (usize index = 0; index < element_count; index++) {
+            for (usize index = 0; index < element_count; index++)
+            {
                 // Ensure we call the copy constructor and the id is correctly copied
                 if (array[index].copy_constructor_count() != 1u ||
-                    array[index].id() != raw[index].id()) {
+                    array[index].id() != raw[index].id())
+                {
                     all_copy_constructor_are_called = false;
                     break;
                 }
@@ -461,7 +471,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
         // Non Constant
         {
             constexpr usize element_count = 4;
-            constexpr type raw[element_count] = { 1,2,3,4 };
+            constexpr type raw[element_count] = {1, 2, 3, 4};
             const auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -485,7 +495,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
         // Constant
         {
             constexpr usize element_count = 4;
-            constexpr type raw[element_count] = { 1,2,3,4 };
+            constexpr type raw[element_count] = {1, 2, 3, 4};
             constexpr auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -509,17 +519,20 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
     {
         hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>() {
-
-            // Test default allcoator with extra
+            []<usize extra>()
+            {
+                // Test default allcoator with extra
                 {
-                    auto test_default_allocator = [](const type* raw, usize element_count) {
+                    auto test_default_allocator = [](const type *raw, usize element_count)
+                    {
                         hud::array<type> array(raw, element_count, extra);
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
-                        for (usize index = 0; index < element_count; index++) {
-                            if (array[index].id() != raw[index].id()) {
+                        for (usize index = 0; index < element_count; index++)
+                        {
+                            if (array[index].id() != raw[index].id())
+                            {
                                 all_values_copied_in_order = false;
                                 break;
                             }
@@ -527,10 +540,12 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
                         // Ensure the copy constructor are called
                         bool all_copy_constructor_are_called = true;
-                        for (usize index = 0; index < element_count; index++) {
+                        for (usize index = 0; index < element_count; index++)
+                        {
                             // Ensure we call the copy constructor and the id is correctly copied
                             if (array[index].copy_constructor_count() != 1u ||
-                                array[index].id() != raw[index].id()) {
+                                array[index].id() != raw[index].id())
+                            {
                                 all_copy_constructor_are_called = false;
                                 break;
                             }
@@ -557,7 +572,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     // Non Constant
                     {
                         constexpr usize element_count = 4;
-                        constexpr type raw[element_count] = { 1,2,3,4 };
+                        constexpr type raw[element_count] = {1, 2, 3, 4};
                         const auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -577,7 +592,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     // Constant
                     {
                         constexpr usize element_count = 4;
-                        constexpr type raw[element_count] = { 1,2,3,4 };
+                        constexpr type raw[element_count] = {1, 2, 3, 4};
                         constexpr auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -595,16 +610,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     }
                 }
 
-
                 // Test with allocator with extra
                 {
-                    auto test_with_allocator = [](const type* raw, usize element_count) {
+                    auto test_with_allocator = [](const type *raw, usize element_count)
+                    {
                         hud::array<type, hud_test::array_allocator<alignof(type)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(type)>{});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
-                        for (usize index = 0; index < element_count; index++) {
-                            if (array[index].id() != raw[index].id()) {
+                        for (usize index = 0; index < element_count; index++)
+                        {
+                            if (array[index].id() != raw[index].id())
+                            {
                                 all_values_copied_in_order = false;
                                 break;
                             }
@@ -612,10 +629,12 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
                         // Ensure the copy constructor are called
                         bool all_copy_constructor_are_called = true;
-                        for (usize index = 0; index < element_count; index++) {
+                        for (usize index = 0; index < element_count; index++)
+                        {
                             // Ensure we call the copy constructor and the id is correctly copied
                             if (array[index].copy_constructor_count() != 1u ||
-                                array[index].id() != raw[index].id()) {
+                                array[index].id() != raw[index].id())
+                            {
                                 all_copy_constructor_are_called = false;
                                 break;
                             }
@@ -645,7 +664,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     // Non Constant
                     {
                         constexpr usize element_count = 4;
-                        constexpr type raw[element_count] = { 1,2,3,4 };
+                        constexpr type raw[element_count] = {1, 2, 3, 4};
                         const auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -669,7 +688,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     // Constant
                     {
                         constexpr usize element_count = 4;
-                        constexpr type raw[element_count] = { 1,2,3,4 };
+                        constexpr type raw[element_count] = {1, 2, 3, 4};
                         constexpr auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -690,19 +709,19 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
-        });
+            });
     }
 }
 
 GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructible_different_type)
 {
 
-
     using TypesToTest = std::tuple<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>;
 
     bool at_least_one_copy_tested = false;
-    hud_test::for_each_type<TypesToTest>()([&at_least_one_copy_tested]<typename type_t>() noexcept {
-        hud_test::for_each_type<TypesToTest>()([&at_least_one_copy_tested]<typename U>() noexcept {
+    hud_test::for_each_type<TypesToTest>()([&at_least_one_copy_tested]<typename type_t>() noexcept
+                                           { hud_test::for_each_type<TypesToTest>()([&at_least_one_copy_tested]<typename U>() noexcept
+                                                                                    {
 
             // Test only types that are not the same but are bitwise copy constructible
             if constexpr (!std::is_same_v<type_t, U> && hud::is_bitwise_copy_constructible_v<type_t, U>)
@@ -992,30 +1011,29 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                             }
                     });
                 }
-            }
-        });
-    });
+            } }); });
 
     GTEST_ASSERT_EQ(at_least_one_copy_tested, true);
-
 }
 
 GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_different_type)
 {
-
 
     using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType;
 
     // test with default allocator no extra
     {
-        auto test_default_allocator = [](const Type1* raw, usize element_count) {
+        auto test_default_allocator = [](const Type1 *raw, usize element_count)
+        {
             hud::array<Type2> array(raw, element_count);
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
-            for (usize index = 0; index < element_count; index++) {
-                if (array[index].id() != raw[index].id()) {
+            for (usize index = 0; index < element_count; index++)
+            {
+                if (array[index].id() != raw[index].id())
+                {
                     all_values_copied_in_order = false;
                     break;
                 }
@@ -1023,10 +1041,12 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
             // Ensure the copy constructor are called
             bool all_copy_constructor_are_called = true;
-            for (usize index = 0; index < element_count; index++) {
+            for (usize index = 0; index < element_count; index++)
+            {
                 // Ensure we call the copy constructor and the id is correctly copied
                 if (array[index].copy_constructor_count() != 1u ||
-                    array[index].id() != raw[index].id()) {
+                    array[index].id() != raw[index].id())
+                {
                     all_copy_constructor_are_called = false;
                     break;
                 }
@@ -1039,7 +1059,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                 array.max_count(),
 
                 // Ensure it's not the same memory buffer
-                (void*)array.data() != (void*)&raw[0],
+                (void *)array.data() != (void *)&raw[0],
 
                 // Ensure values are correclty copied in order
                 all_values_copied_in_order,
@@ -1053,7 +1073,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
         // Non Constant
         {
             constexpr usize element_count = 4;
-            constexpr Type1 raw[element_count] = { 1,2,3,4 };
+            constexpr Type1 raw[element_count] = {1, 2, 3, 4};
             const auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1073,7 +1093,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
         // Constant
         {
             constexpr usize element_count = 4;
-            constexpr Type1 raw[element_count] = { 1,2,3,4 };
+            constexpr Type1 raw[element_count] = {1, 2, 3, 4};
             constexpr auto result = test_default_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1093,13 +1113,16 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
     // test with allocator no extra
     {
-        auto test_with_allocator = [](const Type1* raw, usize element_count) {
+        auto test_with_allocator = [](const Type1 *raw, usize element_count)
+        {
             hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(raw, element_count, hud_test::array_allocator<alignof(Type2)>{});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
-            for (usize index = 0; index < element_count; index++) {
-                if (array[index].id() != raw[index].id()) {
+            for (usize index = 0; index < element_count; index++)
+            {
+                if (array[index].id() != raw[index].id())
+                {
                     all_values_copied_in_order = false;
                     break;
                 }
@@ -1107,10 +1130,12 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
             // Ensure the copy constructor are called
             bool all_copy_constructor_are_called = true;
-            for (usize index = 0; index < element_count; index++) {
+            for (usize index = 0; index < element_count; index++)
+            {
                 // Ensure we call the copy constructor and the id is correctly copied
                 if (array[index].copy_constructor_count() != 1u ||
-                    array[index].id() != raw[index].id()) {
+                    array[index].id() != raw[index].id())
+                {
                     all_copy_constructor_are_called = false;
                     break;
                 }
@@ -1140,7 +1165,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
         // Non Constant
         {
             constexpr usize element_count = 4;
-            constexpr Type1 raw[element_count] = { 1,2,3,4 };
+            constexpr Type1 raw[element_count] = {1, 2, 3, 4};
             const auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1164,7 +1189,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
         // Constant
         {
             constexpr usize element_count = 4;
-            constexpr Type1 raw[element_count] = { 1,2,3,4 };
+            constexpr Type1 raw[element_count] = {1, 2, 3, 4};
             constexpr auto result = test_with_allocator(raw, element_count);
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1188,17 +1213,20 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
     {
         hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>() {
-
-            // Test default allcoator with extra
+            []<usize extra>()
+            {
+                // Test default allcoator with extra
                 {
-                    auto test_default_allocator = [](const Type1* raw, usize element_count) {
+                    auto test_default_allocator = [](const Type1 *raw, usize element_count)
+                    {
                         hud::array<Type2> array(raw, element_count, extra);
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
-                        for (usize index = 0; index < element_count; index++) {
-                            if (array[index].id() != raw[index].id()) {
+                        for (usize index = 0; index < element_count; index++)
+                        {
+                            if (array[index].id() != raw[index].id())
+                            {
                                 all_values_copied_in_order = false;
                                 break;
                             }
@@ -1206,10 +1234,12 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
                         // Ensure the copy constructor are called
                         bool all_copy_constructor_are_called = true;
-                        for (usize index = 0; index < element_count; index++) {
+                        for (usize index = 0; index < element_count; index++)
+                        {
                             // Ensure we call the copy constructor and the id is correctly copied
                             if (array[index].copy_constructor_count() != 1u ||
-                                array[index].id() != raw[index].id()) {
+                                array[index].id() != raw[index].id())
+                            {
                                 all_copy_constructor_are_called = false;
                                 break;
                             }
@@ -1236,7 +1266,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     // Non Constant
                     {
                         constexpr usize element_count = 4;
-                        constexpr Type1 raw[element_count] = { 1,2,3,4 };
+                        constexpr Type1 raw[element_count] = {1, 2, 3, 4};
                         const auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1256,7 +1286,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     // Constant
                     {
                         constexpr usize element_count = 4;
-                        constexpr Type1 raw[element_count] = { 1,2,3,4 };
+                        constexpr Type1 raw[element_count] = {1, 2, 3, 4};
                         constexpr auto result = test_default_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1274,16 +1304,18 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     }
                 }
 
-
                 // Test with allocator with extra
                 {
-                    auto test_with_allocator = [](const Type1* raw, usize element_count) {
+                    auto test_with_allocator = [](const Type1 *raw, usize element_count)
+                    {
                         hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(Type2)>{});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
-                        for (usize index = 0; index < element_count; index++) {
-                            if (array[index].id() != raw[index].id()) {
+                        for (usize index = 0; index < element_count; index++)
+                        {
+                            if (array[index].id() != raw[index].id())
+                            {
                                 all_values_copied_in_order = false;
                                 break;
                             }
@@ -1291,10 +1323,12 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
                         // Ensure the copy constructor are called
                         bool all_copy_constructor_are_called = true;
-                        for (usize index = 0; index < element_count; index++) {
+                        for (usize index = 0; index < element_count; index++)
+                        {
                             // Ensure we call the copy constructor and the id is correctly copied
                             if (array[index].copy_constructor_count() != 1u ||
-                                array[index].id() != raw[index].id()) {
+                                array[index].id() != raw[index].id())
+                            {
                                 all_copy_constructor_are_called = false;
                                 break;
                             }
@@ -1324,7 +1358,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     // Non Constant
                     {
                         constexpr usize element_count = 4;
-                        constexpr Type1 raw[element_count] = { 1,2,3,4 };
+                        constexpr Type1 raw[element_count] = {1, 2, 3, 4};
                         const auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1348,7 +1382,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                     // Constant
                     {
                         constexpr usize element_count = 4;
-                        constexpr Type1 raw[element_count] = { 1,2,3,4 };
+                        constexpr Type1 raw[element_count] = {1, 2, 3, 4};
                         constexpr auto result = test_with_allocator(raw, element_count);
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1369,7 +1403,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
-        });
+            });
     }
 }
 
@@ -1381,13 +1415,16 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
 
     {
-        auto test_default_allocator = [](std::initializer_list<type> initializer) {
+        auto test_default_allocator = [](std::initializer_list<type> initializer)
+        {
             hud::array<type> array(initializer);
             bool all_values_copied = true;
 
             // Ensure values are correclty copied
-            for (usize index = 0; index < initializer.size(); index++) {
-                if (*(array.data() + index) != *(initializer.begin() + index)) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
+                if (*(array.data() + index) != *(initializer.begin() + index))
+                {
                     all_values_copied = false;
                     break;
                 }
@@ -1400,16 +1437,15 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                 array.max_count(),
 
                 // Ensure it's not the same memory buffer
-                (void*)array.data() != (void*)initializer.begin(),
+                (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied
-                all_values_copied
-            };
+                all_values_copied};
         };
 
         // Non Constant
         {
-            const auto result = test_default_allocator({ 1,2,3,4 });
+            const auto result = test_default_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1424,7 +1460,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
         // Constant
         {
-            constexpr auto result = test_default_allocator({ 1,2,3,4 });
+            constexpr auto result = test_default_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1440,13 +1476,16 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
     // test with allocator no extra
     {
-        auto test_with_allocator = [](std::initializer_list<type> initializer) {
+        auto test_with_allocator = [](std::initializer_list<type> initializer)
+        {
             hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, hud_test::array_allocator<alignof(type)>{});
             bool all_values_copied = true;
 
             // Ensure values are correclty copied
-            for (usize index = 0; index < initializer.size(); index++) {
-                if (*(array.data() + index) != *(initializer.begin() + index)) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
+                if (*(array.data() + index) != *(initializer.begin() + index))
+                {
                     all_values_copied = false;
                     break;
                 }
@@ -1466,13 +1505,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                 // Ensure we are allocating only one time
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
         };
 
         // Non Constant
         {
-            const auto result = test_with_allocator({ 1,2,3,4 });
+            const auto result = test_with_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1491,7 +1529,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
         // Constant
         {
-            constexpr auto result = test_with_allocator({ 1,2,3,4 });
+            constexpr auto result = test_with_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1511,17 +1549,20 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
     {
         hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>() {
-
-            // Test default allocator with extra
+            []<usize extra>()
+            {
+                // Test default allocator with extra
                 {
-                    auto test_default_allocator = [](std::initializer_list<type> initializer) {
+                    auto test_default_allocator = [](std::initializer_list<type> initializer)
+                    {
                         hud::array<type> array(initializer, extra);
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
-                        for (usize index = 0; index < initializer.size(); index++) {
-                            if (*(array.data() + index) != *(initializer.begin() + index)) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
+                            if (*(array.data() + index) != *(initializer.begin() + index))
+                            {
                                 all_values_copied = false;
                                 break;
                             }
@@ -1537,13 +1578,11 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                             array.data() != initializer.begin(),
 
                             // Ensure values are correclty copied
-                            all_values_copied
-                        };
-
+                            all_values_copied};
                     };
                     // Non Constant
                     {
-                        const auto result = test_default_allocator({ 1,2,3,4 });
+                        const auto result = test_default_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1558,7 +1597,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                     // Constant
                     {
-                        constexpr auto result = test_default_allocator({ 1,2,3,4 });
+                        constexpr auto result = test_default_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1570,18 +1609,20 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                         // Ensure values are correclty copied
                         GTEST_ASSERT_TRUE(std::get<4>(result));
                     }
-
                 }
 
                 // Test with allocator with extra
                 {
-                    auto test_with_allocator = [](std::initializer_list<i32> initializer) {
+                    auto test_with_allocator = [](std::initializer_list<i32> initializer)
+                    {
                         hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, extra, hud_test::array_allocator<alignof(type)>{});
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
-                        for (usize index = 0; index < initializer.size(); index++) {
-                            if (*(array.data() + index) != *(initializer.begin() + index)) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
+                            if (*(array.data() + index) != *(initializer.begin() + index))
+                            {
                                 all_values_copied = false;
                                 break;
                             }
@@ -1601,13 +1642,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                             // Ensure we are allocating only one time
                             array.allocator().allocation_count(),
-                            array.allocator().free_count()
-                        };
+                            array.allocator().free_count()};
                     };
 
                     // Non Constant
                     {
-                        const auto result = test_with_allocator({ 1,2,3,4 });
+                        const auto result = test_with_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1626,7 +1666,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                     // Constant
                     {
-                        constexpr auto result = test_with_allocator({ 1,2,3,4 });
+                        constexpr auto result = test_with_allocator({1, 2, 3, 4});
 
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1644,7 +1684,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                         GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                     }
                 }
-        });
+            });
     }
 }
 
@@ -1656,15 +1696,18 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
     static_assert(!std::is_same_v<Type1, Type2> && hud::is_bitwise_copy_constructible_v<Type2, Type1>);
 
-    //test with default allocator no extra
+    // test with default allocator no extra
     {
-        auto test_default_allocator = [](std::initializer_list<Type1> initializer) {
+        auto test_default_allocator = [](std::initializer_list<Type1> initializer)
+        {
             hud::array<Type2> array(initializer);
             bool all_values_copied = true;
 
             // Ensure values are correclty copied
-            for (usize index = 0; index < initializer.size(); index++) {
-                if (*(array.data() + index) != static_cast<Type2>(*(initializer.begin() + index))) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
+                if (*(array.data() + index) != static_cast<Type2>(*(initializer.begin() + index)))
+                {
                     all_values_copied = false;
                     break;
                 }
@@ -1677,16 +1720,15 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                 array.max_count(),
 
                 // Ensure it's not the same memory buffer
-                (void*)array.data() != (void*)initializer.begin(),
+                (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied
-                all_values_copied
-            };
+                all_values_copied};
         };
 
         // Non Constant
         {
-            const auto result = test_default_allocator({ 1,2,3,4 });
+            const auto result = test_default_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1701,7 +1743,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
         // Constant
         {
-            constexpr auto result = test_default_allocator({ 1,2,3,4 });
+            constexpr auto result = test_default_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1717,13 +1759,16 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
     // test with allocator no extra
     {
-        auto test_with_allocator = [](std::initializer_list<Type1> initializer) {
+        auto test_with_allocator = [](std::initializer_list<Type1> initializer)
+        {
             hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, hud_test::array_allocator<alignof(Type2)>{});
             bool all_values_copied = true;
 
             // Ensure values are correclty copied
-            for (usize index = 0; index < initializer.size(); index++) {
-                if (*(array.data() + index) != static_cast<Type2>(*(initializer.begin() + index))) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
+                if (*(array.data() + index) != static_cast<Type2>(*(initializer.begin() + index)))
+                {
                     all_values_copied = false;
                     break;
                 }
@@ -1736,20 +1781,19 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                 array.max_count(),
 
                 // Ensure it's not the same memory buffer
-                (void*)array.data() != (void*)initializer.begin(),
+                (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied
                 all_values_copied,
 
                 // Ensure we are allocating only one time
                 array.allocator().allocation_count(),
-                array.allocator().free_count()
-            };
+                array.allocator().free_count()};
         };
 
         // Non Constant
         {
-            const auto result = test_with_allocator({ 1,2,3,4 });
+            const auto result = test_with_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1768,7 +1812,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
         // Constant
         {
-            constexpr auto result = test_with_allocator({ 1,2,3,4 });
+            constexpr auto result = test_with_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1788,17 +1832,20 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
     {
         hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>() {
-
-            // Test default allocator with extra
+            []<usize extra>()
+            {
+                // Test default allocator with extra
                 {
-                    auto test_default_allocator = [](std::initializer_list<Type1> initializer) {
+                    auto test_default_allocator = [](std::initializer_list<Type1> initializer)
+                    {
                         hud::array<Type2> array(initializer, extra);
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
-                        for (usize index = 0; index < initializer.size(); index++) {
-                            if (*(array.data() + index) != static_cast<Type2>(*(initializer.begin() + index))) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
+                            if (*(array.data() + index) != static_cast<Type2>(*(initializer.begin() + index)))
+                            {
                                 all_values_copied = false;
                                 break;
                             }
@@ -1811,16 +1858,14 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                             array.max_count(),
 
                             // Ensure it's not the same memory buffer
-                            (void*)array.data() != (void*)initializer.begin(),
+                            (void *)array.data() != (void *)initializer.begin(),
 
                             // Ensure values are correclty copied
-                            all_values_copied
-                        };
-
+                            all_values_copied};
                     };
                     // Non Constant
                     {
-                        const auto result = test_default_allocator({ 1,2,3,4 });
+                        const auto result = test_default_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1835,7 +1880,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                     // Constant
                     {
-                        constexpr auto result = test_default_allocator({ 1,2,3,4 });
+                        constexpr auto result = test_default_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1847,18 +1892,20 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                         // Ensure values are correclty copied
                         GTEST_ASSERT_TRUE(std::get<4>(result));
                     }
-
                 }
 
                 // Test with allocator with extra
                 {
-                    auto test_with_allocator = [](std::initializer_list<Type1> initializer) {
+                    auto test_with_allocator = [](std::initializer_list<Type1> initializer)
+                    {
                         hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, extra, hud_test::array_allocator<alignof(Type2)>{});
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
-                        for (usize index = 0; index < initializer.size(); index++) {
-                            if (*(array.data() + index) != static_cast<Type2>(*(initializer.begin() + index))) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
+                            if (*(array.data() + index) != static_cast<Type2>(*(initializer.begin() + index)))
+                            {
                                 all_values_copied = false;
                                 break;
                             }
@@ -1871,20 +1918,19 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                             array.max_count(),
 
                             // Ensure it's not the same memory buffer
-                            (void*)array.data() != (void*)initializer.begin(),
+                            (void *)array.data() != (void *)initializer.begin(),
 
                             // Ensure values are correclty copied
                             all_values_copied,
 
                             // Ensure we are allocating only one time
                             array.allocator().allocation_count(),
-                            array.allocator().free_count()
-                        };
+                            array.allocator().free_count()};
                     };
 
                     // Non Constant
                     {
-                        const auto result = test_with_allocator({ 1,2,3,4 });
+                        const auto result = test_with_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1903,7 +1949,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                     // Constant
                     {
-                        constexpr auto result = test_with_allocator({ 1,2,3,4 });
+                        constexpr auto result = test_with_allocator({1, 2, 3, 4});
 
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
@@ -1921,7 +1967,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                         GTEST_ASSERT_EQ(std::get<6>(result), 0u);
                     }
                 }
-        });
+            });
     }
 }
 
@@ -1933,13 +1979,16 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
     // test with default allocator no extra
     {
-        auto test_default_allocator = [](std::initializer_list<type> initializer) {
+        auto test_default_allocator = [](std::initializer_list<type> initializer)
+        {
             hud::array<type> array(initializer);
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
-            for (usize index = 0; index < initializer.size(); index++) {
-                if (array[index].id() != initializer.begin()[index].id()) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
+                if (array[index].id() != initializer.begin()[index].id())
+                {
                     all_values_copied_in_order = false;
                     break;
                 }
@@ -1947,10 +1996,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
             // Ensure the copy constructor are called
             bool all_copy_constructor_are_called = true;
-            for (usize index = 0; index < initializer.size(); index++) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
                 // Ensure we call the copy constructor and the id is correctly copied
                 if (array[index].copy_constructor_count() != 1u ||
-                    array[index].id() != initializer.begin()[index].id()) {
+                    array[index].id() != initializer.begin()[index].id())
+                {
                     all_copy_constructor_are_called = false;
                     break;
                 }
@@ -1963,7 +2014,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                 array.max_count(),
 
                 // Ensure it's not the same memory buffer
-                (void*)array.data() != (void*)initializer.begin(),
+                (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied in order
                 all_values_copied_in_order,
@@ -1976,7 +2027,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
         // Non Constant
         {
-            const auto result = test_default_allocator({ 1,2,3,4 });
+            const auto result = test_default_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -1994,7 +2045,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
         // Constant
         {
-            constexpr auto result = test_default_allocator({ 1,2,3,4 });
+            constexpr auto result = test_default_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2013,13 +2064,16 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
     // test with allocator no extra
     {
-        auto test_with_allocator = [](std::initializer_list<type> initializer) {
+        auto test_with_allocator = [](std::initializer_list<type> initializer)
+        {
             hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, hud_test::array_allocator<alignof(type)>{});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
-            for (usize index = 0; index < initializer.size(); index++) {
-                if (array[index].id() != initializer.begin()[index].id()) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
+                if (array[index].id() != initializer.begin()[index].id())
+                {
                     all_values_copied_in_order = false;
                     break;
                 }
@@ -2027,10 +2081,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
             // Ensure the copy constructor are called
             bool all_copy_constructor_are_called = true;
-            for (usize index = 0; index < initializer.size(); index++) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
                 // Ensure we call the copy constructor and the id is correctly copied
                 if (array[index].copy_constructor_count() != 1u ||
-                    array[index].id() != initializer.begin()[index].id()) {
+                    array[index].id() != initializer.begin()[index].id())
+                {
                     all_copy_constructor_are_called = false;
                     break;
                 }
@@ -2042,7 +2098,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                 array.max_count(),
 
                 // Ensure it's not the same memory buffer
-                (void*)array.data() != (void*)initializer.begin(),
+                (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied in order
                 all_values_copied_in_order,
@@ -2059,7 +2115,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
         // Non Constant
         {
-            const auto result = test_with_allocator({ 1,2,3,4 });
+            const auto result = test_with_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2081,7 +2137,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
         // Constant
         {
-            constexpr auto result = test_with_allocator({ 1,2,3,4 });
+            constexpr auto result = test_with_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2104,17 +2160,20 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
     {
         hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>() {
-
-            // Test default allcoator with extra
+            []<usize extra>()
+            {
+                // Test default allcoator with extra
                 {
-                    auto test_default_allocator = [](std::initializer_list<type> initializer) {
+                    auto test_default_allocator = [](std::initializer_list<type> initializer)
+                    {
                         hud::array<type> array(initializer, extra);
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
-                        for (usize index = 0; index < initializer.size(); index++) {
-                            if (array[index].id() != initializer.begin()[index].id()) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
+                            if (array[index].id() != initializer.begin()[index].id())
+                            {
                                 all_values_copied_in_order = false;
                                 break;
                             }
@@ -2122,10 +2181,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                         // Ensure the copy constructor are called
                         bool all_copy_constructor_are_called = true;
-                        for (usize index = 0; index < initializer.size(); index++) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
                             // Ensure we call the copy constructor and the id is correctly copied
                             if (array[index].copy_constructor_count() != 1u ||
-                                array[index].id() != initializer.begin()[index].id()) {
+                                array[index].id() != initializer.begin()[index].id())
+                            {
                                 all_copy_constructor_are_called = false;
                                 break;
                             }
@@ -2138,7 +2199,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                             array.max_count(),
 
                             // Ensure it's not the same memory buffer
-                            (void*)array.data() != (void*)initializer.begin(),
+                            (void *)array.data() != (void *)initializer.begin(),
 
                             // Ensure values are correclty copied in order
                             all_values_copied_in_order,
@@ -2151,7 +2212,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                     // Non Constant
                     {
-                        const auto result = test_default_allocator({ 1,2,3,4 });
+                        const auto result = test_default_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2169,7 +2230,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                     // Constant
                     {
-                        constexpr auto result = test_default_allocator({ 1,2,3,4 });
+                        constexpr auto result = test_default_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2186,16 +2247,18 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                     }
                 }
 
-
                 // Test with allocator with extra
                 {
-                    auto test_with_allocator = [](std::initializer_list<type> initializer) {
+                    auto test_with_allocator = [](std::initializer_list<type> initializer)
+                    {
                         hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, extra, hud_test::array_allocator<alignof(type)>{});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
-                        for (usize index = 0; index < initializer.size(); index++) {
-                            if (array[index].id() != initializer.begin()[index].id()) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
+                            if (array[index].id() != initializer.begin()[index].id())
+                            {
                                 all_values_copied_in_order = false;
                                 break;
                             }
@@ -2203,10 +2266,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                         // Ensure the copy constructor are called
                         bool all_copy_constructor_are_called = true;
-                        for (usize index = 0; index < initializer.size(); index++) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
                             // Ensure we call the copy constructor and the id is correctly copied
                             if (array[index].copy_constructor_count() != 1u ||
-                                array[index].id() != initializer.begin()[index].id()) {
+                                array[index].id() != initializer.begin()[index].id())
+                            {
                                 all_copy_constructor_are_called = false;
                                 break;
                             }
@@ -2218,7 +2283,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                             array.max_count(),
 
                             // Ensure it's not the same memory buffer
-                            (void*)array.data() != (void*)initializer.begin(),
+                            (void *)array.data() != (void *)initializer.begin(),
 
                             // Ensure values are correclty copied in order
                             all_values_copied_in_order,
@@ -2235,7 +2300,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                     // Non Constant
                     {
-                        const auto result = test_with_allocator({ 1,2,3,4 });
+                        const auto result = test_with_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2257,7 +2322,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                     // Constant
                     {
-                        constexpr auto result = test_with_allocator({ 1,2,3,4 });
+                        constexpr auto result = test_with_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2277,7 +2342,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                         GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
-        });
+            });
     }
 }
 
@@ -2290,13 +2355,16 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
     // test with default allocator no extra
     {
-        auto test_default_allocator = [](std::initializer_list<Type1> initializer) {
+        auto test_default_allocator = [](std::initializer_list<Type1> initializer)
+        {
             hud::array<Type2> array(initializer);
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
-            for (usize index = 0; index < initializer.size(); index++) {
-                if (array[index].id() != initializer.begin()[index].id()) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
+                if (array[index].id() != initializer.begin()[index].id())
+                {
                     all_values_copied_in_order = false;
                     break;
                 }
@@ -2304,10 +2372,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
             // Ensure the copy constructor are called
             bool all_copy_constructor_are_called = true;
-            for (usize index = 0; index < initializer.size(); index++) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
                 // Ensure we call the copy constructor and the id is correctly copied
                 if (array[index].copy_constructor_count() != 1u ||
-                    array[index].id() != initializer.begin()[index].id()) {
+                    array[index].id() != initializer.begin()[index].id())
+                {
                     all_copy_constructor_are_called = false;
                     break;
                 }
@@ -2320,7 +2390,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                 array.max_count(),
 
                 // Ensure it's not the same memory buffer
-                (void*)array.data() != (void*)initializer.begin(),
+                (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied in order
                 all_values_copied_in_order,
@@ -2333,7 +2403,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
         // Non Constant
         {
-            const auto result = test_default_allocator({ 1,2,3,4 });
+            const auto result = test_default_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2351,7 +2421,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
         // Constant
         {
-            constexpr auto result = test_default_allocator({ 1,2,3,4 });
+            constexpr auto result = test_default_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2370,13 +2440,16 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
     // test with allocator no extra
     {
-        auto test_with_allocator = [](std::initializer_list<Type1> initializer) {
+        auto test_with_allocator = [](std::initializer_list<Type1> initializer)
+        {
             hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, hud_test::array_allocator<alignof(Type2)>{});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
-            for (usize index = 0; index < initializer.size(); index++) {
-                if (array[index].id() != initializer.begin()[index].id()) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
+                if (array[index].id() != initializer.begin()[index].id())
+                {
                     all_values_copied_in_order = false;
                     break;
                 }
@@ -2384,10 +2457,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
             // Ensure the copy constructor are called
             bool all_copy_constructor_are_called = true;
-            for (usize index = 0; index < initializer.size(); index++) {
+            for (usize index = 0; index < initializer.size(); index++)
+            {
                 // Ensure we call the copy constructor and the id is correctly copied
                 if (array[index].copy_constructor_count() != 1u ||
-                    array[index].id() != initializer.begin()[index].id()) {
+                    array[index].id() != initializer.begin()[index].id())
+                {
                     all_copy_constructor_are_called = false;
                     break;
                 }
@@ -2399,7 +2474,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                 array.max_count(),
 
                 // Ensure it's not the same memory buffer
-                (void*)array.data() != (void*)initializer.begin(),
+                (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied in order
                 all_values_copied_in_order,
@@ -2416,7 +2491,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
         // Non Constant
         {
-            const auto result = test_with_allocator({ 1,2,3,4 });
+            const auto result = test_with_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2438,7 +2513,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
         // Constant
         {
-            constexpr auto result = test_with_allocator({ 1,2,3,4 });
+            constexpr auto result = test_with_allocator({1, 2, 3, 4});
             // Allocation of 4 i32 should be done
             GTEST_ASSERT_TRUE(std::get<0>(result));
             GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2461,17 +2536,20 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
     {
         hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>() {
-
-            // Test default allcoator with extra
+            []<usize extra>()
+            {
+                // Test default allcoator with extra
                 {
-                    auto test_default_allocator = [](std::initializer_list<Type1> initializer) {
+                    auto test_default_allocator = [](std::initializer_list<Type1> initializer)
+                    {
                         hud::array<Type2> array(initializer, extra);
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
-                        for (usize index = 0; index < initializer.size(); index++) {
-                            if (array[index].id() != initializer.begin()[index].id()) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
+                            if (array[index].id() != initializer.begin()[index].id())
+                            {
                                 all_values_copied_in_order = false;
                                 break;
                             }
@@ -2479,10 +2557,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                         // Ensure the copy constructor are called
                         bool all_copy_constructor_are_called = true;
-                        for (usize index = 0; index < initializer.size(); index++) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
                             // Ensure we call the copy constructor and the id is correctly copied
                             if (array[index].copy_constructor_count() != 1u ||
-                                array[index].id() != initializer.begin()[index].id()) {
+                                array[index].id() != initializer.begin()[index].id())
+                            {
                                 all_copy_constructor_are_called = false;
                                 break;
                             }
@@ -2495,7 +2575,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                             array.max_count(),
 
                             // Ensure it's not the same memory buffer
-                            (void*)array.data() != (void*)initializer.begin(),
+                            (void *)array.data() != (void *)initializer.begin(),
 
                             // Ensure values are correclty copied in order
                             all_values_copied_in_order,
@@ -2508,7 +2588,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                     // Non Constant
                     {
-                        const auto result = test_default_allocator({ 1,2,3,4 });
+                        const auto result = test_default_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2526,7 +2606,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                     // Constant
                     {
-                        constexpr auto result = test_default_allocator({ 1,2,3,4 });
+                        constexpr auto result = test_default_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2543,16 +2623,18 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                     }
                 }
 
-
                 // Test with allocator with extra
                 {
-                    auto test_with_allocator = [](std::initializer_list<Type1> initializer) {
+                    auto test_with_allocator = [](std::initializer_list<Type1> initializer)
+                    {
                         hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, extra, hud_test::array_allocator<alignof(Type2)>{});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
-                        for (usize index = 0; index < initializer.size(); index++) {
-                            if (array[index].id() != initializer.begin()[index].id()) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
+                            if (array[index].id() != initializer.begin()[index].id())
+                            {
                                 all_values_copied_in_order = false;
                                 break;
                             }
@@ -2560,10 +2642,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                         // Ensure the copy constructor are called
                         bool all_copy_constructor_are_called = true;
-                        for (usize index = 0; index < initializer.size(); index++) {
+                        for (usize index = 0; index < initializer.size(); index++)
+                        {
                             // Ensure we call the copy constructor and the id is correctly copied
                             if (array[index].copy_constructor_count() != 1u ||
-                                array[index].id() != initializer.begin()[index].id()) {
+                                array[index].id() != initializer.begin()[index].id())
+                            {
                                 all_copy_constructor_are_called = false;
                                 break;
                             }
@@ -2575,7 +2659,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                             array.max_count(),
 
                             // Ensure it's not the same memory buffer
-                            (void*)array.data() != (void*)initializer.begin(),
+                            (void *)array.data() != (void *)initializer.begin(),
 
                             // Ensure values are correclty copied in order
                             all_values_copied_in_order,
@@ -2592,7 +2676,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                     // Non Constant
                     {
-                        const auto result = test_with_allocator({ 1,2,3,4 });
+                        const auto result = test_with_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2614,7 +2698,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 
                     // Constant
                     {
-                        constexpr auto result = test_with_allocator({ 1,2,3,4 });
+                        constexpr auto result = test_with_allocator({1, 2, 3, 4});
                         // Allocation of 4 i32 should be done
                         GTEST_ASSERT_TRUE(std::get<0>(result));
                         GTEST_ASSERT_EQ(std::get<1>(result), 4u);
@@ -2634,13 +2718,12 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                         GTEST_ASSERT_EQ(std::get<7>(result), 0u);
                     }
                 }
-        });
+            });
     }
 }
 
 GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
 {
-
 
     /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = i32;
@@ -2649,7 +2732,8 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
 
     using CopiedType = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
-    hud_test::for_each_type<hud_test::array_allocator<alignof(type)>, hud_test::ArrayAllocator2<alignof(type)>>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<hud_test::array_allocator<alignof(type)>, hud_test::ArrayAllocator2<alignof(type)>>()([]<typename Allocator>() noexcept
+                                                                                                                  {
 
         auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
@@ -2924,8 +3008,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
                         }
                     }
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
@@ -2943,8 +3026,8 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
     static_assert(!std::is_same_v<Type1, Type2>);
     static_assert(hud::is_bitwise_copy_constructible_v<Type2, Type1>);
 
-
-    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept
+                                                                             {
 
         // Test with default allocator no extra
         {
@@ -3224,13 +3307,11 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
                         }
                     }
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
 {
-
 
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::NonBitwiseCopyConstructibleType;
@@ -3243,7 +3324,8 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
 
     using CopiedType = const hud::array<hud_test::NonBitwiseCopyConstructibleType, AllocatorOfCopiedArray>;
 
-    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept
+                                                                             {
 
         // Test default allocator
         {
@@ -3528,14 +3610,11 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
                     }
 
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
 {
-
-
 
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
@@ -3548,7 +3627,8 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
     static_assert(!std::is_same_v<Type1, Type2>);
     static_assert(!hud::is_bitwise_copy_constructible_v<Type2, Type1>);
 
-    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfCopiedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept
+                                                                             {
 
         // Test default allocator
         {
@@ -3831,13 +3911,11 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
                         }
                     }
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
 {
-
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
     using type = i32;
@@ -3849,7 +3927,8 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
     static_assert(hud::is_bitwise_move_constructible_v<type>);
     using MovedType = hud::array<type, AllocatorOfMovedArray>;
 
-    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept
+                                                                            {
 
         // Test default allocator
         {
@@ -4230,20 +4309,17 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
                         }
                     }
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
 {
-
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
     using Type1 = i32;
     using Type2 = u32;
     using AllocatorOfMovedArray = hud_test::array_allocator<alignof(Type1)>;
     using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
-
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
@@ -4252,7 +4328,8 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
 
     using MovedType = hud::array<Type1, AllocatorOfMovedArray>;
 
-    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>()noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept
+                                                                            {
 
         // Test default allocator
         {
@@ -4638,13 +4715,11 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
                         }
                     }
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
 {
-
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
     using type = hud_test::NonBitwiseCopyConstructibleType;
@@ -4658,7 +4733,8 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
 
     using MovedType = hud::array<type, AllocatorOfMovedArray>;
 
-    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept
+                                                                            {
 
         // Test default allocator
         {
@@ -5021,13 +5097,11 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
                     }
                 }
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
 {
-
 
     /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::NonBitwiseMoveConstructibleType;
@@ -5040,7 +5114,8 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
 
     using MovedType = hud::array<type, AllocatorOfMovedArray>;
 
-    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept
+                                                                            {
         
         // Test default allocator
         {
@@ -5415,14 +5490,11 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
                         }
                     }
             });
-        }
-    });
+        } });
 }
 
 GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
 {
-
-
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
     using Type1 = hud_test::NonBitwiseMoveConstructibleType;
@@ -5437,7 +5509,8 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
 
     using MovedType = hud::array<Type1, AllocatorOfMovedArray>;
 
-    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept {
+    hud_test::for_each_type<AllocatorOfMovedArray, OtherAllocatorOfArray>()([]<typename Allocator>() noexcept
+                                                                            {
 
         // Test default allocator
         {
@@ -5812,8 +5885,5 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
                     }
                 }
             });
-        }
-    });
+        } });
 }
-
-

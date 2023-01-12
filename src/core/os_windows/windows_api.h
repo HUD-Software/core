@@ -7,7 +7,7 @@
 #endif
 
 #define WIN32_LEAN_AND_MEAN // Exclude APIs such as Cryptography, DDE, RPC, Shell, and Windows Sockets.
-#define NOCOMM // Excludes the serial communication API
+#define NOCOMM              // Excludes the serial communication API
 
 #include <Windows.h>
 

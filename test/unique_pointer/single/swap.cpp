@@ -1,17 +1,18 @@
 #include <core/containers/unique_pointer.h>
 
-GTEST_TEST(unique_pointer, swap) {
+GTEST_TEST(unique_pointer, swap)
+{
 
     // UniquePointer::swap
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::unique_pointer<i32> p(new i32(1));
             hud::unique_pointer<i32> p2(new i32(2));
             p.swap(p2);
             return std::tuple{
                 *p == 2,
-                *p2 == 1 
-            };
+                *p2 == 1};
         };
 
         // Non constant
@@ -29,17 +30,16 @@ GTEST_TEST(unique_pointer, swap) {
         }
     }
 
-
     // hud::swap
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::unique_pointer<i32> p(new i32(1));
             hud::unique_pointer<i32> p2(new i32(2));
             hud::swap(p, p2);
             return std::tuple{
                 *p == 2,
-                *p2 == 1
-            };
+                *p2 == 1};
         };
 
         // Non constant
@@ -56,5 +56,4 @@ GTEST_TEST(unique_pointer, swap) {
             GTEST_ASSERT_TRUE(std::get<1>(result));
         }
     }
-
 }

@@ -3,20 +3,24 @@
 #define HD_INC_CORE_TRAITS_IS_ARRAY_H
 #include "integral_constant.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Checks whether type_t is an array type ( Bounded or unbounded ). */
-    template<typename type_t>
+    template <typename type_t>
     struct is_array
-        : hud::false_type {
+        : hud::false_type
+    {
     };
     template <typename type_t, usize extent>
     struct hud::is_array<type_t[extent]>
-        : hud::true_type {
+        : hud::true_type
+    {
     };
     template <typename type_t>
     struct hud::is_array<type_t[]>
-        : hud::true_type {
+        : hud::true_type
+    {
     };
 
     /** Equivalent of hud::is_array<type_t>::value. */

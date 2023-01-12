@@ -1,11 +1,17 @@
 #include <core/traits/is_signed.h>
 
-namespace hud_test {
-    struct a {};
-    enum class e : i32 {};
+namespace hud_test
+{
+    struct a
+    {
+    };
+    enum class e : i32
+    {
+    };
 }
 
-GTEST_TEST(traits, is_signed) {
+GTEST_TEST(traits, is_signed)
+{
     GTEST_ASSERT_FALSE((hud::is_signed_v<bool>));
     GTEST_ASSERT_TRUE((hud::is_signed_v<i8>));
     GTEST_ASSERT_TRUE((hud::is_signed_v<i16>));
@@ -26,11 +32,11 @@ GTEST_TEST(traits, is_signed) {
     GTEST_ASSERT_FALSE((hud::is_signed_v<char16>));
     GTEST_ASSERT_FALSE((hud::is_signed_v<char32>));
     GTEST_ASSERT_TRUE((hud::is_signed_v<ansichar>));
-    #if defined(HD_OS_WINDOWS)
+#if defined(HD_OS_WINDOWS)
     GTEST_ASSERT_FALSE((hud::is_signed_v<wchar>));
-    #else // HD_OS_LINUX
+#else // HD_OS_LINUX
     GTEST_ASSERT_TRUE((hud::is_signed_v<wchar>));
-    #endif
+#endif
     GTEST_ASSERT_FALSE((hud::is_signed_v<hud_test::a>));
 
     GTEST_ASSERT_FALSE((hud::is_signed_v<const bool>));
@@ -53,11 +59,11 @@ GTEST_TEST(traits, is_signed) {
     GTEST_ASSERT_FALSE((hud::is_signed_v<const char16>));
     GTEST_ASSERT_FALSE((hud::is_signed_v<const char32>));
     GTEST_ASSERT_TRUE((hud::is_signed_v<const ansichar>));
-    #if defined(HD_OS_WINDOWS)
+#if defined(HD_OS_WINDOWS)
     GTEST_ASSERT_FALSE((hud::is_signed_v<const wchar>));
-    #else // HD_OS_LINUX
+#else // HD_OS_LINUX
     GTEST_ASSERT_TRUE((hud::is_signed_v<const wchar>));
-    #endif
+#endif
     GTEST_ASSERT_FALSE((hud::is_signed_v<const hud_test::a>));
 
     GTEST_ASSERT_FALSE((hud::is_signed_v<volatile bool>));
@@ -80,11 +86,11 @@ GTEST_TEST(traits, is_signed) {
     GTEST_ASSERT_FALSE((hud::is_signed_v<volatile char16>));
     GTEST_ASSERT_FALSE((hud::is_signed_v<volatile char32>));
     GTEST_ASSERT_TRUE((hud::is_signed_v<volatile ansichar>));
-    #if defined(HD_OS_WINDOWS)
+#if defined(HD_OS_WINDOWS)
     GTEST_ASSERT_FALSE((hud::is_signed_v<volatile wchar>));
-    #else // HD_OS_LINUX
+#else // HD_OS_LINUX
     GTEST_ASSERT_TRUE((hud::is_signed_v<volatile wchar>));
-    #endif
+#endif
     GTEST_ASSERT_FALSE((hud::is_signed_v<volatile hud_test::a>));
 
     GTEST_ASSERT_FALSE((hud::is_signed_v<const volatile bool>));
@@ -107,11 +113,11 @@ GTEST_TEST(traits, is_signed) {
     GTEST_ASSERT_FALSE((hud::is_signed_v<const volatile char16>));
     GTEST_ASSERT_FALSE((hud::is_signed_v<const volatile char32>));
     GTEST_ASSERT_TRUE((hud::is_signed_v<const volatile ansichar>));
-    #if defined(HD_OS_WINDOWS)
+#if defined(HD_OS_WINDOWS)
     GTEST_ASSERT_FALSE((hud::is_signed_v<const volatile wchar>));
-    #else // HD_OS_LINUX
+#else // HD_OS_LINUX
     GTEST_ASSERT_TRUE((hud::is_signed_v<const volatile wchar>));
-    #endif
+#endif
     GTEST_ASSERT_FALSE((hud::is_signed_v<const volatile hud_test::a>));
 
     GTEST_ASSERT_FALSE((hud::is_signed_v<hud_test::e>));

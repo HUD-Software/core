@@ -1,12 +1,14 @@
 #include <core/containers/unique_pointer.h>
 
-GTEST_TEST(unique_pointer_array, swap) {
+GTEST_TEST(unique_pointer_array, swap)
+{
 
     // UniquePointer::swap
     {
-        const auto test = []() {
-            hud::unique_pointer<i32[]> p(new i32[2]{ 1, 2 });
-            hud::unique_pointer<i32[]> p2(new i32[2]{ 3, 4});
+        const auto test = []()
+        {
+            hud::unique_pointer<i32[]> p(new i32[2]{1, 2});
+            hud::unique_pointer<i32[]> p2(new i32[2]{3, 4});
             p.swap(p2);
             return std::tuple{
                 p[0] == 3,
@@ -35,12 +37,12 @@ GTEST_TEST(unique_pointer_array, swap) {
         }
     }
 
-
     // hud::swap
     {
-        const auto test = []() {
-            hud::unique_pointer<i32[]> p(new i32[2]{ 1, 2 });
-            hud::unique_pointer<i32[]> p2(new i32[2]{ 3, 4 });
+        const auto test = []()
+        {
+            hud::unique_pointer<i32[]> p(new i32[2]{1, 2});
+            hud::unique_pointer<i32[]> p2(new i32[2]{3, 4});
             hud::swap(p, p2);
             return std::tuple{
                 p[0] == 3,
@@ -68,5 +70,4 @@ GTEST_TEST(unique_pointer_array, swap) {
             GTEST_ASSERT_TRUE(std::get<3>(result));
         }
     }
-
 }

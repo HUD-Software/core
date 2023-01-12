@@ -1,16 +1,36 @@
 #include <core/traits/is_bitwise_copy_constructible.h>
 
-namespace hud_test {
+namespace hud_test
+{
 
-    enum comp_enum {};
-    enum class comp_enum_2 {};
-    enum class comp_enum_3 : u8 {};
-    enum class comp_enum_4 : u64 {};
+    enum comp_enum
+    {
+    };
+    enum class comp_enum_2
+    {
+    };
+    enum class comp_enum_3 : u8
+    {
+    };
+    enum class comp_enum_4 : u64
+    {
+    };
 
-    struct a { };
-    struct b { b(const b&) {} };
-    struct c { virtual void fn() {} };
-    struct d { d(a&&) {} };
+    struct a
+    {
+    };
+    struct b
+    {
+        b(const b &) {}
+    };
+    struct c
+    {
+        virtual void fn() {}
+    };
+    struct d
+    {
+        d(a &&) {}
+    };
 
 }
 
@@ -52,7 +72,6 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<u8, iptr>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<u8, uptr>));
 
-
     // i16
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<i16, i8>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i16, i16>));
@@ -67,7 +86,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i16, wchar>));
 #else
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<i16, wchar>));
-#endif 
+#endif
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i16, char16>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<i16, char32>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<i16, f32>));
@@ -89,14 +108,13 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<u16, wchar>));
 #else
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<u16, wchar>));
-#endif 
+#endif
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<u16, char16>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<u16, char32>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<u16, f32>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<u16, f64>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<u16, iptr>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<u16, uptr>));
-
 
     // i32
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<i32, i8>));
@@ -224,7 +242,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
 #else
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<wchar, i16>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<wchar, i32>));
-#endif    
+#endif
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<wchar, i64>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<wchar, u8>));
 #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
@@ -233,7 +251,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
 #else
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<wchar, u16>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<wchar, u32>));
-#endif    
+#endif
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<wchar, u64>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<wchar, ansichar>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<wchar, wchar>));
@@ -397,7 +415,6 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<uptr, iptr>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<uptr, uptr>));
 
-
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<hud_test::comp_enum, hud_test::comp_enum>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<hud_test::comp_enum_2, hud_test::comp_enum_2>));
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<hud_test::comp_enum_3, hud_test::comp_enum_3>));
@@ -408,10 +425,10 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<hud_test::comp_enum_3, hud_test::comp_enum_4>));
 
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i32, i32>));
-    GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i32&, i32&>));
+    GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i32 &, i32 &>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<i32[], i32[]>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<i32[32], i32[32]>));
-    GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i32*, i32*>));
+    GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<i32 *, i32 *>));
 
     GTEST_ASSERT_TRUE((hud::is_bitwise_copy_constructible_v<hud_test::a, hud_test::a>));
     GTEST_ASSERT_FALSE((hud::is_bitwise_copy_constructible_v<hud_test::b, hud_test::b>));

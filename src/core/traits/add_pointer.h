@@ -4,16 +4,19 @@
 #include "void_t.h"
 #include "remove_reference.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Provides a member typedef type which is hud::remove_reference_t<type_t>* if type_t is a reference type. Otherwise type is type_t*. */
-    template<typename type_t, typename = void>
-    struct add_pointer {
+    template <typename type_t, typename = void>
+    struct add_pointer
+    {
         using type = type_t;
     };
-    template<typename type_t>
-    struct add_pointer<type_t, void_t<hud::remove_reference_t<type_t>*>> {
-        using type = hud::remove_reference_t<type_t>*;
+    template <typename type_t>
+    struct add_pointer<type_t, void_t<hud::remove_reference_t<type_t> *>>
+    {
+        using type = hud::remove_reference_t<type_t> *;
     };
 
     /** Equivalent of typename add_pointer<type_t>::type. */

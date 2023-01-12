@@ -1,7 +1,7 @@
 #include <core/memory.h>
 
-GTEST_TEST(memory, reverse_bits) {
-
+GTEST_TEST(memory, reverse_bits)
+{
 
     // Non constant
     {
@@ -16,14 +16,14 @@ GTEST_TEST(memory, reverse_bits) {
     }
 }
 
-GTEST_TEST(memory,reverse) {
+GTEST_TEST(memory, reverse)
+{
 
-
-    auto test = []() -> std::tuple<u32, u64> {
+    auto test = []() -> std::tuple<u32, u64>
+    {
         return {
             hud::memory::reverse(u32{0xAB00FF00}),
-            hud::memory::reverse(u64{0x123456789ABCDEF})
-        };
+            hud::memory::reverse(u64{0x123456789ABCDEF})};
     };
 
     // Non constant

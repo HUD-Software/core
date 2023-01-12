@@ -1,13 +1,14 @@
 #include <core/containers/shared_pointer.h>
 
-GTEST_TEST(shared_pointer_array_not_safe, equal_operator) {
+GTEST_TEST(shared_pointer_array_not_safe, equal_operator)
+{
 
-
-    const auto test = []() {
+    const auto test = []()
+    {
         hud::shared_pointer<i32[2]> empty;
-        hud::shared_pointer<i32[2]> p(new i32[2]{ 1,2 });
+        hud::shared_pointer<i32[2]> p(new i32[2]{1, 2});
         hud::shared_pointer<i32[2]> p2(p);
-        hud::shared_pointer<i32[2]> p3(new i32[2]{ 3,4 });
+        hud::shared_pointer<i32[2]> p3(new i32[2]{3, 4});
 
         return std::tuple{
             empty == empty,
@@ -41,31 +42,32 @@ GTEST_TEST(shared_pointer_array_not_safe, equal_operator) {
     // Constant
     // Not working under with msvc
     // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//    {
-//        constexpr auto result = test();
-//        GTEST_ASSERT_TRUE(std::get<0>(result));
-//        GTEST_ASSERT_FALSE(std::get<1>(result));
-//        GTEST_ASSERT_TRUE(std::get<2>(result));
-//        GTEST_ASSERT_TRUE(std::get<3>(result));
-//        GTEST_ASSERT_FALSE(std::get<4>(result));
-//        GTEST_ASSERT_FALSE(std::get<5>(result));
-//        GTEST_ASSERT_TRUE(std::get<6>(result));
-//        GTEST_ASSERT_FALSE(std::get<7>(result));
-//        GTEST_ASSERT_TRUE(std::get<8>(result));
-//        GTEST_ASSERT_FALSE(std::get<9>(result));
-//    }
-//#endif
+    // #if !defined(HD_COMPILER_MSVC)
+    //     {
+    //         constexpr auto result = test();
+    //         GTEST_ASSERT_TRUE(std::get<0>(result));
+    //         GTEST_ASSERT_FALSE(std::get<1>(result));
+    //         GTEST_ASSERT_TRUE(std::get<2>(result));
+    //         GTEST_ASSERT_TRUE(std::get<3>(result));
+    //         GTEST_ASSERT_FALSE(std::get<4>(result));
+    //         GTEST_ASSERT_FALSE(std::get<5>(result));
+    //         GTEST_ASSERT_TRUE(std::get<6>(result));
+    //         GTEST_ASSERT_FALSE(std::get<7>(result));
+    //         GTEST_ASSERT_TRUE(std::get<8>(result));
+    //         GTEST_ASSERT_FALSE(std::get<9>(result));
+    //     }
+    // #endif
 }
 
-GTEST_TEST(shared_pointer_array_not_safe, not_equal_operator) {
+GTEST_TEST(shared_pointer_array_not_safe, not_equal_operator)
+{
 
-
-    const auto test = []() {
+    const auto test = []()
+    {
         hud::shared_pointer<i32[2]> empty;
-        hud::shared_pointer<i32[2]> p(new i32[2]{ 1,2 });
+        hud::shared_pointer<i32[2]> p(new i32[2]{1, 2});
         hud::shared_pointer<i32[2]> p2(p);
-        hud::shared_pointer<i32[2]> p3(new i32[2]{ 3,4 });
+        hud::shared_pointer<i32[2]> p3(new i32[2]{3, 4});
 
         return std::tuple{
             empty != empty,
@@ -99,44 +101,47 @@ GTEST_TEST(shared_pointer_array_not_safe, not_equal_operator) {
     // Constant
     // Not working under with msvc
     // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//    {
-//        constexpr auto result = test();
-//        GTEST_ASSERT_FALSE(std::get<0>(result));
-//        GTEST_ASSERT_TRUE(std::get<1>(result));
-//        GTEST_ASSERT_FALSE(std::get<2>(result));
-//        GTEST_ASSERT_FALSE(std::get<3>(result));
-//        GTEST_ASSERT_TRUE(std::get<4>(result));
-//        GTEST_ASSERT_TRUE(std::get<5>(result));
-//        GTEST_ASSERT_FALSE(std::get<6>(result));
-//        GTEST_ASSERT_TRUE(std::get<7>(result));
-//        GTEST_ASSERT_FALSE(std::get<8>(result));
-//        GTEST_ASSERT_TRUE(std::get<9>(result));
-//    }
-//#endif
+    // #if !defined(HD_COMPILER_MSVC)
+    //     {
+    //         constexpr auto result = test();
+    //         GTEST_ASSERT_FALSE(std::get<0>(result));
+    //         GTEST_ASSERT_TRUE(std::get<1>(result));
+    //         GTEST_ASSERT_FALSE(std::get<2>(result));
+    //         GTEST_ASSERT_FALSE(std::get<3>(result));
+    //         GTEST_ASSERT_TRUE(std::get<4>(result));
+    //         GTEST_ASSERT_TRUE(std::get<5>(result));
+    //         GTEST_ASSERT_FALSE(std::get<6>(result));
+    //         GTEST_ASSERT_TRUE(std::get<7>(result));
+    //         GTEST_ASSERT_FALSE(std::get<8>(result));
+    //         GTEST_ASSERT_TRUE(std::get<9>(result));
+    //     }
+    // #endif
 }
 
-GTEST_TEST(shared_pointer_array_not_safe, less_operator) {
+GTEST_TEST(shared_pointer_array_not_safe, less_operator)
+{
 
-
-    const auto test = []() {
-        i32* ptri_1 = new i32[2];
-        i32* ptri_2 = new i32[2];
-        i32* buf[2];
+    const auto test = []()
+    {
+        i32 *ptri_1 = new i32[2];
+        i32 *ptri_2 = new i32[2];
+        i32 *buf[2];
 
         // Sort pointer in order
         // LCOV_EXCL_START
-        if (ptri_1 < ptri_2) {
+        if (ptri_1 < ptri_2)
+        {
             buf[0] = ptri_1;
             buf[1] = ptri_2;
         }
-        else {
+        else
+        {
             buf[0] = ptri_2;
             buf[1] = ptri_1;
         }
         // LCOV_EXCL_STOP
-        i32* ptr1 = buf[0];
-        i32* ptr2 = buf[1];
+        i32 *ptr1 = buf[0];
+        i32 *ptr2 = buf[1];
 
         hud::shared_pointer<i32[2]> empty;
         hud::shared_pointer<i32[2]> p1(ptr1);
@@ -185,50 +190,52 @@ GTEST_TEST(shared_pointer_array_not_safe, less_operator) {
     // Not testable due to lack of pointer sort at compile time
     // Not working under with msvc
     // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//    {
-//        constexpr auto result = test();
-//        GTEST_ASSERT_FALSE(std::get<0>(result));
-//        GTEST_ASSERT_FALSE(std::get<1>(result));
-//        GTEST_ASSERT_FALSE(std::get<2>(result));
-//        GTEST_ASSERT_FALSE(std::get<3>(result));
-//        GTEST_ASSERT_FALSE(std::get<4>(result));
-//        GTEST_ASSERT_TRUE(std::get<5>(result));
-//        GTEST_ASSERT_FALSE(std::get<6>(result));
-//        GTEST_ASSERT_FALSE(std::get<7>(result));
-//        GTEST_ASSERT_FALSE(std::get<8>(result));
-//        GTEST_ASSERT_FALSE(std::get<9>(result));
-//        GTEST_ASSERT_FALSE(std::get<10>(result));
-//        GTEST_ASSERT_FALSE(std::get<11>(result));
-//        GTEST_ASSERT_FALSE(std::get<12>(result));
-//        GTEST_ASSERT_TRUE(std::get<13>(result));
-//        GTEST_ASSERT_TRUE(std::get<14>(result));
-//    }
-//#endif
+    // #if !defined(HD_COMPILER_MSVC)
+    //     {
+    //         constexpr auto result = test();
+    //         GTEST_ASSERT_FALSE(std::get<0>(result));
+    //         GTEST_ASSERT_FALSE(std::get<1>(result));
+    //         GTEST_ASSERT_FALSE(std::get<2>(result));
+    //         GTEST_ASSERT_FALSE(std::get<3>(result));
+    //         GTEST_ASSERT_FALSE(std::get<4>(result));
+    //         GTEST_ASSERT_TRUE(std::get<5>(result));
+    //         GTEST_ASSERT_FALSE(std::get<6>(result));
+    //         GTEST_ASSERT_FALSE(std::get<7>(result));
+    //         GTEST_ASSERT_FALSE(std::get<8>(result));
+    //         GTEST_ASSERT_FALSE(std::get<9>(result));
+    //         GTEST_ASSERT_FALSE(std::get<10>(result));
+    //         GTEST_ASSERT_FALSE(std::get<11>(result));
+    //         GTEST_ASSERT_FALSE(std::get<12>(result));
+    //         GTEST_ASSERT_TRUE(std::get<13>(result));
+    //         GTEST_ASSERT_TRUE(std::get<14>(result));
+    //     }
+    // #endif
 }
 
+GTEST_TEST(shared_pointer_array_not_safe, less_equal_operator)
+{
 
-GTEST_TEST(shared_pointer_array_not_safe, less_equal_operator) {
-
-
-    const auto test = []() {
-        i32* ptri_1 = new i32[2];
-        i32* ptri_2 = new i32[2];
-        i32* buf[2];
+    const auto test = []()
+    {
+        i32 *ptri_1 = new i32[2];
+        i32 *ptri_2 = new i32[2];
+        i32 *buf[2];
 
         // Sort pointer in order
         // LCOV_EXCL_START
-        if (hud::less<i32*>()(ptri_1, ptri_2)) {
+        if (hud::less<i32 *>()(ptri_1, ptri_2))
+        {
             buf[0] = ptri_1;
             buf[1] = ptri_2;
         }
-        else {
+        else
+        {
             buf[0] = ptri_2;
             buf[1] = ptri_1;
         }
         // LCOV_EXCL_STOP
-        i32* ptr1 = buf[0];
-        i32* ptr2 = buf[1];
+        i32 *ptr1 = buf[0];
+        i32 *ptr2 = buf[1];
 
         hud::shared_pointer<i32[2]> empty;
         hud::shared_pointer<i32[2]> p1(ptr1);
@@ -277,49 +284,52 @@ GTEST_TEST(shared_pointer_array_not_safe, less_equal_operator) {
     // Not testable due to lack of pointer sort at compile time
     // Not working under with msvc
     // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//    {
-//        constexpr auto result = test();
-//        GTEST_ASSERT_TRUE(std::get<0>(result));
-//        GTEST_ASSERT_TRUE(std::get<1>(result));
-//        GTEST_ASSERT_TRUE(std::get<2>(result));
-//        GTEST_ASSERT_FALSE(std::get<3>(result));
-//        GTEST_ASSERT_TRUE(std::get<4>(result));
-//        GTEST_ASSERT_TRUE(std::get<5>(result));
-//        GTEST_ASSERT_FALSE(std::get<6>(result));
-//        GTEST_ASSERT_FALSE(std::get<7>(result));
-//        GTEST_ASSERT_TRUE(std::get<8>(result));
-//        GTEST_ASSERT_TRUE(std::get<9>(result));
-//        GTEST_ASSERT_FALSE(std::get<10>(result));
-//        GTEST_ASSERT_FALSE(std::get<11>(result));
-//        GTEST_ASSERT_TRUE(std::get<12>(result));
-//        GTEST_ASSERT_TRUE(std::get<13>(result));
-//        GTEST_ASSERT_TRUE(std::get<14>(result));
-//    }
-//#endif
+    // #if !defined(HD_COMPILER_MSVC)
+    //     {
+    //         constexpr auto result = test();
+    //         GTEST_ASSERT_TRUE(std::get<0>(result));
+    //         GTEST_ASSERT_TRUE(std::get<1>(result));
+    //         GTEST_ASSERT_TRUE(std::get<2>(result));
+    //         GTEST_ASSERT_FALSE(std::get<3>(result));
+    //         GTEST_ASSERT_TRUE(std::get<4>(result));
+    //         GTEST_ASSERT_TRUE(std::get<5>(result));
+    //         GTEST_ASSERT_FALSE(std::get<6>(result));
+    //         GTEST_ASSERT_FALSE(std::get<7>(result));
+    //         GTEST_ASSERT_TRUE(std::get<8>(result));
+    //         GTEST_ASSERT_TRUE(std::get<9>(result));
+    //         GTEST_ASSERT_FALSE(std::get<10>(result));
+    //         GTEST_ASSERT_FALSE(std::get<11>(result));
+    //         GTEST_ASSERT_TRUE(std::get<12>(result));
+    //         GTEST_ASSERT_TRUE(std::get<13>(result));
+    //         GTEST_ASSERT_TRUE(std::get<14>(result));
+    //     }
+    // #endif
 }
 
-GTEST_TEST(shared_pointer_array_not_safe, greater_operator) {
+GTEST_TEST(shared_pointer_array_not_safe, greater_operator)
+{
 
-
-    const auto test = []() {
-        i32* ptri_1 = new i32[2];
-        i32* ptri_2 = new i32[2];
-        i32* buf[2];
+    const auto test = []()
+    {
+        i32 *ptri_1 = new i32[2];
+        i32 *ptri_2 = new i32[2];
+        i32 *buf[2];
 
         // Sort pointer in order
         // LCOV_EXCL_START
-        if (ptri_1 < ptri_2) {
+        if (ptri_1 < ptri_2)
+        {
             buf[0] = ptri_1;
             buf[1] = ptri_2;
         }
-        else {
+        else
+        {
             buf[0] = ptri_2;
             buf[1] = ptri_1;
         }
         // LCOV_EXCL_STOP
-        i32* ptr1 = buf[0];
-        i32* ptr2 = buf[1];
+        i32 *ptr1 = buf[0];
+        i32 *ptr2 = buf[1];
 
         hud::shared_pointer<i32[2]> empty;
         hud::shared_pointer<i32[2]> p1(ptr1);
@@ -368,49 +378,52 @@ GTEST_TEST(shared_pointer_array_not_safe, greater_operator) {
     // Not testable due to lack of pointer sort at compile time
     // Not working under with msvc
     // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//    {
-//        constexpr auto result = test();
-//     GTEST_ASSERT_FALSE(std::get<0>(result));
-//     GTEST_ASSERT_FALSE(std::get<1>(result));
-//     GTEST_ASSERT_FALSE(std::get<2>(result));
-//     GTEST_ASSERT_TRUE(std::get<3>(result));
-//     GTEST_ASSERT_FALSE(std::get<4>(result));
-//     GTEST_ASSERT_FALSE(std::get<5>(result));
-//     GTEST_ASSERT_TRUE(std::get<6>(result));
-//     GTEST_ASSERT_TRUE(std::get<7>(result));
-//     GTEST_ASSERT_FALSE(std::get<8>(result));
-//     GTEST_ASSERT_FALSE(std::get<9>(result));
-//     GTEST_ASSERT_TRUE(std::get<10>(result));
-//     GTEST_ASSERT_TRUE(std::get<11>(result));
-//     GTEST_ASSERT_FALSE(std::get<12>(result));
-//     GTEST_ASSERT_FALSE(std::get<13>(result));
-//     GTEST_ASSERT_FALSE(std::get<14>(result));
-//    }
-//#endif
+    // #if !defined(HD_COMPILER_MSVC)
+    //     {
+    //         constexpr auto result = test();
+    //      GTEST_ASSERT_FALSE(std::get<0>(result));
+    //      GTEST_ASSERT_FALSE(std::get<1>(result));
+    //      GTEST_ASSERT_FALSE(std::get<2>(result));
+    //      GTEST_ASSERT_TRUE(std::get<3>(result));
+    //      GTEST_ASSERT_FALSE(std::get<4>(result));
+    //      GTEST_ASSERT_FALSE(std::get<5>(result));
+    //      GTEST_ASSERT_TRUE(std::get<6>(result));
+    //      GTEST_ASSERT_TRUE(std::get<7>(result));
+    //      GTEST_ASSERT_FALSE(std::get<8>(result));
+    //      GTEST_ASSERT_FALSE(std::get<9>(result));
+    //      GTEST_ASSERT_TRUE(std::get<10>(result));
+    //      GTEST_ASSERT_TRUE(std::get<11>(result));
+    //      GTEST_ASSERT_FALSE(std::get<12>(result));
+    //      GTEST_ASSERT_FALSE(std::get<13>(result));
+    //      GTEST_ASSERT_FALSE(std::get<14>(result));
+    //     }
+    // #endif
 }
 
-GTEST_TEST(shared_pointer_array_not_safe, greater_equal_operator) {
+GTEST_TEST(shared_pointer_array_not_safe, greater_equal_operator)
+{
 
-
-    const auto test = []() {
-        i32* ptri_1 = new i32[2];
-        i32* ptri_2 = new i32[2];
-        i32* buf[2];
+    const auto test = []()
+    {
+        i32 *ptri_1 = new i32[2];
+        i32 *ptri_2 = new i32[2];
+        i32 *buf[2];
 
         // Sort pointer in order
         // LCOV_EXCL_START
-        if (ptri_1 < ptri_2) {
+        if (ptri_1 < ptri_2)
+        {
             buf[0] = ptri_1;
             buf[1] = ptri_2;
         }
-        else {
+        else
+        {
             buf[0] = ptri_2;
             buf[1] = ptri_1;
         }
         // LCOV_EXCL_STOP
-        i32* ptr1 = buf[0];
-        i32* ptr2 = buf[1];
+        i32 *ptr1 = buf[0];
+        i32 *ptr2 = buf[1];
 
         hud::shared_pointer<i32[2]> empty;
         hud::shared_pointer<i32[2]> p1(ptr1);
@@ -459,24 +472,24 @@ GTEST_TEST(shared_pointer_array_not_safe, greater_equal_operator) {
     // Not testable due to lack of pointer sort at compile time
     // Not working under with msvc
     // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-//#if !defined(HD_COMPILER_MSVC)
-//    {
-//        constexpr auto result = test();
-//        GTEST_ASSERT_TRUE(std::get<0>(result));
-//        GTEST_ASSERT_FALSE(std::get<1>(result));
-//        GTEST_ASSERT_FALSE(std::get<2>(result));
-//        GTEST_ASSERT_TRUE(std::get<3>(result));
-//        GTEST_ASSERT_TRUE(std::get<4>(result));
-//        GTEST_ASSERT_FALSE(std::get<5>(result));
-//        GTEST_ASSERT_TRUE(std::get<6>(result));
-//        GTEST_ASSERT_TRUE(std::get<7>(result));
-//        GTEST_ASSERT_TRUE(std::get<8>(result));
-//        GTEST_ASSERT_TRUE(std::get<9>(result));
-//        GTEST_ASSERT_TRUE(std::get<10>(result));
-//        GTEST_ASSERT_TRUE(std::get<11>(result));
-//        GTEST_ASSERT_TRUE(std::get<12>(result));
-//        GTEST_ASSERT_FALSE(std::get<13>(result));
-//        GTEST_ASSERT_FALSE(std::get<14>(result));
-//    }
-//#endif
+    // #if !defined(HD_COMPILER_MSVC)
+    //     {
+    //         constexpr auto result = test();
+    //         GTEST_ASSERT_TRUE(std::get<0>(result));
+    //         GTEST_ASSERT_FALSE(std::get<1>(result));
+    //         GTEST_ASSERT_FALSE(std::get<2>(result));
+    //         GTEST_ASSERT_TRUE(std::get<3>(result));
+    //         GTEST_ASSERT_TRUE(std::get<4>(result));
+    //         GTEST_ASSERT_FALSE(std::get<5>(result));
+    //         GTEST_ASSERT_TRUE(std::get<6>(result));
+    //         GTEST_ASSERT_TRUE(std::get<7>(result));
+    //         GTEST_ASSERT_TRUE(std::get<8>(result));
+    //         GTEST_ASSERT_TRUE(std::get<9>(result));
+    //         GTEST_ASSERT_TRUE(std::get<10>(result));
+    //         GTEST_ASSERT_TRUE(std::get<11>(result));
+    //         GTEST_ASSERT_TRUE(std::get<12>(result));
+    //         GTEST_ASSERT_FALSE(std::get<13>(result));
+    //         GTEST_ASSERT_FALSE(std::get<14>(result));
+    //     }
+    // #endif
 }

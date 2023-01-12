@@ -5,14 +5,15 @@
 
 #if !defined(HD_OS_LINUX)
 #error This file must be included only when targetting Linux OS
-#endif 
+#endif
 
+namespace hud::os::linux
+{
 
-namespace hud::os::linux{
-
-    struct character 
-        : public os::common::character 
-    {};
+    struct character
+        : public os::common::character
+    {
+    };
 
 } // namespace hud::os::linux
 

@@ -7,17 +7,17 @@
 GTEST_TEST(memory, move_or_copy_assign_trivial_type)
 {
 
-
     using type = u32;
     using ResultType = std::tuple<u32, u32>;
 
     static_assert(hud::is_trivial_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         type dest;
         type src = 15;
         hud::memory::move_or_copy_assign(&dest, hud::move(src));
-        return { dest, src };
+        return {dest, src};
     };
 
     // Non constant
@@ -38,8 +38,8 @@ GTEST_TEST(memory, move_or_copy_assign_trivial_type)
 GTEST_TEST(memory, move_or_copy_assign_bitwise_assignable_type)
 {
 
-
-    struct c {
+    struct c
+    {
         i32 i;
     };
     using type = c;
@@ -48,12 +48,13 @@ GTEST_TEST(memory, move_or_copy_assign_bitwise_assignable_type)
     static_assert(hud::is_bitwise_copy_assignable_v<type>);
     static_assert(hud::is_bitwise_move_assignable_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         type dest, src;
         dest.i = 0;
         src.i = 15;
         hud::memory::move_or_copy_assign(&dest, hud::move(src));
-        return { dest.i, src.i };
+        return {dest.i, src.i};
     };
 
     // Non constant
@@ -74,7 +75,6 @@ GTEST_TEST(memory, move_or_copy_assign_bitwise_assignable_type)
 GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_type)
 {
 
-
     using source_type = hud_test::non_bitwise_copy_assignable_type_3;
     using destination_type = hud_test::non_bitwise_copy_assignable_type_4;
     using ResultType = std::tuple<u32, u32, i32>;
@@ -82,19 +82,20 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_typ
     static_assert(hud::is_copy_assignable_v<destination_type, source_type>);
     static_assert(!hud::is_bitwise_copy_assignable_v<destination_type, source_type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         i32 assign_counter = 0;
-        source_type* src = hud::memory::allocate_array<source_type>(1);
+        source_type *src = hud::memory::allocate_array<source_type>(1);
         hud_test::LeakArrayGuard guard_src(src, 1);
         hud::memory::construct_at(src, &assign_counter);
-        destination_type* dest = hud::memory::allocate_array<destination_type>(1);
+        destination_type *dest = hud::memory::allocate_array<destination_type>(1);
         hud_test::LeakArrayGuard guard_dest(dest, 1);
         hud::memory::construct_at(dest);
 
         hud::memory::move_or_copy_assign(dest, hud::move(*src));
-        return { dest->copy_constructor_count(),
-                 dest->copy_assign_count(),
-                 dest->copy_order() };
+        return {dest->copy_constructor_count(),
+                dest->copy_assign_count(),
+                dest->copy_order()};
     };
 
     // Non constant
@@ -117,7 +118,6 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_typ
 GTEST_TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_type)
 {
 
-
     using source_type = hud_test::NonBitwiseMoveAssignableType3;
     using destination_type = hud_test::NonBitwiseMoveAssignableType4;
     using ResultType = std::tuple<u32, u32, u32, u32, i32>;
@@ -125,21 +125,22 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_typ
     static_assert(hud::is_move_assignable_v<destination_type, source_type>);
     static_assert(!hud::is_bitwise_move_assignable_v<destination_type, source_type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         i32 assign_counter = 0;
-        source_type* src = hud::memory::allocate_array<source_type>(1);
+        source_type *src = hud::memory::allocate_array<source_type>(1);
         hud_test::LeakArrayGuard guard_src(src, 1);
         hud::memory::construct_at(src, &assign_counter);
-        destination_type* dest = hud::memory::allocate_array<destination_type>(1);
+        destination_type *dest = hud::memory::allocate_array<destination_type>(1);
         hud_test::LeakArrayGuard guard_dest(dest, 1);
         hud::memory::construct_at(dest);
 
         hud::memory::move_or_copy_assign(dest, hud::move(*src));
-        return { dest->copy_constructor_count(),
-                 dest->move_constructor_count(),
-                 dest->move_assign_count(),
-                 dest->copy_assign_count(),
-                 dest->move_order() };
+        return {dest->copy_constructor_count(),
+                dest->move_constructor_count(),
+                dest->move_assign_count(),
+                dest->copy_assign_count(),
+                dest->move_order()};
     };
 
     // Non constant
@@ -166,26 +167,26 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_typ
 GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_same_type)
 {
 
-
     using type = hud_test::non_bitwise_copy_assignable_type_4;
     using ResultType = std::tuple<u32, u32, i32>;
 
     static_assert(hud::is_copy_constructible_v<type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         i32 assign_counter = 0;
-        type* src = hud::memory::allocate_array<type>(1);
+        type *src = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard_src(src, 1);
         hud::memory::construct_at(src, &assign_counter);
-        type* dest = hud::memory::allocate_array<type>(1);
+        type *dest = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard_dest(dest, 1);
         hud::memory::construct_at(dest);
 
         hud::memory::move_or_copy_assign(dest, hud::move(*src));
-        return { dest->copy_constructor_count(),
-                 dest->copy_assign_count(),
-                 dest->copy_order() };
+        return {dest->copy_constructor_count(),
+                dest->copy_assign_count(),
+                dest->copy_order()};
     };
 
     // Non constant
@@ -208,17 +209,17 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_same_type)
 GTEST_TEST(memory, move_or_copy_assign_array_trivial_type)
 {
 
-
     using type = u32;
     using ResultType = std::tuple<u32, u32, u32, u32>;
 
     static_assert(std::is_trivial_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         type dest[2];
-        type src[2] = { 15, 32 };
-        hud::memory::move_or_copy_assign_array(dest, src, src+2);
-        return { dest[0], dest[1], src[0], src[1] };
+        type src[2] = {15, 32};
+        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        return {dest[0], dest[1], src[0], src[1]};
     };
 
     // Non constant
@@ -243,8 +244,8 @@ GTEST_TEST(memory, move_or_copy_assign_array_trivial_type)
 GTEST_TEST(memory, move_or_copy_assign_array_bitwise_assignable_type)
 {
 
-
-    struct c {
+    struct c
+    {
         i32 i;
     };
     using type = c;
@@ -253,14 +254,15 @@ GTEST_TEST(memory, move_or_copy_assign_array_bitwise_assignable_type)
     static_assert(hud::is_bitwise_copy_assignable_v<type>);
     static_assert(hud::is_bitwise_move_assignable_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         type dest[2], src[2];
         dest[0].i = 0;
         dest[1].i = 0;
         src[0].i = 15;
         src[1].i = 32;
-        hud::memory::move_or_copy_assign_array(dest, src, src+2);
-        return { dest[0].i, dest[1].i };
+        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        return {dest[0].i, dest[1].i};
     };
 
     // Non constant
@@ -281,7 +283,6 @@ GTEST_TEST(memory, move_or_copy_assign_array_bitwise_assignable_type)
 GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_different_type)
 {
 
-
     using source_type = hud_test::non_bitwise_copy_assignable_type_3;
     using destination_type = hud_test::non_bitwise_copy_assignable_type_4;
     using ResultType = std::tuple<u32, u32, i32, u32, u32, i32>;
@@ -290,22 +291,23 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_differe
     static_assert(!hud::is_bitwise_copy_constructible_v<destination_type, source_type>);
     static_assert(!std::is_same_v<destination_type, source_type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         i32 assign_counter = 0;
-        source_type* src = hud::memory::allocate_array<source_type>(2);
+        source_type *src = hud::memory::allocate_array<source_type>(2);
         hud_test::LeakArrayGuard guard_src(src, 2);
         hud::memory::construct_array_at(src, src + 2, &assign_counter);
-        destination_type* dest = hud::memory::allocate_array<destination_type>(2);
+        destination_type *dest = hud::memory::allocate_array<destination_type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::move_or_copy_assign_array(dest, src, src+2);
-        return { dest[0].copy_constructor_count(),
-                 dest[0].copy_assign_count(),
-                 dest[0].copy_order(),
-                 dest[1].copy_constructor_count(),
-                 dest[1].copy_assign_count(),
-                 dest[1].copy_order() };
+        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        return {dest[0].copy_constructor_count(),
+                dest[0].copy_assign_count(),
+                dest[0].copy_order(),
+                dest[1].copy_constructor_count(),
+                dest[1].copy_assign_count(),
+                dest[1].copy_order()};
     };
 
     // Non constant
@@ -334,7 +336,6 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_differe
 GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_different_type)
 {
 
-
     using source_type = hud_test::NonBitwiseMoveAssignableType3;
     using destination_type = hud_test::NonBitwiseMoveAssignableType4;
     using ResultType = std::tuple<u32, u32, u32, u32, i32, u32, u32, u32, u32, i32>;
@@ -343,27 +344,28 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_differe
     static_assert(!hud::is_bitwise_move_constructible_v<destination_type, source_type>);
     static_assert(!std::is_same_v<destination_type, source_type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         i32 assign_counter = 0;
-        source_type* src = hud::memory::allocate_array<source_type>(2);
+        source_type *src = hud::memory::allocate_array<source_type>(2);
         hud_test::LeakArrayGuard guard_src(src, 2);
         hud::memory::construct_array_at(src, src + 2, &assign_counter);
-        destination_type* dest = hud::memory::allocate_array<destination_type>(2);
+        destination_type *dest = hud::memory::allocate_array<destination_type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::move_or_copy_assign_array(dest, src, src+2);
+        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
 
-        return { dest[0].copy_constructor_count(),
-                 dest[0].move_constructor_count(),
-                 dest[0].copy_assign_count(),
-                 dest[0].move_assign_count(),
-                 dest[0].move_order(),
-                 dest[1].copy_constructor_count(),
-                 dest[1].move_constructor_count(),
-                 dest[1].copy_assign_count(),
-                 dest[1].move_assign_count(),
-                 dest[1].move_order() };
+        return {dest[0].copy_constructor_count(),
+                dest[0].move_constructor_count(),
+                dest[0].copy_assign_count(),
+                dest[0].move_assign_count(),
+                dest[0].move_order(),
+                dest[1].copy_constructor_count(),
+                dest[1].move_constructor_count(),
+                dest[1].copy_assign_count(),
+                dest[1].move_assign_count(),
+                dest[1].move_order()};
     };
 
     // Non constant
@@ -400,29 +402,29 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_differe
 GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_constructible_same_type)
 {
 
-
     using type = hud_test::non_bitwise_copy_assignable_type_4;
     using ResultType = std::tuple<u32, u32, i32, u32, u32, i32>;
 
     static_assert(hud::is_copy_constructible_v<type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         i32 assign_counter = 0;
-        type* src = hud::memory::allocate_array<type>(2);
+        type *src = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_src(src, 2);
         hud::memory::construct_array_at(src, src + 2, &assign_counter);
-        type* dest = hud::memory::allocate_array<type>(2);
+        type *dest = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::move_or_copy_assign_array(dest, src, src+2);
-        return { dest[0].copy_constructor_count(),
-                 dest[0].copy_assign_count(),
-                 dest[0].copy_order(),
-                 dest[1].copy_constructor_count(),
-                 dest[1].copy_assign_count(),
-                 dest[1].copy_order() };
+        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        return {dest[0].copy_constructor_count(),
+                dest[0].copy_assign_count(),
+                dest[0].copy_order(),
+                dest[1].copy_constructor_count(),
+                dest[1].copy_assign_count(),
+                dest[1].copy_order()};
     };
 
     // Non constant
@@ -451,34 +453,34 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_constructible_same
 GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_constructible_same_type)
 {
 
-
     using type = hud_test::NonBitwiseMoveAssignableType4;
     using ResultType = std::tuple<u32, u32, u32, u32, i32, u32, u32, u32, u32, i32>;
 
     static_assert(hud::is_move_constructible_v<type>);
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
 
-    auto test = []() -> ResultType {
+    auto test = []() -> ResultType
+    {
         i32 assign_counter = 0;
-        type* src = hud::memory::allocate_array<type>(2);
+        type *src = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_src(src, 2);
         hud::memory::construct_array_at(src, src + 2, &assign_counter);
-        type* dest = hud::memory::allocate_array<type>(2);
+        type *dest = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::move_or_copy_assign_array(dest, src, src+2);
+        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
 
-        return { dest[0].copy_constructor_count(),
-                 dest[0].move_constructor_count(),
-                 dest[0].copy_assign_count(),
-                 dest[0].move_assign_count(),
-                 dest[0].move_order(),
-                 dest[1].copy_constructor_count(),
-                 dest[1].move_constructor_count(),
-                 dest[1].copy_assign_count(),
-                 dest[1].move_assign_count(),
-                 dest[1].move_order() };
+        return {dest[0].copy_constructor_count(),
+                dest[0].move_constructor_count(),
+                dest[0].copy_assign_count(),
+                dest[0].move_assign_count(),
+                dest[0].move_order(),
+                dest[1].copy_constructor_count(),
+                dest[1].move_constructor_count(),
+                dest[1].copy_assign_count(),
+                dest[1].move_assign_count(),
+                dest[1].move_order()};
     };
 
     // Non constant

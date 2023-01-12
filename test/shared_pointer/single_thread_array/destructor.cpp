@@ -1,12 +1,14 @@
 #include <core/containers/shared_pointer.h>
 #include <array>
 
-GTEST_TEST(shared_pointer_array_not_safe, destructor) {
+GTEST_TEST(shared_pointer_array_not_safe, destructor)
+{
 
-    const auto test = []() {
-        i32 dtor_count[4] = { 0 };
+    const auto test = []()
+    {
+        i32 dtor_count[4] = {0};
         {
-            hud::shared_pointer<hud_test::non_bitwise_type[4]> ptr(new hud_test::non_bitwise_type[4]{ { 123, &dtor_count[0] }, { 123, &dtor_count[1] }, { 123, &dtor_count[2] }, { 123, &dtor_count[3] } });
+            hud::shared_pointer<hud_test::non_bitwise_type[4]> ptr(new hud_test::non_bitwise_type[4]{{123, &dtor_count[0]}, {123, &dtor_count[1]}, {123, &dtor_count[2]}, {123, &dtor_count[3]}});
             {
                 hud::shared_pointer<hud_test::non_bitwise_type[4]> ptr_2(ptr);
             } // dtor_count == 0

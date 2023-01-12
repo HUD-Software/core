@@ -1,21 +1,31 @@
 #include <core/traits/is_trivially_copy_assignable.h>
 
-namespace hud_test {
-    struct a { };
-    struct b : a {};
-    struct c { c& operator= (const a&) { return *this; } };
-    struct d {
-        d& operator= (const d&) { return *this; }
-        d& operator= (const a&) { return *this; }
+namespace hud_test
+{
+    struct a
+    {
+    };
+    struct b : a
+    {
+    };
+    struct c
+    {
+        c &operator=(const a &) { return *this; }
+    };
+    struct d
+    {
+        d &operator=(const d &) { return *this; }
+        d &operator=(const a &) { return *this; }
     };
 }
 
-GTEST_TEST(traits, is_trivially_copy_assignable) {
+GTEST_TEST(traits, is_trivially_copy_assignable)
+{
     GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32>));
-    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32&>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32 &>));
     GTEST_ASSERT_FALSE((hud::is_trivially_copy_assignable_v<i32[]>));
     GTEST_ASSERT_FALSE((hud::is_trivially_copy_assignable_v<i32[32]>));
-    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32*>));
+    GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32 *>));
     GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<i32, f32>));
 
     GTEST_ASSERT_TRUE((hud::is_trivially_copy_assignable_v<hud_test::a>));

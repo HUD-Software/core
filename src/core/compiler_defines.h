@@ -47,11 +47,11 @@ __aarch64__
 
 /** Detect target OS */
 #if defined(_WIN32)
-    #define HD_OS_WINDOWS
+#define HD_OS_WINDOWS
 #elif defined(__linux__)
-    #define HD_OS_LINUX
+#define HD_OS_LINUX
 #else
-    #error Unknown target OS defines
+#error Unknown target OS defines
 #endif
 
 /** Detect compiler */
@@ -60,49 +60,49 @@ __aarch64__
 #endif
 
 #if defined(__clang__)
-    #if defined(_MSC_VER)
-        #define HD_COMPILER_CLANG_CL
-    #else
-            #define HD_COMPILER_CLANG
-    #endif
+#if defined(_MSC_VER)
+#define HD_COMPILER_CLANG_CL
+#else
+#define HD_COMPILER_CLANG
+#endif
 #endif
 
 /** Detect compiler version */
 #if defined(_MSC_VER)
-    #define HD_COMPILER_VERSION _MSC_VER
+#define HD_COMPILER_VERSION _MSC_VER
 #elif defined(HD_COMPILER_CLANG)
-    #define HD_COMPILER_VERSION __clang_major__, __clang_minor__, __clang_patchlevel__
+#define HD_COMPILER_VERSION __clang_major__, __clang_minor__, __clang_patchlevel__
 #else
-    #error Unknown compiler version defines
+#error Unknown compiler version defines
 #endif
 
 /** Detect target architecture */
 #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
-    #if defined(_M_X64)
-        #define HD_TARGET_X64
-    #elif defined (_M_IX86)
-     #define HD_TARGET_X86
-    #elif defined(_M_ARM64)
-        #define HD_TARGET_ARM64
-    #elif defined(_M_ARM)
-        #define HD_TARGET_ARM32
-    #endif
+#if defined(_M_X64)
+#define HD_TARGET_X64
+#elif defined(_M_IX86)
+#define HD_TARGET_X86
+#elif defined(_M_ARM64)
+#define HD_TARGET_ARM64
+#elif defined(_M_ARM)
+#define HD_TARGET_ARM32
+#endif
 #elif defined(HD_COMPILER_CLANG)
-    #if defined(__i386__)
-        #define HD_TARGET_X86
-    #elif defined(__x86_64__)
-        #define HD_TARGET_X64
-    #endif
+#if defined(__i386__)
+#define HD_TARGET_X86
+#elif defined(__x86_64__)
+#define HD_TARGET_X64
+#endif
 #else
-    #error Unknown target architecture defines
+#error Unknown target architecture defines
 #endif
 
 #if defined(HD_TARGET_X64) || defined(HD_TARGET_ARM64)
-    #define HD_TARGET_64_BITS
+#define HD_TARGET_64_BITS
 #elif defined(HD_TARGET_X86) || defined(HD_TARGET_ARM32)
-    #define HD_TARGET_32_BITS
+#define HD_TARGET_32_BITS
 #else
-    #error Unknown target architecture defines
+#error Unknown target architecture defines
 #endif
 
 #if defined(HD_TARGET_X64) || defined(HD_TARGET_X86)
@@ -113,29 +113,27 @@ __aarch64__
 
 /** Detect endianness */
 #if defined(HD_OS_WINDOWS)
-    #define HD_LITTLE_ENDIAN
+#define HD_LITTLE_ENDIAN
 #elif defined(HD_OS_LINUX)
-    #if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
-        #define HD_LITTLE_ENDIAN
-    #elif (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-        #define HD_BIG_ENDIAN
-    #else
-        #error Unknown endianness defines
-    #endif
+#if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
+#define HD_LITTLE_ENDIAN
+#elif (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+#define HD_BIG_ENDIAN
 #else
-    #error Unknown target OS for endianness defines
+#error Unknown endianness defines
 #endif
-
-
+#else
+#error Unknown target OS for endianness defines
+#endif
 
 /** Check required defines */
-#if !defined( HD_TARGET_32_BITS ) && !defined(HD_TARGET_64_BITS)
+#if !defined(HD_TARGET_32_BITS) && !defined(HD_TARGET_64_BITS)
 #error Architecture targeted not supported
 #endif
-#if !defined( HD_COMPILER_MSVC ) && !defined(HD_COMPILER_CLANG_CL) && !defined(HD_COMPILER_CLANG)
+#if !defined(HD_COMPILER_MSVC) && !defined(HD_COMPILER_CLANG_CL) && !defined(HD_COMPILER_CLANG)
 #error Compiler not supported
 #endif
-#if !defined( HD_OS_WINDOWS ) && !defined(HD_OS_LINUX)
+#if !defined(HD_OS_WINDOWS) && !defined(HD_OS_LINUX)
 #error Operating System targeted not supported
 #endif
 #if !defined(HD_DEBUG) && !defined(HD_DEBUGOPTIMIZED) && !defined(HD_RELEASE)
@@ -146,9 +144,9 @@ __aarch64__
 #endif
 
 #if defined(HD_TARGET_32_BITS)
-static_assert(sizeof(void*) == 4, "HD_TARGET_32_BITS is defined but size of pointers are not 4 bytes");
+static_assert(sizeof(void *) == 4, "HD_TARGET_32_BITS is defined but size of pointers are not 4 bytes");
 #elif defined(HD_TARGET_64_BITS)
-static_assert(sizeof(void*) == 8, "HD_TARGET_64_BITS is defined but size of pointers are not 8 bytes");
+static_assert(sizeof(void *) == 8, "HD_TARGET_64_BITS is defined but size of pointers are not 8 bytes");
 #endif
 
 #endif // HD_INC_CORE_COMPILER_DEFINES_H

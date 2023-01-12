@@ -53,7 +53,6 @@ GTEST_TEST(hash, hash_can_hash_floating_point)
     GTEST_ASSERT_EQ(hud::hash(flt64), static_cast<u32>(0xb82c8fdb));
 }
 
-
 GTEST_TEST(hash, hash_of_floating_point_are_usable_in_constexpr)
 {
     constexpr f32 flt32 = 12345.6789f;
@@ -70,20 +69,33 @@ GTEST_TEST(hash, hash_can_hash_c_string)
     static constexpr const ansichar txt[] = "abcdefghijklmnopqrstuvwxyz";
     GTEST_ASSERT_EQ(hud::hash(txt, hud::cstring::length(txt)), 0xaa02c5c1);
 
-    static constexpr const wchar* wtxt = L"abcdefghijklmnopqrstuvwxyz";
-    if constexpr(sizeof(wchar) == 2) {
+    static constexpr const wchar *wtxt = L"abcdefghijklmnopqrstuvwxyz";
+    if constexpr (sizeof(wchar) == 2)
+    {
         GTEST_ASSERT_EQ(hud::hash(wtxt, hud::cstring::length(wtxt)), 0x891d95cf);
-    } else if constexpr (sizeof(wchar) == 4) {
+    }
+    else if constexpr (sizeof(wchar) == 4)
+    {
         GTEST_ASSERT_EQ(hud::hash(wtxt, hud::cstring::length(wtxt)), 0x71002A00);
-    } else {
+    }
+    else
+    {
         FAIL();
     }
 }
 
 GTEST_TEST(hash, hash_can_hash_enumeration)
 {
-    enum class E : u32 { a = hud::u32_max, b = 'a' };
-    enum class E2 : u64 { a = hud::u64_max, b = 'a' };
+    enum class E : u32
+    {
+        a = hud::u32_max,
+        b = 'a'
+    };
+    enum class E2 : u64
+    {
+        a = hud::u64_max,
+        b = 'a'
+    };
 
     GTEST_ASSERT_EQ(hud::hash(E::a), hud::hash(hud::u32_max));
     GTEST_ASSERT_EQ(hud::hash(E::b), hud::hash(static_cast<u32>('a')));
@@ -91,10 +103,18 @@ GTEST_TEST(hash, hash_can_hash_enumeration)
     GTEST_ASSERT_EQ(hud::hash(E2::b), hud::hash(static_cast<u64>('a')));
 }
 
-GTEST_TEST(hash, hash_enumeration_are_usable_in_constexpr) 
+GTEST_TEST(hash, hash_enumeration_are_usable_in_constexpr)
 {
-    enum class E : u32 { a = hud::u32_max, b = 'a' };
-    enum class E2 : u64 { a = hud::u64_max, b = 'a' };
+    enum class E : u32
+    {
+        a = hud::u32_max,
+        b = 'a'
+    };
+    enum class E2 : u64
+    {
+        a = hud::u64_max,
+        b = 'a'
+    };
 
     constexpr u32 hash_e1_a = hud::hash(E::a);
     GTEST_ASSERT_EQ(hash_e1_a, hud::hash(hud::u32_max));
@@ -102,12 +122,12 @@ GTEST_TEST(hash, hash_enumeration_are_usable_in_constexpr)
     GTEST_ASSERT_EQ(hash_e1_b, hud::hash(static_cast<u32>('a')));
     constexpr u32 hash_e2_a = hud::hash(E2::a);
     GTEST_ASSERT_EQ(hash_e2_a, hud::hash(hud::u64_max));
-    constexpr u32 hash_e2_ab= hud::hash(E2::b);
+    constexpr u32 hash_e2_ab = hud::hash(E2::b);
     GTEST_ASSERT_EQ(hash_e2_ab, hud::hash(static_cast<u64>('a')));
 }
 
 GTEST_TEST(hash, hash_can_hash_pointers)
 {
-    const u32* ptr = nullptr;
+    const u32 *ptr = nullptr;
     GTEST_ASSERT_EQ(hud::hash(ptr), reinterpret_cast<uptr>(ptr));
 }

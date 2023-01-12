@@ -1,6 +1,7 @@
 #include <core/traits/make_signed.h>
 
-namespace hud_test {
+namespace hud_test
+{
     enum class a;
     enum class b_char : char;
     enum class b_const_char : const char;
@@ -38,7 +39,8 @@ namespace hud_test {
     enum class e_1 : usize;
 }
 
-GTEST_TEST(traits, make_signed) {
+GTEST_TEST(traits, make_signed)
+{
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<char>, signed char>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<signed char>, signed char>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<short>, signed short>));
@@ -68,22 +70,22 @@ GTEST_TEST(traits, make_signed) {
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<unsigned short>, signed short>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<unsigned int>, signed int>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<unsigned long>, signed long>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<unsigned long long>, signed long long >));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<unsigned long long>, signed long long>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const unsigned char>, const signed char>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const unsigned short>, const signed short>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const unsigned int>, const signed int>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const unsigned long>, const signed long>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const unsigned long long>, const signed long long >));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const unsigned long long>, const signed long long>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<volatile unsigned char>, volatile signed char>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<volatile unsigned short>, volatile signed short>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<volatile unsigned int>, volatile signed int>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<volatile unsigned long>, volatile signed long>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<volatile unsigned long long>, volatile signed long long >));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<volatile unsigned long long>, volatile signed long long>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const volatile unsigned char>, const volatile signed char>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const volatile unsigned short>, const volatile signed short>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const volatile unsigned int>, const volatile signed int>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const volatile unsigned long>, const volatile signed long>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const volatile unsigned long long>, const volatile signed long long >));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<const volatile unsigned long long>, const volatile signed long long>));
 
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<i8>, signed char>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<i16>, i16>));
@@ -94,12 +96,12 @@ GTEST_TEST(traits, make_signed) {
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<u32>, i32>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<u64>, i64>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<ansichar>, signed char>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<wchar>, hud::conditional_t< sizeof(wchar) == 2, i16, i32> >));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<wchar>, hud::conditional_t<sizeof(wchar) == 2, i16, i32>>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<char16>, i16>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<char32>, i32>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<iptr>, iptr>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<uptr>, iptr>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<usize>, hud::conditional_t< sizeof(void*) == 4, i32, i64>>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<usize>, hud::conditional_t<sizeof(void *) == 4, i32, i64>>));
 
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::a>, signed int>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::b_char>, signed char>));
@@ -113,10 +115,10 @@ GTEST_TEST(traits, make_signed) {
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::g>, signed long long>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::h>, signed char>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::i>, signed short>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::j>, signed int >));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::k>, signed long >));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::j>, signed int>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::k>, signed long>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::l>, signed long long>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::m>, hud::conditional_t< sizeof(wchar_t) == 2, signed short, signed int> >));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::m>, hud::conditional_t<sizeof(wchar_t) == 2, signed short, signed int>>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::n>, signed short>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::o>, signed int>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::p>, signed char>));
@@ -129,10 +131,10 @@ GTEST_TEST(traits, make_signed) {
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::w>, i32>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::x>, i64>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::y>, signed char>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::z>, hud::conditional_t< sizeof(wchar) == 2, i16, i32>>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::z>, hud::conditional_t<sizeof(wchar) == 2, i16, i32>>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::a_1>, i16>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::b_1>, i32>));
     GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::c_1>, iptr>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::d_1>, hud::conditional_t< sizeof(void*) == 4, i32, i64>>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::e_1>, hud::conditional_t< sizeof(void*) == 4, i32, i64>>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::d_1>, hud::conditional_t<sizeof(void *) == 4, i32, i64>>));
+    GTEST_ASSERT_TRUE((hud::is_same_v<hud::make_signed_t<hud_test::e_1>, hud::conditional_t<sizeof(void *) == 4, i32, i64>>));
 }

@@ -6,7 +6,8 @@
 #include <optional>
 
 // Nullopt
-GTEST_TEST(optional, assign_empty_trivial_type_with_nullopt) {
+GTEST_TEST(optional, assign_empty_trivial_type_with_nullopt)
+{
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
@@ -14,7 +15,8 @@ GTEST_TEST(optional, assign_empty_trivial_type_with_nullopt) {
     static_assert(hud::is_trivially_copy_assignable_v<type>);
     static_assert(hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = []() {
+    const auto test = []()
+    {
         hud::optional<type> option;
         const bool had_value = option.has_value();
 
@@ -22,8 +24,7 @@ GTEST_TEST(optional, assign_empty_trivial_type_with_nullopt) {
 
         return std::tuple{
             had_value,
-            option.has_value()
-        };
+            option.has_value()};
     };
 
     // Non constant
@@ -41,7 +42,8 @@ GTEST_TEST(optional, assign_empty_trivial_type_with_nullopt) {
     }
 }
 
-GTEST_TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
+GTEST_TEST(optional, assign_empty_non_trivial_type_with_nullopt)
+{
 
     using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
@@ -49,7 +51,8 @@ GTEST_TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = []() {
+    const auto test = []()
+    {
         hud::optional<type> option;
         const bool had_value = option.has_value();
 
@@ -57,8 +60,7 @@ GTEST_TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
 
         return std::tuple{
             had_value,
-            option.has_value()
-        };
+            option.has_value()};
     };
 
     // Non constant
@@ -76,7 +78,8 @@ GTEST_TEST(optional, assign_empty_non_trivial_type_with_nullopt) {
     }
 }
 
-GTEST_TEST(optional, assign_non_empty_trivial_type_with_nullopt) {
+GTEST_TEST(optional, assign_non_empty_trivial_type_with_nullopt)
+{
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
@@ -84,8 +87,9 @@ GTEST_TEST(optional, assign_non_empty_trivial_type_with_nullopt) {
     static_assert(hud::is_trivially_copy_assignable_v<type>);
     static_assert(hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = [](type value) {
-        hud::optional<type> option{ value };
+    const auto test = [](type value)
+    {
+        hud::optional<type> option{value};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
@@ -116,7 +120,8 @@ GTEST_TEST(optional, assign_non_empty_trivial_type_with_nullopt) {
     }
 }
 
-GTEST_TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
+GTEST_TEST(optional, assign_non_empty_non_trivial_type_with_nullopt)
+{
 
     using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
@@ -124,9 +129,10 @@ GTEST_TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = []() {
-        i32 destructor_count{ 0 };
-        hud::optional<type> option{ hud::in_place, &destructor_count };
+    const auto test = []()
+    {
+        i32 destructor_count{0};
+        hud::optional<type> option{hud::in_place, &destructor_count};
         const bool had_value_before = option.has_value();
         const i32 destructor_count_before = destructor_count;
         const u32 move_assign_count_before = option.value().move_assign_count();
@@ -146,8 +152,7 @@ GTEST_TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
             move_constructor_count_before,
             copy_constructor_count_before,
             option.has_value(),
-            destructor_count
-        };
+            destructor_count};
     };
 
     // Non constant
@@ -179,13 +184,15 @@ GTEST_TEST(optional, assign_non_empty_non_trivial_type_with_nullopt) {
     }
 }
 
-GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type)
+{
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const type value) {
+    const auto test = [](const type value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
@@ -194,8 +201,7 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type) {
         return std::tuple{
             had_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -204,7 +210,6 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type) {
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_EQ(std::get<2>(result), 123);
-        
     }
 
     // Constant
@@ -216,7 +221,8 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -224,7 +230,8 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_ty
     static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const OtherType value) {
+    const auto test = [](const OtherType value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
@@ -233,8 +240,7 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_ty
         return std::tuple{
             had_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -243,7 +249,6 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_ty
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_EQ(std::get<2>(result), 123);
-
     }
 
     // Constant
@@ -255,14 +260,16 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_ty
     }
 }
 
-GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_same_type)
+{
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const type before, const type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, const type after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
@@ -272,51 +279,7 @@ GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_same_typ
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
-    };
-
-    // Non constant
-    {
-        auto result = test(123,456);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 123);
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_EQ(std::get<3>(result), 456);
-
-    }
-
-    // Constant
-    {
-        constexpr auto result = test(123,456);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 123);
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_EQ(std::get<3>(result), 456);
-    }
-}
-
-GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_different_type) {
-
-    using type = i32;
-    using OtherType = i16;
-    static_assert(hud::is_trivially_copy_constructible_v<type, OtherType>);
-    static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
-    static_assert(hud::is_not_same_v<type, OtherType>);
-
-    const auto test = [](const type before, const OtherType after) {
-        hud::optional<type> option{ before };
-        const bool had_value_before = option.has_value();
-        const type value_before = option.value();
-
-        option = after;
-
-        return std::tuple{
-            had_value_before,
-            value_before,
-            option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -326,7 +289,6 @@ GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_differen
         GTEST_ASSERT_EQ(std::get<1>(result), 123);
         GTEST_ASSERT_TRUE(std::get<2>(result));
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
-
     }
 
     // Constant
@@ -339,20 +301,64 @@ GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_differen
     }
 }
 
-GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_different_type)
+{
 
+    using type = i32;
+    using OtherType = i16;
+    static_assert(hud::is_trivially_copy_constructible_v<type, OtherType>);
+    static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
+    static_assert(hud::is_not_same_v<type, OtherType>);
+
+    const auto test = [](const type before, const OtherType after)
+    {
+        hud::optional<type> option{before};
+        const bool had_value_before = option.has_value();
+        const type value_before = option.value();
+
+        option = after;
+
+        return std::tuple{
+            had_value_before,
+            value_before,
+            option.has_value(),
+            option.value()};
+    };
+
+    // Non constant
+    {
+        auto result = test(123, 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
+    }
+
+    // Constant
+    {
+        constexpr auto result = test(123, 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
+    }
+}
+
+GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_type)
+{
 
     using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         i32 destructor_count;
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
-        const type other{ value, &destructor_count };
+        const type other{value, &destructor_count};
         option = other;
 
         return std::tuple{
@@ -364,10 +370,8 @@ GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_typ
             option.value().constructor_count(),
             option.value().move_constructor_count(),
             option.value().copy_constructor_count(),
-            destructor_count
-        };
+            destructor_count};
     };
-
 
     // Non constant
     {
@@ -381,26 +385,25 @@ GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_typ
         GTEST_ASSERT_EQ(std::get<6>(result), 0u);
         GTEST_ASSERT_EQ(std::get<7>(result), 1u);
         GTEST_ASSERT_EQ(std::get<8>(result), 0);
-        
     }
 
     // Constant
-   /* {
-        constexpr auto result = test(123);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 123);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<5>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<8>(result), 0);
-    }*/
+    /* {
+         constexpr auto result = test(123);
+         GTEST_ASSERT_FALSE(std::get<0>(result));
+         GTEST_ASSERT_TRUE(std::get<1>(result));
+         GTEST_ASSERT_EQ(std::get<2>(result), 123);
+         GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+         GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+         GTEST_ASSERT_EQ(std::get<5>(result), 1u);
+         GTEST_ASSERT_EQ(std::get<6>(result), 0u);
+         GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+         GTEST_ASSERT_EQ(std::get<8>(result), 0);
+     }*/
 }
 
-GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_different_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
@@ -409,11 +412,12 @@ GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_differen
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        const OtherType other{ value };
+        const OtherType other{value};
         option = other;
 
         return std::tuple{
@@ -421,8 +425,7 @@ GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_differen
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()
-        };
+            option.value().copy_constructor_count()};
     };
 
     // Non constant
@@ -446,17 +449,19 @@ GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_differen
     }
 }
 
-GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same_type)
+{
 
     using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const i32 before, const i32 after) {
+    const auto test = [](const i32 before, const i32 after)
+    {
         i32 destructor_count;
         i32 other_destructor_count;
-        hud::optional<type> option{ hud::in_place, before, &destructor_count };
+        hud::optional<type> option{hud::in_place, before, &destructor_count};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -467,7 +472,7 @@ GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
         const i32 destructor_count_before = destructor_count;
 
-        const type other{ after, &other_destructor_count };
+        const type other{after, &other_destructor_count};
         option = other;
 
         return std::tuple{
@@ -489,7 +494,6 @@ GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same
             destructor_count,
             other_destructor_count,
         };
-        
     };
 
     // Non constant
@@ -537,26 +541,25 @@ GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same
     }
 }
 
-GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_different_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
-
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{before};
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 copy_assign_count_before = option.value().copy_assign_count();
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
 
-        const OtherType other{ after };
+        const OtherType other{after};
 
         option = other;
 
@@ -568,8 +571,7 @@ GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_diff
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()
-        };
+            option.value().copy_constructor_count()};
     };
 
     // Non constant
@@ -599,13 +601,15 @@ GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_diff
     }
 }
 
-GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type)
+{
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](type value) {
+    const auto test = [](type value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
@@ -614,8 +618,7 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type) {
         return std::tuple{
             had_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -624,7 +627,6 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type) {
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_EQ(std::get<2>(result), 123);
-
     }
 
     // Constant
@@ -636,7 +638,8 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -644,7 +647,8 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_ty
     static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](OtherType value) {
+    const auto test = [](OtherType value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
@@ -653,8 +657,7 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_ty
         return std::tuple{
             had_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -663,7 +666,6 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_ty
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_EQ(std::get<2>(result), 123);
-
     }
 
     // Constant
@@ -675,14 +677,16 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_ty
     }
 }
 
-GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_type)
+{
 
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const type before, type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, type after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
@@ -692,8 +696,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_typ
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -703,7 +706,6 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_typ
         GTEST_ASSERT_EQ(std::get<1>(result), 123);
         GTEST_ASSERT_TRUE(std::get<2>(result));
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
-
     }
 
     // Constant
@@ -716,7 +718,8 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_typ
     }
 }
 
-GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -724,8 +727,9 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_differen
     static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const type before, OtherType after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, OtherType after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
@@ -735,8 +739,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_differen
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -746,7 +749,6 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_differen
         GTEST_ASSERT_EQ(std::get<1>(result), 123);
         GTEST_ASSERT_TRUE(std::get<2>(result));
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
-
     }
 
     // Constant
@@ -759,20 +761,21 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_differen
     }
 }
 
-GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_type)
+{
     // Current STD specification make it not possible
     // because hud::is_constructible_v<type_t, U> where type_t and U is not move assignable is false
-    
-    //using namespace hud;
 
-    //using type = hud_test::non_bitwise_copy_assignable_type;
+    // using namespace hud;
 
-    //static_assert(!hud::is_trivially_copy_constructible_v<type>);
-    //static_assert(!hud::is_trivially_copy_assignable_v<type>);
+    // using type = hud_test::non_bitwise_copy_assignable_type;
 
-    //const auto test = [](const i32 value) {
-    //    hud::optional<type> option;
-    //    const bool had_value_before = option.has_value();
+    // static_assert(!hud::is_trivially_copy_constructible_v<type>);
+    // static_assert(!hud::is_trivially_copy_assignable_v<type>);
+
+    // const auto test = [](const i32 value) {
+    //     hud::optional<type> option;
+    //     const bool had_value_before = option.has_value();
 
     //    type other{ value };
 
@@ -786,7 +789,6 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_typ
     //        option.value().copy_constructor_count(),
     //    };
     //};
-
 
     //// Non constant
     //{
@@ -809,8 +811,8 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_typ
     //}
 }
 
-GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_different_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
@@ -819,11 +821,12 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_differen
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        OtherType other{ value };
+        OtherType other{value};
         option = hud::move(other);
 
         return std::tuple{
@@ -831,8 +834,7 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_differen
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()
-        };
+            option.value().copy_constructor_count()};
     };
 
     // Non constant
@@ -856,18 +858,19 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_differen
     }
 }
 
-GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same_type)
+{
     // Current STD specification make it not possible
     // because hud::is_constructible_v<type_t, U> where type_t and U is not move assignable is false
-  
-    //using namespace hud;
-    //using type = hud_test::non_bitwise_copy_assignable_type;
 
-    //static_assert(!hud::is_trivially_copy_constructible_v<type>);
-    //static_assert(!hud::is_trivially_copy_assignable_v<type>);
+    // using namespace hud;
+    // using type = hud_test::non_bitwise_copy_assignable_type;
 
-    //const auto test = [](const i32 before, const i32 after) {
-    //    hud::optional<type> option{ hud::in_place, before };
+    // static_assert(!hud::is_trivially_copy_constructible_v<type>);
+    // static_assert(!hud::is_trivially_copy_assignable_v<type>);
+
+    // const auto test = [](const i32 before, const i32 after) {
+    //     hud::optional<type> option{ hud::in_place, before };
 
     //    const bool has_value_before = option.has_value();
     //    const i32 id_before = option.value().id();
@@ -917,26 +920,25 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same
     //}
 }
 
-GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_different_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
-
 
     static_assert(!hud::is_trivially_copy_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{before};
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 copy_assign_count_before = option.value().copy_assign_count();
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
 
-        OtherType other{ after };
+        OtherType other{after};
 
         option = hud::move(other);
 
@@ -948,8 +950,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_diff
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()
-        };
+            option.value().copy_constructor_count()};
     };
 
     // Non constant
@@ -979,13 +980,15 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_diff
     }
 }
 
-GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type)
+{
 
     using type = i32;
     static_assert(hud::is_trivially_move_constructible_v<type>);
     static_assert(hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = []( type value) {
+    const auto test = [](type value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
@@ -994,8 +997,7 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type) {
         return std::tuple{
             had_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -1004,7 +1006,6 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type) {
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_EQ(std::get<2>(result), 123);
-
     }
 
     // Constant
@@ -1016,7 +1017,8 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type) {
     }
 }
 
-GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -1024,7 +1026,8 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_different_ty
     static_assert(hud::is_trivially_move_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](OtherType value) {
+    const auto test = [](OtherType value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
@@ -1033,8 +1036,7 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_different_ty
         return std::tuple{
             had_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -1043,7 +1045,6 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_different_ty
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_EQ(std::get<2>(result), 123);
-
     }
 
     // Constant
@@ -1055,14 +1056,16 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_different_ty
     }
 }
 
-GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_type)
+{
 
     using type = i32;
     static_assert(hud::is_trivially_move_constructible_v<type>);
     static_assert(hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = [](const type before, type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, type after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
@@ -1072,8 +1075,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_typ
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -1083,7 +1085,6 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_typ
         GTEST_ASSERT_EQ(std::get<1>(result), 123);
         GTEST_ASSERT_TRUE(std::get<2>(result));
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
-
     }
 
     // Constant
@@ -1096,7 +1097,8 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_typ
     }
 }
 
-GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -1104,8 +1106,9 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_differen
     static_assert(hud::is_trivially_move_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const type before, OtherType after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, OtherType after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
@@ -1115,8 +1118,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_differen
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -1126,7 +1128,6 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_differen
         GTEST_ASSERT_EQ(std::get<1>(result), 123);
         GTEST_ASSERT_TRUE(std::get<2>(result));
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
-
     }
 
     // Constant
@@ -1139,19 +1140,20 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_differen
     }
 }
 
-GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_type) {
-
+GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_type)
+{
 
     using type = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
-        type other{ value };
+        type other{value};
 
         option = hud::move(other);
 
@@ -1166,7 +1168,6 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_typ
         };
     };
 
-
     // Non constant
     {
         auto result = test(123);
@@ -1192,8 +1193,8 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_typ
     }
 }
 
-GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_different_type) {
-
+GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_different_type)
+{
 
     using type = hud_test::NonBitwiseMoveAssignableType2;
     using OtherType = hud_test::NonBitwiseMoveAssignableType;
@@ -1202,11 +1203,12 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_differen
     static_assert(!hud::is_trivially_move_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        OtherType other{ value };
+        OtherType other{value};
         option = hud::move(other);
 
         return std::tuple{
@@ -1245,15 +1247,17 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_differen
     }
 }
 
-GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same_type) {
+GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same_type)
+{
 
     using type = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ hud::in_place, before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{hud::in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -1262,7 +1266,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same
         const u32 move_assign_count_before = option.value().move_assign_count();
         const u32 move_constructor_count_before = option.value().move_constructor_count();
 
-        type other{ after };
+        type other{after};
 
         option = hud::move(other);
 
@@ -1280,7 +1284,6 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same
             option.value().move_assign_count(),
             option.value().move_constructor_count(),
         };
-
     };
 
     // Non constant
@@ -1298,7 +1301,6 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same
         GTEST_ASSERT_EQ(std::get<9>(result), 0u);
         GTEST_ASSERT_EQ(std::get<10>(result), 1u);
         GTEST_ASSERT_EQ(std::get<11>(result), 0u);
-
     }
 
     // Constant
@@ -1319,20 +1321,19 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same
     }
 }
 
-GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_different_type) {
-
+GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_different_type)
+{
 
     using type = hud_test::NonBitwiseMoveAssignableType2;
     using OtherType = hud_test::NonBitwiseMoveAssignableType;
-
 
     static_assert(!hud::is_trivially_move_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_move_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{before};
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 copy_assign_count_before = option.value().copy_assign_count();
@@ -1340,7 +1341,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_diff
         const u32 move_assign_count_before = option.value().move_assign_count();
         const u32 move_constructor_count_before = option.value().move_constructor_count();
 
-        OtherType other{ after };
+        OtherType other{after};
 
         option = hud::move(other);
 
@@ -1375,7 +1376,6 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_diff
         GTEST_ASSERT_EQ(std::get<9>(result), 0u);
         GTEST_ASSERT_EQ(std::get<10>(result), 1u);
         GTEST_ASSERT_EQ(std::get<11>(result), 0u);
-
     }
 
     // Constant
@@ -1396,30 +1396,28 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_diff
     }
 }
 
-GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_same_type) {
-
+GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_same_type)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_copy_assignable_v<type>);
 
-
-    const auto test = [](const type value) {
+    const auto test = [](const type value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        const hud::optional<type> other{ value };
+        const hud::optional<type> other{value};
 
         option = other;
 
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
-
 
     // Non constant
     {
@@ -1438,8 +1436,8 @@ GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -1448,21 +1446,20 @@ GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_different_type)
     static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const OtherType value) {
+    const auto test = [](const OtherType value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        const hud::optional<OtherType> other{ value };
+        const hud::optional<OtherType> other{value};
 
         option = other;
 
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
-
 
     // Non constant
     {
@@ -1481,21 +1478,21 @@ GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_different_type)
     }
 }
 
-GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) {
-
+GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type)
+{
 
     using type = hud_test::non_bitwise_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
-
-    const auto test = [](const i32 value) {
-        i32 destructor_count_other{ 0 };
+    const auto test = [](const i32 value)
+    {
+        i32 destructor_count_other{0};
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        const hud::optional<type> other{ hud::in_place, value,  &destructor_count_other };
+        const hud::optional<type> other{hud::in_place, value, &destructor_count_other};
 
         option = other;
 
@@ -1508,8 +1505,7 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) 
             option.value().constructor_count(),
             option.value().move_constructor_count(),
             option.value().copy_constructor_count(),
-            destructor_count_other
-        };
+            destructor_count_other};
     };
 
     // Non constant
@@ -1525,7 +1521,6 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) 
         GTEST_ASSERT_EQ(std::get<7>(result), 1u);
         GTEST_ASSERT_EQ(std::get<8>(result), 0);
     }
-
 
     // Constant
     {
@@ -1540,11 +1535,10 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_same_type) 
         GTEST_ASSERT_EQ(std::get<7>(result), 1u);
         GTEST_ASSERT_EQ(std::get<8>(result), 0);
     }
-
 }
 
-GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
@@ -1553,11 +1547,12 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_t
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
-        const hud::optional<OtherType> other{ value };
+        const hud::optional<OtherType> other{value};
 
         option = other;
 
@@ -1589,76 +1584,29 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_different_t
         GTEST_ASSERT_EQ(std::get<3>(result), 0u);
         GTEST_ASSERT_EQ(std::get<4>(result), 1u);
     }
-
 }
 
-GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_same_type) {
-
+GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_same_type)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const type before, const type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, const type after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
-        const hud::optional<type> other{ after };
+        const hud::optional<type> other{after};
         option = other;
         return std::tuple{
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
-    };
-
-    // Non constant
-    {
-        const auto result = test(123,456);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 123);
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_EQ(std::get<3>(result), 456);
-    }
-
-
-    // Constant
-    {
-        constexpr auto result = test(123, 456);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 123);
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_EQ(std::get<3>(result), 456);
-    }
-}
-
-GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_different_type) {
-
-
-    using type = i32;
-    using OtherType = i16;
-
-    static_assert(hud::is_trivially_copy_constructible_v<type, OtherType>);
-    static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
-    static_assert(hud::is_not_same_v<type, OtherType>);
-
-
-    const auto test = [](const type before, const OtherType after) {
-        hud::optional<type> option{ before };
-        const bool had_value_before = option.has_value();
-        const type value_before = option.value();
-
-        const hud::optional<OtherType> other{ after };
-        option = other;
-        return std::tuple{
-            had_value_before,
-            value_before,
-            option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -1670,6 +1618,49 @@ GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_different_t
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
+    // Constant
+    {
+        constexpr auto result = test(123, 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
+    }
+}
+
+GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_different_type)
+{
+
+    using type = i32;
+    using OtherType = i16;
+
+    static_assert(hud::is_trivially_copy_constructible_v<type, OtherType>);
+    static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
+    static_assert(hud::is_not_same_v<type, OtherType>);
+
+    const auto test = [](const type before, const OtherType after)
+    {
+        hud::optional<type> option{before};
+        const bool had_value_before = option.has_value();
+        const type value_before = option.value();
+
+        const hud::optional<OtherType> other{after};
+        option = other;
+        return std::tuple{
+            had_value_before,
+            value_before,
+            option.has_value(),
+            option.value()};
+    };
+
+    // Non constant
+    {
+        const auto result = test(123, 456);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_EQ(std::get<1>(result), 123);
+        GTEST_ASSERT_TRUE(std::get<2>(result));
+        GTEST_ASSERT_EQ(std::get<3>(result), 456);
+    }
 
     // Constant
     {
@@ -1681,17 +1672,18 @@ GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_different_t
     }
 }
 
-GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_type) {
-
+GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_type)
+{
 
     using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const i32 before, const i32 after) {
+    const auto test = [](const i32 before, const i32 after)
+    {
         i32 destructor_count;
         i32 other_destructor_count;
-        hud::optional<type> option{ hud::in_place, before, &destructor_count };
+        hud::optional<type> option{hud::in_place, before, &destructor_count};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -1702,7 +1694,7 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_ty
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
         const i32 destructor_count_before = destructor_count;
 
-        const hud::optional<type> other{ hud::in_place, after,  &other_destructor_count };
+        const hud::optional<type> other{hud::in_place, after, &other_destructor_count};
         option = other;
 
         return std::tuple{
@@ -1724,7 +1716,6 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_ty
             destructor_count,
             other_destructor_count,
         };
-
     };
 
     // Non constant
@@ -1772,7 +1763,8 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_same_ty
     }
 }
 
-GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_different_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
@@ -1781,14 +1773,15 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_differe
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{before};
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 copy_assign_count_before = option.value().copy_assign_count();
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
 
-        const hud::optional<OtherType> other{ after };
+        const hud::optional<OtherType> other{after};
 
         option = other;
 
@@ -1800,8 +1793,7 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_differe
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()
-        };
+            option.value().copy_constructor_count()};
     };
 
     // Non constant
@@ -1831,29 +1823,28 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_differe
     }
 }
 
-GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_same_type) {
-
+GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_same_type)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const type value) {
+    const auto test = [](const type value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        const hud::optional<type> other{ value };
+        const hud::optional<type> other{value};
 
         option = hud::move(other);
 
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
-
 
     // Non constant
     {
@@ -1872,19 +1863,20 @@ GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_same_type) {
     }
 }
 
-GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type) {
-
+GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        const hud::optional<type> other{ hud::in_place, value};
+        const hud::optional<type> other{hud::in_place, value};
 
         option = hud::move(other);
 
@@ -1907,7 +1899,6 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type) 
         GTEST_ASSERT_EQ(std::get<4>(result), 1u);
     }
 
-
     // Constant
     {
         constexpr auto result = test(123);
@@ -1919,8 +1910,8 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_same_type) 
     }
 }
 
-GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -1929,21 +1920,20 @@ GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_different_type)
     static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const OtherType value) {
+    const auto test = [](const OtherType value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        hud::optional<OtherType> other{ value };
+        hud::optional<OtherType> other{value};
 
         option = hud::move(other);
 
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
-
 
     // Non constant
     {
@@ -1962,8 +1952,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_different_type)
     }
 }
 
-GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
@@ -1972,11 +1962,12 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_t
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
-        const hud::optional<OtherType> other{ value };
+        const hud::optional<OtherType> other{value};
 
         option = hud::move(other);
 
@@ -2010,29 +2001,28 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_different_t
     }
 }
 
-GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_same_type) {
-
+GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_same_type)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_move_constructible_v<type>);
     static_assert(hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = [](const type value) {
+    const auto test = [](const type value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        hud::optional<type> other{ value };
+        hud::optional<type> other{value};
 
         option = hud::move(other);
 
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
-
 
     // Non constant
     {
@@ -2051,19 +2041,20 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_same_type) {
     }
 }
 
-GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type) {
-
+GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type)
+{
 
     using type = hud_test::NonBitwiseMoveAssignableType;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        hud::optional<type> other{ hud::in_place, value };
+        hud::optional<type> other{hud::in_place, value};
 
         option = hud::move(other);
 
@@ -2090,7 +2081,6 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type) 
         GTEST_ASSERT_EQ(std::get<6>(result), 1u);
     }
 
-
     // Constant
     {
         constexpr auto result = test(123);
@@ -2104,8 +2094,8 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type) 
     }
 }
 
-GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_different_type) {
-
+GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -2114,21 +2104,20 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_different_type)
     static_assert(hud::is_trivially_move_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const OtherType value) {
+    const auto test = [](const OtherType value)
+    {
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        hud::optional<OtherType> other{ value };
+        hud::optional<OtherType> other{value};
 
         option = hud::move(other);
 
         return std::tuple{
             has_value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
-
 
     // Non constant
     {
@@ -2147,8 +2136,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_different_type)
     }
 }
 
-GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_different_type) {
-
+GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_different_type)
+{
 
     using type = hud_test::NonBitwiseMoveAssignableType2;
     using OtherType = hud_test::NonBitwiseMoveAssignableType;
@@ -2157,11 +2146,12 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_different_t
     static_assert(!hud::is_trivially_move_assignable_v<type>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 value) {
+    const auto test = [](const i32 value)
+    {
         hud::optional<type> option;
         const bool had_value_before = option.has_value();
 
-        hud::optional<OtherType> other{ value };
+        hud::optional<OtherType> other{value};
 
         option = hud::move(other);
 
@@ -2172,8 +2162,7 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_different_t
             option.value().copy_assign_count(),
             option.value().copy_constructor_count(),
             option.value().move_assign_count(),
-            option.value().move_constructor_count()
-        };
+            option.value().move_constructor_count()};
     };
 
     // Non constant
@@ -2201,39 +2190,39 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_different_t
     }
 }
 
-GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_same_type) {
-
+GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_same_type)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_copy_assignable_v<type>);
 
-    hud::optional<type> option{ 123 };
+    hud::optional<type> option{123};
     GTEST_ASSERT_TRUE(option.has_value());
     GTEST_ASSERT_EQ(option.value(), 123);
 
-    hud::optional<type> other{ 456 };
+    hud::optional<type> other{456};
     option = hud::move(other);
 
     GTEST_ASSERT_TRUE(option.has_value());
     GTEST_ASSERT_EQ(option.value(), 456);
 }
 
-GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_same_type) {
-
+GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_same_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
-    hud::optional<type> option{ 123 };
+    hud::optional<type> option{123};
     GTEST_ASSERT_TRUE(option.has_value());
     GTEST_ASSERT_EQ(option.value().id(), 123);
     GTEST_ASSERT_EQ(option.value().copy_assign_count(), 0u);
     GTEST_ASSERT_EQ(option.value().copy_constructor_count(), 0u);
 
-    hud::optional<type> other{ 456 };
+    hud::optional<type> other{456};
     option = hud::move(other);
 
     GTEST_ASSERT_TRUE(option.has_value());
@@ -2242,8 +2231,8 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_same_ty
     GTEST_ASSERT_EQ(option.value().copy_constructor_count(), 0u);
 }
 
-GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_type) {
-
+GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -2252,13 +2241,13 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_t
     static_assert(hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-
-    const auto test = [](const type before, const OtherType after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, const OtherType after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
-        hud::optional<OtherType> other{ after };
+        hud::optional<OtherType> other{after};
 
         option = hud::move(other);
 
@@ -2266,8 +2255,7 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_t
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -2279,7 +2267,6 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_t
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
-
     // Constant
     {
         constexpr auto result = test(123, 456);
@@ -2290,7 +2277,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_different_t
     }
 }
 
-GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_different_type) {
+GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_different_type)
+{
 
     using type = hud_test::non_bitwise_copy_assignable_type_2;
     using OtherType = hud_test::non_bitwise_copy_assignable_type;
@@ -2299,14 +2287,15 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_differe
     static_assert(!hud::is_trivially_copy_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{before};
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 copy_assign_count_before = option.value().copy_assign_count();
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
 
-        hud::optional<OtherType> other{ after };
+        hud::optional<OtherType> other{after};
 
         option = hud::move(other);
 
@@ -2318,8 +2307,7 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_differe
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()
-        };
+            option.value().copy_constructor_count()};
     };
 
     // Non constant
@@ -2349,20 +2337,21 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_differe
     }
 }
 
-GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type) {
-
+GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type)
+{
 
     using type = i32;
 
     static_assert(hud::is_trivially_move_constructible_v<type>);
     static_assert(hud::is_trivially_move_assignable_v<type>);
 
-    const auto test = [](const type before, const type after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, const type after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
-        hud::optional<type> other{ after };
+        hud::optional<type> other{after};
 
         option = hud::move(other);
 
@@ -2370,8 +2359,7 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type) 
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -2383,7 +2371,6 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type) 
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
-
     // Constant
     {
         constexpr auto result = test(123, 456);
@@ -2394,17 +2381,18 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_same_type) 
     }
 }
 
-GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_type) {
-
+GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_type)
+{
 
     using type = hud_test::non_bitwise_type;
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
-    const auto test = [](const i32 before, const i32 after) {
+    const auto test = [](const i32 before, const i32 after)
+    {
         i32 destructor_count;
         i32 other_destructor_count;
-        hud::optional<type> option{ hud::in_place, before, &destructor_count };
+        hud::optional<type> option{hud::in_place, before, &destructor_count};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -2415,7 +2403,7 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_ty
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
         const i32 destructor_count_before = destructor_count;
 
-        hud::optional<type> other{ hud::in_place, after,  &other_destructor_count };
+        hud::optional<type> other{hud::in_place, after, &other_destructor_count};
         option = hud::move(other);
 
         return std::tuple{
@@ -2437,7 +2425,6 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_ty
             destructor_count,
             other_destructor_count,
         };
-
     };
 
     // Non constant
@@ -2485,8 +2472,8 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_same_ty
     }
 }
 
-GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_different_type) {
-
+GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_different_type)
+{
 
     using type = i32;
     using OtherType = i16;
@@ -2495,20 +2482,19 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_different_t
     static_assert(hud::is_trivially_move_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-
-    const auto test = [](const type before, const OtherType after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const type before, const OtherType after)
+    {
+        hud::optional<type> option{before};
         const bool had_value_before = option.has_value();
         const type value_before = option.value();
 
-        hud::optional<OtherType> other{ after };
+        hud::optional<OtherType> other{after};
         option = hud::move(other);
         return std::tuple{
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()
-        };
+            option.value()};
     };
 
     // Non constant
@@ -2520,7 +2506,6 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_different_t
         GTEST_ASSERT_EQ(std::get<3>(result), 456);
     }
 
-
     // Constant
     {
         constexpr auto result = test(123, 456);
@@ -2531,7 +2516,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_different_t
     }
 }
 
-GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_different_type) {
+GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_different_type)
+{
 
     using type = hud_test::NonBitwiseMoveAssignableType2;
     using OtherType = hud_test::NonBitwiseMoveAssignableType;
@@ -2540,8 +2526,9 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_differe
     static_assert(!hud::is_trivially_move_assignable_v<type, OtherType>);
     static_assert(hud::is_not_same_v<type, OtherType>);
 
-    const auto test = [](const i32 before, const i32 after) {
-        hud::optional<type> option{ before };
+    const auto test = [](const i32 before, const i32 after)
+    {
+        hud::optional<type> option{before};
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
         const u32 copy_assign_count_before = option.value().copy_assign_count();
@@ -2549,7 +2536,7 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_differe
         const u32 move_assign_count_before = option.value().move_assign_count();
         const u32 move_constructor_count_before = option.value().move_constructor_count();
 
-        hud::optional<OtherType> other{ after };
+        hud::optional<OtherType> other{after};
 
         option = hud::move(other);
 
@@ -2565,8 +2552,7 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_differe
             option.value().copy_assign_count(),
             option.value().copy_constructor_count(),
             option.value().move_assign_count(),
-            option.value().move_constructor_count()
-        };
+            option.value().move_constructor_count()};
     };
 
     // Non constant

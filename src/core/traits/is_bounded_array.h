@@ -3,16 +3,19 @@
 #define HD_INC_CORE_TRAITS_IS_BOUNDED_ARRAY_H
 #include "integral_constant.h"
 
-namespace hud {
+namespace hud
+{
 
     /** Checks whether type_t is a bounded array type. */
-    template<typename type_t>
+    template <typename type_t>
     struct is_bounded_array
-        : hud::false_type {
+        : hud::false_type
+    {
     };
-    template<typename type_t, usize extent>
+    template <typename type_t, usize extent>
     struct is_bounded_array<type_t[extent]>
-        : hud::true_type {
+        : hud::true_type
+    {
     };
 
     /** Equivalent of is_bounded_array<type_t>::value. */

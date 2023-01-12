@@ -1,18 +1,19 @@
 #include <core/containers/optional.h>
 
-GTEST_TEST(optional, equal_operator) {
+GTEST_TEST(optional, equal_operator)
+{
 
-    
     using type = i32;
 
     // constexpr bool operator==(const hud::optional<Left>& left, const hud::optional<Right>& right) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
             hud::optional<type> empty_2;
-            hud::optional<type> non_empty{ 1 };
-            hud::optional<type> non_empty_1{ 1 };
-            hud::optional<type> non_empty_2{ 2 };
+            hud::optional<type> non_empty{1};
+            hud::optional<type> non_empty_1{1};
+            hud::optional<type> non_empty_2{2};
 
             const std::tuple test_empty{
                 empty == empty,
@@ -27,60 +28,55 @@ GTEST_TEST(optional, equal_operator) {
                 non_empty == empty_2,
                 non_empty == non_empty,
                 non_empty == non_empty_1,
-                non_empty == non_empty_2
-            };
+                non_empty == non_empty_2};
 
             const std::tuple test_non_empty_1{
                 non_empty_1 == empty,
                 non_empty_1 == empty_2,
                 non_empty_1 == non_empty,
                 non_empty_1 == non_empty_1,
-                non_empty_1 == non_empty_2
-            };
+                non_empty_1 == non_empty_2};
 
             const std::tuple test_non_empty_2{
                 non_empty_2 == empty,
                 non_empty_2 == empty_2,
                 non_empty_2 == non_empty,
                 non_empty_2 == non_empty_1,
-                non_empty_2 == non_empty_2
-            };
+                non_empty_2 == non_empty_2};
 
             return std::tuple{
                 test_empty,
                 test_non_empty,
                 test_non_empty_1,
-                test_non_empty_2
-            };
+                test_non_empty_2};
         };
-
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
@@ -92,28 +88,28 @@ GTEST_TEST(optional, equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
@@ -122,12 +118,12 @@ GTEST_TEST(optional, equal_operator) {
         }
     }
 
-
     // constexpr bool operator==(const hud::optional<TOption>& option, const TValue& value) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 empty == 0,
@@ -143,20 +139,19 @@ GTEST_TEST(optional, equal_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -166,12 +161,12 @@ GTEST_TEST(optional, equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -180,9 +175,10 @@ GTEST_TEST(optional, equal_operator) {
 
     // constexpr bool operator==(const TValue& value, const hud::optional<TOption>& option) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 0 == empty,
@@ -198,20 +194,19 @@ GTEST_TEST(optional, equal_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -221,12 +216,12 @@ GTEST_TEST(optional, equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -234,19 +229,20 @@ GTEST_TEST(optional, equal_operator) {
     }
 }
 
-GTEST_TEST(optional, not_equal_operator) {
-
+GTEST_TEST(optional, not_equal_operator)
+{
 
     using type = i32;
 
     // constexpr bool operator!=(const hud::optional<Left>& left, const hud::optional<Right>& right) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
             hud::optional<type> empty_2;
-            hud::optional<type> non_empty{ 1 };
-            hud::optional<type> non_empty_1{ 1 };
-            hud::optional<type> non_empty_2{ 2 };
+            hud::optional<type> non_empty{1};
+            hud::optional<type> non_empty_1{1};
+            hud::optional<type> non_empty_2{2};
 
             const std::tuple test_empty{
                 empty != empty,
@@ -261,60 +257,55 @@ GTEST_TEST(optional, not_equal_operator) {
                 non_empty != empty_2,
                 non_empty != non_empty,
                 non_empty != non_empty_1,
-                non_empty != non_empty_2
-            };
+                non_empty != non_empty_2};
 
             const std::tuple test_non_empty_1{
                 non_empty_1 != empty,
                 non_empty_1 != empty_2,
                 non_empty_1 != non_empty,
                 non_empty_1 != non_empty_1,
-                non_empty_1 != non_empty_2
-            };
+                non_empty_1 != non_empty_2};
 
             const std::tuple test_non_empty_2{
                 non_empty_2 != empty,
                 non_empty_2 != empty_2,
                 non_empty_2 != non_empty,
                 non_empty_2 != non_empty_1,
-                non_empty_2 != non_empty_2
-            };
+                non_empty_2 != non_empty_2};
 
             return std::tuple{
                 test_empty,
                 test_non_empty,
                 test_non_empty_1,
-                test_non_empty_2
-            };
+                test_non_empty_2};
         };
-
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
@@ -326,28 +317,28 @@ GTEST_TEST(optional, not_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
@@ -356,12 +347,12 @@ GTEST_TEST(optional, not_equal_operator) {
         }
     }
 
-
     // constexpr bool operator!=(const hud::optional<TOption>& option, const TValue& value) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 empty != 0,
@@ -377,20 +368,19 @@ GTEST_TEST(optional, not_equal_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -400,12 +390,12 @@ GTEST_TEST(optional, not_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -414,9 +404,10 @@ GTEST_TEST(optional, not_equal_operator) {
 
     // constexpr bool operator!=(const TValue& value, const hud::optional<TOption>& option) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 0 != empty,
@@ -432,20 +423,19 @@ GTEST_TEST(optional, not_equal_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -455,12 +445,12 @@ GTEST_TEST(optional, not_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -468,19 +458,20 @@ GTEST_TEST(optional, not_equal_operator) {
     }
 }
 
-GTEST_TEST(optional, less_operator) {
-
+GTEST_TEST(optional, less_operator)
+{
 
     using type = i32;
 
     // constexpr bool operator<(const hud::optional<Left>& left, const hud::optional<Right>& right) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
             hud::optional<type> empty_2;
-            hud::optional<type> non_empty{ 1 };
-            hud::optional<type> non_empty_1{ 1 };
-            hud::optional<type> non_empty_2{ 2 };
+            hud::optional<type> non_empty{1};
+            hud::optional<type> non_empty_1{1};
+            hud::optional<type> non_empty_2{2};
 
             const std::tuple test_empty{
                 empty < empty,
@@ -495,60 +486,55 @@ GTEST_TEST(optional, less_operator) {
                 non_empty < empty_2,
                 non_empty < non_empty,
                 non_empty < non_empty_1,
-                non_empty < non_empty_2
-            };
+                non_empty < non_empty_2};
 
             const std::tuple test_non_empty_1{
                 non_empty_1 < empty,
                 non_empty_1 < empty_2,
                 non_empty_1 < non_empty,
                 non_empty_1 < non_empty_1,
-                non_empty_1 < non_empty_2
-            };
+                non_empty_1 < non_empty_2};
 
             const std::tuple test_non_empty_2{
                 non_empty_2 < empty,
                 non_empty_2 < empty_2,
                 non_empty_2 < non_empty,
                 non_empty_2 < non_empty_1,
-                non_empty_2 < non_empty_2
-            };
+                non_empty_2 < non_empty_2};
 
             return std::tuple{
                 test_empty,
                 test_non_empty,
                 test_non_empty_1,
-                test_non_empty_2
-            };
+                test_non_empty_2};
         };
-
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
@@ -560,28 +546,28 @@ GTEST_TEST(optional, less_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
@@ -590,12 +576,12 @@ GTEST_TEST(optional, less_operator) {
         }
     }
 
-
     // constexpr bool operator<(const hud::optional<TOption>& option, const TValue& value) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 empty < 0,
@@ -611,20 +597,19 @@ GTEST_TEST(optional, less_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -634,12 +619,12 @@ GTEST_TEST(optional, less_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -648,9 +633,10 @@ GTEST_TEST(optional, less_operator) {
 
     // constexpr bool operator<(const TValue& value, const hud::optional<TOption>& option) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 0 < empty,
@@ -666,20 +652,19 @@ GTEST_TEST(optional, less_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -689,12 +674,12 @@ GTEST_TEST(optional, less_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -702,19 +687,20 @@ GTEST_TEST(optional, less_operator) {
     }
 }
 
-GTEST_TEST(optional, greater_operator) {
-
+GTEST_TEST(optional, greater_operator)
+{
 
     using type = i32;
 
     // constexpr bool operator>(const hud::optional<Left>& left, const hud::optional<Right>& right) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
             hud::optional<type> empty_2;
-            hud::optional<type> non_empty{ 1 };
-            hud::optional<type> non_empty_1{ 1 };
-            hud::optional<type> non_empty_2{ 2 };
+            hud::optional<type> non_empty{1};
+            hud::optional<type> non_empty_1{1};
+            hud::optional<type> non_empty_2{2};
 
             const std::tuple test_empty{
                 empty > empty,
@@ -729,60 +715,55 @@ GTEST_TEST(optional, greater_operator) {
                 non_empty > empty_2,
                 non_empty > non_empty,
                 non_empty > non_empty_1,
-                non_empty > non_empty_2
-            };
+                non_empty > non_empty_2};
 
             const std::tuple test_non_empty_1{
                 non_empty_1 > empty,
                 non_empty_1 > empty_2,
                 non_empty_1 > non_empty,
                 non_empty_1 > non_empty_1,
-                non_empty_1 > non_empty_2
-            };
+                non_empty_1 > non_empty_2};
 
             const std::tuple test_non_empty_2{
                 non_empty_2 > empty,
                 non_empty_2 > empty_2,
                 non_empty_2 > non_empty,
                 non_empty_2 > non_empty_1,
-                non_empty_2 > non_empty_2
-            };
+                non_empty_2 > non_empty_2};
 
             return std::tuple{
                 test_empty,
                 test_non_empty,
                 test_non_empty_1,
-                test_non_empty_2
-            };
+                test_non_empty_2};
         };
-
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
@@ -794,28 +775,28 @@ GTEST_TEST(optional, greater_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
@@ -824,12 +805,12 @@ GTEST_TEST(optional, greater_operator) {
         }
     }
 
-
     // constexpr bool operator>(const hud::optional<TOption>& option, const TValue& value) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 empty > 0,
@@ -845,20 +826,19 @@ GTEST_TEST(optional, greater_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -868,12 +848,12 @@ GTEST_TEST(optional, greater_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -882,9 +862,10 @@ GTEST_TEST(optional, greater_operator) {
 
     // constexpr bool operator>(const TValue& value, const hud::optional<TOption>& option) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 0 > empty,
@@ -900,20 +881,19 @@ GTEST_TEST(optional, greater_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -923,12 +903,12 @@ GTEST_TEST(optional, greater_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -936,19 +916,20 @@ GTEST_TEST(optional, greater_operator) {
     }
 }
 
-GTEST_TEST(optional, less_equal_operator) {
-
+GTEST_TEST(optional, less_equal_operator)
+{
 
     using type = i32;
 
     // constexpr bool operator<=(const hud::optional<Left>& left, const hud::optional<Right>& right) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
             hud::optional<type> empty_2;
-            hud::optional<type> non_empty{ 1 };
-            hud::optional<type> non_empty_1{ 1 };
-            hud::optional<type> non_empty_2{ 2 };
+            hud::optional<type> non_empty{1};
+            hud::optional<type> non_empty_1{1};
+            hud::optional<type> non_empty_2{2};
 
             const std::tuple test_empty{
                 empty <= empty,
@@ -963,60 +944,55 @@ GTEST_TEST(optional, less_equal_operator) {
                 non_empty <= empty_2,
                 non_empty <= non_empty,
                 non_empty <= non_empty_1,
-                non_empty <= non_empty_2
-            };
+                non_empty <= non_empty_2};
 
             const std::tuple test_non_empty_1{
                 non_empty_1 <= empty,
                 non_empty_1 <= empty_2,
                 non_empty_1 <= non_empty,
                 non_empty_1 <= non_empty_1,
-                non_empty_1 <= non_empty_2
-            };
+                non_empty_1 <= non_empty_2};
 
             const std::tuple test_non_empty_2{
                 non_empty_2 <= empty,
                 non_empty_2 <= empty_2,
                 non_empty_2 <= non_empty,
                 non_empty_2 <= non_empty_1,
-                non_empty_2 <= non_empty_2
-            };
+                non_empty_2 <= non_empty_2};
 
             return std::tuple{
                 test_empty,
                 test_non_empty,
                 test_non_empty_1,
-                test_non_empty_2
-            };
+                test_non_empty_2};
         };
-
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
@@ -1028,28 +1004,28 @@ GTEST_TEST(optional, less_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
@@ -1058,12 +1034,12 @@ GTEST_TEST(optional, less_equal_operator) {
         }
     }
 
-
     // constexpr bool operator<=(const hud::optional<TOption>& option, const TValue& value) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 empty <= 0,
@@ -1079,20 +1055,19 @@ GTEST_TEST(optional, less_equal_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -1102,12 +1077,12 @@ GTEST_TEST(optional, less_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -1116,9 +1091,10 @@ GTEST_TEST(optional, less_equal_operator) {
 
     // constexpr bool operator<=(const TValue& value, const hud::optional<TOption>& option) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 0 <= empty,
@@ -1134,20 +1110,19 @@ GTEST_TEST(optional, less_equal_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -1157,12 +1132,12 @@ GTEST_TEST(optional, less_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -1170,19 +1145,20 @@ GTEST_TEST(optional, less_equal_operator) {
     }
 }
 
-GTEST_TEST(optional, greater_equal_operator) {
-
+GTEST_TEST(optional, greater_equal_operator)
+{
 
     using type = i32;
 
     // constexpr bool operator>=(const hud::optional<Left>& left, const hud::optional<Right>& right) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
             hud::optional<type> empty_2;
-            hud::optional<type> non_empty{ 1 };
-            hud::optional<type> non_empty_1{ 1 };
-            hud::optional<type> non_empty_2{ 2 };
+            hud::optional<type> non_empty{1};
+            hud::optional<type> non_empty_1{1};
+            hud::optional<type> non_empty_2{2};
 
             const std::tuple test_empty{
                 empty >= empty,
@@ -1197,60 +1173,55 @@ GTEST_TEST(optional, greater_equal_operator) {
                 non_empty >= empty_2,
                 non_empty >= non_empty,
                 non_empty >= non_empty_1,
-                non_empty >= non_empty_2
-            };
+                non_empty >= non_empty_2};
 
             const std::tuple test_non_empty_1{
                 non_empty_1 >= empty,
                 non_empty_1 >= empty_2,
                 non_empty_1 >= non_empty,
                 non_empty_1 >= non_empty_1,
-                non_empty_1 >= non_empty_2
-            };
+                non_empty_1 >= non_empty_2};
 
             const std::tuple test_non_empty_2{
                 non_empty_2 >= empty,
                 non_empty_2 >= empty_2,
                 non_empty_2 >= non_empty,
                 non_empty_2 >= non_empty_1,
-                non_empty_2 >= non_empty_2
-            };
+                non_empty_2 >= non_empty_2};
 
             return std::tuple{
                 test_empty,
                 test_non_empty,
                 test_non_empty_1,
-                test_non_empty_2
-            };
+                test_non_empty_2};
         };
-
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
@@ -1262,28 +1233,28 @@ GTEST_TEST(optional, greater_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
             GTEST_ASSERT_FALSE(std::get<3>(test_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
 
-            const auto& test_non_empty_1 = std::get<2>(result);
+            const auto &test_non_empty_1 = std::get<2>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
             GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
             GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
 
-            const auto& test_non_empty_2 = std::get<3>(result);
+            const auto &test_non_empty_2 = std::get<3>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
@@ -1292,12 +1263,12 @@ GTEST_TEST(optional, greater_equal_operator) {
         }
     }
 
-
     // constexpr bool operator>=(const hud::optional<TOption>& option, const TValue& value) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 empty >= 0,
@@ -1313,20 +1284,19 @@ GTEST_TEST(optional, greater_equal_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -1336,12 +1306,12 @@ GTEST_TEST(optional, greater_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_empty));
             GTEST_ASSERT_FALSE(std::get<1>(test_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
@@ -1350,9 +1320,10 @@ GTEST_TEST(optional, greater_equal_operator) {
 
     // constexpr bool operator>=(const TValue& value, const hud::optional<TOption>& option) noexcept
     {
-        const auto test = []() {
+        const auto test = []()
+        {
             hud::optional<type> empty;
-            hud::optional<type> non_empty{ 1 };
+            hud::optional<type> non_empty{1};
 
             const auto test_empty = std::tuple{
                 0 >= empty,
@@ -1368,20 +1339,19 @@ GTEST_TEST(optional, greater_equal_operator) {
 
             return std::tuple{
                 test_empty,
-                test_non_empty
-            };
+                test_non_empty};
         };
 
         // Non constant
         {
             const auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
@@ -1391,12 +1361,12 @@ GTEST_TEST(optional, greater_equal_operator) {
         {
             constexpr auto result = test();
 
-            const auto& test_empty = std::get<0>(result);
+            const auto &test_empty = std::get<0>(result);
             GTEST_ASSERT_TRUE(std::get<0>(test_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_empty));
 
-            const auto& test_non_empty = std::get<1>(result);
+            const auto &test_non_empty = std::get<1>(result);
             GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
             GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
