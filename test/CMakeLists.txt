@@ -267,10 +267,8 @@ set_target_properties(test_core
         CXX_EXTENSIONS NO
 )
 if(MSVC)
-	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /Os)
+	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /Os /EHsc /GR- /utf-8)
 	#target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /EHsc /GR-)
-# elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-# 	target_compile_options( test_core PRIVATE -fno-cxx-exceptions -fno-rtti)
 endif()
 
 if(COVERAGE AND MSVC)
@@ -295,15 +293,17 @@ if(COVERAGE AND MSVC)
 		target_link_directories(test_core PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\15.0.1\\lib\\windows\\")
 		target_link_libraries(test_core PRIVATE "clang_rt.profile-x86_64.lib")
 		add_custom_command( 
-			TARGET test_core POST_BUILD
-			COMMENT "Run test_core.exe"
-			COMMAND Debug\\test_core.exe
-			# "'\.\./\.\./(test|src)/.*'" : Take files only in test or src directory
-			# "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" : Exclude GTEST_TEST and GTEST_ASSERT_
-			#COMMAND mkdir "coverage_html"
-			#COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting
-			#COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml"
+		 	TARGET test_core POST_BUILD
+		 	COMMENT "Run test_core.exe"
+			COMMAND dir
+		 	#COMMAND "Debug\\test_core.exe"
 		)
+		# 	# "'\.\./\.\./(test|src)/.*'" : Take files only in test or src directory
+		# 	# "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" : Exclude GTEST_TEST and GTEST_ASSERT_
+		# 	#COMMAND mkdir "coverage_html"
+		# 	#COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting
+		# 	#COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml"
+		# )
 	endif()
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options(test_core PRIVATE --coverage)
