@@ -10,11 +10,31 @@ UseTab: Never
 TabWidth: 4
 BreakBeforeBraces: Allman
 AllowShortIfStatementsOnASingleLine: false
-IndentCaseLabels: false
+IndentCaseLabels: true
 ColumnLimit: 0
 AccessModifierOffset: -4
 NamespaceIndentation: All
-FixNamespaceComments: false
-
+FixNamespaceComments: true
+IndentCaseBlocks: true
+IndentPPDirectives: BeforeHash
+IndentRequiresClause: true
+InsertNewlineAtEOF: true
+IntegerLiteralSeparator:
+  Binary: 4
+  Decimal: 3
+  Hex: -1
+LambdaBodyIndentation: Signature
+PointerAlignment: Right
+ReferenceAlignment: Right
+RequiresClausePosition: WithPreceding
+RequiresExpressionIndentation: OuterScope
+SpaceAfterTemplateKeyword: false
+SpaceAroundPointerQualifiers: Default
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceInEmptyBlock: false
 ---
 

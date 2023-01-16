@@ -1,7 +1,5 @@
 #include <core/containers/shared_pointer.h>
 
-#include <memory>
-
 GTEST_TEST(weak_pointer_not_safe, default_constructor)
 {
     const auto test = []()

@@ -1,54 +1,54 @@
 #pragma once
 #ifndef HD_INC_OSABSTRACTIONLAYER_MEMORY_H
-#define HD_INC_OSABSTRACTIONLAYER_MEMORY_H
-#include "traits/is_constructible.h"
-#include "traits/is_nothrow_constructible.h"
-#include "traits/is_default_constructible.h"
-#include "traits/is_trivially_default_constructible.h"
-#include "traits/is_nothrow_default_constructible.h"
-#include "traits/is_destructible.h"
-#include "traits/is_trivially_destructible.h"
-#include "traits/is_nothrow_destructible.h"
-#include "traits/is_copy_constructible.h"
-#include "traits/is_bitwise_copy_constructible.h"
-#include "traits/is_nothrow_copy_constructible.h"
-#include "traits/is_move_constructible.h"
-#include "traits/is_bitwise_move_constructible.h"
-#include "traits/is_nothrow_move_constructible.h"
-#include "traits/is_copy_assignable.h"
-#include "traits/is_bitwise_copy_assignable.h"
-#include "traits/is_nothrow_copy_assignable.h"
-#include "traits/is_move_assignable.h"
-#include "traits/is_bitwise_move_assignable.h"
-#include "traits/is_nothrow_move_assignable.h"
-#include "traits/is_bitwise_comparable.h"
-#include "traits/is_comparable_with_equal.h"
-#include "traits/is_comparable_with_not_equal.h"
-#include "traits/is_pointer.h"
+    #define HD_INC_OSABSTRACTIONLAYER_MEMORY_H
+    #include "traits/is_bitwise_comparable.h"
+    #include "traits/is_bitwise_copy_assignable.h"
+    #include "traits/is_bitwise_copy_constructible.h"
+    #include "traits/is_bitwise_move_assignable.h"
+    #include "traits/is_bitwise_move_constructible.h"
+    #include "traits/is_comparable_with_equal.h"
+    #include "traits/is_comparable_with_not_equal.h"
+    #include "traits/is_constructible.h"
+    #include "traits/is_copy_assignable.h"
+    #include "traits/is_copy_constructible.h"
+    #include "traits/is_default_constructible.h"
+    #include "traits/is_destructible.h"
+    #include "traits/is_move_assignable.h"
+    #include "traits/is_move_constructible.h"
+    #include "traits/is_nothrow_constructible.h"
+    #include "traits/is_nothrow_copy_assignable.h"
+    #include "traits/is_nothrow_copy_constructible.h"
+    #include "traits/is_nothrow_default_constructible.h"
+    #include "traits/is_nothrow_destructible.h"
+    #include "traits/is_nothrow_move_assignable.h"
+    #include "traits/is_nothrow_move_constructible.h"
+    #include "traits/is_pointer.h"
+    #include "traits/is_trivially_default_constructible.h"
+    #include "traits/is_trivially_destructible.h"
 
-#include "templates/move.h"
-#include "templates/forward.h"
+    #include "templates/forward.h"
+    #include "templates/move.h"
 
-#include <memory> // std::construct_at
+    #include <memory> // std::construct_at
 
-#if defined(HD_OS_WINDOWS)
-#include "os_windows/memory.h"
-#elif defined(HD_OS_LINUX)
-#include "os_linux/memory.h"
-#else
-#error Targeted OS not supported
-#endif
+    #if defined(HD_OS_WINDOWS)
+        #include "os_windows/memory.h"
+    #elif defined(HD_OS_LINUX)
+        #include "os_linux/memory.h"
+    #else
+        #error Targeted OS not supported
+    #endif
 
 namespace hud
 {
 
     /** Provides memory operations. */
     struct memory :
-#if defined(HD_OS_WINDOWS)
+    #if defined(HD_OS_WINDOWS)
         os::windows::memory
-#elif defined(HD_OS_LINUX)
+    #elif defined(HD_OS_LINUX)
         os::linux::memory
-#endif
+    #endif
     {
         /**
          * Call constructor of type.

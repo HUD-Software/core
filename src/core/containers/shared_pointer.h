@@ -1,34 +1,34 @@
 #pragma once
 #ifndef HD_INC_CORE_SHARED_POINTER_H
-#define HD_INC_CORE_SHARED_POINTER_H
-#include "../minimal.h"
-#include "../atomics.h"
-#include "pair.h"
-#include "../assert.h"
-#include "aligned_buffer.h"
+    #define HD_INC_CORE_SHARED_POINTER_H
+    #include "../assert.h"
+    #include "../atomics.h"
+    #include "../minimal.h"
+    #include "aligned_buffer.h"
+    #include "pair.h"
 
-#include "../traits/conjunction.h"
-#include "../traits/disjunction.h"
-#include "../traits/is_same.h"
-#include "../traits/is_pointer.h"
-#include "../traits/is_convertible.h"
-#include "../traits/remove_pointer.h"
-#include "../traits/void_t.h"
-#include "../traits/add_pointer.h"
-#include "../traits/negation.h"
-#include "../traits/is_void.h"
-#include "../traits/add_const.h"
-#include "../traits/is_nothrow_default_constructible.h"
-#include "../traits/common_type.h"
-#include "../traits/is_unbounded_array.h"
+    #include "../traits/add_const.h"
+    #include "../traits/add_pointer.h"
+    #include "../traits/common_type.h"
+    #include "../traits/conjunction.h"
+    #include "../traits/disjunction.h"
+    #include "../traits/is_convertible.h"
+    #include "../traits/is_nothrow_default_constructible.h"
+    #include "../traits/is_pointer.h"
+    #include "../traits/is_same.h"
+    #include "../traits/is_unbounded_array.h"
+    #include "../traits/is_void.h"
+    #include "../traits/negation.h"
+    #include "../traits/remove_pointer.h"
+    #include "../traits/void_t.h"
 
-#include "../templates/select_deleter_pointer_type.h"
-#include "../templates/default_deleter.h"
-#include "../templates/declval.h"
-#include "../templates/less.h"
-#include "../templates/forward.h"
-#include "../hash.h"
-#include "../allocators/allocation.h"
+    #include "../allocators/allocation.h"
+    #include "../hash.h"
+    #include "../templates/declval.h"
+    #include "../templates/default_deleter.h"
+    #include "../templates/forward.h"
+    #include "../templates/less.h"
+    #include "../templates/select_deleter_pointer_type.h"
 
 /*
 @startuml
@@ -69,7 +69,7 @@ namespace hud
     };
 
     /** Forward declaration, default thread safety is not safe. */
-    template <typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe>
+    template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe>
     class shared_pointer;
 
     namespace details
@@ -79,11 +79,11 @@ namespace hud
          * The base class of the reference controller allocated on the heap shared with all shared_pointer and WeakPointer referencing the same pointer.
          * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
          */
-        template <thread_safety_e thread_safety>
+        template<thread_safety_e thread_safety>
         class reference_controller_base;
 
         /** The not thread safe base class of the reference controller allocated on the heap shared with all shared_pointer and WeakPointer referencing the same pointer. */
-        template <>
+        template<>
         class reference_controller_base<thread_safety_e::not_safe>
         {
 
@@ -178,7 +178,7 @@ namespace hud
          * The thread safe base class of the reference controller allocated on the heap.
          * Shared with all shared_pointer and WeakPointer referencing the same pointer.
          */
-        template <>
+        template<>
         class reference_controller_base<thread_safety_e::safe>
         {
 
@@ -275,7 +275,7 @@ namespace hud
          * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
          * @tparam deleter_t Type of the deleter to use when the object is destroyed
          */
-        template <typename type_t, thread_safety_e thread_safety, typename deleter_t>
+        template<typename type_t, thread_safety_e thread_safety, typename deleter_t>
         class reference_controller_with_deleter
             : public reference_controller_base<thread_safety>
         {
@@ -310,7 +310,7 @@ namespace hud
          * @tparam type_t Type of the pointer to own
          * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
          */
-        template <typename type_t, thread_safety_e thread_safety>
+        template<typename type_t, thread_safety_e thread_safety>
         class reference_controller_no_deleter
             : public reference_controller_base<thread_safety>
         {
@@ -322,7 +322,7 @@ namespace hud
              * @tparam Args Types of arguments forward to the type_t constructor
              * @param args Arguments forward to the type_t constructor
              */
-            template <typename... args_t>
+            template<typename... args_t>
             explicit constexpr reference_controller_no_deleter(args_t &&...args) noexcept
                 requires(!is_array_v<type_t>)
             {
@@ -358,7 +358,7 @@ namespace hud
          * @tparam type_t Type of the pointer to own
          * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
          */
-        template <typename type_t, thread_safety_e thread_safety>
+        template<typename type_t, thread_safety_e thread_safety>
         class reference_controller_no_deleter<type_t[], thread_safety>
             : public reference_controller_base<thread_safety>
         {
@@ -395,14 +395,14 @@ namespace hud
             allocation<type_t> allocation;
         };
 
-        template <thread_safety_e thread_safety>
+        template<thread_safety_e thread_safety>
         class weak_reference_controller;
 
         /**
          * The reference controller use to count reference of a shared_pointer.
          * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
          */
-        template <thread_safety_e thread_safety>
+        template<thread_safety_e thread_safety>
         class shared_reference_controller
         {
 
@@ -527,7 +527,7 @@ namespace hud
             }
 
         private:
-            template <thread_safety_e>
+            template<thread_safety_e>
             friend class weak_reference_controller;
 
         private:
@@ -539,7 +539,7 @@ namespace hud
          * The reference controller use to count reference of a weak_pointer.
          * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
          */
-        template <thread_safety_e thread_safety>
+        template<thread_safety_e thread_safety>
         class weak_reference_controller
         {
         public:
@@ -599,7 +599,7 @@ namespace hud
             }
 
         private:
-            template <thread_safety_e>
+            template<thread_safety_e>
             friend class shared_reference_controller;
 
         private:
@@ -612,11 +612,11 @@ namespace hud
          * @tparam u_type_t Type of the shared_pointer<u_type_t>
          * @tparam type_t Type of the shared_pointer<type_t>
          */
-        template <typename u_type_t, typename type_t>
+        template<typename u_type_t, typename type_t>
         static constexpr bool is_convertible_v = hud::is_convertible_v<u_type_t *, type_t *>;
-        template <typename u_type_t, typename type_t>
+        template<typename u_type_t, typename type_t>
         static constexpr bool is_convertible_v<u_type_t, type_t[]> = hud::is_convertible_v<u_type_t (*)[], type_t (*)[]>;
-        template <typename u_type_t, typename type_t, usize extent>
+        template<typename u_type_t, typename type_t, usize extent>
         static constexpr bool is_convertible_v<u_type_t, type_t[extent]> = hud::is_convertible_v<u_type_t (*)[extent], type_t (*)[extent]>;
 
         /**
@@ -624,19 +624,19 @@ namespace hud
          * @tparam u_type_t Type pointer of the shared_pointer<u_type_t>
          * @tparam type_t Type of the shared_pointer<type_t>
          * */
-        template <typename u_type_t, typename type_t>
+        template<typename u_type_t, typename type_t>
         static constexpr bool is_pointer_compatible_v = hud::is_convertible_v<u_type_t *, type_t *>;
-        template <typename u_type_t, usize extent>
+        template<typename u_type_t, usize extent>
         static constexpr bool is_pointer_compatible_v<u_type_t[extent], u_type_t[]> = true;
-        template <typename u_type_t, usize extent>
+        template<typename u_type_t, usize extent>
         static constexpr bool is_pointer_compatible_v<u_type_t[extent], const u_type_t[]> = true;
-        template <typename u_type_t, usize extent>
+        template<typename u_type_t, usize extent>
         static constexpr bool is_pointer_compatible_v<u_type_t[extent], volatile u_type_t[]> = true;
-        template <typename u_type_t, usize extent>
+        template<typename u_type_t, usize extent>
         static constexpr bool is_pointer_compatible_v<u_type_t[extent], const volatile u_type_t[]> = true;
-    }
+    } // namespace details
 
-    template <typename type_t, hud::thread_safety_e thread_safety = hud::thread_safety_e::not_safe>
+    template<typename type_t, hud::thread_safety_e thread_safety = hud::thread_safety_e::not_safe>
     class weak_pointer
     {
     public:
@@ -647,9 +647,8 @@ namespace hud
         constexpr weak_pointer() noexcept = default;
 
         /** Construct a weak_pointer from a shared_pointer. */
-        template <typename u_type_t>
-        constexpr weak_pointer(const hud::shared_pointer<u_type_t> &shared) noexcept
-            requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        template<typename u_type_t>
+        constexpr weak_pointer(const hud::shared_pointer<u_type_t, thread_safety> &shared) noexcept requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(shared.inner)
         {
         }
@@ -665,7 +664,7 @@ namespace hud
          * @tparam u_type_t Type of the other weak_pointer's pointer to copy. Must be compatible with type_t
          * @param other The weak_pointer to copy
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr weak_pointer(const weak_pointer<u_type_t, thread_safety> &other) noexcept
             requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(other.inner)
@@ -684,7 +683,7 @@ namespace hud
          * @tparam u_type_t Type of the other weak_pointer's pointer to move. Must be compatible with type_t
          * @param other The weak_pointer to move
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr weak_pointer(weak_pointer<u_type_t, thread_safety> &&other) noexcept
             requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(hud::move(other.inner))
@@ -693,16 +692,16 @@ namespace hud
         }
 
         /* Retrives a share_pointer that add the weak_pointer a owner. */
-        [[nodiscard]] constexpr hud::shared_pointer<type_t> lock() const noexcept
+        [[nodiscard]] constexpr hud::shared_pointer<type_t, thread_safety> lock() const noexcept
         {
-            return hud::shared_pointer<type_t>(*this);
+            return hud::shared_pointer<type_t, thread_safety>(*this);
         }
 
     private:
         /** Friend with other owning pointer types */
-        template <typename u_type_t, thread_safety_e>
+        template<typename u_type_t, thread_safety_e>
         friend class weak_pointer;
-        template <typename u_type_t, thread_safety_e>
+        template<typename u_type_t, thread_safety_e>
         friend class shared_pointer;
 
     private:
@@ -717,7 +716,7 @@ namespace hud
      * @tparam type_t The type of the pointer to own
      * @tparam thread_safety The thread safty of the reference counting
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     class shared_pointer
     {
 
@@ -725,7 +724,7 @@ namespace hud
         /** Internal pointer type representation. */
         using pointer_type = hud::remove_extent_t<type_t> *;
         /** Internal deleter_t type used to delete the internal pointer. */
-        template <typename u_type_t>
+        template<typename u_type_t>
         using deleter_type = hud::conditional_t<is_array_v<type_t>, hud::default_deleter<u_type_t[]>, hud::default_deleter<u_type_t>>;
 
     public:
@@ -737,7 +736,7 @@ namespace hud
          * The given pointer must be convertible to type_t*.
          * @param pointer The poiner to own
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr explicit shared_pointer(u_type_t *pointer) noexcept
             requires(details::is_convertible_v<u_type_t, type_t>)
             : inner(pointer, new(std::nothrow) details::reference_controller_with_deleter<u_type_t, thread_safety, deleter_type<u_type_t>>(pointer))
@@ -760,7 +759,7 @@ namespace hud
          * @tparam u_type_t Type of the other shared_pointer's pointer to share. Must be compatible with type_t
          * @param other The shared_pointer to share ownership with
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr shared_pointer(const shared_pointer<u_type_t, thread_safety> &other) noexcept
             requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(other.inner)
@@ -779,7 +778,7 @@ namespace hud
          * @tparam u_type_t Type of the shared_pointer's pointer to steal. Must be compatible with type_t
          * @param other The shared_pointer to transfert ownership from.
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr shared_pointer(shared_pointer<u_type_t, thread_safety> &&other) noexcept
             requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(hud::move(other.inner))
@@ -788,11 +787,12 @@ namespace hud
         }
 
         /**
-         * Con
-         *
+         * Construct a shared_pointer by adding a owner to a weak_pointer
+         * @tparam u_type_t Type of the weak_pointer
+         * @param weak The weak_pointer
          */
-        template <typename u_type_t>
-        constexpr shared_pointer(const hud::weak_pointer<u_type_t> &weak) noexcept
+        template<typename u_type_t>
+        constexpr shared_pointer(const hud::weak_pointer<u_type_t, thread_safety> &weak) noexcept
             : inner(weak.inner)
         {
         }
@@ -813,7 +813,7 @@ namespace hud
          * @param other The shared_pointer to share ownership
          * @return *this
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr shared_pointer &operator=(const shared_pointer<u_type_t, thread_safety> &other) noexcept
             requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         {
@@ -838,9 +838,8 @@ namespace hud
          * @param other The shared_pointer to steal
          * @return *this
          */
-        template <typename u_type_t>
-        constexpr shared_pointer &operator=(shared_pointer<u_type_t, thread_safety> &&other) noexcept
-            requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        template<typename u_type_t>
+        constexpr shared_pointer &operator=(shared_pointer<u_type_t, thread_safety> &&other) noexcept requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         {
             inner = hud::move(other.inner);
             get<0>(other.inner) = nullptr;
@@ -934,14 +933,14 @@ namespace hud
 
     private:
         /** Friend with other owning pointer types */
-        template <typename u_type_t, thread_safety_e>
+        template<typename u_type_t, thread_safety_e>
         friend class shared_pointer;
-        template <typename u_type_t, thread_safety_e>
+        template<typename u_type_t, thread_safety_e>
         friend class weak_pointer;
-        template <typename u_type_t, thread_safety_e thread_safety_1, typename... args_t>
+        template<typename u_type_t, thread_safety_e thread_safety_1, typename... args_t>
         friend shared_pointer<u_type_t, thread_safety_1> make_shared(args_t &&...args) noexcept
             requires(!is_array_v<u_type_t>);
-        template <typename u_type_t, thread_safety_e thread_safety_1>
+        template<typename u_type_t, thread_safety_e thread_safety_1>
         friend shared_pointer<u_type_t, thread_safety_1> make_shared(usize count) noexcept
             requires(hud::is_unbounded_array_v<u_type_t>);
 
@@ -969,7 +968,7 @@ namespace hud
      * @param first The first to swap
      * @param second The second to swap
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     HD_FORCEINLINE constexpr void swap(shared_pointer<type_t, thread_safety> &first, shared_pointer<type_t, thread_safety> &second) noexcept
     {
         first.swap(second);
@@ -985,7 +984,7 @@ namespace hud
      * @param second The second to compare
      * @param true if both pointer are equals, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
+    template<typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const shared_pointer<type_t, thread_safety> &first, const shared_pointer<u_type_t, thread_safety_u> &second) noexcept
     {
         return first.pointer() == second.pointer();
@@ -999,7 +998,7 @@ namespace hud
      * @param hud::ptr::null
      * @param true if shared_pointer don't own a pointer, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const shared_pointer<type_t, thread_safety> &pointer, hud::ptr::null) noexcept
     {
         return !pointer;
@@ -1013,7 +1012,7 @@ namespace hud
      * @param hud::ptr::null
      * @param true if shared_pointer don't own a pointer, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(hud::ptr::null, const shared_pointer<type_t, thread_safety> &pointer) noexcept
     {
         return !pointer;
@@ -1029,7 +1028,7 @@ namespace hud
      * @param second The second to compare
      * @param true if both pointer are not equals, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
+    template<typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const shared_pointer<type_t, thread_safety> &first, const shared_pointer<u_type_t, thread_safety_u> &second) noexcept
     {
         return first.pointer() != second.pointer();
@@ -1043,7 +1042,7 @@ namespace hud
     @param hud::ptr::null
     @param true if shared_pointer own a pointer, false otherwise
     */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const shared_pointer<type_t, thread_safety> &pointer, hud::ptr::null) noexcept
     {
         return static_cast<bool>(pointer);
@@ -1057,7 +1056,7 @@ namespace hud
      * @param pointer The pointer to check
      * @param true if shared_pointer own a pointer, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(hud::ptr::null, const shared_pointer<type_t, thread_safety> &pointer) noexcept
     {
         return static_cast<bool>(pointer);
@@ -1073,7 +1072,7 @@ namespace hud
      * @param second The second to compare
      * @return true if the first shared_pointer owned pointer address less than the second shared_pointer owned pointer address, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
+    template<typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(const shared_pointer<type_t, thread_safety> &first, const shared_pointer<u_type_t, thread_safety_u> &second) noexcept
     {
         using pointer_type = common_type_t<typename shared_pointer<type_t, thread_safety>::pointer_type, typename shared_pointer<u_type_t, thread_safety>::pointer_type>;
@@ -1088,7 +1087,7 @@ namespace hud
      * @param nullptr
      * @return true if the shared_pointer owned pointer address is less than nullptr, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(const shared_pointer<type_t, thread_safety> &pointer, hud::ptr::null) noexcept
     {
         return less<typename shared_pointer<type_t, thread_safety>::pointer_type>()(pointer.pointer(), nullptr);
@@ -1102,7 +1101,7 @@ namespace hud
      * @param pointer The pointer to compare
      * @return true if nullptr is less than the shared_pointer owned pointer address, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(hud::ptr::null, const shared_pointer<type_t, thread_safety> &pointer) noexcept
     {
         return less<typename shared_pointer<type_t, thread_safety>::pointer_type>()(nullptr, pointer.pointer());
@@ -1118,7 +1117,7 @@ namespace hud
      * @param second The second to compare
      * @return true if the first shared_pointer owned pointer address greater than the second shared_pointer owned pointer address, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
+    template<typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(const shared_pointer<type_t, thread_safety> &first, const shared_pointer<u_type_t, thread_safety_u> &second) noexcept
     {
         return second < first;
@@ -1132,7 +1131,7 @@ namespace hud
      * @param nullptr
      * @return true if the shared_pointer owned pointer address is greater than nullptr, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(const shared_pointer<type_t, thread_safety> &pointer, hud::ptr::null) noexcept
     {
         return nullptr < pointer;
@@ -1146,7 +1145,7 @@ namespace hud
      * @param pointer The pointer to compare
      * @return true if nullptr is greater than the shared_pointer owned pointer address, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(hud::ptr::null, const shared_pointer<type_t, thread_safety> &pointer) noexcept
     {
         return pointer < nullptr;
@@ -1162,7 +1161,7 @@ namespace hud
      * @param second The second to compare
      * @return true if the first owned shared_pointer address less or equal the second shared_pointer owned pointer address, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
+    template<typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(const shared_pointer<type_t, thread_safety> &first, const shared_pointer<u_type_t, thread_safety_u> &second) noexcept
     {
         return !(second < first);
@@ -1176,7 +1175,7 @@ namespace hud
      * @param nullptr
      * @return true if the shared_pointer owned pointer address is less or equal nullptr, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(const shared_pointer<type_t, thread_safety> &pointer, hud::ptr::null) noexcept
     {
         return !(nullptr < pointer);
@@ -1190,7 +1189,7 @@ namespace hud
      * @param pointer The pointer to compare
      * @return true if nullptr is less or equal the shared_pointer owned pointer address, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(hud::ptr::null, const shared_pointer<type_t, thread_safety> &pointer) noexcept
     {
         return !(pointer < nullptr);
@@ -1206,7 +1205,7 @@ namespace hud
      * @param second The second to compare
      * @return true if the first shared_pointer owned pointer address compares greater or equal the second shared_pointer owned pointer address, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
+    template<typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(const shared_pointer<type_t, thread_safety> &first, const shared_pointer<u_type_t, thread_safety_u> &second) noexcept
     {
         return !(first < second);
@@ -1220,7 +1219,7 @@ namespace hud
      * @param nullptr
      * @return True if the shared_pointer owned pointer address is greater or equal nullptr, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(const shared_pointer<type_t, thread_safety> &pointer, hud::ptr::null) noexcept
     {
         return !(pointer < nullptr);
@@ -1234,7 +1233,7 @@ namespace hud
      * @param pointer The pointer to compare
      * @return true if nullptr is greater or equal the shared_pointer owned pointer address, false otherwise
      */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(hud::ptr::null, const shared_pointer<type_t, thread_safety> &pointer) noexcept
     {
         return !(nullptr < pointer);
@@ -1249,7 +1248,7 @@ namespace hud
      * @param args Arguments forward to the type_t constructor
      * @return shared_pointer<type_t, thread_safety> pointing to a object of type type_t construct by passing args arguments to its constructor
      */
-    template <typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe, typename... args_t>
+    template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe, typename... args_t>
     [[nodiscard]] HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(args_t &&...args) noexcept
         requires(!is_array_v<type_t>)
     {
@@ -1264,7 +1263,7 @@ namespace hud
      * @param size Number of type_t to allocate
      * @return shared_pointer<type_t, thread_safety> pointer to an array of type type_t
      */
-    template <typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe>
+    template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe>
     [[nodiscard]] HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(const usize count) noexcept
         requires(hud::is_unbounded_array_v<type_t>)
     {
@@ -1272,7 +1271,7 @@ namespace hud
     }
 
     /** Specialization of the hash function for shared_pointer */
-    template <typename type_t, thread_safety_e thread_safety>
+    template<typename type_t, thread_safety_e thread_safety>
     HD_FORCEINLINE u32 hash(const shared_pointer<type_t, thread_safety> &ptr) noexcept
     {
         // Simply hash the pointer
