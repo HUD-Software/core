@@ -1,4 +1,4 @@
-#include <core/containers/unique_pointer.h>
+#include <core/containers/shared_pointer.h>
 
 GTEST_TEST(weak_pointer_array_not_safe, default_constructor)
 {
@@ -6,7 +6,7 @@ GTEST_TEST(weak_pointer_array_not_safe, default_constructor)
     const auto test = []()
     {
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr;
-        return std::tuple{
+        return std::tuple {
             weak_ptr.lock().pointer() == nullptr,
             weak_ptr.lock().shared_count()};
     };
