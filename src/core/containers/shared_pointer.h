@@ -420,10 +420,7 @@ namespace hud
             {
             }
 
-            /**
-             * Construct a shared_reference_controller by sharing the ownership of the controller and acquire a shared reference on it.
-             * @param other The other shared_reference_controller to copy
-             */
+            /** Construct a shared_reference_controller by sharing the ownership of the controller and acquire a shared reference on it. */
             constexpr shared_reference_controller(const shared_reference_controller &other) noexcept
                 : controller(other.controller)
             {
@@ -435,20 +432,14 @@ namespace hud
                 }
             }
 
-            /**
-             * Construct a shared_reference_controller by stealing the controller.
-             * @param other The other shared_reference_controller to move
-             */
+            /** Construct a shared_reference_controller by stealing the controller. */
             constexpr shared_reference_controller(shared_reference_controller &&other) noexcept
                 : controller(other.controller)
             {
                 other.controller = nullptr;
             }
 
-            /**
-             * Construct a shared_reference_controller from a weak_reference_controller and acquire a shared reference on it
-             *
-             */
+            /** Construct a shared_reference_controller from a weak_reference_controller and acquire a shared reference on it. */
             constexpr shared_reference_controller(const weak_reference_controller<thread_safety> &other) noexcept
                 : controller(other.controller)
             {
@@ -462,8 +453,6 @@ namespace hud
             /**
              * Assigns the shared_reference_controller by sharing ownership the controller and acquire a shared reference on
              * the newly shared controller before releasing a shared reference on the old one.
-             * @param other The other shared_reference_controller to copy
-             * @return *this
              */
             constexpr shared_reference_controller &operator=(const shared_reference_controller &other) noexcept
             {
@@ -480,17 +469,13 @@ namespace hud
                     {
                         reference_controller_base_type::release_sharedref(controller);
                     }
-                    // Then we borrow the controller
+                    // Keep the controller
                     controller = other.controller;
                 }
                 return *this;
             }
 
-            /**
-             * Assigns the shared_reference_controller by stealing the controller before releasing a shared reference on the old one.
-             * @param other The other shared_reference_controller to copy
-             * @return *this
-             */
+            /** Assigns the shared_reference_controller by stealing the controller before releasing a shared reference on the old one. */
             constexpr shared_reference_controller &operator=(shared_reference_controller &&other) noexcept
             {
                 // Do not take into account if we assign if the same controller
@@ -549,10 +534,7 @@ namespace hud
             /** Default constrcutor. */
             constexpr weak_reference_controller() noexcept = default;
 
-            /**
-             * Construct a weak_reference_controller by sharing the controller and acquire a weak reference on it.
-             * @param other The other shared_reference_controller to copy
-             */
+            /** Construct a weak_reference_controller by sharing the controller and acquire a weak reference on it. */
             constexpr weak_reference_controller(const shared_reference_controller<thread_safety> &other) noexcept
                 : controller(other.controller)
             {
@@ -564,10 +546,7 @@ namespace hud
                 }
             }
 
-            /**
-             * Construct a weak_reference_controller by sharing the controller and acquire a weak reference on it.
-             * @param other The other weak_reference_controller to copy
-             */
+            /** Construct a weak_reference_controller by sharing the controller and acquire a weak reference on it. */
             constexpr weak_reference_controller(const weak_reference_controller &other) noexcept
                 : controller(other.controller)
             {
@@ -579,10 +558,7 @@ namespace hud
                 }
             }
 
-            /**
-             * Construct a weak_reference_controller by stealing the controller
-             * @param other The other weak_reference_controller to move
-             */
+            /** Construct a weak_reference_controller by stealing the controller. */
             constexpr weak_reference_controller(weak_reference_controller &&other) noexcept
                 : controller(other.controller)
             {
@@ -596,6 +572,24 @@ namespace hud
                 {
                     reference_controller_base_type::release_weakref(controller);
                 }
+            }
+
+            /** Assign a weak controller. */
+            constexpr weak_reference_controller &operator=(const weak_reference_controller &other) noexcept
+            {
+                // We take acquire a weak reference on the copied controller
+                if (other.controller != nullptr)
+                {
+                    reference_controller_base_type::acquire_weakref(other.controller);
+                }
+                // We take release our controller
+                if (controller != nullptr)
+                {
+                    reference_controller_base_type::release_weakref(controller);
+                }
+                // Keep the controller of the copied controller
+                controller = other.controller;
+                return *this;
             }
 
         private:
@@ -647,8 +641,8 @@ namespace hud
         constexpr weak_pointer() noexcept = default;
 
         /** Construct a weak_pointer from a shared_pointer. */
-        template<typename u_type_t>
-        constexpr weak_pointer(const hud::shared_pointer<u_type_t, thread_safety> &shared) noexcept requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        template<typename u_type_t> requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        constexpr weak_pointer(const hud::shared_pointer<u_type_t, thread_safety> &shared) noexcept
             : inner(shared.inner)
         {
         }
@@ -664,9 +658,8 @@ namespace hud
          * @tparam u_type_t Type of the other weak_pointer's pointer to copy. Must be compatible with type_t
          * @param other The weak_pointer to copy
          */
-        template<typename u_type_t>
+        template<typename u_type_t> requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr weak_pointer(const weak_pointer<u_type_t, thread_safety> &other) noexcept
-            requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(other.inner)
         {
         }
@@ -683,12 +676,28 @@ namespace hud
          * @tparam u_type_t Type of the other weak_pointer's pointer to move. Must be compatible with type_t
          * @param other The weak_pointer to move
          */
-        template<typename u_type_t>
+        template<typename u_type_t> requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr weak_pointer(weak_pointer<u_type_t, thread_safety> &&other) noexcept
-            requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(hud::move(other.inner))
         {
             get<0>(other.inner) = nullptr;
+        }
+
+        /** Assign a weak_pointer. */
+        constexpr weak_pointer &operator=(const weak_pointer &other) noexcept
+        {
+            if (this != &other)
+            {
+                inner = other.inner;
+            }
+            return *this;
+        }
+
+        template<typename u_type_t> requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        constexpr weak_pointer &operator=(const weak_pointer<u_type_t, thread_safety> &other) noexcept
+        {
+            inner = other.inner;
+            return *this;
         }
 
         /* Retrives a share_pointer that add the weak_pointer a owner. */
