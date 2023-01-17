@@ -1,4 +1,4 @@
-name: Windows build & test
+name: Windows Clang-cl build & test
 
 on:
   push:
