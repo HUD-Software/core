@@ -42,7 +42,7 @@ GTEST_TEST(array, destructor_call_elements_destructors)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 all_destructor_are_not_called,
                 all_destructor_are_called};
         };
@@ -99,7 +99,7 @@ GTEST_TEST(array, destructor_call_elements_destructors)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 all_destructor_are_not_called,
                 all_destructor_are_called};
         };

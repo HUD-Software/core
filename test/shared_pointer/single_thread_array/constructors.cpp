@@ -58,7 +58,10 @@ GTEST_TEST(shared_pointer_array_not_safe, param_constructor_same_type)
     const auto test = []()
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr(type);
         return std::tuple {
             shared_ptr.pointer() == type,
@@ -102,7 +105,10 @@ GTEST_TEST(shared_pointer_array_not_safe, param_constructor_different_type)
     const auto test = []()
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         hud::shared_pointer<const hud_test::non_bitwise_type[2]> shared_ptr(type);
         return std::tuple {
             shared_ptr.pointer() == type,
@@ -146,7 +152,10 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_constructor_same_type)
     const auto test = []()
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         const hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_to_copy(type);
         hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr(shared_ptr_to_copy);
 
@@ -229,7 +238,10 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_constructor_different_type)
     const auto test = []()
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         const hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_to_copy(type);
         hud::shared_pointer<const hud_test::non_bitwise_type[2]> shared_ptr(shared_ptr_to_copy);
 
@@ -312,7 +324,10 @@ GTEST_TEST(shared_pointer_array_not_safe, move_constructor_same_type)
     const auto test = []()
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_to_move(type);
         hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr(hud::move(shared_ptr_to_move));
 
@@ -395,7 +410,10 @@ GTEST_TEST(shared_pointer_array_not_safe, move_constructor_different_type)
     const auto test = []()
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_to_move(type);
         hud::shared_pointer<const hud_test::non_bitwise_type[2]> shared_ptr(hud::move(shared_ptr_to_move));
 

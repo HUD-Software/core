@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_MISC_DEFAULT_CONSTRUCTIBLE_TYPE_H
 #define HD_INC_MISC_DEFAULT_CONSTRUCTIBLE_TYPE_H
 #include <core/minimal.h>
@@ -25,7 +24,8 @@ namespace hud_test
          * @param id The ID to of the default_constructible_type
          */
         constexpr default_constructible_type(i32 id) noexcept
-            : ctor_count(1u), unique_id(id)
+            : ctor_count(1u)
+            , unique_id(id)
         {
         }
 
@@ -34,7 +34,11 @@ namespace hud_test
          * @param other The default_constructible_type to copy
          */
         constexpr default_constructible_type(const default_constructible_type &other) noexcept
-            : default_construct_count(other.default_construct_count), move_construct_count(other.move_construct_count), copy_construct_count(other.copy_construct_count + 1), ctor_count(other.ctor_count), unique_id(other.unique_id)
+            : default_construct_count(other.default_construct_count)
+            , move_construct_count(other.move_construct_count)
+            , copy_construct_count(other.copy_construct_count + 1)
+            , ctor_count(other.ctor_count)
+            , unique_id(other.unique_id)
         {
         }
 
@@ -43,7 +47,11 @@ namespace hud_test
          * @param other The default_constructible_type to move
          */
         constexpr default_constructible_type(default_constructible_type &&other) noexcept
-            : default_construct_count(other.default_construct_count), move_construct_count(other.move_construct_count + 1), copy_construct_count(other.copy_construct_count), ctor_count(other.ctor_count), unique_id(other.unique_id)
+            : default_construct_count(other.default_construct_count)
+            , move_construct_count(other.move_construct_count + 1)
+            , copy_construct_count(other.copy_construct_count)
+            , ctor_count(other.ctor_count)
+            , unique_id(other.unique_id)
         {
         }
 

@@ -5,19 +5,28 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b(const b &) {}
+        b(const b &)
+        {
+        }
     };
+
     struct c
     {
-        virtual void fn() {}
+        virtual void fn()
+        {
+        }
     };
+
     struct d
     {
-        d(a &&) {}
+        d(a &&)
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_trivially_copy_constructible)
 {

@@ -5,23 +5,27 @@ namespace hud_test
     struct type
     {
         type() noexcept = default;
+
         type(const i32 i) noexcept
             : inner(i)
         {
         }
+
         type(type &&other) noexcept
             : inner(other.inner)
         {
             other.inner = 0;
         }
+
         type &operator=(const type &other) noexcept
         {
             inner = other.inner;
             return *this;
         }
+
         i32 inner;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(templates, swap_trivial_type)
 {

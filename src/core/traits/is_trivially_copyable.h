@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_IS_TRIVIALLY_COPYABLE_H
 #define HD_INC_CORE_TRAITS_IS_TRIVIALLY_COPYABLE_H
 #include "integral_constant.h"
@@ -15,14 +14,14 @@ namespace hud
      *     - has no virtual members.
      *     - its base class and non-static data members (if any) are themselves also trivially copyable types.
      */
-    template <typename type_t>
+    template<typename type_t>
     struct is_trivially_copyable
         : hud::bool_constant<__is_trivially_copyable(type_t)>
     {
     };
 
     /** Equivalent of is_trivially_copyable<type_t>::value. */
-    template <typename type_t>
+    template<typename type_t>
     inline constexpr bool is_trivially_copyable_v = is_trivially_copyable<type_t>::value;
 
 } // namespace hud

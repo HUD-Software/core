@@ -1,33 +1,67 @@
 # https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+# Clang-format 14 only
 ---
 # We'll use defaults from the LLVM style, but with 4 columns indentation.
 BasedOnStyle: LLVM
 IndentWidth: 4
 ---
 Language: Cpp
+AlignAfterOpenBracket: BlockIndent
+AlignArrayOfStructures: Right
+AlignEscapedNewlines: Left
+AlignOperands: AlignAfterOperator
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLambdasOnASingleLine: Inline
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: No
+BinPackArguments: false
+BinPackParameters: false
+BitFieldColonSpacing: Both
+# BreakAfterAttributes: Always # clang-format 16
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeConceptDeclarations: true
+BreakBeforeTernaryOperators: false
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+BreakStringLiterals: true
+CompactNamespaces: false
+Cpp11BracedListStyle: true
+EmptyLineAfterAccessModifier: Never
+EmptyLineBeforeAccessModifier: Always
+FixNamespaceComments: true
 
 UseTab: Never
 TabWidth: 4
 BreakBeforeBraces: Allman
-AllowShortIfStatementsOnASingleLine: false
 IndentCaseLabels: true
 ColumnLimit: 0
 AccessModifierOffset: -4
 NamespaceIndentation: All
-FixNamespaceComments: true
+
 IndentCaseBlocks: true
 IndentPPDirectives: BeforeHash
-IndentRequiresClause: true
-InsertNewlineAtEOF: true
-IntegerLiteralSeparator:
-  Binary: 4
-  Decimal: 3
-  Hex: -1
+IndentRequiresClause: false
+# InsertNewlineAtEOF: true # clang-format 16
+InsertTrailingCommas: Wrapped
+# IntegerLiteralSeparator: # clang-format 16
+#   Binary: 4
+#   Decimal: 3
+#   Hex: -1
 LambdaBodyIndentation: Signature
 PointerAlignment: Right
 ReferenceAlignment: Right
-RequiresClausePosition: WithPreceding
-RequiresExpressionIndentation: OuterScope
+RequiresClausePosition: OwnLine
+# RequiresExpressionIndentation: OuterScope  # clang-format 16
+SeparateDefinitionBlocks: Always
+SortIncludes: Never
 SpaceAfterTemplateKeyword: false
 SpaceAroundPointerQualifiers: Default
 SpaceBeforeAssignmentOperators: true
@@ -36,5 +70,14 @@ SpaceBeforeInheritanceColon: true
 SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: true
 SpaceInEmptyBlock: false
+SpacesInAngles: Never
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
+SpacesInLineCommentPrefix:
+  Minimum: 1
+  Maximum: 1
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+
 ---
 

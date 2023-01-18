@@ -1,10 +1,9 @@
-#pragma once
 #ifndef HD_INC_CORE_OS_WINDOWS_TYPES_H
 #define HD_INC_CORE_OS_WINDOWS_TYPES_H
 #include "../os_common/types.h"
 
 #if !defined(HD_OS_WINDOWS)
-#error This file must be included only when targetting Windows OS
+    #error This file must be included only when targetting Windows OS
 #endif
 
 namespace hud::os::windows

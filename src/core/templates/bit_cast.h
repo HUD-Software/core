@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TEMPLATES_BITCAST_H
 #define HD_INC_CORE_TEMPLATES_BITCAST_H
 #include "../traits/is_same_size.h"
@@ -14,9 +13,9 @@ namespace hud
      * @tparam To The reinterpreted output type
      * @tparam From The type of the source of bits to reinterpret
      */
-    template <typename To, typename From>
+    template<typename To, typename From>
+    requires(sizeof(To) == sizeof(From) && is_trivially_copyable_v<To> && is_trivially_copyable_v<From>)
     [[nodiscard]] constexpr To bit_cast(const From &value) noexcept
-        requires(sizeof(To) == sizeof(From) && is_trivially_copyable_v<To> && is_trivially_copyable_v<From>)
     {
         return __builtin_bit_cast(To, value);
     }

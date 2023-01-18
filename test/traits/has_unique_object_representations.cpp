@@ -5,36 +5,43 @@ namespace hud_test
     struct empty
     {
     };
+
     struct a
     {
         i32 a;
     };
+
     struct b
     {
         i32 a;
         f32 f;
     };
+
     struct c
     {
         i32 a;
         i16 f;
         i16 g;
     };
+
     struct padded
     {
         u8 p;
         // Padding of 3 bytes
         u32 a;
     };
+
     struct derived : a
     {
     };
 
     struct derived2 : a
     {
-        virtual void fn() {}
+        virtual void fn()
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, HasUniqueObjectRepresentations)
 {

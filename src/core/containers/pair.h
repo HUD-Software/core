@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_PAIR_H
 #define HD_INC_CORE_PAIR_H
 #include "../minimal.h"
@@ -40,7 +39,7 @@ namespace hud
      * @tparam first_type Type of the first component
      * @tparam second_type Type of the second component
      */
-    template <typename first_t, typename second_t>
+    template<typename first_t, typename second_t>
     struct pair
     {
         using first_type = first_t;
@@ -59,10 +58,10 @@ namespace hud
          * If one of the component is explicitly default constructible, the pair is explicitly default constructible.
          * pair do not accept throwable default constructible components.
          */
-        constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_implicitly_default_constructible_v<second_type>))
-            pair() noexcept
-            requires(hud::is_default_constructible_v<first_type> && hud::is_default_constructible_v<second_type>)
-            : first(), second()
+        constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_implicitly_default_constructible_v<second_type>)) pair() noexcept
+        requires(hud::is_default_constructible_v<first_type> && hud::is_default_constructible_v<second_type>)
+            : first()
+            , second()
         {
             static_assert(hud::is_nothrow_default_constructible_v<first_type>, "first_type default constructor is throwable. pair is not designed to allow throwable default constructible components");
             static_assert(hud::is_nothrow_default_constructible_v<second_type>, "second_type default constructor is throwable. pair is not designed to allow throwable default constructible components");
@@ -76,10 +75,10 @@ namespace hud
          * @param f An object of the same type of first, or some other type implicitly convertible to it.
          * @param s An object of the same type of second, or some other type implicitly convertible to it.
          */
-        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>))
-            pair(const first_type &f, const second_type &s) noexcept
-            requires(hud::is_copy_constructible_v<first_type> && hud::is_copy_constructible_v<second_type>)
-            : first(f), second(s)
+        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>)) pair(const first_type &f, const second_type &s) noexcept
+        requires(hud::is_copy_constructible_v<first_type> && hud::is_copy_constructible_v<second_type>)
+            : first(f)
+            , second(s)
         {
             static_assert(hud::is_nothrow_copy_constructible_v<first_type>, "first_type(const first_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
             static_assert(hud::is_nothrow_copy_constructible_v<second_type>, "second_type(const second_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
@@ -95,11 +94,12 @@ namespace hud
          * @param f An object of the same type of first, or some other type implicitly convertible to it.
          * @param s An object of the same type of second, or some other type implicitly convertible to it.
          */
-        template <typename u_type_t = first_type, typename v_type_t = second_type>
+        template<typename u_type_t = first_type, typename v_type_t = second_type>
+        requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
         constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
             pair(u_type_t &&f, v_type_t &&s) noexcept
-            requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
-            : first(hud::forward<u_type_t>(f)), second(hud::forward<v_type_t>(s))
+            : first(hud::forward<u_type_t>(f))
+            , second(hud::forward<v_type_t>(s))
         {
             static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
             static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
@@ -124,11 +124,12 @@ namespace hud
          * @tparam u_type2_t Type of the second component.
          * @param other Another pair object.
          */
-        template <typename u_type1_t, typename u_type2_t>
+        template<typename u_type1_t, typename u_type2_t>
+        requires(hud::is_copy_constructible_v<first_type, u_type1_t> && hud::is_copy_constructible_v<second_type, u_type2_t>)
         constexpr explicit(!(hud::is_convertible_v<const u_type1_t &, first_type> && hud::is_convertible_v<const u_type2_t &, second_type>))
             pair(const pair<u_type1_t, u_type2_t> &other) noexcept
-            requires(hud::is_copy_constructible_v<first_type, u_type1_t> && hud::is_copy_constructible_v<second_type, u_type2_t>)
-            : first(other.first), second(other.second)
+            : first(other.first)
+            , second(other.second)
         {
             static_assert(hud::is_nothrow_copy_constructible_v<first_type, u_type1_t>, "first_type(const u_type1_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
             static_assert(hud::is_nothrow_copy_constructible_v<second_type, u_type2_t>, "second_type(const u_type2_t&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
@@ -154,11 +155,12 @@ namespace hud
          * @tparam u_type2_t Type of the second component.
          * @param other Another pair object.
          */
-        template <typename u_type1_t, typename u_type2_t>
+        template<typename u_type1_t, typename u_type2_t>
+        requires(hud::is_move_constructible_v<first_type, u_type1_t> && hud::is_move_constructible_v<second_type, u_type2_t>)
         constexpr explicit(!(hud::is_convertible_v<u_type1_t, first_type> && hud::is_convertible_v<u_type2_t, second_type>))
             pair(pair<u_type1_t, u_type2_t> &&other) noexcept
-            requires(hud::is_move_constructible_v<first_type, u_type1_t> && hud::is_move_constructible_v<second_type, u_type2_t>)
-            : first(hud::forward<u_type1_t>(other.first)), second(hud::forward<u_type2_t>(other.second))
+            : first(hud::forward<u_type1_t>(other.first))
+            , second(hud::forward<u_type2_t>(other.second))
         {
             static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type1_t>, "first_type(u_type1_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
             static_assert(hud::is_nothrow_move_constructible_v<second_type, u_type2_t>, "second_type(u_type2_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
@@ -172,7 +174,7 @@ namespace hud
          * @return *this
          */
         constexpr pair &operator=(const pair &other) noexcept
-            requires(hud::is_copy_assignable_v<first_type> && hud::is_copy_assignable_v<second_type>)
+        requires(hud::is_copy_assignable_v<first_type> && hud::is_copy_assignable_v<second_type>)
         {
             static_assert(hud::is_nothrow_copy_assignable_v<first_type>, "first_type& first_type::operator=(const first_type&) is throwable. pair is not designed to allow throwable copy assignable components");
             static_assert(hud::is_nothrow_copy_assignable_v<second_type>, "second_type& second_type::operator=(const second_type&) is throwable. pair is not designed to allow throwable copy assignable components");
@@ -190,9 +192,9 @@ namespace hud
          * @param other Another pair object.
          * @return *this
          */
-        template <typename u_type_t, typename v_type_t>
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_assignable_v<first_type &, const u_type_t &> && hud::is_copy_assignable_v<second_type, v_type_t>)
         constexpr pair &operator=(const pair<u_type_t, v_type_t> &other) noexcept
-            requires(hud::is_assignable_v<first_type &, const u_type_t &> && hud::is_copy_assignable_v<second_type, v_type_t>)
         {
             static_assert(hud::is_nothrow_copy_assignable_v<first_type, u_type_t>, "first_type& first_type::operator=(const u_type_t&) is throwable. pair is not designed to allow throwable copy assignable components");
             static_assert(hud::is_nothrow_copy_assignable_v<second_type, v_type_t>, "second_type& second_type::operator=(const v_type_t&) is throwable. pair is not designed to allow throwable copy assignable components");
@@ -209,7 +211,7 @@ namespace hud
          * @return *this
          */
         constexpr pair &operator=(pair &&other) noexcept
-            requires(hud::is_move_assignable_v<first_type> && hud::is_move_assignable_v<second_type>)
+        requires(hud::is_move_assignable_v<first_type> && hud::is_move_assignable_v<second_type>)
         {
             static_assert(hud::is_nothrow_move_assignable_v<first_type>, "first_type& first_type::operator=(first_type&&) is throwable. pair is not designed to allow throwable move assignable components");
             static_assert(hud::is_nothrow_move_assignable_v<second_type>, "second_type& second_type::operator=(second_type&&) is throwable. pair is not designed to allow throwable move assignable components");
@@ -227,9 +229,9 @@ namespace hud
          * @param other Another pair object.
          * @return *this
          */
-        template <typename u_type_t, typename v_type_t>
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_assignable_v<first_type &, u_type_t &&> && hud::is_assignable_v<second_type &, v_type_t &&>)
         constexpr pair &operator=(pair<u_type_t, v_type_t> &&other) noexcept
-            requires(hud::is_assignable_v<first_type &, u_type_t &&> && hud::is_assignable_v<second_type &, v_type_t &&>)
         {
             static_assert(hud::is_nothrow_assignable_v<first_type &, u_type_t &&>, "first_type& first_type::operator=(u_type_t&&) is throwable. pair is not designed to allow throwable move assignable components");
             static_assert(hud::is_nothrow_assignable_v<second_type &, v_type_t &&>, "second_type& second_type::operator=(v_type_t&&) is throwable. pair is not designed to allow throwable move assignable components");
@@ -244,7 +246,7 @@ namespace hud
          * @param other The other pair to swap
          */
         constexpr void swap(pair &other) noexcept
-            requires(hud::is_swappable_v<first_type> && hud::is_swappable_v<second_type>)
+        requires(hud::is_swappable_v<first_type> && hud::is_swappable_v<second_type>)
         {
             static_assert(hud::is_nothrow_swappable_v<first_type>, "swap(first_type,first_type) is throwable. pair is not designed to allow throwable swappable components");
             static_assert(hud::is_nothrow_swappable_v<second_type>, "swap(second_type,second_type) is throwable. pair is not designed to allow throwable swappable components");
@@ -260,9 +262,9 @@ namespace hud
      * @param a The pair to swap with b
      * @param b The pair to swap with a
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
+    requires(hud::is_swappable_v<first_type> && hud::is_swappable_v<second_type>)
     static constexpr void swap(pair<first_type, second_type> &a, pair<first_type, second_type> &b) noexcept
-        requires(hud::is_swappable_v<first_type> && hud::is_swappable_v<second_type>)
     {
         a.swap(b);
     }
@@ -275,7 +277,7 @@ namespace hud
      * @param right The right pair of the comperand operator
      * @return true if both elements of left are equals both elements of right, false otherwise
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
     [[nodiscard]] constexpr bool operator==(const pair<first_type, second_type> &left, const pair<first_type, second_type> &right) noexcept
     {
         return left.first == right.first && left.second == right.second;
@@ -289,7 +291,7 @@ namespace hud
      * @param right The right pair of the comperand operator
      * @return true if elements of left are not equals to elements of right, false otherwise
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
     [[nodiscard]] constexpr bool operator!=(const pair<first_type, second_type> &left, const pair<first_type, second_type> &right) noexcept
     {
         return !(left == right);
@@ -303,7 +305,7 @@ namespace hud
      * @param right The right pair of the comperand operator
      * @return true if left.first<right.first. Otherwise, if right.first<left.first, returns false. Otherwise, if left.second<right.second, returns true. Otherwise, returns false.
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
     [[nodiscard]] constexpr bool operator<(const pair<first_type, second_type> &left, const pair<first_type, second_type> &right) noexcept
     {
         return left.first < right.first || (!(right.first < left.first) && left.second < right.second);
@@ -317,7 +319,7 @@ namespace hud
      * @param right The right pair of the comperand operator
      * @return true if right.first<left.first. Otherwise, if left.first<right.first, returns false. Otherwise, if right.second<left.second, returns true. Otherwise, returns false.
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
     [[nodiscard]] constexpr bool operator>(const pair<first_type, second_type> &left, const pair<first_type, second_type> &right) noexcept
     {
         return right < left;
@@ -331,7 +333,7 @@ namespace hud
      * @param right The right pair of the comperand operator
      * @return false if right.first<left.first. Otherwise, if left.first<right.first, returns true. Otherwise, if right.second<left.second, returns false. Otherwise, returns true.
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
     [[nodiscard]] constexpr bool operator<=(const pair<first_type, second_type> &left, const pair<first_type, second_type> &right) noexcept
     {
         return !(right < left);
@@ -345,7 +347,7 @@ namespace hud
      * @param right The right pair of the comperand operator
      * @return false if left.first<right.first. Otherwise, if right.first<left.first, returns true. Otherwise, if left.second<right.second, returns false. Otherwise, returns true.
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
     [[nodiscard]] constexpr bool operator>=(const pair<first_type, second_type> &left, const pair<first_type, second_type> &right) noexcept
     {
         return !(left < right);
@@ -357,7 +359,7 @@ namespace hud
      * @tparam second_type Type of the second component
      * @return pair<V1, V2> where V1 is hud::decay_t<first_type> and V2 is hud::decay_t<second_type>
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
     [[nodiscard]] constexpr hud::pair<hud::decay_t<first_type>, hud::decay_t<second_type>> make_pair(first_type &&value_1, second_type &&value_2) noexcept
     {
         return hud::pair<hud::decay_t<first_type>, hud::decay_t<second_type>>(hud::forward<first_type>(value_1), hud::forward<second_type>(value_2));
@@ -368,7 +370,7 @@ namespace hud
      * @tparam first_type Type of the first component
      * @tparam second_type Type of the second component
      */
-    template <typename first_type, typename second_type>
+    template<typename first_type, typename second_type>
     struct tuple_size<hud::pair<first_type, second_type>>
         : hud::integral_constant<usize, 2>
     {
@@ -380,7 +382,7 @@ namespace hud
      * @tparam first_type Type of the first component
      * @tparam second_type Type of the second component
      */
-    template <usize idx_to_reach, typename first_type, typename second_type>
+    template<usize idx_to_reach, typename first_type, typename second_type>
     struct tuple_element<idx_to_reach, pair<first_type, second_type>>
     {
         static_assert(idx_to_reach < 2, "pair index out of bounds");
@@ -395,7 +397,7 @@ namespace hud
      * @param pair The pair to access
      * @return LValue reference to the member first if index is 0, second if index is 1.
      */
-    template <usize element_index, typename first_type, typename second_type>
+    template<usize element_index, typename first_type, typename second_type>
     [[nodiscard]] constexpr hud::tuple_element_t<element_index, pair<first_type, second_type>> &get(pair<first_type, second_type> &pair) noexcept
     {
         static_assert(element_index < 2, "pair index out of bounds");
@@ -417,7 +419,7 @@ namespace hud
      * @param pair The pair to access
      * @return LValue reference to the member first if index is 0, second if index is 1.
      */
-    template <usize element_index, typename first_type, typename second_type>
+    template<usize element_index, typename first_type, typename second_type>
     [[nodiscard]] constexpr const hud::tuple_element_t<element_index, const pair<first_type, second_type>> &get(const pair<first_type, second_type> &pair) noexcept
     {
         static_assert(element_index < 2, "pair index out of bounds");
@@ -439,7 +441,7 @@ namespace hud
      * @param pair The pair to access
      * @return RValue reference to the member first if index is 0, second if index is 1.
      */
-    template <usize element_index, typename first_type, typename second_type>
+    template<usize element_index, typename first_type, typename second_type>
     [[nodiscard]] constexpr hud::tuple_element_t<element_index, pair<first_type, second_type>> &&get(pair<first_type, second_type> &&pair) noexcept
     {
         static_assert(element_index < 2, "pair index out of bounds");
@@ -461,7 +463,7 @@ namespace hud
      * @param pair The pair to access
      * @return RValue reference to the member first if index is 0, second if index is 1.
      */
-    template <usize element_index, typename first_type, typename second_type>
+    template<usize element_index, typename first_type, typename second_type>
     [[nodiscard]] constexpr const hud::tuple_element_t<element_index, pair<first_type, second_type>> &&get(const pair<first_type, second_type> &&pair) noexcept
     {
         static_assert(element_index < 2, "pair index out of bounds");

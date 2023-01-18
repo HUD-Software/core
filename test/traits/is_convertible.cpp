@@ -5,13 +5,15 @@ namespace
     struct a
     {
     };
+
     struct b
     {
     };
+
     struct c : public a
     {
     };
-}
+} // namespace
 
 GTEST_TEST(traits, is_convertible)
 {

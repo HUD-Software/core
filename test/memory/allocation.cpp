@@ -150,6 +150,7 @@ GTEST_TEST(memory, reallocate_align)
         a(a &&other) = default;
         u32 i;
     };
+
     for (u32 aligment = 1; aligment <= 256; aligment <<= 1)
     {
 

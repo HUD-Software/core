@@ -36,6 +36,7 @@ GTEST_TEST(memory, destroy_trivially_destructible_type)
     {
         i32 i;
     };
+
     using type = c;
     using ResultType = i32;
 
@@ -130,6 +131,7 @@ GTEST_TEST(memory, destroy_array_trivially_destructible_type)
     {
         i32 i;
     };
+
     using type = c;
     using ResultType = std::tuple<i32, i32>;
     static_assert(std::is_trivially_destructible_v<type>);

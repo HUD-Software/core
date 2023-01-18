@@ -5,10 +5,11 @@ namespace hud_test
     enum a
     {
     };
+
     class b
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_arithmetic)
 {

@@ -5,15 +5,21 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b() {}
+        b()
+        {
+        }
     };
+
     struct c
     {
-        c(int) {}
+        c(int)
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_default_constructible)
 {

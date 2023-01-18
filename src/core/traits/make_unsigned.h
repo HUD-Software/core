@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_MAKE_UNSIGNED_H
 #define HD_INC_CORE_TRAITS_MAKE_UNSIGNED_H
 #include "disjunction.h"
@@ -21,74 +20,74 @@ namespace hud
     {
 
         /**  Retrieves the unsigned integral corresponding to u_type_t, keeping any cv-qualifiers. */
-        template <typename u_type_t, usize>
+        template<typename u_type_t, usize>
         struct make_integral_unsigned;
 
-        template <typename u_type_t>
+        template<typename u_type_t>
         struct make_integral_unsigned<u_type_t, 1>
         {
             using type = unsigned char;
         };
 
-        template <typename u_type_t>
+        template<typename u_type_t>
         struct make_integral_unsigned<u_type_t, 2>
         {
             using type = unsigned short;
         };
 
-        template <typename u_type_t>
+        template<typename u_type_t>
         struct make_integral_unsigned<u_type_t, 4>
         {
             using type = unsigned int;
         };
 
-        template <>
+        template<>
         struct make_integral_unsigned<long, 4>
         {
             using type = unsigned long;
         };
 
-        template <>
+        template<>
         struct make_integral_unsigned<unsigned long, 4>
         {
             using type = unsigned long;
         };
 
-        template <typename u_type_t>
+        template<typename u_type_t>
         struct make_integral_unsigned<u_type_t, 8>
         {
             using type = unsigned long long;
         };
 
-        template <>
+        template<>
         struct make_integral_unsigned<long, 8>
         {
             using type = unsigned long;
         };
 
-        template <>
+        template<>
         struct make_integral_unsigned<unsigned long, 8>
         {
             using type = unsigned long;
         };
 
-        template <typename u_type_t>
+        template<typename u_type_t>
         using make_integral_unsigned_t = typename make_integral_unsigned<u_type_t, sizeof(u_type_t)>::type;
 
         /**  Retrieves the unsigned integral corresponding to u_type_t, keeping any cv-qualifiers if u_type_t is not an enum. */
-        template <typename u_type_t, bool = is_enum_v<u_type_t>>
+        template<typename u_type_t, bool = is_enum_v<u_type_t>>
         struct make_unsigned_impl
             : make_unsigned_impl<underlying_type_t<u_type_t>>
         {
         };
 
-        template <typename u_type_t>
+        template<typename u_type_t>
         struct make_unsigned_impl<u_type_t, false>
             : apply_cv<make_integral_unsigned_t<remove_cv_t<u_type_t>>, is_const_v<u_type_t>, is_volatile_v<u_type_t>>
         {
         };
 
-        template <typename u_type_t>
+        template<typename u_type_t>
         using make_unsigned_impl_t = typename make_unsigned_impl<u_type_t>::type;
 
     } // namespace details
@@ -100,7 +99,7 @@ namespace hud
      * The type_t is an enumeration type or char, wchar_t, char8_t, char16_t, char32_t; the unsigned integer type with the smallest rank having the same sizeof as type_t is provided.
      * Otherwise, the behavior is undefined.
      */
-    template <typename type_t>
+    template<typename type_t>
     struct make_unsigned
         : details::make_unsigned_impl<type_t>
     {
@@ -108,7 +107,7 @@ namespace hud
     };
 
     /** Equivalent of typename make_unsigned<type_t>::type. */
-    template <typename type_t>
+    template<typename type_t>
     using make_unsigned_t = typename make_unsigned<type_t>::type;
 
 } // namespace hud

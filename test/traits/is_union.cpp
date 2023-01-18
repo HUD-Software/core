@@ -5,16 +5,18 @@ namespace hud_test
     class a
     {
     };
+
     union b
     {
     };
+
     struct c
     {
         union d
         {
         };
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_union)
 {

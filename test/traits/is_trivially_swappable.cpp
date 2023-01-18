@@ -6,7 +6,7 @@ namespace hud_test
     {
         struct a
         {
-            void fn_a(){};
+            void fn_a() {};
             void fn_a2() const {};
             void fn_a3() volatile {};
             void fn_a4() const volatile {};
@@ -15,10 +15,12 @@ namespace hud_test
             volatile int a2 = 0;
             const volatile int a3 = 0;
         };
+
         [[maybe_unused]] void (a::*pt)() = &a::fn_a;
         [[maybe_unused]] void (a::*pt2)() const = &a::fn_a2;
         [[maybe_unused]] void (a::*pt3)() volatile = &a::fn_a3;
         [[maybe_unused]] void (a::*pt4)() const volatile = &a::fn_a4;
+
         enum E
         {
         };
@@ -26,29 +28,46 @@ namespace hud_test
         struct yes
         {
         };
+
         struct no_dtor
         {
-            ~no_dtor() noexcept {}
+            ~no_dtor() noexcept
+            {
+            }
         };
 
         struct no_move_ctor
         {
-            no_move_ctor(no_move_ctor &&) noexcept {}
+            no_move_ctor(no_move_ctor &&) noexcept
+            {
+            }
         };
 
         struct no_move_assign
         {
-            no_move_assign &operator=(no_move_assign &&) noexcept { return *this; }
+            no_move_assign &operator=(no_move_assign &&) noexcept
+            {
+                return *this;
+            }
         };
 
         struct no
         {
-            no(no &&) noexcept {}
-            no &operator=(no &&) noexcept { return *this; }
-            ~no() noexcept {}
+            no(no &&) noexcept
+            {
+            }
+
+            no &operator=(no &&) noexcept
+            {
+                return *this;
+            }
+
+            ~no() noexcept
+            {
+            }
         };
-    }
-}
+    } // namespace
+} // namespace hud_test
 
 GTEST_TEST(traits, is_trivially_swappable)
 {

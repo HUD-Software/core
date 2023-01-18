@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TEMPLATES_DECLVAL_H
 #define HD_INC_CORE_TEMPLATES_DECLVAL_H
 #include "../traits/add_rvalue_reference.h"
@@ -12,7 +11,7 @@ namespace hud
      * Note that because no definition exists for declval, it can only be used in unevaluated contexts;
      * It is an error to evaluate an expression that contains this function. Formally, the program is ill-formed if this function is odr-used.
      */
-    template <class type_t>
+    template<class type_t>
     constexpr add_rvalue_reference_t<type_t> declval() noexcept;
 
 } // namespace hud

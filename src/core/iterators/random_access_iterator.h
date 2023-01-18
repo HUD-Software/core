@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_RANDOM_ACCESS_ITERATOR_H
 #define HD_INC_CORE_RANDOM_ACCESS_ITERATOR_H
 #include "../traits/is_pointer.h"
@@ -9,30 +8,30 @@ namespace hud
 
     namespace details
     {
-        template <typename type_t>
+        template<typename type_t>
         struct select_pointer_type;
 
-        template <typename type_t>
+        template<typename type_t>
         struct select_pointer_type<type_t *>
         {
             using pointer_type = type_t *;
             using value_type = type_t;
         };
 
-        template <typename type_t, usize extent>
+        template<typename type_t, usize extent>
         struct select_pointer_type<type_t[extent]>
         {
             using pointer_type = type_t *;
             using value_type = type_t;
         };
-    };
+    }; // namespace details
 
     /**
      * Forward declaration of random access iterator on container
      * Specialize for differente random accessible container types like array, c style array etc...
      */
-    template <typename type_t>
-        requires(hud::is_pointer_v<type_t> || hud::is_bounded_array_v<type_t>)
+    template<typename type_t>
+    requires(hud::is_pointer_v<type_t> || hud::is_bounded_array_v<type_t>)
     class random_access_iterator
     {
     public:

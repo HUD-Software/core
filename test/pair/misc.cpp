@@ -17,11 +17,13 @@ GTEST_TEST(pair, sizeof_pair_is_sizeof_inner_types)
 {
 
     using pair_type = hud::pair<i32, u64>;
+
     struct shoud_be
     {
         i32 f;
         u64 s;
     };
+
     GTEST_ASSERT_EQ(sizeof(pair_type), sizeof(shoud_be));
 }
 
@@ -34,7 +36,7 @@ GTEST_TEST(pair, make_pair_create_pair_trivially_constructible)
     const auto test = [](type &&t1, type &&t2)
     {
         const auto pair = hud::make_pair(t1, t2);
-        return std::tuple{
+        return std::tuple {
             pair.first,
             pair.second};
     };
@@ -66,7 +68,7 @@ GTEST_TEST(pair, make_pair_create_pair_non_trivial)
     const auto test = [](type &&t1, type &&t2)
     {
         const auto pair = hud::make_pair(hud::forward<type>(t1), hud::forward<type>(t2));
-        return std::tuple{
+        return std::tuple {
             pair.first.id(),
             pair.first.move_assign_count(),
             pair.first.copy_assign_count(),
@@ -84,7 +86,7 @@ GTEST_TEST(pair, make_pair_create_pair_non_trivial)
 
     // Non constant
     {
-        const auto result = test(type{123, nullptr}, type{456, nullptr});
+        const auto result = test(type {123, nullptr}, type {456, nullptr});
 
         GTEST_ASSERT_EQ(std::get<0>(result), 123);
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
@@ -102,7 +104,7 @@ GTEST_TEST(pair, make_pair_create_pair_non_trivial)
 
     // Constant
     {
-        constexpr auto result = test(type{123, nullptr}, type{456, nullptr});
+        constexpr auto result = test(type {123, nullptr}, type {456, nullptr});
 
         GTEST_ASSERT_EQ(std::get<0>(result), 123);
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
@@ -125,7 +127,7 @@ GTEST_TEST(pair, get_is_usable_with_pair)
     const auto test = [](i32 t1, i32 t2)
     {
         const auto pair = hud::make_pair(t1, t2);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(pair),
             hud::get<1>(pair)};
     };

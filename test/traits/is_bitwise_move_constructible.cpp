@@ -18,15 +18,21 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b(b &&) noexcept {}
+        b(b &&) noexcept
+        {
+        }
     };
+
     struct c
     {
-        virtual void fn() {}
+        virtual void fn()
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_bitwise_move_constructible)
 {

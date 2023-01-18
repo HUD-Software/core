@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_SLICE_H
 #define HD_INC_CORE_SLICE_H
 // #include "templates/swap.h"
@@ -14,7 +13,7 @@ namespace hud
      * with the first element of the sequence at position zero.
      * @tparam type_t The element type
      */
-    template <typename type_t>
+    template<typename type_t>
     class slice
     {
     public:
@@ -32,7 +31,8 @@ namespace hud
          * @param count The number of elements in the sequence
          */
         HD_FORCEINLINE constexpr slice(type_t *first, const usize count) noexcept
-            : begin_ptr(first), count_element(count)
+            : begin_ptr(first)
+            , count_element(count)
         {
         }
 
@@ -41,7 +41,8 @@ namespace hud
 
         /** Move construct the slice. */
         HD_FORCEINLINE constexpr slice(slice &&other) noexcept
-            : begin_ptr(other.begin_ptr), count_element(other.count_element)
+            : begin_ptr(other.begin_ptr)
+            , count_element(other.count_element)
         {
             other.begin_ptr = nullptr;
             other.count_element = 0u;

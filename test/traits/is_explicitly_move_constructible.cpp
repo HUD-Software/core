@@ -6,11 +6,12 @@ namespace hud_test
     {
         no_explicit_ctor(no_explicit_ctor &&) noexcept {};
     };
+
     struct explicit_ctor
     {
         explicit explicit_ctor(explicit_ctor &&) noexcept {};
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_explicitly_move_constructible)
 {

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_MISC_NON_BITWISE_MOVE_ASSIGNABLE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_MOVE_ASSIGNABLE_TYPE_H
 #include <core/minimal.h>
@@ -25,7 +24,11 @@ namespace hud_test
          * @param other The hud_test::non_bitwise_copy_assignable_type to copy
          */
         constexpr NonBitwiseMoveAssignableType(const NonBitwiseMoveAssignableType &other) noexcept
-            : move_assigned_count(other.move_assigned_count), copy_assigned_count(other.copy_assigned_count), move_construct_count(other.move_construct_count), copy_construct_count(other.copy_construct_count + 1), unique_id(other.unique_id)
+            : move_assigned_count(other.move_assigned_count)
+            , copy_assigned_count(other.copy_assigned_count)
+            , move_construct_count(other.move_construct_count)
+            , copy_construct_count(other.copy_construct_count + 1)
+            , unique_id(other.unique_id)
         {
         }
 
@@ -34,7 +37,11 @@ namespace hud_test
          * @param other The NonBitwiseMoveAssignableType to move
          */
         constexpr NonBitwiseMoveAssignableType(NonBitwiseMoveAssignableType &&other) noexcept
-            : move_assigned_count(other.move_assigned_count), copy_assigned_count(other.copy_assigned_count), move_construct_count(other.move_construct_count + 1), copy_construct_count(other.copy_construct_count), unique_id(other.unique_id)
+            : move_assigned_count(other.move_assigned_count)
+            , copy_assigned_count(other.copy_assigned_count)
+            , move_construct_count(other.move_construct_count + 1)
+            , copy_construct_count(other.copy_construct_count)
+            , unique_id(other.unique_id)
         {
         }
 
@@ -197,7 +204,8 @@ namespace hud_test
         constexpr NonBitwiseMoveAssignableType3() noexcept = default;
 
         constexpr NonBitwiseMoveAssignableType3(i32 *increment_ptr) noexcept
-            : NonBitwiseMoveAssignableType2(), increment(increment_ptr)
+            : NonBitwiseMoveAssignableType2()
+            , increment(increment_ptr)
         {
         }
 
@@ -206,7 +214,8 @@ namespace hud_test
          * @param other The hud_test::non_bitwise_copy_assignable_type to copy
          */
         constexpr NonBitwiseMoveAssignableType3(NonBitwiseMoveAssignableType3 &&other) noexcept
-            : NonBitwiseMoveAssignableType2(std::forward<NonBitwiseMoveAssignableType3>(other)), increment(other.increment)
+            : NonBitwiseMoveAssignableType2(std::forward<NonBitwiseMoveAssignableType3>(other))
+            , increment(other.increment)
         {
         }
 

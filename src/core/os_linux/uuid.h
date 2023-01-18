@@ -1,11 +1,10 @@
-#pragma once
 #ifndef HD_INC_CORE_OS_LINUX_UUID_H
 #define HD_INC_CORE_OS_LINUX_UUID_H
 #include "../os_common/uuid.h"
 #include <sys/random.h>
 
 #if !defined(HD_OS_LINUX)
-#error This file must be included only when targetting Linux OS
+    #error This file must be included only when targetting Linux OS
 #endif
 
 namespace hud::os::linux
@@ -43,10 +42,10 @@ namespace hud::os::linux
 
             // Save in the uuid
             const u32 *as_u32 = reinterpret_cast<const u32 *>(&bytes[0]);
-            guid = uuid{as_u32[0], as_u32[1], as_u32[2], as_u32[3]};
+            guid = uuid {as_u32[0], as_u32[1], as_u32[2], as_u32[3]};
             return true;
         }
     };
-}
+} // namespace hud::os::linux
 
 #endif /* HD_INC_CORE_OS_LINUX_UUID_H */

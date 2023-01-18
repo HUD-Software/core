@@ -6,18 +6,18 @@ namespace hud_test
     {
     };
 
-    template <typename type_t>
+    template<typename type_t>
     typename hud::enable_if_t<hud::is_integral_v<type_t>, bool> enable_if_fct_is_integral()
     {
         return true;
     }
 
-    template <typename type_t>
+    template<typename type_t>
     typename hud::enable_if_t<!hud::is_integral_v<type_t>, bool> enable_if_fct_is_integral()
     {
         return false;
     }
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, enable_if)
 {

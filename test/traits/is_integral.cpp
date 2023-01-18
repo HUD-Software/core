@@ -4,7 +4,7 @@ namespace hud_test
 {
     class a;
     enum class b : u32;
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_integral)
 {

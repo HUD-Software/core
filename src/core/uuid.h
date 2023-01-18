@@ -1,13 +1,12 @@
-#pragma once
 #ifndef HD_INC_CORE_UUID_H
 #define HD_INC_CORE_UUID_H
 
 #if defined(HD_OS_WINDOWS)
-#include "os_windows/uuid.h"
+    #include "os_windows/uuid.h"
 #elif defined(HD_OS_LINUX)
-#include "os_linux/uuid.h"
+    #include "os_linux/uuid.h"
 #else
-#error Targeted OS not supported
+    #error Targeted OS not supported
 #endif
 
 namespace hud
@@ -19,7 +18,7 @@ namespace hud
 #elif defined(HD_OS_LINUX)
     using uuid = os::linux::uuid;
 #else
-#error Unsupported platform
+    #error Unsupported platform
 #endif
 
 } // namespace hud

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_ASSERT_H
 #define HD_INC_CORE_ASSERT_H
 #include "debugger.h"

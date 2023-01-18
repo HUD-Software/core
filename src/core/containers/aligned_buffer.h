@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_ALIGNED_BUFFER_H
 #define HD_INC_CORE_ALIGNED_BUFFER_H
 #include "../traits/is_power_of_two.h"
@@ -11,8 +10,8 @@ namespace hud
      * The aligned memory can be retrieves with pointer() function.
      * The given alignment must be a power of two.
      */
-    template <usize size, u32 alignment>
-        requires(is_power_of_two_v<alignment>)
+    template<usize size, u32 alignment>
+    requires(is_power_of_two_v<alignment>)
     class aligned_buffer
     {
     public:
@@ -23,7 +22,7 @@ namespace hud
         }
 
         /** Retrieves a pointer of type type_t to the compile-time aligned array of bytes. */
-        template <typename type_t>
+        template<typename type_t>
         [[nodiscard]] HD_FORCEINLINE type_t *pointer_as() noexcept
         {
             return static_cast<type_t *>(pointer());
@@ -36,7 +35,7 @@ namespace hud
         }
 
         /** Retrieves a pointer of type type_t to the compile-time aligned array of bytes. */
-        template <typename type_t>
+        template<typename type_t>
         [[nodiscard]] HD_FORCEINLINE const type_t *pointer() const noexcept
         {
             return static_cast<const type_t *>(pointer());

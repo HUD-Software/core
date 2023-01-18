@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_IS_STANDARD_LAYOUT_H
 #define HD_INC_CORE_TRAITS_IS_STANDARD_LAYOUT_H
 #include "integral_constant.h"
@@ -25,14 +24,14 @@ namespace hud
      *   is_standard_layout<B>::value -> false
      *   is_standard_layout<C>::value -> false
      */
-    template <typename type_t>
+    template<typename type_t>
     struct is_standard_layout
         : hud::bool_constant<__is_standard_layout(type_t)>
     {
     };
 
     /** Equivalent of is_standard_layout<type_t>::value. */
-    template <typename type_t>
+    template<typename type_t>
     inline constexpr bool is_standard_layout_v = is_standard_layout<type_t>::value;
 
 } // namespace hud

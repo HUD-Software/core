@@ -6,17 +6,23 @@ namespace hud_test
     {
         int i;
     };
+
     struct b
     {
         int i, j;
-        b(const b &x) : i(x.i), j(x.j){};
+        b(const b &x)
+            : i(x.i)
+            , j(x.j) {};
     };
+
     struct c
     {
         int i, j;
-        c(const a &x) : i(x.i), j(1){};
+        c(const a &x)
+            : i(x.i)
+            , j(1) {};
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_trivially_copyable)
 {

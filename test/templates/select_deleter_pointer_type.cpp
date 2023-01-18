@@ -6,11 +6,12 @@ namespace hud_test
     struct deleter_no_pointer_type
     {
     };
+
     struct deleter_pointer_type
     {
         using pointer_type = float *;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(templates, selectDeleterPointerType)
 {

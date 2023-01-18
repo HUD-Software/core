@@ -59,7 +59,6 @@
 // of a+b is easily derived from the hashes of a and b.  This property
 // doesn't hold for any hash functions in this file.
 
-#pragma once
 #ifndef HD_INC_CORE_HASH_ALGORITHM_CITY_HASH_H
 #define HD_INC_CORE_HASH_ALGORITHM_CITY_HASH_H
 #include "../memory.h"
@@ -195,8 +194,8 @@ namespace hud::hash_algorithm
                 c ^= b;
             }
             return avalanche_mixer(
-                combine(b,
-                        combine(static_cast<u32>(length), c)));
+                combine(b, combine(static_cast<u32>(length), c))
+            );
         }
 
         /**
@@ -212,9 +211,8 @@ namespace hud::hash_algorithm
             b += fetch_32(key + length - 4);
             c += fetch_32(key + ((length >> 1) & 4));
             return avalanche_mixer(
-                combine(c,
-                        combine(b,
-                                combine(a, d))));
+                combine(c, combine(b, combine(a, d)))
+            );
         }
 
         /**
@@ -234,12 +232,8 @@ namespace hud::hash_algorithm
             u32 h = static_cast<u32>(length);
 
             return avalanche_mixer(
-                combine(f,
-                        combine(e,
-                                combine(d,
-                                        combine(c,
-                                                combine(b,
-                                                        combine(a, h)))))));
+                combine(f, combine(e, combine(d, combine(c, combine(b, combine(a, h))))))
+            );
         }
 
         /**
@@ -308,8 +302,7 @@ namespace hud::hash_algorithm
             u64 b = fetch_64(key + 8);
             u64 c = fetch_64(key + length - 8) * mul;
             u64 d = fetch_64(key + length - 16) * K2;
-            return hash_64_len_16(hud::memory::rotate_right(a + b, 43) + hud::memory::rotate_right(c, 30) + d,
-                                  a + hud::memory::rotate_right(b + K2, 18) + c, mul);
+            return hash_64_len_16(hud::memory::rotate_right(a + b, 43) + hud::memory::rotate_right(c, 30) + d, a + hud::memory::rotate_right(b + K2, 18) + c, mul);
         }
 
         /**
@@ -365,7 +358,7 @@ namespace hud::hash_algorithm
          */
         static constexpr u64 hash_64_len_16(u64 low, u64 high) noexcept
         {
-            return hash_128_to_64(u128{low, high});
+            return hash_128_to_64(u128 {low, high});
         }
 
         /**
@@ -387,7 +380,7 @@ namespace hud::hash_algorithm
             a += x;
             a += y;
             b += hud::memory::rotate_right(a, 44);
-            return u128{a + z, b + c};
+            return u128 {a + z, b + c};
         }
 
         /**
@@ -400,15 +393,10 @@ namespace hud::hash_algorithm
          */
         static constexpr u128 weak_hash_len_32_with_seeds(const ansichar *key, u64 a, u64 b) noexcept
         {
-            return weak_hash_len_32_with_seeds(fetch_64(key),
-                                               fetch_64(key + 8),
-                                               fetch_64(key + 16),
-                                               fetch_64(key + 24),
-                                               a,
-                                               b);
+            return weak_hash_len_32_with_seeds(fetch_64(key), fetch_64(key + 8), fetch_64(key + 16), fetch_64(key + 24), a, b);
         }
 
-    }
+    } // namespace details
 
     struct city_hash
     {
@@ -549,8 +537,7 @@ namespace hud::hash_algorithm
                 buffer += 64;
                 length -= 64;
             } while (length != 0);
-            return details::hash_64_len_16(details::hash_64_len_16(v.low, w.low) + details::shift_mix(y) * details::K1 + z,
-                                           details::hash_64_len_16(v.high, w.high) + x);
+            return details::hash_64_len_16(details::hash_64_len_16(v.low, w.low) + details::shift_mix(y) * details::K1 + z, details::hash_64_len_16(v.high, w.high) + x);
         }
     };
 

@@ -34,4 +34,4 @@ namespace hud::os::linux
         }
         return found[sizeof(TRACERPID) - 1] != '0';
     }
-}
+} // namespace hud::os::linux

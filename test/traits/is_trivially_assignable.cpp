@@ -5,18 +5,27 @@ namespace
     struct a
     {
     };
+
     struct b : a
     {
     };
+
     struct c
     {
-        c &operator=(const a &) { return *this; }
+        c &operator=(const a &)
+        {
+            return *this;
+        }
     };
+
     struct d
     {
-        d &operator=(const d &) { return *this; }
+        d &operator=(const d &)
+        {
+            return *this;
+        }
     };
-}
+} // namespace
 
 GTEST_TEST(traits, is_trivially_assignable)
 {

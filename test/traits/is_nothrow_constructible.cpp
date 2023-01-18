@@ -5,13 +5,22 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b() {}
-        b(const a &) noexcept {}
-        b(a &&) noexcept {}
+        b()
+        {
+        }
+
+        b(const a &) noexcept
+        {
+        }
+
+        b(a &&) noexcept
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_nothrow_constructible)
 {

@@ -28,7 +28,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -161,7 +161,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -400,7 +400,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -533,7 +533,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -806,7 +806,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -1015,7 +1015,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -1366,7 +1366,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -1575,7 +1575,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -1906,15 +1906,15 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
 
             switch (count_to_assigned)
             {
-            case 0:
-                assigned = std::initializer_list<i32 *>{};
-                break;
-            case 2:
-                assigned = {dtor_to_assigned_ptr_counter[0], dtor_to_assigned_ptr_counter[1]};
-                break;
-            case 3:
-                assigned = {dtor_to_assigned_ptr_counter[0], dtor_to_assigned_ptr_counter[1], dtor_to_assigned_ptr_counter[2]};
-                break;
+                case 0:
+                    assigned = std::initializer_list<i32 *> {};
+                    break;
+                case 2:
+                    assigned = {dtor_to_assigned_ptr_counter[0], dtor_to_assigned_ptr_counter[1]};
+                    break;
+                case 3:
+                    assigned = {dtor_to_assigned_ptr_counter[0], dtor_to_assigned_ptr_counter[1], dtor_to_assigned_ptr_counter[2]};
+                    break;
             }
 
             bool all_destructors_are_called = true;
@@ -1978,7 +1978,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 all_destructors_are_called,
                 assigned_are_not_destroyed,
                 assigned.allocator().allocation_count(),
@@ -2119,15 +2119,15 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
 
         switch (count_to_assigned)
         {
-        case 0:
-            assigned = std::initializer_list<i32 *>{};
-            break;
-        case 2:
-            assigned = {dtor_to_assigned_ptr_counter[0], dtor_to_assigned_ptr_counter[1]};
-            break;
-        case 3:
-            assigned = {dtor_to_assigned_ptr_counter[0], dtor_to_assigned_ptr_counter[1], dtor_to_assigned_ptr_counter[2]};
-            break;
+            case 0:
+                assigned = std::initializer_list<i32 *> {};
+                break;
+            case 2:
+                assigned = {dtor_to_assigned_ptr_counter[0], dtor_to_assigned_ptr_counter[1]};
+                break;
+            case 3:
+                assigned = {dtor_to_assigned_ptr_counter[0], dtor_to_assigned_ptr_counter[1], dtor_to_assigned_ptr_counter[2]};
+                break;
         }
 
         bool all_destructors_are_called = true;
@@ -2191,7 +2191,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             all_destructors_are_called,
             assigned_are_not_destroyed,
             assigned.allocator().allocation_count(),
@@ -2402,7 +2402,7 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -2536,7 +2536,7 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -2978,7 +2978,7 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -3112,7 +3112,7 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -3588,7 +3588,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -3798,7 +3798,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -4424,7 +4424,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -4634,7 +4634,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -5301,7 +5301,7 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 all_destructors_are_called,
                 assigned_are_not_destroyed,
                 assigned.allocator().allocation_count(),
@@ -5504,7 +5504,7 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             all_destructors_are_called,
             assigned_are_not_destroyed,
             assigned.allocator().allocation_count(),
@@ -5893,7 +5893,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
                 }
             }
 
-            return std::tuple{
+            return std::tuple {
                 assigned.data() != nullptr,
                 // Number of element should be equal to the number of element in the std::initializer_list
                 assigned.count(),
@@ -6027,7 +6027,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
             }
         }
 
-        return std::tuple{
+        return std::tuple {
             assigned.data() != nullptr,
             // Number of element should be equal to the number of element in the std::initializer_list
             assigned.count(),
@@ -6528,12 +6528,12 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
         for (usize extra2 = 0; extra2 < 5; extra2++)
         {
             test_assign({}, extra, {}, extra2);
-            test_assign({}, extra, {Type2{0}, Type2{1}, Type2{2}, Type2{3}}, extra2);
-            test_assign({Type1{10}, Type1{20}}, extra, {Type2{0}, Type2{1}, Type2{2}, Type2{3}}, extra2);
-            test_assign({Type1{10}, Type1{20}, Type1{30}, Type1{40}}, extra, {Type2{0}, Type2{1}, Type2{2}, Type2{3}}, extra2);
-            test_assign({Type1{10}, Type1{20}, Type1{30}, Type1{40}, Type1{50}}, extra, {Type2{0}, Type2{1}, Type2{2}, Type2{3}}, extra2);
-            test_assign({Type1{10}, Type1{20}, Type1{30}, Type1{40}, Type1{50}}, extra, {Type2{0}, Type2{1}}, extra2);
-            test_assign({Type1{10}, Type1{20}, Type1{30}, Type1{40}, Type1{50}}, extra, {}, extra2);
+            test_assign({}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {Type2 {0}, Type2 {1}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {}, extra2);
         }
     }
 }
@@ -6692,12 +6692,12 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
         for (usize extra2 = 0; extra2 < 5; extra2++)
         {
             test_assign({}, extra, {}, extra2);
-            test_assign({}, extra, {type{0}, type{1}, type{2}, type{3}}, extra2);
-            test_assign({type{10}, type{20}}, extra, {type{0}, type{1}, type{2}, type{3}}, extra2);
-            test_assign({type{10}, type{20}, type{30}, type{40}}, extra, {type{0}, type{1}, type{2}, type{3}}, extra2);
-            test_assign({type{10}, type{20}, type{30}, type{40}, type{50}}, extra, {type{0}, type{1}, type{2}, type{3}}, extra2);
-            test_assign({type{10}, type{20}, type{30}, type{40}, type{50}}, extra, {type{0}, type{1}}, extra2);
-            test_assign({type{10}, type{20}, type{30}, type{40}, type{50}}, extra, {}, extra2);
+            test_assign({}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
+            test_assign({type {10}, type {20}}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
+            test_assign({type {10}, type {20}, type {30}, type {40}}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
+            test_assign({type {10}, type {20}, type {30}, type {40}, type {50}}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
+            test_assign({type {10}, type {20}, type {30}, type {40}, type {50}}, extra, {type {0}, type {1}}, extra2);
+            test_assign({type {10}, type {20}, type {30}, type {40}, type {50}}, extra, {}, extra2);
         }
     }
 }
@@ -6859,12 +6859,12 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         for (usize extra2 = 0; extra2 < 5; extra2++)
         {
             test_assign({}, extra, {}, extra2);
-            test_assign({}, extra, {Type2{0}, Type2{1}, Type2{2}, Type2{3}}, extra2);
-            test_assign({Type1{10}, Type1{20}}, extra, {Type2{0}, Type2{1}, Type2{2}, Type2{3}}, extra2);
-            test_assign({Type1{10}, Type1{20}, Type1{30}, Type1{40}}, extra, {Type2{0}, Type2{1}, Type2{2}, Type2{3}}, extra2);
-            test_assign({Type1{10}, Type1{20}, Type1{30}, Type1{40}, Type1{50}}, extra, {Type2{0}, Type2{1}, Type2{2}, Type2{3}}, extra2);
-            test_assign({Type1{10}, Type1{20}, Type1{30}, Type1{40}, Type1{50}}, extra, {Type2{0}, Type2{1}}, extra2);
-            test_assign({Type1{10}, Type1{20}, Type1{30}, Type1{40}, Type1{50}}, extra, {}, extra2);
+            test_assign({}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {Type2 {0}, Type2 {1}}, extra2);
+            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {}, extra2);
         }
     }
 }

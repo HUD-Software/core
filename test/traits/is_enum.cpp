@@ -8,6 +8,7 @@ namespace hud_test
         second,
         third
     }; // unscoped enum (c-style)
+
     class b
     {
     };
@@ -17,7 +18,7 @@ namespace hud_test
         beta,
         gamma
     }; // scoped enum (c++11-style)
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_enum)
 {

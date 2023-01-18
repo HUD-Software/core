@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TEMPLATES_LEXICOGRAPHICAL_COMPARE_H
 #define HD_INC_CORE_TEMPLATES_LEXICOGRAPHICAL_COMPARE_H
 #include "../memory.h"
@@ -22,7 +21,7 @@ namespace hud
      * @param last_2 The final positions of the second sequence. last element is not include
      * @return true if the first range compares lexicographically less than than the second, false otherwise (including when all the elements of both ranges are equivalent).
      */
-    template <typename it1_t, typename it2_t>
+    template<typename it1_t, typename it2_t>
     [[nodiscard]] inline constexpr bool lexicographical_compare(it1_t first_1, it1_t last_1, it2_t first_2, it2_t last_2) noexcept
     {
         for (; (first_1 != last_1) && (first_2 != last_2); ++first_1, ++first_2)
@@ -54,7 +53,7 @@ namespace hud
      * @param arr_2 The second array
      * @return true if the first array compares lexicographically less than than the second, false otherwise (including when all the elements of both ranges are equivalent).
      */
-    template <typename array1_t, usize size_1, typename array2_t, usize size_2>
+    template<typename array1_t, usize size_1, typename array2_t, usize size_2>
     [[nodiscard]] HD_FORCEINLINE constexpr bool lexicographical_compare(const array1_t (&arr_1)[size_1], const array2_t (&arr_2)[size_2]) noexcept
     {
         return lexicographical_compare(arr_1, arr_1 + size_1, arr_2, arr_2 + size_2);
@@ -76,9 +75,9 @@ namespace hud
      * @param last_2 The final positions of the second sequence. last element is not include
      * @return true if the first range compares lexicographically less than than the second, false otherwise (including when all the elements of both ranges are equivalent).
      */
-    template <typename it1_t, typename it2_t>
+    template<typename it1_t, typename it2_t>
+    requires(sizeof(it1_t) == 1 && sizeof(it2_t) == 1)
     [[nodiscard]] inline constexpr bool lexicographical_compare(it1_t *first_1, it1_t *last_1, it2_t *first_2, it2_t *last_2) noexcept
-        requires(sizeof(it1_t) == 1 && sizeof(it2_t) == 1)
     {
         const usize size_1 = static_cast<usize>(last_1 - first_1);
         const usize size_2 = static_cast<usize>(last_2 - first_2);
@@ -102,9 +101,9 @@ namespace hud
      * @param count Size of both sequence in bytes
      * @return true if the first range compares lexicographically less than than the second, false otherwise (including when all the elements of both ranges are equivalent).
      */
-    template <typename it1_t, typename it2_t>
+    template<typename it1_t, typename it2_t>
+    requires(sizeof(it1_t) == 1 && sizeof(it2_t) == 1)
     [[nodiscard]] HD_FORCEINLINE constexpr bool lexicographical_compare(it1_t *buffer_1, it2_t *buffer_2, usize size) noexcept
-        requires(sizeof(it1_t) == 1 && sizeof(it2_t) == 1)
     {
         return hud::memory::compare_less(buffer_1, buffer_2, size);
     }
@@ -124,9 +123,9 @@ namespace hud
      * @param arr_2 The second array
      * @return true if the first array compares lexicographically less than than the second, false otherwise (including when all the elements of both ranges are equivalent).
      */
-    template <typename array1_t, typename array2_t, usize size>
+    template<typename array1_t, typename array2_t, usize size>
+    requires(sizeof(array1_t) == 1 && sizeof(array2_t) == 1)
     [[nodiscard]] HD_FORCEINLINE constexpr bool lexicographical_compare(const array1_t (&arr_1)[size], const array2_t (&arr_2)[size]) noexcept
-        requires(sizeof(array1_t) == 1 && sizeof(array2_t) == 1)
     {
         return hud::memory::compare_less(arr_1, arr_2, size);
     }

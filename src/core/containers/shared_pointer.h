@@ -1,34 +1,33 @@
-#pragma once
 #ifndef HD_INC_CORE_SHARED_POINTER_H
-    #define HD_INC_CORE_SHARED_POINTER_H
-    #include "../assert.h"
-    #include "../atomics.h"
-    #include "../minimal.h"
-    #include "aligned_buffer.h"
-    #include "pair.h"
+#define HD_INC_CORE_SHARED_POINTER_H
+#include "../assert.h"
+#include "../atomics.h"
+#include "../minimal.h"
+#include "aligned_buffer.h"
+#include "pair.h"
 
-    #include "../traits/add_const.h"
-    #include "../traits/add_pointer.h"
-    #include "../traits/common_type.h"
-    #include "../traits/conjunction.h"
-    #include "../traits/disjunction.h"
-    #include "../traits/is_convertible.h"
-    #include "../traits/is_nothrow_default_constructible.h"
-    #include "../traits/is_pointer.h"
-    #include "../traits/is_same.h"
-    #include "../traits/is_unbounded_array.h"
-    #include "../traits/is_void.h"
-    #include "../traits/negation.h"
-    #include "../traits/remove_pointer.h"
-    #include "../traits/void_t.h"
+#include "../traits/add_const.h"
+#include "../traits/add_pointer.h"
+#include "../traits/common_type.h"
+#include "../traits/conjunction.h"
+#include "../traits/disjunction.h"
+#include "../traits/is_convertible.h"
+#include "../traits/is_nothrow_default_constructible.h"
+#include "../traits/is_pointer.h"
+#include "../traits/is_same.h"
+#include "../traits/is_unbounded_array.h"
+#include "../traits/is_void.h"
+#include "../traits/negation.h"
+#include "../traits/remove_pointer.h"
+#include "../traits/void_t.h"
 
-    #include "../allocators/allocation.h"
-    #include "../hash.h"
-    #include "../templates/declval.h"
-    #include "../templates/default_deleter.h"
-    #include "../templates/forward.h"
-    #include "../templates/less.h"
-    #include "../templates/select_deleter_pointer_type.h"
+#include "../allocators/allocation.h"
+#include "../hash.h"
+#include "../templates/declval.h"
+#include "../templates/default_deleter.h"
+#include "../templates/forward.h"
+#include "../templates/less.h"
+#include "../templates/select_deleter_pointer_type.h"
 
 /*
 @startuml
@@ -323,8 +322,8 @@ namespace hud
              * @param args Arguments forward to the type_t constructor
              */
             template<typename... args_t>
+            requires(!is_array_v<type_t>)
             explicit constexpr reference_controller_no_deleter(args_t &&...args) noexcept
-                requires(!is_array_v<type_t>)
             {
                 static_assert(is_nothrow_constructible_v<type_t, args_t...>, "shared_pointer do not accept throwable constructible type");
                 hud::memory::construct_at(pointer(), hud::forward<args_t>(args)...);
@@ -641,7 +640,8 @@ namespace hud
         constexpr weak_pointer() noexcept = default;
 
         /** Construct a weak_pointer from a shared_pointer. */
-        template<typename u_type_t> requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr weak_pointer(const hud::shared_pointer<u_type_t, thread_safety> &shared) noexcept
             : inner(shared.inner)
         {
@@ -658,7 +658,8 @@ namespace hud
          * @tparam u_type_t Type of the other weak_pointer's pointer to copy. Must be compatible with type_t
          * @param other The weak_pointer to copy
          */
-        template<typename u_type_t> requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr weak_pointer(const weak_pointer<u_type_t, thread_safety> &other) noexcept
             : inner(other.inner)
         {
@@ -676,7 +677,8 @@ namespace hud
          * @tparam u_type_t Type of the other weak_pointer's pointer to move. Must be compatible with type_t
          * @param other The weak_pointer to move
          */
-        template<typename u_type_t> requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr weak_pointer(weak_pointer<u_type_t, thread_safety> &&other) noexcept
             : inner(hud::move(other.inner))
         {
@@ -693,7 +695,8 @@ namespace hud
             return *this;
         }
 
-        template<typename u_type_t> requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr weak_pointer &operator=(const weak_pointer<u_type_t, thread_safety> &other) noexcept
         {
             inner = other.inner;
@@ -746,8 +749,8 @@ namespace hud
          * @param pointer The poiner to own
          */
         template<typename u_type_t>
+        requires(details::is_convertible_v<u_type_t, type_t>)
         constexpr explicit shared_pointer(u_type_t *pointer) noexcept
-            requires(details::is_convertible_v<u_type_t, type_t>)
             : inner(pointer, new(std::nothrow) details::reference_controller_with_deleter<u_type_t, thread_safety, deleter_type<u_type_t>>(pointer))
         {
         }
@@ -769,8 +772,8 @@ namespace hud
          * @param other The shared_pointer to share ownership with
          */
         template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr shared_pointer(const shared_pointer<u_type_t, thread_safety> &other) noexcept
-            requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(other.inner)
         {
         }
@@ -788,8 +791,8 @@ namespace hud
          * @param other The shared_pointer to transfert ownership from.
          */
         template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr shared_pointer(shared_pointer<u_type_t, thread_safety> &&other) noexcept
-            requires(details::is_pointer_compatible_v<u_type_t, type_t>)
             : inner(hud::move(other.inner))
         {
             get<0>(other.inner) = nullptr;
@@ -823,8 +826,8 @@ namespace hud
          * @return *this
          */
         template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr shared_pointer &operator=(const shared_pointer<u_type_t, thread_safety> &other) noexcept
-            requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         {
             inner = other.inner;
             return *this;
@@ -848,7 +851,8 @@ namespace hud
          * @return *this
          */
         template<typename u_type_t>
-        constexpr shared_pointer &operator=(shared_pointer<u_type_t, thread_safety> &&other) noexcept requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        constexpr shared_pointer &operator=(shared_pointer<u_type_t, thread_safety> &&other) noexcept
         {
             inner = hud::move(other.inner);
             get<0>(other.inner) = nullptr;
@@ -882,7 +886,7 @@ namespace hud
 
         /** Dereference owned pointer. */
         [[nodiscard]] constexpr hud::add_lvalue_reference_t<hud::remove_extent_t<type_t>> operator*() const noexcept
-            requires(!is_void_v<type_t>)
+        requires(!is_void_v<type_t>)
         {
             return *pointer();
         }
@@ -895,14 +899,14 @@ namespace hud
 
         /** Retrieves a reference to the element at the given index. */
         [[nodiscard]] constexpr hud::add_const_t<hud::add_lvalue_reference_t<hud::remove_extent_t<type_t>>> operator[](const usize at) const noexcept
-            requires(is_array_v<type_t>)
+        requires(is_array_v<type_t>)
         {
             return pointer()[at];
         }
 
         /** Retrieves a reference to the element at the given index. */
         [[nodiscard]] constexpr hud::add_lvalue_reference_t<hud::remove_extent_t<type_t>> operator[](const usize at) noexcept
-            requires(is_array_v<type_t>)
+        requires(is_array_v<type_t>)
         {
             return pointer()[at];
         }
@@ -947,11 +951,12 @@ namespace hud
         template<typename u_type_t, thread_safety_e>
         friend class weak_pointer;
         template<typename u_type_t, thread_safety_e thread_safety_1, typename... args_t>
-        friend shared_pointer<u_type_t, thread_safety_1> make_shared(args_t &&...args) noexcept
-            requires(!is_array_v<u_type_t>);
+        requires(!is_array_v<u_type_t>)
+        friend shared_pointer<u_type_t, thread_safety_1> make_shared(args_t &&...args) noexcept;
         template<typename u_type_t, thread_safety_e thread_safety_1>
-        friend shared_pointer<u_type_t, thread_safety_1> make_shared(usize count) noexcept
-            requires(hud::is_unbounded_array_v<u_type_t>);
+        requires(hud::is_unbounded_array_v<u_type_t>)
+        friend shared_pointer<u_type_t, thread_safety_1> make_shared(usize count) noexcept;
+        ;
 
         /**
          * Construct a shared_pointer form a reference_controller_no_deleter.
@@ -1258,8 +1263,8 @@ namespace hud
      * @return shared_pointer<type_t, thread_safety> pointing to a object of type type_t construct by passing args arguments to its constructor
      */
     template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe, typename... args_t>
+    requires(!is_array_v<type_t>)
     [[nodiscard]] HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(args_t &&...args) noexcept
-        requires(!is_array_v<type_t>)
     {
         return shared_pointer<type_t, thread_safety>(new (std::nothrow) details::reference_controller_no_deleter<type_t, thread_safety>(hud::forward<args_t>(args)...));
     }
@@ -1273,8 +1278,8 @@ namespace hud
      * @return shared_pointer<type_t, thread_safety> pointer to an array of type type_t
      */
     template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe>
+    requires(hud::is_unbounded_array_v<type_t>)
     [[nodiscard]] HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(const usize count) noexcept
-        requires(hud::is_unbounded_array_v<type_t>)
     {
         return shared_pointer<type_t, thread_safety>(new (std::nothrow) details::reference_controller_no_deleter<type_t, thread_safety>(count));
     }

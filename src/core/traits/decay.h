@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_DECAY_H
 #define HD_INC_CORE_TRAITS_DECAY_H
 #include "remove_reference.h"
@@ -21,22 +20,18 @@ namespace hud
      *   - Otherwise, a regular lvalue-to-rvalue conversion is applied and the decay type is the same as: remove_cv_t<hud::remove_reference_t<type_t>>.
      * This resembles the implicit conversions happening when an argument is passed by value to a function.
      */
-    template <class type_t>
+    template<class type_t>
     struct decay
     {
     private:
         using NoRefType = hud::remove_reference_t<type_t>;
 
     public:
-        using type = hud::conditional_t<is_array_v<NoRefType>,
-                                        hud::remove_extent_t<NoRefType> *,
-                                        hud::conditional_t<is_function_v<NoRefType>,
-                                                           add_pointer_t<NoRefType>,
-                                                           remove_cv_t<NoRefType>>>;
+        using type = hud::conditional_t<is_array_v<NoRefType>, hud::remove_extent_t<NoRefType> *, hud::conditional_t<is_function_v<NoRefType>, add_pointer_t<NoRefType>, remove_cv_t<NoRefType>>>;
     };
 
     /** Equivalent of typename decay<type_t>::type. */
-    template <typename type_t>
+    template<typename type_t>
     using decay_t = typename decay<type_t>::type;
 
 } // namespace hud

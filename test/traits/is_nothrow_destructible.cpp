@@ -5,15 +5,21 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        ~b() {}
+        ~b()
+        {
+        }
     };
+
     struct c
     {
-        ~c() noexcept(false) {}
+        ~c() noexcept(false)
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_nothrow_destructible)
 {

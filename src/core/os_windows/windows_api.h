@@ -1,9 +1,8 @@
-#pragma once
 #ifndef HD_INC_CORE_OS_WINDOWS_API_H
 #define HD_INC_CORE_OS_WINDOWS_API_H
 
 #if !defined(HD_OS_WINDOWS)
-#error This file must be included only when targetting Windows OS
+    #error This file must be included only when targetting Windows OS
 #endif
 
 #define WIN32_LEAN_AND_MEAN // Exclude APIs such as Cryptography, DDE, RPC, Shell, and Windows Sockets.

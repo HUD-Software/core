@@ -6,27 +6,45 @@ namespace hud_test
     {
         i32 a;
     };
+
     struct b
     {
-        b(i32 b) : mB(b) {}
+        b(i32 b)
+            : mB(b)
+        {
+        }
+
         i32 mB;
     };
+
     struct c
     {
         a a;
     };
+
     struct d
     {
-        d(b b) : mB(b) {}
+        d(b b)
+            : mB(b)
+        {
+        }
+
         b mB;
     };
+
     struct e
     {
         e() = default;
-        e(a a) : mA(a) {}
+
+        e(a a)
+            : mA(a)
+        {
+        }
+
         a mA;
     };
-}
+} // namespace hud_test
+
 GTEST_TEST(traits, is_constructible)
 {
     GTEST_ASSERT_TRUE((hud::is_constructible_v<hud_test::a>));

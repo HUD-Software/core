@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_MISC_NON_DEFAULT_CONSTRUCTIBLE_TYPE_H
 #define HD_INC_MISC_NON_DEFAULT_CONSTRUCTIBLE_TYPE_H
 #include <core/minimal.h>
@@ -20,7 +19,8 @@ namespace hud_test
          * @param id The ID to of the NonDefaultConstructibleType
          */
         constexpr NonDefaultConstructibleType(const i32 id) noexcept
-            : ctor_count(1u), unique_id(id)
+            : ctor_count(1u)
+            , unique_id(id)
         {
         }
 
@@ -29,7 +29,10 @@ namespace hud_test
          * @param other The NonDefaultConstructibleType to copy
          */
         constexpr NonDefaultConstructibleType(const NonDefaultConstructibleType &other) noexcept
-            : move_construct_count(other.move_construct_count), copy_construct_count(other.copy_construct_count + 1), ctor_count(other.ctor_count), unique_id(other.unique_id)
+            : move_construct_count(other.move_construct_count)
+            , copy_construct_count(other.copy_construct_count + 1)
+            , ctor_count(other.ctor_count)
+            , unique_id(other.unique_id)
         {
         }
 
@@ -38,7 +41,10 @@ namespace hud_test
          * @param other The NonDefaultConstructibleType to move
          */
         constexpr NonDefaultConstructibleType(NonDefaultConstructibleType &&other) noexcept
-            : move_construct_count(other.move_construct_count + 1), copy_construct_count(other.copy_construct_count), ctor_count(other.ctor_count), unique_id(other.unique_id)
+            : move_construct_count(other.move_construct_count + 1)
+            , copy_construct_count(other.copy_construct_count)
+            , ctor_count(other.ctor_count)
+            , unique_id(other.unique_id)
         {
         }
 

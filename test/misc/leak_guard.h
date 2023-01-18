@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_TEST_MISC_LEAKGUARD_H
 #define HD_INC_TEST_MISC_LEAKGUARD_H
 #include <core/memory.h>
@@ -6,7 +5,7 @@
 namespace hud_test
 {
 
-    template <typename type_t = void>
+    template<typename type_t = void>
     class LeakGuard
     {
     public:
@@ -29,12 +28,13 @@ namespace hud_test
         type_t *ptr;
     };
 
-    template <typename type_t = void>
+    template<typename type_t = void>
     class LeakArrayGuard
     {
     public:
         constexpr LeakArrayGuard(type_t *allocation, const usize count) noexcept
-            : ptr(allocation), count_of_T(count)
+            : ptr(allocation)
+            , count_of_T(count)
         {
         }
 
@@ -76,6 +76,6 @@ namespace hud_test
         void *ptr;
     };
 
-}
+} // namespace hud_test
 
 #endif // HD_INC_TEST_MISC_LEAKGUARD_H

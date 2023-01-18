@@ -10,7 +10,7 @@ GTEST_TEST(optional, swap_empty_trivial_type)
         {
             static_assert(hud::is_swappable_v<usize, usize>);
             a.swap(b);
-            return std::tuple{
+            return std::tuple {
                 a.first,
                 a.second,
                 b.first,
@@ -44,7 +44,7 @@ GTEST_TEST(optional, swap_empty_trivial_type)
         {
             static_assert(hud::is_swappable_v<usize, usize>);
             swap(a, b);
-            return std::tuple{
+            return std::tuple {
                 a.first,
                 a.second,
                 b.first,

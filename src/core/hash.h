@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_HASH_H
 #define HD_INC_CORE_HASH_H
 #include "traits/is_enum.h"
@@ -11,7 +10,7 @@
 namespace hud
 {
 
-    template <typename type_t>
+    template<typename type_t>
     static inline u32 hash(const type_t) noexcept;
 
     /** Retrieves the 32 bits hash of a i8 value. */
@@ -93,15 +92,15 @@ namespace hud
     }
 
     /** Retrieves the 32 bits hash of an enumeration. */
-    template <typename type_t>
+    template<typename type_t>
+    requires(is_enum_v<type_t>)
     [[nodiscard]] static constexpr u32 hash(const type_t value) noexcept
-        requires(is_enum_v<type_t>)
     {
         return hash(static_cast<underlying_type_t<type_t>>(value));
     }
 
     /** Retrieves the 32 bits hash of a pointer of a type type_t. */
-    template <typename type_t>
+    template<typename type_t>
     [[nodiscard]] static u32 hash(type_t *const pointer) noexcept
     {
         const uptr ptr = reinterpret_cast<uptr>(pointer);

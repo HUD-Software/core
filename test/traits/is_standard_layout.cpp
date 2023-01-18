@@ -6,6 +6,7 @@ namespace hud_test
     {
         int m;
     };
+
     struct b
     {
         int m1;
@@ -13,21 +14,24 @@ namespace hud_test
     private:
         [[maybe_unused]] int m2;
     };
+
     struct c
     {
-        virtual void foo(){};
+        virtual void foo() {};
     };
+
     struct d : a
     {
         int j;
     };
+
     struct E
     {
         int m;
         short a;
         int b;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_standard_layout)
 {

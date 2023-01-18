@@ -2,34 +2,40 @@
 
 namespace hud_test
 {
-    template <typename type_t>
+    template<typename type_t>
     struct custom_deleter
-        : public hud::default_deleter<type_t>,
-          hud_test::non_bitwise_type
+        : public hud::default_deleter<type_t>
+        , hud_test::non_bitwise_type
     {
 
         constexpr custom_deleter() noexcept = default;
         constexpr custom_deleter(const custom_deleter &other) noexcept = default;
         constexpr custom_deleter(custom_deleter &&other) noexcept = default;
+
         constexpr custom_deleter(hud::default_deleter<type_t> &&other) noexcept
-            : hud::default_deleter<type_t>(hud::move(other)), hud_test::non_bitwise_type(hud::move(other))
+            : hud::default_deleter<type_t>(hud::move(other))
+            , hud_test::non_bitwise_type(hud::move(other))
         {
         }
-        template <typename U>
+
+        template<typename U>
         constexpr custom_deleter(custom_deleter<U> &&other) noexcept
-            : hud::default_deleter<type_t>(hud::move(other)), hud_test::non_bitwise_type(hud::move(other))
+            : hud::default_deleter<type_t>(hud::move(other))
+            , hud_test::non_bitwise_type(hud::move(other))
         {
         }
+
         constexpr custom_deleter &operator=(const custom_deleter &) noexcept
         {
             return *this;
         }
+
         constexpr custom_deleter &operator=(custom_deleter &&) noexcept
         {
             return *this;
         }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(unique_pointer, equal_operator)
 {
@@ -41,7 +47,7 @@ GTEST_TEST(unique_pointer, equal_operator)
         hud::unique_pointer<i32, hud_test::custom_deleter<i32>> p2(pi);
         hud::unique_pointer<i32> p3(new i32(0));
         hud::unique_pointer<i32> p4;
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             p1 == p2,
             p2 == p1,
             p1 == p3,
@@ -94,7 +100,7 @@ GTEST_TEST(unique_pointer, not_equal_operator)
         hud::unique_pointer<i32, hud_test::custom_deleter<i32>> p2(pi);
         hud::unique_pointer<i32> p3(new i32(0));
         hud::unique_pointer<i32> p4;
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             p1 != p2,
             p2 != p1,
             p1 != p3,
@@ -148,7 +154,7 @@ GTEST_TEST(unique_pointer, less_operator)
         hud::unique_pointer<i32, hud_test::custom_deleter<i32>> p2(ptr2);
         hud::unique_pointer<i32> p4;
 
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             p1 < p1,
             p1 < p2,
             p2 < p1,
@@ -193,7 +199,7 @@ GTEST_TEST(unique_pointer, less_equal_operator)
         hud::unique_pointer<i32, hud_test::custom_deleter<i32>> p2(ptr2);
         hud::unique_pointer<i32> p4;
 
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             p1 <= p1,
             p1 <= p2,
             p2 <= p1,
@@ -238,7 +244,7 @@ GTEST_TEST(unique_pointer, greater_operator)
         hud::unique_pointer<i32, hud_test::custom_deleter<i32>> p2(ptr2);
         hud::unique_pointer<i32> p4;
 
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             p1 > p1,
             p1 > p2,
             p2 > p1,
@@ -283,7 +289,7 @@ GTEST_TEST(unique_pointer, greater_equal_operator)
         hud::unique_pointer<i32, hud_test::custom_deleter<i32>> p2(ptr2);
         hud::unique_pointer<i32> p4;
 
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             p1 >= p1,
             p1 >= p2,
             p2 >= p1,

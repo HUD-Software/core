@@ -1,11 +1,10 @@
-#pragma once
 #ifndef HD_INC_CORE_OS_WINDOWS_DEBUGGER_H
 #define HD_INC_CORE_OS_WINDOWS_DEBUGGER_H
 #include "windows_api.h"
 #include <cstdlib> // abort
 
 #if !defined(HD_OS_WINDOWS)
-#error This file must be included only when targetting Windows OS
+    #error This file must be included only when targetting Windows OS
 #endif
 
 namespace hud::os::windows

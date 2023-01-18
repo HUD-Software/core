@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_INTEGRAL_CONSTANT_H
 #define HD_INC_CORE_TRAITS_INTEGRAL_CONSTANT_H
 
@@ -6,7 +5,7 @@ namespace hud
 {
 
     /** Wraps a static constant value of specified type type_t. */
-    template <typename type_t, type_t type_t_value>
+    template<typename type_t, type_t type_t_value>
     struct integral_constant
     {
         /** Wrapped static constexpr value. */
@@ -21,6 +20,7 @@ namespace hud
         {
             return value;
         }
+
         /** Conversion function. Returns the wrapped value. */
         constexpr value_type operator()() const noexcept
         {
@@ -29,7 +29,7 @@ namespace hud
     };
 
     /** hud::integral_constant wraps a static constant boolean value. */
-    template <bool value>
+    template<bool value>
     using bool_constant = hud::integral_constant<bool, value>;
 
     /** True boolean integral constant */

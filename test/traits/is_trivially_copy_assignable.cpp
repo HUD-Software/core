@@ -5,19 +5,32 @@ namespace hud_test
     struct a
     {
     };
+
     struct b : a
     {
     };
+
     struct c
     {
-        c &operator=(const a &) { return *this; }
+        c &operator=(const a &)
+        {
+            return *this;
+        }
     };
+
     struct d
     {
-        d &operator=(const d &) { return *this; }
-        d &operator=(const a &) { return *this; }
+        d &operator=(const d &)
+        {
+            return *this;
+        }
+
+        d &operator=(const a &)
+        {
+            return *this;
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_trivially_copy_assignable)
 {

@@ -18,7 +18,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
 
             // Add one element
             const type &ref_0 = array.add_to_ref(element_to_copy);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -29,7 +29,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
                 array.allocator().free_count()};
             // Add another element
             const type &ref_1 = array.add_to_ref(element_to_copy);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -40,7 +40,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
                 array[1].copy_constructor_count(),
                 array.allocator().allocation_count(),
                 array.allocator().free_count()};
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -114,7 +114,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
 
             // Add one element
             const type &ref_0 = array.add_to_ref(element_to_copy);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -126,7 +126,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
             };
             // Add another element
             const type &ref_1 = array.add_to_ref(element_to_copy);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -138,7 +138,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -219,7 +219,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             // Add one element
             const type element_to_copy_0(1u);
             const type &ref_0 = array.add_to_ref(element_to_copy_0);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -232,7 +232,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             // Add another element
             const type element_to_copy_1(2u);
             const type &ref_1 = array.add_to_ref(element_to_copy_1);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -242,7 +242,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -310,7 +310,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             // Add one element
             const type element_to_copy_0(1u);
             const type &ref_0 = array.add_to_ref(element_to_copy_0);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -322,7 +322,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             // Add another element
             const type element_to_copy_1(2u);
             const type &ref_1 = array.add_to_ref(element_to_copy_1);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -331,7 +331,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
                 array[1],
                 array.allocator().allocation_count(),
                 array.allocator().free_count()};
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -406,7 +406,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
 
             // Add one element
             const type &ref_0 = array.add_to_ref(type());
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -418,7 +418,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
             };
             // Add another element
             const type &ref_1 = array.add_to_ref(type());
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -430,7 +430,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -503,7 +503,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
 
             // Add one element
             const type &ref_0 = array.add_to_ref(type());
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -515,7 +515,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
             };
             // Add another element
             const type &ref_1 = array.add_to_ref(type());
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -527,7 +527,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -607,7 +607,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 
             // Add one element
             const type &ref_0 = array.add_to_ref(1u);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -619,7 +619,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 
             // Add another element
             const type &ref_1 = array.add_to_ref(2u);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -629,7 +629,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -696,7 +696,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 
             // Add one element
             const type &ref_0 = array.add_to_ref(1u);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -708,7 +708,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 
             // Add another element
             const type &ref_1 = array.add_to_ref(2u);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -718,7 +718,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -794,7 +794,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
 
             // Add one element
             const type &ref_0 = array.add_to_ref(element);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -805,7 +805,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
             };
             // Add another element
             const type &ref_1 = array.add_to_ref(element);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -815,7 +815,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -884,7 +884,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
 
             // Add one element
             const type &ref_0 = array.add_to_ref(element);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 &ref_0 == array.data(),
                 array.data() != nullptr,
                 array.count(),
@@ -895,7 +895,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
             };
             // Add another element
             const type &ref_1 = array.add_to_ref(element);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 &ref_1 == array.data() + 1,
                 array.data() != nullptr,
                 array.count(),
@@ -905,7 +905,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };

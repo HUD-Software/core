@@ -1,13 +1,12 @@
-#pragma once
 #ifndef HD_INC_CORE_CSTRING_H
 #define HD_INC_CORE_CSTRING_H
 
 #if defined(HD_OS_WINDOWS)
-#include "os_windows/cstring.h"
+    #include "os_windows/cstring.h"
 #elif defined(HD_OS_LINUX)
-#include "os_linux/cstring.h"
+    #include "os_linux/cstring.h"
 #else
-#error Targeted OS not supported
+    #error Targeted OS not supported
 #endif
 
 namespace hud
@@ -29,9 +28,9 @@ namespace hud
          * @param args Depending of the format, list of arguments
          * @return Number of character written, -1 if an error occurred.
          */
-        template <typename type_t>
+        template<typename type_t>
+        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
         static i32 format(type_t *buffer, u32 buffer_size, const type_t *format, ...) noexcept
-            requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
         {
             va_list args;
             va_start(args, format);

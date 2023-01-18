@@ -17,7 +17,8 @@ namespace hud_test
 
         i32 value;
     };
-}
+} // namespace hud_test
+
 // LCOV_EXCL_STOP
 
 GTEST_TEST(templates, greater)
@@ -29,9 +30,9 @@ GTEST_TEST(templates, greater)
     GTEST_ASSERT_FALSE(gr(1, 2));
 
     hud::greater<hud_test::S> gr_s;
-    GTEST_ASSERT_TRUE(gr_s(hud_test::S{2}, hud_test::S{1}));
-    GTEST_ASSERT_FALSE(gr_s(hud_test::S{1}, hud_test::S{1}));
-    GTEST_ASSERT_FALSE(gr_s(hud_test::S{1}, hud_test::S{2}));
+    GTEST_ASSERT_TRUE(gr_s(hud_test::S {2}, hud_test::S {1}));
+    GTEST_ASSERT_FALSE(gr_s(hud_test::S {1}, hud_test::S {1}));
+    GTEST_ASSERT_FALSE(gr_s(hud_test::S {1}, hud_test::S {2}));
 
     hud::greater<i32 *> gr_ptr;
     GTEST_ASSERT_FALSE(gr_ptr(nullptr, nullptr));

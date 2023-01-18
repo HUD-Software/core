@@ -5,10 +5,11 @@ namespace hud_test
     struct a
     {
     };
+
     struct b : public a
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_derived_from)
 {

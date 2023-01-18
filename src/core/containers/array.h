@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_ARRAY_H
 #define HD_INC_CORE_ARRAY_H
 #include "../minimal.h"
@@ -36,8 +35,9 @@ namespace hud
      * @tparam type_t The element type
      * @tparam allocator_t The allocator to use.
      */
-    template <typename type_t, typename allocator_t = hud::aligned_heap_allocator<alignof(type_t)>>
-    class array : private allocator_t
+    template<typename type_t, typename allocator_t = hud::aligned_heap_allocator<alignof(type_t)>>
+    class array
+        : private allocator_t
     {
 
     public:
@@ -66,10 +66,12 @@ namespace hud
          * @param element_number The number of elements in the sequence to copy
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
+        requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const u_type_t *first, const usize element_number, const allocator_type &allocator = allocator_type()) noexcept
-            requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(element_number)), end_ptr(data_at(element_number))
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(element_number))
+            , end_ptr(data_at(element_number))
         {
             hud::memory::copy_construct_array(data(), first, element_number);
         }
@@ -82,10 +84,12 @@ namespace hud
          * @param extra_element_count (Optional) Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
+        requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const u_type_t *first, const usize element_number, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(element_number + extra_element_count)), end_ptr(data_at(element_number))
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(element_number + extra_element_count))
+            , end_ptr(data_at(element_number))
         {
             hud::memory::copy_construct_array(data(), first, element_number);
         }
@@ -96,10 +100,12 @@ namespace hud
          * @param list The std::initializer_list of u_type_t
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
+        requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr array(std::initializer_list<u_type_t> list, const allocator_type &allocator = allocator_type()) noexcept
-            requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(list.size())), end_ptr(data_at(list.size()))
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(list.size()))
+            , end_ptr(data_at(list.size()))
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
             // else it will fail at compile time if begin() is not a pointer
@@ -113,10 +119,12 @@ namespace hud
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
+        requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr array(std::initializer_list<u_type_t> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(list.size() + extra_element_count)), end_ptr(data_at(list.size()))
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(list.size() + extra_element_count))
+            , end_ptr(data_at(list.size()))
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
             // else it will fail at compile time if begin() is not a pointer
@@ -129,8 +137,10 @@ namespace hud
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
         constexpr explicit array(const array &other, const allocator_type &allocator = allocator_type()) noexcept
-            requires(hud::is_copy_constructible_v<type_t>)
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(other.max_count())), end_ptr(data_at(other.count()))
+        requires(hud::is_copy_constructible_v<type_t>)
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(other.max_count()))
+            , end_ptr(data_at(other.count()))
         {
             hud::memory::copy_construct_array(data(), other.data(), count());
         }
@@ -141,9 +151,12 @@ namespace hud
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
+
         constexpr explicit array(const array &other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            requires(hud::is_copy_constructible_v<type_t>)
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count)), end_ptr(data_at(other.count()))
+        requires(hud::is_copy_constructible_v<type_t>)
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count))
+            , end_ptr(data_at(other.count()))
         {
             hud::memory::copy_construct_array(data(), other.data(), count());
         }
@@ -155,10 +168,12 @@ namespace hud
          * @param other The other array to copy
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        template <typename u_type_t, typename u_allocator_t>
+        template<typename u_type_t, typename u_allocator_t>
+        requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const array<u_type_t, u_allocator_t> &other, const allocator_type &allocator = allocator_type()) noexcept
-            requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(other.max_count())), end_ptr(data_at(other.count()))
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(other.max_count()))
+            , end_ptr(data_at(other.count()))
         {
             hud::memory::copy_construct_array(data(), other.data(), count());
         }
@@ -171,10 +186,12 @@ namespace hud
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        template <typename u_type_t, typename u_allocator_t>
+        template<typename u_type_t, typename u_allocator_t>
+        requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const array<u_type_t, u_allocator_t> &other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count)), end_ptr(data_at(other.count()))
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count))
+            , end_ptr(data_at(other.count()))
         {
             hud::memory::copy_construct_array(data(), other.data(), count());
         }
@@ -185,8 +202,10 @@ namespace hud
          * @param other The other array to move
          */
         constexpr explicit array(array &&other) noexcept
-            requires(hud::is_bitwise_move_constructible_v<type_t>)
-            : allocator_t(hud::move(*static_cast<allocator_t *>(&other))), allocation(hud::move(other.allocation)), end_ptr(other.end_ptr)
+        requires(hud::is_bitwise_move_constructible_v<type_t>)
+            : allocator_t(hud::move(*static_cast<allocator_t *>(&other)))
+            , allocation(hud::move(other.allocation))
+            , end_ptr(other.end_ptr)
         {
             other.leak();
         }
@@ -199,9 +218,9 @@ namespace hud
          * @tparam u_type_t The element type of the other array
          * @param other The other array to move
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr explicit array(array<u_type_t, allocator_t> &&other) noexcept
-            requires(hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
+        requires(hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             : allocator_t(hud::move(*static_cast<allocator_t *>(&other)))
         {
 
@@ -230,9 +249,11 @@ namespace hud
          * @param other The other array to move
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        template <typename u_type_t, typename u_allocator_t>
+        template<typename u_type_t, typename u_allocator_t>
         constexpr explicit array(array<u_type_t, u_allocator_t> &&other, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(other.max_count())), end_ptr(data_at(other.count()))
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(other.max_count()))
+            , end_ptr(data_at(other.count()))
         {
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
             // This optimisation works only if allocator do not share the same memory allocation, this case is not used in the engine
@@ -256,9 +277,11 @@ namespace hud
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        template <typename u_type_t, typename u_allocator_t>
+        template<typename u_type_t, typename u_allocator_t>
         constexpr explicit array(array<u_type_t, u_allocator_t> &&other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator), allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count)), end_ptr(data_at(other.count()))
+            : allocator_t(allocator)
+            , allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count))
+            , end_ptr(data_at(other.count()))
         {
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
             // This optimisation works only if allocator do not share the same memory buffer, this case is not used in the engine
@@ -289,7 +312,7 @@ namespace hud
          * @param list The std::initilizer_list to assign
          * @return *this
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr array &operator=(std::initializer_list<u_type_t> list) noexcept
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
@@ -306,7 +329,7 @@ namespace hud
          * @return *this
          */
         constexpr array &operator=(const array &other) noexcept
-            requires(hud::is_copy_assignable_v<type_t>)
+        requires(hud::is_copy_assignable_v<type_t>)
         {
             if (this != &other)
             {
@@ -324,9 +347,9 @@ namespace hud
          * @param other The other array to copy
          * @return *this
          */
-        template <typename u_type_t, typename u_allocator_t>
+        template<typename u_type_t, typename u_allocator_t>
+        requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         constexpr array &operator=(const array<u_type_t, u_allocator_t> &other) noexcept
-            requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         {
             copy_assign(other.data(), other.count());
             return *this;
@@ -339,7 +362,7 @@ namespace hud
          * @param other The other array to move
          */
         constexpr array &operator=(array &&other) noexcept
-            requires(hud::is_move_assignable_v<type_t>)
+        requires(hud::is_move_assignable_v<type_t>)
         {
             if (this != &other)
             {
@@ -357,9 +380,9 @@ namespace hud
          * @tparam u_allocator_t The alloctor type of the other array
          * @param other The other array to move
          */
-        template <typename u_type_t, typename u_allocator_t>
+        template<typename u_type_t, typename u_allocator_t>
+        requires(hud::is_move_assignable_v<type_t, u_type_t>)
         constexpr array &operator=(array<u_type_t, u_allocator_t> &&other) noexcept
-            requires(hud::is_move_assignable_v<type_t, u_type_t>)
         {
             move_assign(hud::forward<array<u_type_t, u_allocator_t>>(other));
             return *this;
@@ -372,9 +395,9 @@ namespace hud
          * @param args Arguments to forward to the constructor of the element
          * @return Index of the newly created element
          */
-        template <typename... args_t>
+        template<typename... args_t>
+        requires(hud::is_constructible_v<type_t, args_t...>)
         constexpr usize emplace_back(args_t &&...args) noexcept
-            requires(hud::is_constructible_v<type_t, args_t...>)
         {
             const usize old_count = count();
             const usize new_count = count() + 1u;
@@ -406,9 +429,9 @@ namespace hud
          * @param args Arguments to forward to the constructor of the element
          * @return Reference to the newly created element
          */
-        template <typename... args_t>
+        template<typename... args_t>
+        requires(hud::is_constructible_v<type_t, args_t...>)
         [[nodiscard]] constexpr type_t &emplace_back_to_ref(args_t &&...args) noexcept
-            requires(hud::is_constructible_v<type_t, args_t...>)
         {
             const usize element_index = emplace_back(hud::forward<args_t>(args)...);
             return *data_at(element_index);
@@ -421,7 +444,7 @@ namespace hud
          * @param idx The index of insertion
          * @param args Arguments to forward to the constructor of the element
          */
-        template <typename... args_t>
+        template<typename... args_t>
         void emplace_at(const usize idx, args_t &&...args) noexcept
         {
             check(idx <= count());
@@ -460,7 +483,7 @@ namespace hud
          * @param args Arguments to forward to the constructor of the element
          * @return Reference to the newly created element
          */
-        template <typename... args_t>
+        template<typename... args_t>
         [[nodiscard]] type_t &emplace_at_to_ref(const usize index, args_t &&...args) noexcept
         {
             emplace_at(index, hud::forward<args_t>(args)...);
@@ -507,7 +530,8 @@ namespace hud
          * @return Reference to of the newly added element
          */
         [[nodiscard]] constexpr type_t &add_to_ref(type_t &&element) noexcept
-            requires(hud::is_move_constructible_v<type_t>)
+        requires(hud::is_move_constructible_v<type_t>)
+
         {
             return emplace_back_to_ref(hud::move(element));
         }
@@ -844,7 +868,7 @@ namespace hud
          * @param other The array to swap with
          */
         void swap(array &other) noexcept
-            requires(hud::is_swappable_v<type_t>)
+        requires(hud::is_swappable_v<type_t>)
         {
             static_assert(hud::is_nothrow_swappable_v<type_t>, "swap(array<type_t>&) is throwable. array is not designed to allow throwable swappable components");
             hud::swap(end_ptr, other.end_ptr);
@@ -859,9 +883,9 @@ namespace hud
          * @param to_find The element to find
          * @return first index of the element where the predicate array[index] == element is true, hud::index_none otherwise
          */
-        template <typename CompType>
+        template<typename CompType>
+        requires(hud::is_comparable_with_equal_v<type_t, CompType>)
         [[nodiscard]] usize find_first_index(const CompType &to_find) const
-            requires(hud::is_comparable_with_equal_v<type_t, CompType>)
         {
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
@@ -883,9 +907,9 @@ namespace hud
          * @param to_find The element to find
          * @return last index of the element where the predicate array[index] == element is true, hud::index_none otherwise
          */
-        template <typename CompType>
+        template<typename CompType>
+        requires(hud::is_comparable_with_equal_v<type_t, CompType>)
         [[nodiscard]] usize find_last_index(const CompType &to_find) const
-            requires(hud::is_comparable_with_equal_v<type_t, CompType>)
         {
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
@@ -907,7 +931,7 @@ namespace hud
          * @param predicate The predicate to use
          * @return first index of the element matching the predicate, hud::index_none otherwise
          */
-        template <typename UnaryPredicate>
+        template<typename UnaryPredicate>
         [[nodiscard]] usize find_first_index_by_predicate(const UnaryPredicate predicate) const
         {
             const type_t *HD_RESTRICT begin = data();
@@ -929,7 +953,7 @@ namespace hud
          * @param predicate The predicate to use
          * @return last index of the element matching the predicate, hud::index_none otherwise
          */
-        template <typename UnaryPredicate>
+        template<typename UnaryPredicate>
         [[nodiscard]] usize find_last_index_by_predicate(const UnaryPredicate predicate) const
         {
             const type_t *HD_RESTRICT begin = data();
@@ -952,9 +976,9 @@ namespace hud
          * @param to_find The element to find
          * @return true if the element is contained in the array, false otherwise
          */
-        template <typename CompType>
+        template<typename CompType>
+        requires(hud::is_comparable_with_equal_v<type_t, CompType>)
         [[nodiscard]] bool contains(const CompType &to_find) const
-            requires(hud::is_comparable_with_equal_v<type_t, CompType>)
         {
             return find_first_index(to_find) != hud::index_none;
         }
@@ -965,7 +989,7 @@ namespace hud
          * @param predicate The predicate to use
          * @return true if an element match the user-defined predicate is contained in the array, false otherwise
          */
-        template <typename UnaryPredicate>
+        template<typename UnaryPredicate>
         [[nodiscard]] bool contains_by_predicate(const UnaryPredicate predicate) const
         {
             return find_first_index_by_predicate(predicate) != hud::index_none;
@@ -1002,7 +1026,7 @@ namespace hud
          * @param source The source of data to copy
          * @param source_count Element count in the source to copy
          */
-        template <typename u_type_t>
+        template<typename u_type_t>
         constexpr void copy_assign(const u_type_t *source, const usize source_count) noexcept
         {
             // Grow the allocation if we don't have enough room
@@ -1055,7 +1079,7 @@ namespace hud
          * @tparam u_allocator_t The alloctor type of the other array
          * @param other The other array to move
          */
-        template <typename u_type_t, typename u_allocator_t>
+        template<typename u_type_t, typename u_allocator_t>
         constexpr void move_assign(array<u_type_t, u_allocator_t> &&other) noexcept
         {
             if (!hud::is_constant_evaluated() && is_same_v<allocator_type, u_allocator_t> && hud::is_bitwise_move_assignable_v<type_t, u_type_t>)
@@ -1144,7 +1168,7 @@ namespace hud
         }
 
     private:
-        template <typename u_type_t, typename u_allocator_t>
+        template<typename u_type_t, typename u_allocator_t>
         friend class array; // Friend with other array of other types
 
     private:
@@ -1163,9 +1187,9 @@ namespace hud
      * @param first The first array to swap
      * @param second The second array to swap
      */
-    template <typename type_t, typename allocator_t>
+    template<typename type_t, typename allocator_t>
+    requires(hud::is_swappable_v<type_t>)
     HD_FORCEINLINE void swap(array<type_t, allocator_t> &first, array<type_t, allocator_t> &second) noexcept
-        requires(hud::is_swappable_v<type_t>)
     {
         first.swap(second);
     }
@@ -1182,7 +1206,7 @@ namespace hud
      * @param right The right array to compare
      * @param true if right and left Arrays are equals, false otherwise
      */
-    template <typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
+    template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
     {
         const usize left_count = left.count();
@@ -1201,7 +1225,7 @@ namespace hud
      * @param right The right array to compare
      * @param true if right and left Arrays are not equals, false otherwise
      */
-    template <typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
+    template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
     {
         const usize left_count = left.count();
@@ -1222,7 +1246,7 @@ namespace hud
      * @param right The right array to compare
      * @param true if right is less than left array, false otherwise
      */
-    template <typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
+    template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
     {
         return lexicographical_compare(left.data(), left.data() + left.count(), right.data(), right.data() + right.count());
@@ -1242,7 +1266,7 @@ namespace hud
      * @param right The right array to compare
      * @param true if right is greater than left array, false otherwise
      */
-    template <typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
+    template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
     {
         return right < left;
@@ -1262,7 +1286,7 @@ namespace hud
      * @param right The right array to compare
      * @param true if right is less or equal left array, false otherwise
      */
-    template <typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
+    template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
     {
         return !(right < left);
@@ -1282,7 +1306,7 @@ namespace hud
      * @param right The right array to compare
      * @param true if right is greater or equal left array, false otherwise
      */
-    template <typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
+    template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
     {
         return !(left < right);

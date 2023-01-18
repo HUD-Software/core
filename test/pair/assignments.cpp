@@ -12,15 +12,15 @@ GTEST_TEST(pair, copy_assign_trivially_copy_assignable_same_type)
 
     const auto test = [](const type t1, const type t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_before = pair.first;
         const i32 second_before = pair.second;
-        const pair_type other{t1, t2};
+        const pair_type other {t1, t2};
 
         pair = other;
 
-        return std::tuple{
+        return std::tuple {
             first_before,
             second_before,
             pair.first,
@@ -57,7 +57,7 @@ GTEST_TEST(pair, copy_assign_non_trivially_copy_assignable_same_type)
 
     const auto test = [](const i32 t1, const i32 t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_id_before = pair.first.id();
         const u32 first_copy_assign_count_before = pair.first.copy_assign_count();
@@ -66,11 +66,11 @@ GTEST_TEST(pair, copy_assign_non_trivially_copy_assignable_same_type)
         const u32 second_copy_assign_count_before = pair.second.copy_assign_count();
         const u32 second_copy_ctor_count_before = pair.second.copy_constructor_count();
 
-        const pair_type other{t1, t2};
+        const pair_type other {t1, t2};
 
         pair = other;
 
-        return std::tuple{
+        return std::tuple {
             first_id_before,
             first_copy_assign_count_before,
             first_copy_ctor_count_before,
@@ -139,11 +139,11 @@ GTEST_TEST(pair, copy_assign_trivially_copy_assignable_different_type)
 
         const Type1 first_before = pair.first;
         const Type1 second_before = pair.second;
-        const OtherPairType other{t1, t2};
+        const OtherPairType other {t1, t2};
 
         pair = other;
 
-        return std::tuple{
+        return std::tuple {
             first_before,
             second_before,
             pair.first,
@@ -182,7 +182,7 @@ GTEST_TEST(pair, copy_assign_non_trivially_copy_assignable_different_type)
 
     const auto test = [](const i32 t1, const i32 t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_id_before = pair.first.id();
         const u32 first_copy_assign_count_before = pair.first.copy_assign_count();
@@ -191,11 +191,11 @@ GTEST_TEST(pair, copy_assign_non_trivially_copy_assignable_different_type)
         const u32 second_copy_assign_count_before = pair.second.copy_assign_count();
         const u32 second_copy_ctor_count_before = pair.second.copy_constructor_count();
 
-        const OtherPairType other{t1, t2};
+        const OtherPairType other {t1, t2};
 
         pair = other;
 
-        return std::tuple{
+        return std::tuple {
             first_id_before,
             first_copy_assign_count_before,
             first_copy_ctor_count_before,
@@ -258,15 +258,15 @@ GTEST_TEST(pair, move_assign_trivially_copy_assignable_same_type)
 
     const auto test = [](const type t1, const type t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_before = pair.first;
         const i32 second_before = pair.second;
-        pair_type other{t1, t2};
+        pair_type other {t1, t2};
 
         pair = hud::move(other);
 
-        return std::tuple{
+        return std::tuple {
             first_before,
             second_before,
             pair.first,
@@ -303,7 +303,7 @@ GTEST_TEST(pair, move_assign_non_trivially_copy_assignable_same_type)
 
     const auto test = [](const i32 t1, const i32 t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_id_before = pair.first.id();
         const u32 first_copy_assign_count_before = pair.first.copy_assign_count();
@@ -312,11 +312,11 @@ GTEST_TEST(pair, move_assign_non_trivially_copy_assignable_same_type)
         const u32 second_copy_assign_count_before = pair.second.copy_assign_count();
         const u32 second_copy_ctor_count_before = pair.second.copy_constructor_count();
 
-        pair_type other{t1, t2};
+        pair_type other {t1, t2};
 
         pair = hud::move(other);
 
-        return std::tuple{
+        return std::tuple {
             first_id_before,
             first_copy_assign_count_before,
             first_copy_ctor_count_before,
@@ -385,11 +385,11 @@ GTEST_TEST(pair, move_assign_trivially_copy_assignable_different_type)
 
         const Type1 first_before = pair.first;
         const Type1 second_before = pair.second;
-        OtherPairType other{t1, t2};
+        OtherPairType other {t1, t2};
 
         pair = hud::move(other);
 
-        return std::tuple{
+        return std::tuple {
             first_before,
             second_before,
             pair.first,
@@ -428,7 +428,7 @@ GTEST_TEST(pair, move_assign_non_trivially_copy_assignable_different_type)
 
     const auto test = [](const i32 t1, const i32 t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_id_before = pair.first.id();
         const u32 first_copy_assign_count_before = pair.first.copy_assign_count();
@@ -437,11 +437,11 @@ GTEST_TEST(pair, move_assign_non_trivially_copy_assignable_different_type)
         const u32 second_copy_assign_count_before = pair.second.copy_assign_count();
         const u32 second_copy_ctor_count_before = pair.second.copy_constructor_count();
 
-        OtherPairType other{t1, t2};
+        OtherPairType other {t1, t2};
 
         pair = hud::move(other);
 
-        return std::tuple{
+        return std::tuple {
             first_id_before,
             first_copy_assign_count_before,
             first_copy_ctor_count_before,
@@ -504,15 +504,15 @@ GTEST_TEST(pair, move_assign_trivially_move_assignable_same_type)
 
     const auto test = [](const type t1, const type t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_before = pair.first;
         const i32 second_before = pair.second;
-        pair_type other{t1, t2};
+        pair_type other {t1, t2};
 
         pair = hud::move(other);
 
-        return std::tuple{
+        return std::tuple {
             first_before,
             second_before,
             pair.first,
@@ -549,7 +549,7 @@ GTEST_TEST(pair, move_assign_non_trivially_move_assignable_same_type)
 
     const auto test = [](const i32 t1, const i32 t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_id_before = pair.first.id();
         const u32 first_copy_assign_count_before = pair.first.copy_assign_count();
@@ -562,11 +562,11 @@ GTEST_TEST(pair, move_assign_non_trivially_move_assignable_same_type)
         const u32 second_move_assign_count_before = pair.second.move_assign_count();
         const u32 second_move_ctor_count_before = pair.second.move_constructor_count();
 
-        pair_type other{t1, t2};
+        pair_type other {t1, t2};
 
         pair = hud::move(other);
 
-        return std::tuple{
+        return std::tuple {
             first_id_before,
             first_copy_assign_count_before,
             first_copy_ctor_count_before,
@@ -659,11 +659,11 @@ GTEST_TEST(pair, move_assign_trivially_move_assignable_different_type)
 
         const Type1 first_before = pair.first;
         const Type1 second_before = pair.second;
-        OtherPairType other{t1, t2};
+        OtherPairType other {t1, t2};
 
         pair = hud::move(other);
 
-        return std::tuple{
+        return std::tuple {
             first_before,
             second_before,
             pair.first,
@@ -702,7 +702,7 @@ GTEST_TEST(pair, move_assign_non_trivially_move_assignable_different_type)
 
     const auto test = [](const i32 t1, const i32 t2)
     {
-        pair_type pair{0, 0};
+        pair_type pair {0, 0};
 
         const i32 first_id_before = pair.first.id();
         const u32 first_copy_assign_count_before = pair.first.copy_assign_count();
@@ -715,11 +715,11 @@ GTEST_TEST(pair, move_assign_non_trivially_move_assignable_different_type)
         const u32 second_move_assign_count_before = pair.second.move_assign_count();
         const u32 second_move_ctor_count_before = pair.second.move_constructor_count();
 
-        OtherPairType other{t1, t2};
+        OtherPairType other {t1, t2};
 
         pair = hud::move(other);
 
-        return std::tuple{
+        return std::tuple {
             first_id_before,
             first_copy_assign_count_before,
             first_copy_ctor_count_before,

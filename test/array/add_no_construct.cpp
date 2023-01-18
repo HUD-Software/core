@@ -17,7 +17,7 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 
             // Insert one element without constructing it
             const usize index_0 = array.add_no_construct(2);
-            const auto result_0 = std::tuple{
+            const auto result_0 = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -34,7 +34,7 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 
             // Insert one element without constructing it
             const usize index_1 = array.add_no_construct(3);
-            const auto result_1 = std::tuple{
+            const auto result_1 = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -42,7 +42,7 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.allocator().allocation_count(),
                 array.allocator().free_count()};
 
-            return std::tuple{
+            return std::tuple {
                 result_0,
                 result_1};
         };
@@ -97,7 +97,7 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 
             // Insert one element without constructing it
             const usize index_0 = array.add_no_construct(2);
-            const auto result_0 = std::tuple{
+            const auto result_0 = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -114,7 +114,7 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 
             // Insert one element without constructing it
             const usize index_1 = array.add_no_construct(3);
-            const auto result_1 = std::tuple{
+            const auto result_1 = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -122,7 +122,7 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.allocator().allocation_count(),
                 array.allocator().free_count()};
 
-            return std::tuple{
+            return std::tuple {
                 result_0,
                 result_1};
         };

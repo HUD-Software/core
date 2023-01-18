@@ -5,7 +5,7 @@ namespace hud_test
     struct a
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, apply_cv)
 {

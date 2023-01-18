@@ -5,17 +5,33 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b &operator=(const b &) { return *this; }
+        b &operator=(const b &)
+        {
+            return *this;
+        }
     };
+
     struct c
     {
-        c &operator=(const c &) noexcept { return *this; }
-        c &operator=(const b &) noexcept { return *this; }
-        c &operator=(const a &) { return *this; }
+        c &operator=(const c &) noexcept
+        {
+            return *this;
+        }
+
+        c &operator=(const b &) noexcept
+        {
+            return *this;
+        }
+
+        c &operator=(const a &)
+        {
+            return *this;
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_nothrow_copy_assignable)
 {

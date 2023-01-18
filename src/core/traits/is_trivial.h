@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_IS_TRIVIAL_H
 #define HD_INC_CORE_TRAITS_IS_TRIVIAL_H
 #include "integral_constant.h"
@@ -22,14 +21,14 @@ namespace hud
      *   is_trivial<A>::value -> true
      *   is_trivial<B>::value -> false
      */
-    template <typename type_t>
+    template<typename type_t>
     struct is_trivial
         : hud::bool_constant<__is_trivial(type_t)>
     {
     };
 
     /** Equivalent of is_trivial<type_t>::value */
-    template <typename type_t>
+    template<typename type_t>
     inline constexpr bool is_trivial_v = is_trivial<type_t>::value;
 
 } // namespace hud

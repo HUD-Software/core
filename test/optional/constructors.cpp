@@ -90,7 +90,7 @@ GTEST_TEST(optional, constructor_in_place_of_non_trivially_constructible_type)
     {
         i32 destructor_counter = 0;
         hud::optional<type> option(hud::in_place, 123, &destructor_counter);
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             option.value().id() == 123,
             option.value().destructor_counter() == &destructor_counter,
@@ -127,7 +127,7 @@ GTEST_TEST(optional, constructor_in_place_of_trivially_constructible_type)
     {
         i32 destructor_counter = 42;
         hud::optional<type> option(hud::in_place, destructor_counter);
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             option.value() == 42};
     };
@@ -159,7 +159,7 @@ GTEST_TEST(optional, copy_construct_bitwise_copy_constructible_same_type)
     auto test = [](const hud::optional<type> &copied)
     {
         hud::optional<type> option(copied);
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             copied.has_value(),
             option.value() == copied.value(),
@@ -199,7 +199,7 @@ GTEST_TEST(optional, copy_construct_non_bitwise_copy_constructible_same_type)
     auto test = [](const hud::optional<type> &copied)
     {
         hud::optional<type> option(copied);
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             copied.has_value(),
             option.value() == copied.value(),
@@ -270,7 +270,7 @@ GTEST_TEST(optional, move_construct_bitwise_copy_constructible_same_type)
     auto test = [](hud::optional<type> &&copied)
     {
         hud::optional<type> option(hud::move(copied));
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             copied.has_value(),
             option.value() == copied.value(),
@@ -317,7 +317,7 @@ GTEST_TEST(optional, move_construct_non_bitwise_copy_constructible_same_type)
     auto test = [](hud::optional<type> &&copied)
     {
         hud::optional<type> option(hud::move(copied));
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             copied.has_value(),
             option.value().id() == copied.value().id(),
@@ -360,7 +360,7 @@ GTEST_TEST(optional, move_construct_bitwise_move_constructible_same_type)
     auto test = [](hud::optional<type> &&copied)
     {
         hud::optional<type> option(hud::move(copied));
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             copied.has_value(),
             option.value() == copied.value(),
@@ -400,7 +400,7 @@ GTEST_TEST(optional, move_construct_non_bitwise_move_constructible_same_type)
     auto test = [](hud::optional<type> &&copied)
     {
         hud::optional<type> option(hud::move(copied));
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             copied.has_value(),
             option.value().id() == copied.value().id(),
@@ -449,7 +449,7 @@ GTEST_TEST(optional, param_constructor_bitwise_copy_constructible_same_type_by_c
     auto test = [](i32 value)
     {
         hud::optional<type> option(value);
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             option.value() == value};
     };
@@ -480,7 +480,7 @@ GTEST_TEST(optional, param_constructor_non_bitwise_copy_constructible_same_type_
     auto test = [](const type &value)
     {
         hud::optional<type> option(value);
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             option.value().id() == value.id(),
             option.value().constructor_count(),
@@ -528,7 +528,7 @@ GTEST_TEST(optional, param_constructor_bitwise_move_constructible_same_type_by_m
     auto test = [](i32 value)
     {
         hud::optional<type> option(hud::move(value));
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             option.value() == value};
     };
@@ -559,7 +559,7 @@ GTEST_TEST(optional, param_constructor_non_bitwise_move_constructible_same_type_
     auto test = [](type &&value)
     {
         hud::optional<type> option(hud::move(value));
-        return std::tuple{
+        return std::tuple {
             option.has_value(),
             option.value().id() == value.id(),
             option.value().constructor_count(),

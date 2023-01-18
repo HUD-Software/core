@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TEMPLATES_EQUAL_H
 #define HD_INC_CORE_TEMPLATES_EQUAL_H
 
@@ -6,7 +5,7 @@ namespace hud
 {
 
     /** Checks whether its two arguments of type type_t compare equal (as returned by operator ==). */
-    template <typename type_t>
+    template<typename type_t>
     struct equal
     {
         /** Member function returning whether the arguments compare equal (lhs==rhs). */

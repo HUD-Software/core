@@ -10,26 +10,43 @@ namespace hud_test
     };
 
     state A_state = state::uninit;
+
     struct a
     {
-        a() { A_state = state::construct; }
-        ~a() { A_state = state::destroyed; }
+        a()
+        {
+            A_state = state::construct;
+        }
+
+        ~a()
+        {
+            A_state = state::destroyed;
+        }
     };
 
     constexpr usize array_size = 2;
     state B_state[array_size] = {state::uninit};
+
     struct b
     {
-        b() {}
+        b()
+        {
+        }
+
         void set_index(usize idx)
         {
             mIndex = idx;
             B_state[mIndex] = state::construct;
         }
-        ~b() { B_state[mIndex] = state::destroyed; }
+
+        ~b()
+        {
+            B_state[mIndex] = state::destroyed;
+        }
+
         usize mIndex;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(templates, default_deleter)
 {

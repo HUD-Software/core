@@ -3,11 +3,13 @@
 namespace hud_test
 {
     struct moveable_2;
+
     struct moveable
     {
         moveable(moveable &&);
         moveable(moveable_2 &&);
     };
+
     struct moveable_2
     {
         moveable_2(moveable &&);
@@ -15,12 +17,14 @@ namespace hud_test
     };
 
     struct not_moveable_2;
+
     struct not_moveable
     {
         not_moveable(not_moveable &&) = delete;
         not_moveable(not_moveable_2 &&) = delete;
         not_moveable &operator=(not_moveable &&) = delete;
     };
+
     struct not_moveable_2
     {
         not_moveable_2(not_moveable_2 &&) = delete;
@@ -28,28 +32,32 @@ namespace hud_test
     };
 
     struct nothrow_moveable_2;
+
     struct nothrow_moveable
     {
         nothrow_moveable(nothrow_moveable_2 &&) noexcept;
     };
+
     struct nothrow_moveable_2
     {
         nothrow_moveable_2(nothrow_moveable &&) noexcept;
     };
 
     struct nothrow_not_moveable_2;
+
     struct nothrow_not_moveable
     {
         nothrow_not_moveable(nothrow_not_moveable &&) noexcept = delete;
         nothrow_not_moveable(nothrow_not_moveable_2 &&) noexcept = delete;
         nothrow_not_moveable &operator=(nothrow_not_moveable &&) noexcept = delete;
     };
+
     struct nothrow_not_moveable_2
     {
         nothrow_not_moveable_2(nothrow_not_moveable_2 &&) noexcept = delete;
         nothrow_not_moveable_2 &operator=(nothrow_not_moveable_2 &&) noexcept = delete;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_nothrow_swappable)
 {

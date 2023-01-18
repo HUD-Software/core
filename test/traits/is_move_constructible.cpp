@@ -5,15 +5,19 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
         b(b &&) = delete;
     };
+
     struct c
     {
-        c(b &&) noexcept {}
+        c(b &&) noexcept
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_move_constructible)
 {

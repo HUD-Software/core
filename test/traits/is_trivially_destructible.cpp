@@ -5,11 +5,14 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        ~b() {}
+        ~b()
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_trivially_destructible)
 {

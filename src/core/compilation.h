@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_COMPILATION_H
 #define HD_INC_CORE_COMPILATION_H
 #include "defines.h"

@@ -17,10 +17,12 @@ namespace hud_test
     {
         return left.value == right.value;
     }
+
     [[nodiscard]] constexpr bool operator==(const d &left, const hud::i32 &right) noexcept
     {
         return left.value == right;
     }
+
     [[nodiscard]] constexpr bool operator==(const hud::i32 &left, const d &right) noexcept
     {
         return left == right.value;
@@ -31,10 +33,12 @@ namespace hud_test
     {
         return left.value != right.value;
     }
+
     [[nodiscard]] constexpr bool operator!=(const d &left, const hud::i32 &right) noexcept
     {
         return left.value != right;
     }
+
     [[nodiscard]] constexpr bool operator!=(const hud::i32 &left, const d &right) noexcept
     {
         return left != right.value;
@@ -45,10 +49,12 @@ namespace hud_test
     {
         return left.value < right.value;
     }
+
     [[nodiscard]] constexpr bool operator<(const c &left, const hud::i32 &right) noexcept
     {
         return left.value < right;
     }
+
     [[nodiscard]] constexpr bool operator<(const hud::i32 &left, const c &right) noexcept
     {
         return left < right.value;
@@ -58,31 +64,35 @@ namespace hud_test
     {
         return left.value < right.value;
     }
+
     [[nodiscard]] constexpr bool operator<(const d &left, const hud::i32 &right) noexcept
     {
         return left.value < right;
     }
+
     [[nodiscard]] constexpr bool operator<(const hud::i32 &left, const d &right) noexcept
     {
         return left < right.value;
     }
-}
+} // namespace hud_test
 
 namespace hud
 {
-    template <>
+    template<>
     struct is_bitwise_comparable<hud_test::c, hud_test::c> : hud::true_type
     {
     };
-    template <>
+
+    template<>
     struct is_bitwise_comparable<hud_test::c, i32> : hud::true_type
     {
     };
-    template <>
+
+    template<>
     struct is_bitwise_comparable<i32, hud_test::c> : hud::true_type
     {
     };
-}
+} // namespace hud
 
 GTEST_TEST(array, equal_operator)
 {
@@ -124,14 +134,14 @@ GTEST_TEST(array, equal_operator)
     hud::array<i32> row_2({1, 2});
     hud::array<i32> col_3({1, 3});
     hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c{1}, c{2}});
-    hud::array<c> row_4({c{1}, c{2}});
-    hud::array<c> col_5({c{1}, c{3}});
-    hud::array<c> row_5({c{1}, c{3}});
-    hud::array<d> col_6({d{1}, d{2}});
-    hud::array<d> row_6({d{1}, d{2}});
-    hud::array<d> col_7({d{1}, d{3}});
-    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<c> col_4({c {1}, c {2}});
+    hud::array<c> row_4({c {1}, c {2}});
+    hud::array<c> col_5({c {1}, c {3}});
+    hud::array<c> row_5({c {1}, c {3}});
+    hud::array<d> col_6({d {1}, d {2}});
+    hud::array<d> row_6({d {1}, d {2}});
+    hud::array<d> col_7({d {1}, d {3}});
+    hud::array<d> row_7({d {1}, d {3}});
 
     // Verify the truth table
     GTEST_ASSERT_TRUE(col_0 == row_0);
@@ -247,14 +257,14 @@ GTEST_TEST(array, not_equal_operator)
     hud::array<i32> row_2({1, 2});
     hud::array<i32> col_3({1, 3});
     hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c{1}, c{2}});
-    hud::array<c> row_4({c{1}, c{2}});
-    hud::array<c> col_5({c{1}, c{3}});
-    hud::array<c> row_5({c{1}, c{3}});
-    hud::array<d> col_6({d{1}, d{2}});
-    hud::array<d> row_6({d{1}, d{2}});
-    hud::array<d> col_7({d{1}, d{3}});
-    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<c> col_4({c {1}, c {2}});
+    hud::array<c> row_4({c {1}, c {2}});
+    hud::array<c> col_5({c {1}, c {3}});
+    hud::array<c> row_5({c {1}, c {3}});
+    hud::array<d> col_6({d {1}, d {2}});
+    hud::array<d> row_6({d {1}, d {2}});
+    hud::array<d> col_7({d {1}, d {3}});
+    hud::array<d> row_7({d {1}, d {3}});
 
     // Verify the truth table
     GTEST_ASSERT_FALSE(col_0 != row_0);
@@ -373,14 +383,14 @@ GTEST_TEST(array, less_operator)
     hud::array<i32> row_2({1, 2});
     hud::array<i32> col_3({1, 3});
     hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c{1}, c{2}});
-    hud::array<c> row_4({c{1}, c{2}});
-    hud::array<c> col_5({c{1}, c{3}});
-    hud::array<c> row_5({c{1}, c{3}});
-    hud::array<d> col_6({d{1}, d{2}});
-    hud::array<d> row_6({d{1}, d{2}});
-    hud::array<d> col_7({d{1}, d{3}});
-    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<c> col_4({c {1}, c {2}});
+    hud::array<c> row_4({c {1}, c {2}});
+    hud::array<c> col_5({c {1}, c {3}});
+    hud::array<c> row_5({c {1}, c {3}});
+    hud::array<d> col_6({d {1}, d {2}});
+    hud::array<d> row_6({d {1}, d {2}});
+    hud::array<d> col_7({d {1}, d {3}});
+    hud::array<d> row_7({d {1}, d {3}});
     hud::array<u8> col_8({u8(1)});
     hud::array<u8> row_8({u8(1)});
     hud::array<u8> col_9({u8(1), u8(2)});
@@ -541,14 +551,14 @@ GTEST_TEST(array, greater_operator)
     hud::array<i32> row_2({1, 2});
     hud::array<i32> col_3({1, 3});
     hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c{1}, c{2}});
-    hud::array<c> row_4({c{1}, c{2}});
-    hud::array<c> col_5({c{1}, c{3}});
-    hud::array<c> row_5({c{1}, c{3}});
-    hud::array<d> col_6({d{1}, d{2}});
-    hud::array<d> row_6({d{1}, d{2}});
-    hud::array<d> col_7({d{1}, d{3}});
-    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<c> col_4({c {1}, c {2}});
+    hud::array<c> row_4({c {1}, c {2}});
+    hud::array<c> col_5({c {1}, c {3}});
+    hud::array<c> row_5({c {1}, c {3}});
+    hud::array<d> col_6({d {1}, d {2}});
+    hud::array<d> row_6({d {1}, d {2}});
+    hud::array<d> col_7({d {1}, d {3}});
+    hud::array<d> row_7({d {1}, d {3}});
     hud::array<u8> col_8({u8(1)});
     hud::array<u8> row_8({u8(1)});
     hud::array<u8> col_9({u8(1), u8(2)});
@@ -709,14 +719,14 @@ GTEST_TEST(array, less_equal_operator)
     hud::array<i32> row_2({1, 2});
     hud::array<i32> col_3({1, 3});
     hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c{1}, c{2}});
-    hud::array<c> row_4({c{1}, c{2}});
-    hud::array<c> col_5({c{1}, c{3}});
-    hud::array<c> row_5({c{1}, c{3}});
-    hud::array<d> col_6({d{1}, d{2}});
-    hud::array<d> row_6({d{1}, d{2}});
-    hud::array<d> col_7({d{1}, d{3}});
-    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<c> col_4({c {1}, c {2}});
+    hud::array<c> row_4({c {1}, c {2}});
+    hud::array<c> col_5({c {1}, c {3}});
+    hud::array<c> row_5({c {1}, c {3}});
+    hud::array<d> col_6({d {1}, d {2}});
+    hud::array<d> row_6({d {1}, d {2}});
+    hud::array<d> col_7({d {1}, d {3}});
+    hud::array<d> row_7({d {1}, d {3}});
     hud::array<u8> col_8({u8(1)});
     hud::array<u8> row_8({u8(1)});
     hud::array<u8> col_9({u8(1), u8(2)});
@@ -877,14 +887,14 @@ GTEST_TEST(array, greater_equal_operator)
     hud::array<i32> row_2({1, 2});
     hud::array<i32> col_3({1, 3});
     hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c{1}, c{2}});
-    hud::array<c> row_4({c{1}, c{2}});
-    hud::array<c> col_5({c{1}, c{3}});
-    hud::array<c> row_5({c{1}, c{3}});
-    hud::array<d> col_6({d{1}, d{2}});
-    hud::array<d> row_6({d{1}, d{2}});
-    hud::array<d> col_7({d{1}, d{3}});
-    hud::array<d> row_7({d{1}, d{3}});
+    hud::array<c> col_4({c {1}, c {2}});
+    hud::array<c> row_4({c {1}, c {2}});
+    hud::array<c> col_5({c {1}, c {3}});
+    hud::array<c> row_5({c {1}, c {3}});
+    hud::array<d> col_6({d {1}, d {2}});
+    hud::array<d> row_6({d {1}, d {2}});
+    hud::array<d> col_7({d {1}, d {3}});
+    hud::array<d> row_7({d {1}, d {3}});
     hud::array<u8> col_8({u8(1)});
     hud::array<u8> row_8({u8(1)});
     hud::array<u8> col_9({u8(1), u8(2)});

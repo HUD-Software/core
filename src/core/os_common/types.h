@@ -1,7 +1,7 @@
-#pragma once
 #ifndef HD_INC_OSABSTRACTIONLAYER_OS_COMMON_TYPES_H
 #define HD_INC_OSABSTRACTIONLAYER_OS_COMMON_TYPES_H
 #include <stdint.h> // uint8_t, uint16_t, ....
+
 namespace hud::os::common
 {
 
@@ -65,13 +65,13 @@ namespace hud::os::common
         static inline constexpr u64 u64_min = 0x0000000000000000;
 
         static inline constexpr i8 i8_max = 127;
-        static inline constexpr i8 i8_min = (i8{-127} - 1);
+        static inline constexpr i8 i8_min = (i8 {-127} - 1);
         static inline constexpr i16 i16_max = 32767;
-        static inline constexpr i16 i16_min = (i16{-32767} - 1);
+        static inline constexpr i16 i16_min = (i16 {-32767} - 1);
         static inline constexpr i32 i32_max = 2147483647;
-        static inline constexpr i32 i32_min = (i32{-2147483647} - 1);
+        static inline constexpr i32 i32_min = (i32 {-2147483647} - 1);
         static inline constexpr i64 i64_max = 9223372036854775807;
-        static inline constexpr i64 i64_min = (i64{-9223372036854775807} - 1);
+        static inline constexpr i64 i64_min = (i64 {-9223372036854775807} - 1);
 
         static inline constexpr ansichar ansichar_max = i8_max;
         static inline constexpr ansichar ansichar_min = i8_min;

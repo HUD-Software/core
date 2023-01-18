@@ -5,19 +5,22 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
         i32 a;
     };
+
     struct c
     {
         i64 a;
     };
+
     struct d
     {
         f32 a;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_same_size)
 {

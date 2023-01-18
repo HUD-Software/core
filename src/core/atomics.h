@@ -1,13 +1,12 @@
-#pragma once
 #ifndef HD_INC_CORE_ATOMICS_H
 #define HD_INC_CORE_ATOMICS_H
 
 #if defined(HD_OS_WINDOWS)
-#include "os_windows/atomics.h"
+    #include "os_windows/atomics.h"
 #elif defined(HD_OS_LINUX)
-#include "os_linux/atomics.h"
+    #include "os_linux/atomics.h"
 #else
-#error Targeted OS not supported
+    #error Targeted OS not supported
 #endif
 
 namespace hud
@@ -20,26 +19,28 @@ namespace hud
 #elif defined(HD_OS_LINUX)
         os::linux::atomics;
 #else
-#error atomics not implemented for the platform
+    #error atomics not implemented for the platform
 #endif
 
     namespace details
     {
-        template <typename type_t>
+        template<typename type_t>
         class atomic_impl;
 
         /**
          * atomic implementation when type_t is Integral.
          * @tparam type_t The Integral type
          */
-        template <typename type_t>
-            requires(is_integral_v<type_t>)
+        template<typename type_t>
+        requires(is_integral_v<type_t>)
         class atomic_impl<type_t>
         {
 
         protected:
             /** Default constructor. Do not value construct the atomic value. */
-            constexpr atomic_impl() noexcept {}
+            constexpr atomic_impl() noexcept
+            {
+            }
 
             /**
              * Initialization copy constructor.
@@ -208,7 +209,7 @@ namespace hud
             /** Atomically increment the atomic value with a seq_cst memory order and return the value of the atomic before the incrementation. */
             HD_FORCEINLINE type_t operator++(i32) volatile noexcept
             {
-                return const_cast<atomic_impl *>(this)->operator++(i32{});
+                return const_cast<atomic_impl *>(this)->operator++(i32 {});
             }
 
             /** Atomically decrement the atomic value with a seq_cst memory order and return the decremented value of the atomic. */
@@ -232,7 +233,7 @@ namespace hud
             /** Atomically decrement the atomic value with a seq_cst memory order and return the value of the atomic before the decrementation. */
             HD_FORCEINLINE type_t operator--(i32) volatile noexcept
             {
-                return const_cast<atomic_impl *>(this)->operator--(i32{});
+                return const_cast<atomic_impl *>(this)->operator--(i32 {});
             }
 
             /** Atomically add a value to the atomic value with a seq_cst memory order and return the result of the addition. */
@@ -263,14 +264,16 @@ namespace hud
             alignas(sizeof(type_t)) type_t storage;
         };
 
-        template <typename type_t>
-            requires(hud::is_pointer_v<type_t>)
+        template<typename type_t>
+        requires(hud::is_pointer_v<type_t>)
         class atomic_impl<type_t>
         {
 
         protected:
             /** Default constructor. Do not value construct the atomic value. */
-            constexpr atomic_impl() noexcept {}
+            constexpr atomic_impl() noexcept
+            {
+            }
 
             /**
              * Initialization copy constructor.
@@ -439,7 +442,7 @@ namespace hud
             /** Atomically increment the atomic value with a seq_cst memory order and return the value of the atomic before the incrementation. */
             HD_FORCEINLINE type_t operator++(i32) volatile noexcept
             {
-                return const_cast<atomic_impl *>(this)->operator++(i32{});
+                return const_cast<atomic_impl *>(this)->operator++(i32 {});
             }
 
             /** Atomically decrement the atomic value with a seq_cst memory order and return the decremented value of the atomic. */
@@ -463,7 +466,7 @@ namespace hud
             /** Atomically decrement the atomic value with a seq_cst memory order and return the value of the atomic before the decrementation. */
             HD_FORCEINLINE type_t operator--(i32) volatile noexcept
             {
-                return const_cast<atomic_impl *>(this)->operator--(i32{});
+                return const_cast<atomic_impl *>(this)->operator--(i32 {});
             }
 
             /** Atomically add a value to the atomic value with a seq_cst memory order and return the result of the addition. */
@@ -493,9 +496,9 @@ namespace hud
         protected:
             alignas(type_t) type_t storage;
         };
-    }
+    } // namespace details
 
-    template <typename type_t>
+    template<typename type_t>
     class atomic : public details::atomic_impl<type_t>
     {
 
@@ -504,7 +507,10 @@ namespace hud
 
     public:
         /** Default constructor. Do not value construct the atomic value. */
-        constexpr atomic() noexcept : base_type() {}
+        constexpr atomic() noexcept
+            : base_type()
+        {
+        }
 
         /**
          * Constructor that initialize the atomic with a given value.

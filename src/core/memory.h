@@ -1,63 +1,62 @@
-#pragma once
 #ifndef HD_INC_OSABSTRACTIONLAYER_MEMORY_H
-    #define HD_INC_OSABSTRACTIONLAYER_MEMORY_H
-    #include "traits/is_bitwise_comparable.h"
-    #include "traits/is_bitwise_copy_assignable.h"
-    #include "traits/is_bitwise_copy_constructible.h"
-    #include "traits/is_bitwise_move_assignable.h"
-    #include "traits/is_bitwise_move_constructible.h"
-    #include "traits/is_comparable_with_equal.h"
-    #include "traits/is_comparable_with_not_equal.h"
-    #include "traits/is_constructible.h"
-    #include "traits/is_copy_assignable.h"
-    #include "traits/is_copy_constructible.h"
-    #include "traits/is_default_constructible.h"
-    #include "traits/is_destructible.h"
-    #include "traits/is_move_assignable.h"
-    #include "traits/is_move_constructible.h"
-    #include "traits/is_nothrow_constructible.h"
-    #include "traits/is_nothrow_copy_assignable.h"
-    #include "traits/is_nothrow_copy_constructible.h"
-    #include "traits/is_nothrow_default_constructible.h"
-    #include "traits/is_nothrow_destructible.h"
-    #include "traits/is_nothrow_move_assignable.h"
-    #include "traits/is_nothrow_move_constructible.h"
-    #include "traits/is_pointer.h"
-    #include "traits/is_trivially_default_constructible.h"
-    #include "traits/is_trivially_destructible.h"
+#define HD_INC_OSABSTRACTIONLAYER_MEMORY_H
+#include "traits/is_bitwise_comparable.h"
+#include "traits/is_bitwise_copy_assignable.h"
+#include "traits/is_bitwise_copy_constructible.h"
+#include "traits/is_bitwise_move_assignable.h"
+#include "traits/is_bitwise_move_constructible.h"
+#include "traits/is_comparable_with_equal.h"
+#include "traits/is_comparable_with_not_equal.h"
+#include "traits/is_constructible.h"
+#include "traits/is_copy_assignable.h"
+#include "traits/is_copy_constructible.h"
+#include "traits/is_default_constructible.h"
+#include "traits/is_destructible.h"
+#include "traits/is_move_assignable.h"
+#include "traits/is_move_constructible.h"
+#include "traits/is_nothrow_constructible.h"
+#include "traits/is_nothrow_copy_assignable.h"
+#include "traits/is_nothrow_copy_constructible.h"
+#include "traits/is_nothrow_default_constructible.h"
+#include "traits/is_nothrow_destructible.h"
+#include "traits/is_nothrow_move_assignable.h"
+#include "traits/is_nothrow_move_constructible.h"
+#include "traits/is_pointer.h"
+#include "traits/is_trivially_default_constructible.h"
+#include "traits/is_trivially_destructible.h"
 
-    #include "templates/forward.h"
-    #include "templates/move.h"
+#include "templates/forward.h"
+#include "templates/move.h"
 
-    #include <memory> // std::construct_at
+#include <memory> // std::construct_at
 
-    #if defined(HD_OS_WINDOWS)
-        #include "os_windows/memory.h"
-    #elif defined(HD_OS_LINUX)
-        #include "os_linux/memory.h"
-    #else
-        #error Targeted OS not supported
-    #endif
+#if defined(HD_OS_WINDOWS)
+    #include "os_windows/memory.h"
+#elif defined(HD_OS_LINUX)
+    #include "os_linux/memory.h"
+#else
+    #error Targeted OS not supported
+#endif
 
 namespace hud
 {
 
     /** Provides memory operations. */
     struct memory :
-    #if defined(HD_OS_WINDOWS)
+#if defined(HD_OS_WINDOWS)
         os::windows::memory
-    #elif defined(HD_OS_LINUX)
+#elif defined(HD_OS_LINUX)
         os::linux::memory
-    #endif
+#endif
     {
         /**
          * Call constructor of type.
          * @tparam type_t Type to default construct
          * @param address The address of the type type_t to default construct
          */
-        template <typename type_t, typename... args_t>
+        template<typename type_t, typename... args_t>
+        requires(hud::is_constructible_v<type_t, args_t...>)
         static constexpr type_t *construct_at(type_t *const address, args_t &&...args) noexcept
-            requires(hud::is_constructible_v<type_t, args_t...>)
         {
             static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
             return std::construct_at(address, hud::forward<args_t>(args)...);
@@ -70,9 +69,9 @@ namespace hud
          * @param address The address of the type type_t to copy construct
          * @param other The objet to copy to address
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         static constexpr type_t *construct_at(type_t *const address, const u_type_t &other) noexcept
-            requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         {
             static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
             return std::construct_at(address, other);
@@ -85,9 +84,9 @@ namespace hud
          * @param address The address of the type type_t to move construct
          * @param other The objet to move to address
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_move_constructible_v<type_t, u_type_t>)
         static constexpr type_t *construct_at(type_t *const address, u_type_t &&other) noexcept
-            requires(hud::is_move_constructible_v<type_t, u_type_t>)
         {
             static_assert(hud::is_nothrow_move_constructible_v<type_t, u_type_t>, "type_t(u_type_t&&) constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
             return std::construct_at(address, hud::forward<u_type_t>(other));
@@ -100,9 +99,9 @@ namespace hud
          * @param count Number of element to construct
          * @param args Arguments forward to the type_t constructor
          */
-        template <typename type_t, typename... args_t>
+        template<typename type_t, typename... args_t>
+        requires(hud::is_constructible_v<type_t, args_t...>)
         static constexpr void construct_array_at(type_t *HD_RESTRICT begin, const type_t *HD_RESTRICT const end, args_t &&...args) noexcept
-            requires(hud::is_constructible_v<type_t, args_t...>)
         {
             static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct is not designed to allow throwable constructible type");
             while (begin < end)
@@ -116,9 +115,9 @@ namespace hud
          * @tparam type_t Type to default construct
          * @param address The address of the type type_t to default construct
          */
-        template <typename type_t>
+        template<typename type_t>
+        requires(hud::is_default_constructible_v<type_t>)
         static constexpr void default_construct(type_t *address) noexcept
-            requires(hud::is_default_constructible_v<type_t>)
         {
             static_assert(hud::is_nothrow_default_constructible_v<type_t>, "type_t default constructor is throwable.hud::memory::default_construct is not designed to allow throwable default constructible type");
             hud::memory::template construct_at(address);
@@ -130,9 +129,9 @@ namespace hud
         @param address Address of the first element to default construct
         @param count Number of element to construct
         */
-        template <typename type_t>
+        template<typename type_t>
+        requires(hud::is_default_constructible_v<type_t>)
         static constexpr void default_construct_array(type_t *HD_RESTRICT begin, type_t *HD_RESTRICT end) noexcept
-            requires(hud::is_default_constructible_v<type_t>)
         {
             static_assert(hud::is_nothrow_default_constructible_v<type_t>, "type_t default constructor is throwable.hud::memory::default_construct is not designed to allow throwable default constructible type");
             if (!hud::is_constant_evaluated() && hud::is_trivially_default_constructible_v<type_t>)
@@ -150,9 +149,9 @@ namespace hud
         @tparam type_t Type to default destroy
         @param address The address of the type type_t to destroy
         */
-        template <typename type_t>
+        template<typename type_t>
+        requires(is_destructible_v<type_t> && !hud::is_pointer_v<type_t>)
         static constexpr void destroy(type_t &obj) noexcept
-            requires(is_destructible_v<type_t> && !hud::is_pointer_v<type_t>)
         {
             if constexpr (!hud::is_trivially_destructible_v<type_t>)
             {
@@ -167,9 +166,9 @@ namespace hud
         @param address Address of the first element to destroy
         @param count Number of element to destroy
         */
-        template <typename type_t>
+        template<typename type_t>
+        requires(is_destructible_v<type_t>)
         static constexpr void destroy_array([[maybe_unused]] type_t *address, [[maybe_unused]] usize count) noexcept
-            requires(is_destructible_v<type_t>)
         {
             if constexpr (!hud::is_trivially_destructible_v<type_t>)
             {
@@ -191,9 +190,9 @@ namespace hud
          * @param source Address of fisrt the element to pass to destination
          * @param count Number of element to copy construct
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         static constexpr void copy_construct_array(type_t *destination, const u_type_t *source, usize count) noexcept
-            requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         {
             static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) copy constructor is throwable.hud::memory::copy_construct_array is not designed to allow throwable copy constructible type");
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t>)
@@ -222,9 +221,9 @@ namespace hud
          * @param source Address of the first element to pass to destination
          * @param count Number of element to copy construct
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>)
         static constexpr void move_or_copy_construct_array(type_t *destination, u_type_t *source, usize count) noexcept
-            requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>)
         {
             if constexpr (hud::is_move_constructible_v<type_t, u_type_t>)
             {
@@ -259,9 +258,9 @@ namespace hud
          * @param source Address of the first element to copy assign
          * @param count Number of elements to copy assign
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         static constexpr void copy_assign_array(type_t *destination, const u_type_t *source, usize count) noexcept
-            requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         {
             if constexpr (hud::is_bitwise_copy_assignable_v<type_t, u_type_t> && !hud::is_constant_evaluated())
             {
@@ -288,9 +287,9 @@ namespace hud
          * @param destination Address of the element that receive the move or copy assign
          * @param source Address of the element that is moved or copied
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
         static constexpr void move_or_copy_assign(type_t *destination, u_type_t &&source) noexcept
-            requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
         {
             if constexpr (hud::is_move_assignable_v<type_t, u_type_t>)
             {
@@ -312,9 +311,9 @@ namespace hud
          * @param source Address of the first element to move assign
          * @param count Number of elements to move assign
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
         static constexpr void move_or_copy_assign_array(type_t *destination, u_type_t *HD_RESTRICT source, u_type_t const *const HD_RESTRICT end_source) noexcept
-            requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
         {
             if constexpr (hud::is_move_assignable_v<type_t, u_type_t>)
             {
@@ -349,9 +348,9 @@ namespace hud
          * @param destination Address of the element type_t
          * @param source Address of the element u_type_t to relocate to destination
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>)
         static constexpr void move_or_copy_construct_then_destroy(type_t *destination, u_type_t &&source) noexcept
-            requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>)
         {
             hud::memory::template construct_at(destination, hud::forward<u_type_t>(source));
             hud::memory::template destroy(source);
@@ -369,9 +368,9 @@ namespace hud
          * @param source Address of the first element u_type_t to relocate to destination
          * @param count Number of element to relocate
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>)
         static constexpr void fast_move_or_copy_construct_array_then_destroy(type_t *destination, u_type_t *source, usize count) noexcept
-            requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>)
         {
             // If the source is bitwise copyable and bitwise moveable to destination then we make a copy instead of a move semantic
             // This performs better that using move semantic that we do a memory move instead
@@ -398,9 +397,9 @@ namespace hud
          * @param source Address of the first element u_type_t to relocate to destination
          * @param count Number of element to relocate
          */
-        template <typename type_t, typename u_type_t>
+        template<typename type_t, typename u_type_t>
+        requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>)
         static constexpr void move_or_copy_construct_array_then_destroy_backward(type_t *destination, u_type_t *source, const usize count) noexcept
-            requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>)
         {
             if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             {
@@ -428,7 +427,7 @@ namespace hud
          * @param right Address of the right element to compare
          * @return true if both elements are the equal, false otherwise
          */
-        template <typename lhs_t, typename rhs_t>
+        template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool equal(const lhs_t *left, const rhs_t *right) noexcept
         {
             static_assert(hud::is_comparable_with_equal_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
@@ -444,7 +443,7 @@ namespace hud
          * @param count Number of element to compare
          * @return true if all elements are the equal, false otherwise
          */
-        template <typename lhs_t, typename rhs_t>
+        template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool equal_array(const lhs_t *left, const rhs_t *right, usize count) noexcept
         {
             if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>)
@@ -477,7 +476,7 @@ namespace hud
          * @param right Address of the right element to compare
          * @return true if elements are not the equal, false otherwise
          */
-        template <typename lhs_t, typename rhs_t>
+        template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool not_equal(const lhs_t *left, const rhs_t *right) noexcept
         {
             static_assert(hud::is_comparable_with_not_equal_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
@@ -493,7 +492,7 @@ namespace hud
          * @param count Number of element to compare
          * @return true if at least one element is not equal, false otherwise
          */
-        template <typename lhs_t, typename rhs_t>
+        template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool not_equal_array(const lhs_t *left, const rhs_t *right, usize count) noexcept
         {
             if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>)

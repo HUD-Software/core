@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_MISC_NON_BITWISE_COPY_ASSIGNABLE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_COPY_ASSIGNABLE_TYPE_H
 #include <core/minimal.h>
@@ -25,7 +24,9 @@ namespace hud_test
          * @param other The non_bitwise_copy_assignable_type to copy
          */
         constexpr non_bitwise_copy_assignable_type(const non_bitwise_copy_assignable_type &other) noexcept
-            : copy_assigned_count(other.copy_assigned_count), copy_construct_count(other.copy_construct_count + 1), unique_id(other.unique_id)
+            : copy_assigned_count(other.copy_assigned_count)
+            , copy_construct_count(other.copy_construct_count + 1)
+            , unique_id(other.unique_id)
         {
         }
 
@@ -34,9 +35,9 @@ namespace hud_test
          * @tparam Integral The integral type to set
          * @param id The id of the non_bitwise_copy_assignable_type
          */
-        template <typename Integral>
+        template<typename Integral>
+        requires(hud::is_integral_v<Integral>)
         constexpr non_bitwise_copy_assignable_type(Integral id) noexcept
-            requires(hud::is_integral_v<Integral>)
             : unique_id(static_cast<i32>(id))
         {
         }
@@ -114,6 +115,7 @@ namespace hud_test
         /** Default construct */
         constexpr non_bitwise_copy_assignable_type_2() noexcept = default;
         constexpr non_bitwise_copy_assignable_type_2(const non_bitwise_copy_assignable_type_2 &) noexcept = default;
+
         /**
          * Construct with a given id
          * @param id The id of the non_bitwise_copy_assignable_type
@@ -167,7 +169,8 @@ namespace hud_test
         constexpr non_bitwise_copy_assignable_type_3() noexcept = default;
 
         constexpr non_bitwise_copy_assignable_type_3(i32 *increment_ptr) noexcept
-            : non_bitwise_copy_assignable_type_2(), increment(increment_ptr)
+            : non_bitwise_copy_assignable_type_2()
+            , increment(increment_ptr)
         {
         }
 
@@ -176,7 +179,8 @@ namespace hud_test
          * @param other The non_bitwise_copy_assignable_type to copy
          */
         constexpr non_bitwise_copy_assignable_type_3(const non_bitwise_copy_assignable_type_3 &other) noexcept
-            : non_bitwise_copy_assignable_type_2(other), increment(other.increment)
+            : non_bitwise_copy_assignable_type_2(other)
+            , increment(other.increment)
         {
         }
 

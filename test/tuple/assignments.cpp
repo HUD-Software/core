@@ -6,10 +6,10 @@ GTEST_TEST(tuple, copy_assign_trivially_copy_assignable_same_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        const tuple_type other_tuple{12.0f, 123, L'h'};
+        tuple_type tuple {hud::taginit};
+        const tuple_type other_tuple {12.0f, 123, L'h'};
         tuple = other_tuple;
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple) == 12.f,
             hud::get<1>(tuple) == 123,
             hud::get<2>(tuple) == L'h',
@@ -40,10 +40,10 @@ GTEST_TEST(tuple, copy_assign_trivially_copy_assignable_different_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        const other_tuple_type other_tuple{(u16)12, (i16)123, u'h'};
+        tuple_type tuple {hud::taginit};
+        const other_tuple_type other_tuple {(u16)12, (i16)123, u'h'};
         tuple = other_tuple;
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple) == 12,
             hud::get<1>(tuple) == 123,
             hud::get<2>(tuple) == L'h',
@@ -73,10 +73,10 @@ GTEST_TEST(tuple, copy_assign_non_trivially_copy_assignable_same_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        const tuple_type other_tuple{1, 12.0f, 123, L'h'};
+        tuple_type tuple {hud::taginit};
+        const tuple_type other_tuple {1, 12.0f, 123, L'h'};
         tuple = other_tuple;
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 0u,
             hud::get<0>(tuple).copy_assign_count() == 1u,
@@ -116,10 +116,10 @@ GTEST_TEST(tuple, copy_assign_non_trivially_copy_assignable_different_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        const other_tuple_type other_tuple{1, (u16)12, (i16)123, u'h'};
+        tuple_type tuple {hud::taginit};
+        const other_tuple_type other_tuple {1, (u16)12, (i16)123, u'h'};
         tuple = other_tuple;
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 0u,
             hud::get<0>(tuple).copy_assign_count() == 1u,
@@ -158,10 +158,10 @@ GTEST_TEST(tuple, move_assign_trivially_copy_assignable_same_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        tuple_type other_tuple{12.0f, 123, L'h'};
+        tuple_type tuple {hud::taginit};
+        tuple_type other_tuple {12.0f, 123, L'h'};
         tuple = hud::move(other_tuple);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple) == 12.f,
             hud::get<1>(tuple) == 123,
             hud::get<2>(tuple) == L'h',
@@ -192,10 +192,10 @@ GTEST_TEST(tuple, move_assign_trivially_copy_assignable_different_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        other_tuple_type other_tuple{(u16)12, (i16)123, u'h'};
+        tuple_type tuple {hud::taginit};
+        other_tuple_type other_tuple {(u16)12, (i16)123, u'h'};
         tuple = hud::move(other_tuple);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple) == 12,
             hud::get<1>(tuple) == 123,
             hud::get<2>(tuple) == L'h',
@@ -225,10 +225,10 @@ GTEST_TEST(tuple, move_assign_non_trivially_copy_assignable_same_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        tuple_type other_tuple{1, 12.0f, 123, L'h'};
+        tuple_type tuple {hud::taginit};
+        tuple_type other_tuple {1, 12.0f, 123, L'h'};
         tuple = hud::move(other_tuple);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 0u,
             hud::get<0>(tuple).copy_assign_count() == 1u,
@@ -268,10 +268,10 @@ GTEST_TEST(tuple, move_assign_non_trivially_copy_assignable_different_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        other_tuple_type other_tuple{1, (u16)12, (i16)123, u'h'};
+        tuple_type tuple {hud::taginit};
+        other_tuple_type other_tuple {1, (u16)12, (i16)123, u'h'};
         tuple = hud::move(other_tuple);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 0u,
             hud::get<0>(tuple).copy_assign_count() == 1u,
@@ -310,10 +310,10 @@ GTEST_TEST(tuple, move_assign_trivially_move_assignable_same_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        tuple_type other_tuple{12.0f, 123, L'h'};
+        tuple_type tuple {hud::taginit};
+        tuple_type other_tuple {12.0f, 123, L'h'};
         tuple = hud::move(other_tuple);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple) == 12.f,
             hud::get<1>(tuple) == 123,
             hud::get<2>(tuple) == L'h',
@@ -344,10 +344,10 @@ GTEST_TEST(tuple, move_assign_trivially_move_assignable_different_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        other_tuple_type other_tuple{(u16)12, (i16)123, u'h'};
+        tuple_type tuple {hud::taginit};
+        other_tuple_type other_tuple {(u16)12, (i16)123, u'h'};
         tuple = hud::move(other_tuple);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple) == 12,
             hud::get<1>(tuple) == 123,
             hud::get<2>(tuple) == L'h',
@@ -377,10 +377,10 @@ GTEST_TEST(tuple, move_assign_non_trivially_move_assignable_same_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        tuple_type other_tuple{1, 12.0f, 123, L'h'};
+        tuple_type tuple {hud::taginit};
+        tuple_type other_tuple {1, 12.0f, 123, L'h'};
         tuple = hud::move(other_tuple);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 0u,
             hud::get<0>(tuple).move_constructor_count() == 0u,
@@ -426,10 +426,10 @@ GTEST_TEST(tuple, move_assign_non_trivially_move_assignable_different_types)
 
     const auto test = []()
     {
-        tuple_type tuple{hud::taginit};
-        other_tuple_type other_tuple{1, (u16)12, (i16)123, u'h'};
+        tuple_type tuple {hud::taginit};
+        other_tuple_type other_tuple {1, (u16)12, (i16)123, u'h'};
         tuple = hud::move(other_tuple);
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 0u,
             hud::get<0>(tuple).move_constructor_count() == 0u,

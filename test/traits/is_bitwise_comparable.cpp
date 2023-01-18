@@ -5,56 +5,77 @@ namespace hud_test
     struct empty
     {
     };
+
     struct a
     {
         i32 a;
     };
+
     struct b
     {
         i32 a;
         f32 f;
     };
+
     struct c
     {
         i32 a;
         i16 f;
         i16 g;
     };
+
     struct padded
     {
         u8 p;
         // Padding of 3 bytes
         u32 a;
     };
+
     struct padded_2
     {
         u32 p;
         u16 a;
         // Padding of 2 bytes
     };
+
     struct derived : a
     {
     };
+
     struct derived_2 : a
     {
-        virtual void fn() {}
+        virtual void fn()
+        {
+        }
     };
+
     struct d
     {
-        bool operator==(const d &) { return true; }
+        bool operator==(const d &)
+        {
+            return true;
+        }
     };
 
     struct f
     {
         i32 a;
         short b;
-        bool operator==(const f &) { return true; }
+
+        bool operator==(const f &)
+        {
+            return true;
+        }
     };
 
     struct comp_e
     {
         i32 a;
-        bool operator==(const comp_e &) { return true; }
+
+        bool operator==(const comp_e &)
+        {
+            return true;
+        }
     };
 
     enum comp_enum
@@ -69,7 +90,7 @@ namespace hud_test
     enum class comp_enum_4 : u64
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_bitwise_comparable)
 {

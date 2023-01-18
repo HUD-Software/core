@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_ALLOCATOR_ALIGNED_HEAP_H
 #define HD_INC_CORE_ALLOCATOR_ALIGNED_HEAP_H
 #include "../memory.h"
@@ -11,8 +10,9 @@ namespace hud
      * Allocator that use the system heap allocation and align all allocation with the given alignment.
      * The given alignment must be a power of two.
      */
-    template <u32 alignment>
-    requires(is_power_of_two_v<alignment>) struct aligned_heap_allocator
+    template<u32 alignment>
+    requires(is_power_of_two_v<alignment>)
+    struct aligned_heap_allocator
         : hud::allocator
     {
         /**
@@ -21,22 +21,22 @@ namespace hud
          * @param count Number of element type_t to allocate
          * @return allocation of the allocated aligned memory block, empty allocation if failed
          */
-        template <typename type_t = u8>
+        template<typename type_t = u8>
         [[nodiscard]] constexpr allocation_type<type_t> allocate(const usize count) noexcept
         {
-            return count > 0 ? allocation_type<type_t>(static_cast<type_t *>(memory::allocate_align<type_t>(count, alignment)), count) : allocation_type<type_t>{};
+            return count > 0 ? allocation_type<type_t>(static_cast<type_t *>(memory::allocate_align<type_t>(count, alignment)), count) : allocation_type<type_t> {};
         }
 
         /**
          * Free memory block
          * @param buffer The buffer to free
          */
-        template <typename type_t = u8>
+        template<typename type_t = u8>
         constexpr void free(const allocation_type<type_t> &buffer) noexcept
         {
             hud::memory::free_align(buffer.data(), buffer.count());
         }
     };
-}
+} // namespace hud
 
 #endif // HD_INC_CORE_ALLOCATOR_ALIGNED_HEAP_H

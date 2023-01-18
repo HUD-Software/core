@@ -18,7 +18,7 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
 
             // Add one element
             const usize index_0 = array.add(element_to_copy);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -29,7 +29,7 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array.allocator().free_count()};
             // Add another element
             const usize index_1 = array.add(element_to_copy);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -40,7 +40,7 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array[1].copy_constructor_count(),
                 array.allocator().allocation_count(),
                 array.allocator().free_count()};
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -114,7 +114,7 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
 
             // Add one element
             const usize index_0 = array.add(element_to_copy);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -126,7 +126,7 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             };
             // Add another element
             const usize index_1 = array.add(element_to_copy);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -138,7 +138,7 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -219,7 +219,7 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
             // Add one element
             const type element_to_copy_0(1u);
             const usize index_0 = array.add(element_to_copy_0);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -232,7 +232,7 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
             // Add another element
             const type element_to_copy_1(2u);
             const usize index_1 = array.add(element_to_copy_1);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -242,7 +242,7 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -310,7 +310,7 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
             // Add one element
             const type element_to_copy_0(1u);
             const usize index_0 = array.add(element_to_copy_0);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -322,7 +322,7 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
             // Add another element
             const type element_to_copy_1(2u);
             const usize index_1 = array.add(element_to_copy_1);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -331,7 +331,7 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
                 array[1],
                 array.allocator().allocation_count(),
                 array.allocator().free_count()};
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -406,7 +406,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
 
             // Add one element
             const usize index_0 = array.add(type());
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -418,7 +418,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
             };
             // Add another element
             const usize index_1 = array.add(type());
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -430,7 +430,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -503,7 +503,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
 
             // Add one element
             const usize index_0 = array.add(type());
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -515,7 +515,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
             };
             // Add another element
             const usize index_1 = array.add(type());
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -527,7 +527,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -607,7 +607,7 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
 
             // Add one element
             const usize index_0 = array.add(1u);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -619,7 +619,7 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
 
             // Add another element
             const usize index_1 = array.add(2u);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -629,7 +629,7 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -696,7 +696,7 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
 
             // Add one element
             const usize index_0 = array.add(1u);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -707,7 +707,7 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
 
             // Add another element
             const usize index_1 = array.add(2u);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -716,7 +716,7 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
                 array[1],
                 array.allocator().allocation_count(),
                 array.allocator().free_count()};
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -792,7 +792,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
 
             // Add one element
             const usize index_0 = array.add(element);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -803,7 +803,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
             };
             // Add another element
             const usize index_1 = array.add(element);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -813,7 +813,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };
@@ -882,7 +882,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
 
             // Add one element
             const usize index_0 = array.add(element);
-            const auto first_element_result = std::tuple{
+            const auto first_element_result = std::tuple {
                 index_0,
                 array.data() != nullptr,
                 array.count(),
@@ -893,7 +893,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
             };
             // Add another element
             const usize index_1 = array.add(element);
-            const auto second_element_result = std::tuple{
+            const auto second_element_result = std::tuple {
                 index_1,
                 array.data() != nullptr,
                 array.count(),
@@ -903,7 +903,7 @@ GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
             };
-            return std::tuple{
+            return std::tuple {
                 first_element_result,
                 second_element_result};
         };

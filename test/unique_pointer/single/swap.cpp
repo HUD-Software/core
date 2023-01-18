@@ -10,7 +10,7 @@ GTEST_TEST(unique_pointer, swap)
             hud::unique_pointer<i32> p(new i32(1));
             hud::unique_pointer<i32> p2(new i32(2));
             p.swap(p2);
-            return std::tuple{
+            return std::tuple {
                 *p == 2,
                 *p2 == 1};
         };
@@ -37,7 +37,7 @@ GTEST_TEST(unique_pointer, swap)
             hud::unique_pointer<i32> p(new i32(1));
             hud::unique_pointer<i32> p2(new i32(2));
             hud::swap(p, p2);
-            return std::tuple{
+            return std::tuple {
                 *p == 2,
                 *p2 == 1};
         };

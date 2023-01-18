@@ -3,40 +3,41 @@
 
 namespace hud_test
 {
-    template <const usize at, typename type0_t, typename type1_t>
+    template<const usize at, typename type0_t, typename type1_t>
     struct tuple_like_class;
 
-    template <typename type0_t, typename type1_t>
+    template<typename type0_t, typename type1_t>
     struct tuple_like_class<0, type0_t, type1_t>
     {
         using type = type0_t;
         type element;
     };
 
-    template <typename type0_t, typename type1_t>
+    template<typename type0_t, typename type1_t>
     struct tuple_like_class<1, type0_t, type1_t>
     {
         using type = type1_t;
         type element;
     };
-}
+} // namespace hud_test
 
 namespace hud
 {
     /**
     Specialization to retrieve the type of the hud_test::tuple_like_class that correspond to the given template argument
     */
-    template <typename type0_t, typename type1_t>
+    template<typename type0_t, typename type1_t>
     struct tuple_element<0, hud_test::tuple_like_class<0, type0_t, type1_t>>
     {
         using type = typename hud_test::tuple_like_class<0, type0_t, type1_t>::type;
     };
-    template <typename type0_t, typename type1_t>
+
+    template<typename type0_t, typename type1_t>
     struct tuple_element<1, hud_test::tuple_like_class<1, type0_t, type1_t>>
     {
         using type = typename hud_test::tuple_like_class<1, type0_t, type1_t>::type;
     };
-}
+} // namespace hud
 
 GTEST_TEST(tuple, tuple_element)
 {

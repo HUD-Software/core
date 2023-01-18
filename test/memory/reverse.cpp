@@ -22,8 +22,8 @@ GTEST_TEST(memory, reverse)
     auto test = []() -> std::tuple<u32, u64>
     {
         return {
-            hud::memory::reverse(u32{0xAB00FF00}),
-            hud::memory::reverse(u64{0x123456789ABCDEF})};
+            hud::memory::reverse(u32 {0xAB00FF00}),
+            hud::memory::reverse(u64 {0x123456789ABCDEF})};
     };
 
     // Non constant

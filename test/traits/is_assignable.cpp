@@ -5,17 +5,23 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
     };
+
     struct c : public a
     {
     };
+
     struct d
     {
-        d &operator=(const b &) { return *this; }
+        d &operator=(const b &)
+        {
+            return *this;
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_assignable)
 {

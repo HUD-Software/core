@@ -6,7 +6,8 @@ namespace hud_test
     struct empty
     {
     };
-}
+} // namespace hud_test
+
 GTEST_TEST(tuple, sizeof_is_correct)
 {
     GTEST_ASSERT_EQ(sizeof(hud::tuple<>), 1u);
@@ -42,7 +43,7 @@ GTEST_TEST(tuple, get)
     const auto test = []()
     {
         auto tuple = hud::make_tuple(12, 15.0f, L'w');
-        return std::tuple{
+        return std::tuple {
             hud::get<0>(tuple) == 12,
             hud::get<1>(tuple) == 15.0f,
             hud::get<2>(tuple) == L'w',
@@ -80,9 +81,19 @@ GTEST_TEST(tuple, tuple_cat)
     using tuple_type2 = hud::tuple<ansichar, wchar, char16, hud_test::non_bitwise_type>;
     using tuple_type3 = hud::tuple<u64, f64, hud_test::non_bitwise_type>;
 
-    using CatType = decltype(hud::tuple_cat(tuple_type1{}, tuple_type2{}, tuple_type3{}));
+    using CatType = decltype(hud::tuple_cat(tuple_type1 {}, tuple_type2 {}, tuple_type3 {}));
 
-    CatType tuple = CatType{123, 12.0f, 'h', L'u', u'd', hud_test::non_bitwise_type{456, nullptr}, 789u, 159., hud_test::non_bitwise_type{753, nullptr}};
+    CatType tuple = CatType {
+        123,
+        12.0f,
+        'h',
+        L'u',
+        u'd',
+        hud_test::non_bitwise_type {456, nullptr},
+        789u,
+        159.,
+        hud_test::non_bitwise_type {753, nullptr}
+    };
 
     GTEST_ASSERT_EQ(hud::tuple_size_v<CatType>, hud::tuple_size_v<tuple_type1> + hud::tuple_size_v<tuple_type2> + hud::tuple_size_v<tuple_type3>);
     GTEST_ASSERT_TRUE((hud::is_same_v<decltype(hud::get<0>(tuple)), i32 &>));

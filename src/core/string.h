@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HUD_INC_OSLAYER_STRING_H
 #define HUD_INC_OSLAYER_STRING_H
 #include "array.h"

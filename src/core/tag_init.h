@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_INITTAG_H
 #define HD_INC_CORE_INITTAG_H
 
@@ -11,12 +10,15 @@ namespace hud
         struct tag
         {
         };
-        explicit constexpr tag_init(tag) {}
+
+        explicit constexpr tag_init(tag)
+        {
+        }
     };
 
     /** Constant used to indicate to initialize an object. */
-    inline constexpr tag_init taginit{tag_init::tag{}};
+    inline constexpr tag_init taginit {tag_init::tag {}};
 
-}
+} // namespace hud
 
 #endif // HD_INC_CORE_INITTAG_H

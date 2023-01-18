@@ -6,11 +6,11 @@ GTEST_TEST(shared_pointer_array_not_safe, equal_operator)
     const auto test = []()
     {
         hud::shared_pointer<i32[2]> empty;
-        hud::shared_pointer<i32[2]> p(new i32[2]{1, 2});
+        hud::shared_pointer<i32[2]> p(new i32[2] {1, 2});
         hud::shared_pointer<i32[2]> p2(p);
-        hud::shared_pointer<i32[2]> p3(new i32[2]{3, 4});
+        hud::shared_pointer<i32[2]> p3(new i32[2] {3, 4});
 
-        return std::tuple{
+        return std::tuple {
             empty == empty,
             empty == p,
             p == p2,
@@ -65,11 +65,11 @@ GTEST_TEST(shared_pointer_array_not_safe, not_equal_operator)
     const auto test = []()
     {
         hud::shared_pointer<i32[2]> empty;
-        hud::shared_pointer<i32[2]> p(new i32[2]{1, 2});
+        hud::shared_pointer<i32[2]> p(new i32[2] {1, 2});
         hud::shared_pointer<i32[2]> p2(p);
-        hud::shared_pointer<i32[2]> p3(new i32[2]{3, 4});
+        hud::shared_pointer<i32[2]> p3(new i32[2] {3, 4});
 
-        return std::tuple{
+        return std::tuple {
             empty != empty,
             empty != p,
             p != p2,
@@ -147,7 +147,7 @@ GTEST_TEST(shared_pointer_array_not_safe, less_operator)
         hud::shared_pointer<i32[2]> p1(ptr1);
         hud::shared_pointer<i32[2]> p2(ptr2);
 
-        return std::tuple{
+        return std::tuple {
             empty < empty,
             empty < p1,
             empty < p2,
@@ -241,7 +241,7 @@ GTEST_TEST(shared_pointer_array_not_safe, less_equal_operator)
         hud::shared_pointer<i32[2]> p1(ptr1);
         hud::shared_pointer<i32[2]> p2(ptr2);
 
-        return std::tuple{
+        return std::tuple {
             empty <= empty,
             empty <= p1,
             empty <= p2,
@@ -335,7 +335,7 @@ GTEST_TEST(shared_pointer_array_not_safe, greater_operator)
         hud::shared_pointer<i32[2]> p1(ptr1);
         hud::shared_pointer<i32[2]> p2(ptr2);
 
-        return std::tuple{
+        return std::tuple {
             empty > empty,
             empty > p1,
             empty > p2,
@@ -429,7 +429,7 @@ GTEST_TEST(shared_pointer_array_not_safe, greater_equal_operator)
         hud::shared_pointer<i32[2]> p1(ptr1);
         hud::shared_pointer<i32[2]> p2(ptr2);
 
-        return std::tuple{
+        return std::tuple {
             empty >= empty,
             empty >= p1,
             empty >= p2,

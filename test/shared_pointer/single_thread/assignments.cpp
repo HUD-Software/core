@@ -10,7 +10,7 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_type)
         const hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr_to_copy(type);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         shared_ptr = shared_ptr_to_copy;
-        return std::tuple{
+        return std::tuple {
             shared_ptr_to_copy.pointer() == type,
             shared_ptr_to_copy.shared_count(),
             shared_ptr_to_copy.pointer()->id(),
@@ -89,7 +89,7 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_different_type)
         const hud::shared_pointer<hud_test::non_bitwise_type2> shared_ptr_to_copy(type);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         shared_ptr = shared_ptr_to_copy;
-        return std::tuple{
+        return std::tuple {
             shared_ptr_to_copy.pointer() == type,
             shared_ptr_to_copy.shared_count(),
             shared_ptr_to_copy.pointer()->id(),
@@ -168,7 +168,7 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_an_empty_same_type)
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
         const hud::shared_pointer<hud_test::non_bitwise_type> empty;
         shared_ptr = empty;
-        return std::tuple{
+        return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
             dtor_count};
@@ -204,7 +204,7 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_nullptr)
         hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type(id, &dtor_count);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
         shared_ptr = nullptr;
-        return std::tuple{
+        return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
             dtor_count};
@@ -241,7 +241,7 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_same_type)
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr_to_copy(type);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         shared_ptr = hud::move(shared_ptr_to_copy);
-        return std::tuple{
+        return std::tuple {
             shared_ptr_to_copy.pointer() == nullptr,
             shared_ptr_to_copy.shared_count(),
             shared_ptr.pointer() == type,
@@ -302,7 +302,7 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_different_type)
         hud::shared_pointer<hud_test::non_bitwise_type2> shared_ptr_to_copy(type);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         shared_ptr = hud::move(shared_ptr_to_copy);
-        return std::tuple{
+        return std::tuple {
             shared_ptr_to_copy.pointer() == nullptr,
             shared_ptr_to_copy.shared_count(),
             shared_ptr.pointer() == type,
@@ -363,7 +363,7 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_an_empty_same_type)
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
         hud::shared_pointer<hud_test::non_bitwise_type> empty;
         shared_ptr = hud::move(empty);
-        return std::tuple{
+        return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
             dtor_count};
@@ -399,7 +399,7 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_nullptr)
         hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type(id, &dtor_count);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
         shared_ptr = hud::move(nullptr);
-        return std::tuple{
+        return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
             dtor_count};
@@ -434,7 +434,7 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_shared_pointer)
         hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type(id, &dtor_count);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
         shared_ptr = shared_ptr;
-        return std::tuple{
+        return std::tuple {
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
             dtor_count};
@@ -469,7 +469,7 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_same_shared_pointer)
         hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type(id, &dtor_count);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(type);
         shared_ptr = hud::move(shared_ptr);
-        return std::tuple{
+        return std::tuple {
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
             dtor_count};

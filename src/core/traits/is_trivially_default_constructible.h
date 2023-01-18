@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_IS_TRIVIALLY_DEFAULT_CONSTRUCTIBLE_H
 #define HD_INC_CORE_TRAITS_IS_TRIVIALLY_DEFAULT_CONSTRUCTIBLE_H
 #include "is_trivially_constructible.h"
@@ -16,14 +15,14 @@ namespace hud
      * - has no non-static data members with brace- or equal- initializers.
      * - its base class and non-static data members (if any) are themselves also trivially default constructible types.
      */
-    template <typename type_t>
+    template<typename type_t>
     struct is_trivially_default_constructible
         : is_trivially_constructible<type_t>
     {
     };
 
     /** Equivalent of is_trivially_default_constructible<type_t>::value. */
-    template <typename type_t>
+    template<typename type_t>
     inline constexpr bool is_trivially_default_constructible_v = is_trivially_default_constructible<type_t>::value;
 
 } // namespace hud

@@ -5,15 +5,20 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
         b &operator=(b &&) = delete;
     };
+
     struct c
     {
-        c &operator=(b &&) noexcept { return *this; }
+        c &operator=(b &&) noexcept
+        {
+            return *this;
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_move_assignable)
 {

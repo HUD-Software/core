@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TUPLE_SIZE_H
 #define HD_INC_CORE_TUPLE_SIZE_H
 #include "../traits/integral_constant.h"
@@ -15,7 +14,7 @@ namespace hud
      * Provides the member constant Value which is equal to the number of elements in the tuple-like type.
      * @tparam tuple_like The tuple-like type
      */
-    template <typename tuple_like>
+    template<typename tuple_like>
     struct tuple_size;
 
     namespace details
@@ -25,7 +24,7 @@ namespace hud
          * Selected when tuple_size<tuple_like>::value is ill-formed
          * @tparam tuple_like The tuple-like type
          */
-        template <typename tuple_like, typename = void>
+        template<typename tuple_like, typename = void>
         struct tuple_size_impl
         {
         };
@@ -34,18 +33,18 @@ namespace hud
          * Selected when tuple_size<tuple_like>::value is well-formed
          * @tparam tuple_like The tuple-like type
          */
-        template <typename tuple_like>
+        template<typename tuple_like>
         struct tuple_size_impl<tuple_like, void_t<decltype(tuple_size<tuple_like>::value)>>
             : hud::integral_constant<usize, tuple_size<tuple_like>::value>
         {
         };
-    }
+    } // namespace details
 
     /**
      * Specialization for const qualified tuple-like objects
      * @tparam tuple_like The tuple-like type
      */
-    template <typename tuple_like>
+    template<typename tuple_like>
     struct tuple_size<const tuple_like>
         : details::tuple_size_impl<tuple_like>
     {
@@ -55,7 +54,7 @@ namespace hud
      * Specialization for volatile-qualified tuple-like objects
      * @tparam tuple_like The tuple-like type
      */
-    template <typename tuple_like>
+    template<typename tuple_like>
     struct tuple_size<volatile tuple_like>
         : details::tuple_size_impl<tuple_like>
     {
@@ -65,14 +64,14 @@ namespace hud
      * Specialization for constvolatile-qualified tuple-like objects
      * @tparam tuple_like The tuple-like type
      */
-    template <typename tuple_like>
+    template<typename tuple_like>
     struct tuple_size<const volatile tuple_like>
         : details::tuple_size_impl<tuple_like>
     {
     };
 
     /** Equalivent of tuple_size<tuple_like>::value. */
-    template <typename tuple_like>
+    template<typename tuple_like>
     inline constexpr usize tuple_size_v = tuple_size<tuple_like>::value;
 
 } // namespace hud

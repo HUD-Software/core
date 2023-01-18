@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TEMPLATES_MOVE_H
 #define HD_INC_CORE_TEMPLATES_MOVE_H
 #include "../traits/remove_reference.h"
@@ -14,7 +13,7 @@ namespace hud
      * @param object The object to move
      * @return An rvalue reference to object.
      */
-    template <typename type_t>
+    template<typename type_t>
     constexpr hud::remove_reference_t<type_t> &&move(type_t &&object) noexcept
     {
         return static_cast<hud::remove_reference_t<type_t> &&>(object);

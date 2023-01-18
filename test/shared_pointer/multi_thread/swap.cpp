@@ -16,7 +16,7 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty)
             hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> empty;
             shared_ptr.swap(empty);
 
-            return std::tuple{
+            return std::tuple {
                 dtor_count == 0,
                 is_pointer_correct,
                 shared_count_before == 1u,
@@ -62,7 +62,7 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty)
             hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> empty;
             swap(shared_ptr, empty);
 
-            return std::tuple{
+            return std::tuple {
                 dtor_count == 0,
                 is_pointer_correct,
                 shared_count_before == 1u,
@@ -113,7 +113,7 @@ GTEST_TEST(shared_pointer_safe, swap_same_type)
             hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr_2(ptr2);
             shared_ptr.swap(shared_ptr_2);
 
-            return std::tuple{
+            return std::tuple {
                 dtor_count == 0,
                 dtor_count_1 == 0,
                 shared_ptr.pointer() == ptr2,
@@ -163,7 +163,7 @@ GTEST_TEST(shared_pointer_safe, swap_same_type)
             hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr_2(ptr2);
             swap(shared_ptr, shared_ptr_2);
 
-            return std::tuple{
+            return std::tuple {
                 dtor_count == 0,
                 dtor_count_1 == 0,
                 shared_ptr.pointer() == ptr2,

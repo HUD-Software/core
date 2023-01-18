@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_MISC_NON_BITWISE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_TYPE_H
 #include <core/minimal.h>
@@ -23,7 +22,13 @@ namespace hud_test
          * @param other The non_bitwise_type to copy
          */
         constexpr non_bitwise_type(const non_bitwise_type &other) noexcept
-            : move_assigned_count(other.move_assigned_count), copy_assigned_count(other.copy_assigned_count), param_construct_count(other.param_construct_count), move_construct_count(other.move_construct_count), copy_construct_count(other.copy_construct_count + 1), unique_id(other.unique_id), is_destructor_counter(other.is_destructor_counter)
+            : move_assigned_count(other.move_assigned_count)
+            , copy_assigned_count(other.copy_assigned_count)
+            , param_construct_count(other.param_construct_count)
+            , move_construct_count(other.move_construct_count)
+            , copy_construct_count(other.copy_construct_count + 1)
+            , unique_id(other.unique_id)
+            , is_destructor_counter(other.is_destructor_counter)
         {
         }
 
@@ -32,7 +37,13 @@ namespace hud_test
          * @param other The non_bitwise_type to move
          */
         constexpr non_bitwise_type(non_bitwise_type &&other) noexcept
-            : move_assigned_count(other.move_assigned_count), copy_assigned_count(other.copy_assigned_count), param_construct_count(other.param_construct_count), move_construct_count(other.move_construct_count + 1), copy_construct_count(other.copy_construct_count), unique_id(other.unique_id), is_destructor_counter(other.is_destructor_counter)
+            : move_assigned_count(other.move_assigned_count)
+            , copy_assigned_count(other.copy_assigned_count)
+            , param_construct_count(other.param_construct_count)
+            , move_construct_count(other.move_construct_count + 1)
+            , copy_construct_count(other.copy_construct_count)
+            , unique_id(other.unique_id)
+            , is_destructor_counter(other.is_destructor_counter)
         {
         }
 
@@ -42,7 +53,8 @@ namespace hud_test
          * @param ptr_to_bool Pointer to the boolean
          */
         constexpr non_bitwise_type(i32 *ptr_to_destructor_counter) noexcept
-            : param_construct_count(1), is_destructor_counter(ptr_to_destructor_counter)
+            : param_construct_count(1)
+            , is_destructor_counter(ptr_to_destructor_counter)
         {
             if (is_destructor_counter != nullptr)
             {
@@ -57,7 +69,9 @@ namespace hud_test
          * @param ptr_to_bool Pointer to the boolean
          */
         constexpr non_bitwise_type(i32 id, i32 *ptr_to_destructor_counter) noexcept
-            : param_construct_count(1), unique_id(id), is_destructor_counter(ptr_to_destructor_counter)
+            : param_construct_count(1)
+            , unique_id(id)
+            , is_destructor_counter(ptr_to_destructor_counter)
         {
             if (is_destructor_counter != nullptr)
             {

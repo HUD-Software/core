@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_ENABLE_IF_H
 #define HD_INC_CORE_TRAITS_ENABLE_IF_H
 
@@ -14,19 +13,19 @@ namespace hud
      * - A return type (not applicable to constructors and destructors),
      * - A class template or function template parameter
      */
-    template <bool enabled, typename type_t = void>
+    template<bool enabled, typename type_t = void>
     struct enable_if
     {
     };
 
-    template <typename type_t>
+    template<typename type_t>
     struct enable_if<true, type_t>
     {
         using type = type_t;
     };
 
     /** Equivalent of typename enable_if<enabled, type_t>::type. */
-    template <bool enabled, typename type_t = void>
+    template<bool enabled, typename type_t = void>
     using enable_if_t = typename enable_if<enabled, type_t>::type;
 
 } // namespace hud

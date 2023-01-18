@@ -5,18 +5,25 @@ namespace hud_test
     class a
     {
     };
+
     class b
     {
-        b() {}
+        b()
+        {
+        }
     };
+
     class c : b
     {
     };
+
     class d
     {
-        virtual void fn() {}
+        virtual void fn()
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_trivial)
 {

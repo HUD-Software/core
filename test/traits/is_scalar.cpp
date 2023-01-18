@@ -4,12 +4,14 @@ namespace hud_test
 {
     struct a
     {
-        void fn() {}
+        void fn()
+        {
+        }
     };
     enum class e
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_scalar)
 {

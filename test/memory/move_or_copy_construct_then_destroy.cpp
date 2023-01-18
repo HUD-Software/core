@@ -74,10 +74,12 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_bitwise_constructible_typ
 GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_constructible_and_destructible_different_type)
 {
 
-    struct source_type : public hud_test::NonBitwiseCopyConstructibleType3, hud_test::SetBoolToTrueWhenDestroyed
+    struct source_type : public hud_test::NonBitwiseCopyConstructibleType3
+        , hud_test::SetBoolToTrueWhenDestroyed
     {
         constexpr source_type(i32 *ctor_order, i32 *dtor_order) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType3(ctor_order), hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
+            : hud_test::NonBitwiseCopyConstructibleType3(ctor_order)
+            , hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
         {
         }
 
@@ -110,8 +112,7 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_construc
         hud_test::LeakArrayGuard guard_dest(dest, 1);
 
         hud::memory::move_or_copy_construct_then_destroy(dest, hud::move(*src));
-        return {dest->copy_constructor_count(),
-                dtor_order};
+        return {dest->copy_constructor_count(), dtor_order};
     };
 
     // Non constant
@@ -132,10 +133,12 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_construc
 GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_different_type)
 {
 
-    struct source_type : public hud_test::NonBitwiseMoveConstructibleType3, hud_test::SetBoolToTrueWhenDestroyed
+    struct source_type : public hud_test::NonBitwiseMoveConstructibleType3
+        , hud_test::SetBoolToTrueWhenDestroyed
     {
         constexpr source_type(i32 *ctor_order, i32 *dtor_order) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType3(ctor_order), hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
+            : hud_test::NonBitwiseMoveConstructibleType3(ctor_order)
+            , hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
         {
         }
 
@@ -176,9 +179,7 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_construc
         hud_test::LeakArrayGuard guard_dest(dest, 1);
 
         hud::memory::move_or_copy_construct_then_destroy(dest, hud::move(*src));
-        return {dest->move_constructor_count(),
-                dest->copy_constructor_count(),
-                dtor_order};
+        return {dest->move_constructor_count(), dest->copy_constructor_count(), dtor_order};
     };
 
     // Non constant
@@ -201,10 +202,12 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_construc
 GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_constructible_and_destructible_same_type)
 {
 
-    struct type : public hud_test::NonBitwiseCopyConstructibleType4, hud_test::SetBoolToTrueWhenDestroyed
+    struct type : public hud_test::NonBitwiseCopyConstructibleType4
+        , hud_test::SetBoolToTrueWhenDestroyed
     {
         constexpr type(i32 *ctor_order, i32 *dtor_order) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType4(ctor_order), hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
+            : hud_test::NonBitwiseCopyConstructibleType4(ctor_order)
+            , hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
         {
         }
 
@@ -230,8 +233,7 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_construc
         hud_test::LeakArrayGuard guard_dest(dest, 1);
 
         hud::memory::move_or_copy_construct_then_destroy(dest, hud::move(*src));
-        return {dest->copy_constructor_count(),
-                dest->ctor_order()};
+        return {dest->copy_constructor_count(), dest->ctor_order()};
     };
 
     // Non constant
@@ -252,22 +254,26 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_copy_construc
 GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_same_type)
 {
 
-    struct type : public hud_test::NonBitwiseMoveConstructibleType4, hud_test::SetBoolToTrueWhenDestroyed
+    struct type : public hud_test::NonBitwiseMoveConstructibleType4
+        , hud_test::SetBoolToTrueWhenDestroyed
     {
         constexpr type(i32 *ctor_order, i32 *dtor_order) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType4(ctor_order), hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
+            : hud_test::NonBitwiseMoveConstructibleType4(ctor_order)
+            , hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
         {
         }
 
         // MSVC call copy constructor instead of move constructor
         // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
         constexpr type(const type &other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType4(other), hud_test::SetBoolToTrueWhenDestroyed(other)
+            : hud_test::NonBitwiseMoveConstructibleType4(other)
+            , hud_test::SetBoolToTrueWhenDestroyed(other)
         {
         }
 
         constexpr type(type &&other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType4(std::forward<hud_test::NonBitwiseMoveConstructibleType4>(other)), hud_test::SetBoolToTrueWhenDestroyed(std::forward<hud_test::SetBoolToTrueWhenDestroyed>(other))
+            : hud_test::NonBitwiseMoveConstructibleType4(std::forward<hud_test::NonBitwiseMoveConstructibleType4>(other))
+            , hud_test::SetBoolToTrueWhenDestroyed(std::forward<hud_test::SetBoolToTrueWhenDestroyed>(other))
         {
         }
 
@@ -293,9 +299,7 @@ GTEST_TEST(memory, move_or_copy_construct_then_destroy_non_bitwise_move_construc
         hud_test::LeakArrayGuard guard_dest(dest, 1);
 
         hud::memory::move_or_copy_construct_then_destroy(dest, hud::move(*src));
-        return {dest->move_constructor_count(),
-                dest->copy_constructor_count(),
-                dest->ctor_order()};
+        return {dest->move_constructor_count(), dest->copy_constructor_count(), dest->ctor_order()};
     };
 
     // Non constant

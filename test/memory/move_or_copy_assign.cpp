@@ -42,6 +42,7 @@ GTEST_TEST(memory, move_or_copy_assign_bitwise_assignable_type)
     {
         i32 i;
     };
+
     using type = c;
     using ResultType = std::tuple<i32, i32>;
 
@@ -93,9 +94,7 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_typ
         hud::memory::construct_at(dest);
 
         hud::memory::move_or_copy_assign(dest, hud::move(*src));
-        return {dest->copy_constructor_count(),
-                dest->copy_assign_count(),
-                dest->copy_order()};
+        return {dest->copy_constructor_count(), dest->copy_assign_count(), dest->copy_order()};
     };
 
     // Non constant
@@ -136,11 +135,7 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_typ
         hud::memory::construct_at(dest);
 
         hud::memory::move_or_copy_assign(dest, hud::move(*src));
-        return {dest->copy_constructor_count(),
-                dest->move_constructor_count(),
-                dest->move_assign_count(),
-                dest->copy_assign_count(),
-                dest->move_order()};
+        return {dest->copy_constructor_count(), dest->move_constructor_count(), dest->move_assign_count(), dest->copy_assign_count(), dest->move_order()};
     };
 
     // Non constant
@@ -184,9 +179,7 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_same_type)
         hud::memory::construct_at(dest);
 
         hud::memory::move_or_copy_assign(dest, hud::move(*src));
-        return {dest->copy_constructor_count(),
-                dest->copy_assign_count(),
-                dest->copy_order()};
+        return {dest->copy_constructor_count(), dest->copy_assign_count(), dest->copy_order()};
     };
 
     // Non constant
@@ -248,6 +241,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_bitwise_assignable_type)
     {
         i32 i;
     };
+
     using type = c;
     using ResultType = std::tuple<i32, i32>;
 
@@ -302,12 +296,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_differe
         hud::memory::construct_array_at(dest, dest + 2);
 
         hud::memory::move_or_copy_assign_array(dest, src, src + 2);
-        return {dest[0].copy_constructor_count(),
-                dest[0].copy_assign_count(),
-                dest[0].copy_order(),
-                dest[1].copy_constructor_count(),
-                dest[1].copy_assign_count(),
-                dest[1].copy_order()};
+        return {dest[0].copy_constructor_count(), dest[0].copy_assign_count(), dest[0].copy_order(), dest[1].copy_constructor_count(), dest[1].copy_assign_count(), dest[1].copy_order()};
     };
 
     // Non constant
@@ -356,16 +345,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_differe
 
         hud::memory::move_or_copy_assign_array(dest, src, src + 2);
 
-        return {dest[0].copy_constructor_count(),
-                dest[0].move_constructor_count(),
-                dest[0].copy_assign_count(),
-                dest[0].move_assign_count(),
-                dest[0].move_order(),
-                dest[1].copy_constructor_count(),
-                dest[1].move_constructor_count(),
-                dest[1].copy_assign_count(),
-                dest[1].move_assign_count(),
-                dest[1].move_order()};
+        return {dest[0].copy_constructor_count(), dest[0].move_constructor_count(), dest[0].copy_assign_count(), dest[0].move_assign_count(), dest[0].move_order(), dest[1].copy_constructor_count(), dest[1].move_constructor_count(), dest[1].copy_assign_count(), dest[1].move_assign_count(), dest[1].move_order()};
     };
 
     // Non constant
@@ -419,12 +399,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_constructible_same
         hud::memory::construct_array_at(dest, dest + 2);
 
         hud::memory::move_or_copy_assign_array(dest, src, src + 2);
-        return {dest[0].copy_constructor_count(),
-                dest[0].copy_assign_count(),
-                dest[0].copy_order(),
-                dest[1].copy_constructor_count(),
-                dest[1].copy_assign_count(),
-                dest[1].copy_order()};
+        return {dest[0].copy_constructor_count(), dest[0].copy_assign_count(), dest[0].copy_order(), dest[1].copy_constructor_count(), dest[1].copy_assign_count(), dest[1].copy_order()};
     };
 
     // Non constant
@@ -471,16 +446,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_constructible_same
 
         hud::memory::move_or_copy_assign_array(dest, src, src + 2);
 
-        return {dest[0].copy_constructor_count(),
-                dest[0].move_constructor_count(),
-                dest[0].copy_assign_count(),
-                dest[0].move_assign_count(),
-                dest[0].move_order(),
-                dest[1].copy_constructor_count(),
-                dest[1].move_constructor_count(),
-                dest[1].copy_assign_count(),
-                dest[1].move_assign_count(),
-                dest[1].move_order()};
+        return {dest[0].copy_constructor_count(), dest[0].move_constructor_count(), dest[0].copy_assign_count(), dest[0].move_assign_count(), dest[0].move_order(), dest[1].copy_constructor_count(), dest[1].move_constructor_count(), dest[1].copy_assign_count(), dest[1].move_assign_count(), dest[1].move_order()};
     };
 
     // Non constant

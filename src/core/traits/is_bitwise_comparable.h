@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_IS_BITWISE_COMPARABLE_H
 #define HD_INC_CORE_TRAITS_IS_BITWISE_COMPARABLE_H
 #include "conjunction.h"
@@ -18,7 +17,7 @@ namespace hud
      * - type_t and u_type_t are bitwise convertible
      * - type_t and u_type_t are the same type and thas_unique_object_representations<type_t> is_standard_layout<type_t> are true
      */
-    template <typename type_t, typename u_type_t = type_t>
+    template<typename type_t, typename u_type_t = type_t>
     struct is_bitwise_comparable
         : hud::disjunction<
               hud::is_bitwise_convertible<type_t, u_type_t>,
@@ -30,7 +29,7 @@ namespace hud
     };
 
     /** Equivalent of is_bitwise_comparable<u_type_t, V=u_type_t>::value. */
-    template <typename u_type_t, typename V = u_type_t>
+    template<typename u_type_t, typename V = u_type_t>
     inline constexpr bool is_bitwise_comparable_v = is_bitwise_comparable<u_type_t, V>::value;
 
 } // namespace hud

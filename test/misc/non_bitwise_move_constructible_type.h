@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_MISC_NON_BITWISE_MOVE_CONSTRUCTIBLE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_MOVE_CONSTRUCTIBLE_TYPE_H
 #include <core/minimal.h>
@@ -22,9 +21,9 @@ namespace hud_test
          * @tparam Integral The integral type to set
          * @param id The id of the NonBitwiseMoveConstructibleType
          */
-        template <typename Integral>
+        template<typename Integral>
+        requires(hud::is_integral_v<Integral>)
         constexpr NonBitwiseMoveConstructibleType(Integral id) noexcept
-            requires(hud::is_integral_v<Integral>)
             : unique_id(static_cast<i32>(id))
         {
         }
@@ -34,7 +33,9 @@ namespace hud_test
          * @param other The NonBitwiseMoveConstructibleType to copy
          */
         constexpr NonBitwiseMoveConstructibleType(const NonBitwiseMoveConstructibleType &other) noexcept
-            : move_construct_count(other.move_construct_count), copy_construct_count(other.copy_construct_count + 1), unique_id(other.unique_id)
+            : move_construct_count(other.move_construct_count)
+            , copy_construct_count(other.copy_construct_count + 1)
+            , unique_id(other.unique_id)
         {
         }
 
@@ -43,7 +44,9 @@ namespace hud_test
          * @param other The NonBitwiseMoveConstructibleType to move
          */
         constexpr NonBitwiseMoveConstructibleType(NonBitwiseMoveConstructibleType &&other) noexcept
-            : move_construct_count(other.move_construct_count + 1), copy_construct_count(other.copy_construct_count), unique_id(other.unique_id)
+            : move_construct_count(other.move_construct_count + 1)
+            , copy_construct_count(other.copy_construct_count)
+            , unique_id(other.unique_id)
         {
         }
 
@@ -132,6 +135,7 @@ namespace hud_test
         {
         }
     };
+
     static_assert(std::is_move_constructible_v<NonBitwiseMoveConstructibleType2>);
     static_assert(!hud::is_bitwise_move_constructible_v<NonBitwiseMoveConstructibleType2>);
     static_assert(std::is_constructible_v<NonBitwiseMoveConstructibleType2, NonBitwiseMoveConstructibleType &&>);
@@ -155,17 +159,20 @@ namespace hud_test
         constexpr NonBitwiseMoveConstructibleType3() noexcept = default;
 
         constexpr NonBitwiseMoveConstructibleType3(i32 *increment_ptr) noexcept
-            : NonBitwiseMoveConstructibleType2(), increment(increment_ptr)
+            : NonBitwiseMoveConstructibleType2()
+            , increment(increment_ptr)
         {
         }
 
         constexpr NonBitwiseMoveConstructibleType3(const NonBitwiseMoveConstructibleType3 &other) noexcept
-            : NonBitwiseMoveConstructibleType2(other), increment(other.increment)
+            : NonBitwiseMoveConstructibleType2(other)
+            , increment(other.increment)
         {
         }
 
         constexpr NonBitwiseMoveConstructibleType3(NonBitwiseMoveConstructibleType3 &&other) noexcept
-            : NonBitwiseMoveConstructibleType2(std::forward<NonBitwiseMoveConstructibleType2>(other)), increment(other.increment)
+            : NonBitwiseMoveConstructibleType2(std::forward<NonBitwiseMoveConstructibleType2>(other))
+            , increment(other.increment)
         {
         }
 
@@ -205,6 +212,7 @@ namespace hud_test
                 increment_value = ++(*incrementation_ptr());
             }
         }
+
         /**
          * Move construct a NonBitwiseMoveConstructibleType4
          * @param other The NonBitwiseMoveConstructibleType3 to move

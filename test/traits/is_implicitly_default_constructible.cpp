@@ -6,11 +6,14 @@ namespace hud_test
     {
         no_explicit_ctor() noexcept {};
     };
+
     struct explicit_ctor
     {
-        explicit explicit_ctor() noexcept {}
+        explicit explicit_ctor() noexcept
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_implicitly_default_constructible)
 {

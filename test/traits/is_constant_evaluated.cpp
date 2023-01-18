@@ -10,7 +10,7 @@ namespace hud_test
         }
         return false;
     }
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_constant_evaluated)
 {

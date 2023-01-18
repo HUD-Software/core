@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_TEST_ARRAY_ALLOCATORS_H
 #define HD_INC_TEST_ARRAY_ALLOCATORS_H
 #include <core/allocators/aligned_heap_allocator.h>
@@ -6,12 +5,12 @@
 
 namespace hud_test
 {
-    template <u32 alignement>
+    template<u32 alignement>
     struct array_allocator
     {
         using allocator_type = hud::aligned_heap_allocator<alignement>;
 
-        template <typename type_t>
+        template<typename type_t>
         using allocation_type = hud::allocation<type_t>;
 
     public:
@@ -53,7 +52,7 @@ namespace hud_test
          * @param count Number of element type_t to allocate
          * @return Allocation of the allocated aligned memory block, empty Allocation if failed
          */
-        template <typename type_t = u8>
+        template<typename type_t = u8>
         [[nodiscard]] constexpr allocation_type<type_t> allocate(const usize count) noexcept
         {
             auto buffer = allocator.template allocate<type_t>(count);
@@ -68,7 +67,7 @@ namespace hud_test
          * Free memory block
          * @param slice The slice to free
          */
-        template <typename type_t = u8>
+        template<typename type_t = u8>
         constexpr void free(allocation_type<type_t> &buffer) noexcept
         {
             if (!buffer.is_empty())
@@ -117,7 +116,7 @@ namespace hud_test
         u32 unique_id = 0;
     };
 
-    template <u32 alignement>
+    template<u32 alignement>
     struct ArrayAllocator2 : public array_allocator<alignement>
     {
     };

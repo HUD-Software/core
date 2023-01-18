@@ -8,7 +8,7 @@ namespace hud_test
     enum class e : i32
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_signed)
 {

@@ -5,14 +5,18 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b() {}
+        b()
+        {
+        }
     }; // non-trivial default ctor.
+
     struct c : a
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_trivially_constructible)
 {

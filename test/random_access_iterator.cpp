@@ -28,7 +28,7 @@ GTEST_TEST(random_access_iterator, constructor)
 
         hud::random_access_iterator<array_type> it(arr);
         hud::random_access_iterator<const_array_type> it_const(arr_const);
-        return std::tuple{
+        return std::tuple {
             it.operator->() == &arr[0],
             it_const.operator->() == &arr_const[0]};
     };
@@ -57,7 +57,7 @@ GTEST_TEST(random_access_iterator, operator_arrow)
         const i32 arr_const[5] = {10, 20, 30, 40, 50};
         using const_array_type = decltype(arr_const);
 
-        return std::tuple{
+        return std::tuple {
             hud::random_access_iterator<array_type>(arr).operator->() == &arr[0],                     // Position is 0 (first)
             hud::random_access_iterator<array_type>(arr, 4).operator->() == &arr[4],                  // Position is 4 (last)
             hud::random_access_iterator<const_array_type>(arr_const).operator->() == &arr_const[0],   // Position is 0 (first)
@@ -93,7 +93,7 @@ GTEST_TEST(random_access_iterator, operator_dereference)
         const i32 arr_const[5] = {10, 20, 30, 40, 50};
         using const_array_type = decltype(arr_const);
 
-        return std::tuple{
+        return std::tuple {
             *hud::random_access_iterator<array_type>(arr) == arr[0],                     // Position is 0 (first)
             *hud::random_access_iterator<array_type>(arr, 4) == arr[4],                  // Position is 4 (last)
             *hud::random_access_iterator<const_array_type>(arr_const) == arr_const[0],   // Position is 0 (first)
@@ -130,7 +130,7 @@ GTEST_TEST(random_access_iterator, operator_pre_increment)
         using const_array_type = decltype(arr_const);
 
         hud::random_access_iterator<array_type> it(arr);
-        const auto mutable_it = std::tuple{
+        const auto mutable_it = std::tuple {
             it.operator->() == &arr[0],
             *it == arr[0],
             (++it).operator->() == &arr[1],
@@ -142,7 +142,7 @@ GTEST_TEST(random_access_iterator, operator_pre_increment)
             (++it).operator->() == &arr[4],
             *it == arr[4]};
         hud::random_access_iterator<const_array_type> it_const(arr_const);
-        const auto const_it = std::tuple{
+        const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[0],
             *it_const == arr_const[0],
             (++it_const).operator->() == &arr_const[1],
@@ -153,7 +153,7 @@ GTEST_TEST(random_access_iterator, operator_pre_increment)
             *it_const == arr_const[3],
             (++it_const).operator->() == &arr_const[4],
             *it_const == arr_const[4]};
-        return std::tuple{
+        return std::tuple {
             mutable_it,
             const_it};
     };
@@ -227,7 +227,7 @@ GTEST_TEST(random_access_iterator, operator_post_increment)
         using const_array_type = decltype(arr_const);
 
         hud::random_access_iterator<array_type> it(arr);
-        const auto mutable_it = std::tuple{
+        const auto mutable_it = std::tuple {
             it.operator->() == &arr[0],
             *it == arr[0],
             (it++).operator->() == &arr[0],
@@ -239,7 +239,7 @@ GTEST_TEST(random_access_iterator, operator_post_increment)
             (it++).operator->() == &arr[3],
             *it == arr[4]};
         hud::random_access_iterator<const_array_type> it_const(arr_const);
-        const auto const_it = std::tuple{
+        const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[0],
             *it_const == arr_const[0],
             (it_const++).operator->() == &arr_const[0],
@@ -250,7 +250,7 @@ GTEST_TEST(random_access_iterator, operator_post_increment)
             *it_const == arr_const[3],
             (it_const++).operator->() == &arr_const[3],
             *it_const == arr_const[4]};
-        return std::tuple{
+        return std::tuple {
             mutable_it,
             const_it};
     };
@@ -324,19 +324,19 @@ GTEST_TEST(random_access_iterator, operator_increment_assign)
         using const_array_type = decltype(arr_const);
 
         hud::random_access_iterator<array_type> it(arr);
-        const auto mutable_it = std::tuple{
+        const auto mutable_it = std::tuple {
             it.operator->() == &arr[0],
             *it == arr[0],
             (it += 1).operator->() == &arr[1],
             *it == arr[1]};
 
         hud::random_access_iterator<const_array_type> it_const(arr_const);
-        const auto const_it = std::tuple{
+        const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[0],
             *it_const == arr_const[0],
             (it_const += 1).operator->() == &arr_const[1],
             *it_const == arr_const[1]};
-        return std::tuple{
+        return std::tuple {
             mutable_it,
             const_it};
     };
@@ -387,7 +387,7 @@ GTEST_TEST(random_access_iterator, operator_increment)
 
         hud::random_access_iterator<array_type> it(arr);
         hud::random_access_iterator<array_type> res_it = it + 1;
-        const auto mutable_it = std::tuple{
+        const auto mutable_it = std::tuple {
             it.operator->() == &arr[0],
             *it == arr[0],
             res_it.operator->() == &arr[1],
@@ -395,12 +395,12 @@ GTEST_TEST(random_access_iterator, operator_increment)
 
         hud::random_access_iterator<const_array_type> it_const(arr_const);
         hud::random_access_iterator<const_array_type> res_it_const = it_const + 1;
-        const auto const_it = std::tuple{
+        const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[0],
             *it_const == arr[0],
             res_it_const.operator->() == &arr_const[1],
             *res_it_const == arr_const[1]};
-        return std::tuple{
+        return std::tuple {
             mutable_it,
             const_it};
     };
@@ -450,7 +450,7 @@ GTEST_TEST(random_access_iterator, operator_pre_decrement)
         using const_array_type = decltype(arr_const);
 
         hud::random_access_iterator<array_type> it(arr, 4);
-        const auto mutable_it = std::tuple{
+        const auto mutable_it = std::tuple {
             it.operator->() == &arr[4],
             *it == arr[4],
             (--it).operator->() == &arr[3],
@@ -462,7 +462,7 @@ GTEST_TEST(random_access_iterator, operator_pre_decrement)
             (--it).operator->() == &arr[0],
             *it == arr[0]};
         hud::random_access_iterator<const_array_type> it_const(arr_const, 4);
-        const auto const_it = std::tuple{
+        const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[4],
             *it_const == arr_const[4],
             (--it_const).operator->() == &arr_const[3],
@@ -473,7 +473,7 @@ GTEST_TEST(random_access_iterator, operator_pre_decrement)
             *it_const == arr_const[1],
             (--it_const).operator->() == &arr_const[0],
             *it_const == arr_const[0]};
-        return std::tuple{
+        return std::tuple {
             mutable_it,
             const_it};
     };
@@ -547,7 +547,7 @@ GTEST_TEST(random_access_iterator, operator_post_decrement)
         using const_array_type = decltype(arr_const);
 
         hud::random_access_iterator<array_type> it(arr, 4);
-        const auto mutable_it = std::tuple{
+        const auto mutable_it = std::tuple {
             it.operator->() == &arr[4],
             *it == arr[4],
             (it--).operator->() == &arr[4],
@@ -559,7 +559,7 @@ GTEST_TEST(random_access_iterator, operator_post_decrement)
             (it--).operator->() == &arr[1],
             *it == arr[0]};
         hud::random_access_iterator<const_array_type> it_const(arr_const, 4);
-        const auto const_it = std::tuple{
+        const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[4],
             *it_const == arr_const[4],
             (it_const--).operator->() == &arr_const[4],
@@ -570,7 +570,7 @@ GTEST_TEST(random_access_iterator, operator_post_decrement)
             *it_const == arr_const[1],
             (it_const--).operator->() == &arr_const[1],
             *it_const == arr_const[0]};
-        return std::tuple{
+        return std::tuple {
             mutable_it,
             const_it};
     };
@@ -644,19 +644,19 @@ GTEST_TEST(random_access_iterator, operator_decrement_assign)
         using const_array_type = decltype(arr_const);
 
         hud::random_access_iterator<array_type> it(arr, 4);
-        const auto mutable_it = std::tuple{
+        const auto mutable_it = std::tuple {
             it.operator->() == &arr[4],
             *it == arr[4],
             (it -= 1).operator->() == &arr[3],
             *it == arr[3]};
 
         hud::random_access_iterator<const_array_type> it_const(arr_const, 4);
-        const auto const_it = std::tuple{
+        const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[4],
             *it_const == arr_const[4],
             (it_const -= 1).operator->() == &arr_const[3],
             *it_const == arr_const[3]};
-        return std::tuple{
+        return std::tuple {
             mutable_it,
             const_it};
     };
@@ -707,7 +707,7 @@ GTEST_TEST(random_access_iterator, operator_decrement)
 
         hud::random_access_iterator<array_type> it(arr, 4);
         hud::random_access_iterator<array_type> res_it = it - 1;
-        const auto mutable_it = std::tuple{
+        const auto mutable_it = std::tuple {
             it.operator->() == &arr[4],
             *it == arr[4],
             res_it.operator->() == &arr[3],
@@ -715,12 +715,12 @@ GTEST_TEST(random_access_iterator, operator_decrement)
 
         hud::random_access_iterator<const_array_type> it_const(arr_const, 4);
         hud::random_access_iterator<const_array_type> res_it_const = it_const - 1;
-        const auto const_it = std::tuple{
+        const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[4],
             *it_const == arr[4],
             res_it_const.operator->() == &arr_const[3],
             *res_it_const == arr_const[3]};
-        return std::tuple{
+        return std::tuple {
             mutable_it,
             const_it};
     };
@@ -770,7 +770,7 @@ GTEST_TEST(random_access_iterator, equal_operator)
         hud::random_access_iterator<array_type> it(arr, 4);
         hud::random_access_iterator<array_type> it_same(arr, 4);
         hud::random_access_iterator<array_type> it_not_same(arr, 2);
-        return std::tuple{
+        return std::tuple {
             it == it_same,
             it == it_not_same,
             it != it_not_same,

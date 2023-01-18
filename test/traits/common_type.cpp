@@ -5,31 +5,32 @@ namespace hud_test
     struct base
     {
     };
+
     struct derived : base
     {
     };
 
-    template <typename = void, typename... type_t>
+    template<typename = void, typename... type_t>
     struct has_common_type_impl
         : hud::false_type
     {
     };
 
-    template <typename... type_t>
+    template<typename... type_t>
     struct has_common_type_impl<hud::void_t<hud::common_type_t<type_t...>>, type_t...>
         : hud::true_type
     {
     };
 
-    template <typename... type_t>
+    template<typename... type_t>
     struct has_common_type
         : has_common_type_impl<void, type_t...>
     {
     };
 
-    template <typename... type_t>
+    template<typename... type_t>
     inline constexpr bool has_common_type_v = has_common_type<type_t...>::value;
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, common_type)
 {

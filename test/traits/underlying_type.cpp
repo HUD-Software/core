@@ -72,7 +72,7 @@ namespace hud_test
     enum class e15cv : const volatile uptr;
     enum class e16cv : const volatile isize;
     enum class e17cv : const volatile usize;
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, underlying_type)
 {

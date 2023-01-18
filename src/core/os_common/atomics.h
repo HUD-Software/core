@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_OS_COMMON_ATOMICS_H
 #define HD_INC_CORE_OS_COMMON_ATOMICS_H
 
@@ -44,6 +43,6 @@ namespace hud::os::common
             seq_cst
         };
     };
-}
+} // namespace hud::os::common
 
 #endif // HD_INC_CORE_OS_COMMON_ATOMICS_H

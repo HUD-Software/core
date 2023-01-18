@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_IS_DEFAULT_CONSTRUCTIBLE_H
 #define HD_INC_CORE_TRAITS_IS_DEFAULT_CONSTRUCTIBLE_H
 #include "is_constructible.h"
@@ -12,14 +11,14 @@ namespace hud
      * This includes scalar types, default constructible classes and arrays of such types.
      * A default constructible class is a class that has a default constructor (either its implicit constructor or a custom defined one).
      */
-    template <typename type_t>
+    template<typename type_t>
     struct is_default_constructible
         : is_constructible<type_t>
     {
     };
 
     /** Equivalent of hud::is_default_constructible<type_t>::value. */
-    template <typename type_t>
+    template<typename type_t>
     inline constexpr bool is_default_constructible_v = hud::is_default_constructible<type_t>::value;
 
 } // namespace hud

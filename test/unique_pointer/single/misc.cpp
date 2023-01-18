@@ -3,28 +3,34 @@
 // LCOV_EXCL_START
 namespace hud_test
 {
-    template <typename type_t>
+    template<typename type_t>
     struct custom_deleter
-        : public hud::default_deleter<type_t>,
-          hud_test::non_bitwise_type
+        : public hud::default_deleter<type_t>
+        , hud_test::non_bitwise_type
     {
 
         constexpr custom_deleter() noexcept = default;
         constexpr custom_deleter(const custom_deleter &other) noexcept = default;
         constexpr custom_deleter(custom_deleter &&other) noexcept = default;
+
         constexpr custom_deleter(hud::default_deleter<type_t> &&other) noexcept
-            : hud::default_deleter<type_t>(hud::move(other)), hud_test::non_bitwise_type(hud::move(other))
+            : hud::default_deleter<type_t>(hud::move(other))
+            , hud_test::non_bitwise_type(hud::move(other))
         {
         }
-        template <typename U>
+
+        template<typename U>
         constexpr custom_deleter(custom_deleter<U> &&other) noexcept
-            : hud::default_deleter<type_t>(hud::move(other)), hud_test::non_bitwise_type(hud::move(other))
+            : hud::default_deleter<type_t>(hud::move(other))
+            , hud_test::non_bitwise_type(hud::move(other))
         {
         }
+
         constexpr custom_deleter &operator=(const custom_deleter &) noexcept
         {
             return *this;
         }
+
         constexpr custom_deleter &operator=(custom_deleter &&) noexcept
         {
             return *this;
@@ -32,7 +38,8 @@ namespace hud_test
     };
 
     using deleter_type = hud_test::custom_deleter<hud_test::non_bitwise_type>;
-}
+} // namespace hud_test
+
 // LCOV_EXCL_STOP
 
 GTEST_TEST(unique_pointer, pointer)
@@ -43,7 +50,7 @@ GTEST_TEST(unique_pointer, pointer)
         i32 *ptr = new i32(35);
         hud::unique_pointer<i32> p(ptr);
         hud::unique_pointer<i32> p2;
-        return std::tuple{
+        return std::tuple {
             p.pointer() == ptr,
             p2.pointer() == nullptr};
     };
@@ -70,7 +77,7 @@ GTEST_TEST(unique_pointer, is_owning)
         i32 *ptr = new i32(35);
         hud::unique_pointer<i32> p(ptr);
         hud::unique_pointer<i32> p2;
-        return std::tuple{
+        return std::tuple {
             p.is_owning(),
             p2.is_owning()};
     };
@@ -97,7 +104,7 @@ GTEST_TEST(unique_pointer, cast_bool)
         i32 *ptr = new i32(35);
         hud::unique_pointer<i32> p(ptr);
         hud::unique_pointer<i32> p2;
-        return std::tuple{
+        return std::tuple {
             static_cast<bool>(p),
             static_cast<bool>(p2)};
     };
@@ -170,7 +177,7 @@ GTEST_TEST(unique_pointer, deleter)
         deleter.set_dtor_counter_ptr(&dtor_counter);
         hud::unique_pointer<hud_test::non_bitwise_type, hud_test::deleter_type> p(new hud_test::non_bitwise_type(1, nullptr), deleter);
         const hud::unique_pointer<hud_test::non_bitwise_type, const hud_test::deleter_type> p_const(new hud_test::non_bitwise_type(2, nullptr), deleter);
-        return std::tuple{
+        return std::tuple {
             !hud::is_const_v<hud::remove_reference_t<decltype(p.deleter())>>,
             hud::is_const_v<hud::remove_reference_t<decltype(p_const.deleter())>>,
             p.deleter().destructor_counter() == &dtor_counter,
@@ -206,7 +213,7 @@ GTEST_TEST(unique_pointer, release)
         hud_test::non_bitwise_type *ptr_const = new hud_test::non_bitwise_type(1, nullptr);
         hud::unique_pointer<const hud_test::non_bitwise_type> p_const(ptr_const);
         auto const_released_ptr = p_const.leak();
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             hud::is_same_v<decltype(released_ptr), hud_test::non_bitwise_type *>,
             hud::is_same_v<decltype(const_released_ptr), const hud_test::non_bitwise_type *>,
             released_ptr == ptr,
@@ -249,7 +256,7 @@ GTEST_TEST(unique_pointer, reset)
         const bool is_not_null_2 = p.pointer() == ptr;
         p.reset();
         const bool is_null_2 = p.pointer() == nullptr;
-        return std::tuple{
+        return std::tuple {
             is_not_null,
             is_null,
             is_not_null_2,

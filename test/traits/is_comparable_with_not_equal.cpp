@@ -14,18 +14,21 @@ namespace hud_test
     enum class comp_enum_4 : u64
     {
     };
+
     struct a
     {
     };
+
     struct b
     {
         bool operator!=(const b &) const noexcept;
     };
+
     struct c
     {
         bool operator!=(const a &) const noexcept;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_comparable_with_not_equal)
 {

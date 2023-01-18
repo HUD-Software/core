@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_OS_COMMON_CHAR_H
 #define HD_INC_CORE_OS_COMMON_CHAR_H
 #include <ctype.h>  // isalum, isalpha, etc...

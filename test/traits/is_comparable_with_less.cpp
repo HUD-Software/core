@@ -19,16 +19,18 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
         bool operator<(const b &) const noexcept;
     };
+
     struct c
     {
         bool operator<(const a &) const noexcept;
     };
 
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_comparable_with_less)
 {

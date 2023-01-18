@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H
 #include <core/minimal.h>
@@ -27,9 +26,9 @@ namespace hud_test
          * @tparam Integral The integral type to set
          * @param id The id of the NonBitwiseCopyConstructibleType
          */
-        template <typename Integral>
+        template<typename Integral>
+        requires(hud::is_integral_v<Integral>)
         constexpr NonBitwiseCopyConstructibleType(Integral id) noexcept
-            requires(hud::is_integral_v<Integral>)
             : unique_id(static_cast<i32>(id))
         {
         }
@@ -39,7 +38,8 @@ namespace hud_test
          * @param other The NonBitwiseCopyConstructibleType to copy
          */
         constexpr NonBitwiseCopyConstructibleType(const NonBitwiseCopyConstructibleType &other) noexcept
-            : copy_construct_count(other.copy_construct_count + 1), unique_id(other.unique_id)
+            : copy_construct_count(other.copy_construct_count + 1)
+            , unique_id(other.unique_id)
         {
         }
 
@@ -126,12 +126,14 @@ namespace hud_test
         }
 
         constexpr NonBitwiseCopyConstructibleType3(i32 *increment_ptr) noexcept
-            : NonBitwiseCopyConstructibleType2(), increment(increment_ptr)
+            : NonBitwiseCopyConstructibleType2()
+            , increment(increment_ptr)
         {
         }
 
         constexpr NonBitwiseCopyConstructibleType3(const NonBitwiseCopyConstructibleType3 &other) noexcept
-            : NonBitwiseCopyConstructibleType2(other), increment(other.increment)
+            : NonBitwiseCopyConstructibleType2(other)
+            , increment(other.increment)
         {
             if (increment)
             {

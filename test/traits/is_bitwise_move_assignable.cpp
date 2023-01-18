@@ -19,16 +19,24 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b &operator=(a &&) noexcept { return *this; }
-    };
-    struct c
-    {
-        c &operator=(c &&) noexcept { return *this; }
+        b &operator=(a &&) noexcept
+        {
+            return *this;
+        }
     };
 
-}
+    struct c
+    {
+        c &operator=(c &&) noexcept
+        {
+            return *this;
+        }
+    };
+
+} // namespace hud_test
 
 GTEST_TEST(traits, is_bitwise_move_assignable)
 {

@@ -35,6 +35,7 @@ GTEST_TEST(memory, default_construct_trivial_constructible_type)
     {
         i32 value;
     };
+
     using type = c;
     using ResultType = i32;
 
@@ -68,6 +69,7 @@ GTEST_TEST(memory, default_construct_non_trivial_constructible_type)
     {
         i32 value = 15;
     };
+
     using type = c;
     using ResultType = i32;
 
@@ -131,6 +133,7 @@ GTEST_TEST(memory, default_construct_array_trivial_constructible_type)
     {
         i32 value;
     };
+
     using type = c;
     using ResultType = std::tuple<i32, i32>;
 
@@ -166,6 +169,7 @@ GTEST_TEST(memory, default_construct_array_non_trivial_constructible_type)
     {
         i32 value = 15;
     };
+
     using type = c;
     using ResultType = std::tuple<i32, i32>;
 

@@ -4,28 +4,46 @@ namespace hud_test
 {
     struct a
     {
-        a() noexcept {}
+        a() noexcept
+        {
+        }
     };
+
     struct b
     {
-        b() noexcept(false) {}
+        b() noexcept(false)
+        {
+        }
     };
 
     struct c
     {
-        c() { throw 20; }
+        c()
+        {
+            throw 20;
+        }
     };
+
     struct d
     {
-        d() noexcept : c() {}
+        d() noexcept
+            : c()
+        {
+        }
+
         c c;
     };
+
     struct e
     {
-        e() : c() {}
+        e()
+            : c()
+        {
+        }
+
         c c;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_nothrow_default_constructible)
 {

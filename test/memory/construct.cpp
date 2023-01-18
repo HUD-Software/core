@@ -41,11 +41,13 @@ GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
     {
         i32 value = 0;
         c() = default;
+
         constexpr c(i32 val) noexcept
             : value(val)
         {
         }
     };
+
     using type = c;
     using ResultType = i32;
     static_assert(!hud::is_trivially_constructible_v<type>);
@@ -132,11 +134,13 @@ GTEST_TEST(memory, construct_array_at_non_trival_type)
     {
         i32 value = 0;
         c() = default;
+
         constexpr c(i32 val) noexcept
             : value(val)
         {
         }
     };
+
     using type = c;
     using ResultType = std::tuple<i32, i32>;
     static_assert(!hud::is_trivially_constructible_v<type>);

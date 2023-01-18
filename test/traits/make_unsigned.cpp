@@ -37,7 +37,7 @@ namespace hud_test
     enum class c_1 : iptr;
     enum class d_1 : uptr;
     enum class e_1 : usize;
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, make_unsigned)
 {

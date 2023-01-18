@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_OS_COMMON_MEMORY_H
 #define HD_INC_CORE_OS_COMMON_MEMORY_H
 #include "../assert.h"
@@ -68,7 +67,7 @@ namespace hud::os::common
          * @param alignment Alignment in bytes
          * @return true if the pointer is aligned, false otherwise
          */
-        template <typename type_t>
+        template<typename type_t>
         [[nodiscard]] static constexpr bool is_pointer_aligned(const type_t *const pointer, const u32 alignment) noexcept
         {
             return is_address_aligned(reinterpret_cast<const uptr>(pointer), alignment);
@@ -106,9 +105,9 @@ namespace hud::os::common
          * @param count Number of type_t to allocate
          * @return Pointer to the allocated memory block, nullptr if failed
          */
-        template <typename type_t>
+        template<typename type_t>
+        requires(is_not_same_v<type_t, void>)
         [[nodiscard]] static constexpr type_t *allocate_array(const usize count) noexcept
-            requires(is_not_same_v<type_t, void>)
         {
             const usize allocation_size = count * sizeof(type_t);
             if (std::is_constant_evaluated())
@@ -167,7 +166,7 @@ namespace hud::os::common
          * @param alignment Required alignment in bytes. Used only in non constant evaluated expression
          * @return Pointer to the aligned allocated memory block, nullptr if failed
          */
-        template <typename type_t>
+        template<typename type_t>
         static constexpr type_t *allocate_align(const usize count, const u32 alignment) noexcept
         {
             if (hud::is_constant_evaluated())
@@ -211,7 +210,7 @@ namespace hud::os::common
          * @param alloc The allocation to free. Must be allocated with the constexpr allocate function in a constexpr expression.
          * @param count Number of type_t to deallocate
          */
-        template <typename type_t>
+        template<typename type_t>
         static constexpr void free_array(type_t *alloc, const usize count) noexcept
         {
             if (hud::is_constant_evaluated())
@@ -241,7 +240,7 @@ namespace hud::os::common
          * @param alloc The allocation to free. Must be allocated with the constexpr allocate function in a constexpr expression
          * @param count Number of type_t to allocate
          */
-        template <typename type_t>
+        template<typename type_t>
         static constexpr void free_align(type_t *pointer, const usize count) noexcept
         {
             if (hud::is_constant_evaluated())
@@ -332,9 +331,10 @@ namespace hud::os::common
 
             return memcpy(destination, source, size);
         }
-        template <typename type_t>
+
+        template<typename type_t>
+        requires(sizeof(type_t) == 1)
         static constexpr type_t *copy(type_t *destination, const type_t *source, const usize size) noexcept
-            requires(sizeof(type_t) == 1)
         {
             if (hud::is_constant_evaluated())
             {
@@ -352,6 +352,7 @@ namespace hud::os::common
                 return static_cast<type_t *>(copy(static_cast<void *>(destination), static_cast<const void *>(source), size));
             }
         }
+
         /**
          * Copy block of memory. Do not support overlapped buffer. Use move to support overlapped buffer.
          * @param destination Pointer to the destination array where the content is to be copied
@@ -359,7 +360,7 @@ namespace hud::os::common
          * @param size Number of bytes to copy
          * @return destination pointer
          */
-        template <typename type_t, usize buffer_size>
+        template<typename type_t, usize buffer_size>
         static constexpr type_t *copy(type_t (&destination)[buffer_size], const type_t (&source)[buffer_size]) noexcept
         {
             return copy(destination, source, buffer_size * sizeof(type_t));
@@ -375,6 +376,7 @@ namespace hud::os::common
         {
             memset(destination, value, size);
         }
+
         static constexpr void set(u8 *destination, const usize size, const u8 value) noexcept
         {
             if (hud::is_constant_evaluated())
@@ -389,9 +391,10 @@ namespace hud::os::common
                 set(static_cast<void *>(destination), size, value);
             }
         }
-        template <typename type_t>
+
+        template<typename type_t>
         static constexpr void set(type_t *destination, const usize size, const u8 value) noexcept
-            requires(is_integral_v<type_t>)
+        requires(is_integral_v<type_t>)
         {
             if (hud::is_constant_evaluated())
             {
@@ -411,7 +414,7 @@ namespace hud::os::common
          * @param buffer The buffer memory to set to value
          * @param value The value to be set
          */
-        template <typename type_t, usize buffer_size>
+        template<typename type_t, usize buffer_size>
         static constexpr void set(type_t (&buffer)[buffer_size], const u8 value) noexcept
         {
             set(buffer, buffer_size * sizeof(type_t), value);
@@ -426,19 +429,22 @@ namespace hud::os::common
         {
             set(destination, size, 0);
         }
+
         static constexpr void set_zero(u8 *destination, const usize size) noexcept
         {
             set(destination, size, 0);
         }
-        template <typename type_t>
+
+        template<typename type_t>
+        requires(is_integral_v<type_t>)
         static constexpr void set_zero(type_t *destination, const usize size) noexcept
-            requires(is_integral_v<type_t>)
         {
             set(destination, size, 0);
         }
-        template <typename type_t>
+
+        template<typename type_t>
+        requires(hud::is_pointer_v<type_t>)
         static constexpr void set_zero(type_t *destination, const usize size) noexcept
-            requires(hud::is_pointer_v<type_t>)
         {
             if (hud::is_constant_evaluated())
             {
@@ -457,7 +463,7 @@ namespace hud::os::common
          * Set a block of memory referenced by buffer to zero.
          * @param buffer The buffer memory to set to zero
          */
-        template <typename type_t, usize buffer_size>
+        template<typename type_t, usize buffer_size>
         static constexpr void set_zero(type_t (&buffer)[buffer_size]) noexcept
         {
             set_zero(buffer, buffer_size * sizeof(type_t));
@@ -474,6 +480,7 @@ namespace hud::os::common
         {
             return memmove(destination, source, size);
         }
+
         static constexpr void *move(u8 *destination, const u8 *source, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
@@ -521,6 +528,7 @@ namespace hud::os::common
         {
             return memcmp(buffer1, buffer2, size);
         }
+
         [[nodiscard]] static constexpr i32 compare(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
@@ -544,7 +552,8 @@ namespace hud::os::common
                 return compare(static_cast<const void *>(buffer1), static_cast<const void *>(buffer2), size);
             }
         }
-        template <typename type_t, usize buffer_size>
+
+        template<typename type_t, usize buffer_size>
         [[nodiscard]] static constexpr i32 compare(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
         {
             return compare(buffer1, buffer2, buffer_size);
@@ -562,11 +571,13 @@ namespace hud::os::common
         {
             return compare(buffer1, buffer2, size) == 0;
         }
+
         [[nodiscard]] static constexpr bool compare_equal(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
             return compare(buffer1, buffer2, size) == 0;
         }
-        template <typename type_t, usize buffer_size>
+
+        template<typename type_t, usize buffer_size>
         [[nodiscard]] static constexpr bool compare_equal(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
         {
             return compare_equal(buffer1, buffer2, buffer_size * sizeof(type_t));
@@ -584,11 +595,13 @@ namespace hud::os::common
         {
             return compare(buffer1, buffer2, size) < 0;
         }
+
         [[nodiscard]] static constexpr bool compare_less(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
             return compare(buffer1, buffer2, size) < 0;
         }
-        template <typename type_t, usize buffer_size>
+
+        template<typename type_t, usize buffer_size>
         [[nodiscard]] static constexpr bool compare_less(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
         {
             return compare_less(buffer1, buffer2, buffer_size);
@@ -606,11 +619,13 @@ namespace hud::os::common
         {
             return compare(buffer1, buffer2, size) > 0;
         }
+
         [[nodiscard]] static constexpr bool compare_greater(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
             return compare(buffer1, buffer2, size) > 0;
         }
-        template <typename type_t, usize buffer_size>
+
+        template<typename type_t, usize buffer_size>
         [[nodiscard]] static constexpr bool compare_greater(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
         {
             return compare_greater(buffer1, buffer2, buffer_size);
@@ -628,6 +643,6 @@ namespace hud::os::common
         }
     };
 
-} // namespace hud
+} // namespace hud::os::common
 
 #endif // HD_INC_CORE_OS_COMMON_MEMORY_H

@@ -19,20 +19,29 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b(const b &) {}
-    };
-    struct c
-    {
-        virtual void fn() {}
-    };
-    struct d
-    {
-        d(a &&) {}
+        b(const b &)
+        {
+        }
     };
 
-}
+    struct c
+    {
+        virtual void fn()
+        {
+        }
+    };
+
+    struct d
+    {
+        d(a &&)
+        {
+        }
+    };
+
+} // namespace hud_test
 
 GTEST_TEST(traits, is_bitwise_copy_constructible)
 {

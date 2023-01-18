@@ -5,19 +5,28 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
-        b(b &&) noexcept {}
+        b(b &&) noexcept
+        {
+        }
     };
+
     struct c
     {
-        c(const c &) noexcept {}
+        c(const c &) noexcept
+        {
+        }
     };
+
     struct d
     {
-        d(const c &) noexcept {}
+        d(const c &) noexcept
+        {
+        }
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_copy_constructible)
 {

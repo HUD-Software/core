@@ -5,13 +5,15 @@ namespace hud_test
     class a
     {
     };
+
     class b : a
     {
     };
+
     class c
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_base_of)
 {

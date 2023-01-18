@@ -1,4 +1,5 @@
 #include <core/traits/is_comparable_with_less_equal.h>
+
 namespace hud_test
 {
     enum comp_enum
@@ -17,15 +18,17 @@ namespace hud_test
     struct a
     {
     };
+
     struct b
     {
         bool operator<=(const b &) const noexcept;
     };
+
     struct c
     {
         bool operator<=(const a &) const noexcept;
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_comparable_with_less_equal)
 {

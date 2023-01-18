@@ -5,7 +5,7 @@ namespace hud_test
     class a
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_object)
 {

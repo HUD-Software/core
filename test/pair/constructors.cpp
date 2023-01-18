@@ -12,16 +12,19 @@
 struct implicit_type
 {
     implicit_type() noexcept = default;
+
     implicit_type(wchar value) noexcept
         : mInner(value)
     {
     }
+
     implicit_type(const implicit_type &other) noexcept
-        : mInner(other.mInner){};
+        : mInner(other.mInner) {};
     implicit_type(implicit_type &&other) noexcept
-        : mInner(other.mInner + 1){};
+        : mInner(other.mInner + 1) {};
     wchar mInner = L'\0';
 };
+
 static_assert(hud::is_implicitly_default_constructible_v<implicit_type>);
 static_assert(!hud::is_explicitly_default_constructible_v<implicit_type>);
 static_assert(hud::is_implicitly_constructible_v<implicit_type, wchar>);
@@ -35,18 +38,26 @@ static_assert(hud::is_convertible_v<const implicit_type &, implicit_type>);
 struct explicit_type
 {
     explicit explicit_type() noexcept = default;
+
     explicit explicit_type(i32 value) noexcept
         : mInner(value)
     {
     }
+
     explicit explicit_type(const explicit_type &other) noexcept
-        : mInner(other.mInner){};
+        : mInner(other.mInner) {};
 
     explicit explicit_type(explicit_type &&other) noexcept
-        : mInner(other.mInner + 1){};
-    operator implicit_type() const noexcept { return implicit_type(static_cast<wchar>(mInner)); }
+        : mInner(other.mInner + 1) {};
+
+    operator implicit_type() const noexcept
+    {
+        return implicit_type(static_cast<wchar>(mInner));
+    }
+
     i32 mInner = 0;
 };
+
 static_assert(!hud::is_implicitly_default_constructible_v<explicit_type>);
 static_assert(hud::is_explicitly_default_constructible_v<explicit_type>);
 static_assert(!hud::is_implicitly_constructible_v<explicit_type, i32>);
@@ -143,7 +154,7 @@ GTEST_TEST(pair, default_constructor_trivial)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_at(pair);
-        const auto result = std::tuple{pair->first, pair->second};
+        const auto result = std::tuple {pair->first, pair->second};
         hud::memory::free_array(pair, 1);
         return result;
     };
@@ -176,7 +187,7 @@ GTEST_TEST(pair, default_constructor_non_trivial)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_at(pair);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.move_assign_count(),
             pair->first.copy_assign_count(),
             pair->first.constructor_count(),
@@ -243,9 +254,9 @@ GTEST_TEST(pair, copy_constructor_trivial_type_same_type)
     const auto test = [](const Type1 &t1, const Type2 &t2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const TypePair other{t1, t2};
+        const TypePair other {t1, t2};
         hud::memory::construct_at(pair, other);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first,
             pair->second};
         hud::memory::free_array(pair, 1);
@@ -279,9 +290,12 @@ GTEST_TEST(pair, copy_constructor_non_trivial_type_same_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const TypePair other{{id1, nullptr}, {id2, nullptr}};
+        const TypePair other {
+            {id1, nullptr},
+            {id2, nullptr}
+        };
         hud::memory::construct_at(pair, other);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.move_assign_count(),
             pair->first.copy_assign_count(),
             pair->first.constructor_count(),
@@ -348,9 +362,9 @@ GTEST_TEST(pair, copy_constructor_non_trivial_copy_constructible_type_same_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const TypePair other{id1, id2};
+        const TypePair other {id1, id2};
         hud::memory::construct_at(pair, other);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -394,9 +408,9 @@ GTEST_TEST(pair, copy_constructor_trivial_type_different_type)
     const auto test = [](const OtherType1 &t1, const OtherType2 &t2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const OtherTypePair other{t1, t2};
+        const OtherTypePair other {t1, t2};
         hud::memory::construct_at(pair, other);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first,
             pair->second};
         hud::memory::free_array(pair, 1);
@@ -435,9 +449,9 @@ GTEST_TEST(pair, copy_constructor_non_trivial_type_different_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const OtherTypePair other{id1, id2};
+        const OtherTypePair other {id1, id2};
         hud::memory::construct_at(pair, other);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -483,9 +497,9 @@ GTEST_TEST(pair, copy_constructor_non_trivial_copy_constructible_type_different_
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const OtherTypePair other{id1, id2};
+        const OtherTypePair other {id1, id2};
         hud::memory::construct_at(pair, other);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -526,9 +540,9 @@ GTEST_TEST(pair, move_constructor_trivial_type_same_type)
     const auto test = [](const Type1 &t1, const Type2 &t2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        TypePair other{t1, t2};
+        TypePair other {t1, t2};
         hud::memory::construct_at(pair, hud::move(other));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first,
             pair->second};
         hud::memory::free_array(pair, 1);
@@ -562,9 +576,12 @@ GTEST_TEST(pair, move_constructor_non_trivial_type_same_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        TypePair other{{id1, nullptr}, {id2, nullptr}};
+        TypePair other {
+            {id1, nullptr},
+            {id2, nullptr}
+        };
         hud::memory::construct_at(pair, hud::move(other));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.move_assign_count(),
             pair->first.copy_assign_count(),
             pair->first.constructor_count(),
@@ -631,9 +648,9 @@ GTEST_TEST(pair, move_constructor_non_trivial_copy_constructible_type_same_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        TypePair other{id1, id2};
+        TypePair other {id1, id2};
         hud::memory::construct_at(pair, hud::move(other));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -674,9 +691,9 @@ GTEST_TEST(pair, move_constructor_non_trivial_move_constructible_type_same_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        TypePair other{id1, id2};
+        TypePair other {id1, id2};
         hud::memory::construct_at(pair, hud::move(other));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.move_constructor_count(),
             pair->first.id(),
@@ -726,9 +743,9 @@ GTEST_TEST(pair, move_constructor_trivial_type_different_type)
     const auto test = [](const OtherType1 &t1, const OtherType2 &t2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        OtherTypePair other{t1, t2};
+        OtherTypePair other {t1, t2};
         hud::memory::construct_at(pair, hud::move(other));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first,
             pair->second};
         hud::memory::free_array(pair, 1);
@@ -767,9 +784,9 @@ GTEST_TEST(pair, move_constructor_non_trivial_copy_constructible_type_different_
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        OtherTypePair other{id1, id2};
+        OtherTypePair other {id1, id2};
         hud::memory::construct_at(pair, hud::move(other));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -815,9 +832,9 @@ GTEST_TEST(pair, move_constructor_non_trivial_move_constructible_type_different_
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        OtherTypePair other{id1, id2};
+        OtherTypePair other {id1, id2};
         hud::memory::construct_at(pair, hud::move(other));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.move_constructor_count(),
             pair->first.id(),
@@ -865,7 +882,7 @@ GTEST_TEST(pair, param_copy_constructor_trivial_type_same_type)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_at(pair, t1, t2);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first,
             pair->second};
         hud::memory::free_array(pair, 1);
@@ -902,7 +919,7 @@ GTEST_TEST(pair, param_copy_constructor_trivial_type_different_type)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_at(pair, t1, t2);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first,
             pair->second};
         hud::memory::free_array(pair, 1);
@@ -936,10 +953,10 @@ GTEST_TEST(pair, param_copy_constructor_non_trivial_type_same_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const Type1 t1{id1, nullptr};
-        const Type2 t2{id2, nullptr};
+        const Type1 t1 {id1, nullptr};
+        const Type2 t2 {id2, nullptr};
         hud::memory::construct_at(pair, t1, t2);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.move_assign_count(),
             pair->first.copy_assign_count(),
             pair->first.constructor_count(),
@@ -1006,10 +1023,10 @@ GTEST_TEST(pair, param_copy_constructor_non_trivial_copy_constructible_type_same
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const Type1 t1{id1};
-        const Type2 t2{id2};
+        const Type1 t1 {id1};
+        const Type2 t2 {id2};
         hud::memory::construct_at(pair, t1, t2);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -1054,10 +1071,10 @@ GTEST_TEST(pair, param_copy_constructor_non_trivial_type_different_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const OtherType1 t1{id1};
-        const OtherType2 t2{id2};
+        const OtherType1 t1 {id1};
+        const OtherType2 t2 {id2};
         hud::memory::construct_at(pair, t1, t2);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -1102,10 +1119,10 @@ GTEST_TEST(pair, param_copy_constructor_non_trivial_copy_constructible_type_diff
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        const OtherType1 t1{id1};
-        const OtherType2 t2{id2};
+        const OtherType1 t1 {id1};
+        const OtherType2 t2 {id2};
         hud::memory::construct_at(pair, t1, t2);
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -1147,7 +1164,7 @@ GTEST_TEST(pair, param_move_constructor_trivial_type_same_type)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_at(pair, hud::forward<Type1>(t1), hud::forward<Type2>(t2));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first,
             pair->second};
         hud::memory::free_array(pair, 1);
@@ -1181,10 +1198,10 @@ GTEST_TEST(pair, param_move_constructor_non_trivial_type_same_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        Type1 t1{id1, nullptr};
-        Type2 t2{id2, nullptr};
+        Type1 t1 {id1, nullptr};
+        Type2 t2 {id2, nullptr};
         hud::memory::construct_at(pair, hud::move(t1), hud::move(t2));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.move_assign_count(),
             pair->first.copy_assign_count(),
             pair->first.constructor_count(),
@@ -1251,10 +1268,10 @@ GTEST_TEST(pair, param_move_constructor_non_trivial_copy_constructible_type_same
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        Type1 t1{id1};
-        Type2 t2{id2};
+        Type1 t1 {id1};
+        Type2 t2 {id2};
         hud::memory::construct_at(pair, hud::move(t1), hud::move(t2));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -1295,11 +1312,11 @@ GTEST_TEST(pair, param_move_constructor_non_trivial_move_constructible_type_same
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        Type1 t1{id1};
-        Type2 t2{id2};
+        Type1 t1 {id1};
+        Type2 t2 {id2};
 
         hud::memory::construct_at(pair, hud::move(t1), hud::move(t2));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.move_constructor_count(),
             pair->first.id(),
@@ -1349,7 +1366,7 @@ GTEST_TEST(pair, param_move_constructor_trivial_type_different_type)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_at(pair, hud::forward<OtherType1>(t1), hud::forward<OtherType2>(t2));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first,
             pair->second};
         hud::memory::free_array(pair, 1);
@@ -1387,10 +1404,10 @@ GTEST_TEST(pair, param_move_constructor_non_trivial_type_different_type)
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        OtherType1 t1{id1};
-        OtherType2 t2{id2};
+        OtherType1 t1 {id1};
+        OtherType2 t2 {id2};
         hud::memory::construct_at(pair, hud::move(t1), hud::move(t2));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -1435,10 +1452,10 @@ GTEST_TEST(pair, param_move_constructor_non_trivial_copy_constructible_type_diff
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        OtherType1 t1{id1};
-        OtherType2 t2{id2};
+        OtherType1 t1 {id1};
+        OtherType2 t2 {id2};
         hud::memory::construct_at(pair, hud::move(t1), hud::move(t2));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.id(),
             pair->second.copy_constructor_count(),
@@ -1483,11 +1500,11 @@ GTEST_TEST(pair, param_move_constructor_non_trivial_move_constructible_type_diff
     const auto test = [](const i32 &id1, const i32 &id2)
     {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        OtherType1 t1{id1};
-        OtherType2 t2{id2};
+        OtherType1 t1 {id1};
+        OtherType2 t2 {id2};
 
         hud::memory::construct_at(pair, hud::move(t1), hud::move(t2));
-        const auto result = std::tuple{
+        const auto result = std::tuple {
             pair->first.copy_constructor_count(),
             pair->first.move_constructor_count(),
             pair->first.id(),

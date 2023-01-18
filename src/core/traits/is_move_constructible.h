@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TRAITS_IS_MOVE_CONSTRUCTIBLE_H
 #define HD_INC_CORE_TRAITS_IS_MOVE_CONSTRUCTIBLE_H
 #include "is_constructible.h"
@@ -16,14 +15,14 @@ namespace hud
      * a copy constructor that is called for rvalue references (these are always called unless the class has a deleted move constructor).
      * Note that this implies that all copy-constructible types are also move-constructible.
      */
-    template <typename type_t, typename u_type_t = type_t>
+    template<typename type_t, typename u_type_t = type_t>
     struct is_move_constructible
         : is_constructible<type_t, add_rvalue_reference_t<u_type_t>>
     {
     };
 
     /** Equivalent of hud::is_move_constructible_v<type_t,u_type_t>::value */
-    template <typename type_t, typename u_type_t = type_t>
+    template<typename type_t, typename u_type_t = type_t>
     inline constexpr bool is_move_constructible_v = is_move_constructible<type_t, u_type_t>::value;
 
 } // namespace hud

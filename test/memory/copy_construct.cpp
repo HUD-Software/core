@@ -43,6 +43,7 @@ GTEST_TEST(memory, copy_construct_array_bitwise_constructible_type)
     {
         i32 i;
     };
+
     using type = c;
     using ResultType = std::tuple<i32, i32, i32, i32>;
 
@@ -133,10 +134,7 @@ GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_same_type)
         type *dest = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::copy_construct_array(dest, src, 2);
-        return {dest[0].copy_constructor_count(),
-                dest[0].ctor_order(),
-                dest[1].copy_constructor_count(),
-                dest[1].ctor_order()};
+        return {dest[0].copy_constructor_count(), dest[0].ctor_order(), dest[1].copy_constructor_count(), dest[1].ctor_order()};
     };
 
     // Non constant

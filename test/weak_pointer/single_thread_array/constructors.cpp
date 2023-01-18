@@ -31,7 +31,10 @@ GTEST_TEST(weak_pointer_array_not_safe, param_constructor_same_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr(type);
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr {shared_ptr};
         return std::tuple {
@@ -80,7 +83,10 @@ GTEST_TEST(weak_pointer_array_not_safe, param_constructor_different_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr(type);
         hud::weak_pointer<const hud_test::non_bitwise_type[2]> weak_ptr {shared_ptr};
         return std::tuple {
@@ -129,7 +135,10 @@ GTEST_TEST(weak_pointer_array_not_safe, copy_constructor_same_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         const hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {type}; // +1 shared_count
         const hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_to_copy {shared_ptr};
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_copy {weak_ptr_to_copy};
@@ -214,7 +223,10 @@ GTEST_TEST(weak_pointer_array_not_safe, copy_constructor_different_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         const hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr(type);
         const hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_to_copy {shared_ptr};
         hud::weak_pointer<const hud_test::non_bitwise_type[2]> weak_ptr_copy {weak_ptr_to_copy};
@@ -299,7 +311,10 @@ GTEST_TEST(weak_pointer_array_not_safe, move_constructor_same_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         const hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {type}; // +1 shared_count
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_to_move {shared_ptr};
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_move {hud::move(weak_ptr_to_move)};
@@ -384,7 +399,10 @@ GTEST_TEST(weak_pointer_array_not_safe, move_constructor_different_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count[2] = {0, 0};
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {{1, &dtor_count[0]}, {2, &dtor_count[1]}};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type[2] {
+            {1, &dtor_count[0]},
+            {2, &dtor_count[1]}
+        };
         const hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {type}; // +1 shared_count
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_to_move {shared_ptr};
         hud::weak_pointer<const hud_test::non_bitwise_type[2]> weak_ptr_move {hud::move(weak_ptr_to_move)};

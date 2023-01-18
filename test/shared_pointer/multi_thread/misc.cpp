@@ -7,7 +7,7 @@ GTEST_TEST(shared_pointer_safe, single_thread_pointer_return_object)
     {
         auto ptr = new hud_test::non_bitwise_type(15, nullptr);
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr(ptr);
-        return std::tuple{
+        return std::tuple {
             shared_ptr.pointer() == ptr};
     };
 
@@ -34,7 +34,7 @@ GTEST_TEST(shared_pointer_safe, single_thread_empty_pointer_return_nullptr)
     const auto test = []()
     {
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr;
-        return std::tuple{
+        return std::tuple {
             shared_ptr.pointer() == nullptr};
     };
 
@@ -62,7 +62,7 @@ GTEST_TEST(shared_pointer_safe, single_thread_is_owning)
     {
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr(new hud_test::non_bitwise_type(15, nullptr));
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> empty_shared_ptr;
-        return std::tuple{
+        return std::tuple {
             shared_ptr.is_owning(),
             empty_shared_ptr.is_owning()};
     };
@@ -93,7 +93,7 @@ GTEST_TEST(shared_pointer_safe, cast_to_bool)
     {
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr(new hud_test::non_bitwise_type(15, nullptr));
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> empty_shared_ptr;
-        return std::tuple{
+        return std::tuple {
             static_cast<bool>(shared_ptr),
             static_cast<bool>(empty_shared_ptr)};
     };
@@ -124,7 +124,7 @@ GTEST_TEST(shared_pointer_safe, operator_dereference)
     {
         auto ptr = new hud_test::non_bitwise_type(15, nullptr);
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr(ptr);
-        return std::tuple{
+        return std::tuple {
             &(*shared_ptr) == ptr};
     };
 
@@ -152,7 +152,7 @@ GTEST_TEST(shared_pointer_safe, operator_arrow)
     {
         auto ptr = new hud_test::non_bitwise_type(15, nullptr);
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr(ptr);
-        return std::tuple{
+        return std::tuple {
             shared_ptr.operator->() == ptr};
     };
 
@@ -187,7 +187,7 @@ GTEST_TEST(shared_pointer_safe, reset_to_empty)
         shared_ptr.reset();
         empty_shared_ptr.reset();
 
-        return std::tuple{
+        return std::tuple {
             is_pointer_correct,
             shared_ptr.pointer() == nullptr,
             is_pointer_empty_correct,
@@ -231,7 +231,7 @@ GTEST_TEST(shared_pointer_safe, reset_to_nullptr)
         shared_ptr.reset(nullptr);
         empty_shared_ptr.reset(nullptr);
 
-        return std::tuple{
+        return std::tuple {
             is_pointer_correct,
             shared_ptr.pointer() == nullptr,
             is_pointer_empty_correct,
@@ -283,7 +283,7 @@ GTEST_TEST(shared_pointer_safe, reset_to_same_type)
         auto reset_2 = new hud_test::non_bitwise_type(15, &dtor_count_2);
         empty_shared_ptr.reset(reset_2);
 
-        return std::tuple{
+        return std::tuple {
             dtor_count == 1,
             is_pointer_correct,
             shared_ptr.pointer() == reset_1,
@@ -351,7 +351,7 @@ GTEST_TEST(shared_pointer_safe, reset_to_different_type)
         auto reset_2 = new hud_test::non_bitwise_type(15, &dtor_count_2);
         empty_shared_ptr.reset(reset_2);
 
-        return std::tuple{
+        return std::tuple {
             dtor_count == 1,
             is_pointer_correct,
             shared_ptr.pointer() == reset_1,
@@ -411,7 +411,7 @@ GTEST_TEST(shared_pointer_safe, reset_to_empty_should_not_delete_if_other_refere
 
         shared_ptr.reset();
 
-        return std::tuple{
+        return std::tuple {
             dtor_count == 0,
             is_pointer_correct,
             have_2_references,
@@ -465,7 +465,7 @@ GTEST_TEST(shared_pointer_safe, reset_to_other_pointer_should_not_delete_if_othe
 
         shared_ptr.reset(other_ptr);
 
-        return std::tuple{
+        return std::tuple {
             dtor_count == 0,
             other_dtor_count == 0,
             is_pointer_correct,
@@ -516,7 +516,7 @@ GTEST_TEST(shared_pointer_safe, make_shared)
         i32 dtor_count = 0;
         const auto shared_ptr_2 = hud::make_shared<hud_test::non_bitwise_type, hud::thread_safety_e::safe>(123, &dtor_count);
 
-        return std::tuple{
+        return std::tuple {
             hud::is_same_v<decltype(shared_ptr.pointer()), i32 *>,
             *shared_ptr.pointer() == 123,
             shared_ptr.shared_count() == 1u,

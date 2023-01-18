@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_MISC_SETBOOLTOTRUEWHENDESTROYED_H
 #define HD_INC_MISC_SETBOOLTOTRUEWHENDESTROYED_H
 #include <core/traits/is_bitwise_copy_constructible.h>

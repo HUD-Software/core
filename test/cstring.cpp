@@ -2,7 +2,7 @@
 
 namespace hud_test
 {
-    template <typename TCharType>
+    template<typename TCharType>
     i32 call_format_vargs(TCharType *buffer, u32 buffer_size, const TCharType *format, ...)
     {
         va_list args;
@@ -455,6 +455,7 @@ GTEST_TEST(cstring, length_safe_with_string_nullptr)
     GTEST_ASSERT_EQ(hud::cstring::length_safe(null_wstring, hud::cstring::RSIZE_MAX_STR), 0u);
     GTEST_ASSERT_EQ(hud::cstring::length_safe(null_wstring, hud::cstring::RSIZE_MAX_STR + 1u), 0u);
 }
+
 GTEST_TEST(cstring, length_safe_with_max_length_zero)
 {
     GTEST_ASSERT_EQ(hud::cstring::length_safe("", 0u), 0u);

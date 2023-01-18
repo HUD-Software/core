@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_OS_COMMON_UUID_H
 #define HD_INC_CORE_OS_COMMON_UUID_H
 #include "../memory.h"
@@ -43,7 +42,10 @@ namespace hud::os::common
          * @param comp_d The d component.
          */
         constexpr uuid(const u32 comp_a, const u32 comp_b, const u32 comp_c, const u32 comp_d) noexcept
-            : a(comp_a), b(comp_b), c(comp_c), d(comp_d)
+            : a(comp_a)
+            , b(comp_b)
+            , c(comp_c)
+            , d(comp_d)
         {
         }
 
@@ -102,6 +104,6 @@ namespace hud::os::common
     {
         return !(left == right);
     }
-} // namespace hud::OS::GUID
+} // namespace hud::os::common
 
 #endif // HD_INC_CORE_OS_COMMON_UUID_H

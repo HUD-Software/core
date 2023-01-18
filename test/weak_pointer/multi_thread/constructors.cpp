@@ -6,7 +6,7 @@ GTEST_TEST(weak_pointer_safe, default_constructor)
     {
         hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr;
 
-        return std::tuple{
+        return std::tuple {
             weak_ptr.lock().pointer() == nullptr,
             weak_ptr.lock().shared_count()};
     };
@@ -33,10 +33,10 @@ GTEST_TEST(weak_pointer_safe, param_constructor_same_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type{id, &dtor_count};
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr{type};
-        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr{shared_ptr};
-        return std::tuple{
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type {id, &dtor_count};
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {type};
+        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr {shared_ptr};
+        return std::tuple {
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
             shared_ptr.pointer()->id(),
@@ -74,10 +74,10 @@ GTEST_TEST(weak_pointer_safe, param_constructor_different_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
-        hud_test::non_bitwise_type2 *type = new hud_test::non_bitwise_type2{id, &dtor_count};
-        hud::shared_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> shared_ptr{type};
-        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr{shared_ptr};
-        return std::tuple{
+        hud_test::non_bitwise_type2 *type = new hud_test::non_bitwise_type2 {id, &dtor_count};
+        hud::shared_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> shared_ptr {type};
+        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr {shared_ptr};
+        return std::tuple {
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
             shared_ptr.pointer()->id(),
@@ -114,14 +114,14 @@ GTEST_TEST(weak_pointer_safe, copy_constructor_same_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type{id, &dtor_count};
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr{type}; // +1 shared_count
-        const hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_to_copy{shared_ptr};
-        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_copy{weak_ptr_to_copy};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type {id, &dtor_count};
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {type}; // +1 shared_count
+        const hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_to_copy {shared_ptr};
+        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_copy {weak_ptr_to_copy};
         const auto locked_weak_ptr_to_copy = weak_ptr_to_copy.lock(); // +1 shared_count
         const auto locked_weak_ptr_copy = weak_ptr_copy.lock();       // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             locked_weak_ptr_to_copy.pointer() == type,
             locked_weak_ptr_to_copy.shared_count(),
             locked_weak_ptr_to_copy.pointer()->id(),
@@ -197,14 +197,14 @@ GTEST_TEST(weak_pointer_safe, copy_constructor_different_type)
     {
         i32 dtor_count = 0;
 
-        hud_test::non_bitwise_type2 *type = new hud_test::non_bitwise_type2{id, &dtor_count};
-        const hud::shared_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> shared_ptr{type}; // +1 shared_count
-        const hud::weak_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> weak_ptr_to_copy{shared_ptr};
-        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_copy{weak_ptr_to_copy};
+        hud_test::non_bitwise_type2 *type = new hud_test::non_bitwise_type2 {id, &dtor_count};
+        const hud::shared_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> shared_ptr {type}; // +1 shared_count
+        const hud::weak_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> weak_ptr_to_copy {shared_ptr};
+        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_copy {weak_ptr_to_copy};
         const auto locked_weak_ptr_to_copy = weak_ptr_to_copy.lock(); // +1 shared_count
         const auto locked_weak_ptr_copy = weak_ptr_copy.lock();       // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             locked_weak_ptr_to_copy.pointer() == type,
             locked_weak_ptr_to_copy.shared_count(),
             locked_weak_ptr_to_copy.pointer()->id(),
@@ -279,14 +279,14 @@ GTEST_TEST(weak_pointer_safe, move_constructor_same_type)
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
-        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type{id, &dtor_count};
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr{type}; // +1 shared_count
-        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_to_move{shared_ptr};
-        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_move{hud::move(weak_ptr_to_move)};
+        hud_test::non_bitwise_type *type = new hud_test::non_bitwise_type {id, &dtor_count};
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {type}; // +1 shared_count
+        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_to_move {shared_ptr};
+        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_move {hud::move(weak_ptr_to_move)};
         const auto locked_weak_ptr_to_move = weak_ptr_to_move.lock();
         const auto locked_weak_ptr_move = weak_ptr_move.lock(); // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             locked_weak_ptr_move.pointer() == type,
             locked_weak_ptr_move.shared_count(),
             locked_weak_ptr_move.pointer()->id(),
@@ -344,13 +344,13 @@ GTEST_TEST(weak_pointer_safe, move_constructor_different_type)
     {
         i32 dtor_count = 0;
         hud_test::non_bitwise_type2 *type = new hud_test::non_bitwise_type2(id, &dtor_count);
-        hud::shared_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> shared_ptr{type}; // +1 shared_count
-        hud::weak_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> weak_ptr_to_move{shared_ptr};
-        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_move{hud::move(weak_ptr_to_move)};
+        hud::shared_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> shared_ptr {type}; // +1 shared_count
+        hud::weak_pointer<hud_test::non_bitwise_type2, hud::thread_safety_e::safe> weak_ptr_to_move {shared_ptr};
+        hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_move {hud::move(weak_ptr_to_move)};
         const auto locked_weak_ptr_to_move = weak_ptr_to_move.lock();
         const auto locked_weak_ptr_move = weak_ptr_move.lock(); // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             locked_weak_ptr_move.pointer() == type,
             locked_weak_ptr_move.shared_count(),
             locked_weak_ptr_move.pointer()->id(),

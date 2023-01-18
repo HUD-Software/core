@@ -3,24 +3,28 @@
 namespace hud_test
 {
     typedef int integer_type;
+
     struct a
     {
         int x, y;
     };
+
     struct b
     {
         int x, y;
     };
+
     struct c : public a
     {
     };
+
     typedef a d;
 
-    template <typename type_t>
+    template<typename type_t>
     struct is_same_d
     {
     };
-}
+} // namespace hud_test
 
 GTEST_TEST(traits, is_not_same)
 {

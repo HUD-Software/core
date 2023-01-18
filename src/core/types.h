@@ -1,14 +1,13 @@
-#pragma once
 #ifndef HD_INC_CORE_TYPES_H
 #define HD_INC_CORE_TYPES_H
 #include "compilation.h"
 
 #if defined(HD_OS_WINDOWS)
-#include "os_windows/types.h"
+    #include "os_windows/types.h"
 #elif defined(HD_OS_LINUX)
-#include "os_linux/types.h"
+    #include "os_linux/types.h"
 #else
-#error Targeted OS not supported
+    #error Targeted OS not supported
 #endif
 
 namespace hud

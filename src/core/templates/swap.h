@@ -1,4 +1,3 @@
-#pragma once
 #ifndef HD_INC_CORE_TEMPLATES_SWAP_H
 #define HD_INC_CORE_TEMPLATES_SWAP_H
 #include "move.h"
@@ -14,9 +13,9 @@ namespace hud
 {
 
     /** Swap 2 a and b. a and b must move constructible and move assignable. */
-    template <typename type_t, typename u_type_t = type_t>
+    template<typename type_t, typename u_type_t = type_t>
+    requires(hud::is_move_constructible_v<type_t, u_type_t> && hud::is_move_assignable_v<u_type_t, type_t>)
     static constexpr void swap(type_t &a, u_type_t &b) noexcept
-        requires(hud::is_move_constructible_v<type_t, u_type_t> && hud::is_move_assignable_v<u_type_t, type_t>)
     {
         static_assert(hud::is_nothrow_move_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) or type_t(u_type_t&&) is throwable. swap is not designed to allow throwable constructible components");
         static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t& type_t::operator=(const u_type_t&) or type_t& type_t::operator=(u_type_t&&) is throwable. swap is not designed to allow throwable assignable components");
@@ -26,9 +25,9 @@ namespace hud
     }
 
     /** Swap 2 a and b array. a and b must move constructible and move assignable. */
-    template <typename type_t, usize N>
+    template<typename type_t, usize N>
+    requires(hud::is_default_constructible_v<type_t> && hud::is_move_constructible_v<type_t> && hud::is_move_assignable_v<type_t>)
     static constexpr void swap(type_t (&a)[N], type_t (&b)[N]) noexcept
-        requires(hud::is_default_constructible_v<type_t> && hud::is_move_constructible_v<type_t> && hud::is_move_assignable_v<type_t>)
     {
         static_assert(hud::is_nothrow_move_constructible_v<type_t>, "type_t(type_t&&) is throwable. swap is not designed to allow throwable move constructible components");
         static_assert(hud::is_nothrow_move_assignable_v<type_t>, "type_t& type_t::operator=(type_t&&) is throwable. swap is not designed to allow throwable move assignable components");
