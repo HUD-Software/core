@@ -8,7 +8,8 @@ GTEST_TEST(weak_pointer_not_safe, default_constructor)
 
         return std::tuple {
             weak_ptr.lock().pointer() == nullptr,
-            weak_ptr.lock().shared_count()};
+            weak_ptr.lock().shared_count(),
+        };
     };
 
     // Non constant

@@ -2,7 +2,6 @@
 
 GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_type)
 {
-
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
@@ -81,7 +80,6 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_type)
 
 GTEST_TEST(shared_pointer_not_safe, copy_assignement_different_type)
 {
-
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
@@ -160,7 +158,6 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_different_type)
 
 GTEST_TEST(shared_pointer_not_safe, copy_assignement_an_empty_same_type)
 {
-
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
@@ -197,7 +194,6 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_an_empty_same_type)
 
 GTEST_TEST(shared_pointer_not_safe, copy_assignement_nullptr)
 {
-
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
@@ -233,7 +229,6 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_nullptr)
 
 GTEST_TEST(shared_pointer_not_safe, move_assignement_same_type)
 {
-
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
@@ -294,7 +289,6 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_same_type)
 
 GTEST_TEST(shared_pointer_not_safe, move_assignement_different_type)
 {
-
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
@@ -355,7 +349,6 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_different_type)
 
 GTEST_TEST(shared_pointer_not_safe, move_assignement_an_empty_same_type)
 {
-
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;
@@ -392,7 +385,6 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_an_empty_same_type)
 
 GTEST_TEST(shared_pointer_not_safe, move_assignement_nullptr)
 {
-
     const auto test = [](i32 id)
     {
         i32 dtor_count = 0;

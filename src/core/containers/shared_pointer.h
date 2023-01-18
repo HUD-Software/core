@@ -573,7 +573,7 @@ namespace hud
                 }
             }
 
-            /** Assign a weak controller. */
+            /** Assign a weak controller by acquiring a weak reference. */
             constexpr weak_reference_controller &operator=(const weak_reference_controller &other) noexcept
             {
                 // We take acquire a weak reference on the copied controller
@@ -588,6 +588,33 @@ namespace hud
                 }
                 // Keep the controller of the copied controller
                 controller = other.controller;
+                return *this;
+            }
+
+            /** Assign a weak controller by stealing the controller. */
+            constexpr weak_reference_controller &operator=(weak_reference_controller &&other) noexcept
+            {
+                // Keep the controller of the copied controller
+                controller = other.controller;
+                // Remove the controller from the moved one
+                other.controller = nullptr;
+                return *this;
+            }
+
+            /** Assign a shared_reference_controller by sharing the controller and acquire a weak reference on it. */
+            constexpr weak_reference_controller &operator=(const shared_reference_controller<thread_safety> &shared_controller) noexcept
+            {
+                // We take acquire a weak reference on the copied controller
+                if (shared_controller.controller != nullptr)
+                {
+                    reference_controller_base_type::acquire_weakref(shared_controller.controller);
+                }
+                // We take release our controller
+                if (controller != nullptr)
+                {
+                    reference_controller_base_type::release_weakref(controller);
+                }
+                controller = shared_controller.controller;
                 return *this;
             }
 
@@ -639,11 +666,15 @@ namespace hud
         /** Default constructor. */
         constexpr weak_pointer() noexcept = default;
 
-        /** Construct a weak_pointer from a shared_pointer. */
+        /**
+         * Construct a weak_pointer from a shared_pointer.
+         * @tparam u_type_t Type of the shared_pointer to assign. Must be compatible with type_t
+         * @param shared_ptr The shared_pointer to assign
+         */
         template<typename u_type_t>
         requires(details::is_pointer_compatible_v<u_type_t, type_t>)
-        constexpr weak_pointer(const hud::shared_pointer<u_type_t, thread_safety> &shared) noexcept
-            : inner(shared.inner)
+        constexpr weak_pointer(const hud::shared_pointer<u_type_t, thread_safety> &shared_ptr) noexcept
+            : inner(shared_ptr.inner)
         {
         }
 
@@ -685,7 +716,7 @@ namespace hud
             get<0>(other.inner) = nullptr;
         }
 
-        /** Assign a weak_pointer. */
+        /** Assign a weak_pointer by copying it. */
         constexpr weak_pointer &operator=(const weak_pointer &other) noexcept
         {
             if (this != &other)
@@ -695,11 +726,54 @@ namespace hud
             return *this;
         }
 
+        /**
+         * Assign a weak_pointer by copying it.
+         * @tparam u_type_t Type of the other weak_pointer's pointer to copy. Must be compatible with type_t
+         * @param other The weak_pointer to copy
+         */
         template<typename u_type_t>
         requires(details::is_pointer_compatible_v<u_type_t, type_t>)
         constexpr weak_pointer &operator=(const weak_pointer<u_type_t, thread_safety> &other) noexcept
         {
             inner = other.inner;
+            return *this;
+        }
+
+        /** Assign a weak_pointer by stealing the pointer. */
+        constexpr weak_pointer &operator=(weak_pointer &&other) noexcept
+        {
+            if (this != &other)
+            {
+                inner = hud::move(other.inner);
+                get<0>(other.inner) = nullptr;
+            }
+            return *this;
+        }
+
+        /**
+         * Assign a weak_pointer by stealing it.
+         * @tparam u_type_t Type of the other weak_pointer's pointer to move. Must be compatible with type_t
+         * @param other The weak_pointer to copy
+         */
+        template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        constexpr weak_pointer &operator=(weak_pointer<u_type_t, thread_safety> &&other) noexcept
+        {
+            inner = hud::move(other.inner);
+            get<0>(other.inner) = nullptr;
+            return *this;
+        }
+
+        /**
+         * Assign a weak_pointer from a shared_pointer.
+         * @tparam u_type_t Type of the shared_pointer to assign. Must be compatible with type_t
+         * @param shared_ptr The shared_pointer to assign
+         */
+        template<typename u_type_t>
+        requires(details::is_pointer_compatible_v<u_type_t, type_t>)
+        constexpr weak_pointer &operator=(const hud::shared_pointer<u_type_t> &shared_ptr) noexcept
+        {
+            inner = shared_ptr.inner;
             return *this;
         }
 
