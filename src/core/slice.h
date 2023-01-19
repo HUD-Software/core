@@ -9,7 +9,7 @@ namespace hud
 {
 
     /**
-     * slice describes an object that can refer to a contiguous sequence of elements to type type_t
+     * Describes an object that can refer to a contiguous sequence of elements to type type_t
      * with the first element of the sequence at position zero.
      * @tparam type_t The element type
      */

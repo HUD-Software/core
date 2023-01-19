@@ -2,7 +2,6 @@
 
 GTEST_TEST(shared_pointer_not_safe, swap_with_empty)
 {
-
     // SharedPointer::swap
     {
         const auto test = []()

@@ -244,12 +244,22 @@ add_executable(test_core
 	unique_pointer/single/swap.cpp
 	weak_pointer/multi_thread/constructors.cpp
 	weak_pointer/multi_thread/assignments.cpp
+	weak_pointer/multi_thread/destructor.cpp
+	weak_pointer/multi_thread/swap.cpp
 	weak_pointer/multi_thread_array/constructors.cpp
 	weak_pointer/multi_thread_array/assignments.cpp
+	weak_pointer/multi_thread_array/destructor.cpp
+	weak_pointer/multi_thread_array/swap.cpp
 	weak_pointer/single_thread/constructors.cpp
 	weak_pointer/single_thread/assignments.cpp
+	weak_pointer/single_thread/destructor.cpp
+	weak_pointer/single_thread/misc.cpp
+	weak_pointer/single_thread/swap.cpp
 	weak_pointer/single_thread_array/constructors.cpp
 	weak_pointer/single_thread_array/assignments.cpp
+	weak_pointer/single_thread_array/destructor.cpp
+	weak_pointer/single_thread_array/misc.cpp
+	weak_pointer/single_thread_array/swap.cpp
 	aligned_buffer.cpp
 	aligned_heap_allocator.cpp
 	allocation.cpp

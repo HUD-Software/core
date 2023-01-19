@@ -480,7 +480,6 @@ namespace hud
                 // Do not take into account if we assign if the same controller
                 if (controller != other.controller)
                 {
-
                     // Move the controller
                     reference_controller_base_type *old_controller = controller;
                     controller = other.controller;
@@ -616,6 +615,17 @@ namespace hud
                 }
                 controller = shared_controller.controller;
                 return *this;
+            }
+
+            /**
+             * Retrieves the shared counter.
+             * This function is available only for unsafe thread weak_pointer.
+             * To aquire the shared_count in a thread safe manner take a lock() of the weak_pointer to access the
+             */
+            [[nodiscard]] constexpr u32 shared_count() const noexcept
+            requires(thread_safety == hud::thread_safety_e::not_safe)
+            {
+                return controller != nullptr ? controller->get_shared_count() : 0u;
             }
 
         private:
@@ -777,10 +787,47 @@ namespace hud
             return *this;
         }
 
-        /* Retrives a share_pointer that add the weak_pointer a owner. */
+        /**
+         * Retrives a share_pointer that add the weak_pointer a owner.
+         * eturns expired() ? shared_ptr<T>() : shared_ptr<T>(*this), executed atomically.
+         * */
         [[nodiscard]] constexpr hud::shared_pointer<type_t, thread_safety> lock() const noexcept
         {
-            return hud::shared_pointer<type_t, thread_safety>(*this);
+            return hud::shared_pointer<type_t, thread_safety> {*this};
+        }
+
+        /** Swap with another weak_pointer. */
+        constexpr void swap(weak_pointer &other) noexcept
+        {
+            hud::swap(inner, other.inner);
+        }
+
+        /** Release the pointer. */
+        constexpr void reset() noexcept
+        {
+            *this = weak_pointer {};
+        }
+
+        /**
+         * Retrieves the number of time the pointer is shared with shared_pointer
+         * This function is available only for unsafe thread weak_pointer.
+         * To acquire the shared_count or access the pointer in a thread safe manner take a lock() of the weak_pointer to access the shared_count
+         */
+        [[nodiscard]] constexpr u32 shared_count() const noexcept
+        requires(thread_safety == hud::thread_safety_e::not_safe)
+        {
+            return get<1>(inner).shared_count();
+        }
+
+        /**
+         * Check if the pointer is still valid to be locked
+         * This function is available only for unsafe thread weak_pointer.
+         * To access the pointer in a thread safe manner take a lock() of the weak_pointer.
+         */
+        [[nodiscard]] constexpr bool expired() const noexcept
+        requires(thread_safety == hud::thread_safety_e::not_safe)
+        {
+            return shared_count() == 0u;
         }
 
     private:
@@ -795,6 +842,20 @@ namespace hud
         using inner_type = hud::pair<pointer_type, details::weak_reference_controller<thread_safety>>;
         inner_type inner;
     };
+
+    /**
+     * Swap weak_pointer.
+     * Same as first.swap(second).
+     * @tparam type_t Type of the first weak_pointer's pointer
+     * @tparam thread_safety The thread safety of pointers
+     * @param first The first to swap
+     * @param second The second to swap
+     */
+    template<typename type_t, thread_safety_e thread_safety>
+    HD_FORCEINLINE constexpr void swap(weak_pointer<type_t, thread_safety> &first, weak_pointer<type_t, thread_safety> &second) noexcept
+    {
+        first.swap(second);
+    }
 
     /**
      * shared_pointer is a smart pointer that share a owning pointer with other shared_pointer.
@@ -949,7 +1010,7 @@ namespace hud
         /** Check whether the shared_pointer own a pointer. */
         [[nodiscard]] constexpr bool is_owning() const noexcept
         {
-            return pointer() != pointer_type();
+            return pointer() != pointer_type {};
         }
 
         /** Check whether the shared_pointer own a pointer. */
@@ -997,13 +1058,13 @@ namespace hud
         /** Destroy the owned pointer and optionally take ownership of a new pointer. */
         constexpr void reset(pointer_type ptr) noexcept
         {
-            *this = shared_pointer(ptr);
+            *this = shared_pointer {ptr};
         }
 
         /** Destroy the owned pointer and taking no ownership. */
         constexpr void reset(hud::ptr::null) noexcept
         {
-            *this = shared_pointer();
+            *this = shared_pointer {};
         }
 
         /** Destroy the owned pointer and taking no ownership. */
@@ -1012,7 +1073,7 @@ namespace hud
             reset(nullptr);
         }
 
-        /**Swap with another shared_pointer. */
+        /** Swap with another shared_pointer. */
         constexpr void swap(shared_pointer &other) noexcept
         {
             hud::swap(inner, other.inner);

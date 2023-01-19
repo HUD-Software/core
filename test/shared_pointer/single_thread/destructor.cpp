@@ -13,7 +13,7 @@ GTEST_TEST(shared_pointer_not_safe, destructor)
             } // dtor_count == 0
 
         } // dtor_count == 1
-        return dtor_count;
+        return dtor_count == 1;
     };
 
     // Non constant
