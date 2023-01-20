@@ -3,7 +3,6 @@
 
 GTEST_TEST(memory, construct_at_trival_type)
 {
-
     auto test_no_param = []() -> u32
     {
         u32 to_construct;
@@ -36,7 +35,6 @@ GTEST_TEST(memory, construct_at_trival_type)
 
 GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
 {
-
     struct c
     {
         i32 value = 0;
@@ -87,7 +85,6 @@ GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
 
 GTEST_TEST(memory, construct_array_at_trival_type)
 {
-
     using type = u32;
     using ResultType = std::tuple<u32, u32>;
     static_assert(hud::is_trivially_constructible_v<type>);
@@ -129,7 +126,6 @@ GTEST_TEST(memory, construct_array_at_trival_type)
 
 GTEST_TEST(memory, construct_array_at_non_trival_type)
 {
-
     struct c
     {
         i32 value = 0;
@@ -180,5 +176,75 @@ GTEST_TEST(memory, construct_array_at_non_trival_type)
         constexpr ResultType result_param = test_param();
         GTEST_ASSERT_EQ(std::get<0>(result_param), 15);
         GTEST_ASSERT_EQ(std::get<1>(result_param), 15);
+    }
+}
+
+GTEST_TEST(memory, construct_array_list_at_trival_type)
+{
+    using type = u32;
+    using ResultType = std::tuple<u32, u32>;
+    static_assert(hud::is_trivially_constructible_v<type>);
+    static_assert(hud::is_trivially_constructible_v<type, u32>);
+
+    const auto test = []() -> ResultType
+    {
+        type to_construct[2];
+        hud::memory::construct_array_list_at(to_construct, to_construct + 2, {1, 2});
+        return {to_construct[0], to_construct[1]};
+    };
+
+    // Non constant
+    {
+        const ResultType result = test();
+        GTEST_ASSERT_EQ(std::get<0>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
+    }
+
+    // Constant
+    {
+        const ResultType result = test();
+        GTEST_ASSERT_EQ(std::get<0>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
+    }
+}
+
+GTEST_TEST(memory, construct_array_list_at_non_trival_type)
+{
+    struct c
+    {
+        i32 value = 0;
+        c() = default;
+
+        constexpr c(i32 val) noexcept
+            : value(val)
+        {
+        }
+    };
+
+    using type = c;
+    using ResultType = std::tuple<i32, i32>;
+    static_assert(!hud::is_trivially_constructible_v<type>);
+    static_assert(!hud::is_trivially_constructible_v<type, i32>);
+
+    auto test = []() -> ResultType
+    {
+        type *to_construct = hud::memory::allocate_array<type>(2);
+        hud_test::LeakArrayGuard guard(to_construct, 2);
+        hud::memory::construct_array_list_at(to_construct, to_construct + 2, {1, 2});
+        return {to_construct[0].value, to_construct[1].value};
+    };
+
+    // Non constant
+    {
+        const ResultType result = test();
+        GTEST_ASSERT_EQ(std::get<0>(result), 1);
+        GTEST_ASSERT_EQ(std::get<1>(result), 2);
+    }
+
+    // Constant
+    {
+        constexpr ResultType result = test();
+        GTEST_ASSERT_EQ(std::get<0>(result), 1);
+        GTEST_ASSERT_EQ(std::get<1>(result), 2);
     }
 }

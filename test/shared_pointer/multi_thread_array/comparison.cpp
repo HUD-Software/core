@@ -1,4 +1,5 @@
 #include <core/containers/shared_pointer.h>
+#include <memory>
 
 GTEST_TEST(shared_pointer_array_safe, equal_operator)
 {
@@ -6,7 +7,7 @@ GTEST_TEST(shared_pointer_array_safe, equal_operator)
     const auto test = []()
     {
         hud::shared_pointer<i32[2], hud::thread_safety_e::safe> empty;
-        hud::shared_pointer<i32[2], hud::thread_safety_e::safe> p(new i32[2] {1, 2});
+        hud::shared_pointer<i32[2], hud::thread_safety_e::safe> p = hud::make_shared<i32[2], hud::thread_safety_e::safe>({1, 2});
         hud::shared_pointer<i32[2], hud::thread_safety_e::safe> p2(p);
         hud::shared_pointer<i32[2], hud::thread_safety_e::safe> p3(new i32[2] {3, 4});
 

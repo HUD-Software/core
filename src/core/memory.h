@@ -103,10 +103,31 @@ namespace hud
         requires(hud::is_constructible_v<type_t, args_t...>)
         static constexpr void construct_array_at(type_t *HD_RESTRICT begin, const type_t *HD_RESTRICT const end, args_t &&...args) noexcept
         {
-            static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct is not designed to allow throwable constructible type");
+            static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct_array_at is not designed to allow throwable constructible type");
             while (begin < end)
             {
                 hud::memory::template construct_at(begin++, hud::forward<args_t>(args)...);
+            }
+        }
+
+        template<typename type_t, typename u_type_t>
+        requires(hud::is_constructible_v<type_t, u_type_t>)
+        static constexpr void construct_array_list_at(type_t *HD_RESTRICT begin, const type_t *HD_RESTRICT const end, std::initializer_list<u_type_t> initializer_list) noexcept
+        {
+            static_assert(hud::is_nothrow_constructible_v<type_t, u_type_t>, "type_t constructor is throwable. hud::memory::construct_array_list_at is not designed to allow throwable constructible type");
+            hud::check((end - begin) == initializer_list.size()); // "The initialization list does not contain as many elements as the array"
+            const u_type_t *HD_RESTRICT begin_list = initializer_list.begin();
+
+            if (!hud::is_constant_evaluated() && hud::is_trivially_constructible_v<type_t, u_type_t>)
+            {
+                hud::memory::copy(begin, begin_list, (end - begin) * sizeof(type_t));
+            }
+            else
+            {
+                while (begin < end)
+                {
+                    hud::memory::template construct_at(begin++, hud::move(*begin_list++));
+                }
             }
         }
 
