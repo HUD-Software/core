@@ -7,9 +7,9 @@ GTEST_TEST(shared_pointer_safe, equal_operator)
     const auto test = []()
     {
         hud::shared_pointer<i32, hud::thread_safety_e::safe> empty;
-        hud::shared_pointer<i32, hud::thread_safety_e::safe> p(new i32(1));
+        hud::shared_pointer<i32, hud::thread_safety_e::safe> p(new (std::nothrow) i32(1));
         hud::shared_pointer<i32, hud::thread_safety_e::safe> p2(p);
-        hud::shared_pointer<i32, hud::thread_safety_e::safe> p3(new i32(3));
+        hud::shared_pointer<i32, hud::thread_safety_e::safe> p3(new (std::nothrow) i32(3));
 
         return std::tuple {
             empty == empty,
