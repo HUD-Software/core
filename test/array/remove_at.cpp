@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 
 GTEST_TEST(array, remove_at_non_trivial_type)
 {

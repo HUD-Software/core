@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 
 GTEST_TEST(array, reserve_empty_to_zero_do_nothing_with_non_trivial_type)
 {

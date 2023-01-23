@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 
 GTEST_TEST(array, default_constructor_should_allocate_no_memory)
 {

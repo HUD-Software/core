@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 #include "../misc/leak_guard.h"
 
 GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_type)

@@ -5,10 +5,14 @@ GTEST_TEST(shared_pointer_array_not_safe, equal_operator)
 
     const auto test = []()
     {
-        hud::shared_pointer<i32[2]> empty;
-        hud::shared_pointer<i32[2]> p(new i32[2] {1, 2});
-        hud::shared_pointer<i32[2]> p2(p);
-        hud::shared_pointer<i32[2]> p3(new i32[2] {3, 4});
+        hud::shared_pointer<i32[]> empty;
+        hud::shared_pointer<i32[]> p = hud::make_shared<i32[]>(2);
+        p[0] = 1;
+        p[1] = 2;
+        hud::shared_pointer<i32[]> p2(p);
+        hud::shared_pointer<i32[]> p3 = hud::make_shared<i32[]>(2);
+        p[0] = 3;
+        p[1] = 4;
 
         return std::tuple {
             empty == empty,
@@ -64,10 +68,14 @@ GTEST_TEST(shared_pointer_array_not_safe, not_equal_operator)
 
     const auto test = []()
     {
-        hud::shared_pointer<i32[2]> empty;
-        hud::shared_pointer<i32[2]> p(new i32[2] {1, 2});
-        hud::shared_pointer<i32[2]> p2(p);
-        hud::shared_pointer<i32[2]> p3(new i32[2] {3, 4});
+        hud::shared_pointer<i32[]> empty;
+        hud::shared_pointer<i32[]> p = hud::make_shared<i32[]>(2);
+        p[0] = 1;
+        p[1] = 2;
+        hud::shared_pointer<i32[]> p2(p);
+        hud::shared_pointer<i32[]> p3 = hud::make_shared<i32[]>(2);
+        p[0] = 3;
+        p[1] = 4;
 
         return std::tuple {
             empty != empty,

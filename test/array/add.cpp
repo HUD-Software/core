@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 
 GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
 {

@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 #include <core/memory.h>
 
 GTEST_TEST(array, add_no_construct_do_not_call_constructor)

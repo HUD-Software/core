@@ -394,54 +394,6 @@ namespace hud
             allocation<type_t> allocation;
         };
 
-        /**
-         * The reference controller that contains an aligned pointer to an array of type_t.
-         * @tparam type_t Type of the pointer to own
-         * @tparam thread_safety The reference counting thread safety to use while counting shared and weak references
-         */
-        template<typename type_t, const usize extent, thread_safety_e thread_safety>
-        class reference_controller_no_deleter<type_t[extent], thread_safety>
-            : public reference_controller_base<thread_safety>
-        {
-
-        public:
-            /** Construct a reference_controller_with_deleter from a pointer to own. */
-            explicit constexpr reference_controller_no_deleter(std::initializer_list<type_t> init_list) noexcept
-                : allocation(hud::memory::allocate_align<type_t>(init_list.size() * sizeof(type_t), alignof(type_t)), init_list.size())
-            {
-                type_t *HD_RESTRICT begin = allocation.data();
-                const type_t *HD_RESTRICT const end = allocation.data_end();
-                const type_t *HD_RESTRICT list_begin = init_list.begin();
-                while (begin < end)
-                {
-                    hud::memory::template construct_at(begin++, hud::move(*(list_begin++)));
-                }
-            }
-
-            /** Retrieves a pointer to the type_t object. */
-            constexpr type_t *pointer() noexcept
-            {
-                return allocation.data();
-            }
-
-            /** Destroy the object by calling the destructor. */
-            constexpr void destroy_object() noexcept final
-            {
-                hud::memory::destroy_array(pointer(), allocation.count());
-                hud::memory::free_align(pointer());
-            }
-
-        private:
-            /** Not copy constructible. */
-            reference_controller_no_deleter(const reference_controller_no_deleter &) = delete;
-            /** Not copy assignable. */
-            reference_controller_no_deleter operator=(const reference_controller_no_deleter &) = delete;
-
-        private:
-            /** The allocation of the array. */
-            allocation<type_t> allocation;
-        };
-
         template<thread_safety_e thread_safety>
         class weak_reference_controller;
 
@@ -1467,21 +1419,6 @@ namespace hud
     [[nodiscard]] HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(const usize count) noexcept
     {
         return shared_pointer<type_t, thread_safety>(new (std::nothrow) details::reference_controller_no_deleter<type_t, thread_safety>(count));
-    }
-
-    /**
-     * Constructs a shared_pointer that owns a pointer to an array of unknown bound type_t.
-     * This overload only participates in overload resolution if type_t is an array of unknown bound.
-     * @tparam type_t Type of the shared_pointer's pointer
-     * @tparam thread_safety The thread safety of SharePointer
-     * @param size Number of type_t to allocate
-     * @return shared_pointer<type_t, thread_safety> pointer to an array of type type_t
-     */
-    template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe>
-    requires(hud::is_bounded_array_v<type_t>)
-    [[nodiscard]] HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(std::initializer_list<hud::remove_extent_t<type_t>> init_list) noexcept
-    {
-        return shared_pointer<type_t, thread_safety>(new (std::nothrow) details::reference_controller_no_deleter<type_t, thread_safety>(init_list));
     }
 
     /** Specialization of the hash function for shared_pointer */

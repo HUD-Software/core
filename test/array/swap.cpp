@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 
 GTEST_TEST(array, swap_empty_array_do_nothing)
 {

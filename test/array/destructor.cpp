@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 #include <core/templates/bit_cast.h>
 
 GTEST_TEST(array, destructor_call_elements_destructors)

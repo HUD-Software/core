@@ -10,7 +10,6 @@ add_executable(test_core
 	array/add.cpp
 	array/add_no_construct.cpp
 	array/add_to_ref.cpp
-	array/allocators.h
 	array/assignment.cpp
 	array/clear.cpp
 	array/comparison.cpp
@@ -47,17 +46,6 @@ add_executable(test_core
 	memory/reverse.cpp
 	memory/rotate.cpp
 	memory/set_zero.cpp
-	misc/default_constructible_type.h
-	misc/for_each_type.h
-	misc/for_each_value.h
-	misc/leak_guard.h
-	misc/non_bitwise_copy_assignable_type.h
-	misc/non_bitwise_copy_constructible_type.h
-	misc/non_bitwise_move_assignable_type.h
-	misc/non_bitwise_move_constructible_type.h
-	misc/non_bitwise_type.h
-	misc/non_default_constructible_type.h
-	misc/set_bool_to_true_when_destroyed.h
 	optional/assignment.cpp
 	optional/comparison.cpp
 	optional/constructors.cpp

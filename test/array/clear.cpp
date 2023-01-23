@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "allocators.h"
+#include "../misc/allocators.h"
 
 GTEST_TEST(array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
 {
