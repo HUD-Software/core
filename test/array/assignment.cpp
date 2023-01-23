@@ -23,8 +23,10 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
             {
                 if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
                 {
+                    // LCOV_EXCL_START
                     all_values_are_copied = false;
                     break;
+                    // LCOV_EXCL_STOP
                 }
             }
 
@@ -156,8 +158,10 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
         {
             if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
             {
+                // LCOV_EXCL_START
                 all_values_are_copied = false;
                 break;
+                // LCOV_EXCL_STOP
             }
         }
 
@@ -395,8 +399,10 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
             {
                 if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
                 {
+                    // LCOV_EXCL_START
                     all_values_are_copied = false;
                     break;
+                    // LCOV_EXCL_STOP
                 }
             }
 
@@ -528,8 +534,10 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
         {
             if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
             {
+                // LCOV_EXCL_START
                 all_values_are_copied = false;
                 break;
+                // LCOV_EXCL_STOP
             }
         }
 
@@ -768,8 +776,10 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                 // Ensure we correctly copied the value
                 if (assigned[index].id() != (elements_to_assign.begin() + index)->id())
                 {
+                    // LCOV_EXCL_START
                     all_values_are_copied = false;
                     break;
+                    // LCOV_EXCL_STOP
                 }
 
                 // Ensure we correctly call copy constructors
@@ -778,8 +788,10 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                     // If we assign more element, we should have reallocate
                     if (assigned[index].copy_constructor_count() != 1u)
                     {
+                        // LCOV_EXCL_START
                         all_copy_constructors_are_called = false;
                         break;
+                        // LCOV_EXCL_STOP
                     }
                 }
                 else
@@ -790,8 +802,10 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                         // For element that are already here, we call operator=
                         if (assigned[index].copy_assign_count() != 1u)
                         {
+                            // LCOV_EXCL_START
                             all_copy_assign_are_called = false;
                             break;
+                            // LCOV_EXCL_STOP
                         }
                     }
                     else
@@ -799,8 +813,10 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                         // For new elements we call copy constructors
                         if (assigned[index].copy_constructor_count() != 1u)
                         {
+                            // LCOV_EXCL_START
                             all_copy_constructors_are_called = false;
                             break;
+                            // LCOV_EXCL_STOP
                         }
                     }
                 }
