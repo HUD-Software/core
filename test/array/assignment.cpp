@@ -21,13 +21,13 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
+                // LCOV_EXCL_START
                 if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
                 {
-                    // LCOV_EXCL_START
                     all_values_are_copied = false;
                     break;
-                    // LCOV_EXCL_STOP
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -156,13 +156,13 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
         [[maybe_unused]] bool all_values_are_copied = true;
         for (usize index = 0; index < assigned.count(); index++)
         {
+            // LCOV_EXCL_START
             if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
             {
-                // LCOV_EXCL_START
                 all_values_are_copied = false;
                 break;
-                // LCOV_EXCL_STOP
             }
+            // LCOV_EXCL_STOP
         }
 
         return std::tuple {
@@ -397,13 +397,13 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
+                 // LCOV_EXCL_START
                 if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
                 {
-                    // LCOV_EXCL_START
                     all_values_are_copied = false;
                     break;
-                    // LCOV_EXCL_STOP
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -532,13 +532,13 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
         [[maybe_unused]] bool all_values_are_copied = true;
         for (usize index = 0; index < assigned.count(); index++)
         {
+            // LCOV_EXCL_START
             if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
             {
-                // LCOV_EXCL_START
                 all_values_are_copied = false;
                 break;
-                // LCOV_EXCL_STOP
             }
+            // LCOV_EXCL_STOP
         }
 
         return std::tuple {
@@ -772,14 +772,13 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
             bool all_copy_assign_are_called = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
-
+                // LCOV_EXCL_START
                 // Ensure we correctly copied the value
                 if (assigned[index].id() != (elements_to_assign.begin() + index)->id())
                 {
-                    // LCOV_EXCL_START
+                    
                     all_values_are_copied = false;
                     break;
-                    // LCOV_EXCL_STOP
                 }
 
                 // Ensure we correctly call copy constructors
@@ -788,10 +787,8 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                     // If we assign more element, we should have reallocate
                     if (assigned[index].copy_constructor_count() != 1u)
                     {
-                        // LCOV_EXCL_START
                         all_copy_constructors_are_called = false;
                         break;
-                        // LCOV_EXCL_STOP
                     }
                 }
                 else
@@ -802,10 +799,8 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                         // For element that are already here, we call operator=
                         if (assigned[index].copy_assign_count() != 1u)
                         {
-                            // LCOV_EXCL_START
                             all_copy_assign_are_called = false;
                             break;
-                            // LCOV_EXCL_STOP
                         }
                     }
                     else
@@ -813,13 +808,12 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                         // For new elements we call copy constructors
                         if (assigned[index].copy_constructor_count() != 1u)
                         {
-                            // LCOV_EXCL_START
                             all_copy_constructors_are_called = false;
                             break;
-                            // LCOV_EXCL_STOP
                         }
                     }
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -989,7 +983,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
         bool all_copy_assign_are_called = true;
         for (usize index = 0; index < assigned.count(); index++)
         {
-
+            // LCOV_EXCL_START
             // Ensure we correctly copied the value
             if (assigned[index].id() != (elements_to_assign.begin() + index)->id())
             {
@@ -1029,6 +1023,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                     }
                 }
             }
+            // LCOV_EXCL_STOP
         }
 
         return std::tuple {
@@ -1340,7 +1335,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
             bool all_copy_assign_are_called = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
-
+                // LCOV_EXCL_START
                 // Ensure we correctly copied the value
                 if (assigned[index].id() != (elements_to_assign.begin() + index)->id())
                 {
@@ -1380,6 +1375,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
                         }
                     }
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -1549,7 +1545,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
         bool all_copy_assign_are_called = true;
         for (usize index = 0; index < assigned.count(); index++)
         {
-
+            // LCOV_EXCL_START
             // Ensure we correctly copied the value
             if (assigned[index].id() != (elements_to_assign.begin() + index)->id())
             {
@@ -1589,6 +1585,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
                     }
                 }
             }
+            // LCOV_EXCL_STOP
         }
 
         return std::tuple {
@@ -1933,6 +1930,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
                     break;
             }
 
+            // LCOV_EXCL_START
             bool all_destructors_are_called = true;
             if (count_to_assigned > count_in_assigned)
             {
@@ -1993,6 +1991,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
                     break;
                 }
             }
+            // LCOV_EXCL_STOP
 
             return std::tuple {
                 all_destructors_are_called,
@@ -2002,95 +2001,96 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
         };
 
         // Non constant
+    {
         {
-            {const auto result = test(0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+            const auto result = test(0, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(2, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(0, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(2, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(3, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(2, 3);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        }
     }
-    {
-        const auto result = test(2, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        const auto result = test(0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        const auto result = test(2, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        const auto result = test(3, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        const auto result = test(2, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    }
-}
 
-// Constant
-{
+    // Constant
     {
-        constexpr auto result = test(0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        {
+            constexpr auto result = test(0, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(2, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(0, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(2, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(3, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(2, 3);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        }
     }
-    {
-        constexpr auto result = test(2, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(2, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(3, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(2, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    }
-}
 }
 
 // Test with extra
@@ -2146,6 +2146,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
                 break;
         }
 
+        // LCOV_EXCL_START
         bool all_destructors_are_called = true;
         if (count_to_assigned > count_in_assigned + extra)
         {
@@ -2206,6 +2207,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
                 break;
             }
         }
+        // LCOV_EXCL_STOP
 
         return std::tuple {
             all_destructors_are_called,
@@ -2213,181 +2215,182 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
             assigned.allocator().allocation_count(),
             assigned.allocator().free_count()};
     };
-
+    
     // Non constant
     {
-        {const auto result = test(0, 0, 0);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(0, 1, 0);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(2, 0, 0);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(2, 1, 0);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(0, 0, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(0, 1, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-}
-{
-    const auto result = test(2, 0, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(2, 1, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(3, 0, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(3, 1, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-{
-    const auto result = test(2, 0, 3);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-}
-{
-    const auto result = test(2, 1, 3);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-}
-}
+        {
+            const auto result = test(0, 0, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(0, 1, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(2, 0, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(2, 1, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(0, 0, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(0, 1, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        }
+        {
+            const auto result = test(2, 0, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(2, 1, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(3, 0, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(3, 1, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            const auto result = test(2, 0, 3);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        }
+        {
+            const auto result = test(2, 1, 3);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+    }
 
-// Constant
-{
+    // Constant
     {
-        constexpr auto result = test(0, 0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        {
+            constexpr auto result = test(0, 0, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(0, 1, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(2, 0, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(2, 1, 0);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(0, 0, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(0, 1, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        }
+        {
+            constexpr auto result = test(2, 0, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(2, 1, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(3, 0, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(3, 1, 2);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
+        {
+            constexpr auto result = test(2, 0, 3);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        }
+        {
+            constexpr auto result = test(2, 1, 3);
+            GTEST_ASSERT_TRUE(std::get<0>(result));
+            GTEST_ASSERT_TRUE(std::get<1>(result));
+            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        }
     }
-    {
-        constexpr auto result = test(0, 1, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(2, 0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(2, 1, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(0, 0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(0, 1, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    }
-    {
-        constexpr auto result = test(2, 0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(2, 1, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(3, 0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(3, 1, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-    {
-        constexpr auto result = test(2, 0, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    }
-    {
-        constexpr auto result = test(2, 1, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    }
-}
 }
 }
 
@@ -2411,11 +2414,13 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
+                // LCOV_EXCL_START
                 if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
                 {
                     all_values_are_copied = false;
                     break;
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -2430,7 +2435,8 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
 
         // Non constant
         {
-            {const auto result = test({}, {});
+            {
+                const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -2547,8 +2553,10 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
         {
             if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
             {
+                // LCOV_EXCL_START
                 all_values_are_copied = false;
                 break;
+                // LCOV_EXCL_STOP
             }
         }
 
@@ -2564,7 +2572,8 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
 
     // Non constant
     {
-        {const auto result = test({}, 0u, {}, 0u);
+        {
+            const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -2987,11 +2996,13 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
+                // LCOV_EXCL_START
                 if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
                 {
                     all_values_are_copied = false;
                     break;
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -3006,7 +3017,8 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
 
         // Non constant
         {
-            {const auto result = test({}, {});
+            {
+                const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -3121,11 +3133,13 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
         [[maybe_unused]] bool all_values_are_copied = true;
         for (usize index = 0; index < assigned.count(); index++)
         {
+            // LCOV_EXCL_START
             if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
             {
                 all_values_are_copied = false;
                 break;
             }
+            // LCOV_EXCL_STOP
         }
 
         return std::tuple {
@@ -3140,7 +3154,8 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
 
     // Non constant
     {
-        {const auto result = test({}, 0u, {}, 0u);
+        {
+            const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -3562,7 +3577,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
             bool all_copy_assign_are_called = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
-
+                // LCOV_EXCL_START
                 // Ensure we correctly copied the value
                 if (assigned[index].id() != *(elements_to_assign.begin() + index))
                 {
@@ -3602,6 +3617,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
                         }
                     }
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -3619,7 +3635,8 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
 
         // Non constant
         {
-            {const auto result = test({}, {});
+            {
+                const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -3772,7 +3789,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
         bool all_copy_assign_are_called = true;
         for (usize index = 0; index < assigned.count(); index++)
         {
-
+            // LCOV_EXCL_START
             // Ensure we correctly copied the value
             if (assigned[index].id() != *(elements_to_assign.begin() + index))
             {
@@ -3812,6 +3829,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
                     }
                 }
             }
+            // LCOV_EXCL_STOP
         }
 
         return std::tuple {
@@ -3829,7 +3847,8 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
 
     // Non constant
     {
-        {const auto result = test({}, 0u, {}, 0u);
+        {
+            const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -4398,7 +4417,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
             bool all_copy_assign_are_called = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
-
+                // LCOV_EXCL_START
                 // Ensure we correctly copied the value
                 if (assigned[index].id() != *(elements_to_assign.begin() + index))
                 {
@@ -4438,6 +4457,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
                         }
                     }
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -4455,7 +4475,8 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
 
         // Non constant
         {
-            {const auto result = test({}, {});
+            {
+                const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -4608,7 +4629,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
         bool all_copy_assign_are_called = true;
         for (usize index = 0; index < assigned.count(); index++)
         {
-
+            // LCOV_EXCL_START
             // Ensure we correctly copied the value
             if (assigned[index].id() != *(elements_to_assign.begin() + index))
             {
@@ -4648,6 +4669,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
                     }
                 }
             }
+            // LCOV_EXCL_STOP
         }
 
         return std::tuple {
@@ -4665,7 +4687,8 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
 
     // Non constant
     {
-        {const auto result = test({}, 0u, {}, 0u);
+        {
+            const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -5256,6 +5279,7 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
 
             assigned = to_assigned;
 
+            // LCOV_EXCL_START
             bool all_destructors_are_called = true;
             if (count_to_assigned > count_in_assigned)
             {
@@ -5316,6 +5340,7 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
                     break;
                 }
             }
+            // LCOV_EXCL_STOP
 
             return std::tuple {
                 all_destructors_are_called,
@@ -5326,7 +5351,8 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
 
         // Non constant
         {
-            {const auto result = test(0, 0);
+            {
+                const auto result = test(0, 0);
         GTEST_ASSERT_TRUE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -5459,6 +5485,7 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
 
         assigned = to_assigned;
 
+        // LCOV_EXCL_START
         bool all_destructors_are_called = true;
         if (count_to_assign > count_in_assigned + extra_in_assigned)
         {
@@ -5519,6 +5546,7 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
                 break;
             }
         }
+        // LCOV_EXCL_STOP
 
         return std::tuple {
             all_destructors_are_called,
@@ -5529,7 +5557,8 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
 
     // Non constant
     {
-        {const auto result = test(0, 0u, 0, 0u);
+        {
+            const auto result = test(0, 0u, 0, 0u);
     GTEST_ASSERT_TRUE(std::get<0>(result));
     GTEST_ASSERT_TRUE(std::get<1>(result));
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -5902,11 +5931,13 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
             [[maybe_unused]] bool all_values_are_moved = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
+                // LCOV_EXCL_START
                 if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
                 {
                     all_values_are_moved = false;
                     break;
                 }
+                // LCOV_EXCL_STOP
             }
 
             return std::tuple {
@@ -5921,7 +5952,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 
         // Non constant
         {
-            {const auto result = test({}, {});
+            {
+                const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -6036,11 +6068,13 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
         [[maybe_unused]] bool all_values_are_moved = true;
         for (usize index = 0; index < assigned.count(); index++)
         {
+            // LCOV_EXCL_START
             if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
             {
                 all_values_are_moved = false;
                 break;
             }
+            // LCOV_EXCL_STOP
         }
 
         return std::tuple {
@@ -6055,7 +6089,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 
     // Non constant
     {
-        {const auto result = test({}, 0u, {}, 0u);
+        {
+            const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
