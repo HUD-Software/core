@@ -320,8 +320,8 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		# "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" : Exclude GTEST_TEST and GTEST_ASSERT_
 		COMMAND rm -rf "coverage_html" "coverage.clang.cobertura.xml"
 		COMMAND mkdir "coverage_html"
-		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting --html-self-contained --delete
-		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml" --delete
+		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting --html-self-contained
+		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml"
 	)
 endif()
 
