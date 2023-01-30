@@ -56,3 +56,4 @@ jobs:
           path: |
             target/test/coverage.clang.cobertura.xml
             target/test/coverage_html/
+            target/test/coverage.clang.cobertura.json
