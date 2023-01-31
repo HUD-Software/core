@@ -397,7 +397,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
             [[maybe_unused]] bool all_values_are_copied = true;
             for (usize index = 0; index < assigned.count(); index++)
             {
-                 // LCOV_EXCL_START
+                // LCOV_EXCL_START
                 if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
                 {
                     all_values_are_copied = false;
@@ -776,7 +776,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
                 // Ensure we correctly copied the value
                 if (assigned[index].id() != (elements_to_assign.begin() + index)->id())
                 {
-                    
+
                     all_values_are_copied = false;
                     break;
                 }
@@ -1916,7 +1916,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
             hud_test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
 
             hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned);
-            
+
             // LCOV_EXCL_START
             switch (count_to_assigned)
             {
@@ -2001,96 +2001,95 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
         };
 
         // Non constant
-    {
         {
-            const auto result = test(0, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(2, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(0, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(2, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(3, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(2, 3);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        }
+            {const auto result = test(0, 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
     }
+    {
+        const auto result = test(2, 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        const auto result = test(0, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        const auto result = test(2, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        const auto result = test(3, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        const auto result = test(2, 3);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    }
+}
 
-    // Constant
+// Constant
+{
     {
-        {
-            constexpr auto result = test(0, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(2, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(0, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(2, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(3, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(2, 3);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        }
+        constexpr auto result = test(0, 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
     }
+    {
+        constexpr auto result = test(2, 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(0, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(2, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(3, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(2, 3);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    }
+}
 }
 
 // Test with extra
@@ -2215,182 +2214,181 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
             assigned.allocator().allocation_count(),
             assigned.allocator().free_count()};
     };
-    
+
     // Non constant
     {
-        {
-            const auto result = test(0, 0, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(0, 1, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(2, 0, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(2, 1, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(0, 0, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(0, 1, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        }
-        {
-            const auto result = test(2, 0, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(2, 1, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(3, 0, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(3, 1, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            const auto result = test(2, 0, 3);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        }
-        {
-            const auto result = test(2, 1, 3);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-    }
+        {const auto result = test(0, 0, 0);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(0, 1, 0);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(2, 0, 0);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(2, 1, 0);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(0, 0, 2);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(0, 1, 2);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+}
+{
+    const auto result = test(2, 0, 2);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(2, 1, 2);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(3, 0, 2);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(3, 1, 2);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+{
+    const auto result = test(2, 0, 3);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+}
+{
+    const auto result = test(2, 1, 3);
+    GTEST_ASSERT_TRUE(std::get<0>(result));
+    GTEST_ASSERT_TRUE(std::get<1>(result));
+    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+}
+}
 
-    // Constant
+// Constant
+{
     {
-        {
-            constexpr auto result = test(0, 0, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(0, 1, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(2, 0, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(2, 1, 0);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(0, 0, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(0, 1, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        }
-        {
-            constexpr auto result = test(2, 0, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(2, 1, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(3, 0, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(3, 1, 2);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
-        {
-            constexpr auto result = test(2, 0, 3);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        }
-        {
-            constexpr auto result = test(2, 1, 3);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-            GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        }
+        constexpr auto result = test(0, 0, 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
     }
+    {
+        constexpr auto result = test(0, 1, 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(2, 0, 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(2, 1, 0);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(0, 0, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(0, 1, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    }
+    {
+        constexpr auto result = test(2, 0, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(2, 1, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(3, 0, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(3, 1, 2);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+    {
+        constexpr auto result = test(2, 0, 3);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    }
+    {
+        constexpr auto result = test(2, 1, 3);
+        GTEST_ASSERT_TRUE(std::get<0>(result));
+        GTEST_ASSERT_TRUE(std::get<1>(result));
+        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
+        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    }
+}
 }
 }
 
@@ -2435,8 +2433,7 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
 
         // Non constant
         {
-            {
-                const auto result = test({}, {});
+            {const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -2572,8 +2569,7 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
 
     // Non constant
     {
-        {
-            const auto result = test({}, 0u, {}, 0u);
+        {const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -3017,8 +3013,7 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
 
         // Non constant
         {
-            {
-                const auto result = test({}, {});
+            {const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -3154,8 +3149,7 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
 
     // Non constant
     {
-        {
-            const auto result = test({}, 0u, {}, 0u);
+        {const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -3635,8 +3629,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
 
         // Non constant
         {
-            {
-                const auto result = test({}, {});
+            {const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -3847,8 +3840,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
 
     // Non constant
     {
-        {
-            const auto result = test({}, 0u, {}, 0u);
+        {const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -4475,8 +4467,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
 
         // Non constant
         {
-            {
-                const auto result = test({}, {});
+            {const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -4687,8 +4678,7 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
 
     // Non constant
     {
-        {
-            const auto result = test({}, 0u, {}, 0u);
+        {const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -5351,8 +5341,7 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
 
         // Non constant
         {
-            {
-                const auto result = test(0, 0);
+            {const auto result = test(0, 0);
         GTEST_ASSERT_TRUE(std::get<0>(result));
         GTEST_ASSERT_TRUE(std::get<1>(result));
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -5557,8 +5546,7 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
 
     // Non constant
     {
-        {
-            const auto result = test(0, 0u, 0, 0u);
+        {const auto result = test(0, 0u, 0, 0u);
     GTEST_ASSERT_TRUE(std::get<0>(result));
     GTEST_ASSERT_TRUE(std::get<1>(result));
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -5952,8 +5940,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 
         // Non constant
         {
-            {
-                const auto result = test({}, {});
+            {const auto result = test({}, {});
         GTEST_ASSERT_FALSE(std::get<0>(result));
         GTEST_ASSERT_EQ(std::get<1>(result), 0u);
         GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -6089,8 +6076,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 
     // Non constant
     {
-        {
-            const auto result = test({}, 0u, {}, 0u);
+        {const auto result = test({}, 0u, {}, 0u);
     GTEST_ASSERT_FALSE(std::get<0>(result));
     GTEST_ASSERT_EQ(std::get<1>(result), 0u);
     GTEST_ASSERT_EQ(std::get<2>(result), 0u);
@@ -6502,76 +6488,83 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
 
     auto test_assign = [](std::initializer_list<Type1> elements_in_assigned, usize extra, std::initializer_list<Type2> elements_to_assign, usize extra_2)
     {
-        hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
-        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
-
-        u32 previous_allocation_count = 0;
-        u32 previous_free_count = 0;
-        // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
+        try
         {
-            // Ensure we are allocating only one time
-            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), 1u);
-            GTEST_ASSERT_EQ(assigned.allocator().free_count(), 0u);
-            previous_allocation_count = assigned.allocator().allocation_count();
-            previous_free_count = assigned.allocator().free_count();
-        }
+            hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
+            hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
 
-        // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
+            u32 previous_allocation_count = 0;
+            u32 previous_free_count = 0;
+            // if we have elements to copy, then 1 allocation should be done
+            if ((elements_in_assigned.size() + extra) > 0)
+            {
+                // Ensure we are allocating only one time
+                GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), 1u);
+                GTEST_ASSERT_EQ(assigned.allocator().free_count(), 0u);
+                previous_allocation_count = assigned.allocator().allocation_count();
+                previous_free_count = assigned.allocator().free_count();
+            }
+
+            // If we have elements inside allocation should be done
+            if ((elements_in_assigned.size() + extra) > 0)
+            {
+                GTEST_ASSERT_NE(assigned.data(), nullptr);
+            }
+            else
+            {
+                GTEST_ASSERT_EQ(assigned.data(), nullptr);
+            }
+            GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
+            GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
+            const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
+            const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
+            if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
+            {
+                GTEST_ASSERT_NE(assigned_buffer_address, to_assigned_buffer_address);
+            }
+
+            assigned = std::move(to_assign);
+
+            // Number of element should be equal to the number of element in the std::initializer_list
+            GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_to_assign.size()));
+
+            // Ensure we keep all allocated memory from the move pointer
+            GTEST_ASSERT_EQ(assigned.max_count(), elements_to_assign.size() + extra_2);
+
+            // Ensures we move all values correctly
+            for (usize index = 0; index < assigned.count(); index++)
+            {
+                GTEST_ASSERT_EQ(assigned[index], static_cast<Type1>(*(elements_to_assign.begin() + index)));
+            }
+
+            // Allocation is not supposed to be done, the type is bitwise moveable, the array should just take the allocation buffer ( move the pointer to the allocation )
+            // assigned array should free the buffer if he have one
+            // Ensure we really stole the buffer and do not allocate
+            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), previous_allocation_count);
+            if ((elements_in_assigned.size() + extra) != 0)
+            {
+                GTEST_ASSERT_EQ(assigned.allocator().free_count(), previous_free_count + 1);
+            }
+
+            // Ensure we really stole the buffer by just moving the pointer
+            GTEST_ASSERT_EQ(reinterpret_cast<const uptr>(assigned.data()), to_assigned_buffer_address);
+
+            // Ensure that the moved array is set to empty
+            GTEST_ASSERT_EQ(to_assign.count(), 0u);
+            GTEST_ASSERT_EQ(to_assign.max_count(), 0u);
+            GTEST_ASSERT_EQ(to_assign.data(), nullptr);
+
+            // Ensure the moved array was not freed and only one allocation was done ( at initilisation of the array )
+            if ((elements_to_assign.size() + extra_2) > 0)
+            {
+                GTEST_ASSERT_EQ(to_assign.allocator().allocation_count(), 1u);
+            }
+            GTEST_ASSERT_EQ(to_assign.allocator().free_count(), 0u);
+        }
+        catch (...)
         {
-            GTEST_ASSERT_NE(assigned.data(), nullptr);
+            GTEST_FAIL();
         }
-        else
-        {
-            GTEST_ASSERT_EQ(assigned.data(), nullptr);
-        }
-        GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
-        GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
-        const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
-        const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
-            GTEST_ASSERT_NE(assigned_buffer_address, to_assigned_buffer_address);
-        }
-
-        assigned = std::move(to_assign);
-
-        // Number of element should be equal to the number of element in the std::initializer_list
-        GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_to_assign.size()));
-
-        // Ensure we keep all allocated memory from the move pointer
-        GTEST_ASSERT_EQ(assigned.max_count(), elements_to_assign.size() + extra_2);
-
-        // Ensures we move all values correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
-            GTEST_ASSERT_EQ(assigned[index], static_cast<Type1>(*(elements_to_assign.begin() + index)));
-        }
-
-        // Allocation is not supposed to be done, the type is bitwise moveable, the array should just take the allocation buffer ( move the pointer to the allocation )
-        // assigned array should free the buffer if he have one
-        // Ensure we really stole the buffer and do not allocate
-        GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), previous_allocation_count);
-        if ((elements_in_assigned.size() + extra) != 0)
-        {
-            GTEST_ASSERT_EQ(assigned.allocator().free_count(), previous_free_count + 1);
-        }
-
-        // Ensure we really stole the buffer by just moving the pointer
-        GTEST_ASSERT_EQ(reinterpret_cast<const uptr>(assigned.data()), to_assigned_buffer_address);
-
-        // Ensure that the moved array is set to empty
-        GTEST_ASSERT_EQ(to_assign.count(), 0u);
-        GTEST_ASSERT_EQ(to_assign.max_count(), 0u);
-        GTEST_ASSERT_EQ(to_assign.data(), nullptr);
-
-        // Ensure the moved array was not freed and only one allocation was done ( at initilisation of the array )
-        if ((elements_to_assign.size() + extra_2) > 0)
-        {
-            GTEST_ASSERT_EQ(to_assign.allocator().allocation_count(), 1u);
-        }
-        GTEST_ASSERT_EQ(to_assign.allocator().free_count(), 0u);
     };
 
     for (usize extra = 0; extra < 5; extra++)

@@ -312,6 +312,7 @@ if(COVERAGE AND MSVC)
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options(test_core PRIVATE --coverage)
 	target_link_options(test_core PRIVATE --coverage)
+	
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
@@ -321,7 +322,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		COMMAND rm -rf "coverage_html" "coverage.clang.cobertura.xml"
 		COMMAND mkdir "coverage_html"
 		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting --html-self-contained
-		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml"
+		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml" --delete
 	)
 endif()
 
