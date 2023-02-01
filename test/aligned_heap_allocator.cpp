@@ -15,10 +15,17 @@ GTEST_TEST(aligned_heap_allocator, correctly_allocate_and_free_aligned_requested
     hud_test::for_each_type<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>()([]<typename type_t>()
                                                                                                         { hud_test::for_each_value<u32, 1, 2, 4, 8, 16, 32, 64, 128, 256, 1024>()([]<u32 alignement>()
                                                                                                                                                                                   {
-            for (u32 count = 1; count < hud::i8_max; count++) {
+            for (u32 count = 0; count < hud::i8_max; count++) {
                 hud::aligned_heap_allocator<alignement> heap_allocator;
                 const auto buffer = heap_allocator.template allocate<type_t>(count);
-                hud_assert_ne(buffer.data(), nullptr);
+                if(count > 0)
+                {
+                    hud_assert_ne(buffer.data(), nullptr);
+                }
+                else
+                {
+                    hud_assert_eq(buffer.data(), nullptr);
+                }
                 hud_assert_eq(buffer.count(), count);
                 hud_assert_eq(buffer.end() - buffer.begin(), static_cast<iptr>(count));
                 hud_assert_true(hud::memory::is_pointer_aligned(buffer.data(), alignement));

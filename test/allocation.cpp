@@ -63,6 +63,8 @@ GTEST_TEST(allocation, move_assignment)
     hud_assert_eq(copy.data(), nullptr);
     hud_assert_true(copy.is_empty());
     hud_assert_eq(copy.count(), 0u);
+
+    // Assign with other
     {
         // constexpr Allocation& operator=(Allocation&& other) noexcept
         copy = hud::move(slice);
@@ -72,6 +74,14 @@ GTEST_TEST(allocation, move_assignment)
         hud_assert_eq(slice.data(), nullptr);
         hud_assert_true(slice.is_empty());
         hud_assert_eq(slice.count(), 0u);
+    }
+
+    // Assign with self
+    {
+        copy = hud::move(copy);
+        hud_assert_eq(copy.data(), arr);
+        hud_assert_false(copy.is_empty());
+        hud_assert_eq(copy.count(), 4u);
     }
 }
 

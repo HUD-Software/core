@@ -6648,7 +6648,14 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we keep all allocated memory from the move pointer
-        hud_assert_eq(assigned.max_count(), static_cast<usize>(std::max(elements_in_assigned.size() + extra, elements_to_assign.size())));
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
+        {
+            hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
+        }
+        else
+        {
+            hud_assert_eq(assigned.max_count(), elements_to_assign.size());
+        }
 
         // Ensures we move all values correctly
         for (usize index = 0; index < assigned.count(); index++)
@@ -6815,7 +6822,14 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we keep all allocated memory from the move pointer
-        hud_assert_eq(assigned.max_count(), static_cast<usize>(std::max(elements_in_assigned.size() + extra, elements_to_assign.size())));
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
+        {
+            hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
+        }
+        else
+        {
+            hud_assert_eq(assigned.max_count(), elements_to_assign.size());
+        }
 
         // Ensures we move all values correctly
         for (usize index = 0; index < assigned.count(); index++)
@@ -6972,7 +6986,14 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we do no reallocate for less memory
-        hud_assert_eq(assigned.max_count(), static_cast<usize>(std::max((elements_in_assigned.size() + extra), elements_to_assign.size())));
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
+        {
+            hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
+        }
+        else
+        {
+            hud_assert_eq(assigned.max_count(), elements_to_assign.size());
+        }
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
