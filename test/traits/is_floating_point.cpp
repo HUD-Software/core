@@ -2,11 +2,11 @@
 
 GTEST_TEST(traits, is_floating_point)
 {
-    GTEST_ASSERT_TRUE((hud::is_floating_point_v<f32>));
-    GTEST_ASSERT_TRUE((hud::is_floating_point_v<const f32>));
-    GTEST_ASSERT_TRUE((hud::is_floating_point_v<const volatile f32>));
-    GTEST_ASSERT_TRUE((hud::is_floating_point_v<f64>));
-    GTEST_ASSERT_TRUE((hud::is_floating_point_v<const f64>));
-    GTEST_ASSERT_TRUE((hud::is_floating_point_v<const volatile f64>));
-    GTEST_ASSERT_FALSE((hud::is_floating_point_v<class a>));
+    hud_assert_true((hud::is_floating_point_v<f32>));
+    hud_assert_true((hud::is_floating_point_v<const f32>));
+    hud_assert_true((hud::is_floating_point_v<const volatile f32>));
+    hud_assert_true((hud::is_floating_point_v<f64>));
+    hud_assert_true((hud::is_floating_point_v<const f64>));
+    hud_assert_true((hud::is_floating_point_v<const volatile f64>));
+    hud_assert_false((hud::is_floating_point_v<class a>));
 }

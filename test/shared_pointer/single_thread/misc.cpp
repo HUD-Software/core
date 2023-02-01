@@ -14,7 +14,7 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_pointer_return_object)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
+        hud_assert_true(std::get<0>(result));
     }
 
     // Constant
@@ -23,7 +23,7 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_pointer_return_object)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
+    //         hud_assert_true(std::get<0>(result));
     //     }
     // #endif
 }
@@ -41,7 +41,7 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_empty_pointer_return_nullptr)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
+        hud_assert_true(std::get<0>(result));
     }
 
     // Constant
@@ -50,7 +50,7 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_empty_pointer_return_nullptr)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
+    //         hud_assert_true(std::get<0>(result));
     //     }
     // #endif
 }
@@ -70,8 +70,8 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_is_owning)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_FALSE(std::get<1>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_false(std::get<1>(result));
     }
 
     // Constant
@@ -80,8 +80,8 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_is_owning)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_FALSE(std::get<1>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_false(std::get<1>(result));
     //     }
     // #endif
 }
@@ -101,8 +101,8 @@ GTEST_TEST(shared_pointer_not_safe, cast_to_bool)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_FALSE(std::get<1>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_false(std::get<1>(result));
     }
 
     // Constant
@@ -111,8 +111,8 @@ GTEST_TEST(shared_pointer_not_safe, cast_to_bool)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_FALSE(std::get<1>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_false(std::get<1>(result));
     //     }
     // #endif
 }
@@ -131,7 +131,7 @@ GTEST_TEST(shared_pointer_not_safe, operator_dereference)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
+        hud_assert_true(std::get<0>(result));
     }
 
     // Constant
@@ -140,7 +140,7 @@ GTEST_TEST(shared_pointer_not_safe, operator_dereference)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
+    //         hud_assert_true(std::get<0>(result));
     //     }
     // #endif
 }
@@ -159,7 +159,7 @@ GTEST_TEST(shared_pointer_not_safe, operator_arrow)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
+        hud_assert_true(std::get<0>(result));
     }
 
     // Constant
@@ -168,7 +168,7 @@ GTEST_TEST(shared_pointer_not_safe, operator_arrow)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
+    //         hud_assert_true(std::get<0>(result));
     //     }
     // #endif
 }
@@ -197,10 +197,10 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_empty)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 
     // Constant
@@ -209,10 +209,10 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_empty)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
     //     }
     // #endif
 }
@@ -241,10 +241,10 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_nullptr)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 
     // Constant
@@ -253,10 +253,10 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_nullptr)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
     //     }
     // #endif
 }
@@ -299,15 +299,15 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_same_type)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
-        GTEST_ASSERT_TRUE(std::get<8>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
     }
 
     // Constant
@@ -316,15 +316,15 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_same_type)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
-    //         GTEST_ASSERT_TRUE(std::get<4>(result));
-    //         GTEST_ASSERT_TRUE(std::get<5>(result));
-    //         GTEST_ASSERT_TRUE(std::get<6>(result));
-    //         GTEST_ASSERT_TRUE(std::get<7>(result));
-    //         GTEST_ASSERT_TRUE(std::get<8>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
+    //         hud_assert_true(std::get<4>(result));
+    //         hud_assert_true(std::get<5>(result));
+    //         hud_assert_true(std::get<6>(result));
+    //         hud_assert_true(std::get<7>(result));
+    //         hud_assert_true(std::get<8>(result));
     //     }
     // #endif
 }
@@ -367,15 +367,15 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_different_type)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
-        GTEST_ASSERT_TRUE(std::get<8>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
     }
 
     // Constant
@@ -384,15 +384,15 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_different_type)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
-    //         GTEST_ASSERT_TRUE(std::get<4>(result));
-    //         GTEST_ASSERT_TRUE(std::get<5>(result));
-    //         GTEST_ASSERT_TRUE(std::get<6>(result));
-    //         GTEST_ASSERT_TRUE(std::get<7>(result));
-    //         GTEST_ASSERT_TRUE(std::get<8>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
+    //         hud_assert_true(std::get<4>(result));
+    //         hud_assert_true(std::get<5>(result));
+    //         hud_assert_true(std::get<6>(result));
+    //         hud_assert_true(std::get<7>(result));
+    //         hud_assert_true(std::get<8>(result));
     //     }
     // #endif
 }
@@ -423,12 +423,12 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_empty_should_not_delete_if_other_re
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 
     // Constant
@@ -437,12 +437,12 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_empty_should_not_delete_if_other_re
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
-    //         GTEST_ASSERT_TRUE(std::get<4>(result));
-    //         GTEST_ASSERT_TRUE(std::get<5>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
+    //         hud_assert_true(std::get<4>(result));
+    //         hud_assert_true(std::get<5>(result));
     //     }
     // #endif
 }
@@ -479,14 +479,14 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_other_pointer_should_not_delete_if_
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
     }
 
     // Constant
@@ -495,14 +495,14 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_other_pointer_should_not_delete_if_
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
-    //         GTEST_ASSERT_TRUE(std::get<4>(result));
-    //         GTEST_ASSERT_TRUE(std::get<5>(result));
-    //         GTEST_ASSERT_TRUE(std::get<6>(result));
-    //         GTEST_ASSERT_TRUE(std::get<7>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
+    //         hud_assert_true(std::get<4>(result));
+    //         hud_assert_true(std::get<5>(result));
+    //         hud_assert_true(std::get<6>(result));
+    //         hud_assert_true(std::get<7>(result));
     //     }
     // #endif
 }
@@ -528,12 +528,12 @@ GTEST_TEST(shared_pointer_not_safe, make_shared)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 
     // Constant
@@ -550,5 +550,5 @@ GTEST_TEST(shared_pointer_not_safe, hash)
         return hud::hash(ptr) == hud::hash(ptr.pointer());
     };
 
-    GTEST_ASSERT_TRUE(test());
+    hud_assert_true(test());
 }

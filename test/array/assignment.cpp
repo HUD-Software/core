@@ -43,51 +43,51 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 
@@ -95,51 +95,51 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 }
@@ -178,99 +178,99 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
     // Non constant
     {
         {const auto result = test({}, 0u, {});
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 0u, {1, 2});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 }
 
@@ -278,99 +278,99 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
 {
     {
         constexpr auto result = test({}, 0u, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0u, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 }
 }
@@ -419,51 +419,51 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 
@@ -471,51 +471,51 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 }
@@ -554,99 +554,99 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
     // Non constant
     {
         {const auto result = test({}, 0u, {});
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 0u, {1, 2});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 }
 
@@ -654,99 +654,99 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
 {
     {
         constexpr auto result = test({}, 0u, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0u, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 }
 }
@@ -832,69 +832,69 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 }
 
@@ -902,69 +902,69 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 }
 }
@@ -1042,135 +1042,135 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
     // Non constant
     {
         {const auto result = test({}, 0, {});
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 0u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 0, {1, 2});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1, {1, 2});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 0, {3, 4});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1, {3, 4});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 0, {4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1, {4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0, {3, 4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1, {3, 4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 }
 
@@ -1178,135 +1178,135 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
 {
     {
         constexpr auto result = test({}, 0, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 0, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 }
 }
@@ -1394,69 +1394,69 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 }
 
@@ -1464,69 +1464,69 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 }
 }
@@ -1604,135 +1604,135 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
     // Non constant
     {
         {const auto result = test({}, 0, {});
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 0u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1, {});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 0, {1, 2});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1, {1, 2});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 0, {3, 4});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1, {3, 4});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 0, {4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1, {4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0, {3, 4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1, {3, 4, 5});
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 }
 
@@ -1740,135 +1740,135 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
 {
     {
         constexpr auto result = test({}, 0, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 0, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 }
 }
@@ -2003,45 +2003,45 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
         // Non constant
         {
             {const auto result = test(0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(2, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(2, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(3, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(2, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
 }
 
@@ -2049,45 +2049,45 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
 {
     {
         constexpr auto result = test(0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(3, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
 }
 }
@@ -2218,87 +2218,87 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
     // Non constant
     {
         {const auto result = test(0, 0, 0);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(0, 1, 0);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 0, 0);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 1, 0);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(0, 0, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(0, 1, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
 }
 {
     const auto result = test(2, 0, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 1, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(3, 0, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(3, 1, 2);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 0, 3);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
 }
 {
     const auto result = test(2, 1, 3);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 }
 
@@ -2306,87 +2306,87 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
 {
     {
         constexpr auto result = test(0, 0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 1, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 1, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 1, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
     {
         constexpr auto result = test(2, 0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 1, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(3, 0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(3, 1, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 0, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
     {
         constexpr auto result = test(2, 1, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
 }
 }
@@ -2434,51 +2434,51 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 
@@ -2486,51 +2486,51 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 }
@@ -2570,200 +2570,200 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
     // Non constant
     {
         {const auto result = test({}, 0u, {}, 0u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 0u, {}, 1u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 
 {
     const auto result = test({}, 0u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({}, 0u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 }
 
@@ -2771,200 +2771,200 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_same_type)
 {
     {
         constexpr auto result = test({}, 0u, {}, 0u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0u, {}, 1u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({}, 0u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({}, 0u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 }
 }
@@ -3014,51 +3014,51 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 
@@ -3066,51 +3066,51 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 }
@@ -3150,200 +3150,200 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
     // Non constant
     {
         {const auto result = test({}, 0u, {}, 0u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 0u, {}, 1u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 
 {
     const auto result = test({}, 0u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({}, 0u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 2u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 }
 
@@ -3351,200 +3351,200 @@ GTEST_TEST(array, assign_array_of_bitwise_copy_assignable_different_type)
 {
     {
         constexpr auto result = test({}, 0u, {}, 0u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0u, {}, 1u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({}, 0u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({}, 0u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 }
 }
@@ -3630,69 +3630,69 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 }
 
@@ -3700,69 +3700,69 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 }
 }
@@ -3841,272 +3841,272 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
     // Non constant
     {
         {const auto result = test({}, 0u, {}, 0u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 0u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 0u, {}, 1u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 0u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 
 {
     const auto result = test({}, 0u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({}, 0u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 }
 
@@ -4114,272 +4114,272 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_same_type)
 {
     {
         constexpr auto result = test({}, 0u, {}, 0u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0u, {}, 1u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 
     {
         constexpr auto result = test({}, 0u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({}, 0u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 }
 }
@@ -4468,69 +4468,69 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 }
 
@@ -4538,69 +4538,69 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 }
 }
@@ -4679,272 +4679,272 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
     // Non constant
     {
         {const auto result = test({}, 0u, {}, 0u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 0u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 0u, {}, 1u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 0u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 
 {
     const auto result = test({}, 0u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({}, 0u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 2u);
+    hud_assert_eq(std::get<7>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_TRUE(std::get<3>(result));
-    GTEST_ASSERT_TRUE(std::get<4>(result));
-    GTEST_ASSERT_TRUE(std::get<5>(result));
-    GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_true(std::get<3>(result));
+    hud_assert_true(std::get<4>(result));
+    hud_assert_true(std::get<5>(result));
+    hud_assert_eq(std::get<6>(result), 1u);
+    hud_assert_eq(std::get<7>(result), 0u);
 }
 }
 
@@ -4952,272 +4952,272 @@ GTEST_TEST(array, assign_array_of_non_bitwise_copy_assignable_different_type)
 {
     {
         constexpr auto result = test({}, 0u, {}, 0u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0u, {}, 1u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 
     {
         constexpr auto result = test({}, 0u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({}, 0u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 2u);
+        hud_assert_eq(std::get<7>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_EQ(std::get<6>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<7>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_eq(std::get<6>(result), 1u);
+        hud_assert_eq(std::get<7>(result), 0u);
     }
 }
 }
@@ -5342,45 +5342,45 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
         // Non constant
         {
             {const auto result = test(0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(2, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(2, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(3, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         const auto result = test(2, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
 }
 
@@ -5388,45 +5388,45 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
 {
     {
         constexpr auto result = test(0, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 0);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(3, 2);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 3);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
 }
 }
@@ -5547,176 +5547,176 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
     // Non constant
     {
         {const auto result = test(0, 0u, 0, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(0, 1u, 0, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(0, 0u, 0, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(0, 1u, 0, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 
 {
     const auto result = test(2, 0u, 0, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 1u, 0, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 0u, 0, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 1u, 0, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 
 {
     const auto result = test(0, 0u, 2, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(0, 1u, 2, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
 }
 {
     const auto result = test(0, 0u, 2, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(0, 1u, 2, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
 }
 
 {
     const auto result = test(2, 0u, 2, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 1u, 2, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 0u, 2, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 1u, 2, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 
 {
     const auto result = test(3, 0u, 2, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(3, 1u, 2, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(3, 0u, 2, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(3, 1u, 2, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 
 {
     const auto result = test(2, 0u, 3, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
 }
 {
     const auto result = test(2, 1u, 3, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 {
     const auto result = test(2, 0u, 3, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
 }
 {
     const auto result = test(2, 1u, 3, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_TRUE(std::get<1>(result));
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_true(std::get<1>(result));
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
 }
 }
 
@@ -5724,176 +5724,176 @@ GTEST_TEST(array, assign_array_call_destructor_of_elements)
 {
     {
         constexpr auto result = test(0, 0u, 0, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 1u, 0, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 0u, 0, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 1u, 0, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
 
     {
         constexpr auto result = test(2, 0u, 0, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 1u, 0, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 0u, 0, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 1u, 0, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
 
     {
         constexpr auto result = test(0, 0u, 2, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 1u, 2, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
     {
         constexpr auto result = test(0, 0u, 2, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(0, 1u, 2, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
 
     {
         constexpr auto result = test(2, 0u, 2, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 1u, 2, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 0u, 2, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 1u, 2, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
 
     {
         constexpr auto result = test(3, 0u, 2, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(3, 1u, 2, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(3, 0u, 2, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(3, 1u, 2, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
 
     {
         constexpr auto result = test(2, 0u, 3, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
     {
         constexpr auto result = test(2, 1u, 3, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
     {
         constexpr auto result = test(2, 0u, 3, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
     }
     {
         constexpr auto result = test(2, 1u, 3, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 0u);
     }
 }
 }
@@ -5941,51 +5941,51 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
         // Non constant
         {
             {const auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         const auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         const auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         const auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         const auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 
@@ -5993,51 +5993,51 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 {
     {
         constexpr auto result = test({}, {});
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, {1, 2});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, {4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, {3, 4, 5});
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 }
 }
@@ -6077,200 +6077,200 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
     // Non constant
     {
         {const auto result = test({}, 0u, {}, 0u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 0u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({}, 0u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {}, 0u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 0u);
-    GTEST_ASSERT_FALSE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_false(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 0u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 0u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 0u);
+    hud_assert_eq(std::get<2>(result), 1u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 
 {
     const auto result = test({}, 0u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({}, 0u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 0u);
+    hud_assert_eq(std::get<4>(result), 0u);
 }
 {
     const auto result = test({}, 1u, {1, 2}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 2u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 2u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 3u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 {
     const auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-    GTEST_ASSERT_TRUE(std::get<0>(result));
-    GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-    GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-    GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-    GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+    hud_assert_true(std::get<0>(result));
+    hud_assert_eq(std::get<1>(result), 3u);
+    hud_assert_eq(std::get<2>(result), 4u);
+    hud_assert_eq(std::get<3>(result), 1u);
+    hud_assert_eq(std::get<4>(result), 1u);
 }
 }
 
@@ -6278,200 +6278,200 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 {
     {
         constexpr auto result = test({}, 0u, {}, 0u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 0u, {}, 1u);
-        GTEST_ASSERT_FALSE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_false(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 1u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 0u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({}, 0u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({}, 0u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({}, 1u, {1, 2}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 2u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 4u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 4u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
     {
         constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 2u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 2u);
+        hud_assert_eq(std::get<4>(result), 1u);
     }
     {
         constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_EQ(std::get<1>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 3u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 0u);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 3u);
+        hud_assert_eq(std::get<2>(result), 3u);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
     }
 }
 }
@@ -6479,92 +6479,83 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 
 GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
 {
-
     using Type1 = i32;
     using Type2 = u32;
     // Ensure we test with different types
     static_assert(!std::is_same_v<Type1, Type2>);
     static_assert(hud::is_bitwise_copy_assignable_v<Type2, Type1>);
 
-    auto test_assign = [](std::initializer_list<Type1> elements_in_assigned, usize extra, std::initializer_list<Type2> elements_to_assign, usize extra_2)
+    auto test_assign = [](std::initializer_list<Type1> elements_in_assigned, usize extra, std::initializer_list<Type2> elements_to_assign, usize extra_2) noexcept
     {
-        try
+        hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
+        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
+
+        u32 previous_allocation_count = 0;
+        u32 previous_free_count = 0;
+        // if we have elements to copy, then 1 allocation should be done
+        if ((elements_in_assigned.size() + extra) > 0)
         {
-            hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
-            hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
-
-            u32 previous_allocation_count = 0;
-            u32 previous_free_count = 0;
-            // if we have elements to copy, then 1 allocation should be done
-            if ((elements_in_assigned.size() + extra) > 0)
-            {
-                // Ensure we are allocating only one time
-                GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), 1u);
-                GTEST_ASSERT_EQ(assigned.allocator().free_count(), 0u);
-                previous_allocation_count = assigned.allocator().allocation_count();
-                previous_free_count = assigned.allocator().free_count();
-            }
-
-            // If we have elements inside allocation should be done
-            if ((elements_in_assigned.size() + extra) > 0)
-            {
-                GTEST_ASSERT_NE(assigned.data(), nullptr);
-            }
-            else
-            {
-                GTEST_ASSERT_EQ(assigned.data(), nullptr);
-            }
-            GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
-            GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
-            const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
-            const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-            if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-            {
-                GTEST_ASSERT_NE(assigned_buffer_address, to_assigned_buffer_address);
-            }
-
-            assigned = std::move(to_assign);
-
-            // Number of element should be equal to the number of element in the std::initializer_list
-            GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_to_assign.size()));
-
-            // Ensure we keep all allocated memory from the move pointer
-            GTEST_ASSERT_EQ(assigned.max_count(), elements_to_assign.size() + extra_2);
-
-            // Ensures we move all values correctly
-            for (usize index = 0; index < assigned.count(); index++)
-            {
-                GTEST_ASSERT_EQ(assigned[index], static_cast<Type1>(*(elements_to_assign.begin() + index)));
-            }
-
-            // Allocation is not supposed to be done, the type is bitwise moveable, the array should just take the allocation buffer ( move the pointer to the allocation )
-            // assigned array should free the buffer if he have one
-            // Ensure we really stole the buffer and do not allocate
-            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), previous_allocation_count);
-            if ((elements_in_assigned.size() + extra) != 0)
-            {
-                GTEST_ASSERT_EQ(assigned.allocator().free_count(), previous_free_count + 1);
-            }
-
-            // Ensure we really stole the buffer by just moving the pointer
-            GTEST_ASSERT_EQ(reinterpret_cast<const uptr>(assigned.data()), to_assigned_buffer_address);
-
-            // Ensure that the moved array is set to empty
-            GTEST_ASSERT_EQ(to_assign.count(), 0u);
-            GTEST_ASSERT_EQ(to_assign.max_count(), 0u);
-            GTEST_ASSERT_EQ(to_assign.data(), nullptr);
-
-            // Ensure the moved array was not freed and only one allocation was done ( at initilisation of the array )
-            if ((elements_to_assign.size() + extra_2) > 0)
-            {
-                GTEST_ASSERT_EQ(to_assign.allocator().allocation_count(), 1u);
-            }
-            GTEST_ASSERT_EQ(to_assign.allocator().free_count(), 0u);
+            // Ensure we are allocating only one time
+            hud_assert_eq(assigned.allocator().allocation_count(), 1u);
+            hud_assert_eq(assigned.allocator().free_count(), 0u);
+            previous_allocation_count = assigned.allocator().allocation_count();
+            previous_free_count = assigned.allocator().free_count();
         }
-        catch (...)
+        // If we have elements inside allocation should be done
+        if ((elements_in_assigned.size() + extra) > 0)
         {
-            GTEST_FAIL();
+            hud_assert_ne(assigned.data(), nullptr);
         }
+        else
+        {
+            hud_assert_eq(assigned.data(), nullptr);
+        }
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
+        const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
+        const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
+        {
+            hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
+        }
+
+        assigned = std::move(to_assign);
+
+        // Number of element should be equal to the number of element in the std::initializer_list
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
+
+        // Ensure we keep all allocated memory from the move pointer
+        hud_assert_eq(assigned.max_count(), elements_to_assign.size() + extra_2);
+
+        // Ensures we move all values correctly
+        for (usize index = 0; index < assigned.count(); index++)
+        {
+            hud_assert_eq(assigned[index], static_cast<Type1>(*(elements_to_assign.begin() + index)));
+        }
+
+        // Allocation is not supposed to be done, the type is bitwise moveable, the array should just take the allocation buffer ( move the pointer to the allocation )
+        // assigned array should free the buffer if he have one
+        // Ensure we really stole the buffer and do not allocate
+        hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
+        if ((elements_in_assigned.size() + extra) != 0)
+        {
+            hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
+        }
+
+        // Ensure we really stole the buffer by just moving the pointer
+        hud_assert_eq(reinterpret_cast<const uptr>(assigned.data()), to_assigned_buffer_address);
+
+        // Ensure that the moved array is set to empty
+        hud_assert_eq(to_assign.count(), 0u);
+        hud_assert_eq(to_assign.max_count(), 0u);
+        hud_assert_eq(to_assign.data(), nullptr);
+
+        // Ensure the moved array was not freed and only one allocation was done ( at initilisation of the array )
+        if ((elements_to_assign.size() + extra_2) > 0)
+        {
+            hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
+        }
+        hud_assert_eq(to_assign.allocator().free_count(), 0u);
     };
 
     for (usize extra = 0; extra < 5; extra++)
@@ -6593,15 +6584,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
         // Ensure that all counters are set to 0
         for (const type &element : elements_in_assigned)
         {
-            GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-            GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-            GTEST_ASSERT_EQ(element.copy_constructor_count(), 0u);
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 0u);
         }
         for (const type &element : elements_to_assign)
         {
-            GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-            GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-            GTEST_ASSERT_EQ(element.copy_constructor_count(), 0u);
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
         hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
@@ -6610,15 +6601,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
         // Ensure assigned copy constructor is set to 1
         for (const type &element : assigned)
         {
-            GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-            GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-            GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 1u);
         }
         for (const type &element : to_assign)
         {
-            GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-            GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-            GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 1u);
         }
 
         u32 previous_allocation_count = 0;
@@ -6627,8 +6618,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
         if ((elements_in_assigned.size() + extra) > 0)
         {
             // Ensure we are allocating only one time
-            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), 1u);
-            GTEST_ASSERT_EQ(assigned.allocator().free_count(), 0u);
+            hud_assert_eq(assigned.allocator().allocation_count(), 1u);
+            hud_assert_eq(assigned.allocator().free_count(), 0u);
             previous_allocation_count = assigned.allocator().allocation_count();
             previous_free_count = assigned.allocator().free_count();
         }
@@ -6636,33 +6627,33 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
         // If we have elements inside allocation should be done
         if ((elements_in_assigned.size() + extra) > 0)
         {
-            GTEST_ASSERT_NE(assigned.data(), nullptr);
+            hud_assert_ne(assigned.data(), nullptr);
         }
         else
         {
-            GTEST_ASSERT_EQ(assigned.data(), nullptr);
+            hud_assert_eq(assigned.data(), nullptr);
         }
-        GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
-        GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
         if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
         {
-            GTEST_ASSERT_NE(assigned_buffer_address, to_assigned_buffer_address);
+            hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
         assigned = std::move(to_assign);
 
         // Number of element should be equal to the number of element in the std::initializer_list
-        GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_to_assign.size()));
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we keep all allocated memory from the move pointer
-        GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(std::max(elements_in_assigned.size() + extra, elements_to_assign.size())));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(std::max(elements_in_assigned.size() + extra, elements_to_assign.size())));
 
         // Ensures we move all values correctly
         for (usize index = 0; index < assigned.count(); index++)
         {
-            GTEST_ASSERT_EQ(assigned[index].id(), (elements_to_assign.begin() + index)->id());
+            hud_assert_eq(assigned[index].id(), (elements_to_assign.begin() + index)->id());
         }
 
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
@@ -6670,10 +6661,10 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
         // Allocation is supposed to reallocate if we assign more elements than was allocated
         if (should_reallocate)
         {
-            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), previous_allocation_count + 1);
+            hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
             if (previous_allocation_count > 0)
             {
-                GTEST_ASSERT_EQ(assigned.allocator().free_count(), previous_free_count + 1);
+                hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
 
@@ -6685,10 +6676,10 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
             for (usize index = 0; index < assigned.count(); index++)
             {
                 const type &element = assigned[index];
-                GTEST_ASSERT_EQ(element.id(), (elements_to_assign.begin() + index)->id());
-                GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-                GTEST_ASSERT_EQ(element.move_constructor_count(), 1u);
-                GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+                hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
+                hud_assert_eq(element.move_assign_count(), 0u);
+                hud_assert_eq(element.move_constructor_count(), 1u);
+                hud_assert_eq(element.copy_constructor_count(), 1u);
             }
         }
         // If not reallocation was done, all element in current count should call move assign,
@@ -6700,34 +6691,34 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
                 const type &element = assigned[index];
                 if (index < elements_in_assigned.size())
                 {
-                    GTEST_ASSERT_EQ(element.move_assign_count(), 1u);
-                    GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-                    GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+                    hud_assert_eq(element.move_assign_count(), 1u);
+                    hud_assert_eq(element.move_constructor_count(), 0u);
+                    hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
                 else
                 {
-                    GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-                    GTEST_ASSERT_EQ(element.move_constructor_count(), 1u);
-                    GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+                    hud_assert_eq(element.move_assign_count(), 0u);
+                    hud_assert_eq(element.move_constructor_count(), 1u);
+                    hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
             }
         }
 
         // Ensure that the moved array is set to empty
-        GTEST_ASSERT_EQ(to_assign.count(), 0u);
-        GTEST_ASSERT_EQ(to_assign.max_count(), 0u);
-        GTEST_ASSERT_EQ(to_assign.data(), nullptr);
+        hud_assert_eq(to_assign.count(), 0u);
+        hud_assert_eq(to_assign.max_count(), 0u);
+        hud_assert_eq(to_assign.data(), nullptr);
 
         // Ensure the moved array was freed and only one allocation was done ( at initilisation of the array )
         if ((elements_to_assign.size() + extra_2) > 0)
         {
-            GTEST_ASSERT_EQ(to_assign.allocator().allocation_count(), 1u);
-            GTEST_ASSERT_EQ(to_assign.allocator().free_count(), 1u);
+            hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
+            hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
         else
         {
-            GTEST_ASSERT_EQ(to_assign.allocator().allocation_count(), 0u);
-            GTEST_ASSERT_EQ(to_assign.allocator().free_count(), 0u);
+            hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
+            hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
@@ -6760,15 +6751,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         // Ensure that all counters are set to 0
         for (const Type1 &element : elements_in_assigned)
         {
-            GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-            GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-            GTEST_ASSERT_EQ(element.copy_constructor_count(), 0u);
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 0u);
         }
         for (const Type2 &element : elements_to_assign)
         {
-            GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-            GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-            GTEST_ASSERT_EQ(element.copy_constructor_count(), 0u);
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
         hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
@@ -6777,15 +6768,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         // Ensure assigned copy constructor is set to 1
         for (const Type1 &element : assigned)
         {
-            GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-            GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-            GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 1u);
         }
         for (const Type2 &element : to_assign)
         {
-            GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-            GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-            GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 1u);
         }
 
         u32 previous_allocation_count = 0;
@@ -6794,8 +6785,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         if ((elements_in_assigned.size() + extra) > 0)
         {
             // Ensure we are allocating only one time
-            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), 1u);
-            GTEST_ASSERT_EQ(assigned.allocator().free_count(), 0u);
+            hud_assert_eq(assigned.allocator().allocation_count(), 1u);
+            hud_assert_eq(assigned.allocator().free_count(), 0u);
             previous_allocation_count = assigned.allocator().allocation_count();
             previous_free_count = assigned.allocator().free_count();
         }
@@ -6803,33 +6794,33 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         // If we have elements inside allocation should be done
         if ((elements_in_assigned.size() + extra) > 0)
         {
-            GTEST_ASSERT_NE(assigned.data(), nullptr);
+            hud_assert_ne(assigned.data(), nullptr);
         }
         else
         {
-            GTEST_ASSERT_EQ(assigned.data(), nullptr);
+            hud_assert_eq(assigned.data(), nullptr);
         }
-        GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
-        GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
         if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
         {
-            GTEST_ASSERT_NE(assigned_buffer_address, to_assigned_buffer_address);
+            hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
         assigned = std::move(to_assign);
 
         // Number of element should be equal to the number of element in the std::initializer_list
-        GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_to_assign.size()));
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we keep all allocated memory from the move pointer
-        GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(std::max(elements_in_assigned.size() + extra, elements_to_assign.size())));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(std::max(elements_in_assigned.size() + extra, elements_to_assign.size())));
 
         // Ensures we move all values correctly
         for (usize index = 0; index < assigned.count(); index++)
         {
-            GTEST_ASSERT_EQ(assigned[index].id(), (elements_to_assign.begin() + index)->id());
+            hud_assert_eq(assigned[index].id(), (elements_to_assign.begin() + index)->id());
         }
 
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
@@ -6837,10 +6828,10 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         // Allocation is supposed to reallocate if we assign more elements than was allocated
         if (should_reallocate)
         {
-            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), previous_allocation_count + 1);
+            hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
             if (previous_allocation_count > 0)
             {
-                GTEST_ASSERT_EQ(assigned.allocator().free_count(), previous_free_count + 1);
+                hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
 
@@ -6852,10 +6843,10 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
             for (usize index = 0; index < assigned.count(); index++)
             {
                 const Type1 &element = assigned[index];
-                GTEST_ASSERT_EQ(element.id(), (elements_to_assign.begin() + index)->id());
-                GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-                GTEST_ASSERT_EQ(element.move_constructor_count(), 1u);
-                GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+                hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
+                hud_assert_eq(element.move_assign_count(), 0u);
+                hud_assert_eq(element.move_constructor_count(), 1u);
+                hud_assert_eq(element.copy_constructor_count(), 1u);
             }
         }
         // If not reallocation was done, all element in current count should call move assign,
@@ -6867,34 +6858,34 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
                 const Type1 &element = assigned[index];
                 if (index < elements_in_assigned.size())
                 {
-                    GTEST_ASSERT_EQ(element.move_assign_count(), 1u);
-                    GTEST_ASSERT_EQ(element.move_constructor_count(), 0u);
-                    GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+                    hud_assert_eq(element.move_assign_count(), 1u);
+                    hud_assert_eq(element.move_constructor_count(), 0u);
+                    hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
                 else
                 {
-                    GTEST_ASSERT_EQ(element.move_assign_count(), 0u);
-                    GTEST_ASSERT_EQ(element.move_constructor_count(), 1u);
-                    GTEST_ASSERT_EQ(element.copy_constructor_count(), 1u);
+                    hud_assert_eq(element.move_assign_count(), 0u);
+                    hud_assert_eq(element.move_constructor_count(), 1u);
+                    hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
             }
         }
 
         // Ensure that the moved array is set to empty
-        GTEST_ASSERT_EQ(to_assign.count(), 0u);
-        GTEST_ASSERT_EQ(to_assign.max_count(), 0u);
-        GTEST_ASSERT_EQ(to_assign.data(), nullptr);
+        hud_assert_eq(to_assign.count(), 0u);
+        hud_assert_eq(to_assign.max_count(), 0u);
+        hud_assert_eq(to_assign.data(), nullptr);
 
         // Ensure the moved array was freed and only one allocation was done ( at initilisation of the array )
         if ((elements_to_assign.size() + extra_2) > 0)
         {
-            GTEST_ASSERT_EQ(to_assign.allocator().allocation_count(), 1u);
-            GTEST_ASSERT_EQ(to_assign.allocator().free_count(), 1u);
+            hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
+            hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
         else
         {
-            GTEST_ASSERT_EQ(to_assign.allocator().allocation_count(), 0u);
-            GTEST_ASSERT_EQ(to_assign.allocator().free_count(), 0u);
+            hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
+            hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
@@ -6921,12 +6912,12 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
         // Ensure that all destructors is not called
         for (i32 *destructor_counter : elements_in_assigned)
         {
-            GTEST_ASSERT_NE(destructor_counter, nullptr);
+            hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
         for (i32 *destructor_counter : elements_to_assign)
         {
-            GTEST_ASSERT_NE(destructor_counter, nullptr);
+            hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
 
@@ -6936,8 +6927,8 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
         // Ensure assigned copy constructor is set to 1
         for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
         {
-            GTEST_ASSERT_NE(element.ptr(), nullptr);
-            GTEST_ASSERT_EQ(*element.ptr(), 0);
+            hud_assert_ne(element.ptr(), nullptr);
+            hud_assert_eq(*element.ptr(), 0);
         }
 
         u32 previous_allocation_count = 0;
@@ -6946,8 +6937,8 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
         if ((elements_in_assigned.size() + extra) > 0)
         {
             // Ensure we are allocating only one time
-            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), 1u);
-            GTEST_ASSERT_EQ(assigned.allocator().free_count(), 0u);
+            hud_assert_eq(assigned.allocator().allocation_count(), 1u);
+            hud_assert_eq(assigned.allocator().free_count(), 0u);
             previous_allocation_count = assigned.allocator().allocation_count();
             previous_free_count = assigned.allocator().free_count();
         }
@@ -6955,14 +6946,14 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
         // If we have elements inside allocation should be done
         if ((elements_in_assigned.size() + extra) > 0)
         {
-            GTEST_ASSERT_NE(assigned.data(), nullptr);
+            hud_assert_ne(assigned.data(), nullptr);
         }
         else
         {
-            GTEST_ASSERT_EQ(assigned.data(), nullptr);
+            hud_assert_eq(assigned.data(), nullptr);
         }
-        GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
-        GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
 
         assigned = std::move(to_assign);
 
@@ -6970,27 +6961,27 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
         // The only case we have no allocation at all is when assigning empty std::initializer_list to empty array
         if ((elements_in_assigned.size() + extra) == 0 && elements_to_assign.size() == 0)
         {
-            GTEST_ASSERT_EQ(assigned.data(), nullptr);
+            hud_assert_eq(assigned.data(), nullptr);
         }
         else
         {
-            GTEST_ASSERT_NE(assigned.data(), nullptr);
+            hud_assert_ne(assigned.data(), nullptr);
         }
 
         // Number of element should be equal to the number of element in the std::initializer_list
-        GTEST_ASSERT_EQ(assigned.count(), static_cast<usize>(elements_to_assign.size()));
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we do no reallocate for less memory
-        GTEST_ASSERT_EQ(assigned.max_count(), static_cast<usize>(std::max((elements_in_assigned.size() + extra), elements_to_assign.size())));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(std::max((elements_in_assigned.size() + extra), elements_to_assign.size())));
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
         if (should_reallocate)
         {
-            GTEST_ASSERT_EQ(assigned.allocator().allocation_count(), previous_allocation_count + 1);
+            hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
             if (previous_allocation_count > 0)
             {
-                GTEST_ASSERT_EQ(assigned.allocator().free_count(), previous_free_count + 1);
+                hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
 
@@ -7001,7 +6992,7 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
         {
             for (const i32 *element : elements_in_assigned)
             {
-                GTEST_ASSERT_EQ(*element, 1);
+                hud_assert_eq(*element, 1);
             }
         }
         // If no reallocation was done, all elements in current count should not be destroyed
@@ -7011,11 +7002,11 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
             {
                 if (index < elements_to_assign.size())
                 {
-                    GTEST_ASSERT_EQ(*(*(elements_in_assigned.begin() + index)), 0);
+                    hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 0);
                 }
                 else
                 {
-                    GTEST_ASSERT_EQ(*(*(elements_in_assigned.begin() + index)), 1);
+                    hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 1);
                 }
             }
         }
@@ -7023,7 +7014,7 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
         // Ensure the copied elements are not destroyed
         for (usize index = 0; index < elements_to_assign.size(); index++)
         {
-            GTEST_ASSERT_EQ(*(*(elements_to_assign.begin() + index)), 0);
+            hud_assert_eq(*(*(elements_to_assign.begin() + index)), 0);
         }
     };
 

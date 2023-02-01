@@ -15,13 +15,13 @@ GTEST_TEST(unique_pointer, destructor)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(result);
+        hud_assert_true(result);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(result);
+        hud_assert_true(result);
     }
 }
 
@@ -42,12 +42,12 @@ GTEST_TEST(unique_pointer, destructor_after_move)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(result);
+        hud_assert_true(result);
     }
 
     // Constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(result);
+        hud_assert_true(result);
     }
 }

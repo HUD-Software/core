@@ -19,17 +19,17 @@ GTEST_TEST(tuple, copy_assign_trivially_copy_assignable_same_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
 
@@ -53,17 +53,17 @@ GTEST_TEST(tuple, copy_assign_trivially_copy_assignable_different_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
 
@@ -89,23 +89,23 @@ GTEST_TEST(tuple, copy_assign_non_trivially_copy_assignable_same_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 }
 
@@ -132,23 +132,23 @@ GTEST_TEST(tuple, copy_assign_non_trivially_copy_assignable_different_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 }
 
@@ -171,17 +171,17 @@ GTEST_TEST(tuple, move_assign_trivially_copy_assignable_same_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
 
@@ -205,17 +205,17 @@ GTEST_TEST(tuple, move_assign_trivially_copy_assignable_different_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
 
@@ -241,23 +241,23 @@ GTEST_TEST(tuple, move_assign_non_trivially_copy_assignable_same_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 }
 
@@ -284,23 +284,23 @@ GTEST_TEST(tuple, move_assign_non_trivially_copy_assignable_different_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
     }
 }
 
@@ -323,17 +323,17 @@ GTEST_TEST(tuple, move_assign_trivially_move_assignable_same_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
 
@@ -357,17 +357,17 @@ GTEST_TEST(tuple, move_assign_trivially_move_assignable_different_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
 
@@ -395,27 +395,27 @@ GTEST_TEST(tuple, move_assign_non_trivially_move_assignable_same_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
     }
 }
 
@@ -444,26 +444,26 @@ GTEST_TEST(tuple, move_assign_non_trivially_move_assignable_different_types)
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
     }
 
     // Non constant
     {
         constexpr auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
     }
 }

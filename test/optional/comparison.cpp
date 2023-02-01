@@ -56,32 +56,32 @@ GTEST_TEST(optional, equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
+            hud_assert_false(std::get<3>(test_empty));
+            hud_assert_false(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<3>(test_non_empty));
+            hud_assert_false(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
+            hud_assert_false(std::get<0>(test_non_empty_1));
+            hud_assert_false(std::get<1>(test_non_empty_1));
+            hud_assert_true(std::get<2>(test_non_empty_1));
+            hud_assert_true(std::get<3>(test_non_empty_1));
+            hud_assert_false(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_2));
+            hud_assert_false(std::get<0>(test_non_empty_2));
+            hud_assert_false(std::get<1>(test_non_empty_2));
+            hud_assert_false(std::get<2>(test_non_empty_2));
+            hud_assert_false(std::get<3>(test_non_empty_2));
+            hud_assert_true(std::get<4>(test_non_empty_2));
         }
 
         // Constant
@@ -89,32 +89,32 @@ GTEST_TEST(optional, equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
+            hud_assert_false(std::get<3>(test_empty));
+            hud_assert_false(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<3>(test_non_empty));
+            hud_assert_false(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
+            hud_assert_false(std::get<0>(test_non_empty_1));
+            hud_assert_false(std::get<1>(test_non_empty_1));
+            hud_assert_true(std::get<2>(test_non_empty_1));
+            hud_assert_true(std::get<3>(test_non_empty_1));
+            hud_assert_false(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_2));
+            hud_assert_false(std::get<0>(test_non_empty_2));
+            hud_assert_false(std::get<1>(test_non_empty_2));
+            hud_assert_false(std::get<2>(test_non_empty_2));
+            hud_assert_false(std::get<3>(test_non_empty_2));
+            hud_assert_true(std::get<4>(test_non_empty_2));
         }
     }
 
@@ -147,14 +147,14 @@ GTEST_TEST(optional, equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -162,14 +162,14 @@ GTEST_TEST(optional, equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
     }
 
@@ -202,14 +202,14 @@ GTEST_TEST(optional, equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -217,14 +217,14 @@ GTEST_TEST(optional, equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
     }
 }
@@ -285,32 +285,32 @@ GTEST_TEST(optional, not_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
+            hud_assert_true(std::get<3>(test_empty));
+            hud_assert_true(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<3>(test_non_empty));
+            hud_assert_true(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
+            hud_assert_true(std::get<0>(test_non_empty_1));
+            hud_assert_true(std::get<1>(test_non_empty_1));
+            hud_assert_false(std::get<2>(test_non_empty_1));
+            hud_assert_false(std::get<3>(test_non_empty_1));
+            hud_assert_true(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_2));
+            hud_assert_true(std::get<0>(test_non_empty_2));
+            hud_assert_true(std::get<1>(test_non_empty_2));
+            hud_assert_true(std::get<2>(test_non_empty_2));
+            hud_assert_true(std::get<3>(test_non_empty_2));
+            hud_assert_false(std::get<4>(test_non_empty_2));
         }
 
         // Constant
@@ -318,32 +318,32 @@ GTEST_TEST(optional, not_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
+            hud_assert_true(std::get<3>(test_empty));
+            hud_assert_true(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<3>(test_non_empty));
+            hud_assert_true(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
+            hud_assert_true(std::get<0>(test_non_empty_1));
+            hud_assert_true(std::get<1>(test_non_empty_1));
+            hud_assert_false(std::get<3>(test_non_empty_1));
+            hud_assert_false(std::get<2>(test_non_empty_1));
+            hud_assert_true(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_2));
+            hud_assert_true(std::get<0>(test_non_empty_2));
+            hud_assert_true(std::get<1>(test_non_empty_2));
+            hud_assert_true(std::get<2>(test_non_empty_2));
+            hud_assert_true(std::get<3>(test_non_empty_2));
+            hud_assert_false(std::get<4>(test_non_empty_2));
         }
     }
 
@@ -376,14 +376,14 @@ GTEST_TEST(optional, not_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -391,14 +391,14 @@ GTEST_TEST(optional, not_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
     }
 
@@ -431,14 +431,14 @@ GTEST_TEST(optional, not_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -446,14 +446,14 @@ GTEST_TEST(optional, not_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
     }
 }
@@ -514,32 +514,32 @@ GTEST_TEST(optional, less_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
+            hud_assert_true(std::get<3>(test_empty));
+            hud_assert_true(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<3>(test_non_empty));
+            hud_assert_true(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
+            hud_assert_false(std::get<0>(test_non_empty_1));
+            hud_assert_false(std::get<1>(test_non_empty_1));
+            hud_assert_false(std::get<2>(test_non_empty_1));
+            hud_assert_false(std::get<3>(test_non_empty_1));
+            hud_assert_true(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_2));
+            hud_assert_false(std::get<0>(test_non_empty_2));
+            hud_assert_false(std::get<1>(test_non_empty_2));
+            hud_assert_false(std::get<2>(test_non_empty_2));
+            hud_assert_false(std::get<3>(test_non_empty_2));
+            hud_assert_false(std::get<4>(test_non_empty_2));
         }
 
         // Constant
@@ -547,32 +547,32 @@ GTEST_TEST(optional, less_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
+            hud_assert_true(std::get<3>(test_empty));
+            hud_assert_true(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<3>(test_non_empty));
+            hud_assert_true(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
+            hud_assert_false(std::get<0>(test_non_empty_1));
+            hud_assert_false(std::get<1>(test_non_empty_1));
+            hud_assert_false(std::get<2>(test_non_empty_1));
+            hud_assert_false(std::get<3>(test_non_empty_1));
+            hud_assert_true(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_2));
+            hud_assert_false(std::get<0>(test_non_empty_2));
+            hud_assert_false(std::get<1>(test_non_empty_2));
+            hud_assert_false(std::get<2>(test_non_empty_2));
+            hud_assert_false(std::get<3>(test_non_empty_2));
+            hud_assert_false(std::get<4>(test_non_empty_2));
         }
     }
 
@@ -605,14 +605,14 @@ GTEST_TEST(optional, less_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -620,14 +620,14 @@ GTEST_TEST(optional, less_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
     }
 
@@ -660,14 +660,14 @@ GTEST_TEST(optional, less_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -675,14 +675,14 @@ GTEST_TEST(optional, less_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
     }
 }
@@ -743,32 +743,32 @@ GTEST_TEST(optional, greater_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
+            hud_assert_false(std::get<3>(test_empty));
+            hud_assert_false(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<3>(test_non_empty));
+            hud_assert_false(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
+            hud_assert_true(std::get<0>(test_non_empty_1));
+            hud_assert_true(std::get<1>(test_non_empty_1));
+            hud_assert_false(std::get<2>(test_non_empty_1));
+            hud_assert_false(std::get<3>(test_non_empty_1));
+            hud_assert_false(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_2));
+            hud_assert_true(std::get<0>(test_non_empty_2));
+            hud_assert_true(std::get<1>(test_non_empty_2));
+            hud_assert_true(std::get<2>(test_non_empty_2));
+            hud_assert_true(std::get<3>(test_non_empty_2));
+            hud_assert_false(std::get<4>(test_non_empty_2));
         }
 
         // Constant
@@ -776,32 +776,32 @@ GTEST_TEST(optional, greater_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
+            hud_assert_false(std::get<3>(test_empty));
+            hud_assert_false(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<3>(test_non_empty));
+            hud_assert_false(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
+            hud_assert_true(std::get<0>(test_non_empty_1));
+            hud_assert_true(std::get<1>(test_non_empty_1));
+            hud_assert_false(std::get<2>(test_non_empty_1));
+            hud_assert_false(std::get<3>(test_non_empty_1));
+            hud_assert_false(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_2));
+            hud_assert_true(std::get<0>(test_non_empty_2));
+            hud_assert_true(std::get<1>(test_non_empty_2));
+            hud_assert_true(std::get<2>(test_non_empty_2));
+            hud_assert_true(std::get<3>(test_non_empty_2));
+            hud_assert_false(std::get<4>(test_non_empty_2));
         }
     }
 
@@ -834,14 +834,14 @@ GTEST_TEST(optional, greater_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -849,14 +849,14 @@ GTEST_TEST(optional, greater_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
     }
 
@@ -889,14 +889,14 @@ GTEST_TEST(optional, greater_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -904,14 +904,14 @@ GTEST_TEST(optional, greater_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
     }
 }
@@ -972,32 +972,32 @@ GTEST_TEST(optional, less_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
+            hud_assert_true(std::get<3>(test_empty));
+            hud_assert_true(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<3>(test_non_empty));
+            hud_assert_true(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
+            hud_assert_false(std::get<0>(test_non_empty_1));
+            hud_assert_false(std::get<1>(test_non_empty_1));
+            hud_assert_true(std::get<2>(test_non_empty_1));
+            hud_assert_true(std::get<3>(test_non_empty_1));
+            hud_assert_true(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_2));
+            hud_assert_false(std::get<0>(test_non_empty_2));
+            hud_assert_false(std::get<1>(test_non_empty_2));
+            hud_assert_false(std::get<2>(test_non_empty_2));
+            hud_assert_false(std::get<3>(test_non_empty_2));
+            hud_assert_true(std::get<4>(test_non_empty_2));
         }
 
         // Constant
@@ -1005,32 +1005,32 @@ GTEST_TEST(optional, less_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
+            hud_assert_true(std::get<3>(test_empty));
+            hud_assert_true(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_false(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<3>(test_non_empty));
+            hud_assert_true(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_1));
+            hud_assert_false(std::get<0>(test_non_empty_1));
+            hud_assert_false(std::get<1>(test_non_empty_1));
+            hud_assert_true(std::get<2>(test_non_empty_1));
+            hud_assert_true(std::get<3>(test_non_empty_1));
+            hud_assert_true(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_FALSE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_2));
+            hud_assert_false(std::get<0>(test_non_empty_2));
+            hud_assert_false(std::get<1>(test_non_empty_2));
+            hud_assert_false(std::get<2>(test_non_empty_2));
+            hud_assert_false(std::get<3>(test_non_empty_2));
+            hud_assert_true(std::get<4>(test_non_empty_2));
         }
     }
 
@@ -1063,14 +1063,14 @@ GTEST_TEST(optional, less_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -1078,14 +1078,14 @@ GTEST_TEST(optional, less_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
     }
 
@@ -1118,14 +1118,14 @@ GTEST_TEST(optional, less_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -1133,14 +1133,14 @@ GTEST_TEST(optional, less_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
     }
 }
@@ -1201,32 +1201,32 @@ GTEST_TEST(optional, greater_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
+            hud_assert_false(std::get<3>(test_empty));
+            hud_assert_false(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<3>(test_non_empty));
+            hud_assert_false(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
+            hud_assert_true(std::get<0>(test_non_empty_1));
+            hud_assert_true(std::get<1>(test_non_empty_1));
+            hud_assert_true(std::get<2>(test_non_empty_1));
+            hud_assert_true(std::get<3>(test_non_empty_1));
+            hud_assert_false(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_2));
+            hud_assert_true(std::get<0>(test_non_empty_2));
+            hud_assert_true(std::get<1>(test_non_empty_2));
+            hud_assert_true(std::get<2>(test_non_empty_2));
+            hud_assert_true(std::get<3>(test_non_empty_2));
+            hud_assert_true(std::get<4>(test_non_empty_2));
         }
 
         // Constant
@@ -1234,32 +1234,32 @@ GTEST_TEST(optional, greater_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<3>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
+            hud_assert_false(std::get<3>(test_empty));
+            hud_assert_false(std::get<4>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<3>(test_non_empty));
+            hud_assert_false(std::get<4>(test_non_empty));
 
             const auto &test_non_empty_1 = std::get<2>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_1));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_1));
-            GTEST_ASSERT_FALSE(std::get<4>(test_non_empty_1));
+            hud_assert_true(std::get<0>(test_non_empty_1));
+            hud_assert_true(std::get<1>(test_non_empty_1));
+            hud_assert_true(std::get<2>(test_non_empty_1));
+            hud_assert_true(std::get<3>(test_non_empty_1));
+            hud_assert_false(std::get<4>(test_non_empty_1));
 
             const auto &test_non_empty_2 = std::get<3>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<3>(test_non_empty_2));
-            GTEST_ASSERT_TRUE(std::get<4>(test_non_empty_2));
+            hud_assert_true(std::get<0>(test_non_empty_2));
+            hud_assert_true(std::get<1>(test_non_empty_2));
+            hud_assert_true(std::get<2>(test_non_empty_2));
+            hud_assert_true(std::get<3>(test_non_empty_2));
+            hud_assert_true(std::get<4>(test_non_empty_2));
         }
     }
 
@@ -1292,14 +1292,14 @@ GTEST_TEST(optional, greater_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -1307,14 +1307,14 @@ GTEST_TEST(optional, greater_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<1>(test_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_empty));
+            hud_assert_false(std::get<0>(test_empty));
+            hud_assert_false(std::get<1>(test_empty));
+            hud_assert_false(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_FALSE(std::get<2>(test_non_empty));
+            hud_assert_true(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_false(std::get<2>(test_non_empty));
         }
     }
 
@@ -1347,14 +1347,14 @@ GTEST_TEST(optional, greater_equal_operator)
             const auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
 
         // Non constant
@@ -1362,14 +1362,14 @@ GTEST_TEST(optional, greater_equal_operator)
             constexpr auto result = test();
 
             const auto &test_empty = std::get<0>(result);
-            GTEST_ASSERT_TRUE(std::get<0>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_empty));
+            hud_assert_true(std::get<0>(test_empty));
+            hud_assert_true(std::get<1>(test_empty));
+            hud_assert_true(std::get<2>(test_empty));
 
             const auto &test_non_empty = std::get<1>(result);
-            GTEST_ASSERT_FALSE(std::get<0>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<1>(test_non_empty));
-            GTEST_ASSERT_TRUE(std::get<2>(test_non_empty));
+            hud_assert_false(std::get<0>(test_non_empty));
+            hud_assert_true(std::get<1>(test_non_empty));
+            hud_assert_true(std::get<2>(test_non_empty));
         }
     }
 }

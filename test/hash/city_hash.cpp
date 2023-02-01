@@ -531,8 +531,8 @@ GTEST_TEST(hash, cityhash_hash32)
 {
     // hash32 of nullptr
     u32 hash_nullptr = hud::hash_algorithm::city_hash::hash_32(nullptr, 0);
-    GTEST_ASSERT_EQ(hash_nullptr, 0XDC56D17A);
-    GTEST_ASSERT_EQ(CityHash32(nullptr, 0), hash_nullptr);
+    hud_assert_eq(hash_nullptr, 0XDC56D17A);
+    hud_assert_eq(CityHash32(nullptr, 0), hash_nullptr);
 
     ansichar key[256];
     hud::memory::set_zero(key);
@@ -543,31 +543,31 @@ GTEST_TEST(hash, cityhash_hash32)
         u32 out = hud::hash_algorithm::city_hash::hash_32(key, i);
 
         // Ensure we have same result as Google implementation
-        GTEST_ASSERT_EQ(out, CityHash32(reinterpret_cast<const ansichar *>(key), i));
+        hud_assert_eq(out, CityHash32(reinterpret_cast<const ansichar *>(key), i));
 
-        GTEST_ASSERT_EQ(hud_test::city_hash_32_result[i], out);
+        hud_assert_eq(hud_test::city_hash_32_result[i], out);
     }
 
     // Test with the lipsum
     const u32 hash = hud::hash_algorithm::city_hash::hash_32(lipsum, hud::cstring::length(lipsum));
-    GTEST_ASSERT_EQ(hash, CityHash32(lipsum, hud::cstring::length(lipsum)));
+    hud_assert_eq(hash, CityHash32(lipsum, hud::cstring::length(lipsum)));
 }
 
 GTEST_TEST(hash, cityhash_hash32_is_usable_in_constexpr)
 {
     constexpr u32 hash_nullptr = hud::hash_algorithm::city_hash::hash_32(nullptr, 0);
-    GTEST_ASSERT_EQ(hash_nullptr, 0XDC56D17A);
-    GTEST_ASSERT_EQ(CityHash32(nullptr, 0), hash_nullptr);
+    hud_assert_eq(hash_nullptr, 0XDC56D17A);
+    hud_assert_eq(CityHash32(nullptr, 0), hash_nullptr);
 
     constexpr u32 hash_lipsum = hud::hash_algorithm::city_hash::hash_32(lipsum, hud::cstring::length(lipsum));
     // Test with the lipsum
-    GTEST_ASSERT_EQ(hash_lipsum, CityHash32(lipsum, hud::cstring::length(lipsum)));
+    hud_assert_eq(hash_lipsum, CityHash32(lipsum, hud::cstring::length(lipsum)));
 }
 
 GTEST_TEST(hash, cityhash_hash64)
 {
     // hash64 of nullptr
-    GTEST_ASSERT_EQ(hud::hash_algorithm::city_hash::hash_64(nullptr, 0), 0X9AE16A3B2F90404Full);
+    hud_assert_eq(hud::hash_algorithm::city_hash::hash_64(nullptr, 0), 0X9AE16A3B2F90404Full);
 
     ansichar key[256];
     hud::memory::set_zero(key);
@@ -576,27 +576,27 @@ GTEST_TEST(hash, cityhash_hash64)
     {
         key[i] = static_cast<i8>(i);
         u64 out = hud::hash_algorithm::city_hash::hash_64(key, i);
-        GTEST_ASSERT_EQ(hud_test::city_hash_64_result[i], out);
+        hud_assert_eq(hud_test::city_hash_64_result[i], out);
     }
 }
 
 GTEST_TEST(hash, cityhash_hash64_is_usable_in_constexpr)
 {
     constexpr u64 hash_nullptr = hud::hash_algorithm::city_hash::hash_64(nullptr, 0);
-    GTEST_ASSERT_EQ(hash_nullptr, 0x9AE16A3B2F90404Full);
-    GTEST_ASSERT_EQ(CityHash64(nullptr, 0), hash_nullptr);
+    hud_assert_eq(hash_nullptr, 0x9AE16A3B2F90404Full);
+    hud_assert_eq(CityHash64(nullptr, 0), hash_nullptr);
 
     constexpr u64 hash_lipsum = hud::hash_algorithm::city_hash::hash_64(lipsum, hud::cstring::length(lipsum));
     // Test with the lipsum
-    GTEST_ASSERT_EQ(hash_lipsum, CityHash64(lipsum, hud::cstring::length(lipsum)));
+    hud_assert_eq(hash_lipsum, CityHash64(lipsum, hud::cstring::length(lipsum)));
 }
 
 GTEST_TEST(hash, cityhash_hash128)
 {
     // hash128 of nullptr
     uint128 hash = CityHash128(nullptr, 0);
-    GTEST_ASSERT_EQ(Uint128Low64(hash), 0x3df09dfc64c09a2bllu);
-    GTEST_ASSERT_EQ(Uint128High64(hash), 0x3cb540c392e51e29llu);
+    hud_assert_eq(Uint128Low64(hash), 0x3df09dfc64c09a2bllu);
+    hud_assert_eq(Uint128High64(hash), 0x3cb540c392e51e29llu);
 
     ansichar key[256];
 
@@ -606,6 +606,6 @@ GTEST_TEST(hash, cityhash_hash128)
     {
         key[i] = static_cast<ansichar>(i);
         u64 out = hud::hash_algorithm::city_hash::hash_64(key, i);
-        GTEST_ASSERT_EQ(hud_test::city_hash_64_result[i], out);
+        hud_assert_eq(hud_test::city_hash_64_result[i], out);
     }
 }

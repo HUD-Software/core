@@ -6,13 +6,13 @@ GTEST_TEST(memory, reverse_bits)
     // Non constant
     {
         const u32 reverse_bits = hud::memory::reverse_bits(0x04C11DB7);
-        GTEST_ASSERT_EQ(reverse_bits, 0xEDB88320);
+        hud_assert_eq(reverse_bits, 0xEDB88320);
     }
 
     // Constant
     {
         constexpr u32 reverse_bits = hud::memory::reverse_bits(0x04C11DB7);
-        GTEST_ASSERT_EQ(reverse_bits, 0xEDB88320);
+        hud_assert_eq(reverse_bits, 0xEDB88320);
     }
 }
 
@@ -29,14 +29,14 @@ GTEST_TEST(memory, reverse)
     // Non constant
     {
         std::tuple<u32, u64> result_shift_0 = test();
-        GTEST_ASSERT_EQ(std::get<0>(result_shift_0), 0x00FF00ABu);
-        GTEST_ASSERT_EQ(std::get<1>(result_shift_0), 0xEFCDAB8967452301ull);
+        hud_assert_eq(std::get<0>(result_shift_0), 0x00FF00ABu);
+        hud_assert_eq(std::get<1>(result_shift_0), 0xEFCDAB8967452301ull);
     }
 
     // Constant
     {
         constexpr std::tuple<u32, u64> result_shift_0 = test();
-        GTEST_ASSERT_EQ(std::get<0>(result_shift_0), 0x00FF00ABu);
-        GTEST_ASSERT_EQ(std::get<1>(result_shift_0), 0xEFCDAB8967452301ull);
+        hud_assert_eq(std::get<0>(result_shift_0), 0x00FF00ABu);
+        hud_assert_eq(std::get<1>(result_shift_0), 0xEFCDAB8967452301ull);
     }
 }

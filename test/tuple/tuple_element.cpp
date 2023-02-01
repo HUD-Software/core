@@ -42,39 +42,39 @@ namespace hud
 GTEST_TEST(tuple, tuple_element)
 {
 
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<0, hud::tuple<u32, u64, wchar>>, u32>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<1, hud::tuple<u32, u64, wchar>>, u64>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<2, hud::tuple<u32, u64, wchar>>, wchar>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<0, hud::tuple<u32, u64, wchar>>, u32>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<1, hud::tuple<u32, u64, wchar>>, u64>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<2, hud::tuple<u32, u64, wchar>>, wchar>));
 
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<0, hud_test::tuple_like_class<0, u32, u64>>, u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, hud_test::tuple_like_class<0, u32, u64>>, u64>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, hud_test::tuple_like_class<1, u32, u64>>, u32>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<1, hud_test::tuple_like_class<1, u32, u64>>, u64>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<0, hud_test::tuple_like_class<0, u32, u64>>, u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, hud_test::tuple_like_class<0, u32, u64>>, u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, hud_test::tuple_like_class<1, u32, u64>>, u32>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<1, hud_test::tuple_like_class<1, u32, u64>>, u64>));
 
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, const hud_test::tuple_like_class<0, u32, u64>>, u32>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<0, const hud_test::tuple_like_class<0, u32, u64>>, const u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, const hud_test::tuple_like_class<0, u32, u64>>, u64>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, const hud_test::tuple_like_class<0, u32, u64>>, const u64>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, const hud_test::tuple_like_class<1, u32, u64>>, u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, const hud_test::tuple_like_class<1, u32, u64>>, const u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, const hud_test::tuple_like_class<1, u32, u64>>, u64>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<1, const hud_test::tuple_like_class<1, u32, u64>>, const u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, const hud_test::tuple_like_class<0, u32, u64>>, u32>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<0, const hud_test::tuple_like_class<0, u32, u64>>, const u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, const hud_test::tuple_like_class<0, u32, u64>>, u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, const hud_test::tuple_like_class<0, u32, u64>>, const u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, const hud_test::tuple_like_class<1, u32, u64>>, u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, const hud_test::tuple_like_class<1, u32, u64>>, const u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, const hud_test::tuple_like_class<1, u32, u64>>, u64>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<1, const hud_test::tuple_like_class<1, u32, u64>>, const u64>));
 
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, volatile hud_test::tuple_like_class<0, u32, u64>>, u32>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<0, volatile hud_test::tuple_like_class<0, u32, u64>>, volatile u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, volatile hud_test::tuple_like_class<0, u32, u64>>, u64>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, volatile hud_test::tuple_like_class<0, u32, u64>>, volatile u64>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, volatile hud_test::tuple_like_class<1, u32, u64>>, u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, volatile hud_test::tuple_like_class<1, u32, u64>>, volatile u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, volatile hud_test::tuple_like_class<1, u32, u64>>, u64>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<1, volatile hud_test::tuple_like_class<1, u32, u64>>, volatile u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, volatile hud_test::tuple_like_class<0, u32, u64>>, u32>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<0, volatile hud_test::tuple_like_class<0, u32, u64>>, volatile u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, volatile hud_test::tuple_like_class<0, u32, u64>>, u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, volatile hud_test::tuple_like_class<0, u32, u64>>, volatile u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, volatile hud_test::tuple_like_class<1, u32, u64>>, u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, volatile hud_test::tuple_like_class<1, u32, u64>>, volatile u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, volatile hud_test::tuple_like_class<1, u32, u64>>, u64>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<1, volatile hud_test::tuple_like_class<1, u32, u64>>, volatile u64>));
 
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, const volatile hud_test::tuple_like_class<0, u32, u64>>, u32>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<0, const volatile hud_test::tuple_like_class<0, u32, u64>>, const volatile u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, const volatile hud_test::tuple_like_class<0, u32, u64>>, u64>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<0, const volatile hud_test::tuple_like_class<0, u32, u64>>, const volatile u64>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, const volatile hud_test::tuple_like_class<1, u32, u64>>, u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, const volatile hud_test::tuple_like_class<1, u32, u64>>, const volatile u32>));
-    GTEST_ASSERT_FALSE((hud::is_same_v<hud::tuple_element_t<1, const volatile hud_test::tuple_like_class<1, u32, u64>>, u64>));
-    GTEST_ASSERT_TRUE((hud::is_same_v<hud::tuple_element_t<1, const volatile hud_test::tuple_like_class<1, u32, u64>>, const volatile u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, const volatile hud_test::tuple_like_class<0, u32, u64>>, u32>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<0, const volatile hud_test::tuple_like_class<0, u32, u64>>, const volatile u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, const volatile hud_test::tuple_like_class<0, u32, u64>>, u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<0, const volatile hud_test::tuple_like_class<0, u32, u64>>, const volatile u64>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, const volatile hud_test::tuple_like_class<1, u32, u64>>, u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, const volatile hud_test::tuple_like_class<1, u32, u64>>, const volatile u32>));
+    hud_assert_false((hud::is_same_v<hud::tuple_element_t<1, const volatile hud_test::tuple_like_class<1, u32, u64>>, u64>));
+    hud_assert_true((hud::is_same_v<hud::tuple_element_t<1, const volatile hud_test::tuple_like_class<1, u32, u64>>, const volatile u64>));
 }

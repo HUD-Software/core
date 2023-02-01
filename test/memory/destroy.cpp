@@ -19,13 +19,13 @@ GTEST_TEST(memory, destroy_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(result, 15u);
+        hud_assert_eq(result, 15u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(result, 15u);
+        hud_assert_eq(result, 15u);
     }
 }
 
@@ -53,13 +53,13 @@ GTEST_TEST(memory, destroy_trivially_destructible_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(result, 15);
+        hud_assert_eq(result, 15);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(result, 15);
+        hud_assert_eq(result, 15);
     }
 }
 
@@ -84,13 +84,13 @@ GTEST_TEST(memory, destroy_non_trivially_destructible_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(result, 1);
+        hud_assert_eq(result, 1);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(result, 1);
+        hud_assert_eq(result, 1);
     }
 }
 
@@ -112,15 +112,15 @@ GTEST_TEST(memory, destroy_array_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 15u);
-        GTEST_ASSERT_EQ(std::get<1>(result), 30u);
+        hud_assert_eq(std::get<0>(result), 15u);
+        hud_assert_eq(std::get<1>(result), 30u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 15u);
-        GTEST_ASSERT_EQ(std::get<1>(result), 30u);
+        hud_assert_eq(std::get<0>(result), 15u);
+        hud_assert_eq(std::get<1>(result), 30u);
     }
 }
 
@@ -148,15 +148,15 @@ GTEST_TEST(memory, destroy_array_trivially_destructible_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 15);
-        GTEST_ASSERT_EQ(std::get<1>(result), 30);
+        hud_assert_eq(std::get<0>(result), 15);
+        hud_assert_eq(std::get<1>(result), 30);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 15);
-        GTEST_ASSERT_EQ(std::get<1>(result), 30);
+        hud_assert_eq(std::get<0>(result), 15);
+        hud_assert_eq(std::get<1>(result), 30);
     }
 }
 
@@ -183,14 +183,14 @@ GTEST_TEST(memory, destroy_array_non_trivially_destructible_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 1);
-        GTEST_ASSERT_EQ(std::get<1>(result), 1);
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 1);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 1);
-        GTEST_ASSERT_EQ(std::get<1>(result), 1);
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 1);
     }
 }

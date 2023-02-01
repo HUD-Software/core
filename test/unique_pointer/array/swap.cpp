@@ -21,19 +21,19 @@ GTEST_TEST(unique_pointer_array, swap)
         // Non constant
         {
             const auto result = test();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_TRUE(std::get<2>(result));
-            GTEST_ASSERT_TRUE(std::get<3>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
         }
 
         // Constant
         {
             constexpr auto result = test();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_TRUE(std::get<2>(result));
-            GTEST_ASSERT_TRUE(std::get<3>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
         }
     }
 
@@ -55,19 +55,19 @@ GTEST_TEST(unique_pointer_array, swap)
         // Non constant
         {
             const auto result = test();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_TRUE(std::get<2>(result));
-            GTEST_ASSERT_TRUE(std::get<3>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
         }
 
         // Constant
         {
             constexpr auto result = test();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_TRUE(std::get<2>(result));
-            GTEST_ASSERT_TRUE(std::get<3>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
         }
     }
 }

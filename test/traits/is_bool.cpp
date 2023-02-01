@@ -2,8 +2,8 @@
 
 GTEST_TEST(traits, is_bool)
 {
-    GTEST_ASSERT_TRUE(hud::is_bool_v<bool>);
-    GTEST_ASSERT_TRUE(hud::is_bool_v<const bool>);
-    GTEST_ASSERT_TRUE(hud::is_bool_v<volatile bool>);
-    GTEST_ASSERT_TRUE(hud::is_bool_v<const volatile bool>);
+    hud_assert_true(hud::is_bool_v<bool>);
+    hud_assert_true(hud::is_bool_v<const bool>);
+    hud_assert_true(hud::is_bool_v<volatile bool>);
+    hud_assert_true(hud::is_bool_v<const volatile bool>);
 }

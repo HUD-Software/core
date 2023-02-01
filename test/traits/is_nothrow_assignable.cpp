@@ -32,9 +32,9 @@ namespace hud_test
 
 GTEST_TEST(traits, is_nothrow_assignable)
 {
-    GTEST_ASSERT_TRUE((hud::is_nothrow_assignable_v<hud_test::a, hud_test::a>));
-    GTEST_ASSERT_TRUE((hud::is_nothrow_assignable_v<hud_test::b, hud_test::a &>));
-    GTEST_ASSERT_FALSE((hud::is_nothrow_assignable_v<hud_test::b, hud_test::b &>));
-    GTEST_ASSERT_TRUE((hud::is_nothrow_assignable_v<hud_test::b, hud_test::a &&>));
-    GTEST_ASSERT_FALSE((hud::is_nothrow_assignable_v<hud_test::b, hud_test::b &&>));
+    hud_assert_true((hud::is_nothrow_assignable_v<hud_test::a, hud_test::a>));
+    hud_assert_true((hud::is_nothrow_assignable_v<hud_test::b, hud_test::a &>));
+    hud_assert_false((hud::is_nothrow_assignable_v<hud_test::b, hud_test::b &>));
+    hud_assert_true((hud::is_nothrow_assignable_v<hud_test::b, hud_test::a &&>));
+    hud_assert_false((hud::is_nothrow_assignable_v<hud_test::b, hud_test::b &&>));
 }

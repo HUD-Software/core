@@ -20,19 +20,19 @@ GTEST_TEST(memory, copy_assign_array_trivial_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 15u);
-        GTEST_ASSERT_EQ(std::get<1>(result), 32u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 15u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 32u);
+        hud_assert_eq(std::get<0>(result), 15u);
+        hud_assert_eq(std::get<1>(result), 32u);
+        hud_assert_eq(std::get<2>(result), 15u);
+        hud_assert_eq(std::get<3>(result), 32u);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 15u);
-        GTEST_ASSERT_EQ(std::get<1>(result), 32u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 15u);
-        GTEST_ASSERT_EQ(std::get<3>(result), 32u);
+        hud_assert_eq(std::get<0>(result), 15u);
+        hud_assert_eq(std::get<1>(result), 32u);
+        hud_assert_eq(std::get<2>(result), 15u);
+        hud_assert_eq(std::get<3>(result), 32u);
     }
 }
 
@@ -64,19 +64,19 @@ GTEST_TEST(memory, copy_assign_array_bitwise_assignable_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 15);
-        GTEST_ASSERT_EQ(std::get<1>(result), 32);
-        GTEST_ASSERT_EQ(std::get<2>(result), 15);
-        GTEST_ASSERT_EQ(std::get<3>(result), 32);
+        hud_assert_eq(std::get<0>(result), 15);
+        hud_assert_eq(std::get<1>(result), 32);
+        hud_assert_eq(std::get<2>(result), 15);
+        hud_assert_eq(std::get<3>(result), 32);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 15);
-        GTEST_ASSERT_EQ(std::get<1>(result), 32);
-        GTEST_ASSERT_EQ(std::get<2>(result), 15);
-        GTEST_ASSERT_EQ(std::get<3>(result), 32);
+        hud_assert_eq(std::get<0>(result), 15);
+        hud_assert_eq(std::get<1>(result), 32);
+        hud_assert_eq(std::get<2>(result), 15);
+        hud_assert_eq(std::get<3>(result), 32);
     }
 }
 
@@ -109,23 +109,23 @@ GTEST_TEST(memory, copy_assign_array_non_bitwise_copy_assignable_different_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<1>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<5>(result), 2);
+        hud_assert_eq(std::get<0>(result), 0u);
+        hud_assert_eq(std::get<1>(result), 1u);
+        hud_assert_eq(std::get<2>(result), 1);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 1u);
+        hud_assert_eq(std::get<5>(result), 2);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<1>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<5>(result), 2);
+        hud_assert_eq(std::get<0>(result), 0u);
+        hud_assert_eq(std::get<1>(result), 1u);
+        hud_assert_eq(std::get<2>(result), 1);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 1u);
+        hud_assert_eq(std::get<5>(result), 2);
     }
 }
 
@@ -156,22 +156,22 @@ GTEST_TEST(memory, copy_assign_array_non_bitwise_copy_assignable_same_type)
     // Non constant
     {
         ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<1>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<5>(result), 2);
+        hud_assert_eq(std::get<0>(result), 0u);
+        hud_assert_eq(std::get<1>(result), 1u);
+        hud_assert_eq(std::get<2>(result), 1);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 1u);
+        hud_assert_eq(std::get<5>(result), 2);
     }
 
     // Constant
     {
         constexpr ResultType result = test();
-        GTEST_ASSERT_EQ(std::get<0>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<1>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<2>(result), 1);
-        GTEST_ASSERT_EQ(std::get<3>(result), 0u);
-        GTEST_ASSERT_EQ(std::get<4>(result), 1u);
-        GTEST_ASSERT_EQ(std::get<5>(result), 2);
+        hud_assert_eq(std::get<0>(result), 0u);
+        hud_assert_eq(std::get<1>(result), 1u);
+        hud_assert_eq(std::get<2>(result), 1);
+        hud_assert_eq(std::get<3>(result), 0u);
+        hud_assert_eq(std::get<4>(result), 1u);
+        hud_assert_eq(std::get<5>(result), 2);
     }
 }

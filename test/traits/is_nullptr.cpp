@@ -7,10 +7,10 @@ namespace hud_test
 
 GTEST_TEST(traits, is_nullptr)
 {
-    GTEST_ASSERT_FALSE((hud::is_nullptr_v<decltype(hud_test::a)>));
-    GTEST_ASSERT_FALSE((hud::is_nullptr_v<decltype(0)>));
-    GTEST_ASSERT_FALSE((hud::is_nullptr_v<decltype(&(*hud_test::a))>));
-    GTEST_ASSERT_TRUE((hud::is_nullptr_v<decltype(nullptr)>));
-    GTEST_ASSERT_TRUE((hud::is_nullptr_v<std::nullptr_t>));
-    GTEST_ASSERT_TRUE((hud::is_nullptr_v<hud::ptr::null>));
+    hud_assert_false((hud::is_nullptr_v<decltype(hud_test::a)>));
+    hud_assert_false((hud::is_nullptr_v<decltype(0)>));
+    hud_assert_false((hud::is_nullptr_v<decltype(&(*hud_test::a))>));
+    hud_assert_true((hud::is_nullptr_v<decltype(nullptr)>));
+    hud_assert_true((hud::is_nullptr_v<std::nullptr_t>));
+    hud_assert_true((hud::is_nullptr_v<hud::ptr::null>));
 }

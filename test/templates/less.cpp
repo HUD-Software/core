@@ -25,17 +25,17 @@ GTEST_TEST(templates, less)
 {
 
     hud::less<i32> ls;
-    GTEST_ASSERT_FALSE(ls(2, 1));
-    GTEST_ASSERT_FALSE(ls(1, 1));
-    GTEST_ASSERT_TRUE(ls(1, 2));
+    hud_assert_false(ls(2, 1));
+    hud_assert_false(ls(1, 1));
+    hud_assert_true(ls(1, 2));
 
     hud::less<hud_test::S> ls_s;
-    GTEST_ASSERT_FALSE(ls_s(hud_test::S {2}, hud_test::S {1}));
-    GTEST_ASSERT_FALSE(ls_s(hud_test::S {1}, hud_test::S {1}));
-    GTEST_ASSERT_TRUE(ls_s(hud_test::S {1}, hud_test::S {2}));
+    hud_assert_false(ls_s(hud_test::S {2}, hud_test::S {1}));
+    hud_assert_false(ls_s(hud_test::S {1}, hud_test::S {1}));
+    hud_assert_true(ls_s(hud_test::S {1}, hud_test::S {2}));
 
     hud::less<i32 *> ls_ptr;
-    GTEST_ASSERT_FALSE(ls_ptr(nullptr, nullptr));
-    GTEST_ASSERT_TRUE(ls_ptr(nullptr, reinterpret_cast<i32 *>(0x1)));
-    GTEST_ASSERT_FALSE(ls_ptr(reinterpret_cast<i32 *>(0x1), nullptr));
+    hud_assert_false(ls_ptr(nullptr, nullptr));
+    hud_assert_true(ls_ptr(nullptr, reinterpret_cast<i32 *>(0x1)));
+    hud_assert_false(ls_ptr(reinterpret_cast<i32 *>(0x1), nullptr));
 }

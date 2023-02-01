@@ -15,23 +15,23 @@ namespace hud_test
 
 GTEST_TEST(traits, is_scalar)
 {
-    GTEST_ASSERT_FALSE((hud::is_scalar_v<hud_test::a>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<hud_test::e>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<i8>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<i16>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<i32>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<i64>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<iptr>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<u8>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<u16>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<u32>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<u64>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<uptr>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<isize>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<usize>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<ansichar>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<wchar>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<hud_test::a *>));
-    GTEST_ASSERT_TRUE((hud::is_scalar_v<decltype(&hud_test::a::fn)>));
-    GTEST_ASSERT_FALSE((hud::is_scalar_v<int(int)>));
+    hud_assert_false((hud::is_scalar_v<hud_test::a>));
+    hud_assert_true((hud::is_scalar_v<hud_test::e>));
+    hud_assert_true((hud::is_scalar_v<i8>));
+    hud_assert_true((hud::is_scalar_v<i16>));
+    hud_assert_true((hud::is_scalar_v<i32>));
+    hud_assert_true((hud::is_scalar_v<i64>));
+    hud_assert_true((hud::is_scalar_v<iptr>));
+    hud_assert_true((hud::is_scalar_v<u8>));
+    hud_assert_true((hud::is_scalar_v<u16>));
+    hud_assert_true((hud::is_scalar_v<u32>));
+    hud_assert_true((hud::is_scalar_v<u64>));
+    hud_assert_true((hud::is_scalar_v<uptr>));
+    hud_assert_true((hud::is_scalar_v<isize>));
+    hud_assert_true((hud::is_scalar_v<usize>));
+    hud_assert_true((hud::is_scalar_v<ansichar>));
+    hud_assert_true((hud::is_scalar_v<wchar>));
+    hud_assert_true((hud::is_scalar_v<hud_test::a *>));
+    hud_assert_true((hud::is_scalar_v<decltype(&hud_test::a::fn)>));
+    hud_assert_false((hud::is_scalar_v<int(int)>));
 }
