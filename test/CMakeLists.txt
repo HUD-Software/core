@@ -310,21 +310,23 @@ if(COVERAGE AND MSVC)
 		# )
 	endif()
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-	target_link_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+	target_compile_options(test_core PRIVATE --coverage)
+	target_link_options(test_core PRIVATE --coverage)
 	
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
-		COMMAND LLVM_PROFILE_FILE=coverage.profraw ./test_core
-	 	COMMAND llvm-profdata merge --sparse ./coverage.profraw -o ./coverage.profdata
-		COMMAND llvm-cov export --format=lcov --instr-profile ./coverage.profdata ./test_core > ./coverage.lcov
+		# COMMAND LLVM_PROFILE_FILE=coverage.profraw ./test_core
+	 	# COMMAND llvm-profdata merge --sparse ./coverage.profraw -o ./coverage.profdata
+		# COMMAND llvm-cov export --format=text --instr-profile ./coverage.profdata ./test_core > ./coverage.lcov
+		# COMMAND genhtml --ignore-errors source ./coverage.lcov --legend --title "commit SHA1" --output-directory=lcov_html
+		COMMAND ./test_core
 		# "'\.\./\.\./(test|src)/.*'" : Take files only in test or src directory
 		# "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" : Exclude GTEST_TEST and GTEST_ASSERT_
-		# COMMAND rm -rf "coverage_html" "coverage.clang.cobertura.xml"
-		# COMMAND mkdir "coverage_html"
-		# COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting --html-self-contained
-		# COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml" --delete
+		COMMAND rm -rf "coverage_html" "coverage.clang.cobertura.xml"
+		COMMAND mkdir "coverage_html"
+		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting --html-self-contained
+		COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml" --delete
 	)
 endif()
 
