@@ -151,21 +151,40 @@ GTEST_TEST(memory, reallocate_align)
         u32 i;
     };
 
-    for (u32 aligment = 1; aligment <= 256; aligment <<= 1)
+    for (u32 alignment = 1; alignment <= 256; alignment <<= 1)
     {
-
-        a *ptr = reinterpret_cast<a *>(hud::memory::reallocate_align(nullptr, sizeof(a), aligment));
+        // Reallocate a null pointer to sizeof(a)
+        a *ptr = reinterpret_cast<a *>(hud::memory::reallocate_align(nullptr, sizeof(a), alignment));
         hud_test::AlignLeakGuard guard(ptr);
         hud_assert_ne(ptr, nullptr);
-        hud_assert_true(hud::memory::is_pointer_aligned(ptr, aligment));
-        ptr->i = 2;
-        ptr = reinterpret_cast<a *>(hud::memory::reallocate_align(ptr, sizeof(a) * 2, aligment));
-        hud_assert_ne(ptr, nullptr);
-        hud_assert_true(hud::memory::is_pointer_aligned(ptr, aligment));
-        (ptr + 1)->i = 3;
-        hud_assert_eq(ptr->i, 2u);
-        hud_assert_eq((ptr + 1)->i, 3u);
-        hud_assert_eq(hud::memory::reallocate_align(ptr, 0, 4), nullptr);
+        hud_assert_true(hud::memory::is_pointer_aligned(ptr, alignment));
+        ptr->i = 1u;
+
+        // Reallocate a sizeof(a) to 2*sizeof(a)
+        a *ptr_2 = reinterpret_cast<a *>(hud::memory::reallocate_align(ptr, sizeof(a) * 2, alignment));
+        hud_assert_ne(ptr_2, nullptr);
+        hud_assert_ne(ptr, ptr_2);
+        hud_assert_true(hud::memory::is_pointer_aligned(ptr_2, alignment));
+        (ptr_2 + 1)->i = 2u;
+        hud_assert_eq(ptr_2->i, 1u);
+        hud_assert_eq((ptr_2 + 1)->i, 2u);
+
+        // Reallocate a 2*sizeof(a) to sizeof(a)
+        a *ptr_3 = reinterpret_cast<a *>(hud::memory::reallocate_align(ptr_2, sizeof(a), alignment));
+        hud_assert_ne(ptr_3, nullptr);
+        hud_assert_ne(ptr_2, ptr_3);
+        hud_assert_true(hud::memory::is_pointer_aligned(ptr_3, alignment));
+        hud_assert_eq(ptr_3->i, 1u);
+
+        // Reallocate a sizeof(a) to sizeof(a)
+        a *ptr_4 = reinterpret_cast<a *>(hud::memory::reallocate_align(ptr_3, sizeof(a), alignment));
+        hud_assert_ne(ptr_4, nullptr);
+        hud_assert_eq(ptr_3, ptr_4); // same same should not be reallocated and return the same pointer
+        hud_assert_true(hud::memory::is_pointer_aligned(ptr_4, alignment));
+        hud_assert_eq(ptr_4->i, 1u);
+
+        // Reallocate a sizeof(a) to 0
+        hud_assert_eq(hud::memory::reallocate_align(ptr_4, 0, alignment), nullptr);
         guard.leak();
     }
 }

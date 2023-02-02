@@ -233,8 +233,8 @@ namespace hud::os::common
         }
 
         /**
-         * Convert string to uppercase.
-         * @param string The string buffer to capitalize
+         * Convert a null-terminated string to uppercase.
+         * @param string The null-terminated string buffer to capitalize
          * @param string_size Size of string buffer in characters.
          * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
          */

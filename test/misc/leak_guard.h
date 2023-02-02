@@ -9,7 +9,7 @@ namespace hud_test
     class LeakGuard
     {
     public:
-        constexpr LeakGuard(type_t *allocation) noexcept
+        constexpr explicit LeakGuard(type_t *allocation) noexcept
             : ptr(allocation)
         {
         }
@@ -32,7 +32,7 @@ namespace hud_test
     class LeakArrayGuard
     {
     public:
-        constexpr LeakArrayGuard(type_t *allocation, const usize count) noexcept
+        constexpr explicit LeakArrayGuard(type_t *allocation, const usize count) noexcept
             : ptr(allocation)
             , count_of_T(count)
         {
@@ -57,7 +57,7 @@ namespace hud_test
     class AlignLeakGuard
     {
     public:
-        AlignLeakGuard(void *allocation) noexcept
+        explicit AlignLeakGuard(void *allocation) noexcept
             : ptr(allocation)
         {
         }
