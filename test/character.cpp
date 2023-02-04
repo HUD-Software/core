@@ -18,80 +18,80 @@ static constexpr ansichar wide_punc[] = {L'!', L'\"', L'#', L'$', L'%', L'&', L'
 // GTEST_TEST(character, is_pure_ansi)
 // {
 //     for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
-//         GTEST_ASSERT_TRUE(hud::character::is_pure_ansi(cur));
+//         hud_assert_true(hud::character::is_pure_ansi(cur));
 //     }
 //     for (wchar cur = 0; cur < hud::wchar_max; cur++) {
 //         if (cur <= hud::ansichar_max) {
-//             GTEST_ASSERT_TRUE(hud::character::is_pure_ansi(cur));
+//             hud_assert_true(hud::character::is_pure_ansi(cur));
 //         }
 //         else {
-//             GTEST_ASSERT_FALSE(hud::character::is_pure_ansi(cur));
+//             hud_assert_false(hud::character::is_pure_ansi(cur));
 //         }
 //     }
 // }
 
 GTEST_TEST(character, is_null)
 {
-    GTEST_ASSERT_TRUE(hud::character::is_null('\0'));
-    GTEST_ASSERT_FALSE(hud::character::is_null(' '));
-    GTEST_ASSERT_TRUE(hud::character::is_null(L'\0'));
-    GTEST_ASSERT_FALSE(hud::character::is_null(L' '));
+    hud_assert_true(hud::character::is_null('\0'));
+    hud_assert_false(hud::character::is_null(' '));
+    hud_assert_true(hud::character::is_null(L'\0'));
+    hud_assert_false(hud::character::is_null(L' '));
 }
 
 GTEST_TEST(character, is_alphanumeric)
 {
     for (const auto &alphanumeric : digits)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphanumeric(alphanumeric));
+        hud_assert_true(hud::character::is_alphanumeric(alphanumeric));
     }
     for (const auto &alphanumeric : wide_digits)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphanumeric(alphanumeric));
+        hud_assert_true(hud::character::is_alphanumeric(alphanumeric));
     }
 
     for (const auto &alphanumeric : low_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphanumeric(alphanumeric));
+        hud_assert_true(hud::character::is_alphanumeric(alphanumeric));
     }
     for (const auto &alphanumeric : wide_low_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphanumeric(alphanumeric));
+        hud_assert_true(hud::character::is_alphanumeric(alphanumeric));
     }
 
     for (const auto &alphanumeric : wide_higher_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphanumeric(alphanumeric));
+        hud_assert_true(hud::character::is_alphanumeric(alphanumeric));
     }
     for (const auto &alphanumeric : higher_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphanumeric(alphanumeric));
+        hud_assert_true(hud::character::is_alphanumeric(alphanumeric));
     }
 
     for (const auto &no_alphanumeric : space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphanumeric(no_alphanumeric));
+        hud_assert_false(hud::character::is_alphanumeric(no_alphanumeric));
     }
     for (const auto &no_alphanumeric : wide_space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphanumeric(no_alphanumeric));
+        hud_assert_false(hud::character::is_alphanumeric(no_alphanumeric));
     }
 
     for (const auto &no_alphanumeric : control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphanumeric(no_alphanumeric));
+        hud_assert_false(hud::character::is_alphanumeric(no_alphanumeric));
     }
     for (const auto &no_alphanumeric : wide_control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphanumeric(no_alphanumeric));
+        hud_assert_false(hud::character::is_alphanumeric(no_alphanumeric));
     }
 
     for (const auto &no_alphanumeric : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphanumeric(no_alphanumeric));
+        hud_assert_false(hud::character::is_alphanumeric(no_alphanumeric));
     }
     for (const auto &no_alphanumeric : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphanumeric(no_alphanumeric));
+        hud_assert_false(hud::character::is_alphanumeric(no_alphanumeric));
     }
 }
 
@@ -99,56 +99,56 @@ GTEST_TEST(character, is_alphabetic)
 {
     for (const auto &no_alphabetic : digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
+        hud_assert_false(hud::character::is_alphabetic(no_alphabetic));
     }
     for (const auto &no_alphabetic : wide_digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
+        hud_assert_false(hud::character::is_alphabetic(no_alphabetic));
     }
 
     for (const auto &alphabetic : low_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphabetic(alphabetic));
+        hud_assert_true(hud::character::is_alphabetic(alphabetic));
     }
     for (const auto &alphabetic : higher_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphabetic(alphabetic));
+        hud_assert_true(hud::character::is_alphabetic(alphabetic));
     }
 
     for (const auto &alphabetic : wide_low_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphabetic(alphabetic));
+        hud_assert_true(hud::character::is_alphabetic(alphabetic));
     }
     for (const auto &alphabetic : wide_higher_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_alphabetic(alphabetic));
+        hud_assert_true(hud::character::is_alphabetic(alphabetic));
     }
 
     for (const auto &no_alphabetic : space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
+        hud_assert_false(hud::character::is_alphabetic(no_alphabetic));
     }
     for (const auto &no_alphabetic : wide_space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
+        hud_assert_false(hud::character::is_alphabetic(no_alphabetic));
     }
 
     for (const auto &no_alphabetic : control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
+        hud_assert_false(hud::character::is_alphabetic(no_alphabetic));
     }
     for (const auto &no_alphabetic : wide_control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
+        hud_assert_false(hud::character::is_alphabetic(no_alphabetic));
     }
 
     for (const auto &no_alphabetic : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
+        hud_assert_false(hud::character::is_alphabetic(no_alphabetic));
     }
     for (const auto &no_alphabetic : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_alphabetic(no_alphabetic));
+        hud_assert_false(hud::character::is_alphabetic(no_alphabetic));
     }
 }
 
@@ -156,56 +156,56 @@ GTEST_TEST(character, is_lowercase)
 {
     for (const auto &no_lowercase : digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
     for (const auto &no_lowercase : wide_digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
 
     for (const auto &lowercase : low_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_lowercase(lowercase));
+        hud_assert_true(hud::character::is_lowercase(lowercase));
     }
     for (const auto &no_lowercase : higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
 
     for (const auto &lowercase : wide_low_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_lowercase(lowercase));
+        hud_assert_true(hud::character::is_lowercase(lowercase));
     }
     for (const auto &no_lowercase : wide_higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
 
     for (const auto &no_lowercase : space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
     for (const auto &no_lowercase : wide_space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
 
     for (const auto &no_lowercase : control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
     for (const auto &no_lowercase : wide_control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
 
     for (const auto &no_lowercase : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
     for (const auto &no_lowercase : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_lowercase(no_lowercase));
+        hud_assert_false(hud::character::is_lowercase(no_lowercase));
     }
 }
 
@@ -213,56 +213,56 @@ GTEST_TEST(character, is_uppercase)
 {
     for (const auto &no_uppercase : digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
     for (const auto &no_uppercase : wide_digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
 
     for (const auto &no_uppercase : low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
     for (const auto &uppercase : higher_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_uppercase(uppercase));
+        hud_assert_true(hud::character::is_uppercase(uppercase));
     }
 
     for (const auto &no_uppercase : wide_low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
     for (const auto &uppercase : wide_higher_letter)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_uppercase(uppercase));
+        hud_assert_true(hud::character::is_uppercase(uppercase));
     }
 
     for (const auto &no_uppercase : space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
     for (const auto &no_uppercase : wide_space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
 
     for (const auto &no_uppercase : control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
     for (const auto &no_uppercase : wide_control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
 
     for (const auto &no_uppercase : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
     for (const auto &no_uppercase : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_uppercase(no_uppercase));
+        hud_assert_false(hud::character::is_uppercase(no_uppercase));
     }
 }
 
@@ -270,56 +270,56 @@ GTEST_TEST(character, is_digit)
 {
     for (const auto &digit : digits)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_digit(digit));
+        hud_assert_true(hud::character::is_digit(digit));
     }
     for (const auto &digit : wide_digits)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_digit(digit));
+        hud_assert_true(hud::character::is_digit(digit));
     }
 
     for (const auto &no_digit : low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
     for (const auto &no_digit : higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
 
     for (const auto &no_digit : wide_low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
     for (const auto &no_digit : wide_higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
 
     for (const auto &no_digit : space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
     for (const auto &no_digit : wide_space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
 
     for (const auto &no_digit : control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
     for (const auto &no_digit : wide_control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
 
     for (const auto &no_digit : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
     for (const auto &no_digit : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_digit(no_digit));
+        hud_assert_false(hud::character::is_digit(no_digit));
     }
 }
 
@@ -330,47 +330,47 @@ GTEST_TEST(character, is_hexa)
 
     for (const auto &hexa : hexa)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_hexa(hexa));
+        hud_assert_true(hud::character::is_hexa(hexa));
     }
     for (const auto &hexa : wide_hexa)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_hexa(hexa));
+        hud_assert_true(hud::character::is_hexa(hexa));
     }
 
     for (const auto &no_hexa : no_hexa)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_hexa));
+        hud_assert_false(hud::character::is_hexa(no_hexa));
     }
     for (const auto &no_hexa : wide_no_hexa)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_hexa));
+        hud_assert_false(hud::character::is_hexa(no_hexa));
     }
 
     for (const auto &no_hexa : space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_hexa));
+        hud_assert_false(hud::character::is_hexa(no_hexa));
     }
     for (const auto &no_hexa : wide_space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_hexa));
+        hud_assert_false(hud::character::is_hexa(no_hexa));
     }
 
     for (const auto &no_hexa : control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_hexa));
+        hud_assert_false(hud::character::is_hexa(no_hexa));
     }
     for (const auto &no_hexa : wide_control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_hexa));
+        hud_assert_false(hud::character::is_hexa(no_hexa));
     }
 
     for (const auto &no_hexa : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_hexa));
+        hud_assert_false(hud::character::is_hexa(no_hexa));
     }
     for (const auto &no_hexa : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_hexa));
+        hud_assert_false(hud::character::is_hexa(no_hexa));
     }
 }
 
@@ -378,70 +378,70 @@ GTEST_TEST(character, is_space_or_tab)
 {
     for (const auto &no_space_or_tab : digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+        hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
     }
     for (const auto &no_space_or_tab : wide_digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+        hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
     }
 
     for (const auto &no_space_or_tab : low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+        hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
     }
     for (const auto &no_space_or_tab : wide_low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+        hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
     }
 
     for (const auto &no_space_or_tab : higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+        hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
     }
     for (const auto &no_space_or_tab : wide_higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+        hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
     }
 
     for (const auto &space_or_tab : space_and_tab)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_space_or_tab(space_or_tab));
+        hud_assert_true(hud::character::is_space_or_tab(space_or_tab));
     }
     for (const auto &space_or_tab : wide_space_and_tab)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_space_or_tab(space_or_tab));
+        hud_assert_true(hud::character::is_space_or_tab(space_or_tab));
     }
 
     for (const auto &no_space_or_tab : control)
     {
         if (no_space_or_tab == ' ' || no_space_or_tab == '\t')
         {
-            GTEST_ASSERT_TRUE(hud::character::is_space_or_tab(no_space_or_tab));
+            hud_assert_true(hud::character::is_space_or_tab(no_space_or_tab));
         }
         else
         {
-            GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+            hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
         }
     }
     for (const auto &no_space_or_tab : wide_control)
     {
         if (no_space_or_tab == L' ' || no_space_or_tab == L'\t')
         {
-            GTEST_ASSERT_TRUE(hud::character::is_space_or_tab(no_space_or_tab));
+            hud_assert_true(hud::character::is_space_or_tab(no_space_or_tab));
         }
         else
         {
-            GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+            hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
         }
     }
 
     for (const auto &no_space_or_tab : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+        hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
     }
     for (const auto &no_space_or_tab : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space_or_tab(no_space_or_tab));
+        hud_assert_false(hud::character::is_space_or_tab(no_space_or_tab));
     }
 }
 
@@ -449,47 +449,47 @@ GTEST_TEST(character, is_control)
 {
     for (const auto &no_control : digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_control(no_control));
+        hud_assert_false(hud::character::is_control(no_control));
     }
     for (const auto &no_control : wide_digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_control(no_control));
+        hud_assert_false(hud::character::is_control(no_control));
     }
 
     for (const auto &no_control : low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_control(no_control));
+        hud_assert_false(hud::character::is_control(no_control));
     }
     for (const auto &no_control : wide_low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_control(no_control));
+        hud_assert_false(hud::character::is_control(no_control));
     }
 
     for (const auto &no_control : higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_control(no_control));
+        hud_assert_false(hud::character::is_control(no_control));
     }
     for (const auto &no_control : wide_higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_control(no_control));
+        hud_assert_false(hud::character::is_control(no_control));
     }
 
     for (const auto &control : control)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_control(control));
+        hud_assert_true(hud::character::is_control(control));
     }
     for (const auto &control : wide_control)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_control(control));
+        hud_assert_true(hud::character::is_control(control));
     }
 
     for (const auto &no_control : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_control(no_control));
+        hud_assert_false(hud::character::is_control(no_control));
     }
     for (const auto &no_control : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_control(no_control));
+        hud_assert_false(hud::character::is_control(no_control));
     }
 }
 
@@ -500,29 +500,29 @@ GTEST_TEST(character, is_space)
 
     for (const auto &no_space : digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+        hud_assert_false(hud::character::is_space(no_space));
     }
     for (const auto &no_space : wide_digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+        hud_assert_false(hud::character::is_space(no_space));
     }
 
     for (const auto &no_space : low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+        hud_assert_false(hud::character::is_space(no_space));
     }
     for (const auto &no_space : wide_low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+        hud_assert_false(hud::character::is_space(no_space));
     }
 
     for (const auto &no_space : higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+        hud_assert_false(hud::character::is_space(no_space));
     }
     for (const auto &no_space : wide_higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+        hud_assert_false(hud::character::is_space(no_space));
     }
 
     for (const auto &no_space : control)
@@ -538,11 +538,11 @@ GTEST_TEST(character, is_space)
         }
         if (in_both)
         {
-            GTEST_ASSERT_TRUE(hud::character::is_space(no_space));
+            hud_assert_true(hud::character::is_space(no_space));
         }
         else
         {
-            GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+            hud_assert_false(hud::character::is_space(no_space));
         }
     }
     for (const auto &no_space : wide_control)
@@ -558,29 +558,29 @@ GTEST_TEST(character, is_space)
         }
         if (in_both)
         {
-            GTEST_ASSERT_TRUE(hud::character::is_space(no_space));
+            hud_assert_true(hud::character::is_space(no_space));
         }
         else
         {
-            GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+            hud_assert_false(hud::character::is_space(no_space));
         }
     }
 
     for (const auto &space : Space)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_space(space));
+        hud_assert_true(hud::character::is_space(space));
     }
     for (const auto &space : WideSpace)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_space(space));
+        hud_assert_true(hud::character::is_space(space));
     }
     for (const auto &no_space : punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+        hud_assert_false(hud::character::is_space(no_space));
     }
     for (const auto &no_space : wide_punc)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_space(no_space));
+        hud_assert_false(hud::character::is_space(no_space));
     }
 }
 
@@ -588,56 +588,56 @@ GTEST_TEST(character, is_punctuation)
 {
     for (const auto &no_punctuation : digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_punctuation(no_punctuation));
+        hud_assert_false(hud::character::is_punctuation(no_punctuation));
     }
     for (const auto &no_punctuation : wide_digits)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_punctuation(no_punctuation));
+        hud_assert_false(hud::character::is_punctuation(no_punctuation));
     }
 
     for (const auto &no_punctuation : low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_punctuation(no_punctuation));
+        hud_assert_false(hud::character::is_punctuation(no_punctuation));
     }
     for (const auto &no_punctuation : wide_low_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_punctuation(no_punctuation));
+        hud_assert_false(hud::character::is_punctuation(no_punctuation));
     }
 
     for (const auto &no_punctuation : higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_punctuation(no_punctuation));
+        hud_assert_false(hud::character::is_punctuation(no_punctuation));
     }
     for (const auto &no_punctuation : wide_higher_letter)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_punctuation(no_punctuation));
+        hud_assert_false(hud::character::is_punctuation(no_punctuation));
     }
 
     for (const auto &no_punctuation : space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_punctuation));
+        hud_assert_false(hud::character::is_hexa(no_punctuation));
     }
     for (const auto &no_punctuation : wide_space_and_tab)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_punctuation));
+        hud_assert_false(hud::character::is_hexa(no_punctuation));
     }
 
     for (const auto &no_punctuation : control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_punctuation));
+        hud_assert_false(hud::character::is_hexa(no_punctuation));
     }
     for (const auto &no_punctuation : wide_control)
     {
-        GTEST_ASSERT_FALSE(hud::character::is_hexa(no_punctuation));
+        hud_assert_false(hud::character::is_hexa(no_punctuation));
     }
 
     for (const auto &punctuation : punc)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_punctuation(punctuation));
+        hud_assert_true(hud::character::is_punctuation(punctuation));
     }
     for (const auto &punctuation : wide_punc)
     {
-        GTEST_ASSERT_TRUE(hud::character::is_punctuation(punctuation));
+        hud_assert_true(hud::character::is_punctuation(punctuation));
     }
 }
 
@@ -645,53 +645,53 @@ GTEST_TEST(character, to_lowercase)
 {
     for (const auto &no_tolower : digits)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_lowercase(no_tolower) == no_tolower);
     }
 
     const usize count = sizeof(low_letter) / sizeof(low_letter[0]);
     for (usize at = 0; at < count; at++)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(low_letter[at]) == low_letter[at]);
+        hud_assert_true(hud::character::to_lowercase(low_letter[at]) == low_letter[at]);
     }
     for (usize at = 0; at < count; at++)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(higher_letter[at]) == low_letter[at]);
+        hud_assert_true(hud::character::to_lowercase(higher_letter[at]) == low_letter[at]);
     }
 
     for (usize at = 0; at < count; at++)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(wide_low_letter[at]) == wide_low_letter[at]);
+        hud_assert_true(hud::character::to_lowercase(wide_low_letter[at]) == wide_low_letter[at]);
     }
     for (usize at = 0; at < count; at++)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(wide_higher_letter[at]) == wide_low_letter[at]);
+        hud_assert_true(hud::character::to_lowercase(wide_higher_letter[at]) == wide_low_letter[at]);
     }
 
     for (const auto &no_tolower : control)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_lowercase(no_tolower) == no_tolower);
     }
     for (const auto &no_tolower : wide_control)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_lowercase(no_tolower) == no_tolower);
     }
 
     for (const auto &no_tolower : space_and_tab)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_lowercase(no_tolower) == no_tolower);
     }
     for (const auto &no_tolower : wide_space_and_tab)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_lowercase(no_tolower) == no_tolower);
     }
 
     for (const auto &no_tolower : punc)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_lowercase(no_tolower) == no_tolower);
     }
     for (const auto &no_tolower : wide_punc)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_lowercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_lowercase(no_tolower) == no_tolower);
     }
 }
 
@@ -699,52 +699,52 @@ GTEST_TEST(character, to_uppercase)
 {
     for (const auto &no_tolower : digits)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_uppercase(no_tolower) == no_tolower);
     }
 
     const usize count = sizeof(low_letter) / sizeof(low_letter[0]);
     for (usize at = 0; at < count; at++)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(low_letter[at]) == higher_letter[at]);
+        hud_assert_true(hud::character::to_uppercase(low_letter[at]) == higher_letter[at]);
     }
     for (usize at = 0; at < count; at++)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(higher_letter[at]) == higher_letter[at]);
+        hud_assert_true(hud::character::to_uppercase(higher_letter[at]) == higher_letter[at]);
     }
 
     for (usize at = 0; at < count; at++)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(wide_low_letter[at]) == wide_higher_letter[at]);
+        hud_assert_true(hud::character::to_uppercase(wide_low_letter[at]) == wide_higher_letter[at]);
     }
     for (usize at = 0; at < count; at++)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(wide_higher_letter[at]) == wide_higher_letter[at]);
+        hud_assert_true(hud::character::to_uppercase(wide_higher_letter[at]) == wide_higher_letter[at]);
     }
 
     for (const auto &no_tolower : control)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_uppercase(no_tolower) == no_tolower);
     }
     for (const auto &no_tolower : wide_control)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_uppercase(no_tolower) == no_tolower);
     }
 
     for (const auto &no_tolower : space_and_tab)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_uppercase(no_tolower) == no_tolower);
     }
     for (const auto &no_tolower : wide_space_and_tab)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_uppercase(no_tolower) == no_tolower);
     }
 
     for (const auto &no_tolower : punc)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_uppercase(no_tolower) == no_tolower);
     }
     for (const auto &no_tolower : wide_punc)
     {
-        GTEST_ASSERT_TRUE(hud::character::to_uppercase(no_tolower) == no_tolower);
+        hud_assert_true(hud::character::to_uppercase(no_tolower) == no_tolower);
     }
 }

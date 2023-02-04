@@ -2,7 +2,7 @@ name: Test coverage
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   coverage_windows:
@@ -45,7 +45,7 @@ jobs:
       - name: Build and test
         run: cmake --build target --config Debug
       - name: Upload to Codecov
-        run: | 
+        run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
           ./codecov -f coverage.clang.cobertura.xml -t ${{secrets.CODECOV_TOKEN}}

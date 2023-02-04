@@ -43,18 +43,18 @@ namespace hud_test
 
 GTEST_TEST(traits, is_implicitly_constructible)
 {
-    GTEST_ASSERT_FALSE((hud::is_implicitly_constructible_v<hud_test::explicit_ctor>));
-    GTEST_ASSERT_FALSE((hud::is_implicitly_constructible_v<hud_test::explicit_ctor, i32>));
-    GTEST_ASSERT_FALSE((hud::is_implicitly_constructible_v<hud_test::explicit_ctor, const hud_test::explicit_ctor &>));
-    GTEST_ASSERT_FALSE((hud::is_implicitly_constructible_v<hud_test::explicit_ctor, hud_test::explicit_ctor &&>));
+    hud_assert_false((hud::is_implicitly_constructible_v<hud_test::explicit_ctor>));
+    hud_assert_false((hud::is_implicitly_constructible_v<hud_test::explicit_ctor, i32>));
+    hud_assert_false((hud::is_implicitly_constructible_v<hud_test::explicit_ctor, const hud_test::explicit_ctor &>));
+    hud_assert_false((hud::is_implicitly_constructible_v<hud_test::explicit_ctor, hud_test::explicit_ctor &&>));
 
-    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<hud_test::no_explicit_ctor>));
-    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<hud_test::no_explicit_ctor, i32>));
-    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<hud_test::no_explicit_ctor, const hud_test::no_explicit_ctor &>));
-    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<hud_test::no_explicit_ctor, hud_test::no_explicit_ctor &&>));
+    hud_assert_true((hud::is_implicitly_constructible_v<hud_test::no_explicit_ctor>));
+    hud_assert_true((hud::is_implicitly_constructible_v<hud_test::no_explicit_ctor, i32>));
+    hud_assert_true((hud::is_implicitly_constructible_v<hud_test::no_explicit_ctor, const hud_test::no_explicit_ctor &>));
+    hud_assert_true((hud::is_implicitly_constructible_v<hud_test::no_explicit_ctor, hud_test::no_explicit_ctor &&>));
 
-    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<i32>));
-    GTEST_ASSERT_TRUE((hud::is_implicitly_constructible_v<const i32>));
-    GTEST_ASSERT_FALSE((hud::is_implicitly_constructible_v<volatile i32>));
-    GTEST_ASSERT_FALSE((hud::is_implicitly_constructible_v<const volatile i32>));
+    hud_assert_true((hud::is_implicitly_constructible_v<i32>));
+    hud_assert_true((hud::is_implicitly_constructible_v<const i32>));
+    hud_assert_false((hud::is_implicitly_constructible_v<volatile i32>));
+    hud_assert_false((hud::is_implicitly_constructible_v<const volatile i32>));
 }

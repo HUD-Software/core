@@ -293,7 +293,11 @@ namespace hud::os::common
                 // Realloc alignment mean realloc and copy the data
                 void *aligned_pointer = allocate_align(size, alignment);
                 usize old_size = *((usize *)((const uptr)pointer - sizeof(void *) - sizeof(uptr))); // Read the size of the allocation
-                usize size_to_copy = size <= old_size ? size : old_size;
+                if (size == old_size)
+                {
+                    return pointer;
+                }
+                usize size_to_copy = size < old_size ? size : old_size;
                 // Copy the current data to the new buffer
                 copy(aligned_pointer, pointer, size_to_copy);
                 free_align(pointer);

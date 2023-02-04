@@ -9,10 +9,10 @@ namespace hud_test
 
 GTEST_TEST(traits, is_array)
 {
-    GTEST_ASSERT_FALSE(hud::is_array_v<hud_test::a>);
-    GTEST_ASSERT_FALSE(hud::is_array_v<hud_test::a *>);
-    GTEST_ASSERT_TRUE(hud::is_array_v<hud_test::a[]>);
-    GTEST_ASSERT_TRUE(hud::is_array_v<hud_test::a[][2]>);
-    GTEST_ASSERT_TRUE(hud::is_array_v<hud_test::a[2]>);
-    GTEST_ASSERT_TRUE(hud::is_array_v<hud_test::a[2][2]>);
+    hud_assert_false(hud::is_array_v<hud_test::a>);
+    hud_assert_false(hud::is_array_v<hud_test::a *>);
+    hud_assert_true(hud::is_array_v<hud_test::a[]>);
+    hud_assert_true(hud::is_array_v<hud_test::a[][2]>);
+    hud_assert_true(hud::is_array_v<hud_test::a[2]>);
+    hud_assert_true(hud::is_array_v<hud_test::a[2][2]>);
 }

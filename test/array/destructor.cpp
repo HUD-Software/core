@@ -50,15 +50,15 @@ GTEST_TEST(array, destructor_call_elements_destructors)
         // Non constant
         {
             const auto result = test_destructor();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_destructor();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
         }
     }
 
@@ -107,15 +107,15 @@ GTEST_TEST(array, destructor_call_elements_destructors)
         // Non constant
         {
             const auto result = test_destructor();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
         }
 
         // Constant
         {
             constexpr auto result = test_destructor();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
         }
     }
 }

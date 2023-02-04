@@ -21,20 +21,20 @@ GTEST_TEST(optional, swap_empty_trivial_type)
         {
             const auto result = test({1, L'a'}, {2, L'b'});
 
-            GTEST_ASSERT_EQ(std::get<0>(result), 2);
-            GTEST_ASSERT_EQ(std::get<1>(result), L'b');
-            GTEST_ASSERT_EQ(std::get<2>(result), 1);
-            GTEST_ASSERT_EQ(std::get<3>(result), L'a');
+            hud_assert_eq(std::get<0>(result), 2);
+            hud_assert_eq(std::get<1>(result), L'b');
+            hud_assert_eq(std::get<2>(result), 1);
+            hud_assert_eq(std::get<3>(result), L'a');
         }
 
         // Constant
         {
             constexpr auto result = test({1, L'a'}, {2, L'b'});
 
-            GTEST_ASSERT_EQ(std::get<0>(result), 2);
-            GTEST_ASSERT_EQ(std::get<1>(result), L'b');
-            GTEST_ASSERT_EQ(std::get<2>(result), 1);
-            GTEST_ASSERT_EQ(std::get<3>(result), L'a');
+            hud_assert_eq(std::get<0>(result), 2);
+            hud_assert_eq(std::get<1>(result), L'b');
+            hud_assert_eq(std::get<2>(result), 1);
+            hud_assert_eq(std::get<3>(result), L'a');
         }
     }
 
@@ -55,20 +55,20 @@ GTEST_TEST(optional, swap_empty_trivial_type)
         {
             const auto result = test({1, L'a'}, {2, L'b'});
 
-            GTEST_ASSERT_EQ(std::get<0>(result), 2);
-            GTEST_ASSERT_EQ(std::get<1>(result), L'b');
-            GTEST_ASSERT_EQ(std::get<2>(result), 1);
-            GTEST_ASSERT_EQ(std::get<3>(result), L'a');
+            hud_assert_eq(std::get<0>(result), 2);
+            hud_assert_eq(std::get<1>(result), L'b');
+            hud_assert_eq(std::get<2>(result), 1);
+            hud_assert_eq(std::get<3>(result), L'a');
         }
 
         // Constant
         {
             constexpr auto result = test({1, L'a'}, {2, L'b'});
 
-            GTEST_ASSERT_EQ(std::get<0>(result), 2);
-            GTEST_ASSERT_EQ(std::get<1>(result), L'b');
-            GTEST_ASSERT_EQ(std::get<2>(result), 1);
-            GTEST_ASSERT_EQ(std::get<3>(result), L'a');
+            hud_assert_eq(std::get<0>(result), 2);
+            hud_assert_eq(std::get<1>(result), L'b');
+            hud_assert_eq(std::get<2>(result), 1);
+            hud_assert_eq(std::get<3>(result), L'a');
         }
     }
 }

@@ -46,25 +46,25 @@ namespace hud_test
 GTEST_TEST(traits, HasUniqueObjectRepresentations)
 {
 
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32>);
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32 *>);
-    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<i32 &>);
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32[]>);
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32[][2]>);
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32[2]>);
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<i32[2][2]>);
-    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud::void_t<>>);
-    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<f32>);
-    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<f64>);
+    hud_assert_true(hud::has_unique_object_representations_v<i32>);
+    hud_assert_true(hud::has_unique_object_representations_v<i32 *>);
+    hud_assert_false(hud::has_unique_object_representations_v<i32 &>);
+    hud_assert_true(hud::has_unique_object_representations_v<i32[]>);
+    hud_assert_true(hud::has_unique_object_representations_v<i32[][2]>);
+    hud_assert_true(hud::has_unique_object_representations_v<i32[2]>);
+    hud_assert_true(hud::has_unique_object_representations_v<i32[2][2]>);
+    hud_assert_false(hud::has_unique_object_representations_v<hud::void_t<>>);
+    hud_assert_false(hud::has_unique_object_representations_v<f32>);
+    hud_assert_false(hud::has_unique_object_representations_v<f64>);
 
-    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::empty>);
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::a>);
-    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::b>);
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::c>);
+    hud_assert_false(hud::has_unique_object_representations_v<hud_test::empty>);
+    hud_assert_true(hud::has_unique_object_representations_v<hud_test::a>);
+    hud_assert_false(hud::has_unique_object_representations_v<hud_test::b>);
+    hud_assert_true(hud::has_unique_object_representations_v<hud_test::c>);
 
-    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::padded>);
+    hud_assert_false(hud::has_unique_object_representations_v<hud_test::padded>);
 
-    GTEST_ASSERT_TRUE(hud::has_unique_object_representations_v<hud_test::derived>);
+    hud_assert_true(hud::has_unique_object_representations_v<hud_test::derived>);
 
-    GTEST_ASSERT_FALSE(hud::has_unique_object_representations_v<hud_test::derived2>);
+    hud_assert_false(hud::has_unique_object_representations_v<hud_test::derived2>);
 }

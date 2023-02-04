@@ -4,9 +4,9 @@
 GTEST_TEST(templates, forward)
 {
 
-    GTEST_ASSERT_TRUE(hud::is_rvalue_reference_v<decltype(hud::forward<i32>(i32 {}))>);
-    GTEST_ASSERT_FALSE(hud::is_lvalue_reference_v<decltype(hud::forward<i32>(i32 {}))>);
+    hud_assert_true(hud::is_rvalue_reference_v<decltype(hud::forward<i32>(i32 {}))>);
+    hud_assert_false(hud::is_lvalue_reference_v<decltype(hud::forward<i32>(i32 {}))>);
 
-    GTEST_ASSERT_TRUE(hud::is_rvalue_reference_v<decltype(hud::forward<const i32>(i32 {}))>);
-    GTEST_ASSERT_FALSE(hud::is_lvalue_reference_v<decltype(hud::forward<const i32>(i32 {}))>);
+    hud_assert_true(hud::is_rvalue_reference_v<decltype(hud::forward<const i32>(i32 {}))>);
+    hud_assert_false(hud::is_lvalue_reference_v<decltype(hud::forward<const i32>(i32 {}))>);
 }

@@ -18,15 +18,15 @@ GTEST_TEST(unique_pointer, swap)
         // Non constant
         {
             const auto result = test();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
         }
 
         // Constant
         {
             constexpr auto result = test();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
         }
     }
 
@@ -45,15 +45,15 @@ GTEST_TEST(unique_pointer, swap)
         // Non constant
         {
             const auto result = test();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
         }
 
         // Constant
         {
             constexpr auto result = test();
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
         }
     }
 }

@@ -2,10 +2,10 @@
 
 GTEST_TEST(traits, is_volatile)
 {
-    GTEST_ASSERT_FALSE((hud::is_volatile_v<int>));
-    GTEST_ASSERT_TRUE((hud::is_volatile_v<volatile int>));
-    GTEST_ASSERT_FALSE((hud::is_volatile_v<const int>));
-    GTEST_ASSERT_TRUE((hud::is_volatile_v<const volatile int>));
-    GTEST_ASSERT_FALSE((hud::is_volatile_v<volatile int *>));
-    GTEST_ASSERT_TRUE((hud::is_volatile_v<volatile int *volatile>));
+    hud_assert_false((hud::is_volatile_v<int>));
+    hud_assert_true((hud::is_volatile_v<volatile int>));
+    hud_assert_false((hud::is_volatile_v<const int>));
+    hud_assert_true((hud::is_volatile_v<const volatile int>));
+    hud_assert_false((hud::is_volatile_v<volatile int *>));
+    hud_assert_true((hud::is_volatile_v<volatile int *volatile>));
 }

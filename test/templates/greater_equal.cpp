@@ -25,17 +25,17 @@ GTEST_TEST(templates, greater_equal)
 {
 
     hud::greater_equal<i32> gr;
-    GTEST_ASSERT_TRUE(gr(2, 1));
-    GTEST_ASSERT_TRUE(gr(1, 1));
-    GTEST_ASSERT_FALSE(gr(1, 2));
+    hud_assert_true(gr(2, 1));
+    hud_assert_true(gr(1, 1));
+    hud_assert_false(gr(1, 2));
 
     hud::greater_equal<hud_test::S> gr_s;
-    GTEST_ASSERT_TRUE(gr_s(hud_test::S {2}, hud_test::S {1}));
-    GTEST_ASSERT_TRUE(gr_s(hud_test::S {1}, hud_test::S {1}));
-    GTEST_ASSERT_FALSE(gr_s(hud_test::S {1}, hud_test::S {2}));
+    hud_assert_true(gr_s(hud_test::S {2}, hud_test::S {1}));
+    hud_assert_true(gr_s(hud_test::S {1}, hud_test::S {1}));
+    hud_assert_false(gr_s(hud_test::S {1}, hud_test::S {2}));
 
     hud::greater_equal<i32 *> gr_ptr;
-    GTEST_ASSERT_TRUE(gr_ptr(nullptr, nullptr));
-    GTEST_ASSERT_FALSE(gr_ptr(nullptr, reinterpret_cast<i32 *>(0x1)));
-    GTEST_ASSERT_TRUE(gr_ptr(reinterpret_cast<i32 *>(0x1), nullptr));
+    hud_assert_true(gr_ptr(nullptr, nullptr));
+    hud_assert_false(gr_ptr(nullptr, reinterpret_cast<i32 *>(0x1)));
+    hud_assert_true(gr_ptr(reinterpret_cast<i32 *>(0x1), nullptr));
 }

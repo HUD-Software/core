@@ -12,3 +12,4 @@
 #include "misc/non_bitwise_type.h"
 #include "misc/non_default_constructible_type.h"
 #include "misc/set_bool_to_true_when_destroyed.h"
+#include "misc/test.h"

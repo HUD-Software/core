@@ -39,24 +39,24 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_same_type)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
-        GTEST_ASSERT_TRUE(std::get<8>(result));
-        GTEST_ASSERT_TRUE(std::get<9>(result));
-        GTEST_ASSERT_TRUE(std::get<10>(result));
-        GTEST_ASSERT_TRUE(std::get<11>(result));
-        GTEST_ASSERT_TRUE(std::get<12>(result));
-        GTEST_ASSERT_TRUE(std::get<13>(result));
-        GTEST_ASSERT_TRUE(std::get<14>(result));
-        GTEST_ASSERT_TRUE(std::get<15>(result));
-        GTEST_ASSERT_TRUE(std::get<16>(result));
-        GTEST_ASSERT_TRUE(std::get<17>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
     }
 
     // Constant
@@ -65,24 +65,24 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_same_type)
     // #if !defined(HD_COMPILER_MSVC)
     //    {
     //        constexpr auto result = test();
-    //        GTEST_ASSERT_TRUE(std::get<0>(result));
-    //        GTEST_ASSERT_TRUE(std::get<1>(result));
-    //        GTEST_ASSERT_TRUE(std::get<2>(result));
-    //        GTEST_ASSERT_TRUE(std::get<3>(result));
-    //        GTEST_ASSERT_TRUE(std::get<4>(result));
-    //        GTEST_ASSERT_TRUE(std::get<5>(result));
-    //        GTEST_ASSERT_TRUE(std::get<6>(result));
-    //        GTEST_ASSERT_TRUE(std::get<7>(result));
-    //        GTEST_ASSERT_TRUE(std::get<8>(result));
-    //        GTEST_ASSERT_TRUE(std::get<9>(result));
-    //        GTEST_ASSERT_TRUE(std::get<10>(result));
-    //        GTEST_ASSERT_TRUE(std::get<11>(result));
-    //        GTEST_ASSERT_TRUE(std::get<12>(result));
-    //        GTEST_ASSERT_TRUE(std::get<13>(result));
-    //        GTEST_ASSERT_TRUE(std::get<14>(result));
-    //        GTEST_ASSERT_TRUE(std::get<15>(result));
-    //        GTEST_ASSERT_TRUE(std::get<16>(result));
-    //        GTEST_ASSERT_TRUE(std::get<17>(result));
+    //        hud_assert_true(std::get<0>(result));
+    //        hud_assert_true(std::get<1>(result));
+    //        hud_assert_true(std::get<2>(result));
+    //        hud_assert_true(std::get<3>(result));
+    //        hud_assert_true(std::get<4>(result));
+    //        hud_assert_true(std::get<5>(result));
+    //        hud_assert_true(std::get<6>(result));
+    //        hud_assert_true(std::get<7>(result));
+    //        hud_assert_true(std::get<8>(result));
+    //        hud_assert_true(std::get<9>(result));
+    //        hud_assert_true(std::get<10>(result));
+    //        hud_assert_true(std::get<11>(result));
+    //        hud_assert_true(std::get<12>(result));
+    //        hud_assert_true(std::get<13>(result));
+    //        hud_assert_true(std::get<14>(result));
+    //        hud_assert_true(std::get<15>(result));
+    //        hud_assert_true(std::get<16>(result));
+    //        hud_assert_true(std::get<17>(result));
     //    }
     // #endif
 }
@@ -125,24 +125,24 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_different_type)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
-        GTEST_ASSERT_TRUE(std::get<8>(result));
-        GTEST_ASSERT_TRUE(std::get<9>(result));
-        GTEST_ASSERT_TRUE(std::get<10>(result));
-        GTEST_ASSERT_TRUE(std::get<11>(result));
-        GTEST_ASSERT_TRUE(std::get<12>(result));
-        GTEST_ASSERT_TRUE(std::get<13>(result));
-        GTEST_ASSERT_TRUE(std::get<14>(result));
-        GTEST_ASSERT_TRUE(std::get<15>(result));
-        GTEST_ASSERT_TRUE(std::get<16>(result));
-        GTEST_ASSERT_TRUE(std::get<17>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
     }
 
     // Constant
@@ -151,24 +151,24 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_different_type)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
-    //         GTEST_ASSERT_TRUE(std::get<4>(result));
-    //         GTEST_ASSERT_TRUE(std::get<5>(result));
-    //         GTEST_ASSERT_TRUE(std::get<6>(result));
-    //         GTEST_ASSERT_TRUE(std::get<7>(result));
-    //         GTEST_ASSERT_TRUE(std::get<8>(result));
-    //         GTEST_ASSERT_TRUE(std::get<9>(result));
-    //         GTEST_ASSERT_TRUE(std::get<10>(result));
-    //         GTEST_ASSERT_TRUE(std::get<11>(result));
-    //         GTEST_ASSERT_TRUE(std::get<12>(result));
-    //         GTEST_ASSERT_TRUE(std::get<13>(result));
-    //         GTEST_ASSERT_TRUE(std::get<14>(result));
-    //         GTEST_ASSERT_TRUE(std::get<15>(result));
-    //         GTEST_ASSERT_TRUE(std::get<16>(result));
-    //         GTEST_ASSERT_TRUE(std::get<17>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
+    //         hud_assert_true(std::get<4>(result));
+    //         hud_assert_true(std::get<5>(result));
+    //         hud_assert_true(std::get<6>(result));
+    //         hud_assert_true(std::get<7>(result));
+    //         hud_assert_true(std::get<8>(result));
+    //         hud_assert_true(std::get<9>(result));
+    //         hud_assert_true(std::get<10>(result));
+    //         hud_assert_true(std::get<11>(result));
+    //         hud_assert_true(std::get<12>(result));
+    //         hud_assert_true(std::get<13>(result));
+    //         hud_assert_true(std::get<14>(result));
+    //         hud_assert_true(std::get<15>(result));
+    //         hud_assert_true(std::get<16>(result));
+    //         hud_assert_true(std::get<17>(result));
     //     }
     // #endif
 }
@@ -198,10 +198,10 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_an_empty_same_type)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 
     // Constant
@@ -210,10 +210,10 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_an_empty_same_type)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
     //     }
     // #endif
 }
@@ -242,10 +242,10 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_nullptr)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 
     // Constant
@@ -254,10 +254,10 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_nullptr)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
     //     }
     // #endif
 }
@@ -300,24 +300,24 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_same_type)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
-        GTEST_ASSERT_TRUE(std::get<8>(result));
-        GTEST_ASSERT_TRUE(std::get<9>(result));
-        GTEST_ASSERT_TRUE(std::get<10>(result));
-        GTEST_ASSERT_TRUE(std::get<11>(result));
-        GTEST_ASSERT_TRUE(std::get<12>(result));
-        GTEST_ASSERT_TRUE(std::get<13>(result));
-        GTEST_ASSERT_TRUE(std::get<14>(result));
-        GTEST_ASSERT_TRUE(std::get<15>(result));
-        GTEST_ASSERT_TRUE(std::get<16>(result));
-        GTEST_ASSERT_TRUE(std::get<17>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
     }
 
     // Constant
@@ -326,24 +326,24 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_same_type)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
-    //         GTEST_ASSERT_TRUE(std::get<4>(result));
-    //         GTEST_ASSERT_TRUE(std::get<5>(result));
-    //         GTEST_ASSERT_TRUE(std::get<6>(result));
-    //         GTEST_ASSERT_TRUE(std::get<7>(result));
-    //         GTEST_ASSERT_TRUE(std::get<8>(result));
-    //         GTEST_ASSERT_TRUE(std::get<9>(result));
-    //         GTEST_ASSERT_TRUE(std::get<10>(result));
-    //         GTEST_ASSERT_TRUE(std::get<11>(result));
-    //         GTEST_ASSERT_TRUE(std::get<12>(result));
-    //         GTEST_ASSERT_TRUE(std::get<13>(result));
-    //         GTEST_ASSERT_TRUE(std::get<14>(result));
-    //         GTEST_ASSERT_TRUE(std::get<15>(result));
-    //         GTEST_ASSERT_TRUE(std::get<16>(result));
-    //         GTEST_ASSERT_TRUE(std::get<17>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
+    //         hud_assert_true(std::get<4>(result));
+    //         hud_assert_true(std::get<5>(result));
+    //         hud_assert_true(std::get<6>(result));
+    //         hud_assert_true(std::get<7>(result));
+    //         hud_assert_true(std::get<8>(result));
+    //         hud_assert_true(std::get<9>(result));
+    //         hud_assert_true(std::get<10>(result));
+    //         hud_assert_true(std::get<11>(result));
+    //         hud_assert_true(std::get<12>(result));
+    //         hud_assert_true(std::get<13>(result));
+    //         hud_assert_true(std::get<14>(result));
+    //         hud_assert_true(std::get<15>(result));
+    //         hud_assert_true(std::get<16>(result));
+    //         hud_assert_true(std::get<17>(result));
     //     }
     // #endif
 }
@@ -387,24 +387,24 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_different_type)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
-        GTEST_ASSERT_TRUE(std::get<4>(result));
-        GTEST_ASSERT_TRUE(std::get<5>(result));
-        GTEST_ASSERT_TRUE(std::get<6>(result));
-        GTEST_ASSERT_TRUE(std::get<7>(result));
-        GTEST_ASSERT_TRUE(std::get<8>(result));
-        GTEST_ASSERT_TRUE(std::get<9>(result));
-        GTEST_ASSERT_TRUE(std::get<10>(result));
-        GTEST_ASSERT_TRUE(std::get<11>(result));
-        GTEST_ASSERT_TRUE(std::get<12>(result));
-        GTEST_ASSERT_TRUE(std::get<13>(result));
-        GTEST_ASSERT_TRUE(std::get<14>(result));
-        GTEST_ASSERT_TRUE(std::get<15>(result));
-        GTEST_ASSERT_TRUE(std::get<16>(result));
-        GTEST_ASSERT_TRUE(std::get<17>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
     }
 
     // Constant
@@ -413,24 +413,24 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_different_type)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
-    //         GTEST_ASSERT_TRUE(std::get<4>(result));
-    //         GTEST_ASSERT_TRUE(std::get<5>(result));
-    //         GTEST_ASSERT_TRUE(std::get<6>(result));
-    //         GTEST_ASSERT_TRUE(std::get<7>(result));
-    //         GTEST_ASSERT_TRUE(std::get<8>(result));
-    //         GTEST_ASSERT_TRUE(std::get<9>(result));
-    //         GTEST_ASSERT_TRUE(std::get<10>(result));
-    //         GTEST_ASSERT_TRUE(std::get<11>(result));
-    //         GTEST_ASSERT_TRUE(std::get<12>(result));
-    //         GTEST_ASSERT_TRUE(std::get<13>(result));
-    //         GTEST_ASSERT_TRUE(std::get<14>(result));
-    //         GTEST_ASSERT_TRUE(std::get<15>(result));
-    //         GTEST_ASSERT_TRUE(std::get<16>(result));
-    //         GTEST_ASSERT_TRUE(std::get<17>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
+    //         hud_assert_true(std::get<4>(result));
+    //         hud_assert_true(std::get<5>(result));
+    //         hud_assert_true(std::get<6>(result));
+    //         hud_assert_true(std::get<7>(result));
+    //         hud_assert_true(std::get<8>(result));
+    //         hud_assert_true(std::get<9>(result));
+    //         hud_assert_true(std::get<10>(result));
+    //         hud_assert_true(std::get<11>(result));
+    //         hud_assert_true(std::get<12>(result));
+    //         hud_assert_true(std::get<13>(result));
+    //         hud_assert_true(std::get<14>(result));
+    //         hud_assert_true(std::get<15>(result));
+    //         hud_assert_true(std::get<16>(result));
+    //         hud_assert_true(std::get<17>(result));
     //     }
     // #endif
 }
@@ -458,10 +458,10 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_an_empty_same_type)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 
     // Constant
@@ -470,10 +470,10 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_an_empty_same_type)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
     //     }
     // #endif
 }
@@ -501,10 +501,10 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_nullptr)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 
     // Constant
@@ -513,10 +513,10 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_nullptr)
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
-    //         GTEST_ASSERT_TRUE(std::get<0>(result));
-    //         GTEST_ASSERT_TRUE(std::get<1>(result));
-    //         GTEST_ASSERT_TRUE(std::get<2>(result));
-    //         GTEST_ASSERT_TRUE(std::get<3>(result));
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_true(std::get<1>(result));
+    //         hud_assert_true(std::get<2>(result));
+    //         hud_assert_true(std::get<3>(result));
     //     }
     // #endif
 }
@@ -542,10 +542,10 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_same_shared_pointer)
     // Non constant
     {
         const auto result = test(123);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -554,10 +554,10 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_same_shared_pointer)
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_TRUE(std::get<2>(result));
-            GTEST_ASSERT_TRUE(std::get<3>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
         }
     #endif*/
 }
@@ -583,10 +583,10 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_same_shared_pointer)
     // Non constant
     {
         const auto result = test(123);
-        GTEST_ASSERT_TRUE(std::get<0>(result));
-        GTEST_ASSERT_TRUE(std::get<1>(result));
-        GTEST_ASSERT_TRUE(std::get<2>(result));
-        GTEST_ASSERT_TRUE(std::get<3>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 
     // Constant is not available with thread safe SharedPointer
@@ -595,10 +595,10 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_same_shared_pointer)
     /* #if !defined(HD_COMPILER_MSVC)
          {
             constexpr auto result = test(123);
-            GTEST_ASSERT_TRUE(std::get<0>(result));
-            GTEST_ASSERT_TRUE(std::get<1>(result));
-            GTEST_ASSERT_TRUE(std::get<2>(result));
-            GTEST_ASSERT_TRUE(std::get<3>(result));
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
          }
      #endif*/
 }

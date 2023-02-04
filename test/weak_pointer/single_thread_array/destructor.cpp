@@ -23,12 +23,12 @@ GTEST_TEST(weak_pointer_array_not_safe, destructor)
     // Non constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(result);
+        hud_assert_true(result);
     }
 
     // Constant
     {
         const auto result = test();
-        GTEST_ASSERT_TRUE(result);
+        hud_assert_true(result);
     }
 }

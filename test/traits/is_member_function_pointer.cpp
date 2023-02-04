@@ -35,26 +35,26 @@ namespace hud_test
 
 GTEST_TEST(traits, is_member_function_pointer)
 {
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<hud_test::a *>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::i)>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::i1)>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::i2)>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::i3)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<void (hud_test::a::*)()>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<void (hud_test::a::*)() const>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<void (hud_test::a::*)() volatile>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<void (hud_test::a::*)() const volatile>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::is_function_a)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<decltype(&hud_test::a::fn_a)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<decltype(&hud_test::a::fn_a2)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<decltype(&hud_test::a::fn_a3)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<decltype(&hud_test::a::fn_a4)>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::a::a0)>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::a::a1)>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::a::a2)>));
-    GTEST_ASSERT_FALSE((hud::is_member_function_pointer_v<decltype(&hud_test::a::a3)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<decltype(hud_test::pt)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<decltype(hud_test::pt2)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<decltype(hud_test::pt3)>));
-    GTEST_ASSERT_TRUE((hud::is_member_function_pointer_v<decltype(hud_test::pt4)>));
+    hud_assert_false((hud::is_member_function_pointer_v<hud_test::a *>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::i)>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::i1)>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::i2)>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::i3)>));
+    hud_assert_true((hud::is_member_function_pointer_v<void (hud_test::a::*)()>));
+    hud_assert_true((hud::is_member_function_pointer_v<void (hud_test::a::*)() const>));
+    hud_assert_true((hud::is_member_function_pointer_v<void (hud_test::a::*)() volatile>));
+    hud_assert_true((hud::is_member_function_pointer_v<void (hud_test::a::*)() const volatile>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::is_function_a)>));
+    hud_assert_true((hud::is_member_function_pointer_v<decltype(&hud_test::a::fn_a)>));
+    hud_assert_true((hud::is_member_function_pointer_v<decltype(&hud_test::a::fn_a2)>));
+    hud_assert_true((hud::is_member_function_pointer_v<decltype(&hud_test::a::fn_a3)>));
+    hud_assert_true((hud::is_member_function_pointer_v<decltype(&hud_test::a::fn_a4)>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::a::a0)>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::a::a1)>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::a::a2)>));
+    hud_assert_false((hud::is_member_function_pointer_v<decltype(&hud_test::a::a3)>));
+    hud_assert_true((hud::is_member_function_pointer_v<decltype(hud_test::pt)>));
+    hud_assert_true((hud::is_member_function_pointer_v<decltype(hud_test::pt2)>));
+    hud_assert_true((hud::is_member_function_pointer_v<decltype(hud_test::pt3)>));
+    hud_assert_true((hud::is_member_function_pointer_v<decltype(hud_test::pt4)>));
 }

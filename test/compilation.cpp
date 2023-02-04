@@ -4,11 +4,11 @@
 GTEST_TEST(compilation, get_compiler)
 {
 #if defined(HD_COMPILER_CLANG_CL)
-    GTEST_ASSERT_EQ(hud::compilation::get_compiler(), hud::compiler_e::clang_cl);
+    hud_assert_eq(hud::compilation::get_compiler(), hud::compiler_e::clang_cl);
 #elif defined(HD_COMPILER_MSVC)
-    GTEST_ASSERT_EQ(hud::compilation::get_compiler(), hud::compiler_e::msvc);
+    hud_assert_eq(hud::compilation::get_compiler(), hud::compiler_e::msvc);
 #elif defined(HD_COMPILER_CLANG)
-    GTEST_ASSERT_EQ(hud::compilation::get_compiler(), hud::compiler_e::clang);
+    hud_assert_eq(hud::compilation::get_compiler(), hud::compiler_e::clang);
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -17,11 +17,11 @@ GTEST_TEST(compilation, get_compiler)
 GTEST_TEST(compilation, get_compiler_name)
 {
 #if defined(HD_COMPILER_CLANG_CL)
-    GTEST_ASSERT_TRUE(hud::cstring::equals(hud::compilation::get_compiler_name(), "Clang-cl"));
+    hud_assert_true(hud::cstring::equals(hud::compilation::get_compiler_name(), "Clang-cl"));
 #elif defined(HD_COMPILER_MSVC)
-    GTEST_ASSERT_TRUE(hud::cstring::equals(hud::compilation::get_compiler_name(), "Microsoft Visual Studio"));
+    hud_assert_true(hud::cstring::equals(hud::compilation::get_compiler_name(), "Microsoft Visual Studio"));
 #elif defined(HD_COMPILER_CLANG)
-    GTEST_ASSERT_TRUE(hud::cstring::equals(hud::compilation::get_compiler_name(), "Clang"));
+    hud_assert_true(hud::cstring::equals(hud::compilation::get_compiler_name(), "Clang"));
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -30,9 +30,9 @@ GTEST_TEST(compilation, get_compiler_name)
 GTEST_TEST(compilation, is_targeting_64bits)
 {
 #if defined(HD_TARGET_X64)
-    GTEST_ASSERT_TRUE(hud::compilation::is_targeting_64bits());
+    hud_assert_true(hud::compilation::is_targeting_64bits());
 #elif defined(HD_TARGET_X86)
-    GTEST_ASSERT_FALSE(hud::compilation::is_targeting_64bits());
+    hud_assert_false(hud::compilation::is_targeting_64bits());
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -41,13 +41,13 @@ GTEST_TEST(compilation, is_targeting_64bits)
 GTEST_TEST(compilation, get_cpu_instruction_set)
 {
 #if defined(HD_TARGET_X64)
-    GTEST_ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::x64);
+    hud_assert_eq(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::x64);
 #elif defined(HD_TARGET_X86)
-    GTEST_ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::x86);
+    hud_assert_eq(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::x86);
 #elif defined(HD_TARGET_ARM32)
-    GTEST_ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::arm32);
+    hud_assert_eq(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::arm32);
 #elif defined(HD_TARGET_ARM64)
-    GTEST_ASSERT_EQ(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::arm64);
+    hud_assert_eq(hud::compilation::get_cpu_instruction_set(), hud::cpu_instruction_set_e::arm64);
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -56,13 +56,13 @@ GTEST_TEST(compilation, get_cpu_instruction_set)
 GTEST_TEST(compilation, is_cpu_instruction_set)
 {
 #if defined(HD_TARGET_X64)
-    GTEST_ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::x64));
+    hud_assert_true(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::x64));
 #elif defined(HD_TARGET_X86)
-    GTEST_ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::x86));
+    hud_assert_true(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::x86));
 #elif defined(HD_TARGET_ARM32)
-    GTEST_ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::arm32));
+    hud_assert_true(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::arm32));
 #elif defined(HD_TARGET_ARM64)
-    GTEST_ASSERT_TRUE(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::arm64));
+    hud_assert_true(hud::compilation::is_cpu_instruction_set(hud::cpu_instruction_set_e::arm64));
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -71,9 +71,9 @@ GTEST_TEST(compilation, is_cpu_instruction_set)
 GTEST_TEST(compilation, get_os)
 {
 #if defined(HD_OS_WINDOWS)
-    GTEST_ASSERT_EQ(hud::compilation::get_os(), hud::os_e::windows);
+    hud_assert_eq(hud::compilation::get_os(), hud::os_e::windows);
 #elif defined(HD_OS_LINUX)
-    GTEST_ASSERT_EQ(hud::compilation::get_os(), hud::os_e::linux);
+    hud_assert_eq(hud::compilation::get_os(), hud::os_e::linux);
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -82,9 +82,9 @@ GTEST_TEST(compilation, get_os)
 GTEST_TEST(compilation, is_assertion_enabled)
 {
 #if defined(HD_DEBUG) || defined(HD_DEBUGOPTIMIZED)
-    GTEST_ASSERT_TRUE(hud::compilation::is_assertion_enabled());
+    hud_assert_true(hud::compilation::is_assertion_enabled());
 #elif defined(HD_RELEASE)
-    GTEST_ASSERT_FALSE(hud::compilation::is_assertion_enabled());
+    hud_assert_false(hud::compilation::is_assertion_enabled());
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -93,9 +93,9 @@ GTEST_TEST(compilation, is_assertion_enabled)
 GTEST_TEST(compilation, get_endianness)
 {
 #if defined(HD_LITTLE_ENDIAN)
-    GTEST_ASSERT_EQ(hud::compilation::get_endianness(), hud::endianness_e::little);
+    hud_assert_eq(hud::compilation::get_endianness(), hud::endianness_e::little);
 #elif defined(HD_BIG_ENDIAN)
-    GTEST_ASSERT_EQ(hud::compilation::get_endianness(), hud::endianness_e::big);
+    hud_assert_eq(hud::compilation::get_endianness(), hud::endianness_e::big);
 #else
     FAIL();
 #endif
@@ -104,9 +104,9 @@ GTEST_TEST(compilation, get_endianness)
 GTEST_TEST(compilation, is_endianness)
 {
 #if defined(HD_LITTLE_ENDIAN)
-    GTEST_ASSERT_TRUE(hud::compilation::is_endianness(hud::endianness_e::little));
+    hud_assert_true(hud::compilation::is_endianness(hud::endianness_e::little));
 #elif defined(HD_BIG_ENDIAN)
-    GTEST_ASSERT_TRUE(hud::compilation::is_endianness(hud::endianness_e::big));
+    hud_assert_true(hud::compilation::is_endianness(hud::endianness_e::big));
 #else
     FAIL();
 #endif

@@ -25,17 +25,17 @@ GTEST_TEST(templates, equal)
 {
 
     hud::equal<i32> eq;
-    GTEST_ASSERT_TRUE(eq(1, 1));
-    GTEST_ASSERT_FALSE(eq(-1, 1));
+    hud_assert_true(eq(1, 1));
+    hud_assert_false(eq(-1, 1));
 
     hud::equal<hud_test::S> eq_s;
-    GTEST_ASSERT_TRUE(eq_s(hud_test::S {
+    hud_assert_true(eq_s(hud_test::S {
                                1,
                            },
                            hud_test::S {1}));
-    GTEST_ASSERT_FALSE(eq_s(hud_test::S {-1}, hud_test::S {1}));
+    hud_assert_false(eq_s(hud_test::S {-1}, hud_test::S {1}));
 
     hud::equal<i32 *> eq_ptr;
-    GTEST_ASSERT_TRUE(eq_ptr(nullptr, nullptr));
-    GTEST_ASSERT_FALSE(eq_ptr(nullptr, reinterpret_cast<i32 *>(0x1)));
+    hud_assert_true(eq_ptr(nullptr, nullptr));
+    hud_assert_false(eq_ptr(nullptr, reinterpret_cast<i32 *>(0x1)));
 }

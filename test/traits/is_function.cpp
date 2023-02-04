@@ -59,15 +59,15 @@ namespace hud_test
 
 GTEST_TEST(traits, is_function)
 {
-    GTEST_ASSERT_TRUE((hud::is_function_v<decltype(hud_test::is_function_a)>));
-    GTEST_ASSERT_FALSE((hud::is_function_v<decltype(hud_test::b)>));
-    GTEST_ASSERT_FALSE((hud::is_function_v<decltype(hud_test::fct_obj)>));
-    GTEST_ASSERT_FALSE((hud::is_function_v<hud_test::c>));
-    GTEST_ASSERT_FALSE((hud::is_function_v<decltype(hud_test::c())>));
-    GTEST_ASSERT_FALSE((hud::is_function_v<hud_test::d>));
-    GTEST_ASSERT_TRUE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct)>::type>));
-    GTEST_ASSERT_TRUE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct2)>::type>));
-    GTEST_ASSERT_TRUE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct3)>::type>));
-    GTEST_ASSERT_TRUE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct4)>::type>));
-    GTEST_ASSERT_FALSE((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::d5)>::type>));
+    hud_assert_true((hud::is_function_v<decltype(hud_test::is_function_a)>));
+    hud_assert_false((hud::is_function_v<decltype(hud_test::b)>));
+    hud_assert_false((hud::is_function_v<decltype(hud_test::fct_obj)>));
+    hud_assert_false((hud::is_function_v<hud_test::c>));
+    hud_assert_false((hud::is_function_v<decltype(hud_test::c())>));
+    hud_assert_false((hud::is_function_v<hud_test::d>));
+    hud_assert_true((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct)>::type>));
+    hud_assert_true((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct2)>::type>));
+    hud_assert_true((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct3)>::type>));
+    hud_assert_true((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::fct4)>::type>));
+    hud_assert_false((hud::is_function_v<hud_test::is_function_pm<decltype(&hud_test::d::d5)>::type>));
 }
