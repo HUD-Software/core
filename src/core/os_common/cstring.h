@@ -458,6 +458,7 @@ namespace hud::os::common
         {
             if (hud::is_constant_evaluated())
             {
+                // LCOV_EXCL_START
                 usize string_length = 0;
                 while (*string != '\0')
                 {
@@ -465,6 +466,7 @@ namespace hud::os::common
                     string++;
                 }
                 return string_length;
+                // LCOV_EXCL_STOP
             }
             else
             {
