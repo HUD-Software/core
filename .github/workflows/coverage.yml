@@ -39,7 +39,9 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Install tools
-        run: sudo apt-get install gcovr llvm -y
+        run: |
+          pip install gcovr
+          sudo apt-get install llvm -y
       - name: Generate Unix Makfiles
         run: cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -Btarget -G "Unix Makefiles" -DCOVERAGE:BOOL=ON
       - name: Build and test
