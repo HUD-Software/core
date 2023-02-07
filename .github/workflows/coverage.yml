@@ -28,43 +28,43 @@ jobs:
         run: |
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
-          .\target\codecov.exe -f target\test\coverage.lcov.info -t ${{secrets.CODECOV_TOKEN}}
+          .\target\codecov.exe -f target\test\coverage.windows.lcov.info -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
           name: coverage
           path: |
-            target\test\coverage.lcov.info
+            target\test\coverage.windows.lcov.info
             target\test\windows\
 
-  # coverage_ubuntu:
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v3
-  #     - name: Set SSH Key
-  #       uses: webfactory/ssh-agent@v0.7.0
-  #       with:
-  #         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-  #     - name: Install tools
-  #       run: |
-  #         curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
-  #         sudo apt-get install llvm -y
-  #         ls -l
-  #     - name: Generate Unix Makfiles
-  #       run: cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -Btarget -G "Unix Makefiles" -DCOVERAGE:BOOL=ON
-  #     - name: Build and test
-  #       run: cmake --build target --config Debug
-  #     - name: Upload to Codecov
-  #       run: |
-  #         curl -Os https://uploader.codecov.io/latest/linux/codecov
-  #         chmod +x codecov
-  #         ./codecov -f coverage.clang.cobertura.xml -t ${{secrets.CODECOV_TOKEN}}
-  #     - name: Upload artifacts
-  #       uses: actions/upload-artifact@v3.1.1
-  #       with:
-  #         name: coverage
-  #         path: |
-  #           target/test/coverage.clang.cobertura.xml
-  #           target/test/coverage_html/
-  #           target/test/coverage.clang.cobertura.json
+  coverage_ubuntu:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set SSH Key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Install tools
+        run: |
+          mkdir target
+          cd target
+          curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
+          sudo apt-get install llvm -y
+      - name: Generate Unix Makfiles
+        run: cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-14 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/clang++-14 -Btarget -G "Unix Makefiles" -DCOVERAGE:BOOL=ON
+      - name: Build and test
+        run: cmake --build target --config Debug
+      - name: Upload to Codecov
+        run: |
+          curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -f target/test/coverage.ubuntu.lcov.info -t ${{secrets.CODECOV_TOKEN}}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: coverage
+          path: |
+            target/test/coverage.ubuntu.lcov.info
+            target/test/ubuntu/

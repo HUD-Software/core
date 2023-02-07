@@ -310,7 +310,7 @@ if(COVERAGE AND MSVC)
 		 	COMMENT "Run test_core.exe"
 		 	COMMAND ./Debug/test_core.exe
 			COMMAND ./../grcov.exe --llvm -t html --branch -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ --keep-only src/* --keep-only test/* --excl-start ^.*LCOV_EXCL_START.*$ --excl-stop ^.*LCOV_EXCL_STOP.*$ -o windows
-			COMMAND ./../grcov.exe --llvm -t lcov --branch -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ --keep-only src/* --keep-only test/* --excl-start ^.*LCOV_EXCL_START.*$ --excl-stop ^.*LCOV_EXCL_STOP.*$ -o coverage.lcov.info
+			COMMAND ./../grcov.exe --llvm -t lcov --branch -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ --keep-only src/* --keep-only test/* --excl-start ^.*LCOV_EXCL_START.*$ --excl-stop ^.*LCOV_EXCL_STOP.*$ -o coverage.windows.lcov.info
 		)
 
 	endif()
@@ -321,20 +321,9 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
-		# COMMAND LLVM_PROFILE_FILE=coverage.profraw ./test_core
-	 	# COMMAND llvm-profdata merge --sparse ./coverage.profraw -o ./coverage.profdata
-		# COMMAND llvm-cov export --format=text --instr-profile ./coverage.profdata ./test_core > ./coverage.lcov
-		# COMMAND genhtml --ignore-errors source ./coverage.lcov --legend --title "commit SHA1" --output-directory=lcov_html
 		COMMAND ./test_core
-		COMMAND ./../grcov.exe --llvm -t html --branch -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ --keep-only src/* --keep-only test/* --excl-start ^.*LCOV_EXCL_START.*$ --excl-stop ^.*LCOV_EXCL_STOP.*$ -o windows
-		COMMAND ./../grcov.exe --llvm -t lcov --branch -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ --keep-only src/* --keep-only test/* --excl-start ^.*LCOV_EXCL_START.*$ --excl-stop ^.*LCOV_EXCL_STOP.*$ -o coverage.lcov.info
-		# "'\.\./\.\./(test|src)/.*'" : Take files only in test or src directory
-		# "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" : Exclude GTEST_TEST and GTEST_ASSERT_
-		# COMMAND rm -rf "coverage_html" "coverage.clang.cobertura.xml"
-		# COMMAND mkdir "coverage_html"
-        # COMMAND gcovr --version
-		# COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --html-details "coverage_html/coverage.clang.cobertura.html" --html-details-syntax-highlighting --html-self-contained
-		# COMMAND gcovr --gcov-executable "llvm-cov gcov" --filter "'\.\./\.\./(test|src)/.*'" --exclude-unreachable-branches --exclude-throw-branches --exclude-lines-by-pattern "'(GTEST_TEST|\\s*GTEST_ASSERT_).*'" --xml "coverage.clang.cobertura.xml" --delete
+		COMMAND ./../grcov --llvm -t html --branch -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/ --excl-start ^.*LCOV_EXCL_START.*$$ --excl-stop ^.*LCOV_EXCL_STOP.*$$ --keep-only src/* --keep-only test/* -o ubuntu
+		COMMAND ./../grcov --llvm -t lcov --branch -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/ --excl-start ^.*LCOV_EXCL_START.*$$ --excl-stop ^.*LCOV_EXCL_STOP.*$$ --keep-only src/* --keep-only test/* -o coverage.ubuntu.lcov.info
 	)
 endif()
 
