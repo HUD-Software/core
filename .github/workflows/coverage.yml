@@ -17,6 +17,7 @@ jobs:
       - name: Download GRCOV
         run: |
           $ProgressPreference = 'SilentlyContinue'
+          New-Item -ItemType Directory -Path ./target/
           Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./target/grcov-x86_64-pc-windows-msvc.zip
           Expand-Archive -Path ./target/grcov-x86_64-pc-windows-msvc.zip -DestinationPath ./target
       - name: Generate visual Studio solution
