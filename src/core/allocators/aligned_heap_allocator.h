@@ -24,12 +24,12 @@ namespace hud
         template<typename type_t = u8>
         [[nodiscard]] constexpr allocation_type<type_t> allocate(const usize count) noexcept
         {
-            if( count == 0u) {
-               return allocation_type<type_t> {};
+            if (count == 0u)
+            {
+                return allocation_type<type_t> {};
             }
-            type_t* alloc = memory::allocate_align<type_t>(count, alignment);
+            type_t *alloc = memory::allocate_align<type_t>(count, alignment);
             return allocation_type<type_t>(alloc, count);
-            //return count > 0 ? allocation_type<type_t>(static_cast<type_t *>(memory::allocate_align<type_t>(count, alignment)), count) : allocation_type<type_t> {};
         }
 
         /**

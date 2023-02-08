@@ -273,7 +273,7 @@ set_target_properties(test_core
 )
 if(MSVC)
 	#target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /Os /EHsc /GR- /utf-8)
-	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /utf-8)
+	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
 endif()
 
 if(COVERAGE AND MSVC)
