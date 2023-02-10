@@ -309,7 +309,8 @@ if(COVERAGE AND MSVC)
 		 	TARGET test_core POST_BUILD
 		 	COMMENT "Run test_core.exe"
 		 	COMMAND ./Debug/test_core.exe
-			COMMAND ./../grcov.exe --llvm -t html -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ 
+			COMMAND ./../grcov.exe --llvm -t html -b ./Debug/ -s ./../../ ./test_core.dir/Debug/
+					--branch
 					--keep-only "src/*" 
 					--keep-only "test/*" 
 					--ignore "test/misc/*" 
@@ -321,6 +322,7 @@ if(COVERAGE AND MSVC)
 					--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
 					-o windows
 			COMMAND ./../grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../ ./test_core.dir/Debug/
+					--branch
 					--keep-only "src/*"
 					--keep-only "test/*" 
 					--ignore "test/misc/*" 
@@ -343,6 +345,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		COMMENT "Run test_core.exe"
 		COMMAND ./test_core
 		COMMAND ./../grcov --llvm -t html -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/ 
+				--branch
 				--keep-only "src/*" 
 				--keep-only "test/*" 
 				--ignore "test/misc/*" 
@@ -354,6 +357,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
 				-o ubuntu
 		COMMAND ./../grcov --llvm -t lcov -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/
+				--branch
 				--keep-only "src/*"
 				--keep-only "test/*" 
 				--ignore "test/misc/*" 
