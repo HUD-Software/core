@@ -4,10 +4,8 @@
 
 GTEST_TEST(memory, allocate)
 {
-
     // Non constant
     {
-
         // Allocation should success and allocate a u32 on the heap
         constexpr usize allocation_size = sizeof(u32) * 2;
         void *ptr = hud::memory::allocate(allocation_size);
@@ -23,7 +21,6 @@ GTEST_TEST(memory, allocate)
 
 GTEST_TEST(memory, allocate_and_free_are_usable_in_constexpr)
 {
-
     constexpr bool allocate_const = []() -> bool
     {
         i32 *const_ptr = hud::memory::allocate_array<i32>(2);
@@ -36,7 +33,6 @@ GTEST_TEST(memory, allocate_and_free_are_usable_in_constexpr)
 
 GTEST_TEST(memory, allocate_zero)
 {
-
     // Allocation should success and allocate a 2*u32 on the heap and fill it with 0
     constexpr usize allocation_size = sizeof(u32) * 2;
     void *ptr = hud::memory::allocate_zero(allocation_size);
@@ -53,7 +49,6 @@ GTEST_TEST(memory, allocate_zero)
 
 GTEST_TEST(memory, allocate_align)
 {
-
     for (u32 aligment = 1; aligment <= 256; aligment <<= 1)
     {
 
@@ -72,7 +67,6 @@ GTEST_TEST(memory, allocate_align)
 
 GTEST_TEST(memory, allocate_align_zero)
 {
-
     for (u32 aligment = 1; aligment <= 256; aligment <<= 1)
     {
 
@@ -93,7 +87,6 @@ GTEST_TEST(memory, allocate_align_zero)
 
 GTEST_TEST(memory, free)
 {
-
     // Difficult to test, at least it should not crash
     hud::memory::free(hud::memory::allocate(sizeof(u32)));
 
@@ -103,7 +96,6 @@ GTEST_TEST(memory, free)
 
 GTEST_TEST(memory, free_align)
 {
-
     // Difficult to test, at least it should not crash
     hud::memory::free_align(hud::memory::allocate_align(sizeof(u32), 128));
 
@@ -113,7 +105,6 @@ GTEST_TEST(memory, free_align)
 
 GTEST_TEST(memory, allocate_align_and_free_align_are_usable_in_consteval)
 {
-
     constexpr bool allocate_const = []() -> bool
     {
         i32 *const_ptr = hud::memory::allocate_align<i32>(2, 128);
@@ -126,7 +117,6 @@ GTEST_TEST(memory, allocate_align_and_free_align_are_usable_in_consteval)
 
 GTEST_TEST(memory, reallocate)
 {
-
     u32 *ptr = reinterpret_cast<u32 *>(hud::memory::reallocate(nullptr, sizeof(u32)));
     hud_test::LeakGuard guard(ptr);
     hud_assert_ne(ptr, nullptr);
@@ -144,7 +134,6 @@ GTEST_TEST(memory, reallocate)
 
 GTEST_TEST(memory, reallocate_align)
 {
-
     struct a
     {
         a(a &&other) = default;

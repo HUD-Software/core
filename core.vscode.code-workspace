@@ -13,7 +13,7 @@
         "C_Cpp.autoAddFileAssociations": false,
         "C_Cpp.clang_format_fallbackStyle": "none",
         "C_Cpp.clang_format_style": "file",
-        "C_Cpp.clang_format_path": "/usr/bin/clang-format-15",
+        "C_Cpp.clang_format_path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\Llvm\\x64\\bin\\clang-format.exe",
         "editor.formatOnSave": true
     },
 }

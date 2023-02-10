@@ -153,7 +153,6 @@ GTEST_TEST(weak_pointer_array_safe, swap_same_type)
                 {1, &dtor_count[0]},
                 {2, &dtor_count[1]}
             };
-            i32 dtor_count_1 = 0;
             hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(ptr); // +1 shared_count
             hud::weak_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> weak_ptr(shared_ptr);
 
@@ -228,7 +227,6 @@ GTEST_TEST(weak_pointer_array_safe, swap_same_type)
                 {1, &dtor_count[0]},
                 {2, &dtor_count[1]}
             };
-            i32 dtor_count_1 = 0;
             hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(ptr); // +1 shared_count
             hud::weak_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> weak_ptr(shared_ptr);
 

@@ -85,13 +85,43 @@ namespace hud::os::common
 
         /**
          * Allocate memory block with no alignment requirements. Must be freed with hud::memory::free.
+         * If Allocation failed or size is 0, nullptr is returned
          * @param size Number of bytes to allocate
          * @return Pointer to the allocated memory block, nullptr if failed
          */
         [[nodiscard]] static void *allocate(const usize size) noexcept
         {
-            check(size != 0);
-            return ::malloc(size);
+            if (size == 0) [[unlikely]]
+            {
+                return nullptr;
+            }
+            void *unaligned_pointer = ::malloc(size);
+            if (unaligned_pointer != nullptr) [[unlikely]]
+            {
+                // assert(false);// OOM
+            }
+            return unaligned_pointer;
+        }
+
+        /**
+         * Allocate memory block with no alignment requirements. Must be freed with hud::memory::free.
+         * If Allocation failed or size is 0, nullptr is returned
+         * @param size Number of bytes to allocate
+         * @param extra Number of extra bytes to allocate
+         * @return Pointer to the allocated memory block, nullptr if failed
+         */
+        [[nodiscard]] static void *allocate(const usize size, const usize extra) noexcept
+        {
+            if (size == 0) [[unlikely]]
+            {
+                return nullptr;
+            }
+            void *unaligned_pointer = ::malloc(size + extra);
+            if (unaligned_pointer != nullptr) [[unlikely]]
+            {
+                // assert(false);// OOM
+            }
+            return unaligned_pointer;
         }
 
         /**
@@ -114,7 +144,7 @@ namespace hud::os::common
             {
                 // Usage of std::allocator.allocate is allowed in constexpr dynamic allocation.
                 // The allocation should be freed with std::allocator<type_t>().deallocate in the same constexpr expression
-                return std::allocator<type_t>().allocate(count);
+                return (allocation_size > 0u) ? std::allocator<type_t>().allocate(count) : nullptr;
             }
             return reinterpret_cast<type_t *>(allocate(allocation_size));
         }
@@ -127,7 +157,7 @@ namespace hud::os::common
         [[nodiscard]] static HD_FORCEINLINE void *allocate_zero(const usize size) noexcept
         {
             void *buffer = allocate(size);
-            if (buffer != nullptr)
+            if (buffer != nullptr) [[likely]]
             {
                 set_zero(buffer, size);
             }
@@ -142,19 +172,12 @@ namespace hud::os::common
          */
         [[nodiscard]] static void *allocate_align(const usize size, const u32 alignment) noexcept
         {
-            check(size != 0);
-            check(size + alignment + ALIGNED_MALLOC_HEADER_SIZE >= size);
-            void *aligned_pointer = nullptr;
-            void *unaligned_pointer = allocate(size + alignment + ALIGNED_MALLOC_HEADER_SIZE);
-            if (unaligned_pointer == nullptr)
+            void *unaligned_pointer = allocate(size, alignment + ALIGNED_MALLOC_HEADER_SIZE);
+            if (unaligned_pointer) [[likely]]
             {
-                /*assert(false);*/ // Out of memory
+                return align_pointer(unaligned_pointer, size, alignment);
             }
-            else
-            {
-                aligned_pointer = align_pointer(unaligned_pointer, size, alignment);
-            }
-            return aligned_pointer;
+            return nullptr;
         }
 
         /**
@@ -185,7 +208,7 @@ namespace hud::os::common
         [[nodiscard]] static HD_FORCEINLINE void *allocate_align_zero(const usize size, const u32 alignment) noexcept
         {
             void *buffer = allocate_align(size, alignment);
-            if (buffer != nullptr)
+            if (buffer != nullptr) [[likely]]
             {
                 set_zero(buffer, size);
             }
