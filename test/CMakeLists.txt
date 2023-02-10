@@ -319,7 +319,7 @@ if(COVERAGE AND MSVC)
 					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
 					--excl-br-start "^.*LCOV_EXCL_START.*" 
 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-					--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
+					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o windows
 			COMMAND ./../grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../ ./test_core.dir/Debug/
 					--branch
@@ -331,7 +331,7 @@ if(COVERAGE AND MSVC)
 					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
 					--excl-br-start "^.*LCOV_EXCL_START.*" 
 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-					--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
+					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o coverage.windows.lcov.info
 		)
 
@@ -354,7 +354,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
 				--excl-br-start "^.*LCOV_EXCL_START.*" 
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-				--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
+				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 				-o ubuntu
 		COMMAND ./../grcov --llvm -t lcov -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/
 				--branch
@@ -366,7 +366,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
 				--excl-br-start "^.*LCOV_EXCL_START.*" 
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-				--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
+				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 				-o coverage.ubuntu.lcov.info
 	)
 endif()
