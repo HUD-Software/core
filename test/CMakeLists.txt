@@ -309,8 +309,28 @@ if(COVERAGE AND MSVC)
 		 	TARGET test_core POST_BUILD
 		 	COMMENT "Run test_core.exe"
 		 	COMMAND ./Debug/test_core.exe
-			COMMAND ./../grcov.exe --llvm -t html --branch -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ --keep-only "src/*" --keep-only "test/*" --ignore "test/misc/*" --excl-start "^.*LCOV_EXCL_START.*" --excl-stop "^.*LCOV_EXCL_STOP.*" --excl-line "\\s*^.*GTEST_TEST\\.*" --excl-br-start "^.*LCOV_EXCL_START.*" --excl-br-stop "^.*LCOV_EXCL_STOP.*" --excl-br-line "\\s*^.*GTEST_TEST\\.*" -o windows
-			COMMAND ./../grcov.exe --llvm -t lcov --branch -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ --keep-only "src/*" --keep-only "test/*" --ignore "test/misc/*" --excl-start "^.*LCOV_EXCL_START.*" --excl-stop "^.*LCOV_EXCL_STOP.*" --excl-line "\\s*^.*GTEST_TEST\\.*" --excl-br-start "^.*LCOV_EXCL_START.*" --excl-br-stop "^.*LCOV_EXCL_STOP.*" --excl-br-line "\\s*^.*GTEST_TEST\\.*" -o coverage.windows.lcov.info
+			COMMAND ./../grcov.exe --llvm -t html -b ./Debug/ -s ./../../ ./test_core.dir/Debug/ 
+					--keep-only "src/*" 
+					--keep-only "test/*" 
+					--ignore "test/misc/*" 
+					--excl-start "^.*LCOV_EXCL_START.*" 
+					--excl-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+					--excl-br-start "^.*LCOV_EXCL_START.*" 
+					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
+					-o windows
+			COMMAND ./../grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../ ./test_core.dir/Debug/
+					--keep-only "src/*"
+					--keep-only "test/*" 
+					--ignore "test/misc/*" 
+					--excl-start "^.*LCOV_EXCL_START.*" 
+					--excl-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+					--excl-br-start "^.*LCOV_EXCL_START.*" 
+					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
+					-o coverage.windows.lcov.info
 		)
 
 	endif()
@@ -322,8 +342,28 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
 		COMMAND ./test_core
-		COMMAND ./../grcov --llvm -t html --branch -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/ --keep-only "src/*" --keep-only "test/*" --ignore "test/misc/*" --excl-start "^.*LCOV_EXCL_START.*" --excl-stop "^.*LCOV_EXCL_STOP.*" --excl-line "\\s*^.*GTEST_TEST\\.*" --excl-br-start "^.*LCOV_EXCL_START.*" --excl-br-stop "^.*LCOV_EXCL_STOP.*" --excl-br-line "\\s*^.*GTEST_TEST\\.*" -o ubuntu
-		COMMAND ./../grcov --llvm -t lcov --branch -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/ --keep-only "src/*" --keep-only "test/*" --ignore "test/misc/*" --excl-start "^.*LCOV_EXCL_START.*" --excl-stop "^.*LCOV_EXCL_STOP.*" --excl-line "\\s*^.*GTEST_TEST\\.*" --excl-br-start "^.*LCOV_EXCL_START.*" --excl-br-stop "^.*LCOV_EXCL_STOP.*" --excl-br-line "\\s*^.*GTEST_TEST\\.*" -o coverage.ubuntu.lcov.info
+		COMMAND ./../grcov --llvm -t html -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/ 
+				--keep-only "src/*" 
+				--keep-only "test/*" 
+				--ignore "test/misc/*" 
+				--excl-start "^.*LCOV_EXCL_START.*" 
+				--excl-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+				--excl-br-start "^.*LCOV_EXCL_START.*" 
+				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
+				-o ubuntu
+		COMMAND ./../grcov --llvm -t lcov -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/
+				--keep-only "src/*"
+				--keep-only "test/*" 
+				--ignore "test/misc/*" 
+				--excl-start "^.*LCOV_EXCL_START.*" 
+				--excl-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+				--excl-br-start "^.*LCOV_EXCL_START.*" 
+				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-br-line "\\s*^.*GTEST_TEST\\.*" 
+				-o coverage.ubuntu.lcov.info
 	)
 endif()
 
