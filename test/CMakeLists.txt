@@ -14,6 +14,7 @@ add_executable(test_core
 	array/clear.cpp
 	array/comparison.cpp
 	array/constructors.cpp
+	array/copy_assign.cpp
 	array/destructor.cpp
 	array/emplace_at.cpp
 	array/emplace_at_to_ref.cpp
@@ -21,6 +22,7 @@ add_executable(test_core
 	array/emplace_back_to_ref.cpp
 	array/iteration.cpp
 	array/misc.cpp
+	array/move_assign.cpp
 	array/remove_at.cpp
 	array/reserve.cpp
 	array/resize.cpp

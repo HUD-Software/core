@@ -331,7 +331,7 @@ namespace hud
         constexpr array &operator=(const array &other) noexcept
         requires(hud::is_copy_assignable_v<type_t>)
         {
-            if (this != &other)
+            if (this != &other) [[likely]]
             {
                 copy_assign(other.data(), other.count());
             }
@@ -364,7 +364,7 @@ namespace hud
         constexpr array &operator=(array &&other) noexcept
         requires(hud::is_move_assignable_v<type_t>)
         {
-            if (this != &other)
+            if (this != &other) [[likely]]
             {
                 move_assign(hud::move(other));
             }

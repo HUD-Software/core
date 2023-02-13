@@ -58,7 +58,7 @@ namespace hud
          */
         HD_FORCEINLINE constexpr allocation &operator=(allocation &&other) noexcept
         {
-            if (this != &other) [[likely]] // LCOV_EXCL_BR_LINE ( branch coverage need path for all type_t instanciated, we don't want to test for all types here )
+            if (this != &other) [[likely]] // LCOV_EXCL_BR_LINE ( Ignore branch coverage for all type_t )
             {
                 begin_ptr = other.begin_ptr;
                 other.begin_ptr = nullptr;
