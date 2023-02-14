@@ -314,8 +314,8 @@ if(COVERAGE AND MSVC)
 			COMMAND ./../grcov.exe --llvm -t html -b ./Debug/ -s ./../../ ./test_core.dir/Debug/
 					--branch
 					--keep-only "src/*" 
-					--keep-only "test/*" 
-					--ignore "test/misc/*" 
+					#--keep-only "test/*" 
+					#--ignore "test/misc/*" 
 					--excl-start "^.*LCOV_EXCL_START.*" 
 					--excl-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
@@ -326,8 +326,8 @@ if(COVERAGE AND MSVC)
 			COMMAND ./../grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../ ./test_core.dir/Debug/
 					--branch
 					--keep-only "src/*"
-					--keep-only "test/*" 
-					--ignore "test/misc/*" 
+					#--keep-only "test/*" 
+					#--ignore "test/misc/*" 
 					--excl-start "^.*LCOV_EXCL_START.*" 
 					--excl-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
@@ -349,8 +349,8 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		COMMAND ./../grcov --llvm -t html -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/ 
 				--branch
 				--keep-only "src/*" 
-				--keep-only "test/*" 
-				--ignore "test/misc/*" 
+				#--keep-only "test/*" 
+				#--ignore "test/misc/*" 
 				--excl-start "^.*LCOV_EXCL_START.*" 
 				--excl-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
@@ -361,8 +361,8 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		COMMAND ./../grcov --llvm -t lcov -b ./Debug/ -s ./../../ ./CMakeFiles/test_core.dir/
 				--branch
 				--keep-only "src/*"
-				--keep-only "test/*" 
-				--ignore "test/misc/*" 
+				#--keep-only "test/*" 
+				#--ignore "test/misc/*" 
 				--excl-start "^.*LCOV_EXCL_START.*" 
 				--excl-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
