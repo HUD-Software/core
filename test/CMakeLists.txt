@@ -299,7 +299,7 @@ if(COVERAGE AND MSVC)
 		set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
 
 		target_compile_options(test_core PRIVATE --coverage)
-		target_link_options(test_core PRIVATE --coverage)
+		target_link_options(test_core PRIVATE --coverage --whole-archive)
 
 		# Add clang lib path to libraries paths
 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
@@ -340,7 +340,7 @@ if(COVERAGE AND MSVC)
 	endif()
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options(test_core PRIVATE --coverage)
-	target_link_options(test_core PRIVATE --coverage)
+	target_link_options(test_core PRIVATE --coverage --whole-archive)
 
 	add_custom_command(
 		TARGET test_core POST_BUILD
