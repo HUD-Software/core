@@ -302,6 +302,7 @@ if(COVERAGE AND MSVC)
 		target_compile_options(test_core PRIVATE --coverage)
 		target_link_options(test_core PRIVATE --coverage)
                 target_compile_options(core PRIVATE --coverage)
+                target_link_options(core PRIVATE --coverage)
 
 		# Add clang lib path to libraries paths
 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
