@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.24)
 
 
 # Define a grouping for source files in IDE project generation
@@ -235,12 +235,17 @@ endif()
 
 
 if(COVERAGE AND MSVC)
-	target_link_options(core PRIVATE /PROFILE)
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	        target_link_options(core PRIVATE /PROFILE)
+        elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+                set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
+	        target_compile_options(core PRIVATE --coverage)
+	        target_link_options(core PRIVATE --coverage)
+        endif()
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options(core PRIVATE --coverage)
 	target_link_options(core PRIVATE --coverage)
-endif()
-
+endif() 
 
 # Include Interface directory to inclusion path
 target_include_directories(core PUBLIC .)
