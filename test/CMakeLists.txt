@@ -297,12 +297,9 @@ if(COVERAGE AND MSVC)
 		# Disable compiler batching to fix a clang-cl bug when activate --coverage
 		# See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
 		set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
-                set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
 
 		target_compile_options(test_core PRIVATE --coverage)
 		target_link_options(test_core PRIVATE --coverage)
-                target_compile_options(core PRIVATE --coverage)
-                target_link_options(core PRIVATE --coverage)
 
 		# Add clang lib path to libraries paths
 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
