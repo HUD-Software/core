@@ -311,6 +311,7 @@ if(COVERAGE AND MSVC)
 		 	TARGET test_core POST_BUILD
 		 	COMMENT "Run test_core.exe"
 		 	COMMAND ./Debug/test_core.exe
+                        COMMAND cd.. 
                         COMMAND tree
 			COMMAND ./../grcov.exe --llvm -t html -b ./Debug/ -s ./../../
 					--branch
