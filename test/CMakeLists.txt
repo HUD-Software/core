@@ -325,7 +325,7 @@ if(COVERAGE AND MSVC)
 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o windows
-                                        ./test_core.dir/Debug/ ./core.dir/Debug/
+                                        ./test_core.dir/Debug/ ../src/core.dir/Debug/
 			COMMAND ./../grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../
 					--branch
 					--keep-only "src/*"
@@ -338,7 +338,7 @@ if(COVERAGE AND MSVC)
 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o coverage.windows.lcov.info
-                                        ./test_core.dir/Debug/ ./core.dir/Debug/
+                                        ./test_core.dir/Debug/ ../src/core.dir/Debug/
 		)
 
 	endif()
