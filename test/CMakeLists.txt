@@ -349,7 +349,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
 		COMMAND ./test_core
-                COMMAND tree ./CMakeFiles
+                COMMAND tree .
 		COMMAND ./../grcov --llvm -t html -b ./Debug/ -s ./../../
 				--branch
 				--keep-only "src/*" 
