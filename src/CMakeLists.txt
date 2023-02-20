@@ -227,25 +227,12 @@ set_target_properties(core
         CXX_EXTENSIONS NO
 )
 if(MSVC)
-	target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20)
+	target_compile_options(  core PRIVATE /Zc:__cplusplus /std:c++20 /permissive- /EHsc /utf-8 )
 	#target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20 /EHsc /GR-)
 # elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 # 	target_compile_options( core PRIVATE -fno-cxx-exceptions -fno-rtti)
 endif()
 
-
-if(COVERAGE AND MSVC)
-        if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	        target_link_options(core PRIVATE /PROFILE)
-        elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-                set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
-	        target_compile_options(core PRIVATE --coverage)
-	        target_link_options(core PRIVATE --coverage)
-        endif()
-elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options(core PRIVATE --coverage)
-	target_link_options(core PRIVATE --coverage)
-endif() 
 
 # Include Interface directory to inclusion path
 target_include_directories(core PUBLIC .)

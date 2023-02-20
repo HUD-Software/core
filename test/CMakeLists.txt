@@ -297,16 +297,21 @@ if(COVERAGE AND MSVC)
 		# Disable compiler batching to fix a clang-cl bug when activate --coverage
 		# See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
 		set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
+		set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
 
 		target_compile_options(test_core PRIVATE --coverage)
 		target_link_options(test_core PRIVATE --coverage)
+		target_compile_options(core PRIVATE --coverage)
+		target_link_options(core PRIVATE --coverage)
 
 		# Add clang lib path to libraries paths
 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
 		target_link_directories(test_core PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\15.0.1\\lib\\windows\\")
+
 		# Need to link manually LLVM Bug 40877
 		# See: https://bugs.llvm.org/show_bug.cgi?id=40877
 		target_link_libraries(test_core PRIVATE "clang_rt.profile-x86_64.lib")
+
 		add_custom_command( 
 		 	TARGET test_core POST_BUILD
 		 	COMMENT "Run test_core.exe"
@@ -323,7 +328,7 @@ if(COVERAGE AND MSVC)
 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o windows
-                                        ./test_core.dir/Debug/ ../src/core.dir/Debug/
+					..
 			COMMAND ./../grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../
 					--branch
 					--keep-only "src/*"
@@ -336,7 +341,7 @@ if(COVERAGE AND MSVC)
 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o coverage.windows.lcov.info
-                                        ./test_core.dir/Debug/ ../src/core.dir/Debug/
+					..
 		)
 
 	endif()
@@ -360,7 +365,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 				-o ubuntu
-                                ./CMakeFiles/test_core.dir/ ../src/CMakeFiles/core.dir/
+				./CMakeFiles/test_core.dir/ ../src/CMakeFiles/core.dir/
 		COMMAND ./../grcov --llvm -t lcov -b ./Debug/ -s ./../../
 				--branch
 				--keep-only "src/*"
@@ -373,7 +378,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 				-o coverage.ubuntu.lcov.info
-                                ./CMakeFiles/test_core.dir/ ../src/CMakeFiles/core.dir/
+				./CMakeFiles/test_core.dir/ ../src/CMakeFiles/core.dir/
 	)
 endif()
 
