@@ -365,7 +365,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 				-o ubuntu
-				./CMakeFiles/test_core.dir/ ../src/CMakeFiles/core.dir/
+				..
 		COMMAND ./../grcov --llvm -t lcov -b ./Debug/ -s ./../../
 				--branch
 				--keep-only "src/*"
@@ -378,7 +378,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 				-o coverage.ubuntu.lcov.info
-				./CMakeFiles/test_core.dir/ ../src/CMakeFiles/core.dir/
+				..
 	)
 endif()
 

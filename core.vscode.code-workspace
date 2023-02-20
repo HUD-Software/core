@@ -14,6 +14,11 @@
         "C_Cpp.clang_format_fallbackStyle": "none",
         "C_Cpp.clang_format_style": "file",
         "C_Cpp.clang_format_path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\VC\\Tools\\Llvm\\x64\\bin\\clang-format.exe",
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "coverage-gutters.coverageFileNames": [
+            "coverage.windows.lcov.info",
+            "coverage.ubuntu.lcov.info"
+        ],
+        "coverage-gutters.showLineCoverage": true
     },
 }

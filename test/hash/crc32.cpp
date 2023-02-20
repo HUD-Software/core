@@ -13,15 +13,20 @@ GTEST_TEST(hash, crc32_lookup_table_is_correct)
 
 GTEST_TEST(hash, crc32_hash_aligned_buffer)
 {
-
     const u32 result = hud::hash_algorithm::crc32::hash((const u8 *)(txt), hud::cstring::length(txt), 0);
     hud_assert_eq(result, 0x4C2750BDu);
+
+    const u32 result_2 = hud::hash_algorithm::crc32::hash((const u8 *)(txt), 0, 0);
+    hud_assert_eq(result_2, 0x0u);
 }
 
 GTEST_TEST(hash, crc32_hash_unaligned)
 {
-    const u32 result2 = hud::hash_algorithm::crc32::hash((const u8 *)(txt_unaligned + 1), hud::cstring::length(txt_unaligned + 1), 0);
-    hud_assert_eq(result2, 0x4C2750BDu);
+    const u32 result = hud::hash_algorithm::crc32::hash((const u8 *)(txt_unaligned + 1), hud::cstring::length(txt_unaligned + 1), 0);
+    hud_assert_eq(result, 0x4C2750BDu);
+
+    const u32 result_2 = hud::hash_algorithm::crc32::hash((const u8 *)(txt_unaligned + 1), 0, 0);
+    hud_assert_eq(result_2, 0x0);
 }
 
 GTEST_TEST(hash, crc32_result_same_as_intel_implementation)
