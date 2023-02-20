@@ -18,14 +18,14 @@ It provides low level C++ features like that is close to C++ STL implmentation:
 - Memory: dynamic allocations, slicing, constexpr allocations/constructions/destructions, etc...
 - Strings: UTF-8 strings, ANSI strings, platform specific strings, etc...
 
-`Core` follows the STL interface but permit to make change and addition to the STL specification to improve productivity, limit bugs and improve performances. It focus on code quality, robustness, and performance.
+`Core` follows the STL interface but permit to make change and addition to the STL specification to improve productivity, limit bugs and improve performance. It focus on code quality, robustness, and performance.
 
-`Core` follow the [HUD-Software](https://github.com/HUD-Software) project organisations:
+`Core` follow the [HUD-Software](https://github.com/HUD-Software) project organisation:
 
 - `src` directory contains the source and interface of the `Core`
-  - `src/core` directroy contains the interface of the `Core` library. This is the directory that will be included in C++ user code to use the library.
+  - `src/core` directory contains the interface of the `Core` library. This is the directory that will be included in C++ user code to use the library.
 
-- `test`directory contains the source of all tests of the core in `src`. Code coverage check that `test`cover all `src` code.
+- `test`directory contains the source of all tests of the `Core` in `src`. Code coverage checks that `test` covers all `src` code.
 
 ## targets
 
@@ -35,4 +35,4 @@ This is the library target. It produce a library called `core` that can be used 
 
 ### `core_test` target
 
-This si the test executable target. It produce a test executable that performs all `core` tests.
+This is the test executable target. It produce a test executable that performs all `core` tests.
