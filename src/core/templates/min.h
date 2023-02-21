@@ -9,7 +9,14 @@ namespace hud
     template<typename u_t, typename v_t>
     constexpr auto min(const u_t &a, const v_t &b) noexcept
     {
-        return less<u_t, v_t>()(a, b) ? a : b;
+        if (less<u_t, v_t>()(a, b))
+        {
+            return a;
+        }
+        else
+        {
+            return b;
+        }
     }
 
 } // namespace hud
