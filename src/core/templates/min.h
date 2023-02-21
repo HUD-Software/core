@@ -9,14 +9,7 @@ namespace hud
     template<typename type_t>
     constexpr type_t &&min(type_t &&a, type_t &&b) noexcept
     {
-        if (less<type_t, type_t>()(a, b))
-        {
-            return hud::forward<type_t &&>(a);
-        }
-        else
-        {
-            return hud::forward<type_t &&>(b);
-        }
+        return less<type_t, type_t>()(a, b) ? hud::forward<type_t &&>(a) : hud::forward<type_t &&>(b);
     }
 
 } // namespace hud

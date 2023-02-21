@@ -6,10 +6,10 @@ namespace hud
 {
 
     /** Retrieves a if b < a, b otherwise. */
-    template<typename u_t, typename v_t>
-    constexpr auto max(const u_t &a, const v_t &b) noexcept
+    template<typename type_t>
+    constexpr auto max(type_t &&a, type_t &&b) noexcept
     {
-        return less<v_t, u_t>()(b, a) ? a : b;
+        return less<type_t, type_t>()(b, a) ? hud::forward<type_t &&>(a) : hud::forward<type_t &&>(b);
     }
 
 } // namespace hud
