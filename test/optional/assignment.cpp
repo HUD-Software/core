@@ -8,7 +8,6 @@
 // Nullopt
 GTEST_TEST(optional, assign_empty_trivial_type_with_nullopt)
 {
-
     using type = i32;
     static_assert(hud::is_trivially_copy_constructible_v<type>);
     static_assert(hud::is_trivially_move_constructible_v<type>);
@@ -764,7 +763,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_differen
 GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_type)
 {
     // Current STD specification make it not possible
-    // because hud::is_constructible_v<type_t, U> where type_t and U is not move assignable is false
+    // because std::is_constructible_v<type_t, U> where type_t and U is not move assignable is false
 
     // using namespace hud;
 
@@ -772,16 +771,18 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_typ
 
     // static_assert(!hud::is_trivially_copy_constructible_v<type>);
     // static_assert(!hud::is_trivially_copy_assignable_v<type>);
+    // static_assert(hud::is_constructible_v<type, type>);
 
-    // const auto test = [](const i32 value) {
+    // const auto test = [](const i32 value)
+    // {
     //     hud::optional<type> option;
     //     const bool had_value_before = option.has_value();
 
-    // type other{ value };
+    // type other {value};
 
     // option = hud::move(other);
 
-    // return std::tuple{
+    // return std::tuple {
     //     had_value_before,
     //     option.has_value(),
     //     option.value().id(),
@@ -790,25 +791,25 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_same_typ
     // };
     // };
 
-    //// Non constant
-    //{
-    //    auto result = test(123);
-    //    hud_assert_false(std::get<0>(result));
-    //    hud_assert_true(std::get<1>(result));
-    //    hud_assert_eq(std::get<2>(result), 123);
-    //    hud_assert_eq(std::get<3>(result), 0u);
-    //    hud_assert_eq(std::get<4>(result), 1u);
-    //}
+    // // Non constant
+    // {
+    //     auto result = test(123);
+    //     hud_assert_false(std::get<0>(result));
+    //     hud_assert_true(std::get<1>(result));
+    //     hud_assert_eq(std::get<2>(result), 123);
+    //     hud_assert_eq(std::get<3>(result), 0u);
+    //     hud_assert_eq(std::get<4>(result), 1u);
+    // }
 
-    //// Constant
-    //{
-    //    auto result = test(123);
-    //    hud_assert_false(std::get<0>(result));
-    //    hud_assert_true(std::get<1>(result));
-    //    hud_assert_eq(std::get<2>(result), 123);
-    //    hud_assert_eq(std::get<3>(result), 0u);
-    //    hud_assert_eq(std::get<4>(result), 1u);
-    //}
+    // // Constant
+    // {
+    //     auto result = test(123);
+    //     hud_assert_false(std::get<0>(result));
+    //     hud_assert_true(std::get<1>(result));
+    //     hud_assert_eq(std::get<2>(result), 123);
+    //     hud_assert_eq(std::get<3>(result), 0u);
+    //     hud_assert_eq(std::get<4>(result), 1u);
+    // }
 }
 
 GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_different_type)

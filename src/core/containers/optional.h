@@ -44,13 +44,13 @@ namespace hud
         {
 
             /** Retrieves this as a optional_destructible_base */
-            constexpr base_t *this_T() noexcept
+            constexpr base_t *this_as_base_t() noexcept
             {
                 return static_cast<base_t *>(this);
             }
 
             /** Retrieves this as a optional_destructible_base */
-            constexpr const base_t *this_T() const noexcept
+            constexpr const base_t *this_as_base_t() const noexcept
             {
                 return static_cast<const base_t *>(this);
             }
@@ -58,45 +58,45 @@ namespace hud
             /** Call destructor on the contained value and mark the storage without value */
             constexpr void reset() noexcept
             {
-                if (this_T()->some)
+                if (this_as_base_t()->some)
                 {
-                    hud::memory::destroy(this_T()->some_value);
-                    this_T()->some = false;
+                    hud::memory::destroy(this_as_base_t()->some_value);
+                    this_as_base_t()->some = false;
                 }
             }
 
             /** Checks if it contains a value */
             [[nodiscard]] constexpr bool has_value() const noexcept
             {
-                return this_T()->some;
+                return this_as_base_t()->some;
             }
 
             /** Retrivies the contained value */
             [[nodiscard]] constexpr value_t &value() &noexcept
             {
                 check(has_value());
-                return this_T()->some_value;
+                return this_as_base_t()->some_value;
             }
 
             /** Retrivies the contained value */
             [[nodiscard]] constexpr const value_t &value() const &noexcept
             {
                 check(has_value());
-                return this_T()->some_value;
+                return this_as_base_t()->some_value;
             }
 
             /** Retrivies the contained value */
             [[nodiscard]] constexpr const value_t &&value() const &&noexcept
             {
                 check(has_value());
-                return hud::move(this_T()->some_value);
+                return hud::move(this_as_base_t()->some_value);
             }
 
             /** Retrivies the contained value */
             [[nodiscard]] constexpr value_t &&value() &&noexcept
             {
                 check(has_value());
-                return hud::move(this_T()->some_value);
+                return hud::move(this_as_base_t()->some_value);
             }
 
             /**
@@ -107,8 +107,8 @@ namespace hud
             template<typename... u_type_t>
             constexpr void construct_in_place(u_type_t &&...args) noexcept
             {
-                hud::memory::construct_at(&this_T()->some_value, hud::forward<u_type_t>(args)...);
-                this_T()->some = true;
+                hud::memory::construct_at(&this_as_base_t()->some_value, hud::forward<u_type_t>(args)...);
+                this_as_base_t()->some = true;
             }
 
             /**
@@ -123,7 +123,7 @@ namespace hud
             template<typename u_type_t>
             constexpr void assign(u_type_t &&other) noexcept
             {
-                if (has_value() == other.has_value())
+                if (has_value() == other.has_value()) // LCOV_EXCL_BR_LINE (Don't covert for all possible u_type_t)
                 {
                     if (has_value())
                     {
@@ -222,7 +222,7 @@ namespace hud
             /** Call the destructor of inner value if this has value */
             constexpr ~optional_destructible_base() noexcept
             {
-                if (some)
+                if (some) // LCOV_EXCL_BR_LINE (Don't covert for all possible u_type_t)
                 {
                     hud::memory::destroy(some_value);
                 }
@@ -267,7 +267,7 @@ namespace hud
 
             constexpr optional_copy_base(const optional_copy_base &other) noexcept
             {
-                if (other.some)
+                if (other.some) // LCOV_EXCL_BR_LINE (Don't covert for all possible u_type_t)
                 {
                     this->construct_in_place(other.some_value);
                 }
