@@ -17,6 +17,7 @@ namespace hud::os::linux
         /** Break the debugger if the calling process is being debugged by a user-mode debugger. */
         static HD_FORCEINLINE void break_here() noexcept
         {
+            // LCOV_EXCL_START ( We don't covert the code that break the debugger )
             if (is_present())
             {
                 if constexpr (hud::compilation::is_compiler(compiler_e::clang))
@@ -32,6 +33,7 @@ namespace hud::os::linux
 #endif
                 }
             }
+            // LCOV_EXCL_STOP
         }
     };
 

@@ -29,10 +29,14 @@ namespace hud::os::linux
 
             // 1. Generate 16 random bytes (=128 bits)
             alignas(16) u8 bytes[16];
-            if (getrandom(bytes, sizeof(bytes), GRND_RANDOM) != sizeof(bytes))
+            i32 bytes_coun_copied = getrandom(bytes, sizeof(bytes), GRND_RANDOM);
+
+            // LCOV_EXCL_START ( Supposed never failed, else alternative is to read in /dev/{u}random )
+            if (bytes_coun_copied != sizeof(bytes))
             {
                 return false;
             }
+            // LCOV_EXCL_STOP
 
             // 2. Set the four most significant bits of the 7th byte to 0100, so the high nibble is "4"
             bytes[6] = (bytes[6] & 0x0F) | 0x40;
