@@ -30,7 +30,7 @@ namespace hud
         {
             // Ensure we don't have an incomplete type
             static_assert(0 < sizeof(type_t), "can't delete an incomplete type");
-            delete ptr;
+            delete ptr; // LCOV_EXCL_BR_LINE (Ignore the throw branches)
         }
     };
 
@@ -58,7 +58,7 @@ namespace hud
         {
             // Ensure we don't have an incomplete type
             static_assert(0 < sizeof(type_t), "can't delete an incomplete type");
-            delete[] ptr;
+            delete[] ptr; // LCOV_EXCL_BR_LINE (Ignore the throw branches)
         }
     };
 
