@@ -390,21 +390,213 @@ GTEST_TEST(cstring, to_uppercase_partial)
 
 GTEST_TEST(cstring, to_uppercase_partial_safe)
 {
-    ansichar txt[] = "abc123,;:!";
-    hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 10, 2));
-    hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    // Zero size, zero count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 0, 0));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Zero size, more count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 0, 1));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
 
-    hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 10, 0));
-    hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 10, 11));
-    hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 12, 11));
+    // Smaller size, zero count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 2, 0));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Smaller size, smaller count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 2, 1));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Smaller size, exact count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 2, 2));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Smaller size, more count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 2, 3));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
 
-    wchar wide_txt[] = L"abc123,;:!";
-    hud_assert_true(hud::cstring::to_uppercase_partial_safe(wide_txt, 10, 2));
-    hud_assert_true(wide_txt[0] == 'A' && wide_txt[1] == 'B' && wide_txt[2] == 'c' && wide_txt[3] == '1' && wide_txt[4] == '2' && wide_txt[5] == '3' && wide_txt[6] == ',' && wide_txt[7] == ';' && wide_txt[8] == ':' && wide_txt[9] == '!' && wide_txt[10] == '\0');
+    // Correct size, zero count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 10, 0));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Correct size, smaller count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 10, 2));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Correct size, exact count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 10, 10));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Correct size, move count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 10, 11));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
 
-    hud_assert_true(hud::cstring::to_uppercase_partial_safe(wide_txt, 10, 0));
-    hud_assert_false(hud::cstring::to_uppercase_partial_safe(wide_txt, 10, 11));
-    hud_assert_false(hud::cstring::to_uppercase_partial_safe(wide_txt, 12, 11));
+    // To big size, zero count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 11, 0));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // To big size, smaller count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 11, 2));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // To big size, exact count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 11, 11));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // To big size, more count
+    {
+        ansichar txt[] = "abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 11, 12));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+
+    // With nullptr, zero count
+    {
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((ansichar *)nullptr, 11, 0));
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((ansichar *)nullptr, 0, 0));
+    }
+    // With nullptr, exact count
+    {
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((ansichar *)nullptr, 11, 11));
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((ansichar *)nullptr, 0, 0));
+    }
+    // With nullptr, more count
+    {
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((ansichar *)nullptr, 11, 12));
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((ansichar *)nullptr, 0, 1));
+    }
+
+    // Zero size, zero count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 0, 0));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Zero size, move count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 0, 1));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+
+    // Smaller size, zero count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 2, 0));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Smaller size, smaller count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 2, 1));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Smaller size, exact count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 2, 2));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Smaller size, more count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 2, 3));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+
+    // Correct size, zero count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 10, 0));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Correct size, smaller count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 10, 2));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Correct size, exact count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 10, 10));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Correct size, more count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 10, 11));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+
+    // To big size, zero count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 11, 0));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // To big size, smaller count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_true(hud::cstring::to_uppercase_partial_safe(txt, 11, 2));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // To big size, exact count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 11, 11));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // To big size, more count
+    {
+        wchar txt[] = L"abc123,;:!";
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe(txt, 11, 12));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+
+    // With nullptr, zero count
+    {
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((wchar *)nullptr, 11, 0));
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((wchar *)nullptr, 0, 0));
+    }
+    // With nullptr, exact count
+    {
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((wchar *)nullptr, 11, 11));
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((wchar *)nullptr, 0, 0));
+    }
+    // With nullptr, more count
+    {
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((wchar *)nullptr, 11, 12));
+        hud_assert_false(hud::cstring::to_uppercase_partial_safe((wchar *)nullptr, 0, 1));
+    }
 }
 
 GTEST_TEST(cstring, to_lowercase)
@@ -501,21 +693,213 @@ GTEST_TEST(cstring, to_lowercase_partial)
 
 GTEST_TEST(cstring, to_lowercase_partial_safe)
 {
-    ansichar txt[] = "ABC123,;:!";
-    hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 10, 2));
-    hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    // Zero size, zero count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 0, 0));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Zero size, more count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 0, 1));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
 
-    hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 10, 0));
-    hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 10, 11));
-    hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 12, 11));
+    // Smaller size, zero count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 2, 0));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Smaller size, smaller count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 2, 1));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Smaller size, exact count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 2, 2));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Smaller size, more count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 2, 3));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
 
-    wchar wide_txt[] = L"ABC123,;:!";
-    hud_assert_true(hud::cstring::to_lowercase_partial_safe(wide_txt, 10, 2));
-    hud_assert_true(wide_txt[0] == 'a' && wide_txt[1] == 'b' && wide_txt[2] == 'C' && wide_txt[3] == '1' && wide_txt[4] == '2' && wide_txt[5] == '3' && wide_txt[6] == ',' && wide_txt[7] == ';' && wide_txt[8] == ':' && wide_txt[9] == '!' && wide_txt[10] == '\0');
+    // Correct size, zero count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 10, 0));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Correct size, smaller count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 10, 2));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Correct size, exact count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 10, 10));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // Correct size, move count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 10, 11));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
 
-    hud_assert_true(hud::cstring::to_lowercase_partial_safe(wide_txt, 10, 0));
-    hud_assert_false(hud::cstring::to_lowercase_partial_safe(wide_txt, 10, 11));
-    hud_assert_false(hud::cstring::to_lowercase_partial_safe(wide_txt, 12, 11));
+    // To big size, zero count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 11, 0));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // To big size, smaller count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 11, 2));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // To big size, exact count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 11, 11));
+        hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+    // To big size, more count
+    {
+        ansichar txt[] = "ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 11, 12));
+        hud_assert_true(txt[0] == 'A' && txt[1] == 'B' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+    }
+
+    // With nullptr, zero count
+    {
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((ansichar *)nullptr, 11, 0));
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((ansichar *)nullptr, 0, 0));
+    }
+    // With nullptr, exact count
+    {
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((ansichar *)nullptr, 11, 11));
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((ansichar *)nullptr, 0, 0));
+    }
+    // With nullptr, more count
+    {
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((ansichar *)nullptr, 11, 12));
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((ansichar *)nullptr, 0, 1));
+    }
+
+    // Zero size, zero count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 0, 0));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Zero size, move count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 0, 1));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+
+    // Smaller size, zero count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 2, 0));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Smaller size, smaller count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 2, 1));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Smaller size, exact count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 2, 2));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Smaller size, more count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 2, 3));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+
+    // Correct size, zero count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 10, 0));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Correct size, smaller count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 10, 2));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Correct size, exact count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 10, 10));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // Correct size, more count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 10, 11));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+
+    // To big size, zero count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 11, 0));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // To big size, smaller count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_true(hud::cstring::to_lowercase_partial_safe(txt, 11, 2));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // To big size, exact count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 11, 11));
+        hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+    // To big size, more count
+    {
+        wchar txt[] = L"ABC123,;:!";
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe(txt, 11, 12));
+        hud_assert_true(txt[0] == L'A' && txt[1] == L'B' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == L'\0');
+    }
+
+    // With nullptr, zero count
+    {
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((wchar *)nullptr, 11, 0));
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((wchar *)nullptr, 0, 0));
+    }
+    // With nullptr, exact count
+    {
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((wchar *)nullptr, 11, 11));
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((wchar *)nullptr, 0, 0));
+    }
+    // With nullptr, more count
+    {
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((wchar *)nullptr, 11, 12));
+        hud_assert_false(hud::cstring::to_lowercase_partial_safe((wchar *)nullptr, 0, 1));
+    }
 }
 
 GTEST_TEST(cstring, equals)

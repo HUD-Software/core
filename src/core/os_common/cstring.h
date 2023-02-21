@@ -56,7 +56,7 @@ namespace hud::os::common
          * @return true if the string contains only ansichar and reach null-terminator character or the string_size character.
          *         false if the string contains non ansichar character
          */
-        static bool is_pure_ansi_safe(const ansichar *string, usize string_size) noexcept
+        static HD_FORCEINLINE bool is_pure_ansi_safe(const ansichar *string, usize string_size) noexcept
         {
             return string != nullptr;
         }
