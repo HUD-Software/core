@@ -6,16 +6,16 @@ namespace hud
 {
 
     /** Retrieves a if a < b, b otherwise. */
-    template<typename u_t, typename v_t>
-    constexpr auto min(const u_t &a, const v_t &b) noexcept
+    template<typename type_t>
+    constexpr type_t &&min(type_t &&a, type_t &&b) noexcept
     {
-        if (less<u_t, v_t>()(a, b))
+        if (less<type_t, type_t>()(a, b))
         {
-            return a;
+            return hud::forward<type_t &&>(a);
         }
         else
         {
-            return b;
+            return hud::forward<type_t &&>(b);
         }
     }
 
