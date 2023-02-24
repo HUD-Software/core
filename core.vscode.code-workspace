@@ -19,6 +19,8 @@
             "coverage.windows.lcov.info",
             "coverage.ubuntu.lcov.info"
         ],
-        "coverage-gutters.showLineCoverage": true
+        "coverage-gutters.showLineCoverage": true,
+        "cmake.allowUnsupportedPresetsVersions": false,
+        "cmake.launchBehavior": "breakAndReuseTerminal",
     },
 }

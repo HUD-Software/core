@@ -537,7 +537,6 @@ namespace hud
                          is_scalar<type_t>,
                          hud::is_same<hud::decay_t<u_type_t>, type_t>>>>)
         constexpr optional &operator=(u_type_t &&value) noexcept
-
         {
             if (has_value())
             {
