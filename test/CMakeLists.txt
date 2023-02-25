@@ -313,35 +313,37 @@ endif()
 add_custom_command( 
 	TARGET test_core POST_BUILD
 	COMMENT "Run test_core.exe"
-	COMMAND "$<$<CONFIG:Coverage>:powershell Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./Coverage/grcov-x86_64-pc-windows-msvc.zip>"
-	# COMMAND Expand-Archive -Path ${CMAKE_CURRENT_BINARY_DIR}/Coverage/grcov-x86_64-pc-windows-msvc.zip -DestinationPath ${CMAKE_CURRENT_BINARY_DIR}/Coverage/
+	COMMAND "$<$<CONFIG:Coverage>:${POWERSHELL_PATH};Invoke-WebRequest;-Uri;https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip;-OutFile;./Coverage/grcov-x86_64-pc-windows-msvc.zip>" 
+	COMMAND "$<$<CONFIG:Coverage>:${POWERSHELL_PATH};Expand-Archive;-Path;${CMAKE_CURRENT_BINARY_DIR}/Coverage/grcov-x86_64-pc-windows-msvc.zip;-DestinationPath;${CMAKE_CURRENT_BINARY_DIR}/Coverage/>" 
 	COMMAND ./Coverage/test_core.exe
-	# COMMAND ./../grcov.exe --llvm -t html -b ./Coverage/ -s ./../../
-	# 		--branch
-	# 		--keep-only "src/*" 
-	# 		#--keep-only "test/*" 
-	# 		#--ignore "test/misc/*" 
-	# 		--excl-start "^.*LCOV_EXCL_START.*" 
-	# 		--excl-stop "^.*LCOV_EXCL_STOP.*" 
-	# 		--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
-	# 		--excl-br-start "^.*LCOV_EXCL_START.*" 
-	# 		--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-	# 		--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-	# 		-o windows
-	# 		..
-	# COMMAND ./../grcov.exe --llvm -t lcov -b ./Coverage/ -s ./../../
-	# 		--branch
-	# 		--keep-only "src/*"
-	# 		#--keep-only "test/*" 
-	# 		#--ignore "test/misc/*" 
-	# 		--excl-start "^.*LCOV_EXCL_START.*" 
-	# 		--excl-stop "^.*LCOV_EXCL_STOP.*" 
-	# 		--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
-	# 		--excl-br-start "^.*LCOV_EXCL_START.*" 
-	# 		--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-	# 		--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-	# 		-o coverage.windows.lcov.info
-	# 		..
+	COMMAND ./Coverage/grcov.exe --llvm -t html -b ./Coverage/ -s ./../../
+			--branch
+			--keep-only "src/*" 
+			#--keep-only "test/*" 
+			#--ignore "test/misc/*" 
+			--excl-start "^.*LCOV_EXCL_START.*" 
+			--excl-stop "^.*LCOV_EXCL_STOP.*" 
+			--excl-line "(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)" 
+			--excl-br-start "^.*LCOV_EXCL_START.*" 
+			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+			--excl-br-line "(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)" 
+			-o windows
+			..
+	COMMAND ./Coverage/grcov.exe --llvm -t lcov -b ./Coverage/ -s ./../../
+			--branch
+			--keep-only "src/*"
+			#--keep-only "test/*" 
+			#--ignore "test/misc/*" 
+			--excl-start "^.*LCOV_EXCL_START.*" 
+			--excl-stop "^.*LCOV_EXCL_STOP.*" 
+			--excl-line "(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)" 
+			--excl-br-start "^.*LCOV_EXCL_START.*" 
+			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+			--excl-br-line "(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)" 
+			-o coverage.windows.lcov.info
+			..
+	COMMAND_EXPAND_LISTS
+	VERBATIM
 )
 
 	# if(MSVC AND CMAKE_CXX_COMPILER_ID MATCHES Clang)
