@@ -278,143 +278,109 @@ if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
 endif()
 
-find_program(POWERSHELL_PATH NAMES powershell)
-message(POWERSHELL_PATH ${POWERSHELL_PATH})
-message(CMAKE_CURRENT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-# Download and unzip grcov
-# file(DOWNLOAD
-# 	https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip
-# 	${CMAKE_CURRENT_BINARY_DIR}/Coverage/grcov-x86_64-pc-windows-msvc.zip
-# )
-# file(ARCHIVE_EXTRACT 
-# 	INPUT ${CMAKE_CURRENT_BINARY_DIR}/Coverage/grcov-x86_64-pc-windows-msvc.zip 
-# 	DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Coverage/
-# )
+if(COVERAGE AND MSVC)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		set(MSVC_CODECOVERAGE_CONSOLE_PATH "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console\\Microsoft.CodeCoverage.Console.exe" CACHE STRING "Path to Microsoft.CodeCoverage.Console.exe")
+		find_program(MSVC_CODECOVERAGE_CONSOLE_EXE ${MSVC_CODECOVERAGE_CONSOLE_PATH})
+		if(NOT MSVC_CODECOVERAGE_CONSOLE_EXE)
+			message(FATAL_ERROR "Code coverage on Windows need Microsoft.CodeCoverage.Console.exe available in Visual Studio 2022 17.3 Enterprise Edition")
+		endif()
 
-if(MSVC AND CMAKE_CXX_COMPILER_ID MATCHES Clang)
-	# Disable compiler batching to fix a clang-cl bug when activate --coverage
-	# See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
-	set_target_properties(test_core core PROPERTIES VS_NO_COMPILE_BATCHING ON)
+		target_link_options(test_core PRIVATE /PROFILE)
+		add_custom_command(
+			TARGET test_core POST_BUILD
+			COMMENT "Instrument and Collect test_core.exe"
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument Debug\\test_core.exe -s ..\\..\\test\\coverage.runsettings
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Debug\\test_core.exe -o Debug\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
+		)
+	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+		# Disable compiler batching to fix a clang-cl bug when activate --coverage
+		# See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
+		set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
+		set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
 
-	# Add clang-cl lib path to libraries paths
-	# Need to link manually LLVM Bug 40877
-	# See: https://bugs.llvm.org/show_bug.cgi?id=40877
-	target_link_directories(test_core PRIVATE ${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\15.0.1\\lib\\windows\\)
-	target_link_libraries(test_core PRIVATE clang_rt.profile-x86_64.lib)
+		target_compile_options(test_core PRIVATE --coverage)
+		target_link_options(test_core PRIVATE --coverage)
+		target_compile_options(core PRIVATE --coverage)
+		target_link_options(core PRIVATE --coverage)
+
+		# Add clang lib path to libraries paths
+		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
+		target_link_directories(test_core PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\15.0.1\\lib\\windows\\")
+
+		# Need to link manually LLVM Bug 40877
+		# See: https://bugs.llvm.org/show_bug.cgi?id=40877
+		target_link_libraries(test_core PRIVATE "clang_rt.profile-x86_64.lib")
+
+		add_custom_command( 
+		 	TARGET test_core POST_BUILD
+		 	COMMENT "Run test_core.exe"
+		 	COMMAND ./Debug/test_core.exe
+			COMMAND ./../grcov.exe --llvm -t html -b ./Debug/ -s ./../../
+					--branch
+					--keep-only "src/*" 
+					#--keep-only "test/*" 
+					#--ignore "test/misc/*" 
+					--excl-start "^.*LCOV_EXCL_START.*" 
+					--excl-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+					--excl-br-start "^.*LCOV_EXCL_START.*" 
+					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+					-o windows
+					..
+			COMMAND ./../grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../
+					--branch
+					--keep-only "src/*"
+					#--keep-only "test/*" 
+					#--ignore "test/misc/*" 
+					--excl-start "^.*LCOV_EXCL_START.*" 
+					--excl-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+					--excl-br-start "^.*LCOV_EXCL_START.*" 
+					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+					-o coverage.windows.lcov.info
+					..
+		)
+
+	endif()
+elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	target_compile_options(test_core PRIVATE --coverage)
+	target_link_options(test_core PRIVATE --coverage)
+
+	add_custom_command(
+		TARGET test_core POST_BUILD
+		COMMENT "Run test_core.exe"
+		COMMAND ./test_core
+		COMMAND ./../grcov --llvm -t html -b ./Debug/ -s ./../../
+				--branch
+				--keep-only "src/*" 
+				#--keep-only "test/*" 
+				#--ignore "test/misc/*" 
+				--excl-start "^.*LCOV_EXCL_START.*" 
+				--excl-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+				--excl-br-start "^.*LCOV_EXCL_START.*" 
+				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+				-o ubuntu
+				..
+		COMMAND ./../grcov --llvm -t lcov -b ./Debug/ -s ./../../
+				--branch
+				--keep-only "src/*"
+				#--keep-only "test/*" 
+				#--ignore "test/misc/*" 
+				--excl-start "^.*LCOV_EXCL_START.*" 
+				--excl-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+				--excl-br-start "^.*LCOV_EXCL_START.*" 
+				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+				-o coverage.ubuntu.lcov.info
+				..
+	)
 endif()
-
-if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-	target_compile_options(test_core PRIVATE $<$<CONFIG:Coverage>:--coverage>)
-	target_compile_options(core PRIVATE $<$<CONFIG:Coverage>:--coverage>)
-	target_link_options(test_core PRIVATE $<$<CONFIG:Coverage>:--coverage>)
-	target_link_options(core PRIVATE $<$<CONFIG:Coverage>:--coverage>)
-endif()
-
-add_custom_command( 
-	TARGET test_core POST_BUILD
-	COMMENT "Run test_core.exe"
-	COMMAND "$<$<CONFIG:Coverage>:${POWERSHELL_PATH};Invoke-WebRequest;-Uri;https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip;-OutFile;./Coverage/grcov-x86_64-pc-windows-msvc.zip>" 
-	COMMAND "$<$<CONFIG:Coverage>:${POWERSHELL_PATH};Expand-Archive;-Path;${CMAKE_CURRENT_BINARY_DIR}/Coverage/grcov-x86_64-pc-windows-msvc.zip;-DestinationPath;${CMAKE_CURRENT_BINARY_DIR}/Coverage/>" 
-	COMMAND ./Coverage/test_core.exe
-	COMMAND ./Coverage/grcov.exe --llvm -t html -b ./Coverage/ -s ./../../
-			--branch
-			--keep-only "src/*" 
-			#--keep-only "test/*" 
-			#--ignore "test/misc/*" 
-			--excl-start "^.*LCOV_EXCL_START.*" 
-			--excl-stop "^.*LCOV_EXCL_STOP.*" 
-			--excl-line "(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)" 
-			--excl-br-start "^.*LCOV_EXCL_START.*" 
-			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-			--excl-br-line "(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)" 
-			-o windows
-			..
-	COMMAND ./Coverage/grcov.exe --llvm -t lcov -b ./Coverage/ -s ./../../
-			--branch
-			--keep-only "src/*"
-			#--keep-only "test/*" 
-			#--ignore "test/misc/*" 
-			--excl-start "^.*LCOV_EXCL_START.*" 
-			--excl-stop "^.*LCOV_EXCL_STOP.*" 
-			--excl-line "(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)" 
-			--excl-br-start "^.*LCOV_EXCL_START.*" 
-			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-			--excl-br-line "(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)" 
-			-o coverage.windows.lcov.info
-			..
-	COMMAND_EXPAND_LISTS
-	VERBATIM
-)
-
-	# if(MSVC AND CMAKE_CXX_COMPILER_ID MATCHES Clang)
-		
-	# elseif(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-	# 	add_custom_command(
-	# 		TARGET test_core POST_BUILD
-	# 		COMMENT "Run test_core.exe"
-	# 		COMMAND ./test_core
-	# 		COMMAND ./../grcov --llvm -t html -b ./Coverage/ -s ./../../
-	# 				--branch
-	# 				--keep-only "src/*" 
-	# 				#--keep-only "test/*" 
-	# 				#--ignore "test/misc/*" 
-	# 				--excl-start "^.*LCOV_EXCL_START.*" 
-	# 				--excl-stop "^.*LCOV_EXCL_STOP.*" 
-	# 				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
-	# 				--excl-br-start "^.*LCOV_EXCL_START.*" 
-	# 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-	# 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-	# 				-o ubuntu
-	# 				..
-	# 		COMMAND ./../grcov --llvm -t lcov -b ./Coverage/ -s ./../../
-	# 				--branch
-	# 				--keep-only "src/*"
-	# 				#--keep-only "test/*" 
-	# 				#--ignore "test/misc/*" 
-	# 				--excl-start "^.*LCOV_EXCL_START.*" 
-	# 				--excl-stop "^.*LCOV_EXCL_STOP.*" 
-	# 				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
-	# 				--excl-br-start "^.*LCOV_EXCL_START.*" 
-	# 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-	# 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-	# 				-o coverage.ubuntu.lcov.info
-	# 				..
-	# 	)
-	# endif()
-#endif()
-
-# if(COVERAGE AND MSVC)
-# 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-# 		set(MSVC_CODECOVERAGE_CONSOLE_PATH "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console\\Microsoft.CodeCoverage.Console.exe" CACHE STRING "Path to Microsoft.CodeCoverage.Console.exe")
-# 		find_program(MSVC_CODECOVERAGE_CONSOLE_EXE ${MSVC_CODECOVERAGE_CONSOLE_PATH})
-# 		if(NOT MSVC_CODECOVERAGE_CONSOLE_EXE)
-# 			message(FATAL_ERROR "Code coverage on Windows need Microsoft.CodeCoverage.Console.exe available in Visual Studio 2022 17.3 Enterprise Edition")
-# 		endif()
-
-# 		target_link_options(test_core PRIVATE /PROFILE)
-# 		add_custom_command(
-# 			TARGET test_core POST_BUILD
-# 			COMMENT "Instrument and Collect test_core.exe"
-# 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument Debug\\test_core.exe -s ..\\..\\test\\coverage.runsettings
-# 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Debug\\test_core.exe -o Debug\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
-# 		)
-# 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-
-
-# 		# target_compile_options(test_core PRIVATE --coverage)
-# 		# target_link_options(test_core PRIVATE --coverage)
-# 		# target_compile_options(core PRIVATE --coverage)
-# 		# target_link_options(core PRIVATE --coverage)
-
-		
-
-# 	endif()
-# elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-# 	target_compile_options(test_core PRIVATE --coverage)
-# 	target_link_options(test_core PRIVATE --coverage)
-
-	
-# endif()
 
 target_precompile_headers(test_core PRIVATE precompiled.h)
 
@@ -446,15 +412,6 @@ target_compile_definitions(
 	$<$<CONFIG:MinSizeRel>:HD_RELEASE>
 	# DebugOptimized specific compiler flags
 	$<$<CONFIG:RelWithDebInfo>:HD_DEBUGOPTIMIZED>
-	# Coverage specific compiler flags
-	$<$<CONFIG:Coverage>:HD_DEBUG>
-)
-
-target_compile_definitions(
-	core
-	PRIVATE
-	# Coverage specific compiler flags
-	$<$<CONFIG:Coverage>:HD_DEBUG>
 )
 
 # Add Core dependency
