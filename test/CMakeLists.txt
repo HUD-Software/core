@@ -315,8 +315,10 @@ if(COVERAGE AND MSVC)
 		add_custom_command( 
 		 	TARGET test_core POST_BUILD
 		 	COMMENT "Run test_core.exe"
+			COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./Debug/grcov-x86_64-pc-windows-msvc.zip
+			COMMAND Powershell.exe Expand-Archive -Path ./Debug/grcov-x86_64-pc-windows-msvc.zip -DestinationPath ./Debug/
 		 	COMMAND ./Debug/test_core.exe
-			COMMAND ./../grcov.exe --llvm -t html -b ./Debug/ -s ./../../
+			COMMAND ./Debug/grcov.exe --llvm -t html -b ./Debug/ -s ./../../
 					--branch
 					--keep-only "src/*" 
 					#--keep-only "test/*" 
@@ -329,7 +331,7 @@ if(COVERAGE AND MSVC)
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o windows
 					..
-			COMMAND ./../grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../
+			COMMAND ./Debug/grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../
 					--branch
 					--keep-only "src/*"
 					#--keep-only "test/*" 
@@ -352,6 +354,7 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
+		COMMAND curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
 		COMMAND ./test_core
 		COMMAND ./../grcov --llvm -t html -b ./Debug/ -s ./../../
 				--branch
