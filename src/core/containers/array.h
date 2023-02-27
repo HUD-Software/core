@@ -331,7 +331,7 @@ namespace hud
         constexpr array &operator=(const array &other) noexcept
         requires(hud::is_copy_assignable_v<type_t>)
         {
-            if (this != &other) [[likely]] // LCOV_EXCL_BR_LINE ( Ignore branch coverage for all type_t )
+            if (this != &other) [[likely]]
             {
                 copy_assign(other.data(), other.count());
             }
