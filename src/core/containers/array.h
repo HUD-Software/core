@@ -331,7 +331,7 @@ namespace hud
         constexpr array &operator=(const array &other) noexcept
         requires(hud::is_copy_assignable_v<type_t>)
         {
-            if (this != &other) [[likely]] // LCOV_EXCL_BR_LINE ( Ignore branch coverage for all type_t )
+            if (this != &other) [[likely]]
             {
                 copy_assign(other.data(), other.count());
             }
@@ -364,7 +364,7 @@ namespace hud
         constexpr array &operator=(array &&other) noexcept
         requires(hud::is_move_assignable_v<type_t>)
         {
-            if (this != &other) [[likely]] // LCOV_EXCL_BR_LINE ( Ignore branch coverage for all type_t )
+            if (this != &other) [[likely]]
             {
                 move_assign(hud::move(other));
             }
@@ -403,7 +403,7 @@ namespace hud
             const usize new_count = count() + 1u;
 
             // If we don't have enough place in allocated memory we need to reallocate.
-            if (new_count > max_count()) // LCOV_EXCL_BR_LINE ( Ignore branch coverage for all type_t )
+            if (new_count > max_count())
             {
                 allocation_type new_allocation = allocator_type::template allocate<type_t>(new_count);
                 // Construct the element in-place
@@ -452,7 +452,7 @@ namespace hud
             const usize new_count = count() + 1u;
 
             // if we don't have enough place in allocated memory we need to reallocate.
-            if (new_count > max_count()) // LCOV_EXCL_BR_LINE ( Ignore branch coverage for all type_t )
+            if (new_count > max_count())
             {
                 allocation_type new_allocation = allocator_type::template allocate<type_t>(new_count);
                 // Construct the element in-place
