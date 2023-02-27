@@ -307,8 +307,8 @@ if(COVERAGE AND MSVC)
 		 	COMMENT "Run test_core.exe"
 			COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./Debug/grcov-x86_64-pc-windows-msvc.zip
 			COMMAND Powershell.exe Expand-Archive -Path ./Debug/grcov-x86_64-pc-windows-msvc.zip -DestinationPath ./Debug/
-		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="foo.profraw" ./Debug/test_core.exe
-			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse foo.profraw -o foo.profdata
+		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="core.profraw" ./Debug/test_core.exe
+			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse core.profraw -o core.profdata
 			COMMAND ./Debug/grcov.exe --llvm -t html -b ./Debug/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
@@ -350,8 +350,8 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
 		COMMAND curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
-		COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="foo.profraw" ./test_core
-		COMMAND llvm-profdata merge -sparse foo.profraw -o foo.profdata
+		COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="core.profraw" ./test_core
+		COMMAND llvm-profdata merge -sparse core.profraw -o core.profdata
 		COMMAND ./grcov --llvm -t html -b . -s ./../../
 				--llvm-path /usr/bin/
 				--branch
