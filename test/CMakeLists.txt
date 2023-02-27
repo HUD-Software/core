@@ -294,31 +294,23 @@ if(COVERAGE AND MSVC)
 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Debug\\test_core.exe -o Debug\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
 		)
 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-		# Disable compiler batching to fix a clang-cl bug when activate --coverage
-		# See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
-		set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
-		set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
-
-		target_compile_options(test_core PRIVATE --coverage)
-		target_link_options(test_core PRIVATE --coverage)
-		target_compile_options(core PRIVATE --coverage)
-		target_link_options(core PRIVATE --coverage)
+		target_compile_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+		target_compile_options(core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 
 		# Add clang lib path to libraries paths
 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
 		target_link_directories(test_core PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\15.0.1\\lib\\windows\\")
 
-		# Need to link manually LLVM Bug 40877
-		# See: https://bugs.llvm.org/show_bug.cgi?id=40877
-		target_link_libraries(test_core PRIVATE "clang_rt.profile-x86_64.lib")
 
 		add_custom_command( 
 		 	TARGET test_core POST_BUILD
 		 	COMMENT "Run test_core.exe"
 			COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./Debug/grcov-x86_64-pc-windows-msvc.zip
 			COMMAND Powershell.exe Expand-Archive -Path ./Debug/grcov-x86_64-pc-windows-msvc.zip -DestinationPath ./Debug/
-		 	COMMAND ./Debug/test_core.exe
+		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="foo.profraw" ./Debug/test_core.exe
+			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse foo.profraw -o foo.profdata
 			COMMAND ./Debug/grcov.exe --llvm -t html -b ./Debug/ -s ./../../
+					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
 					--keep-only "src/*" 
 					#--keep-only "test/*" 
@@ -332,6 +324,7 @@ if(COVERAGE AND MSVC)
 					-o windows
 					..
 			COMMAND ./Debug/grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../
+					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
 					--keep-only "src/*"
 					#--keep-only "test/*" 
