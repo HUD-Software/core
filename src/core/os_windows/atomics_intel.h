@@ -59,7 +59,7 @@ namespace hud::os::windows
             type_t destination = load_no_barrier(source);
 
             // Load barrier
-            if (order != memory_order_e::relaxed) // LCOV_EXCL_BR_LINE
+            if (order != memory_order_e::relaxed)
             {
                 // atomic load do not support release and acq_rel memory fence
                 check(order != memory_order_e::release);
@@ -79,7 +79,7 @@ namespace hud::os::windows
         requires(is_integral_v<type_t>)
         static void store(type_t &destination, const type_t value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
-            switch (order) // LCOV_EXCL_BR_LINE
+            switch (order)
             {
                 case memory_order_e::relaxed:
                     store_no_barrier(destination, value);
@@ -132,7 +132,7 @@ namespace hud::os::windows
         requires(hud::is_pointer_v<type_t>)
         static void store(type_t &destination, const type_t value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
-            switch (order) // LCOV_EXCL_BR_LINE
+            switch (order)
             {
                 case memory_order_e::relaxed:
                     store_no_barrier(destination, value);

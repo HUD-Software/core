@@ -123,7 +123,7 @@ namespace hud
             template<typename u_type_t>
             constexpr void assign(u_type_t &&other) noexcept
             {
-                if (has_value() == other.has_value()) // LCOV_EXCL_BR_LINE (Don't covert for all possible u_type_t)
+                if (has_value() == other.has_value())
                 {
                     if (has_value())
                     {
@@ -222,7 +222,7 @@ namespace hud
             /** Call the destructor of inner value if this has value */
             constexpr ~optional_destructible_base() noexcept
             {
-                if (some) // LCOV_EXCL_BR_LINE (Don't covert for all possible u_type_t)
+                if (some)
                 {
                     hud::memory::destroy(some_value);
                 }
@@ -267,7 +267,7 @@ namespace hud
 
             constexpr optional_copy_base(const optional_copy_base &other) noexcept
             {
-                if (other.some) // LCOV_EXCL_BR_LINE (Don't covert for all possible u_type_t)
+                if (other.some)
                 {
                     this->construct_in_place(other.some_value);
                 }

@@ -58,7 +58,7 @@ namespace hud
          */
         HD_FORCEINLINE constexpr allocation &operator=(allocation &&other) noexcept
         {
-            if (this != &other) [[likely]] // LCOV_EXCL_BR_LINE ( Ignore branch coverage for all type_t )
+            if (this != &other) [[likely]]
             {
                 begin_ptr = other.begin_ptr;
                 other.begin_ptr = nullptr;
