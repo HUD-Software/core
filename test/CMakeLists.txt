@@ -348,15 +348,19 @@ if(COVERAGE AND MSVC)
 
 	endif()
 elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options(test_core PRIVATE --coverage)
-	target_link_options(test_core PRIVATE --coverage)
+	target_compile_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+	target_link_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+	target_compile_options(core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+	target_link_options(core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 
 	add_custom_command(
 		TARGET test_core POST_BUILD
 		COMMENT "Run test_core.exe"
 		COMMAND curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
-		COMMAND ./test_core
-		COMMAND ./../grcov --llvm -t html -b ./Debug/ -s ./../../
+		COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="foo.profraw" ./test_core
+		COMMAND llvm-profdata merge -sparse foo.profraw -o foo.profdata
+		COMMAND ./grcov --llvm -t html -b . -s ./../../
+				--llvm-path /usr/bin/
 				--branch
 				--keep-only "src/*" 
 				#--keep-only "test/*" 
@@ -369,7 +373,8 @@ elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 				-o ubuntu
 				..
-		COMMAND ./../grcov --llvm -t lcov -b ./Debug/ -s ./../../
+		COMMAND ./grcov --llvm -t lcov -b . -s ./../../
+				--llvm-path /usr/bin/
 				--branch
 				--keep-only "src/*"
 				#--keep-only "test/*" 
