@@ -228,10 +228,12 @@ namespace hud
             // in constant evaluation. So we allocate a new allocation, move elements then free the moved allocation.
             if (hud::is_constant_evaluated())
             {
+                // LCOV_EXLC_START
                 allocation = allocator_type::template allocate<type_t>(other.max_count());
                 end_ptr = data_at(other.count());
                 hud::memory::move_or_copy_construct_array(data(), other.data(), count());
                 other.free_to_null();
+                // LCOV_EXLC_STOP
             }
             else
             {

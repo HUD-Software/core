@@ -102,12 +102,6 @@ namespace hud
                 return shared_count;
             }
 
-            /** Retrieves the weak counter. */
-            [[nodiscard]] constexpr u32 get_weak_count() const noexcept
-            {
-                return weak_count;
-            }
-
             /**
              * Increment the shared counter of a reference_controller_base by 1.
              * @param controller The reference_controller_base
@@ -195,12 +189,6 @@ namespace hud
             [[nodiscard]] u32 get_shared_count() const noexcept
             {
                 return shared_count.load();
-            }
-
-            /** Retrieves the weak counter. */
-            [[nodiscard]] u32 get_weak_count() const noexcept
-            {
-                return weak_count.load();
             }
 
             /**

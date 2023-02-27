@@ -152,7 +152,7 @@ namespace hud::hash_algorithm
         {
             if constexpr (compilation::is_endianness(endianness_e::big))
             {
-                return hud::memory::reverse(unaligned_load32(buffer));
+                return hud::memory::reverse(unaligned_load32(buffer)); // LCOV_EXCL_LINE
             }
             else
             {
@@ -169,7 +169,7 @@ namespace hud::hash_algorithm
         {
             if constexpr (compilation::is_endianness(endianness_e::big))
             {
-                return hud::memory::reverse(unaligned_load64(buffer));
+                return hud::memory::reverse(unaligned_load64(buffer)); // LCOV_EXCL_LINE
             }
             else
             {
