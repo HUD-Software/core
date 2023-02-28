@@ -227,14 +227,14 @@ namespace hud
             // We moving an array of bitwise moveable constructible type where type_t != u_type_t We can't use reinterpret_cast to still the pointer
             // in constant evaluation. So we allocate a new allocation, move elements then free the moved allocation.
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
-                // LCOV_EXCL_START
                 allocation = allocator_type::template allocate<type_t>(other.max_count());
                 end_ptr = data_at(other.count());
                 hud::memory::move_or_copy_construct_array(data(), other.data(), count());
                 other.free_to_null();
-                // LCOV_EXCL_START
             }
+            // LCOV_EXCL_STOP
             else
             {
                 allocation = allocation_type(reinterpret_cast<type_t *>(other.data()), other.max_count());
@@ -607,9 +607,9 @@ namespace hud
          */
         void remove_at_shrink(const usize index, const usize count_to_remove = 1) noexcept
         {
-            check(index < count());
             if (count() > 0)
             {
+                check(index < count());
                 type_t *first_item_to_remove = data_at(index);
                 check(count_to_remove <= count()); // Remove more elements than possible
                 hud::memory::destroy_array(first_item_to_remove, count_to_remove);
@@ -1047,29 +1047,51 @@ namespace hud
             // If we don't need to reallocate
             else
             {
-                if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_assignable_v<type_t, u_type_t>)
+                if (hud::is_constant_evaluated())
+                // LCOV_EXCL_START
                 {
-                    const isize extra_to_construct = static_cast<isize>(source_count - count());
-                    // We assign all elements that are already in the allocation,
-                    // Then we copy construct all remaining elements at the end of the assigned elements
-                    if (extra_to_construct > 0)
-                    {
-                        hud::memory::copy_assign_array(data(), source, count());
-                        hud::memory::copy_construct_array(data_at(count()), source + count(), static_cast<usize>(extra_to_construct));
-                    }
-                    // If we assign less or equal count of elements than the current element count
-                    // we copy assign all new elements of the source in the allocation, then we destroy the remaining elements
-                    else
-                    {
-                        hud::memory::copy_assign_array(data(), source, source_count);
-                        hud::memory::destroy_array(data() + source_count, static_cast<usize>(-extra_to_construct));
-                    }
+                    copy_assign_or_copy_construct_no_reallocation(source, source_count);
+                }
+                // LCOV_EXCL_STOP
+                else if (!hud::is_bitwise_copy_assignable_v<type_t, u_type_t>)
+                {
+                    copy_assign_or_copy_construct_no_reallocation(source, source_count);
                 }
                 else
                 {
                     hud::memory::copy_assign_array(data(), source, source_count);
                 }
                 end_ptr = allocation.data_at(source_count);
+            }
+        }
+
+        /**
+         * Copy assign a source_count elements from the source of data to the array.
+         * Call assign for already existing elements or copy constructor for non existing elements.
+         * This method supposed source_count <= max_count() because it does not reallocate the buffer.
+         * @tparam u_type_t The element type of the other array
+         * @param source The source of data to copy
+         * @param source_count Element count in the source to copy
+         */
+        template<typename u_type_t>
+        constexpr void copy_assign_or_copy_construct_no_reallocation(const u_type_t *source, const usize source_count) noexcept
+        {
+            check(source_count <= max_count());
+
+            const isize extra_to_construct = source_count - count();
+            // We assign all elements that are already in the allocation,
+            // Then we copy construct all remaining elements at the end of the assigned elements
+            if (extra_to_construct > 0)
+            {
+                hud::memory::copy_assign_array(data(), source, count());
+                hud::memory::copy_construct_array(data_at(count()), source + count(), static_cast<usize>(extra_to_construct));
+            }
+            // If we assign less or equal count of elements than the current element count
+            // we copy assign all new elements of the source in the allocation, then we destroy the remaining elements
+            else
+            {
+                hud::memory::copy_assign_array(data(), source, source_count);
+                hud::memory::destroy_array(data() + source_count, static_cast<usize>(-extra_to_construct));
             }
         }
 

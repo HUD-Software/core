@@ -754,6 +754,31 @@ GTEST_TEST(array, remove_at_shrink_trivial_type)
         hud_assert_eq(array[1], 3u);
         hud_assert_eq(array.allocator().allocation_count(), 4u);
         hud_assert_eq(array.allocator().free_count(), 3u);
+
+        // Remove the rest
+        array.remove_at_shrink(0);
+        hud_assert_eq(array.count(), 1u);
+        hud_assert_eq(array.max_count(), 1u);
+        hud_assert_eq(array[0], 3u);
+        hud_assert_eq(array.allocator().allocation_count(), 5u);
+        hud_assert_eq(array.allocator().free_count(), 4u);
+        array.remove_at_shrink(0);
+        hud_assert_eq(array.count(), 0u);
+        hud_assert_eq(array.max_count(), 0u);
+        hud_assert_eq(array.allocator().allocation_count(), 5u);
+        hud_assert_eq(array.allocator().free_count(), 5u);
+
+        // Remove when empty
+        array.remove_at_shrink(0);
+        hud_assert_eq(array.count(), 0u);
+        hud_assert_eq(array.max_count(), 0u);
+        hud_assert_eq(array.allocator().allocation_count(), 5u);
+        hud_assert_eq(array.allocator().free_count(), 5u);
+        array.remove_at_shrink(1);
+        hud_assert_eq(array.count(), 0u);
+        hud_assert_eq(array.max_count(), 0u);
+        hud_assert_eq(array.allocator().allocation_count(), 5u);
+        hud_assert_eq(array.allocator().free_count(), 5u);
     }
 
     // remove_at(const index index, const usize count_to_remove)
@@ -819,5 +844,24 @@ GTEST_TEST(array, remove_at_shrink_trivial_type)
         hud_assert_eq(array[1], 5u);
         hud_assert_eq(array.allocator().allocation_count(), 4u);
         hud_assert_eq(array.allocator().free_count(), 3u);
+
+        // Remove the rest
+        array.remove_at_shrink(0, 2);
+        hud_assert_eq(array.count(), 0u);
+        hud_assert_eq(array.max_count(), 0u);
+        hud_assert_eq(array.allocator().allocation_count(), 4u);
+        hud_assert_eq(array.allocator().free_count(), 4u);
+
+        // Remove when empty
+        array.remove_at_shrink(0, 0);
+        hud_assert_eq(array.count(), 0u);
+        hud_assert_eq(array.max_count(), 0u);
+        hud_assert_eq(array.allocator().allocation_count(), 4u);
+        hud_assert_eq(array.allocator().free_count(), 4u);
+        array.remove_at_shrink(0, 2);
+        hud_assert_eq(array.count(), 0u);
+        hud_assert_eq(array.max_count(), 0u);
+        hud_assert_eq(array.allocator().allocation_count(), 4u);
+        hud_assert_eq(array.allocator().free_count(), 4u);
     }
 }
