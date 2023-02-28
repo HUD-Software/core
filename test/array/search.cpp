@@ -234,22 +234,22 @@ GTEST_TEST(array, find_last_index_by_predicate_non_trivial_type)
     array.emplace_back(50, nullptr);
 
     hud_assert_eq(array.find_last_index_by_predicate([](const type &element)
-                                                     { return element.id() == 10; }),
+                                                     { return element.id() == 10u; }),
                   5u);
     hud_assert_eq(array.find_last_index_by_predicate([](const type &element)
-                                                     { return element.id() == 20; }),
+                                                     { return element.id() == 20u; }),
                   6u);
     hud_assert_eq(array.find_last_index_by_predicate([](const type &element)
-                                                     { return element.id() == 30; }),
+                                                     { return element.id() == 30u; }),
                   7u);
     hud_assert_eq(array.find_last_index_by_predicate([](const type &element)
-                                                     { return element.id() == 40; }),
+                                                     { return element.id() == 40u; }),
                   8u);
     hud_assert_eq(array.find_last_index_by_predicate([](const type &element)
-                                                     { return element.id() == 50; }),
+                                                     { return element.id() == 50u; }),
                   9u);
     hud_assert_eq(array.find_last_index_by_predicate([](const type &element)
-                                                     { return element.id() == 0; }),
+                                                     { return element.id() == 0u; }),
                   hud::index_none);
 }
 
