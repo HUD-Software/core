@@ -964,7 +964,8 @@ namespace hud
             while (cur != begin)
             {
                 cur--;
-                if (predicate(*cur))
+                bool found = predicate(*cur);
+                if (found)
                 {
                     return static_cast<usize>(cur - begin);
                 }
