@@ -1,11 +1,36 @@
 <div align="center">
-  <img width="200" height="200" background-color="white" src="https://avatars.githubusercontent.com/u/104791429"/>
+  <img height="200" background-color="white" src="https://hud-software.github.io/bande.png" alt="HUD-Software"/>
   <h1>Core</h1>
 </div>
 
-| Build & test | Quality | Coverage |
-|:--------------|---------|--------------|
-|[![Windows cl build & test](https://github.com/HUD-Software/core/actions/workflows/windows_cl_x64.yml/badge.svg?branch=main)](https://github.com/HUD-Software/core/actions/workflows/windows_cl_x64.yml) <br> [![Windows clang-cl build & test](https://github.com/HUD-Software/core/actions/workflows/windows_clang_x64.yml/badge.svg?branch=main)](https://github.com/HUD-Software/core/actions/workflows/windows_clang_x64.yml) <br> [![Ubuntu clang build & test](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang.yml/badge.svg)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang.yml) | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/8014adeaff854f95b7688b8bed741964)](https://www.codacy.com/gh/HUD-Software/core/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=HUD-Software/core&amp;utm_campaign=Badge_Grade) <br> [![CodeQL Analysis](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml/badge.svg?branch=main)](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml) | [![codecov](https://codecov.io/gh/HUD-Software/core/branch/main/graph/badge.svg?token=KDDSR2NG0M)](https://codecov.io/gh/HUD-Software/core)|
+**_Table of contents_**
+
+1. [Status](#status)
+1. [Description](#description)
+2. [Targets](#targets)
+    1. [core](#core-target)
+    2. [core_test](#core_test-target)
+    
+</br>
+
+# Status
+
+***Windows build and test***
+
+[![cl_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_cl_x86-64.yml?label=CL%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_cl_x86-64.yml)
+[![clang-cl_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_clang_x86-64.yml?label=Clang-cl%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_clang_x86-64.yml)
+
+***Ubuntu build and test***
+
+[![clang_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang_x86-64.yml?label=Clang%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang_x86-64.yml)
+
+***Quality***
+
+[![codecov](https://img.shields.io/codecov/c/github/hud-software/core?label=Codecov&logo=Codecov&logoColor=lightgrey&style=flat-square)](https://app.codecov.io/gh/HUD-Software/core)
+[![codeql](https://img.shields.io/github/actions/workflow/status/hud-software/core/codeQL.yml?label=CodeQL%20Quality&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml)
+[![codacy](https://img.shields.io/codacy/grade/8014adeaff854f95b7688b8bed741964?label=Codacy%20Quality&logo=Codacy&logoColor=lightgrey&style=flat-square)](https://app.codacy.com/gh/HUD-Software/core/)
+
+</br>
 
 # Description
 
