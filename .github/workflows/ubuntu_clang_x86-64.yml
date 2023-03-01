@@ -1,4 +1,4 @@
-name: Ubuntu clang build & test
+name: Ubuntu clang x86-64 build & test
 
 on:
   push:

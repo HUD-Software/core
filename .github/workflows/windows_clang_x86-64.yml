@@ -1,4 +1,4 @@
-name: Windows cl build & test
+name: Windows clang-cl x86-64 build & test
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Generate visual Studio solution
-        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64
+        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang-cl.exe" "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang-cl.exe" -Btarget -G "Visual Studio 17 2022" -T ClangCL,host=x64 -A x64
       - name: Build
         run: cmake.exe --build target --config Release
       - name: Test
@@ -37,5 +37,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: windows_msvc_x64
+          name: windows_clang_x64
           path: release\**
