@@ -3,7 +3,7 @@
 GTEST_TEST(unique_pointer_array, destructor)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         i32 dtor_count[2] = {0, 0};
         {
@@ -35,7 +35,7 @@ GTEST_TEST(unique_pointer_array, destructor)
 GTEST_TEST(unique_pointer_array, destructor_after_move)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         i32 dtor_count[2] = {0, 0};
         {

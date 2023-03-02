@@ -35,6 +35,10 @@ namespace hud_test
         {
             return *this;
         }
+
+        // Bug: Waiting for GCC 13 (Bug 93413 - Defaulted constexpr Destructor not being found during constant evaluation)
+        // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93413
+        ~custom_deleter() = default;
     };
 
     using deleter_type = custom_deleter<hud_test::non_bitwise_type[]>;
@@ -43,6 +47,9 @@ namespace hud_test
     template<typename type_t>
     struct custom_deleter2 : public custom_deleter<type_t>
     {
+        // Bug: Waiting for GCC 13 (Bug 93413 - Defaulted constexpr Destructor not being found during constant evaluation)
+        // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93413
+        ~custom_deleter2() = default;
     };
 
     using deleter_type2 = custom_deleter2<hud_test::non_bitwise_type[]>;
@@ -75,7 +82,7 @@ GTEST_TEST(unique_pointer_array, default_constructor)
 GTEST_TEST(unique_pointer_array, constructor_with_same_pointer)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -88,7 +95,8 @@ GTEST_TEST(unique_pointer_array, constructor_with_same_pointer)
             pi->copy_constructor_count() == 0u,
             pi->move_constructor_count() == 0u,
             pi->copy_assign_count() == 0u,
-            pi->move_assign_count() == 0u};
+            pi->move_assign_count() == 0u,
+        };
     };
 
     // Non constant
@@ -117,7 +125,7 @@ GTEST_TEST(unique_pointer_array, constructor_with_same_pointer)
 GTEST_TEST(unique_pointer_array, constructor_with_different_pointer)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -159,7 +167,7 @@ GTEST_TEST(unique_pointer_array, constructor_with_different_pointer)
 GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_same_deleter_by_copy)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -221,7 +229,7 @@ GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_same_deleter_by_co
 GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_different_deleter_by_copy)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -282,7 +290,7 @@ GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_different_deleter_
 
 GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_same_deleter_by_move)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         static_assert(hud::is_move_constructible_v<hud_test::deleter_type>);
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
@@ -343,7 +351,7 @@ GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_same_deleter_by_mo
 
 GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_different_deleter_by_move)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         static_assert(hud::is_move_constructible_v<hud_test::deleter_type>);
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
@@ -404,7 +412,7 @@ GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_different_deleter_
 
 GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_ref_same_deleter)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -480,7 +488,7 @@ GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_ref_same_deleter)
 
 GTEST_TEST(unique_pointer_array, constructor_with_pointer_and_ref_different_deleter)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -621,7 +629,7 @@ GTEST_TEST(unique_pointer_array, constructor_with_nullptr_with_deleter_ref)
 
 GTEST_TEST(unique_pointer_array, move_constructor_same_type)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -683,7 +691,7 @@ GTEST_TEST(unique_pointer_array, move_constructor_same_type)
 GTEST_TEST(unique_pointer_array, move_constructor_same_type_different_deleter)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -745,7 +753,7 @@ GTEST_TEST(unique_pointer_array, move_constructor_same_type_different_deleter)
 GTEST_TEST(unique_pointer_array, move_constructor_same_type_with_same_deleter_ref)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -811,7 +819,7 @@ GTEST_TEST(unique_pointer_array, move_constructor_same_type_with_same_deleter_re
 GTEST_TEST(unique_pointer_array, move_constructor_different_type_same_deleter)
 {
 
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -872,7 +880,7 @@ GTEST_TEST(unique_pointer_array, move_constructor_different_type_same_deleter)
 
 GTEST_TEST(unique_pointer_array, move_constructor_different_type_different_deleter)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},

@@ -24,7 +24,7 @@
 
 #elif defined(HD_OS_LINUX)
 
-    #if defined(HD_COMPILER_CLANG)
+    #if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
 
         // Use __forceinline only in non debug mode
         #if defined(HD_DEBUG)
@@ -35,7 +35,6 @@
 
         #define HD_RESTRICT __restrict__ // Indicates that a symbol is not aliased in the current scope.
         #define __STDC_WANT_LIB_EXT1__ 1 // Enable bounds-checked functions ( ISO C Safe Array Functions : memcpy_s, strcpy_s, snwprintf_s, etc... )
-
     #else
         #error Unsupported compiler for Linux
     #endif // defined(HD_COMPILER_CLANG)

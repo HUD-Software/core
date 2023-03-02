@@ -27,21 +27,21 @@ namespace hud_test
     struct d
     {
         d() noexcept
-            : c()
+            : mC()
         {
         }
 
-        c c;
+        c mC;
     };
 
     struct e
     {
         e()
-            : c()
+            : mC()
         {
         }
 
-        c c;
+        c mC;
     };
 } // namespace hud_test
 

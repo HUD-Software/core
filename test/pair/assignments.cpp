@@ -541,7 +541,7 @@ GTEST_TEST(pair, move_assign_trivially_move_assignable_same_type)
 GTEST_TEST(pair, move_assign_non_trivially_move_assignable_same_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type;
     using pair_type = hud::pair<type, type>;
 
     static_assert(hud::is_move_assignable_v<type>);
@@ -692,8 +692,8 @@ GTEST_TEST(pair, move_assign_trivially_move_assignable_different_type)
 GTEST_TEST(pair, move_assign_non_trivially_move_assignable_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseMoveAssignableType2;
-    using Type2 = hud_test::NonBitwiseMoveAssignableType;
+    using Type1 = hud_test::non_bitwise_move_assignable_type2;
+    using Type2 = hud_test::non_bitwise_move_assignable_type;
     using pair_type = hud::pair<Type1, Type1>;
     using OtherPairType = hud::pair<Type2, Type2>;
 

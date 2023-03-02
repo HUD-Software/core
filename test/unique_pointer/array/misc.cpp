@@ -35,6 +35,8 @@ namespace hud_test
         {
             return *this;
         }
+
+        ~custom_deleter() = default;
     };
 
     using deleter_type = hud_test::custom_deleter<hud_test::non_bitwise_type[]>;
@@ -152,7 +154,7 @@ GTEST_TEST(unique_pointer_array, operator_array)
 
 GTEST_TEST(unique_pointer_array, deleter)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         i32 dtor_counter = 0;
         hud_test::deleter_type deleter;
@@ -195,7 +197,7 @@ GTEST_TEST(unique_pointer_array, deleter)
 
 GTEST_TEST(unique_pointer_array, release)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *ptr = new hud_test::non_bitwise_type[2] {
             {1, nullptr},
@@ -240,7 +242,7 @@ GTEST_TEST(unique_pointer_array, release)
 
 GTEST_TEST(unique_pointer_array, reset)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *ptr = new hud_test::non_bitwise_type[2] {
             {1, nullptr},

@@ -2,7 +2,7 @@
 
 GTEST_TEST(tuple, swap_non_trivially_copy_assignable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
+    using tuple_type = hud::tuple<hud_test::non_bitwise_move_assignable_type, f32, i32, wchar>;
 
     const auto test = []()
     {
@@ -74,8 +74,8 @@ GTEST_TEST(tuple, swap_non_trivially_copy_assignable_same_types)
 
 GTEST_TEST(tuple, swap_non_trivially_copy_assignable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType2, f32, i32, wchar>;
-    using other_tuple_type = hud::tuple<hud_test::NonBitwiseMoveAssignableType, f32, i32, wchar>;
+    using tuple_type = hud::tuple<hud_test::non_bitwise_move_assignable_type2, f32, i32, wchar>;
+    using other_tuple_type = hud::tuple<hud_test::non_bitwise_move_assignable_type, f32, i32, wchar>;
     const auto test = []()
     {
         tuple_type tuple_a {1, 12.0f, 123, L'c'};

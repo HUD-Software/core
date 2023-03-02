@@ -1,6 +1,9 @@
 #ifndef HD_INC_CORE_TRAITS_IS_TRIVIALLY_DESTRUCTIBLE_H
 #define HD_INC_CORE_TRAITS_IS_TRIVIALLY_DESTRUCTIBLE_H
 #include "integral_constant.h"
+#if !__has_builtin(__is_trivially_destructible)
+    #include "is_destructible.h"
+#endif
 
 namespace hud
 {
@@ -15,7 +18,13 @@ namespace hud
      */
     template<typename type_t>
     struct is_trivially_destructible
+#if __has_builtin(__is_trivially_destructible)
         : hud::bool_constant<__is_trivially_destructible(type_t)>
+#else
+        : hud::conjunction<
+              hud::is_destructible<type_t>,
+              hud::bool_constant<__has_trivial_destructor(type_t)>>
+#endif
     {
     };
 

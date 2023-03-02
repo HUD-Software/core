@@ -64,6 +64,8 @@ __aarch64__
     #else
         #define HD_COMPILER_CLANG
     #endif
+#elif defined(__GNUC__)
+    #define HD_COMPILER_GCC
 #endif
 
 /** Detect compiler version */
@@ -71,6 +73,8 @@ __aarch64__
     #define HD_COMPILER_VERSION _MSC_VER
 #elif defined(HD_COMPILER_CLANG)
     #define HD_COMPILER_VERSION __clang_major__, __clang_minor__, __clang_patchlevel__
+#elif defined(HD_COMPILER_GCC)
+    #define HD_COMPILER_VERSION __GNUC__, __GNUC_MINOR__
 #else
     #error Unknown compiler version defines
 #endif
@@ -86,7 +90,7 @@ __aarch64__
     #elif defined(_M_ARM)
         #define HD_TARGET_ARM32
     #endif
-#elif defined(HD_COMPILER_CLANG)
+#elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
     #if defined(__i386__)
         #define HD_TARGET_X86
     #elif defined(__x86_64__)
@@ -129,7 +133,7 @@ __aarch64__
 #if !defined(HD_TARGET_32_BITS) && !defined(HD_TARGET_64_BITS)
     #error Architecture targeted not supported
 #endif
-#if !defined(HD_COMPILER_MSVC) && !defined(HD_COMPILER_CLANG_CL) && !defined(HD_COMPILER_CLANG)
+#if !defined(HD_COMPILER_MSVC) && !defined(HD_COMPILER_CLANG_CL) && !defined(HD_COMPILER_CLANG) && !defined(HD_COMPILER_GCC)
     #error Compiler not supported
 #endif
 #if !defined(HD_OS_WINDOWS) && !defined(HD_OS_LINUX)

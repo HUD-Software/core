@@ -34,6 +34,10 @@ namespace hud_test
         {
             return *this;
         }
+
+        // Bug: Waiting for GCC 13 (Bug 93413 - Defaulted constexpr Destructor not being found during constant evaluation)
+        // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93413
+        ~custom_deleter() = default;
     };
 } // namespace hud_test
 

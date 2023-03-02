@@ -34,6 +34,10 @@ namespace hud_test
         {
             return *this;
         }
+
+        // Bug: Waiting for GCC 13 (Bug 93413 - Defaulted constexpr Destructor not being found during constant evaluation)
+        // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93413
+        ~custom_deleter() = default;
     };
 
     using deleter_type = custom_deleter<hud_test::non_bitwise_type[]>;
@@ -42,6 +46,9 @@ namespace hud_test
     template<typename type_t>
     struct custom_deleter2 : public custom_deleter<type_t>
     {
+        // Bug: Waiting for GCC 13 (Bug 93413 - Defaulted constexpr Destructor not being found during constant evaluation)
+        // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93413
+        ~custom_deleter2() = default;
     };
 
     using deleter_type2 = custom_deleter2<hud_test::non_bitwise_type[]>;
@@ -50,7 +57,7 @@ namespace hud_test
 
 GTEST_TEST(unique_pointer_array, assign_by_move_same_type)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -115,7 +122,7 @@ GTEST_TEST(unique_pointer_array, assign_by_move_same_type)
 
 GTEST_TEST(unique_pointer_array, assign_by_move_same_type_with_deleter_ref)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -185,7 +192,7 @@ GTEST_TEST(unique_pointer_array, assign_by_move_same_type_with_deleter_ref)
 
 GTEST_TEST(unique_pointer_array, assign_by_move_same_type_with_different_deleter_ref)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},
@@ -255,7 +262,7 @@ GTEST_TEST(unique_pointer_array, assign_by_move_same_type_with_different_deleter
 
 GTEST_TEST(unique_pointer_array, assign_by_move_different_type)
 {
-    const auto test = []()
+    const auto test = []() constexpr
     {
         hud_test::non_bitwise_type *pi = new hud_test::non_bitwise_type[2] {
             {123, nullptr},

@@ -1144,7 +1144,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_differen
 GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
@@ -1197,8 +1197,8 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_same_typ
 GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_different_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType2;
-    using OtherType = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type2;
+    using OtherType = hud_test::non_bitwise_move_assignable_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_move_assignable_v<type, OtherType>);
@@ -1251,7 +1251,7 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_move_assignable_differen
 GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
@@ -1325,8 +1325,8 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same
 GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_different_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType2;
-    using OtherType = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type2;
+    using OtherType = hud_test::non_bitwise_move_assignable_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_move_assignable_v<type, OtherType>);
@@ -2045,7 +2045,7 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_same_type)
 GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_same_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
@@ -2140,8 +2140,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_different_type)
 GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_different_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType2;
-    using OtherType = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type2;
+    using OtherType = hud_test::non_bitwise_move_assignable_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
     static_assert(!hud::is_trivially_move_assignable_v<type>);
@@ -2520,8 +2520,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_different_t
 GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_different_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType2;
-    using OtherType = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type2;
+    using OtherType = hud_test::non_bitwise_move_assignable_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type, OtherType>);
     static_assert(!hud::is_trivially_move_assignable_v<type, OtherType>);

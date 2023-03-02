@@ -379,7 +379,7 @@ namespace hud
 
         private:
             /** The allocation of the array. */
-            allocation<type_t> allocation;
+            hud::allocation<type_t> allocation;
         };
 
         template<thread_safety_e thread_safety>

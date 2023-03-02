@@ -17,7 +17,7 @@ namespace hud
     };
 
     template<typename type_t>
-    struct hud::is_same<type_t, type_t>
+    struct is_same<type_t, type_t>
         : hud::true_type
     {
     };

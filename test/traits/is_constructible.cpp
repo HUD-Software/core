@@ -4,7 +4,7 @@ namespace hud_test
 {
     struct a
     {
-        i32 a;
+        i32 mA;
     };
 
     struct b
@@ -19,7 +19,7 @@ namespace hud_test
 
     struct c
     {
-        a a;
+        a mA;
     };
 
     struct d
@@ -36,8 +36,8 @@ namespace hud_test
     {
         e() = default;
 
-        e(a a)
-            : mA(a)
+        e(a a_)
+            : mA(a_)
         {
         }
 

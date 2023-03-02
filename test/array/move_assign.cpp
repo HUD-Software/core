@@ -582,16 +582,16 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type)
 
 GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
 {
-    using Type1 = i32;
-    using Type2 = u32;
+    using type1 = i32;
+    using type2 = u32;
     // Ensure we test with different types
-    static_assert(!std::is_same_v<Type1, Type2>);
-    static_assert(hud::is_bitwise_copy_assignable_v<Type2, Type1>);
+    static_assert(!std::is_same_v<type1, type2>);
+    static_assert(hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<Type1> elements_in_assigned, usize extra, std::initializer_list<Type2> elements_to_assign, usize extra_2) noexcept
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_2) noexcept
     {
-        hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
-        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
+        hud::array<type1, hud_test::array_allocator<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::array<type2, hud_test::array_allocator<alignof(type2)>> to_assign(elements_to_assign, extra_2);
 
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
@@ -633,7 +633,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
         // Ensures we move all values correctly
         for (usize index = 0; index < assigned.count(); index++)
         {
-            hud_assert_eq(assigned[index], static_cast<Type1>(*(elements_to_assign.begin() + index)));
+            hud_assert_eq(assigned[index], static_cast<type1>(*(elements_to_assign.begin() + index)));
         }
 
         // Allocation is not supposed to be done, the type is bitwise moveable, the array should just take the allocation buffer ( move the pointer to the allocation )
@@ -666,12 +666,12 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
         for (usize extra2 = 0; extra2 < 5; extra2++)
         {
             test_assign({}, extra, {}, extra2);
-            test_assign({}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {Type2 {0}, Type2 {1}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {}, extra2);
+            test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {type2 {0}, type2 {1}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {}, extra2);
         }
     }
 }
@@ -679,7 +679,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type)
 GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type;
     static_assert(!hud::is_bitwise_move_assignable_v<type>);
 
     auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_2)
@@ -850,39 +850,39 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
 GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseMoveAssignableType2;
-    using Type2 = hud_test::NonBitwiseMoveAssignableType;
+    using type1 = hud_test::non_bitwise_move_assignable_type2;
+    using type2 = hud_test::non_bitwise_move_assignable_type;
     // Ensure we test with different types
-    static_assert(!std::is_same_v<Type1, Type2>);
-    static_assert(!hud::is_bitwise_copy_assignable_v<Type2, Type1>);
+    static_assert(!std::is_same_v<type1, type2>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<Type1> elements_in_assigned, usize extra, std::initializer_list<Type2> elements_to_assign, usize extra_2)
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_2)
     {
         // Ensure that all counters are set to 0
-        for (const Type1 &element : elements_in_assigned)
+        for (const type1 &element : elements_in_assigned)
         {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const Type2 &element : elements_to_assign)
+        for (const type2 &element : elements_to_assign)
         {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<Type1, hud_test::array_allocator<alignof(Type1)>> assigned(elements_in_assigned, extra);
-        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> to_assign(elements_to_assign, extra_2);
+        hud::array<type1, hud_test::array_allocator<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::array<type2, hud_test::array_allocator<alignof(type2)>> to_assign(elements_to_assign, extra_2);
 
         // Ensure assigned copy constructor is set to 1
-        for (const Type1 &element : assigned)
+        for (const type1 &element : assigned)
         {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const Type2 &element : to_assign)
+        for (const type2 &element : to_assign)
         {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
@@ -959,7 +959,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         {
             for (usize index = 0; index < assigned.count(); index++)
             {
-                const Type1 &element = assigned[index];
+                const type1 &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
                 hud_assert_eq(element.move_constructor_count(), 1u);
@@ -972,7 +972,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         {
             for (usize index = 0; index < assigned.count(); index++)
             {
-                const Type1 &element = assigned[index];
+                const type1 &element = assigned[index];
                 if (index < elements_in_assigned.size())
                 {
                     hud_assert_eq(element.move_assign_count(), 1u);
@@ -1011,12 +1011,12 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         for (usize extra2 = 0; extra2 < 5; extra2++)
         {
             test_assign({}, extra, {}, extra2);
-            test_assign({}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {Type2 {0}, Type2 {1}, Type2 {2}, Type2 {3}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {Type2 {0}, Type2 {1}}, extra2);
-            test_assign({Type1 {10}, Type1 {20}, Type1 {30}, Type1 {40}, Type1 {50}}, extra, {}, extra2);
+            test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {type2 {0}, type2 {1}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {}, extra2);
         }
     }
 }
@@ -1318,7 +1318,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self)
 GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType;
+    using type = hud_test::non_bitwise_move_assignable_type;
     static_assert(!hud::is_bitwise_move_assignable_v<type>);
 
     // Test without extra

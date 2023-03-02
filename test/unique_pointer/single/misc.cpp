@@ -35,6 +35,8 @@ namespace hud_test
         {
             return *this;
         }
+
+        ~custom_deleter() = default;
     };
 
     using deleter_type = hud_test::custom_deleter<hud_test::non_bitwise_type>;

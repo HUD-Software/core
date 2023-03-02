@@ -117,8 +117,8 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_typ
 GTEST_TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_type)
 {
 
-    using source_type = hud_test::NonBitwiseMoveAssignableType3;
-    using destination_type = hud_test::NonBitwiseMoveAssignableType4;
+    using source_type = hud_test::non_bitwise_move_assignable_type3;
+    using destination_type = hud_test::non_bitwise_move_assignable_type4;
     using ResultType = std::tuple<u32, u32, u32, u32, i32>;
 
     static_assert(hud::is_move_assignable_v<destination_type, source_type>);
@@ -325,8 +325,8 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_differe
 GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_different_type)
 {
 
-    using source_type = hud_test::NonBitwiseMoveAssignableType3;
-    using destination_type = hud_test::NonBitwiseMoveAssignableType4;
+    using source_type = hud_test::non_bitwise_move_assignable_type3;
+    using destination_type = hud_test::non_bitwise_move_assignable_type4;
     using ResultType = std::tuple<u32, u32, u32, u32, i32, u32, u32, u32, u32, i32>;
 
     static_assert(hud::is_move_constructible_v<destination_type, source_type>);
@@ -428,7 +428,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_constructible_same
 GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_constructible_same_type)
 {
 
-    using type = hud_test::NonBitwiseMoveAssignableType4;
+    using type = hud_test::non_bitwise_move_assignable_type4;
     using ResultType = std::tuple<u32, u32, u32, u32, i32, u32, u32, u32, u32, i32>;
 
     static_assert(hud::is_move_constructible_v<type>);

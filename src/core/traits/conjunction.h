@@ -11,21 +11,21 @@ namespace hud
     struct conjunction;
 
     template<>
-    struct hud::conjunction<>
+    struct conjunction<>
         : hud::true_type
     {
         // Empty is true
     };
 
     template<typename type_t>
-    struct hud::conjunction<type_t>
+    struct conjunction<type_t>
         : type_t
     {
         // Only 1 boolean, evaluate without conditional
     };
 
     template<typename type_t, typename... rest_t>
-    struct hud::conjunction<type_t, rest_t...>
+    struct conjunction<type_t, rest_t...>
         : hud::conditional_t<type_t::value, hud::conjunction<rest_t...>, type_t>
     {
         // If type_t is true evaluate next, else type_t is false

@@ -209,22 +209,28 @@ namespace hud_test
     static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_type>);
     static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_type>);
     static_assert(!hud::is_bitwise_move_assignable_v<non_bitwise_type>);
-
-    struct non_bitwise_type2 : public non_bitwise_type
+    
+    // Bug: Waiting for GCC 13 (Bug 93413 - Defaulted constexpr Destructor not being found during constant evaluation)
+    // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93413
+    template<typename=void>
+    struct non_bitwise_type2_gcc : public non_bitwise_type
     {
 
-        constexpr non_bitwise_type2(const non_bitwise_type &other) noexcept
+        constexpr non_bitwise_type2_gcc(const non_bitwise_type &other) noexcept
             : non_bitwise_type(other)
         {
         }
 
-        constexpr non_bitwise_type2(i32 id, i32 *ptr_to_destructor_counter) noexcept
+        constexpr non_bitwise_type2_gcc(i32 id, i32 *ptr_to_destructor_counter) noexcept
             : non_bitwise_type(id, ptr_to_destructor_counter)
         {
         }
 
-        constexpr ~non_bitwise_type2() noexcept = default;
+        constexpr ~non_bitwise_type2_gcc() noexcept = default;
     };
+
+    using non_bitwise_type2 = non_bitwise_type2_gcc<>;
+
 } // namespace hud_test
 
 #endif // HD_INC_MISC_NON_DEFAULT_CONSTRUCTIBLE_TYPE_H

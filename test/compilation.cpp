@@ -9,6 +9,8 @@ GTEST_TEST(compilation, get_compiler)
     hud_assert_eq(hud::compilation::get_compiler(), hud::compiler_e::msvc);
 #elif defined(HD_COMPILER_CLANG)
     hud_assert_eq(hud::compilation::get_compiler(), hud::compiler_e::clang);
+#elif defined(HD_COMPILER_GCC)
+    hud_assert_eq(hud::compilation::get_compiler(), hud::compiler_e::gcc);
 #else
     FAIL(); // "Not implemented"
 #endif
@@ -22,6 +24,8 @@ GTEST_TEST(compilation, get_compiler_name)
     hud_assert_true(hud::cstring::equals(hud::compilation::get_compiler_name(), "Microsoft Visual Studio"));
 #elif defined(HD_COMPILER_CLANG)
     hud_assert_true(hud::cstring::equals(hud::compilation::get_compiler_name(), "Clang"));
+#elif defined(HD_COMPILER_GCC)
+    hud_assert_true(hud::cstring::equals(hud::compilation::get_compiler_name(), "GNU gcc/G++"));
 #else
     FAIL(); // "Not implemented"
 #endif

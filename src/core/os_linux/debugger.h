@@ -20,18 +20,15 @@ namespace hud::os::linux
             // LCOV_EXCL_START ( We don't covert the code that break the debugger )
             if (is_present())
             {
-                if constexpr (hud::compilation::is_compiler(compiler_e::clang))
-                {
-                    __builtin_debugtrap();
-                }
-                else
-                {
-#if defined(HD_TARGET_X86_FAMILY)
-                    __asm__("int $3");
-#elif defined(HD_TARGET_ARM_FAMILY)
-                    __builtin_trap();
+#if defined(HD_COMPILER_CLANG)
+                __builtin_debugtrap();
+#else
+    #if defined(HD_TARGET_X86_FAMILY)
+                __asm__("int $3");
+    #elif defined(HD_TARGET_ARM_FAMILY)
+                __builtin_trap();
+    #endif
 #endif
-                }
             }
             // LCOV_EXCL_STOP
         }

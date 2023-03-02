@@ -34,6 +34,8 @@ namespace hud_test
         {
             return *this;
         }
+
+        ~custom_deleter() = default;
     };
 } // namespace hud_test
 

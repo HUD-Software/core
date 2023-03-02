@@ -34,6 +34,8 @@ namespace
         {
             return *this;
         }
+
+        ~custom_deleter() = default;
     };
 
     using deleter_type = custom_deleter<hud_test::non_bitwise_type>;
@@ -41,6 +43,7 @@ namespace
     template<typename type_t>
     struct custom_deleter2 : public custom_deleter<type_t>
     {
+        ~custom_deleter2() = default;
     };
 
     using deleter_type2 = custom_deleter<hud_test::non_bitwise_type>;

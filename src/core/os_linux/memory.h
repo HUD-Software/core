@@ -41,7 +41,17 @@ namespace hud::os::linux
          */
         static constexpr u32 rotate_left(const u32 value, const u32 shift) noexcept
         {
+#if __has_builtin(__builtin_rotateleft32)
             return __builtin_rotateleft32(value, shift);
+#else
+            const int __r = shift % 32;
+            if (__r == 0)
+                return value;
+            else if (__r > 0)
+                return (value << __r) | (value >> ((32 - __r) % 32));
+            else
+                return (value >> -__r) | (value << ((32 + __r) % 32)); // rotr(x, -r)
+#endif
         }
 
         /**
@@ -52,7 +62,17 @@ namespace hud::os::linux
          */
         static constexpr u64 rotate_left(const u64 value, const u32 shift) noexcept
         {
+#if __has_builtin(__builtin_rotateleft64)
             return __builtin_rotateleft64(value, shift);
+#else
+            const int __r = shift % 64;
+            if (__r == 0)
+                return value;
+            else if (__r > 0)
+                return (value << __r) | (value >> ((64 - __r) % 64));
+            else
+                return (value >> -__r) | (value << ((64 + __r) % 64)); // rotr(x, -r)
+#endif
         }
 
         /**
@@ -63,7 +83,17 @@ namespace hud::os::linux
          */
         static constexpr u32 rotate_right(const u32 value, const u32 shift) noexcept
         {
+#if __has_builtin(__builtin_rotateright32)
             return __builtin_rotateright32(value, shift);
+#else
+            const int __r = shift % 32;
+            if (__r == 0)
+                return value;
+            else if (__r > 0)
+                return (value >> __r) | (value << ((32 - __r) % 32));
+            else
+                return (value << -__r) | (value >> ((32 + __r) % 32)); // rotl(x, -r)
+#endif
         }
 
         /**
@@ -74,7 +104,17 @@ namespace hud::os::linux
         */
         static constexpr u64 rotate_right(const u64 value, const u32 shift) noexcept
         {
+#if __has_builtin(__builtin_rotateright64)
             return __builtin_rotateright64(value, shift);
+#else
+            const int __r = shift % 64;
+            if (__r == 0)
+                return value;
+            else if (__r > 0)
+                return (value >> __r) | (value << ((64 - __r) % 64));
+            else
+                return (value << -__r) | (value >> ((64 + __r) % 64)); // rotl(x, -r)
+#endif
         }
     };
 

@@ -13,13 +13,13 @@ namespace hud
     };
 
     template<typename type_t, usize extent>
-    struct hud::is_array<type_t[extent]>
+    struct is_array<type_t[extent]>
         : hud::true_type
     {
     };
 
     template<typename type_t>
-    struct hud::is_array<type_t[]>
+    struct is_array<type_t[]>
         : hud::true_type
     {
     };

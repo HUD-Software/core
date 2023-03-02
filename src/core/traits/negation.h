@@ -14,7 +14,7 @@ namespace hud
     };
 
     template<typename type_t>
-    struct hud::negation<type_t, false>
+    struct negation<type_t, false>
         : hud::true_type
     {
     };
