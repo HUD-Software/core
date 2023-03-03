@@ -13,14 +13,14 @@
 
 namespace hud
 {
-    // #if __has_builtin(__is_convertible_to)
-    //     /** Checks whether from_t is implicitly convertible to to_t. */
-    //     template<typename from_t, typename to_t>
-    //     struct is_convertible
-    //         : hud::bool_constant<__is_convertible_to(from_t, to_t)>
-    //     {
-    //     };
-    // #else
+#if __has_builtin(__is_convertible_to)
+    /** Checks whether from_t is implicitly convertible to to_t. */
+    template<typename from_t, typename to_t>
+    struct is_convertible
+        : hud::bool_constant<__is_convertible_to(from_t, to_t)>
+    {
+    };
+#else
     namespace details
     {
 
@@ -42,7 +42,7 @@ namespace hud
     {
     };
 
-    // #endif
+#endif
 
     /** Equivalent of hud::is_convertible<from_t,to_t>::value. */
     template<typename from_t, typename to_t>

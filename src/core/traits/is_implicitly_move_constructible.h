@@ -9,7 +9,7 @@ namespace hud
     /** Checks whether type_t is an implicitly move constructible type with u_type_t. */
     template<typename type_t, typename u_type_t = type_t>
     struct is_implicitly_move_constructible
-        : is_implicitly_constructible<type_t, add_rvalue_reference_t<u_type_t>>
+        : hud::is_convertible<u_type_t &&, type_t>
     {
     };
 
