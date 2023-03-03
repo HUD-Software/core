@@ -7,10 +7,29 @@
 namespace hud
 {
 
+    namespace details
+    {
+        template<typename T>
+        void test_implicitly_copy_constructible(T);
+
+        template<typename T, typename U, typename = void>
+        struct is_implicitly_copy_constructible
+            : std::false_type
+        {
+        };
+
+        template<typename T, typename U>
+        struct is_implicitly_copy_constructible<T, U, std::void_t<decltype(test_implicitly_copy_constructible<T>(std::declval<U>()))>>
+            : std::true_type
+        {
+        };
+
+    } // namespace details
+
     /** Checks whether type_t is an implicitly copy constructible type with u_type_t. */
     template<typename type_t, typename u_type_t = type_t>
     struct is_implicitly_copy_constructible
-        : is_implicitly_constructible<type_t, hud::add_lvalue_reference_t<hud::add_const_t<u_type_t>>>
+        : details::is_implicitly_copy_constructible<type_t, hud::add_lvalue_reference_t<hud::add_const_t<u_type_t>>>
     {
     };
 

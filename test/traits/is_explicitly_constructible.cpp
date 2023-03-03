@@ -1,4 +1,4 @@
-#include <core/traits/is_explicitly_default_constructible.h>
+#include <core/traits/is_explicitly_constructible.h>
 
 namespace hud_test
 {

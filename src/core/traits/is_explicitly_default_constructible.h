@@ -1,6 +1,6 @@
 #ifndef HD_INC_CORE_TRAITS_IS_EXPLICITLY_DEFAULT_CONSTRUCTIBLE_H
 #define HD_INC_CORE_TRAITS_IS_EXPLICITLY_DEFAULT_CONSTRUCTIBLE_H
-#include "is_explicitly_constructible.h"
+#include "is_implicitly_default_constructible.h"
 
 namespace hud
 {
@@ -8,7 +8,9 @@ namespace hud
     /** Checks whether type_t is an explicitly default constructible type. */
     template<typename type_t>
     struct is_explicitly_default_constructible
-        : public is_explicitly_constructible<type_t>
+        : hud::conjunction<
+              hud::is_default_constructible<type_t>,
+              hud::negation<hud::is_implicitly_default_constructible<type_t>>>
     {
     };
 
