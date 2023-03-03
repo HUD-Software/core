@@ -1,5 +1,5 @@
 <div align="center">
-  <img height="200" background-color="white" src="https://hud-software.github.io/bande.png" alt="HUD-Software"/>
+  <img width="80%" background-color="white" src="https://hud-software.github.io/bande.png" alt="HUD-Software"/>
   <h1>Core</h1>
 </div>
 
