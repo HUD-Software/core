@@ -1,6 +1,9 @@
 #ifndef HD_INC_CORE_TRAITS_IS_CONVERTIBLE_H
 #define HD_INC_CORE_TRAITS_IS_CONVERTIBLE_H
 #include "integral_constant.h"
+
+#include "is_void.h"
+#include "../templates/declval.h"
 #if !__has_builtin(__is_convertible_to)
     #include "disjunction.h"
     #include "is_void.h"
@@ -10,48 +13,36 @@
 
 namespace hud
 {
-#if __has_builtin(__is_convertible_to)
-    /** Checks whether from_t is implicitly convertible to to_t. */
-    template<typename from_t, typename to_t>
-    struct is_convertible
-        : hud::bool_constant<__is_convertible_to(from_t, to_t)>
-    {
-    };
-#else
+    // #if __has_builtin(__is_convertible_to)
+    //     /** Checks whether from_t is implicitly convertible to to_t. */
+    //     template<typename from_t, typename to_t>
+    //     struct is_convertible
+    //         : hud::bool_constant<__is_convertible_to(from_t, to_t)>
+    //     {
+    //     };
+    // #else
     namespace details
     {
-        template<typename from_t, typename to_t, bool = hud::disjunction<hud::is_void<from_t>, hud::is_function<to_t>, hud::is_array<to_t>>::value>
-        struct is_convertible
-        {
-            typedef typename hud::is_void<to_t>::type type;
-        };
 
-        template<typename from_t, typename to_t>
-        class is_convertible<from_t, to_t, false>
-        {
-            template<typename to_v_t>
-            static void __test_aux(to_v_t) noexcept;
+        template<class T>
+        auto test_returnable(int) -> decltype(void(static_cast<T (*)()>(nullptr)), hud::true_type {});
+        template<class>
+        auto test_returnable(...) -> hud::false_type;
 
-            template<typename from_v_t, typename to_v_t, typename = decltype(__test_aux<to_v_t>(std::declval<from_v_t>()))>
-            static true_type
-            __test(int);
+        template<class From, class To>
+        auto test_implicitly_convertible(int) -> decltype(void(hud::declval<void (&)(To)>()(hud::declval<From>())), hud::true_type {});
+        template<class, class>
+        auto test_implicitly_convertible(...) -> hud::false_type;
 
-            template<typename, typename>
-            static false_type
-            __test(...);
-
-        public:
-            typedef decltype(__test<from_t, to_t>(0)) type;
-        };
     } // namespace details
 
-    /** Checks whether from_t is implicitly convertible to to_t. */
-    template<typename from_t, typename to_t>
+    template<class From, class To>
     struct is_convertible
-        : hud::details::is_convertible<from_t, to_t>::type
+        : std::bool_constant<(decltype(details::test_returnable<To>(0))::value && decltype(details::test_implicitly_convertible<From, To>(0))::value) || (hud::is_void<From>::value && hud::is_void<To>::value)>
     {
     };
-#endif
+
+    // #endif
 
     /** Equivalent of hud::is_convertible<from_t,to_t>::value. */
     template<typename from_t, typename to_t>
