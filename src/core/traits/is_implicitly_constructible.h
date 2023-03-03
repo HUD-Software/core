@@ -1,9 +1,8 @@
 #ifndef HD_INC_CORE_TRAITS_IS_IMPLICITLY_CONSTRUCTIBLE_H
 #define HD_INC_CORE_TRAITS_IS_IMPLICITLY_CONSTRUCTIBLE_H
-#include "../traits/is_constructible.h"
-#include "../traits/void_t.h"
-#include "../templates/declval.h"
-#include "../traits/is_convertible.h"
+#include "is_implicitly_default_constructible.h"
+#include "is_implicitly_copy_constructible.h"
+#include "is_implicitly_move_constructible.h"
 
 namespace hud
 {
@@ -32,14 +31,20 @@ namespace hud
         };
 
         template<typename type_t>
-        struct is_implicitly_constructible_impl<type_t, const type_t &>
-            : hud::is_convertible<const type_t &, type_t>
+        struct is_implicitly_constructible_impl<type_t>
+            : hud::is_implicitly_default_constructible<type_t>
         {
         };
 
-        template<typename type_t>
-        struct is_implicitly_constructible_impl<type_t, type_t &&>
-            : hud::is_convertible<type_t &&, type_t>
+        template<typename type_t, typename u_type_t>
+        struct is_implicitly_constructible_impl<type_t, const u_type_t &>
+            : hud::is_implicitly_copy_constructible<type_t, u_type_t>
+        {
+        };
+
+        template<typename type_t, typename u_type_t>
+        struct is_implicitly_constructible_impl<type_t, u_type_t &&>
+            : hud::is_implicitly_move_constructible<type_t, u_type_t>
         {
         };
 

@@ -1,7 +1,7 @@
 #ifndef HD_INC_CORE_TRAITS_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_H
 #define HD_INC_CORE_TRAITS_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_H
+#include "is_convertible.h"
 #include "add_rvalue_reference.h"
-#include "is_implicitly_constructible.h"
 
 namespace hud
 {
@@ -9,7 +9,7 @@ namespace hud
     /** Checks whether type_t is an implicitly move constructible type with u_type_t. */
     template<typename type_t, typename u_type_t = type_t>
     struct is_implicitly_move_constructible
-        : hud::is_convertible<u_type_t &&, type_t>
+        : hud::is_convertible<hud::add_rvalue_reference_t<u_type_t>, type_t>
     {
     };
 
