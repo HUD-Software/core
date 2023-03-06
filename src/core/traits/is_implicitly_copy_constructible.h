@@ -19,7 +19,7 @@ namespace hud
         };
 
         template<typename T, typename U>
-        struct is_implicitly_copy_constructible<T, U, hud::void_t<decltype(test_implicitly_copy_constructible<T>(hud::declval<U>()))>>
+        struct is_implicitly_copy_constructible<T, const U &, hud::void_t<decltype(test_implicitly_copy_constructible<T>(static_cast<const U &>(hud::declval<U>())))>>
             : hud::true_type
         {
         };

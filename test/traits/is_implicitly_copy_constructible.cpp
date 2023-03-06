@@ -147,6 +147,6 @@ GTEST_TEST(traits, is_implicitly_copy_constructible)
     // cv-qualified trivial types
     hud_assert_true((hud::is_implicitly_copy_constructible_v<i32>));
     hud_assert_true((hud::is_implicitly_copy_constructible_v<const i32>));
-    hud_assert_true((hud::is_implicitly_copy_constructible_v<volatile i32>));
-    hud_assert_true((hud::is_implicitly_copy_constructible_v<const volatile i32>));
+    hud_assert_false((hud::is_implicitly_copy_constructible_v<volatile i32>));
+    hud_assert_false((hud::is_implicitly_copy_constructible_v<const volatile i32>));
 }
