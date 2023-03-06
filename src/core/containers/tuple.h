@@ -173,6 +173,28 @@ namespace hud
         };
 
         /**
+         * @brief Check if a tuple<T0,T1> is copy constructible from pair<first_type,second_type>.
+         * @tparam pair_t The hud::pair
+         * @tparam tuple_t  The hud::tuple
+         */
+        template<typename pair_t, typename tuple_t>
+        struct is_pair_copy_constructible_to_tuple
+            : hud::false_type
+        {
+        };
+
+        template<typename pair_type0_t, typename pair_type1_t, typename tuple_type0_t, typename tuple_type1_t>
+        struct is_pair_copy_constructible_to_tuple<hud::pair<pair_type0_t, pair_type1_t>, hud::tuple<tuple_type0_t, tuple_type1_t>>
+            : hud::conjunction<
+                  hud::is_copy_constructible<tuple_type0_t, pair_type0_t>,
+                  hud::is_copy_constructible<tuple_type1_t, pair_type1_t>>
+        {
+        };
+
+        template<typename pair_t, typename tuple_t>
+        inline constexpr bool is_pair_copy_constructible_to_tuple_v = is_pair_copy_constructible_to_tuple<pair_t, tuple_t>::value;
+
+        /**
          * Check if a tuple<T0,T1> is explicitly copy constructible from pair<first_type,second_type>.
          * In other words, if T0(const first_type{}) is explicit and T1(const second_type{}) is explicit
          */
@@ -190,6 +212,28 @@ namespace hud
 
         template<typename pair_t, typename tuple_t>
         inline constexpr bool is_pair_explicitly_copy_constructible_to_tuple_v = is_pair_explicitly_copy_constructible_to_tuple<pair_t, tuple_t>::value;
+
+        /**
+         * @brief Check if a tuple<T0,T1> is move constructible from pair<first_type,second_type>.
+         * @tparam pair_t The hud::pair
+         * @tparam tuple_t  The hud::tuple
+         */
+        template<typename pair_t, typename tuple_t>
+        struct is_pair_move_constructible_to_tuple
+            : hud::false_type
+        {
+        };
+
+        template<typename pair_type0_t, typename pair_type1_t, typename tuple_type0_t, typename tuple_type1_t>
+        struct is_pair_move_constructible_to_tuple<hud::pair<pair_type0_t, pair_type1_t>, hud::tuple<tuple_type0_t, tuple_type1_t>>
+            : hud::conjunction<
+                  hud::is_move_constructible<tuple_type0_t, pair_type0_t>,
+                  hud::is_move_constructible<tuple_type1_t, pair_type1_t>>
+        {
+        };
+
+        template<typename pair_t, typename tuple_t>
+        inline constexpr bool is_pair_move_constructible_to_tuple_v = is_pair_move_constructible_to_tuple<pair_t, tuple_t>::value;
 
         /**
          * Check if a tuple<T0,T1> is explicitly move constructible from pair<first_type,second_type>.
@@ -579,10 +623,7 @@ namespace hud
          * @param pair The pair to copy construct
          */
         template<typename first_type, typename second_type>
-        requires(hud::conjunction_v<
-                 hud::bool_constant<sizeof...(types_t) == 2>,
-                 hud::is_copy_constructible<hud::tuple_element_t<0, tuple>, first_type>,
-                 hud::is_copy_constructible<hud::tuple_element_t<1, tuple>, second_type>>)
+        requires(details::is_pair_copy_constructible_to_tuple_v<hud::pair<first_type, second_type>, tuple>)
         explicit(details::is_pair_explicitly_copy_constructible_to_tuple_v<hud::pair<first_type, second_type>, tuple>) constexpr tuple(const hud::pair<first_type, second_type> &pair) noexcept
             : tuple(pair.first, pair.second)
         {
@@ -597,10 +638,7 @@ namespace hud
          * @param pair The pair to copy construct
          */
         template<typename first_type, typename second_type>
-        requires(hud::conjunction_v<
-                 hud::bool_constant<sizeof...(types_t) == 2>,
-                 hud::is_move_constructible<hud::tuple_element_t<0, tuple>, first_type>,
-                 hud::is_move_constructible<hud::tuple_element_t<1, tuple>, second_type>>)
+        requires(details::is_pair_move_constructible_to_tuple_v<hud::pair<first_type, second_type>, tuple>)
         explicit(details::is_pair_explicitly_move_constructible_to_tuple_v<hud::pair<first_type, second_type>, tuple>) constexpr tuple(hud::pair<first_type, second_type> &&pair) noexcept
             : tuple(hud::move(pair.first), hud::move(pair.second))
         {

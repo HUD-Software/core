@@ -30,7 +30,7 @@
         #if defined(HD_DEBUG)
             #define HD_FORCEINLINE
         #else
-            #define HD_FORCEINLINE __attribute__((always_inline)) // Overrides the cost/benefit analysis and relies on the judgment of the programmer instead
+            #define HD_FORCEINLINE __attribute__((always_inline)) inline // Overrides the cost/benefit analysis and relies on the judgment of the programmer instead
         #endif
 
         #define HD_RESTRICT __restrict__ // Indicates that a symbol is not aliased in the current scope.
