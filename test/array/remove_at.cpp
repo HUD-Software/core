@@ -10,9 +10,9 @@ GTEST_TEST(array, remove_at_non_trivial_type)
     // remove_at(const index index)
     {
         // Initilize the array
+        i32 destructor_called[5];
         array_type array;
         array.reserve(5);
-        i32 destructor_called[5];
         hud::memory::set_zero(destructor_called);
         array.emplace_back(0, &destructor_called[0]);
         array.emplace_back(1, &destructor_called[1]);
@@ -129,9 +129,10 @@ GTEST_TEST(array, remove_at_non_trivial_type)
     // remove_at(const index index, const usize count_to_remove)
     {
         // Initilize the array
+        i32 destructor_called[8];
         array_type array;
         array.reserve(8);
-        i32 destructor_called[8];
+
         hud::memory::set_zero(destructor_called);
         array.emplace_back(0, &destructor_called[0]);
         array.emplace_back(1, &destructor_called[1]);
@@ -424,9 +425,9 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
     // remove_at(const index index)
     {
         // Initilize the array
+        i32 destructor_called[5];
         array_type array;
         array.reserve(5);
-        i32 destructor_called[5];
         hud::memory::set_zero(destructor_called);
         array.emplace_back(0, &destructor_called[0]);
         array.emplace_back(1, &destructor_called[1]);
@@ -544,9 +545,9 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
     // remove_at(const index index, const usize count_to_remove)
     {
         // Initilize the array
+        i32 destructor_called[8];
         array_type array;
         array.reserve(8);
-        i32 destructor_called[8];
         hud::memory::set_zero(destructor_called);
         array.emplace_back(0, &destructor_called[0]);
         array.emplace_back(1, &destructor_called[1]);

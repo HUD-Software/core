@@ -25,7 +25,7 @@ namespace hud::os::linux
             return false;
         }
 
-        buffer[read_count] = '\0';
+        buffer[read_count - 1] = '\0';
         constexpr ansichar TRACERPID[] = "TracerPid:\t";
         ansichar *found = strstr(buffer, TRACERPID);
         if (found == nullptr)

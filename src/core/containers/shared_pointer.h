@@ -411,7 +411,6 @@ namespace hud
             constexpr shared_reference_controller(const shared_reference_controller &other) noexcept
                 : controller(other.controller)
             {
-
                 // Increment the counter if the copied reference controller have a associated object
                 if (controller != nullptr)
                 {
@@ -430,7 +429,6 @@ namespace hud
             constexpr shared_reference_controller(const weak_reference_controller<thread_safety> &other) noexcept
                 : controller(other.controller)
             {
-
                 if (controller != nullptr)
                 {
                     reference_controller_base_type::acquire_sharedref(controller);
@@ -581,6 +579,11 @@ namespace hud
             /** Assign a weak controller by stealing the controller. */
             constexpr weak_reference_controller &operator=(weak_reference_controller &&other) noexcept
             {
+                // We take release our controller
+                if (controller != nullptr)
+                {
+                    reference_controller_base_type::release_weakref(controller);
+                }
                 // Keep the controller of the copied controller
                 controller = other.controller;
                 // Remove the controller from the moved one

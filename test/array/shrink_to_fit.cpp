@@ -3,7 +3,6 @@
 
 GTEST_TEST(array, shrink_to_fit_decrease_allocation)
 {
-
     hud::array<hud_test::non_bitwise_type, hud_test::array_allocator<alignof(hud_test::non_bitwise_type)>> array;
     hud_assert_eq(array.data(), nullptr);
     hud_assert_eq(array.count(), 0u);
@@ -30,7 +29,7 @@ GTEST_TEST(array, shrink_to_fit_decrease_allocation)
 
 GTEST_TEST(array, shrink_to_fit_free_the_array_if_count_is_zero)
 {
-
+    i32 destructor_called[10];
     hud::array<hud_test::non_bitwise_type, hud_test::array_allocator<alignof(hud_test::non_bitwise_type)>> array;
     hud_assert_eq(array.data(), nullptr);
     hud_assert_eq(array.count(), 0u);
@@ -40,7 +39,6 @@ GTEST_TEST(array, shrink_to_fit_free_the_array_if_count_is_zero)
 
     // Emplace 5 elements and reserve for 10
     array.reserve(10);
-    i32 destructor_called[10];
     hud::memory::set_zero(destructor_called, 10 * sizeof(bool));
 
     for (usize index = 0; index < 5; index++)

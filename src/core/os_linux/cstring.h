@@ -23,7 +23,7 @@ namespace hud::os::linux
         static HD_FORCEINLINE bool copy_safe(ansichar *destination, const usize destination_size, const ansichar *source) noexcept
         {
             check_params(destination, destination_size, source, length(source) + 1);
-            strncpy(destination, source, length(source));
+            strncpy(destination, source, length(source) + 1);
             return true;
         }
 

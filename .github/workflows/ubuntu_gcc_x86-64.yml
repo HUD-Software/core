@@ -1,0 +1,42 @@
+name: Ubuntu gcc x86-64 build & test
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-tests:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set SSH Key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Generate Unix Makefiles
+        run: cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/gcc-12 -DCMAKE_CXX_COMPILER:FILEPATH=/usr/bin/g++-12 -Btarget -G "Unix Makefiles"
+      - name: Build
+        run: cmake --build target --config Release
+      - name: Test
+        run: |
+          cd target
+          ctest -j32 -C Release -T test --output-on-failure
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Ubuntu Core Test Report
+          path: target/test/test_core_report.xml
+          reporter: java-junit
+      - name: Release
+        run: |
+          mkdir -p release
+          cp -R target/test/test_core release -i
+          cp -R target/src/*.a release -i
+          cp -R src/core release/core -i
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: Ubuntu_gcc_x86_64
+          path: release/**

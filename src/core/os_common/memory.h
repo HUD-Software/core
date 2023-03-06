@@ -313,14 +313,14 @@ namespace hud::os::common
         {
             if (pointer && size)
             {
-                // Realloc alignment mean realloc and copy the data
-                void *aligned_pointer = allocate_align(size, alignment);
                 usize old_size = *((usize *)((const uptr)pointer - sizeof(void *) - sizeof(uptr))); // Read the size of the allocation
                 if (size == old_size)
                 {
                     return pointer;
                 }
                 usize size_to_copy = size < old_size ? size : old_size;
+                // Realloc alignment mean realloc and copy the data
+                void *aligned_pointer = allocate_align(size, alignment);
                 // Copy the current data to the new buffer
                 copy(aligned_pointer, pointer, size_to_copy);
                 free_align(pointer);

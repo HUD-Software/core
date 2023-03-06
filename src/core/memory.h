@@ -262,7 +262,7 @@ namespace hud
         requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         static constexpr void copy_assign_array(type_t *destination, const u_type_t *source, usize count) noexcept
         {
-            if constexpr (hud::is_bitwise_copy_assignable_v<type_t, u_type_t> && !hud::is_constant_evaluated())
+            if (hud::is_bitwise_copy_assignable_v<type_t, u_type_t> && !hud::is_constant_evaluated())
             {
                 hud::memory::copy(destination, source, count * sizeof(type_t));
             }
@@ -313,7 +313,7 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
-        static constexpr void move_or_copy_assign_array(type_t *destination, u_type_t *HD_RESTRICT source, u_type_t const *const HD_RESTRICT end_source) noexcept
+        static constexpr void move_or_copy_assign_array(type_t *destination, u_type_t *source, u_type_t const *const HD_RESTRICT end_source) noexcept
         {
             if constexpr (hud::is_move_assignable_v<type_t, u_type_t>)
             {
@@ -324,7 +324,7 @@ namespace hud
                 static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign_array is not designed to allow throwable copy assignable type");
             }
 
-            if constexpr (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && hud::is_same_size_v<type_t, u_type_t> && !hud::is_constant_evaluated())
+            if (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && hud::is_same_size_v<type_t, u_type_t> && !hud::is_constant_evaluated())
             {
                 hud::memory::move(destination, source, (end_source - source) * sizeof(type_t));
             }

@@ -278,6 +278,11 @@ if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
 endif()
 
+# target_compile_options(test_core PRIVATE -fsanitize=address)
+# target_link_options(test_core PRIVATE -fsanitize=address)
+# target_compile_options(core PRIVATE -fsanitize=address)
+# target_link_options(core PRIVATE -fsanitize=address)
+
 if(COVERAGE AND MSVC)
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 		set(MSVC_CODECOVERAGE_CONSOLE_PATH "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console\\Microsoft.CodeCoverage.Console.exe" CACHE STRING "Path to Microsoft.CodeCoverage.Console.exe")
@@ -400,7 +405,7 @@ target_compile_definitions(
 	GTEST_DONT_DEFINE_ASSERT_TRUE=1
 	GTEST_DONT_DEFINE_ASSERT_FALSE=1
 	GTEST_DONT_DEFINE_ASSERT_EQ=1
-	GTEST_DONT_DEFIgnore NE_ASSERT_NE=1
+	GTEST_DONT_DEFINE_ASSERT_NE=1
 	GTEST_DONT_DEFINE_ASSERT_LE=1
 	GTEST_DONT_DEFINE_ASSERT_LT=1
 	GTEST_DONT_DEFINE_ASSERT_GE=1
