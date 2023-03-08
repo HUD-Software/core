@@ -20,7 +20,11 @@ namespace hud::os::linux
          */
         static void thread_fence(const memory_order_e order) noexcept
         {
+#if HD_HAS_BUILTIN_ATOMIC_THREAD_FENCE
             __atomic_thread_fence(to_gcc_order(order));
+#else
+    #error hud::os::linux::thread_fence(memory_order_e) not defined
+#endif
         }
 
         /**

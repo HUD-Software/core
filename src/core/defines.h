@@ -26,6 +26,7 @@
             #define HD_HAS_BUILTIN_BULITIN_ROTATELEFT64 0  // MSVC don't have __builtin_rotateleft64 builtin
             #define HD_HAS_BUILTIN_BULITIN_ROTATERIGHT32 0 // MSVC don't have __builtin_rotateright32 builtin
             #define HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64 0 // MSVC don't have __builtin_rotateright64 builtin
+            #define HD_HAS_BUILTIN_ATOMIC_THREAD_FENCE 0 // MSVC don't have __atomic_thread_fence builtin
         #elif defined(HD_COMPILER_CLANG_CL)
             #define HD_HAS_BUILTIN_BUILTIN_BSWAP32 __has_builtin(__builtin_bswap32)             // Clang and GCC maybe defined __builtin_bswap32 builtin
             #define HD_HAS_BUILTIN_BULITIN_BSWAP64 __has_builtin(__builtin_bswap64)             // Clang and GCC maybe defined __builtin_bswap64 builtin
@@ -33,6 +34,7 @@
             #define HD_HAS_BUILTIN_BULITIN_ROTATELEFT64 __has_builtin(__builtin_rotateleft64)   // Clang and GCC maybe defined __builtin_rotateleft64 builtin
             #define HD_HAS_BUILTIN_BULITIN_ROTATERIGHT32 __has_builtin(__builtin_rotateright32) // Clang and GCC maybe defined __builtin_rotateright32 builtin
             #define HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64 __has_builtin(__builtin_rotateright64) // Clang and GCC maybe defined __builtin_rotateright64 builtin
+            #define HD_HAS_BUILTIN_ATOMIC_THREAD_FENCE __has_builtin(__atomic_thread_fence)   // Clang and GCC maybe defined __atomic_thread_fence builtin
         #endif
     #else
         #error Unsupported compiler for Windows
@@ -71,6 +73,8 @@
         #define HD_HAS_BUILTIN_BULITIN_ROTATELEFT64 __has_builtin(__builtin_rotateleft64)           // Clang and GCC maybe defined __builtin_rotateleft64 builtin
         #define HD_HAS_BUILTIN_BULITIN_ROTATERIGHT32 __has_builtin(__builtin_rotateright32)         // Clang and GCC maybe defined __builtin_rotateright32 builtin
         #define HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64 __has_builtin(__builtin_rotateright64)         // Clang and GCC maybe defined __builtin_rotateright64 builtin
+        #define HD_HAS_BUILTIN_ATOMIC_THREAD_FENCE __has_builtin(__atomic_thread_fence)             // Clang and GCC maybe defined __atomic_thread_fence builtin
+
     #else
         #error Unsupported compiler for Linux
     #endif // defined(HD_COMPILER_CLANG)
@@ -104,5 +108,8 @@
 #endif
 #ifndef HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64
     #error has __builtin_rotateright64 builtin is not defined
+#endif
+#ifndef HD_HAS_BUILTIN_ATOMIC_THREAD_FENCE
+    #error has __atomic_thread_fence builtin is not defined
 #endif
 #endif // HD_INC_CORE_DEFINES_H
