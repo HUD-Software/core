@@ -2,18 +2,17 @@
 #define HD_INC_CORE_TRAITS_IS_CONVERTIBLE_H
 #include "integral_constant.h"
 
-#include "is_void.h"
-#include "../templates/declval.h"
-#if !__has_builtin(__is_convertible_to)
+#if !HD_HAS_BUILTIN_IS_CONVERTIBLE_TO
     #include "disjunction.h"
     #include "is_void.h"
     #include "is_function.h"
     #include "is_array.h"
+    #include "../templates/declval.h"
 #endif
 
 namespace hud
 {
-#if __has_builtin(__is_convertible_to)
+#if HD_HAS_BUILTIN_IS_CONVERTIBLE_TO
     /** Checks whether from_t is implicitly convertible to to_t. */
     template<typename from_t, typename to_t>
     struct is_convertible

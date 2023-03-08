@@ -19,7 +19,11 @@ namespace hud::os::linux
          */
         static constexpr u32 reverse(const u32 value) noexcept
         {
+#if HD_HAS_BUILTIN_BUILTIN_BSWAP32
             return __builtin_bswap32(value);
+#else
+    #error hud::os::linux::reverse(u32) not defined
+#endif
         }
 
         /**
@@ -30,7 +34,11 @@ namespace hud::os::linux
          */
         static constexpr u64 reverse(const u64 value) noexcept
         {
+#if HD_HAS_BUILTIN_BULITIN_BSWAP64
             return __builtin_bswap64(value);
+#else
+    #error hud::os::linux::reverse(u64) not defined
+#endif
         }
 
         /**
@@ -41,7 +49,7 @@ namespace hud::os::linux
          */
         static constexpr u32 rotate_left(const u32 value, const u32 shift) noexcept
         {
-#if __has_builtin(__builtin_rotateleft32)
+#if HD_HAS_BUILTIN_BULITIN_ROTATELEFT32
             return __builtin_rotateleft32(value, shift);
 #else
             const int __r = shift % 32;
@@ -62,7 +70,7 @@ namespace hud::os::linux
          */
         static constexpr u64 rotate_left(const u64 value, const u32 shift) noexcept
         {
-#if __has_builtin(__builtin_rotateleft64)
+#if HD_HAS_BUILTIN_BULITIN_ROTATELEFT64
             return __builtin_rotateleft64(value, shift);
 #else
             const int __r = shift % 64;
@@ -83,7 +91,7 @@ namespace hud::os::linux
          */
         static constexpr u32 rotate_right(const u32 value, const u32 shift) noexcept
         {
-#if __has_builtin(__builtin_rotateright32)
+#if HD_HAS_BUILTIN_BULITIN_ROTATERIGHT32
             return __builtin_rotateright32(value, shift);
 #else
             const int __r = shift % 32;
@@ -104,7 +112,7 @@ namespace hud::os::linux
         */
         static constexpr u64 rotate_right(const u64 value, const u32 shift) noexcept
         {
-#if __has_builtin(__builtin_rotateright64)
+#if HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64
             return __builtin_rotateright64(value, shift);
 #else
             const int __r = shift % 64;

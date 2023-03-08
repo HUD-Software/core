@@ -152,14 +152,4 @@ static_assert(sizeof(void *) == 4, "HD_TARGET_32_BITS is defined but size of poi
 static_assert(sizeof(void *) == 8, "HD_TARGET_64_BITS is defined but size of pointers are not 8 bytes");
 #endif
 
-#if defined(HD_COMPILER_CLANG)
-    #if __has_feature(address_sanitizer)
-        #define ADDRESS_SANITIZER
-    #endif
-#elif defined(HD_COMPILER_GCC) && defined(__SANITIZE_ADDRESS__)
-    #if defined(__SANITIZE_ADDRESS__)
-        #define ADDRESS_SANITIZER
-    #endif
-#endif
-
 #endif // HD_INC_CORE_COMPILER_DEFINES_H
