@@ -23,7 +23,7 @@ namespace hud::os::linux
 #if HD_HAS_BUILTIN_ATOMIC_THREAD_FENCE
             __atomic_thread_fence(to_gcc_order(order));
 #else
-    #error hud::os::linux::thread_fence(memory_order_e) not defined
+    #error hud::os::linux::atomics::thread_fence(memory_order_e) not defined
 #endif
         }
 
@@ -40,7 +40,11 @@ namespace hud::os::linux
             // atomic load do not support release and acq_rel memory fence
             check(order != memory_order_e::release);
             check(order != memory_order_e::acq_rel);
+#if HD_HAS_BUILTIN_ATOMIC_LOAD_N
             return __atomic_load_n(&source, to_gcc_order(order));
+#else
+    #error hud::os::linux::atomics::load(type_t, memory_order_e) not defined
+#endif
         }
 
         /**
@@ -57,7 +61,11 @@ namespace hud::os::linux
             check(order != memory_order_e::consume);
             check(order != memory_order_e::acquire);
             check(order != memory_order_e::acq_rel);
+#if HD_HAS_BUILTIN_ATOMIC_STORE_N
             __atomic_store_n(&destination, value, to_gcc_order(order));
+#else
+    #error hud::os::linux::atomics::store(type_t, type_t, memory_order_e) not defined
+#endif
         }
 
         /**
@@ -74,7 +82,11 @@ namespace hud::os::linux
         [[nodiscard]] static type_t compare_and_swap(type_t &destination, const type_t &expected, const type_t &value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
             check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
+#if HD_HAS_BUILTIN_SYNC_VAL_COMPARE_AND_SWAP
             return __sync_val_compare_and_swap(&destination, expected, value);
+#else
+    #error hud::os::linux::atomics::compare_and_swap(type_t, type_t, type_t, memory_order_e) not defined
+#endif
         }
 
         /**
@@ -92,7 +104,11 @@ namespace hud::os::linux
         [[nodiscard]] static bool compare_and_set(type_t &destination, type_t &expected, const type_t &value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
             check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
+#if HD_HAS_BUILTIN_ATOMIC_COMPARE_EXCHANGE_N
             return __atomic_compare_exchange_n(&destination, &expected, value, false, to_gcc_order(order), to_gcc_failure_order(order));
+#else
+    #error hud::os::linux::atomics::compare_and_set(type_t, type_t, type_t, memory_order_e) not defined
+#endif
         }
 
         /**
@@ -107,7 +123,11 @@ namespace hud::os::linux
         [[nodiscard]] static type_t exchange(type_t &destination, const type_t &value, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
             check(hud::memory::is_pointer_aligned(&destination, sizeof(type_t)));
+#if HD_HAS_BUILTIN_ATOMIC_EXCHANGE_N
             return __atomic_exchange_n(&destination, value, to_gcc_order(order));
+#else
+    #error hud::os::linux::atomics::exchange(type_t, type_t, memory_order_e) not defined
+#endif
         }
 
         /**
@@ -123,7 +143,11 @@ namespace hud::os::linux
         [[nodiscard]] static type_t fetch_add(type_t &addend, const type_t &to_add, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
             check(hud::memory::is_pointer_aligned(&addend, sizeof(type_t)));
+#if HD_HAS_BUILTIN_ATOMIC_FETCH_ADD
             return __atomic_fetch_add(&addend, to_add, to_gcc_order(order));
+#else
+    #error hud::os::linux::atomics::fetch_add(type_t, type_t, memory_order_e) not defined
+#endif
         }
 
         /**
@@ -139,8 +163,12 @@ namespace hud::os::linux
         [[nodiscard]] static type_t fetch_add(type_t &addend, const isize to_add, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
             check(hud::memory::is_pointer_aligned(&addend, sizeof(type_t)));
+#if HD_HAS_BUILTIN_ATOMIC_FETCH_ADD
             const usize ptrdiff_to_add = static_cast<usize>(to_add) * sizeof(hud::remove_pointer_t<type_t>);
             return __atomic_fetch_add(&addend, static_cast<isize>(ptrdiff_to_add), to_gcc_order(order));
+#else
+    #error hud::os::linux::atomics::fetch_add(type_t, isize, memory_order_e) not defined
+#endif
         }
 
         /**
@@ -156,7 +184,11 @@ namespace hud::os::linux
         [[nodiscard]] static type_t fetch_sub(type_t &subtracted, const type_t &to_subtract, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
             check(hud::memory::is_pointer_aligned(&subtracted, sizeof(type_t)));
+#if HD_HAS_BUILTIN_ATOMIC_FETCH_SUB
             return __atomic_fetch_sub(&subtracted, to_subtract, to_gcc_order(order));
+#else
+    #error hud::os::linux::atomics::fetch_sub(type_t, type_t, memory_order_e) not defined
+#endif
         }
 
         /**
@@ -172,8 +204,12 @@ namespace hud::os::linux
         [[nodiscard]] static type_t fetch_sub(type_t &subtracted, const isize to_subtract, [[maybe_unused]] const memory_order_e order = memory_order_e::seq_cst) noexcept
         {
             check(hud::memory::is_pointer_aligned(&subtracted, sizeof(type_t)));
+#if HD_HAS_BUILTIN_ATOMIC_FETCH_SUB
             const usize ptrdiff_to_subtract = static_cast<usize>(to_subtract) * sizeof(hud::remove_pointer_t<type_t>);
             return __atomic_fetch_sub(&subtracted, static_cast<isize>(ptrdiff_to_subtract), to_gcc_order(order));
+#else
+    #error hud::os::linux::atomics::fetch_sub(type_t, isize, memory_order_e) not defined
+#endif
         }
 
     private:

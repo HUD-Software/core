@@ -20,13 +20,11 @@ namespace hud::os::linux
             // LCOV_EXCL_START ( We don't covert the code that break the debugger )
             if (is_present())
             {
-#if defined(HD_COMPILER_CLANG)
-                __builtin_debugtrap();
-#else
-    #if defined(HD_TARGET_X86_FAMILY)
+#if defined(HD_TARGET_X86_FAMILY)
+    #if HD_HAS_BUILTIN_ASM
                 __asm__("int $3");
-    #elif defined(HD_TARGET_ARM_FAMILY)
-                __builtin_trap();
+    #else
+        #error hud::os::linux::debugger::break_here() is not defined
     #endif
 #endif
             }
