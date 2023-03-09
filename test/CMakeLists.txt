@@ -278,12 +278,15 @@ if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
 endif()
 
-if(SANITZER)
+
+if(SANITIZER)
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-		target_compile_options(test_core PRIVATE /fsanitize=address)
-		target_link_options(test_core PRIVATE /fsanitize=address)
-		target_compile_options(core PRIVATE /fsanitize=address)
-		target_link_options(core PRIVATE /fsanitize=address)
+		# Add clang lib path to libraries paths
+		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
+		target_link_directories(test_core PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\15.0.1\\lib\\windows\\")
+		
+		target_compile_options(test_core PRIVATE /fsanitize=address /INCREMENTAL:NO)
+		target_compile_options(core PRIVATE /fsanitize=address /INCREMENTAL:NO)
 	endif()
 	if( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 		# https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
