@@ -112,6 +112,8 @@ __aarch64__
     #define HD_TARGET_X86_FAMILY
 #elif defined(HD_TARGET_ARM64) || defined(HD_TARGET_ARM32)
     #define HD_TARGET_ARM_FAMILY
+#else
+    #error Unknown target family
 #endif
 
 /** Detect endianness */

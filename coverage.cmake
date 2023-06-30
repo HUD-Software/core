@@ -28,8 +28,8 @@ if(MSVC)
 		add_custom_command(
 			TARGET ${project_name} POST_BUILD
 			COMMENT "Instrument and Collect ${project_name}.exe"
-			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument Debug\\${project_name}.exe -s ..\\..\\test\\coverage.runsettings
-			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Debug\\${project_name}.exe -o Debug\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument Release\\${project_name}.exe -s ..\\..\\test\\coverage.runsettings
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Release\\${project_name}.exe -o Release\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
 		)
 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
@@ -43,11 +43,13 @@ if(MSVC)
 		add_custom_command( 
 		 	TARGET ${project_name} POST_BUILD
 		 	COMMENT "Run ${project_name}.exe"
-			COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./Debug/grcov-x86_64-pc-windows-msvc.zip
-			COMMAND Powershell.exe Expand-Archive -Path ./Debug/grcov-x86_64-pc-windows-msvc.zip -DestinationPath ./Debug/
-		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./Debug/${project_name}.exe
+			COMMAND cd
+			COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./grcov-x86_64-pc-windows-msvc.zip
+			COMMAND Powershell.exe Expand-Archive -Path ./grcov-x86_64-pc-windows-msvc.zip -DestinationPath . -F
+			COMMAND echo ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./Release/${project_name}.exe
+		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./Release/${project_name}.exe
 			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse ${lib_name}.profraw -o ${lib_name}.profdata
-			COMMAND ./Debug/grcov.exe --llvm -t html -b ./Debug/ -s ./../../
+			COMMAND ./grcov.exe --llvm -t html -b ./Release/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
 					--keep-only "src/*" 
@@ -61,7 +63,7 @@ if(MSVC)
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o windows
 					..
-			COMMAND ./Debug/grcov.exe --llvm -t lcov -b ./Debug/ -s ./../../
+			COMMAND ./grcov.exe --llvm -t lcov -b ./Release/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
 					--keep-only "src/*"
