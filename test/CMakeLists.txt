@@ -435,8 +435,6 @@ enable_coverage(test_core core)
 # 				..
 # 	)
 # endif()
-
-
 target_precompile_headers(test_core PRIVATE precompiled.h)
 
 # Add defines
