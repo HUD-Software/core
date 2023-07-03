@@ -1081,11 +1081,12 @@ namespace hud
         friend shared_pointer<u_type_t, thread_safety_1> make_shared(args_t &&...args) noexcept;
         template<typename u_type_t, thread_safety_e thread_safety_1>
         requires(hud::is_unbounded_array_v<u_type_t>)
-        friend shared_pointer<u_type_t, thread_safety_1> make_shared(usize count) noexcept;
+        friend shared_pointer<u_type_t, thread_safety_1> make_shared(const usize count) noexcept;
         template<typename u_type_t, thread_safety_e thread_safety_1>
         requires(hud::is_bounded_array_v<u_type_t>)
         friend shared_pointer<u_type_t, thread_safety_1> make_shared(std::initializer_list<hud::remove_extent_t<u_type_t>> init_list) noexcept;
 
+        // public:
         /**
          * Construct a shared_pointer form a reference_controller_no_deleter.
          * Only used by hud::make_shared(...).

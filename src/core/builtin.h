@@ -11,7 +11,7 @@
     #define HD_HAS_BUILTIN_BULITIN_ROTATERIGHT32 __has_builtin(__builtin_rotateright32)         // Clang and GCC maybe defined __builtin_rotateright32 builtin
     #define HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64 __has_builtin(__builtin_rotateright64)         // Clang and GCC maybe defined __builtin_rotateright64 builtin
     #define HD_HAS_BUILTIN_ATOMIC_THREAD_FENCE __has_builtin(__atomic_thread_fence)             // Clang and GCC maybe defined __atomic_thread_fence builtin
-    #define HD_HAS_BUILTIN_ATOMIC_LOAD_N __has_builtin(_atomic_load_n)                          // Clang and GCC maybe defined _atomic_load_n builtin
+    #define HD_HAS_BUILTIN_ATOMIC_LOAD_N __has_builtin(__atomic_load_n)                         // Clang and GCC maybe defined _atomic_load_n builtin
     #define HD_HAS_BUILTIN_ATOMIC_STORE_N __has_builtin(__atomic_store_n)                       // Clang and GCC maybe defined __atomic_store_n builtin
     #define HD_HAS_BUILTIN_SYNC_VAL_COMPARE_AND_SWAP __has_builtin(__sync_val_compare_and_swap) // Clang and GCC maybe defined __sync_val_compare_and_swap builtin
     #define HD_HAS_BUILTIN_ATOMIC_COMPARE_EXCHANGE_N __has_builtin(__atomic_compare_exchange_n) // Clang and GCC maybe defined __atomic_compare_exchange_n builtin
@@ -19,7 +19,6 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_ADD __has_builtin(__atomic_fetch_add)                   // Clang and GCC maybe defined __atomic_fetch_add builtin
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB __has_builtin(__atomic_fetch_sub)                   // Clang and GCC maybe defined __atomic_fetch_sub builtin
     #define HD_HAS_BUILTIN_DEBUGTRAP __has_builtin(__builtin_debugtrap)                         // Clang and GCC maybe defined __builtin_debugtrap builtin
-    #define HD_HAS_BUILTIN_ASM __has_builtin(__asm__)                                           // Clang and GCC maybe defined __asm__ builtin
 
 #elif defined(HD_COMPILER_CLANG_CL)
     #define HD_HAS_BUILTIN_IS_CONVERTIBLE_TO __has_builtin(__is_convertible_to)                 // Clang-cl maybe defined __is_convertible_to builtin
@@ -39,7 +38,6 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_ADD __has_builtin(__atomic_fetch_add)                   // Clang-cl maybe defined __atomic_fetch_add builtin
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB __has_builtin(__atomic_fetch_sub)                   // Clang-cl maybe defined __atomic_fetch_sub builtin
     #define HD_HAS_BUILTIN_DEBUGTRAP __has_builtin(__builtin_debugtrap)                         // Clang-cl maybe defined __builtin_debugtrap builtin
-    #define HD_HAS_BUILTIN_ASM __has_builtin(__asm__)                                           // Clang-cl maybe defined __asm__ builtin
 
 #elif defined(HD_COMPILER_MSVC)
     #define HD_HAS_BUILTIN_IS_CONVERTIBLE_TO 1         // MSVC defined __is_convertible_to builtin
@@ -59,7 +57,6 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_ADD 0          // MSVC don't have __atomic_fetch_add builtin
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB 0          // MSVC don't have __atomic_fetch_sub builtin
     #define HD_HAS_BUILTIN_DEBUGTRAP 0                 // MSVC don't have __builtin_debugtrap builtin
-    #define HD_HAS_BUILTIN_ASM 0                       // MSVC don't have __asm__ builtin
 
 #endif
 

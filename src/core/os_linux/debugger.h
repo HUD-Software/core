@@ -21,11 +21,8 @@ namespace hud::os::linux
             if (is_present())
             {
 #if defined(HD_TARGET_X86_FAMILY)
-    #if HD_HAS_BUILTIN_ASM
-                __asm__("int $3");
-    #else
-        #error hud::os::linux::debugger::break_here() is not defined
-    #endif
+
+                asm("int $3");
 #endif
             }
             // LCOV_EXCL_STOP
