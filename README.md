@@ -23,6 +23,7 @@
 ***Ubuntu build and test***
 
 [![clang_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang_x86-64.yml?label=Clang%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang_x86-64.yml)
+[![gcc_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_gcc_x86-64.yml?label=GCC%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_gcc_x86-64.yml)
 
 ***Quality***
 
