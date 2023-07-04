@@ -329,7 +329,7 @@ if(SANITIZER)
 endif()
 
 
-enable_coverage(test_core core)
+#enable_coverage(test_core core)
 
 # if(COVERAGE AND MSVC)
 # 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
