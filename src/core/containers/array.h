@@ -604,16 +604,16 @@ namespace hud
                 const usize count_to_relocate_after = remains - index;
                 if (count_to_relocate_after > 0)
                 {
-                    type_t *first_items_to_assign = first_item_to_remove + count_to_remove;
-                    const usize count_to_move_or_copy_construct = count_to_remove;
-                    type_t *first_items_to_move = first_items_to_assign + count_to_move_or_copy_construct;
-                    type_t *end_items_to_move = first_items_to_assign + (count_to_relocate_after - count_to_move_or_copy_construct) + 1;
+                    // We need to copy construct elements stored in removed elements memory
+                    // We need to move assign elements stored after the elements that are copy constructed
+                    type_t *first_items_to_relocate = first_item_to_remove + count_to_remove;
+                    type_t *first_items_to_move = first_items_to_relocate + count_to_remove;
 
                     // Copy or move construct elements to free space
-                    hud::memory::move_or_copy_construct_array(first_item_to_remove, first_items_to_assign, count_to_move_or_copy_construct);
+                    hud::memory::move_or_copy_construct_array(first_item_to_remove, first_items_to_relocate, count_to_remove);
                     // Relocate all elements left to keep element continuity
-                    hud::memory::move_or_copy_assign_array(first_items_to_assign, first_items_to_move, end_items_to_move);
-                    hud::memory::destroy_array(end_items_to_move, index);
+                    hud::memory::move_or_copy_assign_array(first_items_to_relocate, first_items_to_move, end_ptr);
+                    hud::memory::destroy_array(end_ptr, index);
                 }
                 end_ptr = allocation.data_at(remains);
             }
