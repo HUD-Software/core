@@ -346,8 +346,12 @@ namespace hud::os::common
          */
         static void *copy(void *destination, const void *source, const usize size) noexcept
         {
-            // Check that buffers are not overlapping
-            if (size > 0)
+            // The behavior is undefined if either destination or source is an invalid or null pointer.
+            check(destination != nullptr);
+            check(source != nullptr);
+
+            // The behavior is undefined if the objects overlap
+            if (size > 0) [[likely]]
             {
                 check(destination != source);
                 const volatile uptr dest_addr = reinterpret_cast<uptr>(destination);
@@ -401,6 +405,8 @@ namespace hud::os::common
          */
         static HD_FORCEINLINE void set(void *destination, const usize size, const u8 value) noexcept
         {
+            // The behavior is undefined if destination is a null pointer.
+            check(destination != nullptr);
             memset(destination, value, size);
         }
 
@@ -505,6 +511,9 @@ namespace hud::os::common
          */
         static HD_FORCEINLINE void *move(void *destination, const void *source, const usize size) noexcept
         {
+            // The behavior is undefined if either destination or source is an invalid or null pointer.
+            check(destination != nullptr);
+            check(source != nullptr);
             return memmove(destination, source, size);
         }
 
@@ -553,6 +562,9 @@ namespace hud::os::common
          */
         [[nodiscard]] static HD_FORCEINLINE i32 compare(const void *buffer1, const void *buffer2, const usize size) noexcept
         {
+            // The behavior is undefined if either buffer1 or buffer2 is a null pointer.
+            check(buffer1 != nullptr);
+            check(buffer2 != nullptr);
             return memcmp(buffer1, buffer2, size);
         }
 

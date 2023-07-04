@@ -109,7 +109,10 @@ namespace hud
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
             // else it will fail at compile time if begin() is not a pointer
-            hud::memory::copy_construct_array(data(), list.begin(), count());
+            if (count() > 0u)
+            {
+                hud::memory::copy_construct_array(data(), list.begin(), count());
+            }
         }
 
         /**
@@ -410,8 +413,11 @@ namespace hud
                 allocation_type new_allocation = allocator_type::template allocate<type_t>(new_count);
                 // Construct the element in-place
                 hud::memory::construct_at(new_allocation.data_at(old_count), hud::forward<args_t>(args)...);
-                // Relocate the element that are before the newly added element
-                hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), old_count);
+                // Relocate the element that are before the newly added element if any
+                if (old_count != 0u)
+                {
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), old_count);
+                }
                 // Free the allocation and replace it with the newly created
                 free_allocation_and_replace_it(hud::move(new_allocation), new_count);
             }
@@ -663,7 +669,10 @@ namespace hud
             if (element_number > max_count())
             {
                 allocation_type new_allocation = allocator_type::template allocate<type_t>(element_number);
-                hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), count());
+                if (count() > 0u)
+                {
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), count());
+                }
                 free_allocation_and_replace_it(hud::move(new_allocation), count());
             }
         }
@@ -1057,7 +1066,7 @@ namespace hud
                 {
                     copy_assign_or_copy_construct_no_reallocation(source, source_count);
                 }
-                else
+                else if (source_count > 0u)
                 {
                     hud::memory::copy_assign_array(data(), source, source_count);
                 }

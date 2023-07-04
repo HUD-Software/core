@@ -161,11 +161,12 @@ namespace hud
         }
 
         /**
-        Call destructor of first count contiguously stored elements of type type_t ( Only for type with non trivial destructible type )
-        @tparam type_t Type to default destroy
-        @param address Address of the first element to destroy
-        @param count Number of element to destroy
-        */
+         * Call destructor of first count contiguously stored elements of type type_t ( Only for type with non trivial destructible type ).
+         * Do nothing if address is nullptr.
+         * @tparam type_t Type to default destroy
+         * @param address Address of the first element to destroy
+         * @param count Number of element to destroy
+         */
         template<typename type_t>
         requires(is_destructible_v<type_t>)
         static constexpr void destroy_array([[maybe_unused]] type_t *address, [[maybe_unused]] usize count) noexcept
@@ -357,9 +358,9 @@ namespace hud
         }
 
         /**
-         * Move or copy construct first count of contiguously stored elements of type u_type_t to to first count of contiguously stored elements of type type_t
+         * Move or copy construct first @p count of contiguously stored elements of type u_type_t to to first \p count of contiguously stored elements of type type_t
          * The move constructor is called if u_type_t is a move constructible type to type_t, else the copy constructor is called if u_type_t is a copy constructible type to type_t.
-         * If type_t is bitwise copy constructible the source is copied by simply copy the source memory to destination withhud::memory::copy.
+         * If type_t is bitwise copy constructible the source is copied by simply copy the source memory to destination with hud::memory::copy.
          * This implies that source and destination are not overlapping.
          * After the construction of all elements, destructor's are called for count elements in the contiguously stored source
          * @tparam type_t Type of the relocated element

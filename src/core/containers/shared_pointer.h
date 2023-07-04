@@ -1077,7 +1077,7 @@ namespace hud
         template<typename u_type_t, thread_safety_e>
         friend class weak_pointer;
         template<typename u_type_t, thread_safety_e thread_safety_1, typename... args_t>
-        requires(!is_array_v<u_type_t>)
+        // requires(!is_array_v<u_type_t>)
         friend shared_pointer<u_type_t, thread_safety_1> make_shared(args_t &&...args) noexcept;
         template<typename u_type_t, thread_safety_e thread_safety_1>
         requires(hud::is_unbounded_array_v<u_type_t>)
@@ -1392,7 +1392,7 @@ namespace hud
      * @return shared_pointer<type_t, thread_safety> pointing to a object of type type_t construct by passing args arguments to its constructor
      */
     template<typename type_t, thread_safety_e thread_safety = thread_safety_e::not_safe, typename... args_t>
-    requires(!is_array_v<type_t>)
+    // requires(!is_array_v<type_t>)
     [[nodiscard]] HD_FORCEINLINE shared_pointer<type_t, thread_safety> make_shared(args_t &&...args) noexcept
     {
         return shared_pointer<type_t, thread_safety>(new (std::nothrow) details::reference_controller_no_deleter<type_t, thread_safety>(hud::forward<args_t>(args)...));
