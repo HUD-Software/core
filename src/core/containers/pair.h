@@ -275,7 +275,7 @@ namespace hud
      * @tparam second_type Type of the second component
      * @param left The left pair of the comperand operator
      * @param right The right pair of the comperand operator
-     * @return true if both elements of left are equals both elements of right, false otherwise
+     * @return true if both elements of left are equal both elements of right, false otherwise
      */
     template<typename first_type, typename second_type>
     [[nodiscard]] constexpr bool operator==(const pair<first_type, second_type> &left, const pair<first_type, second_type> &right) noexcept

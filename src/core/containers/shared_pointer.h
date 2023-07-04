@@ -1125,7 +1125,7 @@ namespace hud
      * @tparam thread_safety_u The thread safety of second SharePointer
      * @param first The first to compare
      * @param second The second to compare
-     * @param true if both pointer are equals, false otherwise
+     * @param true if both pointer are equal, false otherwise
      */
     template<typename type_t, thread_safety_e thread_safety, typename u_type_t, thread_safety_e thread_safety_u>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const shared_pointer<type_t, thread_safety> &first, const shared_pointer<u_type_t, thread_safety_u> &second) noexcept

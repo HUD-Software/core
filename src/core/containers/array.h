@@ -109,9 +109,9 @@ namespace hud
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
             // else it will fail at compile time if begin() is not a pointer
-            if (count() > 0u)
+            if (list.size() > 0u)
             {
-                hud::memory::copy_construct_array(data(), list.begin(), count());
+                hud::memory::copy_construct_array(data(), list.begin(), list.size());
             }
         }
 
@@ -131,7 +131,10 @@ namespace hud
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
             // else it will fail at compile time if begin() is not a pointer
-            hud::memory::copy_construct_array(data(), list.begin(), count());
+            if (list.size() > 0u)
+            {
+                hud::memory::copy_construct_array(data(), list.begin(), list.size());
+            }
         }
 
         /**
@@ -145,7 +148,7 @@ namespace hud
             , allocation(allocator_type::template allocate<type_t>(other.max_count()))
             , end_ptr(data_at(other.count()))
         {
-            hud::memory::copy_construct_array(data(), other.data(), count());
+            hud::memory::copy_construct_array(data(), other.data(), other.count());
         }
 
         /**
@@ -465,10 +468,14 @@ namespace hud
                 allocation_type new_allocation = allocator_type::template allocate<type_t>(new_count);
                 // Construct the element in-place
                 hud::memory::construct_at(new_allocation.data_at(idx), hud::forward<args_t>(args)...);
-                // Relocate others before the emplaced element
-                hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), idx);
-                // Relocate others after the emplaced element
-                hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data_at(idx + 1), allocation.data_at(idx), old_count - idx);
+                // Relocate elements if any
+                if (old_count > 0u)
+                {
+                    // Relocate others before the emplaced element
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), idx);
+                    // Relocate others after the emplaced element
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data_at(idx + 1), allocation.data_at(idx), old_count - idx);
+                }
                 // Free the allocation and replace it with the newly created
                 free_allocation_and_replace_it(hud::move(new_allocation), new_count);
             }
@@ -594,13 +601,19 @@ namespace hud
                 hud::memory::destroy_array(first_item_to_remove, count_to_remove);
                 const usize remains = count() - count_to_remove;
 
-                const usize count_to_reallocate_after = remains - index;
-                if (count_to_reallocate_after > 0)
+                const usize count_to_relocate_after = remains - index;
+                if (count_to_relocate_after > 0)
                 {
-                    const auto items_to_assign = first_item_to_remove + count_to_remove;
-                    // relocate all elements left to keep element continuity
-                    hud::memory::move_or_copy_assign_array(first_item_to_remove, items_to_assign, items_to_assign + count_to_reallocate_after);
-                    hud::memory::destroy_array(first_item_to_remove + count_to_reallocate_after, index);
+                    type_t *first_items_to_assign = first_item_to_remove + count_to_remove;
+                    const usize count_to_move_or_copy_construct = count_to_remove;
+                    type_t *first_items_to_move = first_items_to_assign + count_to_move_or_copy_construct;
+                    type_t *end_items_to_move = first_items_to_assign + (count_to_relocate_after - count_to_move_or_copy_construct) + 1;
+
+                    // Copy or move construct elements to free space
+                    hud::memory::move_or_copy_construct_array(first_item_to_remove, first_items_to_assign, count_to_move_or_copy_construct);
+                    // Relocate all elements left to keep element continuity
+                    hud::memory::move_or_copy_assign_array(first_items_to_assign, first_items_to_move, end_items_to_move);
+                    hud::memory::destroy_array(end_items_to_move, index);
                 }
                 end_ptr = allocation.data_at(remains);
             }
@@ -1166,7 +1179,7 @@ namespace hud
         /**
          * Free the allocation and replace the allocation and count.
          * @param new_allocation The new allocation to move
-         * @param new_count_of_element The new count of element to set
+         * @param new_count_of_element The new count of elements to set
          */
         constexpr void free_allocation_and_replace_it(allocation_type &&new_allocation, const usize new_count_of_element) noexcept
         {
@@ -1228,8 +1241,8 @@ namespace hud
     }
 
     /**
-     * Checks whether right and left array are equals.
-     * array are equals if both contains same number of elements and all values are equals.
+     * Checks whether right and left array are equal.
+     * array are equal if both contains same number of elements and all values are equal.
      * Value types must be comparable with operator==() if types are not bitwise comparable with equal operator.
      * @tparam left_t Value type of the left array
      * @tparam left_allocator_t The allocator type of the left array
@@ -1237,18 +1250,31 @@ namespace hud
      * @tparam right_allocator_t The allocator type of the right array
      * @param left The left array to compare
      * @param right The right array to compare
-     * @param true if right and left Arrays are equals, false otherwise
+     * @param true if right and left Arrays are equal, false otherwise
      */
     template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
     {
-        const usize left_count = left.count();
-        return left_count == right.count() && hud::memory::equal_array(left.data(), right.data(), left_count);
+        // Arrays are not equal if the counts of elements differ
+        if (left.count() != right.count())
+        {
+            return false;
+        }
+
+        if (left.data() != nullptr)
+        {
+            if (right.data() != nullptr) // If left and right are not nullptr, compare them
+            {
+                return hud::memory::equal_array(left.data(), right.data(), left.count());
+            }
+            return false; // Arrays are not equal if right is not nullptr but left is nullptr
+        }
+        return right.data() != nullptr; // If left is nullptr, arrays are not equal if right is also nullptr
     }
 
     /**
      * Checks whether right and left array are not equals.
-     * array are equals if they do not contains the same number of elements or at least one element is not equal in both array.
+     * array are equal if they do not contains the same number of elements or at least one element is not equal in both array.
      * Value types must be comparable with operator!=() if types are not bitwise comparable with not equal operator.
      * @tparam left_t Value type of the left array
      * @tparam left_allocator_t The allocator type of the left array
@@ -1261,8 +1287,21 @@ namespace hud
     template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
     {
-        const usize left_count = left.count();
-        return left_count != right.count() || hud::memory::not_equal_array(left.data(), right.data(), left_count);
+        // Arrays are not equal if the counts of elements differ
+        if (left.count() != right.count())
+        {
+            return false;
+        }
+
+        if (left.data() != nullptr)
+        {
+            if (right.data() != nullptr) // If left and right are not nullptr, compare them
+            {
+                return hud::memory::not_equal_array(left.data(), right.data(), left.count());
+            }
+            return true; // Arrays are not equal if right is not nullptr but left is nullptr
+        }
+        return right.data() == nullptr; // If left is nullptr, arrays are not equal if right is also nullptr
     }
 
     /**

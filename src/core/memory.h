@@ -358,7 +358,7 @@ namespace hud
         }
 
         /**
-         * Move or copy construct first @p count of contiguously stored elements of type u_type_t to to first \p count of contiguously stored elements of type type_t
+         * Move or copy construct first @p count of contiguously stored elements of type u_type_t to to first \p count of contiguously stored elements of type type_t.
          * The move constructor is called if u_type_t is a move constructible type to type_t, else the copy constructor is called if u_type_t is a copy constructible type to type_t.
          * If type_t is bitwise copy constructible the source is copied by simply copy the source memory to destination with hud::memory::copy.
          * This implies that source and destination are not overlapping.

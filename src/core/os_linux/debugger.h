@@ -7,7 +7,6 @@
 
 namespace hud::os::linux
 {
-
     struct debugger
     {
 
@@ -20,9 +19,15 @@ namespace hud::os::linux
             // LCOV_EXCL_START ( We don't covert the code that break the debugger )
             if (is_present())
             {
+                // With clang/gcc we can break the debugger on x86 by invoking int3
 #if defined(HD_TARGET_X86_FAMILY)
 
                 asm("int $3");
+#else
+                // Dereference nullptr through a volatile pointer to prevent the compiler
+                // from removing. We use this rather than abort() or __builtin_trap() for
+                // portability: some debuggers don't correctly trap abort().
+                *static_cast<volatile int *>(nullptr) = 1;
 #endif
             }
             // LCOV_EXCL_STOP

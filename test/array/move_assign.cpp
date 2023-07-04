@@ -793,7 +793,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type)
             }
         }
         // If not reallocation was done, all element in current count should call move assign,
-        // else all elements assign after the count of element before the assignement should be move construct
+        // else all elements assign after the count of elements before the assignement should be move construct
         else
         {
             for (usize index = 0; index < assigned.count(); index++)
@@ -967,7 +967,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
             }
         }
         // If not reallocation was done, all element in current count should call move assign,
-        // else all elements assign after the count of element before the assignement should be move construct
+        // else all elements assign after the count of elements before the assignement should be move construct
         else
         {
             for (usize index = 0; index < assigned.count(); index++)

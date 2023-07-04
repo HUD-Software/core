@@ -908,12 +908,12 @@ namespace hud
     }
 
     /**
-     * Checks if all elements of left tuple are equals to all elements at the same index of right tuple, that is, compares all elements by operator==.
+     * Checks if all elements of left tuple are equal to all elements at the same index of right tuple, that is, compares all elements by operator==.
      * @tparam types_t types_t of the left tuple
      * @tparam u_types_t types_t of the right tuple
      * @param first The first tuple to compare by operator==
      * @param second The second tuple to compareby operator==
-     * @return true if all elements of left tuple are equals to all elements at the same index of right tuple, false otherwise
+     * @return true if all elements of left tuple are equal to all elements at the same index of right tuple, false otherwise
      */
     template<typename... types_t, typename... u_types_t>
     [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept

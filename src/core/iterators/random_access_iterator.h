@@ -122,7 +122,7 @@ namespace hud
             return pointer - other.pointer;
         }
 
-        /** Checks if 2 random_access_iterator are equals. */
+        /** Checks if 2 random_access_iterator are equal. */
         [[nodiscard]] constexpr bool operator==(const random_access_iterator &other) const noexcept
         {
             return pointer == other.pointer;

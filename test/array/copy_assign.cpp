@@ -2919,7 +2919,7 @@ GTEST_TEST(array, copy_assign_array_call_destructor_of_elements)
             }
             else
             { // count_to_assigned == count_in_assigned
-                // If we assigned same count of element, none should be destroyed
+                // If we assigned same count of elements, none should be destroyed
                 for (usize index = 0; index < count_in_assigned; index++)
                 {
                     if (dtor_assigned_counter[index] != 0u)
@@ -3124,7 +3124,7 @@ GTEST_TEST(array, copy_assign_array_call_destructor_of_elements)
         }
         else
         { // count_to_assigned == count_in_assigned
-            // If we assigned same count of element, none should be destroyed
+            // If we assigned same count of elements, none should be destroyed
             for (usize index = 0; index < count_in_assigned; index++)
             {
                 if (dtor_assigned_counter[index] != 0u)

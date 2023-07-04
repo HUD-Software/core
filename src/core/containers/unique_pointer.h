@@ -761,7 +761,7 @@ namespace hud
      * @tparam u_deleter_t Type of the second unique_pointer's deleter
      * @param first The first to compare
      * @param second The second to compare
-     * @param true if both pointer are equals, false otherwise
+     * @param true if both pointer are equal, false otherwise
      */
     template<typename type_t, typename deleter_type, typename u_ptr_t, typename u_deleter_t>
     [[nodiscard]] constexpr bool operator==(const unique_pointer<type_t, deleter_type> &first, const unique_pointer<u_ptr_t, u_deleter_t> &second) noexcept

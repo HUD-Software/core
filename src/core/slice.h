@@ -190,7 +190,7 @@ namespace hud
     private:
         /** Pointer to the first element */
         type_t *begin_ptr = nullptr;
-        /** Count of element */
+        /** Count of elements */
         usize count_element = 0u;
     };
 

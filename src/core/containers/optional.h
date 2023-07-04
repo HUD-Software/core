@@ -72,28 +72,28 @@ namespace hud
             }
 
             /** Retrivies the contained value */
-            [[nodiscard]] constexpr value_t &value() &noexcept
+            [[nodiscard]] constexpr value_t &value() & noexcept
             {
                 check(has_value());
                 return this_as_base_t()->some_value;
             }
 
             /** Retrivies the contained value */
-            [[nodiscard]] constexpr const value_t &value() const &noexcept
+            [[nodiscard]] constexpr const value_t &value() const & noexcept
             {
                 check(has_value());
                 return this_as_base_t()->some_value;
             }
 
             /** Retrivies the contained value */
-            [[nodiscard]] constexpr const value_t &&value() const &&noexcept
+            [[nodiscard]] constexpr const value_t &&value() const && noexcept
             {
                 check(has_value());
                 return hud::move(this_as_base_t()->some_value);
             }
 
             /** Retrivies the contained value */
-            [[nodiscard]] constexpr value_t &&value() &&noexcept
+            [[nodiscard]] constexpr value_t &&value() && noexcept
             {
                 check(has_value());
                 return hud::move(this_as_base_t()->some_value);
@@ -621,25 +621,25 @@ namespace hud
         }
 
         /** Retrieves a const l-value reference to the contained value */
-        [[nodiscard]] constexpr type_t &value() &noexcept
+        [[nodiscard]] constexpr type_t &value() & noexcept
         {
             return super_type::value();
         }
 
         /** Retrieves a const l-value reference to the contained value */
-        [[nodiscard]] constexpr const type_t &value() const &noexcept
+        [[nodiscard]] constexpr const type_t &value() const & noexcept
         {
             return super_type::value();
         }
 
         /** Retrieves a const l-value reference to the contained value */
-        [[nodiscard]] constexpr const type_t &&value() const &&noexcept
+        [[nodiscard]] constexpr const type_t &&value() const && noexcept
         {
             return hud::move(super_type::value());
         }
 
         /** Retrieves a const l-value reference to the contained value */
-        [[nodiscard]] constexpr type_t &&value() &&noexcept
+        [[nodiscard]] constexpr type_t &&value() && noexcept
         {
             return hud::move(super_type::value());
         }
@@ -676,7 +676,7 @@ namespace hud
 
         /** Retrieves a reference to the contained value if optional contains a value, return the default_value otherwise */
         template<typename u_type_t>
-        [[nodiscard]] constexpr type_t value_or(u_type_t &&default_value) const &noexcept
+        [[nodiscard]] constexpr type_t value_or(u_type_t &&default_value) const & noexcept
         {
             static_assert(hud::is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
             static_assert(hud::is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
@@ -685,7 +685,7 @@ namespace hud
 
         /** Retrieve a reference to the contained value if optional contains a value, return the default_value otherwise */
         template<typename u_type_t>
-        [[nodiscard]] constexpr type_t value_or(u_type_t &&default_value) &&noexcept
+        [[nodiscard]] constexpr type_t value_or(u_type_t &&default_value) && noexcept
         {
             static_assert(hud::is_copy_constructible_v<type_t>, "optional<type_t>::value_or: type_t must be copy constructible");
             static_assert(hud::is_convertible_v<u_type_t, type_t>, "optional<type_t>::value_or: u_type_t must be convertible to type_t");
@@ -756,14 +756,14 @@ namespace hud
     }
 
     /**
-     * Checks whether right and left optional are equals.
-     * Optionals are equals if both contained or not a value and if contained values are equals.
+     * Checks whether right and left optional are equal.
+     * Optionals are equal if both contained or not a value and if contained values are equal.
      * Value types must be comparable with operator==()
      * @tparam left_t Value type of the left optional
      * @tparam right_t Value type of the right optional
      * @param left The left optional to compare
      * @param right The right optional to compare
-     * @param true if right and left optional are equals, false otherwise
+     * @param true if right and left optional are equal, false otherwise
      */
     template<typename left_t, typename right_t>
     requires(hud::is_comparable_with_equal_v<left_t, right_t>)
