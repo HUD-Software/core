@@ -600,8 +600,8 @@ namespace hud
                 check(count_to_remove <= count()); // Remove more elements than possible
                 hud::memory::destroy_array(first_item_to_remove, count_to_remove);
                 const usize remains = count() - count_to_remove;
-
                 const usize count_to_relocate_after = remains - index;
+
                 if (count_to_relocate_after > 0)
                 {
                     // We need to copy construct elements stored in removed elements memory
@@ -1269,7 +1269,7 @@ namespace hud
             }
             return false; // Arrays are not equal if right is not nullptr but left is nullptr
         }
-        return right.data() != nullptr; // If left is nullptr, arrays are not equal if right is also nullptr
+        return right.data() == nullptr; // If left is nullptr, arrays are not equal if right is also nullptr
     }
 
     /**
@@ -1290,7 +1290,7 @@ namespace hud
         // Arrays are not equal if the counts of elements differ
         if (left.count() != right.count())
         {
-            return false;
+            return true;
         }
 
         if (left.data() != nullptr)
@@ -1301,7 +1301,7 @@ namespace hud
             }
             return true; // Arrays are not equal if right is not nullptr but left is nullptr
         }
-        return right.data() == nullptr; // If left is nullptr, arrays are not equal if right is also nullptr
+        return right.data() != nullptr; // If left is nullptr, arrays are not equal if right is also nullptr
     }
 
     /**

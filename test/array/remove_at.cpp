@@ -94,13 +94,13 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_eq(array.max_count(), 5u); // no shrink
         hud_assert_eq(array[0].id(), 1);
         hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_assign_count(), 1u);
+        hud_assert_eq(array[0].move_constructor_count(), 1u);
+        hud_assert_eq(array[0].move_assign_count(), 0u);
         hud_assert_eq(array[0].copy_assign_count(), 0u);
         hud_assert_eq(array[1].id(), 3);
         hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_assign_count(), 2u);
+        hud_assert_eq(array[1].move_constructor_count(), 1u);
+        hud_assert_eq(array[1].move_assign_count(), 1u);
         hud_assert_eq(array[1].copy_assign_count(), 0u);
         hud_assert_eq(array[2].id(), 4);
         hud_assert_eq(array[2].copy_constructor_count(), 0u);
@@ -123,13 +123,13 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_eq(array.max_count(), 5u); // no shrink
         hud_assert_eq(array[0].id(), 1);
         hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_assign_count(), 1u);
+        hud_assert_eq(array[0].move_constructor_count(), 1u);
+        hud_assert_eq(array[0].move_assign_count(), 0u);
         hud_assert_eq(array[0].copy_assign_count(), 0u);
         hud_assert_eq(array[1].id(), 3);
         hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_assign_count(), 2u);
+        hud_assert_eq(array[1].move_constructor_count(), 1u);
+        hud_assert_eq(array[1].move_assign_count(), 1u);
         hud_assert_eq(array[1].copy_assign_count(), 0u);
         hud_assert_eq(array.allocator().allocation_count(), 1u);
         hud_assert_eq(array.allocator().free_count(), 0u);
@@ -212,13 +212,13 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_eq(array.max_count(), 8u);
         hud_assert_eq(array[0].id(), 2);
         hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_assign_count(), 1u);
+        hud_assert_eq(array[0].move_constructor_count(), 1u);
+        hud_assert_eq(array[0].move_assign_count(), 0u);
         hud_assert_eq(array[0].copy_assign_count(), 0u);
         hud_assert_eq(array[1].id(), 3);
         hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_assign_count(), 1u);
+        hud_assert_eq(array[1].move_constructor_count(), 1u);
+        hud_assert_eq(array[1].move_assign_count(), 0u);
         hud_assert_eq(array[1].copy_assign_count(), 0u);
         hud_assert_eq(array[2].id(), 4);
         hud_assert_eq(array[2].copy_constructor_count(), 0u);
@@ -259,18 +259,18 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_eq(array.max_count(), 8u); // no shrink
         hud_assert_eq(array[0].id(), 2);
         hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_assign_count(), 1u);
+        hud_assert_eq(array[0].move_constructor_count(), 1u);
+        hud_assert_eq(array[0].move_assign_count(), 0u);
         hud_assert_eq(array[0].copy_assign_count(), 0u);
         hud_assert_eq(array[1].id(), 5);
         hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_assign_count(), 2u);
+        hud_assert_eq(array[1].move_constructor_count(), 1u);
+        hud_assert_eq(array[1].move_assign_count(), 1u);
         hud_assert_eq(array[1].copy_assign_count(), 0u);
         hud_assert_eq(array[2].id(), 6);
         hud_assert_eq(array[2].copy_constructor_count(), 0u);
-        hud_assert_eq(array[2].move_constructor_count(), 0u);
-        hud_assert_eq(array[2].move_assign_count(), 2u);
+        hud_assert_eq(array[2].move_constructor_count(), 1u);
+        hud_assert_eq(array[2].move_assign_count(), 1u);
         hud_assert_eq(array[2].copy_assign_count(), 0u);
         hud_assert_eq(array[3].id(), 7);
         hud_assert_eq(array[3].copy_constructor_count(), 0u);
@@ -296,13 +296,13 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_eq(array.max_count(), 8u); // no shrink
         hud_assert_eq(array[0].id(), 2);
         hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_assign_count(), 1u);
+        hud_assert_eq(array[0].move_constructor_count(), 1u);
+        hud_assert_eq(array[0].move_assign_count(), 0u);
         hud_assert_eq(array[0].copy_assign_count(), 0u);
         hud_assert_eq(array[1].id(), 5);
         hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_assign_count(), 2u);
+        hud_assert_eq(array[1].move_constructor_count(), 1u);
+        hud_assert_eq(array[1].move_assign_count(), 1u);
         hud_assert_eq(array[1].copy_assign_count(), 0u);
         hud_assert_eq(array.allocator().allocation_count(), 1u);
         hud_assert_eq(array.allocator().free_count(), 0u);
