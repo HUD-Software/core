@@ -400,14 +400,15 @@ namespace hud::os::common
         /**
          * Sets the first size bytes of the block of memory pointed by destination to the specified value.
          * @param destination Pointer to the buffer
-         * @param value The value to be set
          * @param size Number of bytes to set to the value
+         * @param value The value to be set
+         * @return Pointer to the buffer @p destination
          */
-        static HD_FORCEINLINE void set(void *destination, const usize size, const u8 value) noexcept
+        static HD_FORCEINLINE void *set(void *destination, const usize size, const u8 value) noexcept
         {
             // The behavior is undefined if destination is a null pointer.
             check(destination != nullptr);
-            memset(destination, value, size);
+            return memset(destination, value, size);
         }
 
         static constexpr void set(u8 *destination, const usize size, const u8 value) noexcept
