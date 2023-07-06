@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
 
-# Set project name
-project(test_core
-		DESCRIPTION "HUD Engine Core tests"
-		LANGUAGES CXX
-)
-
 add_executable(test_core 
 	array/add.cpp
 	array/add_no_construct.cpp
@@ -278,55 +272,55 @@ if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
 endif()
 
-if(SANITIZER)
-	if(MSVC)
-		if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-			# MSVC ASAN is limited
-			# https://devblogs.microsoft.com/cppblog/addresssanitizer-asan-for-windows-with-msvc/#compiling-with-asan-from-the-console
-			target_compile_options(test_core PRIVATE /fsanitize=address /INCREMENTAL:NO /Zi)
-			target_compile_options(core PRIVATE /fsanitize=address /INCREMENTAL:NO /Zi)
-			target_compile_definitions(test_core PRIVATE _DISABLE_VECTOR_ANNOTATION)
-			get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
-			add_custom_command(TARGET test_core POST_BUILD 
-				COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
-				COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
-			)
-		endif()
-		if( CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-			message( error FATAL_ERROR "ASAN with Clang-cl is not supported")
-			# https://github.com/aminya/project_options/issues/138
-			# https://stackoverflow.com/questions/66531482/application-crashes-when-using-address-sanitizer-with-msvc
-			# https://devblogs.microsoft.com/cppblog/asan-for-windows-x64-and-debug-build-support/
-			# https://learn.microsoft.com/en-us/cpp/sanitizers/asan-runtime?view=msvc-170
-		endif()
-	elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	# https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
-		target_compile_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-		target_link_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-		target_compile_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-		target_link_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-	endif()
-	# if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 
-	# 	# MSVC ASAN is limited
-	# 	# https://devblogs.microsoft.com/cppblog/addresssanitizer-asan-for-windows-with-msvc/#compiling-with-asan-from-the-console
-	# 	target_compile_options(test_core PRIVATE /fsanitize=address)
-	# 	target_compile_options(core PRIVATE /fsanitize=address)
-	# 	target_compile_definitions(test_core PRIVATE _DISABLE_VECTOR_ANNOTATION)
-	# 	get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
-	# 	add_custom_command(TARGET test_core POST_BUILD 
-	# 		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
-	# 		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>)
-	# endif()
-	# if( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	# 	# https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
+	# if(MSVC)
+	# 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# 		# MSVC ASAN is limited
+	# 		# https://devblogs.microsoft.com/cppblog/addresssanitizer-asan-for-windows-with-msvc/#compiling-with-asan-from-the-console
+	# 		target_compile_options(test_core PRIVATE /fsanitize=address /INCREMENTAL:NO /Zi)
+	# 		target_compile_options(core PRIVATE /fsanitize=address /INCREMENTAL:NO /Zi)
+	# 		target_compile_definitions(test_core PRIVATE _DISABLE_VECTOR_ANNOTATION)
+	# 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
+	# 		add_custom_command(TARGET test_core POST_BUILD 
+	# 			COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
+	# 			COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
+	# 		)
+	# 	endif()
+	# 	if( CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	# 		message( error FATAL_ERROR "ASAN with Clang-cl is not supported")
+	# 		# https://github.com/aminya/project_options/issues/138
+	# 		# https://stackoverflow.com/questions/66531482/application-crashes-when-using-address-sanitizer-with-msvc
+	# 		# https://devblogs.microsoft.com/cppblog/asan-for-windows-x64-and-debug-build-support/
+	# 		# https://learn.microsoft.com/en-us/cpp/sanitizers/asan-runtime?view=msvc-170
+	# 	endif()
+	# elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	# # https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
 	# 	target_compile_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
 	# 	target_link_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
 	# 	target_compile_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
 	# 	target_link_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
 	# endif()
+	# # if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 
-endif()
+	# # 	# MSVC ASAN is limited
+	# # 	# https://devblogs.microsoft.com/cppblog/addresssanitizer-asan-for-windows-with-msvc/#compiling-with-asan-from-the-console
+	# # 	target_compile_options(test_core PRIVATE /fsanitize=address)
+	# # 	target_compile_options(core PRIVATE /fsanitize=address)
+	# # 	target_compile_definitions(test_core PRIVATE _DISABLE_VECTOR_ANNOTATION)
+	# # 	get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
+	# # 	add_custom_command(TARGET test_core POST_BUILD 
+	# # 		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
+	# # 		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>)
+	# # endif()
+	# # if( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	# # 	# https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
+	# # 	target_compile_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# # 	target_link_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# # 	target_compile_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# # 	target_link_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# # endif()
+
+##endif()
 
 
 #enable_coverage(test_core core)
@@ -475,12 +469,19 @@ message("Fetching HUD-Software/google-test...")
 include(FetchContent)
 FetchContent_Declare(
 	google_test 
-	GIT_REPOSITORY  https://github.com/HUD-Software/google-test.git
-	GIT_TAG         5306f1a0e51f6001c624588fafdb646bb377866c
+	GIT_REPOSITORY  https://github.com/google/googletest.git
+	GIT_TAG         v1.13.0
 )
-FetchContent_MakeAvailable(google_test)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(BUILD_GTEST ON CACHE BOOL "" FORCE)
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCED)
+set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
+set(gtest_build_samples OFF CACHE BOOL "" FORCE)
+set(gtest_build_tests OFF CACHE BOOL "" FORCE)
 
+FetchContent_MakeAvailable(google_test)
 target_link_libraries( test_core PRIVATE gtest )
+add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE_DIR:gtest>/gtest.dll $<TARGET_FILE_DIR:test_core>)
 
 # Add Intel slice-by-8 dependency
 message("Fetching HUD-Software/slice-by-8...")
@@ -508,3 +509,15 @@ target_link_libraries( test_core PRIVATE cityhash )
 
 # Add the executable test
 add_test(NAME core COMMAND test_core --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
+
+
+if(SANITIZER)
+	include(../sanitizer.cmake)
+	enable_sanitizer(test_core core)
+endif()
+if(COVERAGE)
+	include(../coverage.cmake)
+	include(coverage.cmake)
+endif()
+
+

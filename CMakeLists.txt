@@ -11,9 +11,6 @@ project(core
 # Create variable CMAKE_CXX_COMPILER_PATH
 get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
 
-include(coverage.cmake)
-include(sanitizer.cmake)
-
 add_subdirectory(src)
 enable_testing()
 add_subdirectory(test)

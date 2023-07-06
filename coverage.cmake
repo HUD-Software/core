@@ -17,6 +17,18 @@ endif()
 
 function(enable_coverage project_name lib_name)
 if(MSVC)
+		string(
+			APPEND VS_CONFIG
+			"$<IF:$<CONFIG:Debug>,"
+			"Debug,"
+			"$<IF:$<CONFIG:Release>,"
+			"Release,"
+			"$<IF:$<CONFIG:MinSizeRel>,"
+			"MinSizeRel,"
+			"$<IF:$<CONFIG:RelWithDebInfo>,"
+			"RelWithDebInfo,>>>>"
+		)
+
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 		set(MSVC_CODECOVERAGE_CONSOLE_PATH "C:\\Program Files\\Microsoft Visual Studio\\2022\\Enterprise\\Common7\\IDE\\Extensions\\Microsoft\\CodeCoverage.Console\\Microsoft.CodeCoverage.Console.exe" CACHE STRING "Path to Microsoft.CodeCoverage.Console.exe")
 		find_program(MSVC_CODECOVERAGE_CONSOLE_EXE ${MSVC_CODECOVERAGE_CONSOLE_PATH})
@@ -39,17 +51,15 @@ if(MSVC)
 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
 		target_link_directories(${project_name} PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\${CMAKE_CXX_COMPILER_VERSION}\\lib\\windows\\")
 
-
 		add_custom_command( 
 		 	TARGET ${project_name} POST_BUILD
 		 	COMMENT "Run ${project_name}.exe"
-			COMMAND cd
 			COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./grcov-x86_64-pc-windows-msvc.zip
 			COMMAND Powershell.exe Expand-Archive -Path ./grcov-x86_64-pc-windows-msvc.zip -DestinationPath . -F
-			COMMAND echo ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./Release/${project_name}.exe
-		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./Release/${project_name}.exe
+			COMMAND echo ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./${VS_CONFIG}/${project_name}.exe
+		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./${VS_CONFIG}/${project_name}.exe
 			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse ${lib_name}.profraw -o ${lib_name}.profdata
-			COMMAND ./grcov.exe --llvm -t html -b ./Release/ -s ./../../
+			COMMAND ./grcov.exe --llvm -t html -b ./${VS_CONFIG}/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
 					--keep-only "src/*" 
@@ -63,7 +73,7 @@ if(MSVC)
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o windows
 					..
-			COMMAND ./grcov.exe --llvm -t lcov -b ./Release/ -s ./../../
+			COMMAND ./grcov.exe --llvm -t lcov -b ./${VS_CONFIG}/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
 					--keep-only "src/*"
@@ -77,6 +87,7 @@ if(MSVC)
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 					-o coverage.windows.lcov.info
 					..
+			
 		)
 	endif()
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
