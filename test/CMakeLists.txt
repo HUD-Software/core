@@ -481,7 +481,7 @@ set(gtest_build_tests OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(google_test)
 target_link_libraries( test_core PRIVATE gtest )
-add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE_DIR:gtest>/gtest.dll $<TARGET_FILE_DIR:test_core>)
+add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:gtest> $<TARGET_FILE_DIR:test_core>)
 
 # Add Intel slice-by-8 dependency
 message("Fetching HUD-Software/slice-by-8...")
