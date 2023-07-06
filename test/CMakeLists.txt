@@ -517,7 +517,7 @@ if(SANITIZER)
 endif()
 if(COVERAGE)
 	include(../coverage.cmake)
-	include(coverage.cmake)
+	enable_coverage(test_core core)
 endif()
 
 

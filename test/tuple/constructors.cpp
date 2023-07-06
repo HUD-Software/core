@@ -213,6 +213,8 @@ GTEST_TEST(tuple, default_constructor_uninit)
 
         tuple_type2 *tuple2 = hud::memory::allocate_array<tuple_type2>(1);
         hud::memory::set(tuple2, sizeof(tuple_type2), 0xFF);
+        // Avoid optimisation in release that can remove the memory::set
+        static_cast<volatile tuple_type2 *>(tuple2);
         hud::memory::construct_at(tuple2);
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(*tuple2)), i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(*tuple2)), i32 &>));
