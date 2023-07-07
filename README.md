@@ -22,7 +22,7 @@
 
 ***Ubuntu build and test***
 
-[![clang_14_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang_14_x86-64-64.yml?label=Clang%2014%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang_14_x86-64-64.yml)
+[![clang_14_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang_14_x86-64.yml?label=Clang%2014%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang_14_x86-64.yml)
 [![gcc_12_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_gcc_12_x86-64.yml?label=GCC%2012%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_gcc_12_x86-64.yml)
 
 ***Quality***
