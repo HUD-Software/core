@@ -17,13 +17,13 @@
 
 ***Windows build and test***
 
-[![cl_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_cl_x86-64.yml?label=CL%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_cl_x86-64.yml)
-[![clang-cl_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_clang_x86-64.yml?label=Clang-cl%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_clang_x86-64.yml)
+[![msvc_2022_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_msvc_2022_x86-64.yml?label=MSVC%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_msvc_2022_x86-64.yml)
+[![clang-cl_2022_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_clang_cl_2022_x86-64.yml?label=Clang-cl%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_clang_cl_2022_x86-64.yml)
 
 ***Ubuntu build and test***
 
-[![clang_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang_x86-64.yml?label=Clang%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang_x86-64.yml)
-[![gcc_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_gcc_x86-64.yml?label=GCC%20compiler%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_gcc_x86-64.yml)
+[![clang_14_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang_14_x86-64-64.yml?label=Clang%2014%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang_14_x86-64-64.yml)
+[![gcc_12_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_gcc_12_x86-64.yml?label=GCC%2012%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_gcc_12_x86-64.yml)
 
 ***Quality***
 
