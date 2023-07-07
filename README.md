@@ -17,8 +17,8 @@
 
 ***Windows build and test***
 
-[![msvc_2022_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_msvc_2022_x86-64.yml?label=MSVC%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_msvc_2022_x86-64.yml)
-[![clang-cl_2022_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_clang_cl_2022_x86-64.yml?label=Clang-cl%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_clang_cl_2022_x86-64.yml)
+[![msvc_2022_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_msvc_2022_x86-64.yml?label=MSVC%202022%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_msvc_2022_x86-64.yml)
+[![clang-cl_2022_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_clang_cl_2022_x86-64.yml?label=Clang-cl%202022%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/windows_clang_cl_2022_x86-64.yml)
 
 ***Ubuntu build and test***
 
