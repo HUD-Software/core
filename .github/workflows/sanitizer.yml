@@ -5,7 +5,7 @@ on:
     branches: ["main"]
 
 jobs:
-  sanitizer_windows:
+  sanitizer_windows_msvc:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
@@ -21,7 +21,7 @@ jobs:
       - name: Test
         run: ctest --test-dir target -j10 -C Debug -T test --output-on-failure --verbose
 
-  sanitizer_clang14:
+  sanitizer_ubuntu_clang14:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
@@ -38,7 +38,8 @@ jobs:
         run: cmake --build target --config Debug
       - name: Test
         run: ctest --test-dir target -j10 -C Debug -T test --output-on-failure --verbose
-  sanitizer_gcc12:
+        
+  sanitizer_ubuntu_gcc12:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository

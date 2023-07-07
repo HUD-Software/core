@@ -5,7 +5,7 @@ on:
     branches: ["main"]
 
 jobs:
-  coverage_windows:
+  coverage_windows_clangcl:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
@@ -31,7 +31,7 @@ jobs:
             target\test\coverage.windows.lcov.info
             target\test\windows\
 
-  coverage_ubuntu:
+  coverage_ubuntu_clang_14:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository

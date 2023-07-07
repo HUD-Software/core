@@ -1,4 +1,4 @@
-name: Ubuntu gcc x86-64 build & test
+name: Ubuntu gcc-12 x86-64 build & test
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Ubuntu Core Test Report
+          name: Core Test Report (Ubuntu gcc-12 x86-64)
           path: target/test/test_core_report.xml
           reporter: java-junit
       - name: Release
@@ -36,5 +36,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: Ubuntu_gcc_x86_64
+          name: Ubuntu_gcc_12_x86_64
           path: release/**
