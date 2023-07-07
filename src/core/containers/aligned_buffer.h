@@ -12,7 +12,7 @@ namespace hud
      */
     template<usize size, u32 alignment>
     requires(is_power_of_two_v<alignment>)
-    class aligned_buffer
+    class alignas(alignment) aligned_buffer
     {
     public:
         /** Retrieves a pointer to the compile-time aligned array of bytes. */

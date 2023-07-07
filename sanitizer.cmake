@@ -37,7 +37,7 @@ function(enable_sanitizer project_name lib_name)
 			-fsanitize=float-divide-by-zero
 			-fsanitize=float-cast-overflow 
 			-fno-sanitize=null
-			-fno-sanitize=alignment
+			-fsanitize=alignment
 			$<$<CONFIG:Release>:-fno-omit-frame-pointer -g>
 			$<$<CONFIG:MinSizeRel>:-fno-omit-frame-pointer -g>
 			$<$<CONFIG:RelWithDebInfo>:-fno-omit-frame-pointer>
