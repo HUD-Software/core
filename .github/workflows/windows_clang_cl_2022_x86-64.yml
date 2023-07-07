@@ -1,4 +1,4 @@
-name: Windows clang-cl x86-64 build & test
+name: Windows clang-cl 2022 x86-64 build & test
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Windows Core Test Report
+          name: Core Test Report (Windows clang-cl 2022 x86-64)
           path: target/test/test_core_report.xml
           reporter: java-junit
       - name: Release
@@ -35,5 +35,5 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: windows_clang_x64
+          name: windows_clang_cl_2022_x64
           path: release\**
