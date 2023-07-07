@@ -48,9 +48,10 @@ namespace hud_test
 GTEST_TEST(traits, is_constructible)
 {
     hud_assert_true((hud::is_constructible_v<hud_test::a>));
-#if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG)
+#if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG) && HD_COMPILER_CLANG_VERSION_MAJOR < 16
     // Bug: Waiting for clang anwser https://github.com/llvm/llvm-project/issues/55974
     // Clang do not implement the Parenthesized initialization of aggregates feature yet
+    // Fix with clang-16
     hud_assert_false((hud::is_constructible_v<hud_test::a, i32>));
 #else
     hud_assert_true((hud::is_constructible_v<hud_test::a, i32>));

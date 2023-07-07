@@ -72,7 +72,10 @@ __aarch64__
 #if defined(_MSC_VER)
     #define HD_COMPILER_VERSION _MSC_VER
 #elif defined(HD_COMPILER_CLANG)
-    #define HD_COMPILER_VERSION __clang_major__, __clang_minor__, __clang_patchlevel__
+    #define HD_COMPILER_CLANG_VERSION_MAJOR __clang_major__
+    #define HD_COMPILER_CLANG_VERSION_MINOR __clang_minor__
+    #define HD_COMPILER_CLANG_VERSION_PATCH __clang_patchlevel__
+    #define HD_COMPILER_VERSION HD_COMPILER_CLANG_VERSION_MAJOR, HD_COMPILER_CLANG_VERSION_MINOR, HD_COMPILER_CLANG_VERSION_PATCH
 #elif defined(HD_COMPILER_GCC)
     #define HD_COMPILER_VERSION __GNUC__, __GNUC_MINOR__
 #else
