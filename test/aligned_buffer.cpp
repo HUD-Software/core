@@ -10,6 +10,6 @@ GTEST_TEST(aligned_buffer, default_constructor_should_aligned_buffer_correctly)
                                                                          {
             hud::aligned_buffer<size, alignement> buffer;
             volatile void* ptr = buffer.pointer();
-            printf("Size %lu, Alignement %u\n", size, alignement);
+            printf("Address 0x%lx, Size %lu, Alignement %u\n", reinterpret_cast<uptr>(ptr), size, alignement);
             hud_assert_true(hud::memory::is_pointer_aligned(ptr, alignement)); }); });
 }
