@@ -233,13 +233,11 @@ GTEST_TEST(cstring, append_safe)
     ansichar dest[6] = {'a', 'b', 'c', '\0'};
     hud_assert_true(hud::cstring::append_safe(dest, 6, src));
     hud_assert_true(dest[0] == 'a' && dest[1] == 'b' && dest[2] == 'c' && dest[3] == 'd' && dest[4] == 'e' && dest[5] == '\0');
-    dest[0] = '\0';
 
     static constexpr const wchar *const wide_src = L"de";
     wchar wide_dest[6] = {L'a', L'b', L'c', L'\0'};
     hud_assert_true(hud::cstring::append_safe(wide_dest, 6, wide_src));
     hud_assert_true(wide_dest[0] == L'a' && wide_dest[1] == L'b' && wide_dest[2] == L'c' && wide_dest[3] == L'd' && wide_dest[4] == L'e' && wide_dest[5] == L'\0');
-    dest[0] = L'\0';
 
     // Thoses crash
     // hud_assert_false(hud::cstring::append_safe(nullptr, 6, src));
