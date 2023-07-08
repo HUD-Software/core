@@ -63,8 +63,7 @@ if(MSVC)
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
 					--keep-only "src/*" 
-					#--keep-only "test/*" 
-					#--ignore "test/misc/*" 
+					--keep-only "interface/*"
 					--excl-start "^.*LCOV_EXCL_START.*" 
 					--excl-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
@@ -77,8 +76,7 @@ if(MSVC)
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
 					--keep-only "src/*"
-					#--keep-only "test/*" 
-					#--ignore "test/misc/*" 
+					--keep-only "interface/*"
 					--excl-start "^.*LCOV_EXCL_START.*" 
 					--excl-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
@@ -106,8 +104,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--llvm-path /usr/bin/
 				--branch
 				--keep-only "src/*" 
-				#--keep-only "test/*" 
-				#--ignore "test/misc/*" 
+				--keep-only "interface/*"
 				--excl-start "^.*LCOV_EXCL_START.*" 
 				--excl-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
@@ -120,8 +117,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--llvm-path /usr/bin/
 				--branch
 				--keep-only "src/*"
-				#--keep-only "test/*" 
-				#--ignore "test/misc/*" 
+				--keep-only "interface/*"
 				--excl-start "^.*LCOV_EXCL_START.*" 
 				--excl-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
