@@ -31,7 +31,7 @@ jobs:
         run: |
           xcopy target\test\Release release\ /s /y
           xcopy target\src\Release release\ /s /y
-          xcopy src\core release\core\ /s /y
+          xcopy interface\core release\core\ /s /y
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
