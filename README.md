@@ -22,12 +22,21 @@
 
 ***Ubuntu build and test***
 
-[![clang_14_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang_14_x86-64.yml?label=Clang%2014%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang_14_x86-64.yml)
-[![gcc_12_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_gcc_12_x86-64.yml?label=GCC%2012%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_gcc_12_x86-64.yml)
+[![clang_14_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang14_x86-64.yml?label=Clang%2014%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang14_x86-64.yml)
+[![gcc_12_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_gcc12_x86-64.yml?label=GCC%2012%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_gcc12_x86-64.yml)
+
+***Coverage***
+
+[![codecov](https://img.shields.io/codecov/c/github/hud-software/core?label=Codecov&logo=Codecov&logoColor=lightgrey&style=flat-square)](https://app.codecov.io/gh/HUD-Software/core)
+
+***Sanitizer***
+
+[![MSVC](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_msvc_2022_x86-64.yml?label=MSVC%202022%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/sanitizer_msvc.yml)
+[![GCC](https://img.shields.io/github/actions/workflow/status/hud-software/core/sanitizer_gcc12.yml?label=GCC%2012%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/sanitizer_gcc12.yml)
+[![Clang](https://img.shields.io/github/actions/workflow/status/hud-software/core/sanitizer_clang14.yml?label=Clang%2014%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/sanitizer_clang14.yml)
 
 ***Quality***
 
-[![codecov](https://img.shields.io/codecov/c/github/hud-software/core?label=Codecov&logo=Codecov&logoColor=lightgrey&style=flat-square)](https://app.codecov.io/gh/HUD-Software/core)
 [![codeql](https://img.shields.io/github/actions/workflow/status/hud-software/core/codeQL.yml?label=CodeQL%20Quality&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/codeQL.yml)
 [![codacy](https://img.shields.io/codacy/grade/8014adeaff854f95b7688b8bed741964?label=Codacy%20Quality&logo=Codacy&logoColor=lightgrey&style=flat-square)](https://app.codacy.com/gh/HUD-Software/core/)
 
