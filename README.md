@@ -7,9 +7,9 @@
 
 1. [Status](#status)
 1. [Description](#description)
-2. [Targets](#targets)
+<!-- 2. [Targets](#targets)
     1. [core](#core-target)
-    2. [core_test](#core_test-target)
+    2. [core_test](#core_test-target) -->
     
 </br>
 
@@ -25,15 +25,15 @@
 [![clang_14_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_clang14_x86-64.yml?label=Clang%2014%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_clang14_x86-64.yml)
 [![gcc_12_x86-64](https://img.shields.io/github/actions/workflow/status/hud-software/core/ubuntu_gcc12_x86-64.yml?label=GCC%2012%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/ubuntu_gcc12_x86-64.yml)
 
-***Coverage***
-
-[![codecov](https://img.shields.io/codecov/c/github/hud-software/core?label=Codecov&logo=Codecov&logoColor=lightgrey&style=flat-square)](https://app.codecov.io/gh/HUD-Software/core)
-
 ***Sanitizer***
 
 [![MSVC](https://img.shields.io/github/actions/workflow/status/hud-software/core/windows_msvc_2022_x86-64.yml?label=MSVC%202022%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/sanitizer_msvc.yml)
 [![GCC](https://img.shields.io/github/actions/workflow/status/hud-software/core/sanitizer_gcc12.yml?label=GCC%2012%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/sanitizer_gcc12.yml)
 [![Clang](https://img.shields.io/github/actions/workflow/status/hud-software/core/sanitizer_clang14.yml?label=Clang%2014%20x86-64&logo=C%2B%2B&logoColor=lightgrey&style=flat-square)](https://github.com/HUD-Software/core/actions/workflows/sanitizer_clang14.yml)
+
+***Coverage***
+
+[![codecov](https://img.shields.io/codecov/c/github/hud-software/core?label=Codecov&logo=Codecov&logoColor=lightgrey&style=flat-square)](https://app.codecov.io/gh/HUD-Software/core)
 
 ***Quality***
 
@@ -46,7 +46,7 @@
 
 `Core` is the heart of the HUD-engine for [HUD-Software](https://github.com/HUD-Software).
 
-It provides low level C++ features like that is close to C++ STL implmentation:
+It provides low level C++ features like that is close to C++ STL implementation:
 
 - Containers: array (std::vector), pair, tuple, optional, shared_pointer, unique_pointer, etc...
 - Debugging features: conditional break, debugger attached checker, callstacks, etc...
@@ -61,7 +61,7 @@ It provides low level C++ features like that is close to C++ STL implmentation:
   - `src/core` directory contains the interface of the `Core` library. This is the directory that will be included in C++ user code to use the library.
 
 - `test`directory contains the source of all tests of the `Core` in `src`. Code coverage checks that `test` covers all `src` code.
-
+<!-- 
 ## targets
 
 ### `core` target
@@ -70,4 +70,4 @@ This is the library target. It produce a library called `core` that can be used 
 
 ### `core_test` target
 
-This is the test executable target. It produce a test executable that performs all `core` tests.
+This is the test executable target. It produce a test executable that performs all `core` tests. -->
