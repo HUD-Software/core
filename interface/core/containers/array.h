@@ -1261,15 +1261,18 @@ namespace hud
             return false;
         }
 
-        if (left.data() != nullptr)
+        // At this point, the case where count is different will never be encountered here
+        // We consider that left and right are both nullptr or not, but ignore the case left is nullptr and right is not and viceversa.
+
+        // If left and right are not nullptr, compare them
+        if (left.data() != nullptr && right.data() != nullptr)
         {
-            if (right.data() != nullptr) // If left and right are not nullptr, compare them
-            {
-                return hud::memory::equal_array(left.data(), right.data(), left.count());
-            }
-            return false; // Arrays are not equal if right is not nullptr but left is nullptr
+            return hud::memory::equal_array(left.data(), right.data(), left.count());
         }
-        return right.data() == nullptr; // If left is nullptr, arrays are not equal if right is also nullptr
+
+        // At this point, we know that left is nullptr or right is nullptr but not both
+        // There are equal only if both are nullptr.
+        return right.data() == nullptr;
     }
 
     /**
@@ -1293,15 +1296,18 @@ namespace hud
             return true;
         }
 
-        if (left.data() != nullptr)
+        // At this point, the case where count is different will never be encountered here
+        // We consider that left and right are both nullptr or not, but ignore the case left is nullptr and right is not and viceversa.
+
+        // If left and right are not nullptr, compare them
+        if (left.data() != nullptr && right.data() != nullptr)
         {
-            if (right.data() != nullptr) // If left and right are not nullptr, compare them
-            {
-                return hud::memory::not_equal_array(left.data(), right.data(), left.count());
-            }
-            return true; // Arrays are not equal if right is not nullptr but left is nullptr
+            return hud::memory::not_equal_array(left.data(), right.data(), left.count());
         }
-        return right.data() != nullptr; // If left is nullptr, arrays are not equal if right is also nullptr
+
+        // At this point, we know that left is nullptr or right is nullptr but not both
+        // There are equal only if both are nullptr.
+        return right.data() != nullptr;
     }
 
     /**
