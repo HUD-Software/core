@@ -37,6 +37,8 @@ if(MSVC)
 		endif()
 
 		target_link_options(${project_name} PRIVATE /PROFILE)
+		target_link_options(${lib_name} PRIVATE /PROFILE)
+		
 		add_custom_command(
 			TARGET ${project_name} POST_BUILD
 			COMMENT "Instrument and Collect ${project_name}.exe"
