@@ -37,7 +37,6 @@ if(MSVC)
 		endif()
 
 		target_link_options(${project_name} PRIVATE /PROFILE)
-		target_link_options(${lib_name} PRIVATE /PROFILE)
 		
 		add_custom_command(
 			TARGET ${project_name} POST_BUILD
@@ -91,9 +90,9 @@ if(MSVC)
 		)
 	endif()
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+	target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping -mllvm -runtime-counter-relocation)
 	target_link_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-	target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+	target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping -mllvm -runtime-counter-relocation)
 	target_link_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 
 	add_custom_command(
