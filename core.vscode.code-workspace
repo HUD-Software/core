@@ -24,4 +24,11 @@
         "cmake.launchBehavior": "breakAndReuseTerminal",
         "testMate.cpp.test.executables": "target/**/*{test}*",
     },
+    "extensions": {
+        "recommendations": [
+            "ms-vscode.cpptools-extension-pack",
+            "ryanluker.vscode-coverage-gutters",
+            "matepek.vscode-catch2-test-adapter"
+        ]
+    }
 }
