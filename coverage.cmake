@@ -167,43 +167,116 @@ if(MSVC)
 		# )
 	endif()
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping -mllvm -runtime-counter-relocation)
+	target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 	target_link_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-	target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping -mllvm -runtime-counter-relocation)
+	target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 	target_link_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+	
+	add_custom_command( 
+		 	TARGET ${project_name} POST_BUILD
+			COMMAND echo Download Grcov...
+			COMMAND curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
+		)
 
-	add_custom_command(
-		TARGET ${project_name} POST_BUILD
-		COMMENT "Run ${project_name}.exe"
-		COMMAND curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
-		COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./${project_name}
-		COMMAND llvm-profdata merge -sparse ${lib_name}.profraw -o ${lib_name}.profdata
-		COMMAND ./grcov --llvm -t html -b . -s ./../../
-				--llvm-path /usr/bin/
-				--branch
-				--keep-only "src/*" 
-				--keep-only "interface/*"
-				--excl-start "^.*LCOV_EXCL_START.*" 
-				--excl-stop "^.*LCOV_EXCL_STOP.*" 
-				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
-				--excl-br-start "^.*LCOV_EXCL_START.*" 
-				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-				-o ubuntu
-				..
-		COMMAND ./grcov --llvm -t lcov -b . -s ./../../
-				--llvm-path /usr/bin/
-				--branch
-				--keep-only "src/*"
-				--keep-only "interface/*"
-				--excl-start "^.*LCOV_EXCL_START.*" 
-				--excl-stop "^.*LCOV_EXCL_STOP.*" 
-				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
-				--excl-br-start "^.*LCOV_EXCL_START.*" 
-				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-				-o coverage.ubuntu.lcov.info
-				..
-	)
+    	add_custom_command( 
+		 	TARGET ${project_name} POST_BUILD
+			COMMAND echo Start coverage...
+			COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./${project_name}
+		)
+
+		add_custom_command( 
+			TARGET ${project_name} POST_BUILD
+			COMMAND echo Merge coverage info...
+			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge ${lib_name}.profraw -o ${lib_name}.profdata
+		)
+
+		add_custom_command( 
+			TARGET ${project_name} POST_BUILD
+			COMMAND echo Show profraw...
+			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata show --all-functions ${lib_name}.profdata >> profraw.info.txt
+		)
+
+		add_custom_command( 
+			TARGET ${project_name} POST_BUILD
+			COMMAND echo Show coverage info...
+			COMMAND rm -f show.txt
+			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-cov show ./${project_name} -instr-profile=${lib_name}.profdata -debuginfod >> show.txt
+			#COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-cov show ./${VS_CONFIG}/${project_name}.exe -instr-profile=default.profdata --show-branches=count --show-expansions >> show.txt
+		)
+
+
+		add_custom_command( 
+			TARGET ${project_name} POST_BUILD
+			COMMAND echo Generate HTML report...
+			COMMAND rm -f coverage.ubuntu.lcov.info
+			COMMAND ./grcov --llvm -t html -b . -s ./../../
+					--llvm-path /usr/bin/
+					--guess-directory-when-missing
+					--branch
+					--keep-only "src/*" 
+					--keep-only "interface/*"
+					--excl-start "^.*LCOV_EXCL_START.*" 
+					--excl-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+					--excl-br-start "^.*LCOV_EXCL_START.*" 
+					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+					-o ubuntu
+					..
+		)
+
+		add_custom_command( 
+			TARGET ${project_name} POST_BUILD
+			COMMAND echo Generate LCOV report...
+			COMMAND rm -f coverage.ubuntu.lcov.info
+			COMMAND ./grcov --llvm -t lcov -b . -s ./../../
+					--llvm-path /usr/bin/
+					--branch
+					--keep-only "src/*"
+					--keep-only "interface/*"
+					--excl-start "^.*LCOV_EXCL_START.*" 
+					--excl-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+					--excl-br-start "^.*LCOV_EXCL_START.*" 
+					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+					-o coverage.ubuntu.lcov.info
+					..
+		)
+
+
+	# add_custom_command(
+	# 	TARGET ${project_name} POST_BUILD
+	# 	COMMENT "Run ${project_name}.exe"
+	# 	COMMAND curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
+	# 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./${project_name}
+	# 	COMMAND llvm-profdata merge -sparse ${lib_name}.profraw -o ${lib_name}.profdata
+	# 	COMMAND ./grcov --llvm -t html -b . -s ./../../
+	# 			--llvm-path /usr/bin/
+	# 			--branch
+	# 			--keep-only "src/*" 
+	# 			--keep-only "interface/*"
+	# 			--excl-start "^.*LCOV_EXCL_START.*" 
+	# 			--excl-stop "^.*LCOV_EXCL_STOP.*" 
+	# 			--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+	# 			--excl-br-start "^.*LCOV_EXCL_START.*" 
+	# 			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+	# 			--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+	# 			-o ubuntu
+	# 			..
+	# 	COMMAND ./grcov --llvm -t lcov -b . -s ./../../
+	# 			--llvm-path /usr/bin/
+	# 			--branch
+	# 			--keep-only "src/*"
+	# 			--keep-only "interface/*"
+	# 			--excl-start "^.*LCOV_EXCL_START.*" 
+	# 			--excl-stop "^.*LCOV_EXCL_STOP.*" 
+	# 			--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+	# 			--excl-br-start "^.*LCOV_EXCL_START.*" 
+	# 			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+	# 			--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+	# 			-o coverage.ubuntu.lcov.info
+	# 			..
+	# )
 endif()
 endfunction()
