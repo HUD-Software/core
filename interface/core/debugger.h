@@ -5,6 +5,7 @@
     #include "os_windows/debugger.h"
 #elif defined(HD_OS_LINUX)
     #include "os_linux/debugger.h"
+    #include <stdlib.h> // abort
 #else
     #error Targeted OS not supported
 #endif

@@ -3,9 +3,12 @@
 #include "../assert.h"
 #include <stdlib.h> // malloc, free, ...
 #include <string.h> // memset
+#include <memory>   // std::allocator
 #include "../math.h"
 #include "../traits/is_constant_evaluated.h"
 #include "../traits/is_not_same.h"
+#include "../traits/is_pointer.h"
+#include "../traits/is_constant_evaluated.h"
 
 namespace hud::os::common
 {
@@ -50,7 +53,7 @@ namespace hud::os::common
          * @param alignment Alignment in bytes
          * @return Aligned pointer with header information before the returned pointer, nullptr otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE void *align_pointer(void *const unaligned_pointer, const usize size, const u32 alignment) noexcept
+        [[nodiscard]] static void *align_pointer(void *const unaligned_pointer, const usize size, const u32 alignment) noexcept
         {
             const uptr unaligned_address = (const uptr)unaligned_pointer;
             const uptr aligned_pointer = align_address(unaligned_address + ALIGNED_MALLOC_HEADER_SIZE, alignment);
@@ -136,11 +139,11 @@ namespace hud::os::common
          * @return Pointer to the allocated memory block, nullptr if failed
          */
         template<typename type_t>
-        requires(is_not_same_v<type_t, void>)
+        requires(hud::is_not_same_v<type_t, void>)
         [[nodiscard]] static constexpr type_t *allocate_array(const usize count) noexcept
         {
             const usize allocation_size = count * sizeof(type_t);
-            if (std::is_constant_evaluated())
+            if (hud::is_constant_evaluated())
             {
                 // Usage of std::allocator.allocate is allowed in constexpr dynamic allocation.
                 // The allocation should be freed with std::allocator<type_t>().deallocate in the same constexpr expression
@@ -520,8 +523,10 @@ namespace hud::os::common
 
         static constexpr void *move(u8 *destination, const u8 *source, const usize size) noexcept
         {
+
             if (hud::is_constant_evaluated())
             {
+                // LCOV_EXCL_START
                 u8 *dest = destination;
                 if (size == 0)
                 {
@@ -544,6 +549,7 @@ namespace hud::os::common
 
                 hud::os::common::memory::free_array(tmp, size);
                 return dest;
+                // LCOV_EXCL_STOP
             }
             else
             {
@@ -573,6 +579,7 @@ namespace hud::os::common
         {
             if (hud::is_constant_evaluated())
             {
+                // LCOV_EXCL_START
                 const u8 *lhs = buffer1;
                 const u8 *rhs = buffer2;
                 for (usize position = 0; position < size; position++)
@@ -586,6 +593,7 @@ namespace hud::os::common
                     rhs++;
                 }
                 return 0;
+                // LCOV_EXCL_STOP
             }
             else
             {
