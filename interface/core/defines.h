@@ -19,6 +19,13 @@
         #define NOMINMAX                                   // Do not defines min and max macro
         #undef RSIZE_MAX                                   // MSVC deinfed RSIZE_MAX to (SIZE_MAX >> 1) in limit.h. This is C11 that is not implemented by every compiler. Use hud::cstring::RSIZE_MAX instead.
         #define USE_ADDRESS_SANITIZER __SANITIZE_ADDRESS__ // The __SANITIZE_ADDRESS__ preprocessor macro is defined as 1 when /fsanitize=address is set
+        #define HD_DLL_EXPORT __declspec(dllexport)        // Export a library symbol
+        #define HD_DLL_IMPORT __declspec(dllimport)        // Import a library symbol
+        #if defined(_WINDLL)
+            #define HD_DLL HD_DLL_EXPORT
+        #else
+            #define HD_DLL HD_DLL_IMPORT
+        #endif
     #else
         #error Unsupported compiler for Windows
     #endif
@@ -46,13 +53,13 @@
                 #define USE_ADDRESS_SANITIZER 1
             #endif
         #endif
+        #define HD_DLL
     #else
         #error Unsupported compiler for Linux
     #endif
 
 #else
     #error Unsupported operating system
-
 #endif
 
 #endif // HD_INC_CORE_DEFINES_H

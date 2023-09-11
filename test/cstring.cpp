@@ -55,9 +55,9 @@ GTEST_TEST(cstring, is_null_or_empty)
     hud_assert_true(hud::cstring::is_null_or_empty(empty));
     hud_assert_true(hud::cstring::is_null_or_empty(null));
 
-    static constexpr const ansichar *const wide_no_null_empty = "abc";
-    static constexpr const ansichar *const wide_empty = "";
-    static constexpr const ansichar *const wide_null = nullptr;
+    static constexpr const wchar *const wide_no_null_empty = L"abc";
+    static constexpr const wchar *const wide_empty = L"";
+    static constexpr const wchar *const wide_null = nullptr;
 
     hud_assert_false(hud::cstring::is_null_or_empty(wide_no_null_empty));
     hud_assert_true(hud::cstring::is_null_or_empty(wide_empty));

@@ -217,7 +217,7 @@ set( interface
 source_group( TREE ${CMAKE_SOURCE_DIR} FILES ${interface} ${src})
 
 # Add OSLayer to the project
-add_library(core STATIC ${interface} ${src})
+add_library(core SHARED ${interface} ${src})
 
 # Use C++ 20
 set_target_properties(core
