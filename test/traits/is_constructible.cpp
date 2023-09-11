@@ -48,7 +48,7 @@ namespace hud_test
 GTEST_TEST(traits, is_constructible)
 {
     hud_assert_true((hud::is_constructible_v<hud_test::a>));
-#if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG) && HD_COMPILER_CLANG_VERSION_MAJOR < 16
+#if (defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG)) && HD_COMPILER_CLANG_VERSION_MAJOR < 16
     // Clang do not implement the Parenthesized initialization of aggregates feature before clang-16.
     // See: https://github.com/llvm/llvm-project/issues/55974
     hud_assert_false((hud::is_constructible_v<hud_test::a, i32>));
@@ -61,7 +61,7 @@ GTEST_TEST(traits, is_constructible)
     hud_assert_true((hud::is_constructible_v<hud_test::b, const volatile i32>));
     hud_assert_true((hud::is_constructible_v<hud_test::b, f32>)); // Implicit conversion f32 to i32
     hud_assert_true((hud::is_constructible_v<hud_test::c>));
-#if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG) && HD_COMPILER_CLANG_VERSION_MAJOR < 16
+#if (defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_CLANG)) && HD_COMPILER_CLANG_VERSION_MAJOR < 16
     // Clang do not implement the Parenthesized initialization of aggregates feature before clang-16.
     // See: https://github.com/llvm/llvm-project/issues/55974
     hud_assert_false((hud::is_constructible_v<hud_test::c, hud_test::a>));

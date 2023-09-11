@@ -69,9 +69,9 @@ __aarch64__
 #endif
 
 /** Detect compiler version */
-#if defined(_MSC_VER)
+#if defined(HD_COMPILER_MSVC)
     #define HD_COMPILER_VERSION _MSC_VER
-#elif defined(HD_COMPILER_CLANG)
+#elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_CLANG_CL)
     #define HD_COMPILER_CLANG_VERSION_MAJOR __clang_major__
     #define HD_COMPILER_CLANG_VERSION_MINOR __clang_minor__
     #define HD_COMPILER_CLANG_VERSION_PATCH __clang_patchlevel__

@@ -2,6 +2,8 @@
 
 #include <core/cstring.h>
 
+// #include <core/templates/bit_cast.h>
+
 GTEST_TEST(hash, hash_can_hash_integral)
 {
     // Consider compiler just truncate value that are bigger than u32
@@ -56,11 +58,11 @@ GTEST_TEST(hash, hash_can_hash_floating_point)
 GTEST_TEST(hash, hash_of_floating_point_are_usable_in_constexpr)
 {
     constexpr f32 flt32 = 12345.6789f;
-    constexpr u32 flt32_hash = std::bit_cast<u32>(flt32);
+    constexpr u32 flt32_hash = hud::bit_cast<u32>(flt32);
     hud_assert_eq(flt32_hash, static_cast<u32>(0x4640e6b7));
 
     constexpr f64 flt64 = 12345.6789;
-    constexpr u32 flt64_hash = hud::hash(std::bit_cast<u64>(flt64));
+    constexpr u32 flt64_hash = hud::hash(hud::bit_cast<u64>(flt64));
     hud_assert_eq(flt64_hash, static_cast<u32>(0xb82c8fdb));
 }
 
