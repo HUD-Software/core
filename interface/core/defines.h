@@ -21,11 +21,14 @@
         #define USE_ADDRESS_SANITIZER __SANITIZE_ADDRESS__ // The __SANITIZE_ADDRESS__ preprocessor macro is defined as 1 when /fsanitize=address is set
         #define HD_DLL_EXPORT __declspec(dllexport)        // Export a library symbol
         #define HD_DLL_IMPORT __declspec(dllimport)        // Import a library symbol
-        #if defined(_WINDLL)
-            #define HD_DLL HD_DLL_EXPORT
+        #if defined(HD_CORE_DLL_EXPORT)
+            #define HD_CORE_DLL HD_DLL_EXPORT
+        #elif defined(HD_CORE_DLL_IMPORT)
+            #define HD_CORE_DLL HD_DLL_IMPORT
         #else
-            #define HD_DLL HD_DLL_IMPORT
+            #define HD_CORE_DLL
         #endif
+
     #else
         #error Unsupported compiler for Windows
     #endif
@@ -53,7 +56,7 @@
                 #define USE_ADDRESS_SANITIZER 1
             #endif
         #endif
-        #define HD_DLL
+        #define HD_CORE_DLL
     #else
         #error Unsupported compiler for Linux
     #endif

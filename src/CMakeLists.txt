@@ -217,7 +217,7 @@ set( interface
 source_group( TREE ${CMAKE_SOURCE_DIR} FILES ${interface} ${src})
 
 # Add OSLayer to the project
-add_library(core SHARED ${interface} ${src})
+add_library(core STATIC ${interface} ${src})
 
 # Use C++ 20
 set_target_properties(core
@@ -255,3 +255,8 @@ target_compile_definitions(
 	# DebugOptimized specific compiler flags
 	$<$<CONFIG:RelWithDebInfo>:HD_DEBUGOPTIMIZED>
 )
+
+# If we build as shared library define HD_CORE_DLL_EXPORT
+if(BUILD_SHARED_LIBS)
+    target_compile_definitions(core PRIVATE HD_CORE_DLL_EXPORT)
+endif()

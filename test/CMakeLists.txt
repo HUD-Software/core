@@ -272,6 +272,8 @@ if(MSVC)
 	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
 endif()
 
+get_target_property(core_type core TYPE)
+
 
 	# if(MSVC)
 	# 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -463,6 +465,12 @@ target_compile_definitions(
 
 # Add Core dependency
 target_link_libraries(test_core PRIVATE core)
+if (core_type STREQUAL SHARED_LIBRARY)
+	# If we use code as shared library define HD_CORE_DLL_IMPORT
+    target_compile_definitions(test_core PRIVATE HD_CORE_DLL_IMPORT)
+	# Copyo the shared library next to test_core binary
+	add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:core> $<TARGET_FILE_DIR:test_core>)
+endif()
 
 # Add Google test dependency
 message("Fetching HUD-Software/google-test...")
@@ -482,10 +490,6 @@ set(gtest_build_tests OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(google_test)
 target_link_libraries( test_core PRIVATE gtest )
 add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:gtest> $<TARGET_FILE_DIR:test_core>)
-get_target_property(core_type core TYPE)
-if (core_type STREQUAL SHARED_LIBRARY)
-	add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:core> $<TARGET_FILE_DIR:test_core>)
-endif()
 
 # Add Intel slice-by-8 dependency
 message("Fetching HUD-Software/slice-by-8...")

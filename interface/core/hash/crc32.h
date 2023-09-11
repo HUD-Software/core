@@ -15,13 +15,13 @@ namespace hud::hash_algorithm
          * @param seed The seed to use. Default is 0.
          * @return The CRC32 of the buffer
          */
-        [[nodiscard]] static HD_DLL u32 hash(const u8 *buffer, usize count, const u32 seed = 0) noexcept;
+        [[nodiscard]] static HD_CORE_DLL u32 hash(const u8 *buffer, usize count, const u32 seed = 0) noexcept;
 
         /**
          * Check that the CRC32 lookup table have correct values
          * Intent to be used only for test validation
          */
-        [[nodiscard]] static HD_DLL bool is_lookup_table_values_correct() noexcept;
+        [[nodiscard]] static HD_CORE_DLL bool is_lookup_table_values_correct() noexcept;
     };
 
 } // namespace hud::hash_algorithm
