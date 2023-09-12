@@ -332,7 +332,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		COMMAND echo Generate HTML report...
 		COMMAND ./grcov --llvm -t html -b . -s ./../../
 				--llvm-path /usr/bin/
-				--branch
+				#--branch
 				--keep-only "src/*" 
 				--keep-only "interface/*"
 				--excl-start "^.*LCOV_EXCL_START.*" 
@@ -350,7 +350,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		COMMAND echo Generate LCOV report...
 		COMMAND ./grcov --llvm -t lcov -b . -s ./../../
 				--llvm-path /usr/bin/
-				--branch
+				#--branch
 				--keep-only "src/*"
 				--keep-only "interface/*"
 				--excl-start "^.*LCOV_EXCL_START.*" 
