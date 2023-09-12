@@ -5,32 +5,31 @@ on:
     branches: ["main"]
 
 jobs:
-   coverage_windows_clangcl:
-     runs-on: windows-latest
-     steps:
-       - name: Checkout repository
-         uses: actions/checkout@v3
-       - name: Set SSH Key
-         uses: webfactory/ssh-agent@v0.7.0
-         with:
-           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-       - name: Generate visual Studio solution
-         run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang-cl.exe" "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang-cl.exe" -Btarget -G "Visual Studio 17 2022" -T ClangCL,host=x64 -A x64 -DCOVERAGE:BOOL=ON
-       - name: Build and test
-         run: cmake.exe --build target --config Debug
-       - name: Upload coverage report to Codecov
-         run: |
-           $ProgressPreference = 'SilentlyContinue'
-           Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
-           .\target\codecov.exe -f target\test\coverage.windows.lcov.info -t ${{secrets.CODECOV_TOKEN}}
-       - name: Upload artifacts
-         uses: actions/upload-artifact@v3.1.1
-         with:
-           name: coverage
-           path: |
-             target\test\coverage.windows.lcov.info
-             target\test\windows\
-
+  coverage_windows_clangcl:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Set SSH Key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Generate visual Studio solution
+        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang-cl.exe" "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang-cl.exe" -Btarget -G "Visual Studio 17 2022" -T ClangCL,host=x64 -A x64 -DCOVERAGE:BOOL=ON
+      - name: Build and test
+        run: cmake.exe --build target --config Debug
+      - name: Upload coverage report to Codecov
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
+          .\target\codecov.exe -f target\test\coverage.windows.lcov.info -t ${{secrets.CODECOV_TOKEN}}
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: coverage
+          path: |
+            target\test\coverage.windows.lcov.info
+            target\test\windows\
   coverage_ubuntu_clang_14:
     runs-on: ubuntu-22.04
     steps:
