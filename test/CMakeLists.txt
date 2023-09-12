@@ -466,7 +466,7 @@ target_compile_definitions(
 # Add Core dependency
 target_link_libraries(test_core PRIVATE core)
 if (core_type STREQUAL SHARED_LIBRARY)
-	# If we use code as shared library define HD_CORE_DLL_IMPORT
+	# If we load shared library define HD_CORE_DLL_IMPORT
     target_compile_definitions(test_core PRIVATE HD_CORE_DLL_IMPORT)
 	# Copyo the shared library next to test_core binary
 	add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:core> $<TARGET_FILE_DIR:test_core>)
@@ -526,7 +526,7 @@ endif()
 
 if(COVERAGE)
 	include(../coverage.cmake)
-	enable_coverage(test_core core)
+	enable_gcov_coverage(test_core core)
 endif()
 
 

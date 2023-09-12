@@ -251,6 +251,12 @@ if(MSVC)
 		)
 
 		add_custom_command( 
+		 	TARGET ${project_name} POST_BUILD
+			COMMAND echo Delete old coverage...
+			COMMAND if exist coverage.windows.lcov.info del /s /q coverage.windows.lcov.info # It appears that coverage.windows.lcov.info impact grcov generation...
+		)
+
+		add_custom_command( 
 			TARGET ${project_name} POST_BUILD
 			COMMAND echo Generate HTML report...
 			COMMAND ./grcov.exe --llvm -t html -b ./${VS_CONFIG}/ -s ./../../
@@ -287,7 +293,8 @@ if(MSVC)
 		)
 
 	endif()
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")*
+
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Disable compiler batching to fix a clang-cl bug when activate --coverage
 	# See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
 	set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
@@ -312,8 +319,15 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")*
 	)
 
 	add_custom_command( 
+		 	TARGET ${project_name} POST_BUILD
+			COMMAND echo Delete old coverage...
+			COMMAND [ -e coverage.ubuntu.lcov.info ] && rm -f coverage.ubuntu.lcov.info  # It appears that coverage.windows.lcov.info impact grcov generation...
+		)
+
+	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Generate HTML report...
+		COMMAND rm -f coverage.ubuntu.lcov.info
 		COMMAND ./grcov --llvm -t html -b . -s ./../../
 				--llvm-path /usr/bin/
 				--branch
