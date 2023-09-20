@@ -22,15 +22,15 @@ jobs:
         run: |
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
-          .\target\codecov.exe -f target\test\coverage.windows.lcov.info -t ${{secrets.CODECOV_TOKEN}}
+          .\target\codecov.exe -f target\test\coverage.windows.clang.lcov.info -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
           name: coverage
           path: |
-            target\test\coverage.windows.lcov.info
+            target\test\coverage.windows.clang.lcov.info
             target\test\windows\
-  coverage_ubuntu_clang_14:
+  coverage_linux_clang_14:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
@@ -49,11 +49,11 @@ jobs:
         run: |
           curl -Os https://uploader.codecov.io/latest/linux/codecov
           chmod +x codecov
-          ./codecov -f target/test/coverage.ubuntu.lcov.info -t ${{secrets.CODECOV_TOKEN}}
+          ./codecov -f target/test/coverage.linux.clang.lcov.info -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
           name: coverage
           path: |
-            target/test/coverage.ubuntu.lcov.info
+            target/test/coverage.linux.clang.lcov.info
             target/test/ubuntu/

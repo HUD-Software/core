@@ -80,7 +80,6 @@ if(MSVC)
 			TARGET ${project_name} POST_BUILD
 			COMMAND echo Show coverage info...
 			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-cov report ./${VS_CONFIG}/${project_name}.exe -instr-profile=${project_name}.profdata -dump
-			#COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-cov report ./${VS_CONFIG}/${project_name}.exe -instr-profile=${lib_name}.profdata
 		)
 
 		add_custom_command( 
@@ -92,7 +91,7 @@ if(MSVC)
 		add_custom_command( 
 			TARGET ${project_name} POST_BUILD
 			COMMAND echo Generate HTML report...
-			COMMAND del /s /q coverage.windows.lcov.info # It appears that coverage.windows.lcov.info impact this generation...
+			COMMAND del /s /q coverage.windows.clang.lcov.info # It appears that coverage.windows.clang.lcov.info impact this generation...
 			COMMAND ./grcov.exe --llvm -t html -b ./${VS_CONFIG}/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
@@ -111,7 +110,7 @@ if(MSVC)
 		add_custom_command( 
 			TARGET ${project_name} POST_BUILD
 			COMMAND echo Generate LCOV report...
-			COMMAND del /s /q coverage.windows.lcov.info
+			COMMAND del /s /q coverage.windows.clang.lcov.info
 			COMMAND ./grcov.exe --llvm -t lcov -b ./${VS_CONFIG}/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
@@ -123,7 +122,7 @@ if(MSVC)
 					--excl-br-start "^.*LCOV_EXCL_START.*" 
 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-					-o coverage.windows.lcov.info
+					-o coverage.windows.clang.lcov.info
 					..
 		)
 	endif()
@@ -168,7 +167,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Generate HTML report...
-		COMMAND rm -f coverage.ubuntu.lcov.info
+		COMMAND rm -f coverage.linux.clang.lcov.info
 		COMMAND ./grcov --llvm -t html -b . -s ./../../
 				--llvm-path /usr/bin/
 				--branch
@@ -187,7 +186,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Generate LCOV report...
-		COMMAND rm -f coverage.ubuntu.lcov.info
+		COMMAND rm -f coverage.linux.clang.lcov.info
 		COMMAND ./grcov --llvm -t lcov -b . -s ./../../
 				--llvm-path /usr/bin/
 				--branch
@@ -199,7 +198,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-start "^.*LCOV_EXCL_START.*" 
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-				-o coverage.ubuntu.lcov.info
+				-o coverage.linux.clang.lcov.info
 				..
 	)
 endif()
@@ -229,9 +228,7 @@ if(MSVC)
 		set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
 
 		target_compile_options(${project_name} PRIVATE --coverage)
-		#target_link_options(${project_name} PRIVATE --coverage)
 		target_compile_options(${lib_name} PRIVATE --coverage)
-		#target_link_options(${lib_name} PRIVATE --coverage)
 
 		# Add clang lib path to libraries paths
 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
@@ -258,7 +255,7 @@ if(MSVC)
 		add_custom_command( 
 		 	TARGET ${project_name} POST_BUILD
 			COMMAND echo Delete old coverage...
-			COMMAND if exist coverage.windows.lcov.info del /s /q coverage.windows.lcov.info # It appears that coverage.windows.lcov.info impact grcov generation...
+			COMMAND if exist coverage.windows.clang.lcov.info del /s /q coverage.windows.clang.lcov.info # It appears that coverage.windows.clang.lcov.info impact grcov generation...
 		)
 
 		add_custom_command( 
@@ -293,7 +290,7 @@ if(MSVC)
 					--excl-br-start "^.*LCOV_EXCL_START.*" 
 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-					-o coverage.windows.lcov.info
+					-o coverage.windows.clang.lcov.info
 					..
 		)
 
@@ -312,7 +309,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Download Grcov...
-		COMMAND if [ ! -e coverage.ubuntu.lcov.info ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
+		COMMAND if [ ! -e coverage.linux.clang.lcov.info ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
 	)
 
 	add_custom_command( 
@@ -324,7 +321,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Delete old coverage...
-		COMMAND if [ -e coverage.ubuntu.lcov.info ];then (rm coverage.ubuntu.lcov.info) fi # It appears that coverage.windows.lcov.info impact grcov generation...
+		COMMAND if [ -e coverage.linux.clang.lcov.info ];then (rm coverage.linux.clang.lcov.info) fi # It appears that coverage.windows.clang.lcov.info impact grcov generation...
 	)
 
 	add_custom_command( 
@@ -359,7 +356,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-start "^.*LCOV_EXCL_START.*" 
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-				-o coverage.ubuntu.lcov.info
+				-o coverage.linux.clang.lcov.info
 				..
 	)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
@@ -375,7 +372,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	# add_custom_command( 
 	# 	TARGET ${project_name} POST_BUILD
 	# 	COMMAND echo Download Grcov...
-	# 	COMMAND if [ ! -e coverage.ubuntu.lcov.info ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
+	# 	COMMAND if [ ! -e coverage.linux.clang.lcov.info ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
 	# )
 
 	add_custom_command( 
@@ -406,7 +403,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # add_custom_command( 
 	# 	TARGET ${project_name} POST_BUILD
 	# 	COMMAND echo Generate HTML report...
-	# 	COMMAND lcov --capture --directory . --output-file coverage.ubuntu.lcov.infolcov
+	# 	COMMAND lcov --capture --directory . --output-file coverage.linux.clang.lcov.infolcov
 	# )
 
 	# add_custom_command( 
@@ -423,7 +420,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	# 			--excl-br-start "^.*LCOV_EXCL_START.*" 
 	# 			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 	# 			--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-	# 			-o coverage.ubuntu.lcov.info
+	# 			-o coverage.linux.clang.lcov.info
 	# 			..
 	# )
 

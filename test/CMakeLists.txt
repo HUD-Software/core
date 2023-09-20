@@ -384,7 +384,7 @@ get_target_property(core_type core TYPE)
 # 					--excl-br-start "^.*LCOV_EXCL_START.*" 
 # 					--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 # 					--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-# 					-o coverage.windows.lcov.info
+# 					-o coverage.windows.clang.lcov.info
 # 					..
 # 		)
 
@@ -427,7 +427,7 @@ get_target_property(core_type core TYPE)
 # 				--excl-br-start "^.*LCOV_EXCL_START.*" 
 # 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 # 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-# 				-o coverage.ubuntu.lcov.info
+# 				-o coverage.linux.clang.lcov.info
 # 				..
 # 	)
 # endif()
