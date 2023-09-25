@@ -46,8 +46,8 @@ if(MSVC)
 		add_custom_command(
 			TARGET ${project_name} POST_BUILD
 			COMMENT "Instrument and Collect ${project_name}.exe"
-			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument ${VS_CONFIG}\\${project_name}.exe -s ..\\..\\test\\coverage.runsettings
-			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect ${VS_CONFIG}\\${project_name}.exe -o ${VS_CONFIG}\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument ${VS_CONFIG}\\${project_name}.exe -s ..\\..\\coverage.runsettings
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect ${VS_CONFIG}\\${project_name}.exe -o ${VS_CONFIG}\\coverage.msvc -f cobertura -s ..\\..\\coverage.runsettings
 		)
 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)

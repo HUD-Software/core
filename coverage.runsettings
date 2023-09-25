@@ -10,6 +10,7 @@
         <Sources>
             <Exclude>
                 <Source>.*\\_deps\\.*</Source>
+                <Source>.*\\core\\test\\.*</Source>
             </Exclude>
         </Sources>
     </CodeCoverage>
