@@ -309,7 +309,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Download Grcov...
-		COMMAND if [ ! -e coverage.linux.clang.lcov.info ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
+		COMMAND if [ ! -e grcov ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
 	)
 
 	add_custom_command( 
@@ -338,7 +338,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-start "^.*LCOV_EXCL_START.*" 
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-				-o ubuntu
+				-o linux.clang
 				..
 	)
 
@@ -369,60 +369,61 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_link_options(${project_name} PRIVATE --coverage)
 	target_compile_options(${lib_name} PRIVATE --coverage)
 	
-	# add_custom_command( 
-	# 	TARGET ${project_name} POST_BUILD
-	# 	COMMAND echo Download Grcov...
-	# 	COMMAND if [ ! -e coverage.linux.clang.lcov.info ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
-	# )
-
+	add_custom_command( 
+		TARGET ${project_name} POST_BUILD
+		COMMAND echo Download Grcov...
+		COMMAND if [ ! -e grcov ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
+	)
+	
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Start coverage...
 		COMMAND ./${project_name}
 	)
 
-	# add_custom_command( 
-	# 	TARGET ${project_name} POST_BUILD
-	# 	COMMAND echo Generate HTML report...
-	# 	COMMAND ./grcov -t html -b . -s ./../../
-	# 			--llvm-path /usr/bin/
-	# 			--branch
-	# 			--keep-only "src/*" 
-	# 			--keep-only "interface/*"
-	# 			--excl-start "^.*LCOV_EXCL_START.*" 
-	# 			--excl-stop "^.*LCOV_EXCL_STOP.*" 
-	# 			--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
-	# 			--excl-br-start "^.*LCOV_EXCL_START.*" 
-	# 			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-	# 			--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-	# 			-o ubuntu
-	# 			..
-	# )
+	add_custom_command( 
+		TARGET ${project_name} POST_BUILD
+		COMMAND echo Generate HTML report...
+		COMMAND ./grcov -t html -b . -s ./../../
+				--llvm-path /usr/bin/
+				#--branch
+				--keep-only "src/*" 
+				--keep-only "interface/*"
+				--excl-start "^.*LCOV_EXCL_START.*" 
+				--excl-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+				--excl-br-start "^.*LCOV_EXCL_START.*" 
+				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+				-o linux.gcc
+				..
+	)
+	add_custom_command( 
+		TARGET ${project_name} POST_BUILD
+		COMMAND echo Generate LCOV report...
+		COMMAND ./grcov -t lcov -b . -s ./../../
+				--llvm-path /usr/bin/
+				#--branch
+				--keep-only "src/*"
+				--keep-only "interface/*"
+				--excl-start "^.*LCOV_EXCL_START.*" 
+				--excl-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+				--excl-br-start "^.*LCOV_EXCL_START.*" 
+				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+				-o coverage.linux.gcc.lcov.info
+				..
+	)
 
 	# set(GCOV_FILEPATH "/usr/bin/gcov-12")
     # add_custom_command( 
 	# 	TARGET ${project_name} POST_BUILD
 	# 	COMMAND echo Generate HTML report...
-	# 	COMMAND lcov --capture --directory . --output-file coverage.linux.clang.lcov.infolcov
+	# 	COMMAND lcov --capture --directory . --output-file coverage.linux.clang.lcov.info
 	# )
 
-	# add_custom_command( 
-	# 	TARGET ${project_name} POST_BUILD
-	# 	COMMAND echo Generate LCOV report...
-	# 	COMMAND ./grcov -t lcov -b . -s ./../../
-	# 			--llvm-path /usr/bin/
-	# 			--branch
-	# 			--keep-only "src/*"
-	# 			--keep-only "interface/*"
-	# 			--excl-start "^.*LCOV_EXCL_START.*" 
-	# 			--excl-stop "^.*LCOV_EXCL_STOP.*" 
-	# 			--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
-	# 			--excl-br-start "^.*LCOV_EXCL_START.*" 
-	# 			--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
-	# 			--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-	# 			-o coverage.linux.clang.lcov.info
-	# 			..
-	# )
+	
 
 endif()
 endfunction()
