@@ -45,9 +45,17 @@ if(MSVC)
 		
 		add_custom_command(
 			TARGET ${project_name} POST_BUILD
-			COMMENT "Instrument and Collect ${project_name}.exe"
-			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument ${VS_CONFIG}\\${project_name}.exe -s ..\\..\\coverage.runsettings
-			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect ${VS_CONFIG}\\${project_name}.exe -o ${VS_CONFIG}\\coverage.msvc -f cobertura -s ..\\..\\coverage.runsettings
+			COMMAND echo Instrument ${project_name}.exe
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument ${VS_CONFIG}/${project_name}.exe 
+					--settings ../../coverage.runsettings
+		)
+		add_custom_command(
+			TARGET ${project_name} POST_BUILD
+			COMMAND echo Collect ${project_name}.exe
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect ${VS_CONFIG}/${project_name}.exe 
+					--output ${VS_CONFIG}/coverage.msvc.cobertura 
+					--output-format cobertura 
+					--settings ../../coverage.runsettings
 		)
 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
@@ -217,9 +225,17 @@ if(MSVC)
 		
 		add_custom_command(
 			TARGET ${project_name} POST_BUILD
-			COMMENT "Instrument and Collect ${project_name}.exe"
-			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument ${VS_CONFIG}\\${project_name}.exe -s ..\\..\\test\\coverage.runsettings
-			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect ${VS_CONFIG}\\${project_name}.exe -o ${VS_CONFIG}\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
+			COMMAND echo Instrument ${project_name}.exe
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument ${VS_CONFIG}/${project_name}.exe 
+					--settings ../../coverage.runsettings
+		)
+		add_custom_command(
+			TARGET ${project_name} POST_BUILD
+			COMMAND echo Collect ${project_name}.exe
+			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect ${VS_CONFIG}/${project_name}.exe 
+					--output ${VS_CONFIG}/coverage.msvc.cobertura 
+					--output-format cobertura 
+					--settings ../../coverage.runsettings
 		)
 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		# Disable compiler batching to fix a clang-cl bug when activate --coverage
@@ -255,7 +271,7 @@ if(MSVC)
 		add_custom_command( 
 		 	TARGET ${project_name} POST_BUILD
 			COMMAND echo Delete old coverage...
-			COMMAND if exist coverage.windows.clang.lcov.info del /s /q coverage.windows.clang.lcov.info # It appears that coverage.windows.clang.lcov.info impact grcov generation...
+			COMMAND if exist coverage.windows.clang.lcov.info del /s /q coverage.windows.clang.lcov.info
 		)
 
 		add_custom_command( 
@@ -321,7 +337,7 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Delete old coverage...
-		COMMAND if [ -e coverage.linux.clang.lcov.info ];then (rm coverage.linux.clang.lcov.info) fi # It appears that coverage.windows.clang.lcov.info impact grcov generation...
+		COMMAND if [ -e coverage.linux.clang.lcov.info ];then (rm coverage.linux.clang.lcov.info) fi
 	)
 
 	add_custom_command( 

@@ -22,13 +22,13 @@ jobs:
         run: |
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
-          .\target\codecov.exe -f target\test\Debug\coverage.msvc -t ${{secrets.CODECOV_TOKEN}}
+          .\target\codecov.exe -f target\test\Debug\coverage.msvc.cobertura -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
           name: coverage
           path: |
-            target\test\Debug\coverage.msvc
+            target\test\Debug\coverage.msvc.cobertura
   coverage_windows_clangcl:
     runs-on: windows-latest
     steps:

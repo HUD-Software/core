@@ -340,7 +340,7 @@ get_target_property(core_type core TYPE)
 # 			TARGET test_core POST_BUILD
 # 			COMMENT "Instrument and Collect test_core.exe"
 # 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument Debug\\test_core.exe -s ..\\..\\test\\coverage.runsettings
-# 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Debug\\test_core.exe -o Debug\\coverage.msvc -f cobertura -s ..\\..\\test\\coverage.runsettings
+# 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Debug\\test_core.exe -o Debug\\coverage.msvc.cobertura -f cobertura -s ..\\..\\test\\coverage.runsettings
 # 		)
 # 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 # 		target_compile_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)

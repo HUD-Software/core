@@ -10,8 +10,11 @@
         <Sources>
             <Exclude>
                 <Source>.*\\_deps\\.*</Source>
-                <Source>.*\\core\\test\\.*</Source>
+                <Source>.*\\test\\.*</Source>
             </Exclude>
         </Sources>
+        <EnableStaticNativeInstrumentation>True</EnableStaticNativeInstrumentation>
+        <EnableDynamicNativeInstrumentation>False</EnableDynamicNativeInstrumentation>
+        <EnableStaticNativeInstrumentationRestore>False</EnableStaticNativeInstrumentationRestore>
     </CodeCoverage>
 </Configuration>
