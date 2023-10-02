@@ -5,6 +5,10 @@ on:
     branches: ["main"]
 
 jobs:
+  # We deactivate it because LCOV_EXCL_START and LCOV_EXCL_STOP are not 
+  #taken into account, same for if (hud::is_constant_evaluated())
+  #
+  #
   # coverage_windows_msvc:
   #   runs-on: windows-latest
   #   steps:
