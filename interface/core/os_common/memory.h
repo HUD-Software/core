@@ -144,11 +144,13 @@ namespace hud::os::common
         {
             const usize allocation_size = count * sizeof(type_t);
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
                 // Usage of std::allocator.allocate is allowed in constexpr dynamic allocation.
                 // The allocation should be freed with std::allocator<type_t>().deallocate in the same constexpr expression
                 return (allocation_size > 0u) ? std::allocator<type_t>().allocate(count) : nullptr;
             }
+            // LCOV_EXCL_STOP
             return reinterpret_cast<type_t *>(allocate(allocation_size));
         }
 
