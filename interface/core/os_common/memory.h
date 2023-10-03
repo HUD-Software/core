@@ -240,6 +240,7 @@ namespace hud::os::common
         static constexpr void free_array(type_t *alloc, const usize count) noexcept
         {
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
                 if (alloc != nullptr)
                 {
@@ -248,6 +249,7 @@ namespace hud::os::common
                     std::allocator<type_t>().deallocate(alloc, count);
                 }
             }
+            // LCOV_EXCL_STOP
             else
             {
                 free(reinterpret_cast<void *>(alloc));
@@ -270,9 +272,11 @@ namespace hud::os::common
         static constexpr void free_align(type_t *pointer, const usize count) noexcept
         {
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
                 free_array(pointer, count);
             }
+            // LCOV_EXCL_STOP
             else
             {
                 free_align(reinterpret_cast<const void *>(pointer));
@@ -371,6 +375,7 @@ namespace hud::os::common
         static constexpr type_t *copy(type_t *destination, const type_t *source, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
                 type_t *dest = destination;
                 for (usize position = 0; position < size; position++)
@@ -381,6 +386,7 @@ namespace hud::os::common
                 }
                 return dest;
             }
+            // LCOV_EXCL_STOP
             else
             {
                 return static_cast<type_t *>(copy(static_cast<void *>(destination), static_cast<const void *>(source), size));
@@ -417,12 +423,14 @@ namespace hud::os::common
         static constexpr void set(u8 *destination, const usize size, const u8 value) noexcept
         {
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size; position++)
                 {
                     std::construct_at(destination + position, value);
                 }
             }
+            // LCOV_EXCL_STOP
             else
             {
                 set(static_cast<void *>(destination), size, value);
@@ -434,12 +442,14 @@ namespace hud::os::common
         requires(is_integral_v<type_t>)
         {
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size / sizeof(type_t); position++)
                 {
                     std::construct_at(destination + position, value);
                 }
             }
+            // LCOV_EXCL_STOP
             else
             {
                 set(static_cast<void *>(destination), size, value);
@@ -484,12 +494,14 @@ namespace hud::os::common
         static constexpr void set_zero(type_t *destination, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size / sizeof(type_t); position++)
                 {
                     std::construct_at(destination + position, nullptr);
                 }
             }
+            // LCOV_EXCL_STOP
             else
             {
                 set(static_cast<void *>(destination), size, 0);
@@ -525,8 +537,8 @@ namespace hud::os::common
         {
 
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
-                // LCOV_EXCL_START
                 u8 *dest = destination;
                 if (size == 0)
                 {
@@ -549,8 +561,8 @@ namespace hud::os::common
 
                 hud::os::common::memory::free_array(tmp, size);
                 return dest;
-                // LCOV_EXCL_STOP
             }
+            // LCOV_EXCL_STOP
             else
             {
                 return move(static_cast<void *>(destination), static_cast<const void *>(source), size);
@@ -578,8 +590,8 @@ namespace hud::os::common
         [[nodiscard]] static constexpr i32 compare(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
-                // LCOV_EXCL_START
                 const u8 *lhs = buffer1;
                 const u8 *rhs = buffer2;
                 for (usize position = 0; position < size; position++)
@@ -593,8 +605,8 @@ namespace hud::os::common
                     rhs++;
                 }
                 return 0;
-                // LCOV_EXCL_STOP
             }
+            // LCOV_EXCL_STOP
             else
             {
                 return compare(static_cast<const void *>(buffer1), static_cast<const void *>(buffer2), size);
