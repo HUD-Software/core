@@ -14,7 +14,7 @@ namespace hud::os::linux
         i32 file_descriptor = open("/proc/self/status", O_RDONLY);
         if (file_descriptor == -1)
         {
-            return false;
+            return false; // LCOV_EXCL_LINE
         }
 
         constexpr usize BUFFER_BYTES_COUNT = 256;
@@ -22,7 +22,7 @@ namespace hud::os::linux
         isize read_count = read(file_descriptor, buffer, BUFFER_BYTES_COUNT);
         if (read_count == -1)
         {
-            return false;
+            return false; // LCOV_EXCL_LINE
         }
 
         buffer[read_count - 1] = '\0';
@@ -30,7 +30,7 @@ namespace hud::os::linux
         ansichar *found = strstr(buffer, TRACERPID);
         if (found == nullptr)
         {
-            return false;
+            return false; // LCOV_EXCL_LINE
         }
         return found[sizeof(TRACERPID) - 1] != '0';
     }
