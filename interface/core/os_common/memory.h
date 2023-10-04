@@ -198,9 +198,11 @@ namespace hud::os::common
         static constexpr type_t *allocate_align(const usize count, const u32 alignment) noexcept
         {
             if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
             {
                 return allocate_array<type_t>(count);
             }
+            // LCOV_EXCL_STOP
             return reinterpret_cast<type_t *>(allocate_align(count * sizeof(type_t), alignment));
         }
 
