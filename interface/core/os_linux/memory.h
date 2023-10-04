@@ -1,10 +1,10 @@
 #ifndef HD_INC_CORE_OS_LINUX_MEMORY_H
-    #define HD_INC_CORE_OS_LINUX_MEMORY_H
-    #include "../os_common/memory.h"
+#define HD_INC_CORE_OS_LINUX_MEMORY_H
+#include "../os_common/memory.h"
 
-    #if !defined(HD_OS_LINUX)
-        #error This file must be included only when targetting Linux OS
-    #endif
+#if !defined(HD_OS_LINUX)
+    #error This file must be included only when targetting Linux OS
+#endif
 
 namespace hud::os::linux
 {
@@ -19,11 +19,11 @@ namespace hud::os::linux
          */
         static constexpr u32 reverse(const u32 value) noexcept
         {
-    #if HD_HAS_BUILTIN_BUILTIN_BSWAP32
+#if HD_HAS_BUILTIN_BUILTIN_BSWAP32
             return __builtin_bswap32(value);
-    #else
-        #error hud::os::linux::memory::reverse(u32) not defined
-    #endif
+#else
+    #error hud::os::linux::memory::reverse(u32) not defined
+#endif
         }
 
         /**
@@ -34,11 +34,11 @@ namespace hud::os::linux
          */
         static constexpr u64 reverse(const u64 value) noexcept
         {
-    #if HD_HAS_BUILTIN_BULITIN_BSWAP64
+#if HD_HAS_BUILTIN_BULITIN_BSWAP64
             return __builtin_bswap64(value);
-    #else
-        #error hud::os::linux::memory::reverse(u64) not defined
-    #endif
+#else
+    #error hud::os::linux::memory::reverse(u64) not defined
+#endif
         }
 
         /**
@@ -49,11 +49,12 @@ namespace hud::os::linux
          */
         static constexpr u32 rotate_left(const u32 value, const u32 shift) noexcept
         {
-    #if HD_HAS_BUILTIN_BULITIN_ROTATELEFT32
+#if HD_HAS_BUILTIN_BULITIN_ROTATELEFT32
             return __builtin_rotateleft32(value, shift);
-    #else
-            const int __r = shift % 32;
+#else
+            const u32 __r = shift % 32;
             return (value << __r) | (value >> ((32 - __r) % 32));
+#endif
         }
 
         /**
@@ -64,12 +65,12 @@ namespace hud::os::linux
          */
         static constexpr u64 rotate_left(const u64 value, const u32 shift) noexcept
         {
-        #if HD_HAS_BUILTIN_BULITIN_ROTATELEFT64
+#if HD_HAS_BUILTIN_BULITIN_ROTATELEFT64
             return __builtin_rotateleft64(value, shift);
-        #else
-            const int __r = shift % 64;
+#else
+            const u64 __r = shift % 64;
             return (value << __r) | (value >> ((64 - __r) % 64));
-        #endif
+#endif
         }
 
         /**
@@ -80,12 +81,12 @@ namespace hud::os::linux
          */
         static constexpr u32 rotate_right(const u32 value, const u32 shift) noexcept
         {
-        #if HD_HAS_BUILTIN_BULITIN_ROTATERIGHT32
+#if HD_HAS_BUILTIN_BULITIN_ROTATERIGHT32
             return __builtin_rotateright32(value, shift);
-        #else
-            const int __r = shift % 32;
+#else
+            const u32 __r = shift % 32;
             return (value >> __r) | (value << ((32 - __r) % 32));
-        #endif
+#endif
         }
 
         /**
@@ -96,15 +97,15 @@ namespace hud::os::linux
         */
         static constexpr u64 rotate_right(const u64 value, const u32 shift) noexcept
         {
-        #if HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64
+#if HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64
             return __builtin_rotateright64(value, shift);
-        #else
-            const int __r = shift % 64;
+#else
+            const u64 __r = shift % 64;
             return (value >> __r) | (value << ((64 - __r) % 64));
-        #endif
+#endif
         }
     };
 
 } // namespace hud::os::linux
 
-    #endif /* HD_INC_CORE_OS_LINUX_MEMORY_H */
+#endif /* HD_INC_CORE_OS_LINUX_MEMORY_H */
