@@ -24,6 +24,8 @@ namespace hud
         using iterator_type = random_access_iterator<type_t *>;
         /** Constant slice iterator type */
         using const_iterator_type = random_access_iterator<const type_t *>;
+        /** The element type to the allocation. */
+        using element_type = type_t;
 
         /** Default construct with value-initialized slice. */
         constexpr allocation() noexcept = default;

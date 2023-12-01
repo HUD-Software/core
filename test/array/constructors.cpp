@@ -1434,7 +1434,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                 (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied
-                all_values_copied};
+                all_values_copied
+            };
         };
 
         // Non Constant
@@ -1499,7 +1500,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                 // Ensure we are allocating only one time
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
         };
 
         // Non Constant
@@ -1572,7 +1574,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                             array.data() != initializer.begin(),
 
                             // Ensure values are correclty copied
-                            all_values_copied};
+                            all_values_copied
+                        };
                     };
                     // Non Constant
                     {
@@ -1636,7 +1639,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                             // Ensure we are allocating only one time
                             array.allocator().allocation_count(),
-                            array.allocator().free_count()};
+                            array.allocator().free_count()
+                        };
                     };
 
                     // Non Constant
@@ -1718,7 +1722,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                 (void *)array.data() != (void *)initializer.begin(),
 
                 // Ensure values are correclty copied
-                all_values_copied};
+                all_values_copied
+            };
         };
 
         // Non Constant
@@ -1783,7 +1788,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                 // Ensure we are allocating only one time
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
         };
 
         // Non Constant
@@ -1856,7 +1862,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                             (void *)array.data() != (void *)initializer.begin(),
 
                             // Ensure values are correclty copied
-                            all_values_copied};
+                            all_values_copied
+                        };
                     };
                     // Non Constant
                     {
@@ -1920,7 +1927,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 
                             // Ensure we are allocating only one time
                             array.allocator().allocation_count(),
-                            array.allocator().free_count()};
+                            array.allocator().free_count()
+                        };
                     };
 
                     // Non Constant
@@ -2722,8 +2730,8 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type)
 
     using CopiedType = hud::array<type, hud_test::array_allocator<alignof(type)>>;
 
-    hud_test::for_each_type<hud_test::array_allocator<alignof(type)>, hud_test::ArrayAllocator2<alignof(type)>>()([]<typename Allocator>() noexcept
-                                                                                                                  {
+    hud_test::for_each_type<hud_test::array_allocator<alignof(type)>, hud_test::array_allocator_2<alignof(type)>>()([]<typename Allocator>() noexcept
+                                                                                                                    {
 
         auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
@@ -3009,7 +3017,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type)
     using Type2 = u32;
 
     using AllocatorOfCopiedArray = hud_test::array_allocator<alignof(Type1)>;
-    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
+    using OtherAllocatorOfArray = hud_test::array_allocator_2<alignof(Type2)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfCopiedArray, OtherAllocatorOfArray>);
@@ -3306,7 +3314,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type)
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::NonBitwiseCopyConstructibleType;
     using AllocatorOfCopiedArray = hud_test::array_allocator<alignof(type)>;
-    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(type)>;
+    using OtherAllocatorOfArray = hud_test::array_allocator_2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfCopiedArray, OtherAllocatorOfArray>);
@@ -3610,7 +3618,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type)
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
     using AllocatorOfCopiedArray = hud_test::array_allocator<alignof(Type1)>;
-    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
+    using OtherAllocatorOfArray = hud_test::array_allocator_2<alignof(Type2)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfCopiedArray, OtherAllocatorOfArray>);
@@ -3910,7 +3918,7 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type)
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
     using type = i32;
     using AllocatorOfMovedArray = hud_test::array_allocator<alignof(type)>;
-    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(type)>;
+    using OtherAllocatorOfArray = hud_test::array_allocator_2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
@@ -4309,7 +4317,7 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type)
     using Type1 = i32;
     using Type2 = u32;
     using AllocatorOfMovedArray = hud_test::array_allocator<alignof(Type1)>;
-    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
+    using OtherAllocatorOfArray = hud_test::array_allocator_2<alignof(Type2)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
@@ -4715,7 +4723,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type)
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
     using AllocatorOfMovedArray = hud_test::array_allocator<alignof(type)>;
-    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(type)>;
+    using OtherAllocatorOfArray = hud_test::array_allocator_2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
@@ -5096,7 +5104,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type)
     /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::NonBitwiseMoveConstructibleType;
     using AllocatorOfMovedArray = hud_test::array_allocator<alignof(type)>;
-    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(type)>;
+    using OtherAllocatorOfArray = hud_test::array_allocator_2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);
@@ -5490,7 +5498,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type)
     using Type1 = hud_test::NonBitwiseMoveConstructibleType;
     using Type2 = hud_test::NonBitwiseMoveConstructibleType2;
     using AllocatorOfMovedArray = hud_test::array_allocator<alignof(Type1)>;
-    using OtherAllocatorOfArray = hud_test::ArrayAllocator2<alignof(Type2)>;
+    using OtherAllocatorOfArray = hud_test::array_allocator_2<alignof(Type2)>;
 
     // Ensure we test with different allocator and types
     static_assert(!std::is_same_v<AllocatorOfMovedArray, OtherAllocatorOfArray>);

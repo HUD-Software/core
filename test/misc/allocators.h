@@ -117,7 +117,7 @@ namespace hud_test
     };
 
     template<u32 alignement>
-    struct ArrayAllocator2 : public array_allocator<alignement>
+    struct array_allocator_2 : public array_allocator<alignement>
     {
     };
 

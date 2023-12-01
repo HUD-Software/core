@@ -1122,13 +1122,19 @@ namespace hud
          * If u_type_t is bitwise moveable to type_t and the allocator are the same, the internal allocation ownership is given to this by stealing the pointer
          * If u_type_t is not bitwise moveable to type_t or allocators are differents, it do not still the pointer and call the type_t's move constructor is called for each element.
          * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The alloctor type of the other array
+         * @tparam u_allocator_t The allocator type of the other array
          * @param other The other array to move
          */
         template<typename u_type_t, typename u_allocator_t>
         constexpr void move_assign(array<u_type_t, u_allocator_t> &&other) noexcept
         {
-            if (!hud::is_constant_evaluated() && is_same_v<allocator_type, u_allocator_t> && hud::is_bitwise_move_assignable_v<type_t, u_type_t>)
+            // We can still the allocation directly from the other array all the following statements are true :
+            // - Is not contant evaluated ( reinterpret_cast is involved )
+            // - u_type_t is bitwise moveable to type_t
+            // - allocation_type::element_type  is bitwise moveable to (array<u_type_t, u_allocator_t>
+            if (!hud::is_constant_evaluated()
+                && hud::is_bitwise_move_assignable_v<type_t, u_type_t>
+                && hud::is_bitwise_move_assignable_v<typename allocation_type::element_type, typename array<u_type_t, u_allocator_t>::allocation_type::element_type>)
             {
                 // Destroy existing elements
                 hud::memory::destroy_array(data(), count());
@@ -1152,7 +1158,6 @@ namespace hud
                 // If we don't need to reallocate
                 else
                 {
-
                     // We assign all elements that are already in the allocation,
                     // Then we copy construct all remaining elements at the end of the assigned elements
                     if (other.count() > count())

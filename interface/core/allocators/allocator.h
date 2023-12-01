@@ -6,7 +6,6 @@ namespace hud
 {
     struct allocator
     {
-
         /** The type of allocation done by this allocator. */
         template<typename type_t>
         using allocation_type = hud::allocation<type_t>;
