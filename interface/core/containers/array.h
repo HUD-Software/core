@@ -1132,15 +1132,16 @@ namespace hud
             // - Is not contant evaluated ( reinterpret_cast is involved )
             // - u_type_t is bitwise moveable to type_t
             // - allocation_type::element_type  is bitwise moveable to (array<u_type_t, u_allocator_t>
-            if (!hud::is_constant_evaluated() && is_same_v<allocator_type, u_allocator_t> && hud::is_bitwise_move_assignable_v<type_t, u_type_t>)
-            // if (!hud::is_constant_evaluated()
-            //     && hud::is_bitwise_move_assignable_v<type_t, u_type_t>
-            //     && hud::is_bitwise_move_assignable_v<typename allocation_type::element_type, typename array<u_type_t, u_allocator_t>::allocation_type::element_type>)
+            // if (!hud::is_constant_evaluated() && is_same_v<allocator_type, u_allocator_t> && hud::is_bitwise_move_assignable_v<type_t, u_type_t>)
+            if (!hud::is_constant_evaluated()
+                && hud::is_bitwise_move_assignable_v<type_t, u_type_t>
+                && hud::is_move_assignable_v<allocator_type, u_allocator_t>
+                && hud::is_bitwise_move_assignable_v<typename allocation_type::element_type, typename array<u_type_t, u_allocator_t>::allocation_type::element_type>)
             {
                 // Destroy existing elements
                 hud::memory::destroy_array(data(), count());
                 // Still the allocation and the allocator
-                *static_cast<allocator_type *>(this) = hud::move(*static_cast<allocator_type *>(&other));
+                *static_cast<allocator_type *>(this) = hud::move(*static_cast<u_allocator_t *>(&other));
                 free_allocation_and_replace_it(allocation_type(reinterpret_cast<type_t *>(other.allocation.data()), other.allocation.count()), other.count());
                 other.leak();
             }
