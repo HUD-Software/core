@@ -9,6 +9,7 @@ namespace hud_test
         // LCOV_EXCL_START
         try
         {
+            hud::debugger::break_here_if(!condition);
             GTEST_ASSERT_TRUE(condition) << file << "(" << line << "): " << condition_str << " != true";
         }
         catch (const std::exception &e)
@@ -28,6 +29,7 @@ namespace hud_test
         // LCOV_EXCL_START
         try
         {
+            hud::debugger::break_here_if(condition);
             GTEST_ASSERT_FALSE(condition) << file << "(" << line << "): " << condition_str << " != false";
         }
         catch (const std::exception &e)
@@ -47,6 +49,7 @@ namespace hud_test
         // LCOV_EXCL_START
         try
         {
+            hud::debugger::break_here_if(!(a == b));
             GTEST_ASSERT_EQ(a, b) << file << "(" << line << "): " << a_str << " == " << b_str;
         }
         catch (const std::exception &e)
@@ -66,6 +69,7 @@ namespace hud_test
         // LCOV_EXCL_START
         try
         {
+            hud::debugger::break_here_if(!(a != b));
             GTEST_ASSERT_NE(a, b) << file << "(" << line << "): " << a_str << " != " << b_str;
         }
         catch (const std::exception &e)

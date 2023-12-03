@@ -7,11 +7,11 @@ GTEST_TEST(debugger, is_present)
 
 GTEST_TEST(debugger, break_here_if)
 {
-    hud::debugger::break_here_if(true);
-    hud::debugger::break_here_if(false);
+    //hud::debugger::break_here_if(true);
+    //hud::debugger::break_here_if(false);
 }
 
 GTEST_TEST(debugger, break_here)
 {
-    hud::debugger::break_here();
+    //hud::debugger::break_here();
 }

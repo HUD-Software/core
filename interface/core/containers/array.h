@@ -1175,8 +1175,8 @@ namespace hud
                         if (other.data())
                         {
                             hud::memory::move_or_copy_assign_array(data(), other.data(), other.end_ptr);
-                            hud::memory::destroy_array(data() + other.count(), count() - other.count());
                         }
+                        hud::memory::destroy_array(data() + other.count(), count() - other.count());
                     }
                     end_ptr = allocation.data_at(other.count());
                 }
