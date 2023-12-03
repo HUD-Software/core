@@ -1170,10 +1170,13 @@ namespace hud
                     }
                     // If we assign less or equal count of elements than the current element count
                     // we copy assign all new elements of the source in the allocation, then we destroy the remaining elements
-                    else
+                    else if (data())
                     {
-                        hud::memory::move_or_copy_assign_array(data(), other.data(), other.end_ptr);
-                        hud::memory::destroy_array(data() + other.count(), count() - other.count());
+                        if (other.data())
+                        {
+                            hud::memory::move_or_copy_assign_array(data(), other.data(), other.end_ptr);
+                            hud::memory::destroy_array(data() + other.count(), count() - other.count());
+                        }
                     }
                     end_ptr = allocation.data_at(other.count());
                 }
@@ -1188,7 +1191,9 @@ namespace hud
          * @param new_allocation The new allocation to move
          * @param new_count_of_element The new count of elements to set
          */
-        constexpr void free_allocation_and_replace_it(allocation_type &&new_allocation, const usize new_count_of_element) noexcept
+        constexpr void
+        free_allocation_and_replace_it(allocation_type &&new_allocation, const usize new_count_of_element) noexcept
+
         {
             allocator_type::template free<type_t>(allocation);
             allocation = hud::move(new_allocation);
