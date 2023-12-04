@@ -528,11 +528,3 @@ if(COVERAGE)
 	include(../coverage.cmake)
 	enable_gcov_coverage(test_core core)
 endif()
-
-
-if(MSVC)
-	set_property(TARGET test_core PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-	set_property(TARGET core PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-	set_property(TARGET slice_by_8 PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-	set_property(TARGET cityhash PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-endif()
