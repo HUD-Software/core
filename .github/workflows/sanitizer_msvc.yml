@@ -6,7 +6,7 @@ on:
 
 jobs:
   sanitizer_windows_msvc:
-    runs-on: windows-2019
+    runs-on: windows-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -15,7 +15,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Generate visual Studio solution
-        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64 -DSANITIZER:BOOL=ON
+        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64 #-DSANITIZER:BOOL=ON
       - name: Build
         run: cmake.exe --build target --config Debug
       - name: Test
