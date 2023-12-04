@@ -519,10 +519,10 @@ target_link_libraries( test_core PRIVATE cityhash )
 add_test(NAME core COMMAND test_core --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
 
 
-if(SANITIZER)
+#if(SANITIZER)
 	include(../sanitizer.cmake)
 	enable_sanitizer(test_core core)
-endif()
+#endif()
 
 if(COVERAGE)
 	include(../coverage.cmake)
