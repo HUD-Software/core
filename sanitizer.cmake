@@ -18,7 +18,9 @@ function(enable_sanitizer project_name lib_name)
 			#target_compile_definitions(gtest PRIVATE _DISABLE_VECTOR_ANNOTATION)
 
 			add_custom_command(TARGET ${project_name} POST_BUILD 
+				COMMAND Echo "Copy ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll to $<TARGET_FILE_DIR:${project_name}>"
 				COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:${project_name}>
+				COMMAND Echo "Copy ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll to $<TARGET_FILE_DIR:${project_name}>"
 				COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:${project_name}>
 			)
 		elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
