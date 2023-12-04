@@ -19,5 +19,4 @@ jobs:
       - name: Build
         run: cmake.exe --build target --config Debug
       - name: Test
-        run: .\target\test\Debug\test_core.exe
-                   # ctest --test-dir target -j10 -C Debug -T test --output-on-failure --verbose
+        run: ctest --test-dir target -j10 -C Debug -T test --output-on-failure --verbose
