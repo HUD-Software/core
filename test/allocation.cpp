@@ -244,7 +244,7 @@ GTEST_TEST(allocation, to_slice)
 {
     // to_slice of empty allocation is empty slice
     {
-        hud::allocation<i32> allocation(nullptr, 0u);
+        hud::allocation<i32> allocation(nullptr, nullptr);
         hud_assert_eq(allocation.data(), nullptr);
         hud_assert_eq(allocation.count(), 0u);
 

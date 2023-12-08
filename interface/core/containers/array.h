@@ -243,7 +243,7 @@ namespace hud
             // LCOV_EXCL_STOP
             else
             {
-                allocation = allocation_type(reinterpret_cast<type_t *>(other.data()), other.max_count());
+                allocation = other.allocation.reinterpret_cast_to<type_t>();
                 end_ptr = data_at(other.count());
                 other.leak();
             }
@@ -1143,7 +1143,7 @@ namespace hud
                 // Move the allocator
                 *static_cast<allocator_type *>(this) = hud::move(*static_cast<u_allocator_t *>(&other));
                 // Still the allocation and cast the type
-                free_allocation_and_replace_it(allocation_type(reinterpret_cast<type_t *>(other.allocation.data()), other.allocation.count()), other.count());
+                free_allocation_and_replace_it(other.allocation.reinterpret_cast_to<type_t>(), other.count());
                 other.leak();
             }
             else

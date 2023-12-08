@@ -30,6 +30,12 @@ namespace hud
         /** Default construct with value-initialized slice. */
         constexpr allocation() noexcept = default;
 
+        HD_FORCEINLINE constexpr allocation(type_t *begin, type_t *end) noexcept
+            : begin_ptr(begin)
+            , end_ptr(end)
+        {
+        }
+
         /**
          * Construct with user-defined pointer and number of elements to sequence.
          * @param first The pointer to the first element of the contiguous sequence of elements
@@ -139,12 +145,25 @@ namespace hud
             return begin_ptr + index < end_ptr;
         }
 
-        [[nodiscard]] HD_FORCEINLINE constexpr allocation sub_allocation(const usize first_index, const usize count) const noexcept
+        /**
+         * Reinterprets the bits of the allocation type to the given type.
+         * Be very carefull with this method, struct alignement may be not respected.
+         * This is a reinterpret_cast.
+         * @return The allocation transmute to another type
+         */
+        template<typename type_u>
+        [[nodiscard]] allocation<type_u> HD_FORCEINLINE reinterpret_cast_to() const noexcept
         {
-            check(first_index <= this->count());         // "sub_slice can't start after the end of the slice"
-            check(first_index + count <= this->count()); // "sub_slice can't end after the end of the slice"
-            return allocation(begin_ptr + first_index, count);
+            return allocation<type_u> {reinterpret_cast<type_u *>(begin_ptr), reinterpret_cast<type_u *>(end_ptr)};
         }
+
+        // /** Retrieves a suballoation*/
+        // [[nodiscard]] HD_FORCEINLINE constexpr allocation sub_allocation(const usize first_index, const usize count) const noexcept
+        // {
+        //     check(first_index <= this->count());         // "sub_slice can't start after the end of the slice"
+        //     check(first_index + count <= this->count()); // "sub_slice can't end after the end of the slice"
+        //     return allocation(begin_ptr + first_index, count);
+        // }
 
         /**
          * Retrieves a sub-slice of the slice.
