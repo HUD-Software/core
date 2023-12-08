@@ -1140,8 +1140,9 @@ namespace hud
             {
                 // Destroy existing elements
                 hud::memory::destroy_array(data(), count());
-                // Still the allocation and the allocator
+                // Move the allocator
                 *static_cast<allocator_type *>(this) = hud::move(*static_cast<u_allocator_t *>(&other));
+                // Still the allocation and cast the type
                 free_allocation_and_replace_it(allocation_type(reinterpret_cast<type_t *>(other.allocation.data()), other.allocation.count()), other.count());
                 other.leak();
             }

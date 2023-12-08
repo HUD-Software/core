@@ -1,28 +1,28 @@
 cmake_minimum_required(VERSION 3.24)
 
 add_executable(test_core 
-	array/add.cpp
-	array/add_no_construct.cpp
-	array/add_to_ref.cpp
-	array/assignment.cpp
-	array/clear.cpp
-	array/comparison.cpp
-	array/constructors.cpp
-	array/copy_assign.cpp
-	array/destructor.cpp
-	array/emplace_at.cpp
-	array/emplace_at_to_ref.cpp
-	array/emplace_back.cpp
-	array/emplace_back_to_ref.cpp
-	array/iteration.cpp
-	array/misc.cpp
-	array/move_assign.cpp
-	array/remove_at.cpp
-	array/reserve.cpp
-	array/resize.cpp
-	array/search.cpp
-	array/shrink_to_fit.cpp
-	array/swap.cpp
+	array/array_add.cpp
+	array/array_add_no_construct.cpp
+	array/array_add_to_ref.cpp
+	array/array_assignment.cpp
+	array/array_clear.cpp
+	array/array_comparison.cpp
+	array/array_constructors.cpp
+	array/array_copy_assign.cpp
+	array/array_destructor.cpp
+	array/array_emplace_at.cpp
+	array/array_emplace_at_to_ref.cpp
+	array/array_emplace_back.cpp
+	array/array_emplace_back_to_ref.cpp
+	array/array_iteration.cpp
+	array/array_misc.cpp
+	array/array_move_assign.cpp
+	array/array_remove_at.cpp
+	array/array_reserve.cpp
+	array/array_resize.cpp
+	array/array_search.cpp
+	array/array_shrink_to_fit.cpp
+	array/array_swap.cpp
 	hash/city_hash.cpp
 	hash/crc32.cpp
 	hash/hash.cpp
