@@ -151,19 +151,12 @@ namespace hud
          * This is a reinterpret_cast.
          * @return The allocation transmute to another type
          */
-        template<typename type_u>
-        [[nodiscard]] allocation<type_u> HD_FORCEINLINE reinterpret_cast_to() const noexcept
+        template<typename u_type_t>
+        [[nodiscard]] allocation<u_type_t> HD_FORCEINLINE reinterpret_cast_to() const noexcept
         {
-            return allocation<type_u> {reinterpret_cast<type_u *>(begin_ptr), reinterpret_cast<type_u *>(end_ptr)};
+            static_assert(alignof(u_type_t) == alignof(type_t), "Alignement requirement mismatch");
+            return allocation<u_type_t> {reinterpret_cast<u_type_t *>(begin_ptr), reinterpret_cast<u_type_t *>(end_ptr)};
         }
-
-        // /** Retrieves a suballoation*/
-        // [[nodiscard]] HD_FORCEINLINE constexpr allocation sub_allocation(const usize first_index, const usize count) const noexcept
-        // {
-        //     check(first_index <= this->count());         // "sub_slice can't start after the end of the slice"
-        //     check(first_index + count <= this->count()); // "sub_slice can't end after the end of the slice"
-        //     return allocation(begin_ptr + first_index, count);
-        // }
 
         /**
          * Retrieves a sub-slice of the slice.
