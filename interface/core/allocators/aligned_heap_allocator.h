@@ -2,7 +2,7 @@
 #define HD_INC_CORE_ALLOCATOR_ALIGNED_HEAP_H
 #include "../memory.h"
 #include "../traits/is_power_of_two.h"
-#include "allocator.h"
+#include "allocation.h"
 
 namespace hud
 {
@@ -13,8 +13,20 @@ namespace hud
     template<u32 alignment>
     requires(is_power_of_two_v<alignment>)
     struct aligned_heap_allocator
-        : hud::allocator
     {
+        /** The type of allocation done by this allocator. */
+        template<typename type_t>
+        using allocation_type = hud::allocation<type_t>;
+
+        /** Do not propagate the allocator when container is moved. */
+        using propagate_on_container_move_assignment = hud::false_type;
+
+        /** Do not propagate the allocator when containes if copied. */
+        using propagate_on_container_copy_assignment = hud::false_type;
+
+        /** Do not propagate the allocator when containes if swapped. */
+        using propagate_on_container_swap = hud::false_type;
+
         /**
          * Allocate aligned memory block
          * @tparam type_t The element type to allocate

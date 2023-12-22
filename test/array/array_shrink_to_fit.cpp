@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/allocators.h"
+#include "../misc/array_allocators.h"
 
 GTEST_TEST(array, shrink_to_fit_decrease_allocation)
 {

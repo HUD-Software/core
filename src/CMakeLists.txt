@@ -11,13 +11,14 @@ set( src
 if(UNIX AND NOT APPLE)
 set( src ${src}
 	os_linux/debugger.cpp
+	precompiled.h
 )
 endif()
 
 set( interface
 	../interface/core/allocators/aligned_heap_allocator.h
 	../interface/core/allocators/allocation.h
-	../interface/core/allocators/allocator.h
+	../interface/core/allocators/allocator_traits.h
 	../interface/core/allocators/heap_allocator.h
 	../interface/core/containers/aligned_buffer.h
 	../interface/core/containers/array.h
@@ -113,6 +114,7 @@ set( interface
 	../interface/core/traits/is_default_constructible.h
 	../interface/core/traits/is_derived_from.h
 	../interface/core/traits/is_destructible.h
+	../interface/core/traits/is_empty.h
 	../interface/core/traits/is_enum.h
 	../interface/core/traits/is_explicitly_constructible.h
 	../interface/core/traits/is_explicitly_copy_constructible.h
@@ -236,6 +238,9 @@ endif()
 
 # Include Interface directory to inclusion path
 target_include_directories(core PUBLIC ../interface)
+
+
+target_precompile_headers(core PRIVATE precompiled.h)
 
 # Add defines
 target_compile_definitions(

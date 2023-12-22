@@ -1132,11 +1132,12 @@ namespace hud
             // - Is not contant evaluated ( reinterpret_cast is involved )
             // - u_type_t is bitwise moveable to type_t
             // - allocation_type::element_type  is bitwise moveable to (array<u_type_t, u_allocator_t>
-            // if (!hud::is_constant_evaluated() && is_same_v<allocator_type, u_allocator_t> && hud::is_bitwise_move_assignable_v<type_t, u_type_t>)
+
+            // TODO: Use propagate_on_container_move_assignment instead of this
+            // Read https://www.foonathan.net/2015/10/allocatorawarecontainer-propagation-pitfalls/
             if (!hud::is_constant_evaluated()
                 && hud::is_bitwise_move_assignable_v<type_t, u_type_t>
-                && hud::is_move_assignable_v<allocator_type, u_allocator_t>
-                && hud::is_bitwise_move_assignable_v<typename allocation_type::element_type, typename array<u_type_t, u_allocator_t>::allocation_type::element_type>)
+                && allocator_type::propagate_on_container_move_assignment::value)
             {
                 // Destroy existing elements
                 hud::memory::destroy_array(data(), count());

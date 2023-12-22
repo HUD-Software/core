@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/allocators.h"
+#include "../misc/array_allocators.h"
 #include <core/memory.h>
 
 GTEST_TEST(array, add_no_construct_do_not_call_constructor)
@@ -23,7 +23,8 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.count(),
                 array.max_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
 
             // Construct only in constant_evaluated
             // Constant evaluation do not allowed to access non initialized memory
@@ -40,11 +41,13 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.count(),
                 array.max_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
 
             return std::tuple {
                 result_0,
-                result_1};
+                result_1
+            };
         };
 
         // Non constant
@@ -103,7 +106,8 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.count(),
                 array.max_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
 
             // Construct only in constant_evaluated
             // Constant evaluation do not allowed to access non initialized memory
@@ -120,11 +124,13 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
                 array.count(),
                 array.max_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
 
             return std::tuple {
                 result_0,
-                result_1};
+                result_1
+            };
         };
 
         // Non constant

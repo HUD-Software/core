@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/allocators.h"
+#include "../misc/array_allocators.h"
 
 GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
 {
@@ -26,7 +26,8 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
                 array[0].copy_assign_count(),
                 array[0].copy_constructor_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
             // Add another element
             const type &ref_1 = array.add_to_ref(element_to_copy);
             const auto second_element_result = std::tuple {
@@ -39,10 +40,12 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
                 array[1].copy_assign_count(),
                 array[1].copy_constructor_count(),
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -140,7 +143,8 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_ty
             };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -244,7 +248,8 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
             };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -317,7 +322,8 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
                 array.max_count(),
                 array[0],
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
 
             // Add another element
             const type element_to_copy_1(2u);
@@ -330,10 +336,12 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
                 array[0],
                 array[1],
                 array.allocator().allocation_count(),
-                array.allocator().free_count()};
+                array.allocator().free_count()
+            };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -432,7 +440,8 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
             };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -529,7 +538,8 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
             };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -631,7 +641,8 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
             };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -720,7 +731,8 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
             };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -817,7 +829,8 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
             };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant
@@ -907,7 +920,8 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
             };
             return std::tuple {
                 first_element_result,
-                second_element_result};
+                second_element_result
+            };
         };
 
         // Non Constant

@@ -24,8 +24,10 @@ namespace hud
         using iterator_type = random_access_iterator<type_t *>;
         /** Constant slice iterator type */
         using const_iterator_type = random_access_iterator<const type_t *>;
-        /** The element type to the allocation. */
+        /** The element type of the allocation. */
         using element_type = type_t;
+        /** The pointer to element type of the allocation. */
+        using pointer_type = element_type *;
 
         /** Default construct with value-initialized slice. */
         constexpr allocation() noexcept = default;
@@ -195,9 +197,9 @@ namespace hud
 
     private:
         /** Pointer to the first element */
-        type_t *HD_RESTRICT begin_ptr = nullptr;
+        pointer_type HD_RESTRICT begin_ptr = nullptr;
         /** Number of element */
-        type_t *HD_RESTRICT end_ptr = nullptr;
+        pointer_type HD_RESTRICT end_ptr = nullptr;
     };
 
 } // namespace hud

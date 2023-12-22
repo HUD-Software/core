@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/allocators.h"
+#include "../misc/array_allocators.h"
 #include "../misc/leak_guard.h"
 
 GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type)

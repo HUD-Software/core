@@ -1,15 +1,18 @@
 #ifndef HD_INC_CORE_ALLOCATOR_HEAP_H
 #define HD_INC_CORE_ALLOCATOR_HEAP_H
 #include "../memory.h"
-#include "allocator.h"
+#include "allocation.h"
+#include "allocator_traits.h"
 
 namespace hud
 {
 
     /** Allocator that use the system heap allocation. */
     struct heap_allocator
-        : hud::allocator
     {
+        /** The type of allocation done by this allocator. */
+        template<typename type_t>
+        using allocation_type = hud::allocation<type_t>;
 
         /**
          * Allocate memory block with no alignment requirements
@@ -34,6 +37,9 @@ namespace hud
         }
     };
 
+    static_assert(hud::allocator_traits<heap_allocator>::is_always_equal::value);
+    static_assert(!hud::allocator_traits<heap_allocator>::copy_when_container_copy::value);
+    static_assert(!hud::allocator_traits<heap_allocator>::move_when_container_move::value);
 } // namespace hud
 
 #endif // HD_INC_CORE_ALLOCATOR_HEAP_H

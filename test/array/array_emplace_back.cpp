@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/allocators.h"
+#include "../misc/array_allocators.h"
 
 GTEST_TEST(array, emplace_back_can_default_construct_non_trivially_default_constructible_type)
 {

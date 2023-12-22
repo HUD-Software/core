@@ -12,6 +12,14 @@ namespace hud_test
 
         template<typename type_t>
         using allocation_type = hud::allocation<type_t>;
+        /** Do not propagate the allocator when container is moved. */
+        using propagate_on_container_move_assignment = hud::false_type;
+
+        /** Do not propagate the allocator when containes if copied. */
+        using propagate_on_container_copy_assignment = hud::false_type;
+
+        /** Do not propagate the allocator when containes if swapped. */
+        using propagate_on_container_swap = hud::false_type;
 
     public:
         /** Default constructor. */

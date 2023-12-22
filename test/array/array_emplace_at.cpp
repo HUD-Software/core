@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/allocators.h"
+#include "../misc/array_allocators.h"
 
 GTEST_TEST(array, emplace_at_can_default_construct_non_trivially_default_constructible_type)
 {
@@ -15,276 +15,276 @@ GTEST_TEST(array, emplace_at_can_default_construct_non_trivially_default_constru
         {
             // The empty array
             array_type array;
-    hud_assert_eq(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 0u);
-    hud_assert_eq(array.allocator().allocation_count(), 0u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(array.count());
+            // Emplace first element
+            array.emplace_at(array.count());
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 1u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
-    hud_assert_eq(array[0].default_constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[0].default_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
 
-    // Emplace second element
-    array.emplace_at(array.count());
+            // Emplace second element
+            array.emplace_at(array.count());
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 2u);
-    hud_assert_eq(array.allocator().free_count(), 1u);
-    hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
-    hud_assert_eq(array[0].default_constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 1u);
-    hud_assert_eq(array[1].id(), type::DEFAULT_ID_VALUE);
-    hud_assert_eq(array[1].default_constructor_count(), 1u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].move_constructor_count(), 0u);
-}
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[0].default_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 1u);
+            hud_assert_eq(array[1].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[1].default_constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 0u);
+        }
 
-// No reallocation
-{
-    // The empty array but with memory reserved
-    array_type array;
-    array.reserve(2);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+        // No reallocation
+        {
+            // The empty array but with memory reserved
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(0);
+            // Emplace first element
+            array.emplace_at(0);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
-    hud_assert_eq(array[0].default_constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[0].default_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
 
-    // Emplace second element
-    array.emplace_at(1);
+            // Emplace second element
+            array.emplace_at(1);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
-    hud_assert_eq(array[0].default_constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
-    hud_assert_eq(array[1].id(), type::DEFAULT_ID_VALUE);
-    hud_assert_eq(array[1].default_constructor_count(), 1u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].move_constructor_count(), 0u);
-}
-}
-
-// Emplace at the middle of an array
-{
-    // Reallocation
-    {
-        // The array with 4 elements with ID [1,2,3,4]
-        array_type array;
-array.reserve(4);
-array.emplace_back(1);
-array.emplace_back(2);
-array.emplace_back(3);
-array.emplace_back(4);
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 4u);
-hud_assert_eq(array.max_count(), 4u);
-hud_assert_eq(array.allocator().allocation_count(), 1u);
-hud_assert_eq(array.allocator().free_count(), 0u);
-
-// Emplace first element
-array.emplace_at(array.count() / 2u);
-
-// Ensure we correctly emplaced the first element
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 5u);
-hud_assert_eq(array.max_count(), 5u);
-hud_assert_eq(array.allocator().allocation_count(), 2u);
-hud_assert_eq(array.allocator().free_count(), 1u);
-hud_assert_eq(array[0].id(), 1);
-hud_assert_eq(array[0].default_constructor_count(), 0u);
-hud_assert_eq(array[0].copy_constructor_count(), 0u);
-hud_assert_eq(array[0].move_constructor_count(), 1u);
-hud_assert_eq(array[1].id(), 2);
-hud_assert_eq(array[1].default_constructor_count(), 0u);
-hud_assert_eq(array[1].copy_constructor_count(), 0u);
-hud_assert_eq(array[1].move_constructor_count(), 1u);
-hud_assert_eq(array[2].id(), type::DEFAULT_ID_VALUE);
-hud_assert_eq(array[2].default_constructor_count(), 1u);
-hud_assert_eq(array[2].copy_constructor_count(), 0u);
-hud_assert_eq(array[2].move_constructor_count(), 0u);
-hud_assert_eq(array[3].id(), 3);
-hud_assert_eq(array[3].default_constructor_count(), 0u);
-hud_assert_eq(array[3].copy_constructor_count(), 0u);
-hud_assert_eq(array[3].move_constructor_count(), 1u);
-hud_assert_eq(array[4].id(), 4);
-hud_assert_eq(array[4].default_constructor_count(), 0u);
-hud_assert_eq(array[4].copy_constructor_count(), 0u);
-hud_assert_eq(array[4].move_constructor_count(), 1u);
-}
-
-// No reallocation
-{
-    // The array with 4 elements with ID [1,2,3,4]
-    array_type array;
-    array.reserve(5);
-    array.emplace_back(1);
-    array.emplace_back(2);
-    array.emplace_back(3);
-    array.emplace_back(4);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 4u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-
-    // Emplace element in the middle
-    array.emplace_at(array.count() / 2u);
-
-    // Ensure we correctly emplaced the element.
-    // Array should be [1,2,type::DEFAULT_ID_VALUE,3,4]
-    // Only 4 and 5 are copied
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 5u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), 1);
-    hud_assert_eq(array[0].default_constructor_count(), 0u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
-    hud_assert_eq(array[1].id(), 2);
-    hud_assert_eq(array[1].default_constructor_count(), 0u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].move_constructor_count(), 0u);
-    hud_assert_eq(array[2].id(), type::DEFAULT_ID_VALUE);
-    hud_assert_eq(array[2].default_constructor_count(), 1u);
-    hud_assert_eq(array[2].copy_constructor_count(), 0u);
-    hud_assert_eq(array[2].move_constructor_count(), 0u);
-    hud_assert_eq(array[3].id(), 3);
-    hud_assert_eq(array[3].default_constructor_count(), 0u);
-    hud_assert_eq(array[3].copy_constructor_count(), 0u);
-    hud_assert_eq(array[3].move_constructor_count(), 1u);
-    hud_assert_eq(array[4].id(), 4);
-    hud_assert_eq(array[4].default_constructor_count(), 0u);
-    hud_assert_eq(array[4].copy_constructor_count(), 0u);
-    hud_assert_eq(array[4].move_constructor_count(), 1u);
-}
-}
-
-// Emplace at the begin of an array
-{
-    // Reallocation
-    {
-        // The empty array
-        array_type array;
-        hud_assert_eq(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 0u);
-        hud_assert_eq(array.allocator().allocation_count(), 0u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-
-        // Emplace first element
-        array.emplace_at(0);
-
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 1u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
-        hud_assert_eq(array[0].default_constructor_count(), 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-
-        // Emplace second element
-        array.emplace_at(0);
-
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 2u);
-        hud_assert_eq(array.allocator().free_count(), 1u);
-        hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
-        hud_assert_eq(array[0].default_constructor_count(), 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].id(), type::DEFAULT_ID_VALUE);
-        hud_assert_eq(array[1].default_constructor_count(), 1u);
-        hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 1u);
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[0].default_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[1].default_constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 0u);
+        }
     }
 
-    // No reallocation
+    // Emplace at the middle of an array
     {
-        // The empty array
-        array_type array;
-        array.reserve(2);
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
+        // Reallocation
+        {
+            // The array with 4 elements with ID [1,2,3,4]
+            array_type array;
+            array.reserve(4);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(3);
+            array.emplace_back(4);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 4u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace first element
-        array.emplace_at(0);
+            // Emplace first element
+            array.emplace_at(array.count() / 2u);
 
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
-        hud_assert_eq(array[0].default_constructor_count(), 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].default_constructor_count(), 0u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 1u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].default_constructor_count(), 0u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 1u);
+            hud_assert_eq(array[2].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[2].default_constructor_count(), 1u);
+            hud_assert_eq(array[2].copy_constructor_count(), 0u);
+            hud_assert_eq(array[2].move_constructor_count(), 0u);
+            hud_assert_eq(array[3].id(), 3);
+            hud_assert_eq(array[3].default_constructor_count(), 0u);
+            hud_assert_eq(array[3].copy_constructor_count(), 0u);
+            hud_assert_eq(array[3].move_constructor_count(), 1u);
+            hud_assert_eq(array[4].id(), 4);
+            hud_assert_eq(array[4].default_constructor_count(), 0u);
+            hud_assert_eq(array[4].copy_constructor_count(), 0u);
+            hud_assert_eq(array[4].move_constructor_count(), 1u);
+        }
 
-        // Emplace second element
-        array.emplace_at(0);
+        // No reallocation
+        {
+            // The array with 4 elements with ID [1,2,3,4]
+            array_type array;
+            array.reserve(5);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(3);
+            array.emplace_back(4);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
-        hud_assert_eq(array[0].default_constructor_count(), 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].id(), type::DEFAULT_ID_VALUE);
-        hud_assert_eq(array[1].default_constructor_count(), 1u);
-        hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 1u);
+            // Emplace element in the middle
+            array.emplace_at(array.count() / 2u);
+
+            // Ensure we correctly emplaced the element.
+            // Array should be [1,2,type::DEFAULT_ID_VALUE,3,4]
+            // Only 4 and 5 are copied
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].default_constructor_count(), 0u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].default_constructor_count(), 0u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 0u);
+            hud_assert_eq(array[2].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[2].default_constructor_count(), 1u);
+            hud_assert_eq(array[2].copy_constructor_count(), 0u);
+            hud_assert_eq(array[2].move_constructor_count(), 0u);
+            hud_assert_eq(array[3].id(), 3);
+            hud_assert_eq(array[3].default_constructor_count(), 0u);
+            hud_assert_eq(array[3].copy_constructor_count(), 0u);
+            hud_assert_eq(array[3].move_constructor_count(), 1u);
+            hud_assert_eq(array[4].id(), 4);
+            hud_assert_eq(array[4].default_constructor_count(), 0u);
+            hud_assert_eq(array[4].copy_constructor_count(), 0u);
+            hud_assert_eq(array[4].move_constructor_count(), 1u);
+        }
     }
-}
+
+    // Emplace at the begin of an array
+    {
+        // Reallocation
+        {
+            // The empty array
+            array_type array;
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[0].default_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+
+            // Emplace second element
+            array.emplace_at(0);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[0].default_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[1].default_constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 1u);
+        }
+
+        // No reallocation
+        {
+            // The empty array
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[0].default_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+
+            // Emplace second element
+            array.emplace_at(0);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[0].default_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), type::DEFAULT_ID_VALUE);
+            hud_assert_eq(array[1].default_constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 1u);
+        }
+    }
 }
 
 GTEST_TEST(array, emplace_at_can_default_construct_trivially_default_constructible_type)
@@ -300,222 +300,222 @@ GTEST_TEST(array, emplace_at_can_default_construct_trivially_default_constructib
         {
             // The empty array
             array_type array;
-    hud_assert_eq(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 0u);
-    hud_assert_eq(array.allocator().allocation_count(), 0u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(array.count());
+            // Emplace first element
+            array.emplace_at(array.count());
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 1u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 0u);
 
-    // Change the value to differanciate it from default value
-    array[0] = 1u;
+            // Change the value to differanciate it from default value
+            array[0] = 1u;
 
-    // Emplace second element
-    array.emplace_at(array.count());
+            // Emplace second element
+            array.emplace_at(array.count());
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 2u);
-    hud_assert_eq(array.allocator().free_count(), 1u);
-    hud_assert_eq(array[0], 1u);
-    hud_assert_eq(array[1], 0u);
-}
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 0u);
+        }
 
-// No reallocation
-{
-    // The empty array but with memory reserved
-    array_type array;
-    array.reserve(2);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+        // No reallocation
+        {
+            // The empty array but with memory reserved
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(0);
+            // Emplace first element
+            array.emplace_at(0);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 0u);
 
-    // Change the value to differanciate it from default value
-    array[0] = 1u;
+            // Change the value to differanciate it from default value
+            array[0] = 1u;
 
-    // Emplace second element
-    array.emplace_at(1);
+            // Emplace second element
+            array.emplace_at(1);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 1u);
-    hud_assert_eq(array[1], 0u);
-}
-}
-
-// Emplace at the middle of an array
-{
-    // Reallocation
-    {
-        // The array with 4 elements with ID [1,2,3,4]
-        array_type array;
-array.reserve(4);
-array.emplace_back(1);
-array.emplace_back(2);
-array.emplace_back(3);
-array.emplace_back(4);
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 4u);
-hud_assert_eq(array.max_count(), 4u);
-hud_assert_eq(array.allocator().allocation_count(), 1u);
-hud_assert_eq(array.allocator().free_count(), 0u);
-
-// Emplace first element
-array.emplace_at(array.count() / 2u);
-
-// Ensure we correctly emplaced the first element
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 5u);
-hud_assert_eq(array.max_count(), 5u);
-hud_assert_eq(array.allocator().allocation_count(), 2u);
-hud_assert_eq(array.allocator().free_count(), 1u);
-hud_assert_eq(array[0], 1u);
-hud_assert_eq(array[1], 2u);
-hud_assert_eq(array[2], 0u);
-hud_assert_eq(array[3], 3u);
-hud_assert_eq(array[4], 4u);
-}
-
-// No reallocation
-{
-    // The array with 4 elements with ID [1,2,3,4]
-    array_type array;
-    array.reserve(5);
-    array.emplace_back(1);
-    array.emplace_back(2);
-    array.emplace_back(3);
-    array.emplace_back(4);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 4u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-
-    // Emplace element in the middle
-    array.emplace_at(array.count() / 2u);
-
-    // Ensure we correctly emplaced the element.
-    // Array should be [1,2,type::DEFAULT_ID_VALUE,3,4]
-    // Only 4 and 5 are copied
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 5u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 1u);
-    hud_assert_eq(array[1], 2u);
-    hud_assert_eq(array[2], 0u);
-    hud_assert_eq(array[3], 3u);
-    hud_assert_eq(array[4], 4u);
-}
-}
-
-// Emplace at the begin of an array
-{
-    // Reallocation
-    {
-        // The empty array
-        array_type array;
-        hud_assert_eq(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 0u);
-        hud_assert_eq(array.allocator().allocation_count(), 0u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-
-        // Emplace first element
-        array.emplace_at(0);
-
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 1u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], 0u);
-
-        // Change the value to differanciate it from default value
-        array[0] = 1u;
-
-        // Emplace second element
-        array.emplace_at(0);
-
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 2u);
-        hud_assert_eq(array.allocator().free_count(), 1u);
-        hud_assert_eq(array[0], 0u);
-        hud_assert_eq(array[1], 1u);
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 0u);
+        }
     }
 
-    // No reallocation
+    // Emplace at the middle of an array
     {
-        // The empty array
-        array_type array;
-        array.reserve(2);
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
+        // Reallocation
+        {
+            // The array with 4 elements with ID [1,2,3,4]
+            array_type array;
+            array.reserve(4);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(3);
+            array.emplace_back(4);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 4u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace first element
-        array.emplace_at(0);
+            // Emplace first element
+            array.emplace_at(array.count() / 2u);
 
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+            hud_assert_eq(array[2], 0u);
+            hud_assert_eq(array[3], 3u);
+            hud_assert_eq(array[4], 4u);
+        }
 
-        // Change the value to differanciate it from default value
-        array[0] = 1u;
+        // No reallocation
+        {
+            // The array with 4 elements with ID [1,2,3,4]
+            array_type array;
+            array.reserve(5);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(3);
+            array.emplace_back(4);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace second element
-        array.emplace_at(0);
+            // Emplace element in the middle
+            array.emplace_at(array.count() / 2u);
 
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], 0u);
-        hud_assert_eq(array[1], 1u);
+            // Ensure we correctly emplaced the element.
+            // Array should be [1,2,type::DEFAULT_ID_VALUE,3,4]
+            // Only 4 and 5 are copied
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+            hud_assert_eq(array[2], 0u);
+            hud_assert_eq(array[3], 3u);
+            hud_assert_eq(array[4], 4u);
+        }
     }
-}
+
+    // Emplace at the begin of an array
+    {
+        // Reallocation
+        {
+            // The empty array
+            array_type array;
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 0u);
+
+            // Change the value to differanciate it from default value
+            array[0] = 1u;
+
+            // Emplace second element
+            array.emplace_at(0);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], 0u);
+            hud_assert_eq(array[1], 1u);
+        }
+
+        // No reallocation
+        {
+            // The empty array
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 0u);
+
+            // Change the value to differanciate it from default value
+            array[0] = 1u;
+
+            // Emplace second element
+            array.emplace_at(0);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 0u);
+            hud_assert_eq(array[1], 1u);
+        }
+    }
 }
 
 GTEST_TEST(array, emplace_at_can_construct_non_trivially_constructible_type)
@@ -532,278 +532,278 @@ GTEST_TEST(array, emplace_at_can_construct_non_trivially_constructible_type)
         {
             // The empty array
             array_type array;
-    hud_assert_eq(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 0u);
-    hud_assert_eq(array.allocator().allocation_count(), 0u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(array.count(), 1);
+            // Emplace first element
+            array.emplace_at(array.count(), 1);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 1u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), 1);
-    hud_assert_eq(array[0].constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
 
-    // Emplace second element
-    array.emplace_at(array.count(), 2);
+            // Emplace second element
+            array.emplace_at(array.count(), 2);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 2u);
-    hud_assert_eq(array.allocator().free_count(), 1u);
-    hud_assert_eq(array[0].id(), 1);
-    hud_assert_eq(array[0].constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 1u);
-    hud_assert_eq(array[1].id(), 2);
-    hud_assert_eq(array[1].constructor_count(), 1u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].move_constructor_count(), 0u);
-}
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 1u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 0u);
+        }
 
-// No reallocation
-{
-    // The empty array but with memory reserved
-    array_type array;
-    array.reserve(2);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+        // No reallocation
+        {
+            // The empty array but with memory reserved
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(0, 1);
+            // Emplace first element
+            array.emplace_at(0, 1);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), 1);
-    hud_assert_eq(array[0].constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
 
-    // Emplace second element
-    array.emplace_at(1, 2);
+            // Emplace second element
+            array.emplace_at(1, 2);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), 1);
-    hud_assert_eq(array[0].constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
-    hud_assert_eq(array[1].id(), 2);
-    hud_assert_eq(array[1].constructor_count(), 1u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].move_constructor_count(), 0u);
-}
-}
-
-// Emplace at the middle of an array
-{
-    // Reallocation
-    {
-        // The array with 4 elements with ID [1,2,4,5]
-        array_type array;
-array.reserve(4);
-array.emplace_back(1);
-array.emplace_back(2);
-array.emplace_back(4);
-array.emplace_back(5);
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 4u);
-hud_assert_eq(array.max_count(), 4u);
-hud_assert_eq(array.allocator().allocation_count(), 1u);
-hud_assert_eq(array.allocator().free_count(), 0u);
-
-// Emplace first element
-array.emplace_at(array.count() / 2u, 3);
-
-// Ensure we correctly emplaced the element in the middle.
-// Array should be [1,2,3,4,5]
-// All elements are should be moved except the inserted in the middle
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 5u);
-hud_assert_eq(array.max_count(), 5u);
-hud_assert_eq(array.allocator().allocation_count(), 2u);
-hud_assert_eq(array.allocator().free_count(), 1u);
-hud_assert_eq(array[0].id(), 1);
-hud_assert_eq(array[0].constructor_count(), 1u);
-hud_assert_eq(array[0].copy_constructor_count(), 0u);
-hud_assert_eq(array[0].move_constructor_count(), 1u);
-hud_assert_eq(array[1].id(), 2);
-hud_assert_eq(array[1].constructor_count(), 1u);
-hud_assert_eq(array[1].copy_constructor_count(), 0u);
-hud_assert_eq(array[1].move_constructor_count(), 1u);
-hud_assert_eq(array[2].id(), 3);
-hud_assert_eq(array[2].constructor_count(), 1u);
-hud_assert_eq(array[2].copy_constructor_count(), 0u);
-hud_assert_eq(array[2].move_constructor_count(), 0u);
-hud_assert_eq(array[3].id(), 4);
-hud_assert_eq(array[3].constructor_count(), 1u);
-hud_assert_eq(array[3].copy_constructor_count(), 0u);
-hud_assert_eq(array[3].move_constructor_count(), 1u);
-hud_assert_eq(array[4].id(), 5);
-hud_assert_eq(array[4].constructor_count(), 1u);
-hud_assert_eq(array[4].copy_constructor_count(), 0u);
-hud_assert_eq(array[4].move_constructor_count(), 1u);
-}
-
-// No reallocation
-{
-    // The array with 4 elements with ID [1,2,4,5]
-    array_type array;
-    array.reserve(5);
-    array.emplace_back(1);
-    array.emplace_back(2);
-    array.emplace_back(4);
-    array.emplace_back(5);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 4u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-
-    // Emplace element in the middle
-    array.emplace_at(array.count() / 2u, 3);
-
-    // Ensure we correctly emplaced the element.
-    // Array should be [1,2,3,4,5]
-    // Only 4 and 5 are copied
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 5u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), 1);
-    hud_assert_eq(array[0].constructor_count(), 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
-    hud_assert_eq(array[1].id(), 2);
-    hud_assert_eq(array[1].constructor_count(), 1u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].move_constructor_count(), 0u);
-    hud_assert_eq(array[2].id(), 3);
-    hud_assert_eq(array[2].constructor_count(), 1u);
-    hud_assert_eq(array[2].copy_constructor_count(), 0u);
-    hud_assert_eq(array[2].move_constructor_count(), 0u);
-    hud_assert_eq(array[3].id(), 4);
-    hud_assert_eq(array[3].constructor_count(), 1u);
-    hud_assert_eq(array[3].copy_constructor_count(), 0u);
-    hud_assert_eq(array[3].move_constructor_count(), 1u);
-    hud_assert_eq(array[4].id(), 5);
-    hud_assert_eq(array[4].constructor_count(), 1u);
-    hud_assert_eq(array[4].copy_constructor_count(), 0u);
-    hud_assert_eq(array[4].move_constructor_count(), 1u);
-}
-}
-
-// Emplace at the begin of an array
-{
-    // Reallocation
-    {
-        // The empty array
-        array_type array;
-        hud_assert_eq(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 0u);
-        hud_assert_eq(array.allocator().allocation_count(), 0u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-
-        // Emplace first element
-        array.emplace_at(0, 1);
-
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 1u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), 1);
-        hud_assert_eq(array[0].constructor_count(), 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-
-        // Emplace second element
-        array.emplace_at(0, 2);
-
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 2u);
-        hud_assert_eq(array.allocator().free_count(), 1u);
-        hud_assert_eq(array[0].id(), 2);
-        hud_assert_eq(array[0].constructor_count(), 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].id(), 1);
-        hud_assert_eq(array[1].constructor_count(), 1u);
-        hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 1u);
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 0u);
+        }
     }
 
-    // No reallocation
+    // Emplace at the middle of an array
     {
-        // The empty array
-        array_type array;
-        array.reserve(2);
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
+        // Reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(4);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 4u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace first element
-        array.emplace_at(0, 1);
+            // Emplace first element
+            array.emplace_at(array.count() / 2u, 3);
 
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), 1);
-        hud_assert_eq(array[0].constructor_count(), 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
+            // Ensure we correctly emplaced the element in the middle.
+            // Array should be [1,2,3,4,5]
+            // All elements are should be moved except the inserted in the middle
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 1u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 1u);
+            hud_assert_eq(array[2].id(), 3);
+            hud_assert_eq(array[2].constructor_count(), 1u);
+            hud_assert_eq(array[2].copy_constructor_count(), 0u);
+            hud_assert_eq(array[2].move_constructor_count(), 0u);
+            hud_assert_eq(array[3].id(), 4);
+            hud_assert_eq(array[3].constructor_count(), 1u);
+            hud_assert_eq(array[3].copy_constructor_count(), 0u);
+            hud_assert_eq(array[3].move_constructor_count(), 1u);
+            hud_assert_eq(array[4].id(), 5);
+            hud_assert_eq(array[4].constructor_count(), 1u);
+            hud_assert_eq(array[4].copy_constructor_count(), 0u);
+            hud_assert_eq(array[4].move_constructor_count(), 1u);
+        }
 
-        // Emplace second element
-        array.emplace_at(0, 2);
+        // No reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(5);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), 2);
-        hud_assert_eq(array[0].constructor_count(), 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[0].move_constructor_count(), 0u);
-        hud_assert_eq(array[1].id(), 1);
-        hud_assert_eq(array[1].constructor_count(), 1u);
-        hud_assert_eq(array[1].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].move_constructor_count(), 1u);
+            // Emplace element in the middle
+            array.emplace_at(array.count() / 2u, 3);
+
+            // Ensure we correctly emplaced the element.
+            // Array should be [1,2,3,4,5]
+            // Only 4 and 5 are copied
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 0u);
+            hud_assert_eq(array[2].id(), 3);
+            hud_assert_eq(array[2].constructor_count(), 1u);
+            hud_assert_eq(array[2].copy_constructor_count(), 0u);
+            hud_assert_eq(array[2].move_constructor_count(), 0u);
+            hud_assert_eq(array[3].id(), 4);
+            hud_assert_eq(array[3].constructor_count(), 1u);
+            hud_assert_eq(array[3].copy_constructor_count(), 0u);
+            hud_assert_eq(array[3].move_constructor_count(), 1u);
+            hud_assert_eq(array[4].id(), 5);
+            hud_assert_eq(array[4].constructor_count(), 1u);
+            hud_assert_eq(array[4].copy_constructor_count(), 0u);
+            hud_assert_eq(array[4].move_constructor_count(), 1u);
+        }
     }
-}
+
+    // Emplace at the begin of an array
+    {
+        // Reallocation
+        {
+            // The empty array
+            array_type array;
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0, 1);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+
+            // Emplace second element
+            array.emplace_at(0, 2);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), 2);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), 1);
+            hud_assert_eq(array[1].constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 1u);
+        }
+
+        // No reallocation
+        {
+            // The empty array
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0, 1);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+
+            // Emplace second element
+            array.emplace_at(0, 2);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 2);
+            hud_assert_eq(array[0].constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), 1);
+            hud_assert_eq(array[1].constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].move_constructor_count(), 1u);
+        }
+    }
 }
 
 GTEST_TEST(array, emplace_at_can_construct_trivially_constructible_type)
@@ -819,212 +819,212 @@ GTEST_TEST(array, emplace_at_can_construct_trivially_constructible_type)
         {
             // The empty array
             array_type array;
-    hud_assert_eq(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 0u);
-    hud_assert_eq(array.allocator().allocation_count(), 0u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(array.count(), 1u);
+            // Emplace first element
+            array.emplace_at(array.count(), 1u);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 1u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 1u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
 
-    // Emplace second element
-    array.emplace_at(array.count(), 2u);
+            // Emplace second element
+            array.emplace_at(array.count(), 2u);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 2u);
-    hud_assert_eq(array.allocator().free_count(), 1u);
-    hud_assert_eq(array[0], 1u);
-    hud_assert_eq(array[1], 2u);
-}
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+        }
 
-// No reallocation
-{
-    // The empty array but with memory reserved
-    array_type array;
-    array.reserve(2);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+        // No reallocation
+        {
+            // The empty array but with memory reserved
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(0, 1u);
+            // Emplace first element
+            array.emplace_at(0, 1u);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 1u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
 
-    // Emplace second element
-    array.emplace_at(1, 2u);
+            // Emplace second element
+            array.emplace_at(1, 2u);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 1u);
-    hud_assert_eq(array[1], 2u);
-}
-}
-
-// Emplace at the middle of an array
-{
-    // Reallocation
-    {
-        // The array with 4 elements with ID [1,2,4,5]
-        array_type array;
-array.reserve(4);
-array.emplace_back(1u);
-array.emplace_back(2u);
-array.emplace_back(4u);
-array.emplace_back(5u);
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 4u);
-hud_assert_eq(array.max_count(), 4u);
-hud_assert_eq(array.allocator().allocation_count(), 1u);
-hud_assert_eq(array.allocator().free_count(), 0u);
-
-// Emplace first element
-array.emplace_at(array.count() / 2u, 3u);
-
-// Ensure we correctly emplaced the element in the middle.
-// Array should be [1,2,3,4,5]
-// All elements are should be moved except the inserted in the middle
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 5u);
-hud_assert_eq(array.max_count(), 5u);
-hud_assert_eq(array.allocator().allocation_count(), 2u);
-hud_assert_eq(array.allocator().free_count(), 1u);
-hud_assert_eq(array[0], 1u);
-hud_assert_eq(array[1], 2u);
-hud_assert_eq(array[2], 3u);
-hud_assert_eq(array[3], 4u);
-hud_assert_eq(array[4], 5u);
-}
-
-// No reallocation
-{
-    // The array with 4 elements with ID [1,2,4,5]
-    array_type array;
-    array.reserve(5);
-    array.emplace_back(1u);
-    array.emplace_back(2u);
-    array.emplace_back(4u);
-    array.emplace_back(5u);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 4u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-
-    // Emplace element in the middle
-    array.emplace_at(array.count() / 2u, 3u);
-
-    // Ensure we correctly emplaced the element.
-    // Array should be [1,2,3,4,5]
-    // Only 4 and 5 are copied
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 5u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 1u);
-    hud_assert_eq(array[1], 2u);
-    hud_assert_eq(array[2], 3u);
-    hud_assert_eq(array[3], 4u);
-    hud_assert_eq(array[4], 5u);
-}
-}
-
-// Emplace at the begin of an array
-{
-    // Reallocation
-    {
-        // The empty array
-        array_type array;
-        hud_assert_eq(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 0u);
-        hud_assert_eq(array.allocator().allocation_count(), 0u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-
-        // Emplace first element
-        array.emplace_at(0, 1u);
-
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 1u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], 1u);
-
-        // Emplace second element
-        array.emplace_at(0, 2u);
-
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 2u);
-        hud_assert_eq(array.allocator().free_count(), 1u);
-        hud_assert_eq(array[0], 2u);
-        hud_assert_eq(array[1], 1u);
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+        }
     }
 
-    // No reallocation
+    // Emplace at the middle of an array
     {
-        // The empty array
-        array_type array;
-        array.reserve(2);
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
+        // Reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(4);
+            array.emplace_back(1u);
+            array.emplace_back(2u);
+            array.emplace_back(4u);
+            array.emplace_back(5u);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 4u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace first element
-        array.emplace_at(0, 1u);
+            // Emplace first element
+            array.emplace_at(array.count() / 2u, 3u);
 
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], 1u);
+            // Ensure we correctly emplaced the element in the middle.
+            // Array should be [1,2,3,4,5]
+            // All elements are should be moved except the inserted in the middle
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+            hud_assert_eq(array[2], 3u);
+            hud_assert_eq(array[3], 4u);
+            hud_assert_eq(array[4], 5u);
+        }
 
-        // Emplace second element
-        array.emplace_at(0, 2u);
+        // No reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(5);
+            array.emplace_back(1u);
+            array.emplace_back(2u);
+            array.emplace_back(4u);
+            array.emplace_back(5u);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], 2u);
-        hud_assert_eq(array[1], 1u);
+            // Emplace element in the middle
+            array.emplace_at(array.count() / 2u, 3u);
+
+            // Ensure we correctly emplaced the element.
+            // Array should be [1,2,3,4,5]
+            // Only 4 and 5 are copied
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+            hud_assert_eq(array[2], 3u);
+            hud_assert_eq(array[3], 4u);
+            hud_assert_eq(array[4], 5u);
+        }
     }
-}
+
+    // Emplace at the begin of an array
+    {
+        // Reallocation
+        {
+            // The empty array
+            array_type array;
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0, 1u);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
+
+            // Emplace second element
+            array.emplace_at(0, 2u);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], 2u);
+            hud_assert_eq(array[1], 1u);
+        }
+
+        // No reallocation
+        {
+            // The empty array
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0, 1u);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
+
+            // Emplace second element
+            array.emplace_at(0, 2u);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 2u);
+            hud_assert_eq(array[1], 1u);
+        }
+    }
 }
 
 GTEST_TEST(array, emplace_at_can_copy_construct_non_bitwise_copy_constructible_type)
@@ -1041,271 +1041,271 @@ GTEST_TEST(array, emplace_at_can_copy_construct_non_bitwise_copy_constructible_t
         {
             // The empty array
             array_type array;
-    hud_assert_eq(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 0u);
-    hud_assert_eq(array.allocator().allocation_count(), 0u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // The first element to emplace by copy construct
-    const type first_element_to_copy(0);
-    hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
+            // The first element to emplace by copy construct
+            const type first_element_to_copy(0);
+            hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(array.count(), first_element_to_copy);
+            // Emplace first element
+            array.emplace_at(array.count(), first_element_to_copy);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 1u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), first_element_to_copy.id());
-    hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_copy.id());
+            hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
 
-    // The second element to emplace by copy construct
-    const type second_element_to_copy(1);
-    hud_assert_eq(second_element_to_copy.copy_constructor_count(), 0u);
+            // The second element to emplace by copy construct
+            const type second_element_to_copy(1);
+            hud_assert_eq(second_element_to_copy.copy_constructor_count(), 0u);
 
-    // Emplace second element
-    array.emplace_at(array.count(), second_element_to_copy);
+            // Emplace second element
+            array.emplace_at(array.count(), second_element_to_copy);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 2u);
-    hud_assert_eq(array.allocator().free_count(), 1u);
-    hud_assert_eq(array[0].id(), first_element_to_copy.id());
-    hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 2u);
-    hud_assert_eq(array[1].id(), second_element_to_copy.id());
-    hud_assert_eq(array[1].copy_constructor_count(), second_element_to_copy.copy_constructor_count() + 1u);
-}
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), first_element_to_copy.id());
+            hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 2u);
+            hud_assert_eq(array[1].id(), second_element_to_copy.id());
+            hud_assert_eq(array[1].copy_constructor_count(), second_element_to_copy.copy_constructor_count() + 1u);
+        }
 
-// No reallocation
-{
-    // The empty array but with memory reserved
-    array_type array;
-    array.reserve(2);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+        // No reallocation
+        {
+            // The empty array but with memory reserved
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // The first element to emplace by copy construct
-    const type first_element_to_copy(0);
-    hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
+            // The first element to emplace by copy construct
+            const type first_element_to_copy(0);
+            hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(0, first_element_to_copy);
+            // Emplace first element
+            array.emplace_at(0, first_element_to_copy);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), first_element_to_copy.id());
-    hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_copy.id());
+            hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
 
-    // The second element to emplace by copy construct
-    const type second_element_to_copy(1);
-    hud_assert_eq(second_element_to_copy.copy_constructor_count(), 0u);
+            // The second element to emplace by copy construct
+            const type second_element_to_copy(1);
+            hud_assert_eq(second_element_to_copy.copy_constructor_count(), 0u);
 
-    // Emplace second element
-    array.emplace_at(1, second_element_to_copy);
+            // Emplace second element
+            array.emplace_at(1, second_element_to_copy);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), first_element_to_copy.id());
-    hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
-    hud_assert_eq(array[1].id(), second_element_to_copy.id());
-    hud_assert_eq(array[1].copy_constructor_count(), second_element_to_copy.copy_constructor_count() + 1u);
-}
-}
-
-// Emplace at the middle of an array
-{
-    // Reallocation
-    {
-        // The array with 4 elements with ID [1,2,4,5]
-        array_type array;
-array.reserve(4);
-array.emplace_back(1);
-array.emplace_back(2);
-array.emplace_back(4);
-array.emplace_back(5);
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 4u);
-hud_assert_eq(array.max_count(), 4u);
-hud_assert_eq(array.allocator().allocation_count(), 1u);
-hud_assert_eq(array.allocator().free_count(), 0u);
-
-// The element to emplace by copy construct with ID = 1
-const type first_element_to_copy(3);
-hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
-
-// Emplace first element
-array.emplace_at(array.count() / 2u, first_element_to_copy);
-
-// Ensure we correctly emplaced the first element
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 5u);
-hud_assert_eq(array.max_count(), 5u);
-hud_assert_eq(array.allocator().allocation_count(), 2u);
-hud_assert_eq(array.allocator().free_count(), 1u);
-hud_assert_eq(array[0].id(), 1);
-hud_assert_eq(array[0].copy_constructor_count(), 1u);
-hud_assert_eq(array[1].id(), 2);
-hud_assert_eq(array[1].copy_constructor_count(), 1u);
-hud_assert_eq(array[2].id(), 3);
-hud_assert_eq(array[2].copy_constructor_count(), 1u);
-hud_assert_eq(array[3].id(), 4);
-hud_assert_eq(array[3].copy_constructor_count(), 1u);
-hud_assert_eq(array[4].id(), 5);
-hud_assert_eq(array[4].copy_constructor_count(), 1u);
-}
-
-// No reallocation
-{
-    // The array with 4 elements with ID [1,2,4,5]
-    array_type array;
-    array.reserve(5);
-    array.emplace_back(1);
-    array.emplace_back(2);
-    array.emplace_back(4);
-    array.emplace_back(5);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 4u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-
-    // The element to emplace by copy construct with ID = 1
-    const type first_element_to_copy(3);
-    hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
-
-    // Emplace element in the middle
-    array.emplace_at(array.count() / 2u, first_element_to_copy);
-
-    // Ensure we correctly emplaced the element. Array should be [1,2,3,4,5]
-    // Only 4 and 5 are copied
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 5u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), 1);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].id(), 2);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-    hud_assert_eq(array[2].id(), 3);
-    hud_assert_eq(array[2].copy_constructor_count(), 1u);
-    hud_assert_eq(array[3].id(), 4);
-    hud_assert_eq(array[3].copy_constructor_count(), 1u);
-    hud_assert_eq(array[4].id(), 5);
-    hud_assert_eq(array[4].copy_constructor_count(), 1u);
-}
-}
-
-// Emplace at the begin of an array
-{
-    // Reallocation
-    {
-        // The empty array
-        array_type array;
-        hud_assert_eq(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 0u);
-        hud_assert_eq(array.allocator().allocation_count(), 0u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-
-        // The first element to emplace by copy construct
-        const type first_element_to_copy(0);
-        hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
-
-        // Emplace first element
-        array.emplace_at(0, first_element_to_copy);
-
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 1u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), first_element_to_copy.id());
-        hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
-
-        // The second element to emplace by copy construct
-        const type second_element_to_copy(1);
-        hud_assert_eq(second_element_to_copy.copy_constructor_count(), 0u);
-
-        // Emplace second element
-        array.emplace_at(0, second_element_to_copy);
-
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 2u);
-        hud_assert_eq(array.allocator().free_count(), 1u);
-        hud_assert_eq(array[0].id(), second_element_to_copy.id());
-        hud_assert_eq(array[0].copy_constructor_count(), second_element_to_copy.copy_constructor_count() + 1u);
-        hud_assert_eq(array[1].id(), first_element_to_copy.id());
-        hud_assert_eq(array[1].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 2u);
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_copy.id());
+            hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
+            hud_assert_eq(array[1].id(), second_element_to_copy.id());
+            hud_assert_eq(array[1].copy_constructor_count(), second_element_to_copy.copy_constructor_count() + 1u);
+        }
     }
 
-    // No reallocation
+    // Emplace at the middle of an array
     {
-        // The empty array
-        array_type array;
-        array.reserve(2);
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
+        // Reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(4);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 4u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // The first element to emplace by copy construct
-        const type first_element_to_copy(0);
-        hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
+            // The element to emplace by copy construct with ID = 1
+            const type first_element_to_copy(3);
+            hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
 
-        // Emplace first element
-        array.emplace_at(0, first_element_to_copy);
+            // Emplace first element
+            array.emplace_at(array.count() / 2u, first_element_to_copy);
 
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), first_element_to_copy.id());
-        hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].copy_constructor_count(), 1u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].copy_constructor_count(), 1u);
+            hud_assert_eq(array[2].id(), 3);
+            hud_assert_eq(array[2].copy_constructor_count(), 1u);
+            hud_assert_eq(array[3].id(), 4);
+            hud_assert_eq(array[3].copy_constructor_count(), 1u);
+            hud_assert_eq(array[4].id(), 5);
+            hud_assert_eq(array[4].copy_constructor_count(), 1u);
+        }
 
-        // The second element to emplace by copy construct
-        const type second_element_to_copy(1);
-        hud_assert_eq(second_element_to_copy.copy_constructor_count(), 0u);
+        // No reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(5);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace second element
-        array.emplace_at(0, second_element_to_copy);
+            // The element to emplace by copy construct with ID = 1
+            const type first_element_to_copy(3);
+            hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
 
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), second_element_to_copy.id());
-        hud_assert_eq(array[0].copy_constructor_count(), second_element_to_copy.copy_constructor_count() + 1u);
-        hud_assert_eq(array[1].id(), first_element_to_copy.id());
-        hud_assert_eq(array[1].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 2u);
+            // Emplace element in the middle
+            array.emplace_at(array.count() / 2u, first_element_to_copy);
+
+            // Ensure we correctly emplaced the element. Array should be [1,2,3,4,5]
+            // Only 4 and 5 are copied
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[2].id(), 3);
+            hud_assert_eq(array[2].copy_constructor_count(), 1u);
+            hud_assert_eq(array[3].id(), 4);
+            hud_assert_eq(array[3].copy_constructor_count(), 1u);
+            hud_assert_eq(array[4].id(), 5);
+            hud_assert_eq(array[4].copy_constructor_count(), 1u);
+        }
     }
-}
+
+    // Emplace at the begin of an array
+    {
+        // Reallocation
+        {
+            // The empty array
+            array_type array;
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // The first element to emplace by copy construct
+            const type first_element_to_copy(0);
+            hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0, first_element_to_copy);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_copy.id());
+            hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
+
+            // The second element to emplace by copy construct
+            const type second_element_to_copy(1);
+            hud_assert_eq(second_element_to_copy.copy_constructor_count(), 0u);
+
+            // Emplace second element
+            array.emplace_at(0, second_element_to_copy);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), second_element_to_copy.id());
+            hud_assert_eq(array[0].copy_constructor_count(), second_element_to_copy.copy_constructor_count() + 1u);
+            hud_assert_eq(array[1].id(), first_element_to_copy.id());
+            hud_assert_eq(array[1].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 2u);
+        }
+
+        // No reallocation
+        {
+            // The empty array
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // The first element to emplace by copy construct
+            const type first_element_to_copy(0);
+            hud_assert_eq(first_element_to_copy.copy_constructor_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0, first_element_to_copy);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_copy.id());
+            hud_assert_eq(array[0].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 1u);
+
+            // The second element to emplace by copy construct
+            const type second_element_to_copy(1);
+            hud_assert_eq(second_element_to_copy.copy_constructor_count(), 0u);
+
+            // Emplace second element
+            array.emplace_at(0, second_element_to_copy);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), second_element_to_copy.id());
+            hud_assert_eq(array[0].copy_constructor_count(), second_element_to_copy.copy_constructor_count() + 1u);
+            hud_assert_eq(array[1].id(), first_element_to_copy.id());
+            hud_assert_eq(array[1].copy_constructor_count(), first_element_to_copy.copy_constructor_count() + 2u);
+        }
+    }
 }
 
 GTEST_TEST(array, emplace_at_can_copy_construct_bitwise_copy_constructible_type)
@@ -1321,239 +1321,239 @@ GTEST_TEST(array, emplace_at_can_copy_construct_bitwise_copy_constructible_type)
         {
             // The empty array
             array_type array;
-    hud_assert_eq(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 0u);
-    hud_assert_eq(array.allocator().allocation_count(), 0u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // The first element to emplace by copy construct
-    const type first_element_to_copy(0);
+            // The first element to emplace by copy construct
+            const type first_element_to_copy(0);
 
-    // Emplace first element
-    array.emplace_at(array.count(), first_element_to_copy);
+            // Emplace first element
+            array.emplace_at(array.count(), first_element_to_copy);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 1u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], first_element_to_copy);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_copy);
 
-    // The second element to emplace by copy construct
-    const type second_element_to_copy(1);
+            // The second element to emplace by copy construct
+            const type second_element_to_copy(1);
 
-    // Emplace second element
-    array.emplace_at(array.count(), second_element_to_copy);
+            // Emplace second element
+            array.emplace_at(array.count(), second_element_to_copy);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 2u);
-    hud_assert_eq(array.allocator().free_count(), 1u);
-    hud_assert_eq(array[0], first_element_to_copy);
-    hud_assert_eq(array[1], second_element_to_copy);
-}
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], first_element_to_copy);
+            hud_assert_eq(array[1], second_element_to_copy);
+        }
 
-// No reallocation
-{
-    // The empty array but with memory reserved
-    array_type array;
-    array.reserve(2);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+        // No reallocation
+        {
+            // The empty array but with memory reserved
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // The first element to emplace by copy construct
-    const type first_element_to_copy(0);
+            // The first element to emplace by copy construct
+            const type first_element_to_copy(0);
 
-    // Emplace first element
-    array.emplace_at(0, first_element_to_copy);
+            // Emplace first element
+            array.emplace_at(0, first_element_to_copy);
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], first_element_to_copy);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_copy);
 
-    // The second element to emplace by copy construct
-    const type second_element_to_copy(1);
+            // The second element to emplace by copy construct
+            const type second_element_to_copy(1);
 
-    // Emplace second element
-    array.emplace_at(1, second_element_to_copy);
+            // Emplace second element
+            array.emplace_at(1, second_element_to_copy);
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], first_element_to_copy);
-    hud_assert_eq(array[1], second_element_to_copy);
-}
-}
-
-// Emplace at the middle of an array
-{
-    // Reallocation
-    {
-        // The array with 4 elements with ID [1,2,4,5]
-        array_type array;
-array.reserve(4);
-array.emplace_back(1);
-array.emplace_back(2);
-array.emplace_back(4);
-array.emplace_back(5);
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 4u);
-hud_assert_eq(array.max_count(), 4u);
-hud_assert_eq(array.allocator().allocation_count(), 1u);
-hud_assert_eq(array.allocator().free_count(), 0u);
-
-// The element to emplace by copy construct with ID = 1
-const type first_element_to_copy(3);
-
-// Emplace first element
-array.emplace_at(array.count() / 2u, first_element_to_copy);
-
-// Ensure we correctly emplaced the first element
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 5u);
-hud_assert_eq(array.max_count(), 5u);
-hud_assert_eq(array.allocator().allocation_count(), 2u);
-hud_assert_eq(array.allocator().free_count(), 1u);
-hud_assert_eq(array[0], 1u);
-hud_assert_eq(array[1], 2u);
-hud_assert_eq(array[2], 3u);
-hud_assert_eq(array[3], 4u);
-hud_assert_eq(array[4], 5u);
-}
-
-// No reallocation
-{
-    // The array with 4 elements with ID [1,2,4,5]
-    array_type array;
-    array.reserve(5);
-    array.emplace_back(1);
-    array.emplace_back(2);
-    array.emplace_back(4);
-    array.emplace_back(5);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 4u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-
-    // The element to emplace by copy construct with ID = 1
-    const type first_element_to_copy(3);
-
-    // Emplace element in the middle
-    array.emplace_at(array.count() / 2u, first_element_to_copy);
-
-    // Ensure we correctly emplaced the element. Array should be [1,2,3,4,5]
-    // Only 4 and 5 are copied
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 5u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 1u);
-    hud_assert_eq(array[1], 2u);
-    hud_assert_eq(array[2], 3u);
-    hud_assert_eq(array[3], 4u);
-    hud_assert_eq(array[4], 5u);
-}
-}
-
-// Emplace at the begin of an array
-{
-    // Reallocation
-    {
-        // The empty array
-        array_type array;
-        hud_assert_eq(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 0u);
-        hud_assert_eq(array.allocator().allocation_count(), 0u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-
-        // The first element to emplace by copy construct
-        const type first_element_to_copy(0);
-
-        // Emplace first element
-        array.emplace_at(0, first_element_to_copy);
-
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 1u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], first_element_to_copy);
-
-        // The second element to emplace by copy construct
-        const type second_element_to_copy(1);
-
-        // Emplace second element
-        array.emplace_at(0, second_element_to_copy);
-
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 2u);
-        hud_assert_eq(array.allocator().free_count(), 1u);
-        hud_assert_eq(array[0], second_element_to_copy);
-        hud_assert_eq(array[1], first_element_to_copy);
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_copy);
+            hud_assert_eq(array[1], second_element_to_copy);
+        }
     }
 
-    // No reallocation
+    // Emplace at the middle of an array
     {
-        // The empty array
-        array_type array;
-        array.reserve(2);
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
+        // Reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(4);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 4u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // The first element to emplace by copy construct
-        const type first_element_to_copy(0);
+            // The element to emplace by copy construct with ID = 1
+            const type first_element_to_copy(3);
 
-        // Emplace first element
-        array.emplace_at(0, first_element_to_copy);
+            // Emplace first element
+            array.emplace_at(array.count() / 2u, first_element_to_copy);
 
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], first_element_to_copy);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+            hud_assert_eq(array[2], 3u);
+            hud_assert_eq(array[3], 4u);
+            hud_assert_eq(array[4], 5u);
+        }
 
-        // The second element to emplace by copy construct
-        const type second_element_to_copy(1);
+        // No reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(5);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace second element
-        array.emplace_at(0, second_element_to_copy);
+            // The element to emplace by copy construct with ID = 1
+            const type first_element_to_copy(3);
 
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], second_element_to_copy);
-        hud_assert_eq(array[1], first_element_to_copy);
+            // Emplace element in the middle
+            array.emplace_at(array.count() / 2u, first_element_to_copy);
+
+            // Ensure we correctly emplaced the element. Array should be [1,2,3,4,5]
+            // Only 4 and 5 are copied
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+            hud_assert_eq(array[2], 3u);
+            hud_assert_eq(array[3], 4u);
+            hud_assert_eq(array[4], 5u);
+        }
     }
-}
+
+    // Emplace at the begin of an array
+    {
+        // Reallocation
+        {
+            // The empty array
+            array_type array;
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // The first element to emplace by copy construct
+            const type first_element_to_copy(0);
+
+            // Emplace first element
+            array.emplace_at(0, first_element_to_copy);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_copy);
+
+            // The second element to emplace by copy construct
+            const type second_element_to_copy(1);
+
+            // Emplace second element
+            array.emplace_at(0, second_element_to_copy);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], second_element_to_copy);
+            hud_assert_eq(array[1], first_element_to_copy);
+        }
+
+        // No reallocation
+        {
+            // The empty array
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // The first element to emplace by copy construct
+            const type first_element_to_copy(0);
+
+            // Emplace first element
+            array.emplace_at(0, first_element_to_copy);
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_copy);
+
+            // The second element to emplace by copy construct
+            const type second_element_to_copy(1);
+
+            // Emplace second element
+            array.emplace_at(0, second_element_to_copy);
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], second_element_to_copy);
+            hud_assert_eq(array[1], first_element_to_copy);
+        }
+    }
 }
 
 GTEST_TEST(array, emplace_at_can_move_construct_non_bitwise_move_constructible_type)
@@ -1570,303 +1570,303 @@ GTEST_TEST(array, emplace_at_can_move_construct_non_bitwise_move_constructible_t
         {
             // The empty array
             array_type array;
-    hud_assert_eq(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 0u);
-    hud_assert_eq(array.allocator().allocation_count(), 0u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // The first element to emplace by move construct
-    type first_element_to_move(0);
-    hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
-    hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
+            // The first element to emplace by move construct
+            type first_element_to_move(0);
+            hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
+            hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(array.count(), hud::move(first_element_to_move));
+            // Emplace first element
+            array.emplace_at(array.count(), hud::move(first_element_to_move));
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 1u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), first_element_to_move.id());
-    hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_move.id());
+            hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
 
-    // The second element to emplace by move construct
-    type second_element_to_move(1);
-    hud_assert_eq(second_element_to_move.copy_constructor_count(), 0u);
-    hud_assert_eq(second_element_to_move.move_constructor_count(), 0u);
+            // The second element to emplace by move construct
+            type second_element_to_move(1);
+            hud_assert_eq(second_element_to_move.copy_constructor_count(), 0u);
+            hud_assert_eq(second_element_to_move.move_constructor_count(), 0u);
 
-    // Emplace second element
-    array.emplace_at(array.count(), hud::move(second_element_to_move));
+            // Emplace second element
+            array.emplace_at(array.count(), hud::move(second_element_to_move));
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 2u);
-    hud_assert_eq(array.allocator().free_count(), 1u);
-    hud_assert_eq(array[0].id(), first_element_to_move.id());
-    hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 2u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].id(), second_element_to_move.id());
-    hud_assert_eq(array[1].move_constructor_count(), second_element_to_move.move_constructor_count() + 1u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-}
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), first_element_to_move.id());
+            hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 2u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), second_element_to_move.id());
+            hud_assert_eq(array[1].move_constructor_count(), second_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+        }
 
-// No reallocation
-{
-    // The empty array but with memory reserved
-    array_type array;
-    array.reserve(2);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+        // No reallocation
+        {
+            // The empty array but with memory reserved
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // The first element to emplace by move construct
-    type first_element_to_move(0);
-    hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
-    hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
+            // The first element to emplace by move construct
+            type first_element_to_move(0);
+            hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
+            hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
 
-    // Emplace first element
-    array.emplace_at(0, hud::move(first_element_to_move));
+            // Emplace first element
+            array.emplace_at(0, hud::move(first_element_to_move));
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), first_element_to_move.id());
-    hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_move.id());
+            hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
 
-    // The second element to emplace by move construct
-    type second_element_to_move(1);
-    hud_assert_eq(second_element_to_move.copy_constructor_count(), 0u);
-    hud_assert_eq(second_element_to_move.move_constructor_count(), 0u);
+            // The second element to emplace by move construct
+            type second_element_to_move(1);
+            hud_assert_eq(second_element_to_move.copy_constructor_count(), 0u);
+            hud_assert_eq(second_element_to_move.move_constructor_count(), 0u);
 
-    // Emplace second element
-    array.emplace_at(1, hud::move(second_element_to_move));
+            // Emplace second element
+            array.emplace_at(1, hud::move(second_element_to_move));
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), first_element_to_move.id());
-    hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].id(), second_element_to_move.id());
-    hud_assert_eq(array[1].move_constructor_count(), second_element_to_move.move_constructor_count() + 1u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-}
-}
-
-// Emplace at the middle of an array
-{
-    // Reallocation
-    {
-        // The array with 4 elements with ID [1,2,4,5]
-        array_type array;
-array.reserve(4);
-array.emplace_back(1);
-array.emplace_back(2);
-array.emplace_back(4);
-array.emplace_back(5);
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 4u);
-hud_assert_eq(array.max_count(), 4u);
-hud_assert_eq(array.allocator().allocation_count(), 1u);
-hud_assert_eq(array.allocator().free_count(), 0u);
-
-// The element to emplace by move construct with ID = 1
-type first_element_to_move(3);
-hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
-hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
-
-// Emplace first element
-array.emplace_at(array.count() / 2u, hud::move(first_element_to_move));
-
-// Ensure we correctly emplaced the first element
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 5u);
-hud_assert_eq(array.max_count(), 5u);
-hud_assert_eq(array.allocator().allocation_count(), 2u);
-hud_assert_eq(array.allocator().free_count(), 1u);
-hud_assert_eq(array[0].id(), 1);
-hud_assert_eq(array[0].move_constructor_count(), 1u);
-hud_assert_eq(array[0].copy_constructor_count(), 0u);
-hud_assert_eq(array[1].id(), 2);
-hud_assert_eq(array[1].move_constructor_count(), 1u);
-hud_assert_eq(array[1].copy_constructor_count(), 0u);
-hud_assert_eq(array[2].id(), 3);
-hud_assert_eq(array[2].move_constructor_count(), 1u);
-hud_assert_eq(array[2].copy_constructor_count(), 0u);
-hud_assert_eq(array[3].id(), 4);
-hud_assert_eq(array[3].move_constructor_count(), 1u);
-hud_assert_eq(array[3].copy_constructor_count(), 0u);
-hud_assert_eq(array[4].id(), 5);
-hud_assert_eq(array[4].move_constructor_count(), 1u);
-hud_assert_eq(array[4].copy_constructor_count(), 0u);
-}
-
-// No reallocation
-{
-    // The array with 4 elements with ID [1,2,4,5]
-    array_type array;
-    array.reserve(5);
-    array.emplace_back(1);
-    array.emplace_back(2);
-    array.emplace_back(4);
-    array.emplace_back(5);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 4u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-
-    // The element to emplace by move construct with ID = 1
-    type first_element_to_move(3);
-    hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
-    hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
-
-    // Emplace element in the middle
-    array.emplace_at(array.count() / 2u, hud::move(first_element_to_move));
-
-    // Ensure we correctly emplaced the element. Array should be [1,2,3,4,5]
-    // Only 4 and 5 are copied
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 5u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0].id(), 1);
-    hud_assert_eq(array[0].move_constructor_count(), 0u);
-    hud_assert_eq(array[0].copy_constructor_count(), 0u);
-    hud_assert_eq(array[1].id(), 2);
-    hud_assert_eq(array[1].move_constructor_count(), 0u);
-    hud_assert_eq(array[1].copy_constructor_count(), 0u);
-    hud_assert_eq(array[2].id(), 3);
-    hud_assert_eq(array[2].move_constructor_count(), 1u);
-    hud_assert_eq(array[2].copy_constructor_count(), 0u);
-    hud_assert_eq(array[3].id(), 4);
-    hud_assert_eq(array[3].move_constructor_count(), 1u);
-    hud_assert_eq(array[3].copy_constructor_count(), 0u);
-    hud_assert_eq(array[4].id(), 5);
-    hud_assert_eq(array[4].move_constructor_count(), 1u);
-    hud_assert_eq(array[4].copy_constructor_count(), 0u);
-}
-}
-
-// Emplace at the begin of an array
-{
-    // Reallocation
-    {
-        // The empty array
-        array_type array;
-        hud_assert_eq(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 0u);
-        hud_assert_eq(array.allocator().allocation_count(), 0u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-
-        // The first element to emplace by move construct
-        type first_element_to_move(0);
-        hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
-        hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
-
-        // Emplace first element
-        array.emplace_at(0, hud::move(first_element_to_move));
-
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 1u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), first_element_to_move.id());
-        hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-
-        // The second element to emplace by move construct
-        type second_element_to_move(1);
-        hud_assert_eq(second_element_to_move.move_constructor_count(), 0u);
-        hud_assert_eq(second_element_to_move.copy_constructor_count(), 0u);
-
-        // Emplace second element
-        array.emplace_at(0, hud::move(second_element_to_move));
-
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 2u);
-        hud_assert_eq(array.allocator().free_count(), 1u);
-        hud_assert_eq(array[0].id(), second_element_to_move.id());
-        hud_assert_eq(array[0].move_constructor_count(), second_element_to_move.move_constructor_count() + 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].id(), first_element_to_move.id());
-        hud_assert_eq(array[1].move_constructor_count(), first_element_to_move.move_constructor_count() + 2u);
-        hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_move.id());
+            hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), second_element_to_move.id());
+            hud_assert_eq(array[1].move_constructor_count(), second_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+        }
     }
 
-    // No reallocation
+    // Emplace at the middle of an array
     {
-        // The empty array
-        array_type array;
-        array.reserve(2);
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
+        // Reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(4);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 4u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // The first element to emplace by move construct
-        type first_element_to_move(0);
-        hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
-        hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
+            // The element to emplace by move construct with ID = 1
+            type first_element_to_move(3);
+            hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
+            hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
 
-        // Emplace first element
-        array.emplace_at(0, hud::move(first_element_to_move));
+            // Emplace first element
+            array.emplace_at(array.count() / 2u, hud::move(first_element_to_move));
 
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), first_element_to_move.id());
-        hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].move_constructor_count(), 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].move_constructor_count(), 1u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[2].id(), 3);
+            hud_assert_eq(array[2].move_constructor_count(), 1u);
+            hud_assert_eq(array[2].copy_constructor_count(), 0u);
+            hud_assert_eq(array[3].id(), 4);
+            hud_assert_eq(array[3].move_constructor_count(), 1u);
+            hud_assert_eq(array[3].copy_constructor_count(), 0u);
+            hud_assert_eq(array[4].id(), 5);
+            hud_assert_eq(array[4].move_constructor_count(), 1u);
+            hud_assert_eq(array[4].copy_constructor_count(), 0u);
+        }
 
-        // The second element to emplace by move construct
-        type second_element_to_move(1);
-        hud_assert_eq(second_element_to_move.move_constructor_count(), 0u);
-        hud_assert_eq(second_element_to_move.copy_constructor_count(), 0u);
+        // No reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(5);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace second element
-        array.emplace_at(0, hud::move(second_element_to_move));
+            // The element to emplace by move construct with ID = 1
+            type first_element_to_move(3);
+            hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
+            hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
 
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0].id(), second_element_to_move.id());
-        hud_assert_eq(array[0].move_constructor_count(), second_element_to_move.move_constructor_count() + 1u);
-        hud_assert_eq(array[0].copy_constructor_count(), 0u);
-        hud_assert_eq(array[1].id(), first_element_to_move.id());
-        hud_assert_eq(array[1].move_constructor_count(), first_element_to_move.move_constructor_count() + 2u);
-        hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            // Emplace element in the middle
+            array.emplace_at(array.count() / 2u, hud::move(first_element_to_move));
+
+            // Ensure we correctly emplaced the element. Array should be [1,2,3,4,5]
+            // Only 4 and 5 are copied
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), 1);
+            hud_assert_eq(array[0].move_constructor_count(), 0u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), 2);
+            hud_assert_eq(array[1].move_constructor_count(), 0u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+            hud_assert_eq(array[2].id(), 3);
+            hud_assert_eq(array[2].move_constructor_count(), 1u);
+            hud_assert_eq(array[2].copy_constructor_count(), 0u);
+            hud_assert_eq(array[3].id(), 4);
+            hud_assert_eq(array[3].move_constructor_count(), 1u);
+            hud_assert_eq(array[3].copy_constructor_count(), 0u);
+            hud_assert_eq(array[4].id(), 5);
+            hud_assert_eq(array[4].move_constructor_count(), 1u);
+            hud_assert_eq(array[4].copy_constructor_count(), 0u);
+        }
     }
-}
+
+    // Emplace at the begin of an array
+    {
+        // Reallocation
+        {
+            // The empty array
+            array_type array;
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // The first element to emplace by move construct
+            type first_element_to_move(0);
+            hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
+            hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0, hud::move(first_element_to_move));
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_move.id());
+            hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+
+            // The second element to emplace by move construct
+            type second_element_to_move(1);
+            hud_assert_eq(second_element_to_move.move_constructor_count(), 0u);
+            hud_assert_eq(second_element_to_move.copy_constructor_count(), 0u);
+
+            // Emplace second element
+            array.emplace_at(0, hud::move(second_element_to_move));
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0].id(), second_element_to_move.id());
+            hud_assert_eq(array[0].move_constructor_count(), second_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), first_element_to_move.id());
+            hud_assert_eq(array[1].move_constructor_count(), first_element_to_move.move_constructor_count() + 2u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+        }
+
+        // No reallocation
+        {
+            // The empty array
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // The first element to emplace by move construct
+            type first_element_to_move(0);
+            hud_assert_eq(first_element_to_move.copy_constructor_count(), 0u);
+            hud_assert_eq(first_element_to_move.move_constructor_count(), 0u);
+
+            // Emplace first element
+            array.emplace_at(0, hud::move(first_element_to_move));
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), first_element_to_move.id());
+            hud_assert_eq(array[0].move_constructor_count(), first_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+
+            // The second element to emplace by move construct
+            type second_element_to_move(1);
+            hud_assert_eq(second_element_to_move.move_constructor_count(), 0u);
+            hud_assert_eq(second_element_to_move.copy_constructor_count(), 0u);
+
+            // Emplace second element
+            array.emplace_at(0, hud::move(second_element_to_move));
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0].id(), second_element_to_move.id());
+            hud_assert_eq(array[0].move_constructor_count(), second_element_to_move.move_constructor_count() + 1u);
+            hud_assert_eq(array[0].copy_constructor_count(), 0u);
+            hud_assert_eq(array[1].id(), first_element_to_move.id());
+            hud_assert_eq(array[1].move_constructor_count(), first_element_to_move.move_constructor_count() + 2u);
+            hud_assert_eq(array[1].copy_constructor_count(), 0u);
+        }
+    }
 }
 
 GTEST_TEST(array, emplace_at_can_move_construct_bitwise_move_constructible_type)
@@ -1882,237 +1882,237 @@ GTEST_TEST(array, emplace_at_can_move_construct_bitwise_move_constructible_type)
         {
             // The empty array
             array_type array;
-    hud_assert_eq(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 0u);
-    hud_assert_eq(array.allocator().allocation_count(), 0u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // The first element to emplace by move construct
-    type first_element_to_move(0);
+            // The first element to emplace by move construct
+            type first_element_to_move(0);
 
-    // Emplace first element
-    array.emplace_at(array.count(), hud::move(first_element_to_move));
+            // Emplace first element
+            array.emplace_at(array.count(), hud::move(first_element_to_move));
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 1u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], first_element_to_move);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_move);
 
-    // The second element to emplace by move construct
-    type second_element_to_move(1);
+            // The second element to emplace by move construct
+            type second_element_to_move(1);
 
-    // Emplace second element
-    array.emplace_at(array.count(), hud::move(second_element_to_move));
+            // Emplace second element
+            array.emplace_at(array.count(), hud::move(second_element_to_move));
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 2u);
-    hud_assert_eq(array.allocator().free_count(), 1u);
-    hud_assert_eq(array[0], first_element_to_move);
-    hud_assert_eq(array[1], second_element_to_move);
-}
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], first_element_to_move);
+            hud_assert_eq(array[1], second_element_to_move);
+        }
 
-// No reallocation
-{
-    // The empty array but with memory reserved
-    array_type array;
-    array.reserve(2);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 0u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
+        // No reallocation
+        {
+            // The empty array but with memory reserved
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-    // The first element to emplace by move construct
-    type first_element_to_move(0);
+            // The first element to emplace by move construct
+            type first_element_to_move(0);
 
-    // Emplace first element
-    array.emplace_at(0, hud::move(first_element_to_move));
+            // Emplace first element
+            array.emplace_at(0, hud::move(first_element_to_move));
 
-    // Ensure we correctly emplaced the first element
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 1u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], first_element_to_move);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_move);
 
-    // The second element to emplace by move construct
-    type second_element_to_move(1);
+            // The second element to emplace by move construct
+            type second_element_to_move(1);
 
-    // Emplace second element
-    array.emplace_at(1, hud::move(second_element_to_move));
+            // Emplace second element
+            array.emplace_at(1, hud::move(second_element_to_move));
 
-    // Ensure we correctly emplaced the second element and we really reallocate the array
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 2u);
-    hud_assert_eq(array.max_count(), 2u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], first_element_to_move);
-    hud_assert_eq(array[1], second_element_to_move);
-}
-}
-
-// Emplace at the middle of an array
-{
-    // Reallocation
-    {
-        // The array with 4 elements with ID [1,2,4,5]
-        array_type array;
-array.reserve(4);
-array.emplace_back(1);
-array.emplace_back(2);
-array.emplace_back(4);
-array.emplace_back(5);
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 4u);
-hud_assert_eq(array.max_count(), 4u);
-hud_assert_eq(array.allocator().allocation_count(), 1u);
-hud_assert_eq(array.allocator().free_count(), 0u);
-
-// The element to emplace by move construct with ID = 1
-type first_element_to_move(3);
-
-// Emplace first element
-array.emplace_at(array.count() / 2u, hud::move(first_element_to_move));
-
-// Ensure we correctly emplaced the first element
-hud_assert_ne(array.data(), nullptr);
-hud_assert_eq(array.count(), 5u);
-hud_assert_eq(array.max_count(), 5u);
-hud_assert_eq(array.allocator().allocation_count(), 2u);
-hud_assert_eq(array.allocator().free_count(), 1u);
-hud_assert_eq(array[0], 1u);
-hud_assert_eq(array[1], 2u);
-hud_assert_eq(array[2], 3u);
-hud_assert_eq(array[3], 4u);
-hud_assert_eq(array[4], 5u);
-}
-
-// No reallocation
-{
-    // The array with 4 elements with ID [1,2,4,5]
-    array_type array;
-    array.reserve(5);
-    array.emplace_back(1);
-    array.emplace_back(2);
-    array.emplace_back(4);
-    array.emplace_back(5);
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 4u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-
-    // The element to emplace by move construct with ID = 1
-    type first_element_to_move(3);
-
-    // Emplace element in the middle
-    array.emplace_at(array.count() / 2u, hud::move(first_element_to_move));
-
-    // Ensure we correctly emplaced the element. Array should be [1,2,3,4,5]
-    // Only 4 and 5 are copied
-    hud_assert_ne(array.data(), nullptr);
-    hud_assert_eq(array.count(), 5u);
-    hud_assert_eq(array.max_count(), 5u);
-    hud_assert_eq(array.allocator().allocation_count(), 1u);
-    hud_assert_eq(array.allocator().free_count(), 0u);
-    hud_assert_eq(array[0], 1u);
-    hud_assert_eq(array[1], 2u);
-    hud_assert_eq(array[2], 3u);
-    hud_assert_eq(array[3], 4u);
-    hud_assert_eq(array[4], 5u);
-}
-}
-
-// Emplace at the begin of an array
-{
-    // Reallocation
-    {
-        // The empty array
-        array_type array;
-        hud_assert_eq(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 0u);
-        hud_assert_eq(array.allocator().allocation_count(), 0u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-
-        // The first element to emplace by move construct
-        type first_element_to_move(0);
-
-        // Emplace first element
-        array.emplace_at(0, hud::move(first_element_to_move));
-
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 1u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], first_element_to_move);
-
-        // The second element to emplace by move construct
-        type second_element_to_move(1);
-
-        // Emplace second element
-        array.emplace_at(0, hud::move(second_element_to_move));
-
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 2u);
-        hud_assert_eq(array.allocator().free_count(), 1u);
-        hud_assert_eq(array[0], second_element_to_move);
-        hud_assert_eq(array[1], first_element_to_move);
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_move);
+            hud_assert_eq(array[1], second_element_to_move);
+        }
     }
 
-    // No reallocation
+    // Emplace at the middle of an array
     {
-        // The empty array
-        array_type array;
-        array.reserve(2);
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 0u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
+        // Reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(4);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 4u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // The first element to emplace by move construct
-        type first_element_to_move(0);
+            // The element to emplace by move construct with ID = 1
+            type first_element_to_move(3);
 
-        // Emplace first element
-        array.emplace_at(0, hud::move(first_element_to_move));
+            // Emplace first element
+            array.emplace_at(array.count() / 2u, hud::move(first_element_to_move));
 
-        // Ensure we correctly emplaced the first element
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 1u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], first_element_to_move);
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+            hud_assert_eq(array[2], 3u);
+            hud_assert_eq(array[3], 4u);
+            hud_assert_eq(array[4], 5u);
+        }
 
-        // The second element to emplace by move construct
-        type second_element_to_move(1);
+        // No reallocation
+        {
+            // The array with 4 elements with ID [1,2,4,5]
+            array_type array;
+            array.reserve(5);
+            array.emplace_back(1);
+            array.emplace_back(2);
+            array.emplace_back(4);
+            array.emplace_back(5);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 4u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
 
-        // Emplace second element
-        array.emplace_at(0, hud::move(second_element_to_move));
+            // The element to emplace by move construct with ID = 1
+            type first_element_to_move(3);
 
-        // Ensure we correctly emplaced the second element and we really reallocate the array
-        hud_assert_ne(array.data(), nullptr);
-        hud_assert_eq(array.count(), 2u);
-        hud_assert_eq(array.max_count(), 2u);
-        hud_assert_eq(array.allocator().allocation_count(), 1u);
-        hud_assert_eq(array.allocator().free_count(), 0u);
-        hud_assert_eq(array[0], second_element_to_move);
-        hud_assert_eq(array[1], first_element_to_move);
+            // Emplace element in the middle
+            array.emplace_at(array.count() / 2u, hud::move(first_element_to_move));
+
+            // Ensure we correctly emplaced the element. Array should be [1,2,3,4,5]
+            // Only 4 and 5 are copied
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 5u);
+            hud_assert_eq(array.max_count(), 5u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], 1u);
+            hud_assert_eq(array[1], 2u);
+            hud_assert_eq(array[2], 3u);
+            hud_assert_eq(array[3], 4u);
+            hud_assert_eq(array[4], 5u);
+        }
     }
-}
+
+    // Emplace at the begin of an array
+    {
+        // Reallocation
+        {
+            // The empty array
+            array_type array;
+            hud_assert_eq(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 0u);
+            hud_assert_eq(array.allocator().allocation_count(), 0u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // The first element to emplace by move construct
+            type first_element_to_move(0);
+
+            // Emplace first element
+            array.emplace_at(0, hud::move(first_element_to_move));
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 1u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_move);
+
+            // The second element to emplace by move construct
+            type second_element_to_move(1);
+
+            // Emplace second element
+            array.emplace_at(0, hud::move(second_element_to_move));
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 2u);
+            hud_assert_eq(array.allocator().free_count(), 1u);
+            hud_assert_eq(array[0], second_element_to_move);
+            hud_assert_eq(array[1], first_element_to_move);
+        }
+
+        // No reallocation
+        {
+            // The empty array
+            array_type array;
+            array.reserve(2);
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 0u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+
+            // The first element to emplace by move construct
+            type first_element_to_move(0);
+
+            // Emplace first element
+            array.emplace_at(0, hud::move(first_element_to_move));
+
+            // Ensure we correctly emplaced the first element
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 1u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], first_element_to_move);
+
+            // The second element to emplace by move construct
+            type second_element_to_move(1);
+
+            // Emplace second element
+            array.emplace_at(0, hud::move(second_element_to_move));
+
+            // Ensure we correctly emplaced the second element and we really reallocate the array
+            hud_assert_ne(array.data(), nullptr);
+            hud_assert_eq(array.count(), 2u);
+            hud_assert_eq(array.max_count(), 2u);
+            hud_assert_eq(array.allocator().allocation_count(), 1u);
+            hud_assert_eq(array.allocator().free_count(), 0u);
+            hud_assert_eq(array[0], second_element_to_move);
+            hud_assert_eq(array[1], first_element_to_move);
+        }
+    }
 }

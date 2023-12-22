@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/allocators.h"
+#include "../misc/array_allocators.h"
 #include <core/templates/bit_cast.h>
 
 GTEST_TEST(array, destructor_call_elements_destructors)
@@ -44,7 +44,8 @@ GTEST_TEST(array, destructor_call_elements_destructors)
 
             return std::tuple {
                 all_destructor_are_not_called,
-                all_destructor_are_called};
+                all_destructor_are_called
+            };
         };
 
         // Non constant
@@ -101,7 +102,8 @@ GTEST_TEST(array, destructor_call_elements_destructors)
 
             return std::tuple {
                 all_destructor_are_not_called,
-                all_destructor_are_called};
+                all_destructor_are_called
+            };
         };
 
         // Non constant
