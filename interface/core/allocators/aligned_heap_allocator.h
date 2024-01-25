@@ -3,6 +3,7 @@
 #include "../memory.h"
 #include "../traits/is_power_of_two.h"
 #include "allocation.h"
+#include "allocator_traits.h"
 
 namespace hud
 {
@@ -16,16 +17,7 @@ namespace hud
     {
         /** The type of allocation done by this allocator. */
         template<typename type_t>
-        using allocation_type = hud::allocation<type_t>;
-
-        /** Do not propagate the allocator when container is moved. */
-        using propagate_on_container_move_assignment = hud::false_type;
-
-        /** Do not propagate the allocator when containes if copied. */
-        using propagate_on_container_copy_assignment = hud::false_type;
-
-        /** Do not propagate the allocator when containes if swapped. */
-        using propagate_on_container_swap = hud::false_type;
+        using memory_allocation_type = hud::memory_allocation<type_t>;
 
         /**
          * Allocate aligned memory block
@@ -34,9 +26,9 @@ namespace hud
          * @return allocation of the allocated aligned memory block, empty allocation if failed
          */
         template<typename type_t = u8>
-        [[nodiscard]] constexpr allocation_type<type_t> allocate(const usize count) noexcept
+        [[nodiscard]] constexpr memory_allocation_type<type_t> allocate(const usize count) noexcept
         {
-            return allocation_type<type_t>(memory::allocate_align<type_t>(count, alignment), count);
+            return memory_allocation_type<type_t>(memory::allocate_align<type_t>(count, alignment), count);
         }
 
         /**
@@ -44,11 +36,15 @@ namespace hud
          * @param buffer The buffer to free
          */
         template<typename type_t = u8>
-        constexpr void free(const allocation_type<type_t> &buffer) noexcept
+        constexpr void free(const memory_allocation_type<type_t> &buffer) noexcept
         {
             hud::memory::free_align(buffer.data(), buffer.count());
         }
     };
+
+    static_assert(hud::allocator_traits<aligned_heap_allocator<8>>::is_always_equal::value);
+    static_assert(!hud::allocator_traits<aligned_heap_allocator<8>>::copy_when_container_copy::value);
+    static_assert(!hud::allocator_traits<aligned_heap_allocator<8>>::move_when_container_move::value);
 } // namespace hud
 
 #endif // HD_INC_CORE_ALLOCATOR_ALIGNED_HEAP_H

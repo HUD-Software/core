@@ -2,6 +2,7 @@
 #define HD_INC_CORE_ARRAY_H
 #include "../minimal.h"
 #include "../allocators/aligned_heap_allocator.h"
+#include "../allocators/allocator_traits.h"
 #include "../traits/is_constructible.h"
 #include "../memory.h"
 #include "../traits/is_copy_constructible.h"
@@ -27,6 +28,154 @@
 
 namespace hud
 {
+    namespace details
+    {
+        template<typename type_t, typename allocator_t>
+        struct array_allocator_storage
+        {
+            /** The type of the allocator used. */
+            using allocator_type = allocator_t;
+
+            /** The type of allocation done by the allocator. */
+            using memory_allocation_type = typename allocator_type::template memory_allocation_type<type_t>;
+
+            constexpr array_allocator_storage() = default;
+
+            constexpr array_allocator_storage(const allocator_t &other_allocator) noexcept
+                : allocator_(other_allocator)
+            {
+            }
+
+            constexpr array_allocator_storage(allocator_t &&other_allocator) noexcept
+                : allocator_(hud::move(other_allocator))
+            {
+            }
+
+            constexpr array_allocator_storage(const array_allocator_storage &other) noexcept
+                : allocator_(other.allocator_)
+            {
+            }
+
+            constexpr array_allocator_storage(array_allocator_storage &&other) noexcept
+                : allocator_(hud::move(other.allocator_))
+            {
+            }
+
+            void swap(array_allocator_storage &other) noexcept
+            requires(hud::is_swappable_v<allocator_t>)
+            {
+                hud::swap(allocator_, other.allocator_);
+            }
+
+            template<typename type_t>
+            [[nodiscard]] constexpr auto allocate(const usize count) noexcept
+            {
+                return allocator_.allocate<type_t>(count);
+            }
+
+            constexpr void free(memory_allocation_type &buffer) noexcept
+            {
+                allocator_.free(buffer);
+            }
+
+            constexpr allocator_t &allocator() noexcept
+            {
+                return allocator_;
+            }
+
+            constexpr const allocator_t &allocator() const noexcept
+            {
+                return allocator_;
+            }
+
+            allocator_t allocator_;
+        };
+
+        template<typename type_t, typename allocator_t, bool copy_when_container_copy = hud::allocator_traits<allocator_t>::copy_when_container_copy::value>
+        struct array_copy_assign_base
+            : public array_allocator_storage<type_t, allocator_t>
+        {
+            using super_type = array_allocator_storage<type_t, allocator_t>;
+            using super_type::super_type;
+            constexpr array_copy_assign_base() = default;
+            constexpr array_copy_assign_base(const array_copy_assign_base &other) = default;
+            constexpr array_copy_assign_base(array_copy_assign_base &&other) = default;
+            constexpr array_copy_assign_base &operator=(const array_copy_assign_base &) = default;
+            constexpr array_copy_assign_base &operator=(array_copy_assign_base &&) = default;
+        };
+
+        template<typename type_t, typename allocator_t>
+        struct array_copy_assign_base<type_t, allocator_t, true>
+            : public array_allocator_storage<type_t, allocator_t>
+        {
+            static_assert(hud::is_nothrow_copy_assignable_v<allocator_t>, "allocator_t operator=(const allocator_t&) copy assign is throwable. hud::array is not designed to allow throwable copy assignable allocator");
+            using super_type = array_allocator_storage<type_t, allocator_t>;
+            using super_type::super_type;
+            constexpr array_copy_assign_base() = default;
+            constexpr array_copy_assign_base(const array_copy_assign_base &other) = default;
+            constexpr array_copy_assign_base(array_copy_assign_base &&other) = default;
+
+            constexpr array_copy_assign_base &operator=(const array_copy_assign_base &other) noexcept
+            {
+                if (this != &other)
+                {
+                    this->allocator = other.allocator;
+                }
+                return *this;
+            }
+
+            constexpr array_copy_assign_base &operator=(array_copy_assign_base &&) = default;
+        };
+
+        template<typename type_t, typename allocator_t, bool move_when_container_copy = hud::allocator_traits<allocator_t>::move_when_container_move::value>
+        struct array_move_assign_base
+            : array_copy_assign_base<type_t, allocator_t>
+        {
+            static_assert(hud::is_nothrow_move_assignable_v<allocator_t>, "allocator_t operator=(allocator_t&&) move assign is throwable. hud::array is not designed to allow throwable move assignable allocator");
+            using super_type = array_copy_assign_base<type_t, allocator_t>;
+            using super_type::super_type;
+            constexpr array_move_assign_base() = default;
+            constexpr array_move_assign_base(const array_move_assign_base &other) = default;
+            constexpr array_move_assign_base(array_move_assign_base &&other) = default;
+            constexpr array_move_assign_base &operator=(const array_move_assign_base &) = default;
+
+            constexpr array_move_assign_base &operator=(array_move_assign_base &&other) noexcept
+            {
+                if (this != &other)
+                {
+                    this->allocator = hud::move(other.allocator);
+                }
+                return *this;
+            }
+        };
+
+        template<typename type_t, typename allocator_t>
+        struct array_move_assign_base<type_t, allocator_t, true>
+            : array_copy_assign_base<type_t, allocator_t>
+        {
+            using super_type = array_copy_assign_base<type_t, allocator_t>;
+            using super_type::super_type;
+            constexpr array_move_assign_base() = default;
+            constexpr array_move_assign_base(const array_move_assign_base &other) = default;
+            constexpr array_move_assign_base(array_move_assign_base &&other) = default;
+            constexpr array_move_assign_base &operator=(const array_move_assign_base &) = default;
+            constexpr array_move_assign_base &operator=(array_move_assign_base &&) = default;
+        };
+
+        template<typename type_t, typename allocator_t>
+        struct array_impl
+            : array_move_assign_base<type_t, allocator_t>
+        {
+            using super_type = array_move_assign_base<type_t, allocator_t>;
+            using super_type::super_type;
+            constexpr array_impl() = default;
+            constexpr array_impl(const array_impl &other) = default;
+            constexpr array_impl(array_impl &&other) = default;
+            constexpr array_impl &operator=(const array_impl &) = default;
+            constexpr array_impl &operator=(array_impl &&) = default;
+        };
+
+    } // namespace details
 
     /**
      * array is a fast and memory efficient sequence of elements of the same type.
@@ -37,18 +186,19 @@ namespace hud
      */
     template<typename type_t, typename allocator_t = hud::aligned_heap_allocator<alignof(type_t)>>
     class array
-        : private allocator_t
+        : details::array_impl<type_t, allocator_t>
     {
+        using super_type = details::array_impl<type_t, allocator_t>;
 
     public:
         /** the type contained in the array. */
         using value_type = type_t;
 
         /** The type of the allocator used. */
-        using allocator_type = allocator_t;
+        using allocator_type = super_type::allocator_type;
 
         /** The type of allocation done by the allocator. */
-        using allocation_type = typename allocator_type::template allocation_type<type_t>;
+        using memory_allocation_type = super_type::memory_allocation_type;
 
         /** Mutable array iterator type. */
         using iterator = random_access_iterator<type_t *>;
@@ -69,8 +219,8 @@ namespace hud
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const u_type_t *first, const usize element_number, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(element_number))
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(element_number))
             , end_ptr(data_at(element_number))
         {
             hud::memory::copy_construct_array(data(), first, element_number);
@@ -87,8 +237,8 @@ namespace hud
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const u_type_t *first, const usize element_number, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(element_number + extra_element_count))
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(element_number + extra_element_count))
             , end_ptr(data_at(element_number))
         {
             hud::memory::copy_construct_array(data(), first, element_number);
@@ -103,8 +253,8 @@ namespace hud
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr array(std::initializer_list<u_type_t> list, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(list.size()))
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(list.size()))
             , end_ptr(data_at(list.size()))
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
@@ -125,8 +275,8 @@ namespace hud
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr array(std::initializer_list<u_type_t> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(list.size() + extra_element_count))
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(list.size() + extra_element_count))
             , end_ptr(data_at(list.size()))
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
@@ -140,12 +290,25 @@ namespace hud
         /**
          * Copy construct from another array.
          * @param other The other array to copy
-         * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
-        constexpr explicit array(const array &other, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr explicit array(const array &other) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(other.max_count()))
+            : super_type(other)
+            , allocation(super_type::allocate<type_t>(other.max_count()))
+            , end_ptr(data_at(other.count()))
+        {
+            hud::memory::copy_construct_array(data(), other.data(), other.count());
+        }
+
+        /**
+         * Copy construct from another array.
+         * @param other The other array to copy
+         * @param allocator The allocator instance to use. Copy the allocator.
+         */
+        constexpr explicit array(const array &other, const allocator_type &allocator) noexcept
+        requires(hud::is_copy_constructible_v<type_t>)
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(other.max_count()))
             , end_ptr(data_at(other.count()))
         {
             hud::memory::copy_construct_array(data(), other.data(), other.count());
@@ -155,13 +318,28 @@ namespace hud
          * Copy construct from another array.
          * @param other The other array to copy
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
-         * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
 
-        constexpr explicit array(const array &other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr explicit array(const array &other, const usize extra_element_count) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count))
+            : super_type(other)
+            , allocation(super_type::allocate<type_t>(other.max_count() + extra_element_count))
+            , end_ptr(data_at(other.count()))
+        {
+            hud::memory::copy_construct_array(data(), other.data(), count());
+        }
+
+        /**
+         * Copy construct from another array.
+         * @param other The other array to copy
+         * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
+         * @param allocator The allocator instance to use.
+         */
+
+        constexpr explicit array(const array &other, const usize extra_element_count, const allocator_type &allocator) noexcept
+        requires(hud::is_copy_constructible_v<type_t>)
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(other.max_count() + extra_element_count))
             , end_ptr(data_at(other.count()))
         {
             hud::memory::copy_construct_array(data(), other.data(), count());
@@ -177,8 +355,8 @@ namespace hud
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const array<u_type_t, u_allocator_t> &other, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(other.max_count()))
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(other.max_count()))
             , end_ptr(data_at(other.count()))
         {
             hud::memory::copy_construct_array(data(), other.data(), count());
@@ -195,8 +373,8 @@ namespace hud
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const array<u_type_t, u_allocator_t> &other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count))
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(other.max_count() + extra_element_count))
             , end_ptr(data_at(other.count()))
         {
             hud::memory::copy_construct_array(data(), other.data(), count());
@@ -209,7 +387,7 @@ namespace hud
          */
         constexpr explicit array(array &&other) noexcept
         requires(hud::is_bitwise_move_constructible_v<type_t>)
-            : allocator_t(hud::move(*static_cast<allocator_t *>(&other)))
+            : super_type(hud::move(other))
             , allocation(hud::move(other.allocation))
             , end_ptr(other.end_ptr)
         {
@@ -227,7 +405,7 @@ namespace hud
         template<typename u_type_t>
         constexpr explicit array(array<u_type_t, allocator_t> &&other) noexcept
         requires(hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
-            : allocator_t(hud::move(*static_cast<allocator_t *>(&other)))
+            : super_type(hud::move(other.allocator()))
         {
 
             // We moving an array of bitwise moveable constructible type where type_t != u_type_t We can't use reinterpret_cast to still the pointer
@@ -235,7 +413,7 @@ namespace hud
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
             {
-                allocation = allocator_type::template allocate<type_t>(other.max_count());
+                allocation = super_type::allocate<type_t>(other.max_count());
                 end_ptr = data_at(other.count());
                 hud::memory::move_or_copy_construct_array(data(), other.data(), count());
                 other.free_to_null();
@@ -259,8 +437,8 @@ namespace hud
          */
         template<typename u_type_t, typename u_allocator_t>
         constexpr explicit array(array<u_type_t, u_allocator_t> &&other, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(other.max_count()))
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(other.max_count()))
             , end_ptr(data_at(other.count()))
         {
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
@@ -287,8 +465,8 @@ namespace hud
          */
         template<typename u_type_t, typename u_allocator_t>
         constexpr explicit array(array<u_type_t, u_allocator_t> &&other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_t(allocator)
-            , allocation(allocator_type::template allocate<type_t>(other.max_count() + extra_element_count))
+            : super_type(allocator)
+            , allocation(super_type::allocate<type_t>(other.max_count() + extra_element_count))
             , end_ptr(data_at(other.count()))
         {
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
@@ -311,7 +489,7 @@ namespace hud
         constexpr ~array() noexcept
         {
             hud::memory::destroy_array(allocation.data(), count());
-            allocator_type::template free<type_t>(allocation);
+            super_type::free(allocation);
         }
 
         /**
@@ -413,7 +591,7 @@ namespace hud
             // If we don't have enough place in allocated memory we need to reallocate.
             if (new_count > max_count())
             {
-                allocation_type new_allocation = allocator_type::template allocate<type_t>(new_count);
+                memory_allocation_type new_allocation = super_type::allocate<type_t>(new_count);
                 // Construct the element in-place
                 hud::memory::construct_at(new_allocation.data_at(old_count), hud::forward<args_t>(args)...);
                 // Relocate the element that are before the newly added element if any
@@ -465,7 +643,7 @@ namespace hud
             // if we don't have enough place in allocated memory we need to reallocate.
             if (new_count > max_count())
             {
-                allocation_type new_allocation = allocator_type::template allocate<type_t>(new_count);
+                memory_allocation_type new_allocation = super_type::allocate<type_t>(new_count);
                 // Construct the element in-place
                 hud::memory::construct_at(new_allocation.data_at(idx), hud::forward<args_t>(args)...);
                 // Relocate elements if any
@@ -580,7 +758,7 @@ namespace hud
             }
             else if (end_ptr < allocation.data_end())
             {
-                allocation_type new_allocation = allocator_type::template allocate<type_t>(count());
+                memory_allocation_type new_allocation = super_type::allocate<type_t>(count());
                 hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), count());
                 free_allocation_and_replace_it(hud::move(new_allocation), count());
             }
@@ -636,7 +814,7 @@ namespace hud
 
                 if (remains > 0)
                 {
-                    allocation_type new_allocation = allocator_type::template allocate<type_t>(remains);
+                    memory_allocation_type new_allocation = super_type::allocate<type_t>(remains);
                     // Move or copy elements before the removed element then destroy moved or copied elements from the old allocation
                     hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), index);
                     // Move or copy elements after the removed element then destroy moved or copied elements from the old allocation
@@ -681,7 +859,7 @@ namespace hud
         {
             if (element_number > max_count())
             {
-                allocation_type new_allocation = allocator_type::template allocate<type_t>(element_number);
+                memory_allocation_type new_allocation = super_type::allocate<type_t>(element_number);
                 if (count() > 0u)
                 {
                     hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), count());
@@ -743,7 +921,7 @@ namespace hud
         /** Retrieves the allocator. */
         [[nodiscard]] HD_FORCEINLINE constexpr const allocator_type &allocator() const noexcept
         {
-            return *static_cast<const allocator_type *>(this);
+            return super_type::allocator();
         }
 
         /** Retrieves a constant pointer to the first element of the contiguous elements. */
@@ -897,7 +1075,7 @@ namespace hud
             static_assert(hud::is_nothrow_swappable_v<type_t>, "swap(array<type_t>&) is throwable. array is not designed to allow throwable swappable components");
             hud::swap(end_ptr, other.end_ptr);
             hud::swap(allocation, other.allocation);
-            hud::swap(*static_cast<allocator_type *>(this), *static_cast<allocator_type *>(&other));
+            super_type::swap(other);
         }
 
         /**
@@ -1061,7 +1239,7 @@ namespace hud
                 // Destroy existing
                 hud::memory::destroy_array(data(), count());
                 // Allocate a new allocation and copy construct source into it
-                allocation_type new_allocation = allocator_type::template allocate<type_t>(source_count);
+                memory_allocation_type new_allocation = super_type::allocate<type_t>(source_count);
                 hud::memory::copy_construct_array(new_allocation.data(), source, source_count);
                 // Save the newly allocated allocation
                 free_allocation_and_replace_it(hud::move(new_allocation), source_count);
@@ -1128,6 +1306,13 @@ namespace hud
         template<typename u_type_t, typename u_allocator_t>
         constexpr void move_assign(array<u_type_t, u_allocator_t> &&other) noexcept
         {
+            super_type::allocator() = std::move(other.allocator());
+            // Move the allocator if the same
+            // if (hud::is_same_v<allocator_t, u_allocator_t>)
+            // {
+            //     *static_cast<super_type *>(this) = std::move(other);
+            // }
+
             // We can still the allocation directly from the other array all the following statements are true :
             // - Is not contant evaluated ( reinterpret_cast is involved )
             // - u_type_t is bitwise moveable to type_t
@@ -1142,7 +1327,8 @@ namespace hud
                 // Destroy existing elements
                 hud::memory::destroy_array(data(), count());
                 // Move the allocator
-                *static_cast<allocator_type *>(this) = hud::move(*static_cast<u_allocator_t *>(&other));
+                //*static_cast<super_type *>(this) = hud::move(other);
+                //*static_cast<allocator_type *>(this) = hud::move(*static_cast<u_allocator_t *>(&other));
                 // Still the allocation and cast the type
                 free_allocation_and_replace_it(other.allocation.template reinterpret_cast_to<type_t>(), other.count());
                 other.leak();
@@ -1155,7 +1341,7 @@ namespace hud
                 {
                     // Delete existing elements
                     hud::memory::destroy_array(data(), count());
-                    allocation_type new_allocation = allocator_type::template allocate<type_t>(other.count());
+                    memory_allocation_type new_allocation = super_type::allocate<type_t>(other.count());
                     hud::memory::move_or_copy_construct_array(new_allocation.data(), other.data(), other.count());
                     free_allocation_and_replace_it(hud::move(new_allocation), other.count());
                 }
@@ -1194,10 +1380,9 @@ namespace hud
          * @param new_count_of_element The new count of elements to set
          */
         constexpr void
-        free_allocation_and_replace_it(allocation_type &&new_allocation, const usize new_count_of_element) noexcept
-
+        free_allocation_and_replace_it(memory_allocation_type &&new_allocation, const usize new_count_of_element) noexcept
         {
-            allocator_type::template free<type_t>(allocation);
+            super_type::free(allocation);
             allocation = hud::move(new_allocation);
             end_ptr = allocation.data_at(new_count_of_element);
         }
@@ -1205,7 +1390,7 @@ namespace hud
         /** Free the allocation and set everything to default */
         constexpr void free_to_null() noexcept
         {
-            allocator_type::template free<type_t>(allocation);
+            super_type::free(allocation);
             leak();
         }
 
@@ -1232,8 +1417,8 @@ namespace hud
         friend class array; // Friend with other array of other types
 
     private:
-        /** The allocation */
-        allocation_type allocation;
+        /** The memory allocation. */
+        memory_allocation_type allocation;
 
         /** Pointer to the end of the element sequence. */
         type_t *end_ptr = nullptr;

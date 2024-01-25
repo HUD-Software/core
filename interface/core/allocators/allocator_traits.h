@@ -16,7 +16,7 @@ namespace hud
          * If `hud::true_type`, the allocator should never be copied or moved.
          * If `hud::false_type`, the allocator can be copy/move constructed and assigned.
          */
-        using is_always_equal = hud::disjunction<hud::is_empty<allocator_t>, hud::is_bitwise_copyable<allocator_t>>;
+        using is_always_equal = hud::disjunction<hud::is_empty<allocator_t>>;
 
         /**
          * Indicates whether `allocator_t` should never be copy assigned when the container is copy assigned.

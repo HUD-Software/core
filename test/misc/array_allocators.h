@@ -11,7 +11,7 @@ namespace hud_test
         using allocator_type = hud::aligned_heap_allocator<alignement>;
 
         template<typename type_t>
-        using allocation_type = hud::allocation<type_t>;
+        using memory_allocation_type = hud::memory_allocation<type_t>;
         /** Do not propagate the allocator when container is moved. */
         using propagate_on_container_move_assignment = hud::false_type;
 
@@ -61,7 +61,7 @@ namespace hud_test
          * @return Allocation of the allocated aligned memory block, empty Allocation if failed
          */
         template<typename type_t = u8>
-        [[nodiscard]] constexpr allocation_type<type_t> allocate(const usize count) noexcept
+        [[nodiscard]] constexpr memory_allocation_type<type_t> allocate(const usize count) noexcept
         {
             auto buffer = allocator.template allocate<type_t>(count);
             if (!buffer.is_empty())
@@ -76,7 +76,7 @@ namespace hud_test
          * @param slice The slice to free
          */
         template<typename type_t = u8>
-        constexpr void free(allocation_type<type_t> &buffer) noexcept
+        constexpr void free(memory_allocation_type<type_t> &buffer) noexcept
         {
             if (!buffer.is_empty())
             {

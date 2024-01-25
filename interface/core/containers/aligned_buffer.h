@@ -11,7 +11,7 @@ namespace hud
      * The given alignment must be a power of two.
      */
     template<usize size, u32 alignment>
-    requires(is_power_of_two_v<alignment>)
+    requires(hud::is_power_of_two_v<alignment>)
     class alignas(alignment) aligned_buffer
     {
     public:

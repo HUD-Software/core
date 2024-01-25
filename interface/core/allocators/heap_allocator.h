@@ -12,7 +12,7 @@ namespace hud
     {
         /** The type of allocation done by this allocator. */
         template<typename type_t>
-        using allocation_type = hud::allocation<type_t>;
+        using memory_allocation_type = hud::memory_allocation<type_t>;
 
         /**
          * Allocate memory block with no alignment requirements
@@ -21,9 +21,9 @@ namespace hud
          * @return allocation view into the allocated memory, empty allocation if failed
          */
         template<typename type_t = u8>
-        [[nodiscard]] constexpr allocation_type<type_t> allocate(const usize count) noexcept
+        [[nodiscard]] constexpr memory_allocation_type<type_t> allocate(const usize count) noexcept
         {
-            return allocation_type<type_t>(memory::allocate_array<type_t>(count), count);
+            return memory_allocation_type<type_t>(memory::allocate_array<type_t>(count), count);
         }
 
         /**
@@ -31,7 +31,7 @@ namespace hud
          * @param buffer The buffer to free
          */
         template<typename type_t = u8>
-        constexpr void free(const allocation_type<type_t> &buffer) noexcept
+        constexpr void free(const memory_allocation_type<type_t> &buffer) noexcept
         {
             hud::memory::free_array(buffer.data(), buffer.count());
         }

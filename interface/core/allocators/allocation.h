@@ -10,13 +10,13 @@ namespace hud
 {
 
     /**
-     * allocation describes an allocation that refer to a contiguous sequence of type type_t with the first element of the sequence at position zero.
-     * Because allocation represent an allocated memory on the heap, it can't be copied but it can be moved to give ownership of the allocated memory to another allocation.
-     * allocation is similar to slice by because of it nature and due to the fact that the C++ Standard forbids containers of const elements because allocator<const type_t> is ill-formed,
+     * `memory_allocation` describes an allocation that refer to a contiguous sequence of type type_t with the first element of the sequence at position zero.
+     * Because memory_allocation represent an allocated memory on the heap, it can't be copied but it can be moved to give ownership of the allocated memory to another allocation.
+     * memory_allocation is similar to slice by because of it nature and due to the fact that the C++ Standard forbids containers of const elements because allocator<const type_t> is ill-formed,
      * the pointed memory return by data() is not const type_t but type_t even if allocation is const.
      */
     template<typename type_t>
-    class allocation
+    class memory_allocation
     {
 
     public:
@@ -30,30 +30,35 @@ namespace hud
         using pointer_type = element_type *;
 
         /** Default construct with value-initialized slice. */
-        constexpr allocation() noexcept = default;
+        constexpr memory_allocation() noexcept = default;
 
-        HD_FORCEINLINE constexpr allocation(type_t *begin, type_t *end) noexcept
+        /**
+         * Constructor for the `memory_allocation` class with specified `begin` and `end` pointers.
+         * @param begin The pointer to the first element of the contiguous sequence of elements
+         * @param end The pointer one past the last element of the contiguous sequence
+         */
+        HD_FORCEINLINE constexpr memory_allocation(type_t *begin, type_t *end) noexcept
             : begin_ptr(begin)
             , end_ptr(end)
         {
         }
 
         /**
-         * Construct with user-defined pointer and number of elements to sequence.
+         * Constructor for the `memory_allocation` class with a user-defined pointer and a specified number of elements.
          * @param first The pointer to the first element of the contiguous sequence of elements
          * @param count The count of elements in the sequence
          */
-        HD_FORCEINLINE constexpr allocation(type_t *first, const usize count) noexcept
+        HD_FORCEINLINE constexpr memory_allocation(type_t *first, const usize count) noexcept
             : begin_ptr(first)
             , end_ptr(first + count)
         {
         }
 
         /**
-         * Move construct the allocation.
-         * @param other The allocation to move
+         * Move constructor for the `memory_allocation` class, taking ownership of `other`.
+         * @param other The `memory_allocation` to be moved
          */
-        HD_FORCEINLINE constexpr allocation(allocation &&other) noexcept
+        HD_FORCEINLINE constexpr memory_allocation(memory_allocation &&other) noexcept
             : begin_ptr(other.begin_ptr)
             , end_ptr(other.end_ptr)
         {
@@ -62,11 +67,11 @@ namespace hud
         }
 
         /**
-         * Move assign the allocation.
-         * @param other The allocation to move
-         * @return *this
+         * Move assignment operator for the `memory_allocation` class, taking ownership of `other`.
+         * @param other The `memory_allocation` to be moved
+         * @return Reference to *this
          */
-        HD_FORCEINLINE constexpr allocation &operator=(allocation &&other) noexcept
+        HD_FORCEINLINE constexpr memory_allocation &operator=(memory_allocation &&other) noexcept
         {
             if (this != &other) [[likely]]
             {
@@ -79,8 +84,8 @@ namespace hud
         }
 
         /**
-         * Reset the allocation but do not free the memory. This function is safe if you free the memory before.
-         * Set to internal pointer to nullptr and the count to zero.
+         * Reset the `memory_allocation` without freeing the memory. This function is safe to use if memory has been deallocated separately.
+         * Sets the internal pointers to nullptr and the count to zero.
          */
         HD_FORCEINLINE constexpr void leak() noexcept
         {
@@ -89,9 +94,9 @@ namespace hud
         }
 
         /**
-         * Retrieves reference on the element at the given index.
-         * @param index The index of the element to retrieve
-         * @return Reference on the element at the given index
+         * Retrieves a reference to the element at the specified `index`.
+         * @param index The `index` of the element to retrieve
+         * @return Reference to the element at the specified `index`
          */
         [[nodiscard]] HD_FORCEINLINE constexpr hud::add_lvalue_reference_t<type_t> operator[](const usize index) const noexcept
         {
@@ -99,7 +104,7 @@ namespace hud
             return *(data() + index);
         }
 
-        /** Checks if the allocation is empty or not. */
+        /** Checks if the `memory_allocation` is empty. */
         [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
         {
             return begin_ptr == end_ptr;
@@ -118,10 +123,10 @@ namespace hud
         }
 
         /**
-         * Retrieves a pointer to the elements at given index of the sequence.
-         * A special case is allowed when data_at(count()) is called.
-         * No assertion is done but the pointer is not valid to dereference.
-         * This feature is usefull to get a pointer end to performs pointer aritmetics.
+         * Retrieves a pointer to the element at the given `index` of the sequence.
+         * A special case is allowed when `data_at(count())` is called.
+         * No assertion is done, but the pointer is not valid for dereferencing.
+         * This feature is useful for obtaining a pointer to the end to perform pointer arithmetic.
          */
         [[nodiscard]] constexpr type_t *data_at(const usize index) const noexcept
         {
@@ -129,42 +134,43 @@ namespace hud
             return data() + index;
         }
 
-        /** Retrieves the count of elements the allocation refers to. */
+        /** Retrieves the count of elements in the `memory_allocation`. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize count() const noexcept
         {
             return static_cast<usize>(end_ptr - begin_ptr);
         }
 
-        /** Retrieves the count of bytes the allocation refers to. */
+        /** Retrieves the count of bytes in the `memory_allocation`. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize byte_count() const noexcept
         {
             return count() * sizeof(type_t);
         }
 
-        /** Check whether index is in valid range or not. */
+        /** Checks whether `index` is in a valid range. */
         [[nodiscard]] HD_FORCEINLINE constexpr bool is_valid_index(const usize index) const noexcept
         {
             return begin_ptr + index < end_ptr;
         }
 
         /**
-         * Reinterprets the bits of the allocation type to the given type.
-         * Be very carefull with this method, struct alignement may be not respected.
+         * Reinterprets the bits of the `memory_allocation` type as the given type.
+         * Caution: Be very careful when using this method; struct alignment may not be respected.
          * This is a reinterpret_cast.
-         * @return The allocation transmute to another type
+         * @tparam u_type_t The type to reinterpret the `memory_allocation` as
+         * @return The `memory_allocation` transmuted to another type
          */
         template<typename u_type_t>
-        [[nodiscard]] allocation<u_type_t> HD_FORCEINLINE reinterpret_cast_to() const noexcept
+        [[nodiscard]] memory_allocation<u_type_t> HD_FORCEINLINE reinterpret_cast_to() const noexcept
         {
             static_assert(alignof(u_type_t) == alignof(type_t), "Alignement requirement mismatch");
-            return allocation<u_type_t> {reinterpret_cast<u_type_t *>(begin_ptr), reinterpret_cast<u_type_t *>(end_ptr)};
+            return memory_allocation<u_type_t> {reinterpret_cast<u_type_t *>(begin_ptr), reinterpret_cast<u_type_t *>(end_ptr)};
         }
 
         /**
-         * Retrieves a sub-slice of the slice.
+         * Retrieves a slice of a part or the entire allocation of the `memory_allocation`.
          * @param first_index The index of the first element in the slice sequence
-         * @param count The count of elements the slice sequence must contains
-         * @return The sub-slice from data()+first_index over a sequence of count elements
+         * @param count The count of elements in the sub-slice
+         * @return The sub-slice starting from data() + first_index over a sequence of count elements
          */
         [[nodiscard]] HD_FORCEINLINE constexpr slice<type_t> sub_slice(const usize first_index, const usize count) const noexcept
         {
@@ -192,8 +198,8 @@ namespace hud
         }
 
     private:
-        allocation(const allocation &) = delete;
-        allocation &operator=(const allocation &) = delete;
+        memory_allocation(const memory_allocation &) = delete;
+        memory_allocation &operator=(const memory_allocation &) = delete;
 
     private:
         /** Pointer to the first element */

@@ -1700,7 +1700,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
     }
 }
 
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type)
+GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type_same_allocator)
 {
 
     using type1 = hud_test::non_bitwise_move_assignable_type2;
@@ -1874,7 +1874,181 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     }
 }
 
-GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
+GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type_different_allocator)
+{
+
+    using type1 = hud_test::non_bitwise_move_assignable_type2;
+    using type2 = hud_test::non_bitwise_move_assignable_type;
+    // Ensure we test with different types
+    static_assert(!std::is_same_v<type1, type2>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<type2, type1>);
+
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_2)
+    {
+        // Ensure that all counters are set to 0
+        for (const type1 &element : elements_in_assigned)
+        {
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 0u);
+        }
+        for (const type2 &element : elements_to_assign)
+        {
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 0u);
+        }
+
+        hud::array<type1, hud_test::array_allocator<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::array<type2, hud_test::array_allocator_2<alignof(type2)>> to_assign(elements_to_assign, extra_2);
+
+        // Ensure assigned copy constructor is set to 1
+        for (const type1 &element : assigned)
+        {
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 1u);
+        }
+        for (const type2 &element : to_assign)
+        {
+            hud_assert_eq(element.move_assign_count(), 0u);
+            hud_assert_eq(element.move_constructor_count(), 0u);
+            hud_assert_eq(element.copy_constructor_count(), 1u);
+        }
+
+        u32 previous_allocation_count = 0;
+        u32 previous_free_count = 0;
+        // if we have elements to copy, then 1 allocation should be done
+        if ((elements_in_assigned.size() + extra) > 0)
+        {
+            // Ensure we are allocating only one time
+            hud_assert_eq(assigned.allocator().allocation_count(), 1u);
+            hud_assert_eq(assigned.allocator().free_count(), 0u);
+            previous_allocation_count = assigned.allocator().allocation_count();
+            previous_free_count = assigned.allocator().free_count();
+        }
+
+        // If we have elements inside allocation should be done
+        if ((elements_in_assigned.size() + extra) > 0)
+        {
+            hud_assert_ne(assigned.data(), nullptr);
+        }
+        else
+        {
+            hud_assert_eq(assigned.data(), nullptr);
+        }
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
+        const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
+        const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
+        {
+            hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
+        }
+
+        assigned = std::move(to_assign);
+
+        // Number of element should be equal to the number of element in the std::initializer_list
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
+
+        // Ensure we keep all allocated memory from the move pointer
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
+        {
+            hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
+        }
+        else
+        {
+            hud_assert_eq(assigned.max_count(), elements_to_assign.size());
+        }
+
+        // Ensures we move all values correctly
+        for (usize index = 0; index < assigned.count(); index++)
+        {
+            hud_assert_eq(assigned[index].id(), (elements_to_assign.begin() + index)->id());
+        }
+
+        const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
+
+        // Allocation is supposed to reallocate if we assign more elements than was allocated
+        if (should_reallocate)
+        {
+            hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
+            if (previous_allocation_count > 0)
+            {
+                hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
+            }
+        }
+
+        // Ensures we move all values correctly
+        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // All elements are destroyed and the move constructor of all elements is called instead of move assignement
+        if (should_reallocate)
+        {
+            for (usize index = 0; index < assigned.count(); index++)
+            {
+                const type1 &element = assigned[index];
+                hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
+                hud_assert_eq(element.move_assign_count(), 0u);
+                hud_assert_eq(element.move_constructor_count(), 1u);
+                hud_assert_eq(element.copy_constructor_count(), 1u);
+            }
+        }
+        // If not reallocation was done, all element in current count should call move assign,
+        // else all elements assign after the count of elements before the assignement should be move construct
+        else
+        {
+            for (usize index = 0; index < assigned.count(); index++)
+            {
+                const type1 &element = assigned[index];
+                if (index < elements_in_assigned.size())
+                {
+                    hud_assert_eq(element.move_assign_count(), 1u);
+                    hud_assert_eq(element.move_constructor_count(), 0u);
+                    hud_assert_eq(element.copy_constructor_count(), 1u);
+                }
+                else
+                {
+                    hud_assert_eq(element.move_assign_count(), 0u);
+                    hud_assert_eq(element.move_constructor_count(), 1u);
+                    hud_assert_eq(element.copy_constructor_count(), 1u);
+                }
+            }
+        }
+
+        // Ensure that the moved array is set to empty
+        hud_assert_eq(to_assign.count(), 0u);
+        hud_assert_eq(to_assign.max_count(), 0u);
+        hud_assert_eq(to_assign.data(), nullptr);
+
+        // Ensure the moved array was freed and only one allocation was done ( at initilisation of the array )
+        if ((elements_to_assign.size() + extra_2) > 0)
+        {
+            hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
+            hud_assert_eq(to_assign.allocator().free_count(), 1u);
+        }
+        else
+        {
+            hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
+            hud_assert_eq(to_assign.allocator().free_count(), 0u);
+        }
+    };
+
+    for (usize extra = 0; extra < 5; extra++)
+    {
+        for (usize extra2 = 0; extra2 < 5; extra2++)
+        {
+            test_assign({}, extra, {}, extra2);
+            test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {type2 {0}, type2 {1}}, extra2);
+            test_assign({type1 {10}, type1 {20}, type1 {30}, type1 {40}, type1 {50}}, extra, {}, extra2);
+        }
+    }
+}
+
+GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements)
 {
 
     auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign)
@@ -1893,6 +2067,142 @@ GTEST_TEST(array, move_assign_array_call_destructor_of_elements)
 
         hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
         hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
+
+        // Ensure assigned copy constructor is set to 1
+        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
+        {
+            hud_assert_ne(element.ptr(), nullptr);
+            hud_assert_eq(*element.ptr(), 0);
+        }
+
+        u32 previous_allocation_count = 0;
+        u32 previous_free_count = 0;
+        // if we have elements to copy, then 1 allocation should be done
+        if ((elements_in_assigned.size() + extra) > 0)
+        {
+            // Ensure we are allocating only one time
+            hud_assert_eq(assigned.allocator().allocation_count(), 1u);
+            hud_assert_eq(assigned.allocator().free_count(), 0u);
+            previous_allocation_count = assigned.allocator().allocation_count();
+            previous_free_count = assigned.allocator().free_count();
+        }
+
+        // If we have elements inside allocation should be done
+        if ((elements_in_assigned.size() + extra) > 0)
+        {
+            hud_assert_ne(assigned.data(), nullptr);
+        }
+        else
+        {
+            hud_assert_eq(assigned.data(), nullptr);
+        }
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
+        hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
+
+        assigned = std::move(to_assign);
+
+        // Allocation should never be released if already done
+        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty array
+        if ((elements_in_assigned.size() + extra) == 0 && elements_to_assign.size() == 0)
+        {
+            hud_assert_eq(assigned.data(), nullptr);
+        }
+        else
+        {
+            hud_assert_ne(assigned.data(), nullptr);
+        }
+
+        // Number of element should be equal to the number of element in the std::initializer_list
+        hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
+
+        // Ensure we do no reallocate for less memory
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
+        {
+            hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
+        }
+        else
+        {
+            hud_assert_eq(assigned.max_count(), elements_to_assign.size());
+        }
+
+        // Allocation is supposed to reallocate if we assign more elements than was allocated
+        const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
+        if (should_reallocate)
+        {
+            hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
+            if (previous_allocation_count > 0)
+            {
+                hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
+            }
+        }
+
+        // Ensure we called destructors
+        // If the a reallocation was done,
+        // All elements are destroyed
+        if (should_reallocate)
+        {
+            for (const i32 *element : elements_in_assigned)
+            {
+                hud_assert_eq(*element, 1);
+            }
+        }
+        // If no reallocation was done, all elements in current count should not be destroyed
+        else
+        {
+            for (usize index = 0; index < elements_in_assigned.size(); index++)
+            {
+                if (index < elements_to_assign.size())
+                {
+                    hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 0);
+                }
+                else
+                {
+                    hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 1);
+                }
+            }
+        }
+
+        // Ensure the copied elements are not destroyed
+        for (usize index = 0; index < elements_to_assign.size(); index++)
+        {
+            hud_assert_eq(*(*(elements_to_assign.begin() + index)), 0);
+        }
+    };
+
+    i32 assigned[5];
+    i32 to_assign[5];
+
+    for (usize extra = 0; extra < 5; extra++)
+    {
+        test_assign({}, extra, {});
+        test_assign({}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
+        test_assign({&assigned[0], &assigned[1]}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
+        test_assign({&assigned[0], &assigned[1], &assigned[2], &assigned[3]}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
+        test_assign({&assigned[0], &assigned[1], &assigned[2], &assigned[3], &assigned[4]}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
+        test_assign({&assigned[0], &assigned[1], &assigned[2], &assigned[3], &assigned[4]}, extra, {&to_assign[0], &to_assign[1]});
+        test_assign({&assigned[0], &assigned[1], &assigned[2], &assigned[3], &assigned[4]}, extra, {});
+    }
+}
+
+GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_elements)
+{
+
+    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign)
+    {
+        // Ensure that all destructors is not called
+        for (i32 *destructor_counter : elements_in_assigned)
+        {
+            hud_assert_ne(destructor_counter, nullptr);
+            *destructor_counter = 0;
+        }
+        for (i32 *destructor_counter : elements_to_assign)
+        {
+            hud_assert_ne(destructor_counter, nullptr);
+            *destructor_counter = 0;
+        }
+
+        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
+        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
 
         // Ensure assigned copy constructor is set to 1
         for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
