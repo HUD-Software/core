@@ -108,7 +108,7 @@ namespace hud_test
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType2>);
 
     /**
-     * A copy constructible type that is not a bitwise moveable type
+     * A copy constructible type that is not a bitwise movable type
      * The id is copied in order to know which NonBitwiseMoveConstructibleType is the original NonBitwiseMoveConstructibleType.
      * This type add a incremanation pointer information to the type used by NonBitwiseMoveConstructibleType4 when this type is constructed.
      */

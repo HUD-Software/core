@@ -38,7 +38,12 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 // Ensure we do no reallocate for less memory
                 assigned.max_count(),
                 assigned.allocator().allocation_count(),
-                assigned.allocator().free_count()
+                assigned.allocator().free_count(),
+                to_assign.data() == nullptr,
+                to_assign.count(),
+                to_assign.max_count(),
+                to_assign.allocator().allocation_count(),
+                to_assign.allocator().free_count(),
             };
         };
 
@@ -51,6 +56,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, {});
@@ -59,6 +69,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, {1, 2});
@@ -67,6 +82,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, {3, 4});
@@ -75,6 +95,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2, 3}, {4, 5});
@@ -83,6 +108,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, {3, 4, 5});
@@ -91,6 +121,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
         }
 
@@ -103,6 +138,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({1, 2}, {});
@@ -111,6 +151,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({}, {1, 2});
@@ -119,6 +164,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, {3, 4});
@@ -127,6 +177,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2, 3}, {4, 5});
@@ -135,6 +190,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, {3, 4, 5});
@@ -143,6 +203,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
         }
     }
@@ -176,7 +241,12 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 // Ensure we do no reallocate for less memory
                 assigned.max_count(),
                 assigned.allocator().allocation_count(),
-                assigned.allocator().free_count()
+                assigned.allocator().free_count(),
+                to_assign.data() == nullptr,
+                to_assign.count(),
+                to_assign.max_count(),
+                to_assign.allocator().allocation_count(),
+                to_assign.allocator().free_count(),
             };
         };
 
@@ -189,6 +259,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 0u);
@@ -197,6 +272,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, 0u, {}, 1u);
@@ -205,6 +285,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 1u);
@@ -213,6 +298,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
 
             {
@@ -222,6 +312,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 1u, {}, 0u);
@@ -230,6 +325,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 0u, {}, 1u);
@@ -238,6 +338,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 1u, {}, 1u);
@@ -246,6 +351,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
 
             {
@@ -255,6 +365,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {1, 2}, 0u);
@@ -263,6 +378,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, 0u, {1, 2}, 1u);
@@ -271,6 +391,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {1, 2}, 1u);
@@ -279,8 +404,12 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
-
             {
                 const auto result = test({1, 2}, 0u, {3, 4}, 0u);
                 hud_assert_true(std::get<0>(result));
@@ -288,6 +417,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 1u, {3, 4}, 0u);
@@ -296,6 +430,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 0u, {3, 4}, 1u);
@@ -304,6 +443,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 1u, {3, 4}, 1u);
@@ -312,6 +456,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
 
             {
@@ -321,6 +470,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
@@ -329,6 +483,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
@@ -337,6 +496,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
@@ -345,6 +509,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
 
             {
@@ -354,6 +523,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
@@ -362,6 +536,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
@@ -370,6 +549,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 4u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
@@ -378,6 +562,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 4u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
         }
 
@@ -390,6 +579,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 0u);
@@ -398,6 +592,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, {}, 1u);
@@ -406,6 +605,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 1u);
@@ -414,6 +618,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -423,6 +632,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {}, 0u);
@@ -431,6 +645,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({1, 2}, 0u, {}, 1u);
@@ -439,6 +658,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {}, 1u);
@@ -447,6 +671,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -456,6 +685,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 1u, {1, 2}, 0u);
@@ -464,6 +698,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 0u, {1, 2}, 1u);
@@ -472,6 +711,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 1u, {1, 2}, 1u);
@@ -480,8 +724,12 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
-
             {
                 constexpr auto result = test({1, 2}, 0u, {3, 4}, 0u);
                 hud_assert_true(std::get<0>(result));
@@ -489,6 +737,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {3, 4}, 0u);
@@ -497,6 +750,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 0u, {3, 4}, 1u);
@@ -505,6 +763,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {3, 4}, 1u);
@@ -513,6 +776,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -522,6 +790,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
@@ -530,6 +803,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 4u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
@@ -538,6 +816,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
@@ -546,6 +829,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 4u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -555,6 +843,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
@@ -563,6 +856,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
@@ -571,6 +869,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
@@ -579,6 +882,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
         }
     }
@@ -620,7 +928,12 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 // Ensure we do no reallocate for less memory
                 assigned.max_count(),
                 assigned.allocator().allocation_count(),
-                assigned.allocator().free_count()
+                assigned.allocator().free_count(),
+                to_assign.data() == nullptr,
+                to_assign.count(),
+                to_assign.max_count(),
+                to_assign.allocator().allocation_count(),
+                to_assign.allocator().free_count(),
             };
         };
 
@@ -633,22 +946,37 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, {});
-                hud_assert_false(std::get<0>(result));
+                hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 0u);
-                hud_assert_eq(std::get<2>(result), 0u);
+                hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, {1, 2});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
                 hud_assert_eq(std::get<2>(result), 2u);
-                hud_assert_eq(std::get<3>(result), 0u);
+                hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, {3, 4});
@@ -656,23 +984,38 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<1>(result), 2u);
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2, 3}, {4, 5});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
-                hud_assert_eq(std::get<2>(result), 2u);
+                hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, {3, 4, 5});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 3u);
                 hud_assert_eq(std::get<2>(result), 3u);
-                hud_assert_eq(std::get<3>(result), 1u);
+                hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
         }
 
@@ -685,6 +1028,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({1, 2}, {});
@@ -693,6 +1041,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({}, {1, 2});
@@ -701,6 +1054,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, {3, 4});
@@ -709,6 +1067,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2, 3}, {4, 5});
@@ -717,6 +1080,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, {3, 4, 5});
@@ -725,12 +1093,18 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
         }
     }
 
     // Test with extra
     {
+
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
         {
             hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
@@ -758,7 +1132,12 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 // Ensure we do no reallocate for less memory
                 assigned.max_count(),
                 assigned.allocator().allocation_count(),
-                assigned.allocator().free_count()
+                assigned.allocator().free_count(),
+                to_assign.data() == nullptr,
+                to_assign.count(),
+                to_assign.max_count(),
+                to_assign.allocator().allocation_count(),
+                to_assign.allocator().free_count(),
             };
         };
 
@@ -771,22 +1150,37 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({}, 1u, {}, 0u);
-                hud_assert_false(std::get<0>(result));
-                hud_assert_eq(std::get<1>(result), 0u);
-                hud_assert_eq(std::get<2>(result), 0u);
-                hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
-            }
-            {
-                const auto result = test({}, 0u, {}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 0u);
                 hud_assert_eq(std::get<2>(result), 1u);
+                hud_assert_eq(std::get<3>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
+            }
+            {
+                const auto result = test({}, 0u, {}, 1u);
+                hud_assert_false(std::get<0>(result));
+                hud_assert_eq(std::get<1>(result), 0u);
+                hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({}, 1u, {}, 1u);
@@ -794,40 +1188,65 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<1>(result), 0u);
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
                 const auto result = test({1, 2}, 0u, {}, 0u);
-                hud_assert_false(std::get<0>(result));
+                hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 0u);
-                hud_assert_eq(std::get<2>(result), 0u);
+                hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 1u, {}, 0u);
-                hud_assert_false(std::get<0>(result));
+                hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 0u);
-                hud_assert_eq(std::get<2>(result), 0u);
+                hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 const auto result = test({1, 2}, 0u, {}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 0u);
-                hud_assert_eq(std::get<2>(result), 1u);
+                hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, 1u, {}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 0u);
-                hud_assert_eq(std::get<2>(result), 1u);
+                hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -835,32 +1254,52 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
                 hud_assert_eq(std::get<2>(result), 2u);
-                hud_assert_eq(std::get<3>(result), 0u);
+                hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({}, 1u, {1, 2}, 0u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
                 hud_assert_eq(std::get<2>(result), 2u);
-                hud_assert_eq(std::get<3>(result), 1u);
+                hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({}, 0u, {1, 2}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
-                hud_assert_eq(std::get<2>(result), 3u);
-                hud_assert_eq(std::get<3>(result), 0u);
+                hud_assert_eq(std::get<2>(result), 2u);
+                hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({}, 1u, {1, 2}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
-                hud_assert_eq(std::get<2>(result), 3u);
-                hud_assert_eq(std::get<3>(result), 1u);
+                hud_assert_eq(std::get<2>(result), 2u);
+                hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -869,23 +1308,38 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<1>(result), 2u);
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, 1u, {3, 4}, 0u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
-                hud_assert_eq(std::get<2>(result), 2u);
+                hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, 0u, {3, 4}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
-                hud_assert_eq(std::get<2>(result), 3u);
+                hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, 1u, {3, 4}, 1u);
@@ -893,24 +1347,39 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<1>(result), 2u);
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
                 const auto result = test({1, 2, 3}, 0u, {4, 5}, 0u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
-                hud_assert_eq(std::get<2>(result), 2u);
+                hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
-                hud_assert_eq(std::get<2>(result), 2u);
+                hud_assert_eq(std::get<2>(result), 4u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
@@ -918,15 +1387,25 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<1>(result), 2u);
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 2u);
-                hud_assert_eq(std::get<2>(result), 3u);
+                hud_assert_eq(std::get<2>(result), 4u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -934,8 +1413,13 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 3u);
                 hud_assert_eq(std::get<2>(result), 3u);
-                hud_assert_eq(std::get<3>(result), 1u);
+                hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
@@ -943,23 +1427,38 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<1>(result), 3u);
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 3u);
-                hud_assert_eq(std::get<2>(result), 4u);
-                hud_assert_eq(std::get<3>(result), 1u);
+                hud_assert_eq(std::get<2>(result), 3u);
+                hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 const auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_eq(std::get<1>(result), 3u);
-                hud_assert_eq(std::get<2>(result), 4u);
+                hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
-                hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
         }
 
@@ -972,6 +1471,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 0u);
@@ -980,6 +1484,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({}, 0u, {}, 1u);
@@ -988,6 +1497,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 0u);
                 hud_assert_eq(std::get<3>(result), 0u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 1u, {}, 1u);
@@ -996,6 +1510,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 1u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -1005,6 +1524,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {}, 0u);
@@ -1013,6 +1537,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 0u);
+                hud_assert_eq(std::get<9>(result), 0u);
             }
             {
                 constexpr auto result = test({1, 2}, 0u, {}, 1u);
@@ -1021,6 +1550,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {}, 1u);
@@ -1029,6 +1563,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -1038,6 +1577,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 1u, {1, 2}, 0u);
@@ -1046,6 +1590,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 0u, {1, 2}, 1u);
@@ -1054,6 +1603,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({}, 1u, {1, 2}, 1u);
@@ -1062,6 +1616,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -1071,6 +1630,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {3, 4}, 0u);
@@ -1079,6 +1643,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 0u, {3, 4}, 1u);
@@ -1087,6 +1656,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 2u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {3, 4}, 1u);
@@ -1095,6 +1669,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -1104,6 +1683,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 0u);
@@ -1112,6 +1696,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 4u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2, 3}, 0u, {4, 5}, 1u);
@@ -1120,6 +1709,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2, 3}, 1u, {4, 5}, 1u);
@@ -1128,6 +1722,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 4u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
 
             {
@@ -1137,6 +1736,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 0u);
@@ -1145,6 +1749,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 0u, {3, 4, 5}, 1u);
@@ -1153,6 +1762,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 2u);
                 hud_assert_eq(std::get<4>(result), 1u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
             {
                 constexpr auto result = test({1, 2}, 1u, {3, 4, 5}, 1u);
@@ -1161,6 +1775,11 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
                 hud_assert_eq(std::get<2>(result), 3u);
                 hud_assert_eq(std::get<3>(result), 1u);
                 hud_assert_eq(std::get<4>(result), 0u);
+                hud_assert_true(std::get<5>(result));
+                hud_assert_eq(std::get<6>(result), 0u);
+                hud_assert_eq(std::get<7>(result), 0u);
+                hud_assert_eq(std::get<8>(result), 1u);
+                hud_assert_eq(std::get<9>(result), 1u);
             }
         }
     }
@@ -1222,7 +1841,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
             hud_assert_eq(assigned[index], static_cast<type1>(*(elements_to_assign.begin() + index)));
         }
 
-        // Allocation is not supposed to be done, the type is bitwise moveable, the array should just take the allocation buffer ( move the pointer to the allocation )
+        // Allocation is not supposed to be done, the type is bitwise movable, the array should just take the allocation buffer ( move the pointer to the allocation )
         // assigned array should free the buffer if he have one
         // Ensure we really stole the buffer and do not allocate
         hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
@@ -1309,8 +1928,15 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
         // Number of element should be equal to the number of element in the std::initializer_list
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
-        // Ensure we keep all allocated memory from the move pointer
-        hud_assert_eq(assigned.max_count(), elements_to_assign.size() + extra_2);
+        // max_count must grown only if we don't have enough memory in assigned array
+        if (elements_to_assign.size() > (elements_in_assigned.size() + extra))
+        {
+            hud_assert_eq(assigned.max_count(), elements_to_assign.size());
+        }
+        else
+        {
+            hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
+        }
 
         // Ensures we move all values correctly
         for (usize index = 0; index < assigned.count(); index++)
@@ -1318,29 +1944,41 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
             hud_assert_eq(assigned[index], static_cast<type1>(*(elements_to_assign.begin() + index)));
         }
 
-        // Allocation is not supposed to be done, the type is bitwise moveable, the array should just take the allocation buffer ( move the pointer to the allocation )
-        // assigned array should free the buffer if he have one
-        // Ensure we really stole the buffer and do not allocate
-        hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
-        if ((elements_in_assigned.size() + extra) != 0)
+        // If we have elements to assign, a new allocation should be done
+        if (elements_to_assign.size() > (elements_in_assigned.size() + extra))
+        {
+            hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
+        }
+        else
+        {
+            hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
+        }
+
+        // If we already have allocated data and the allocation size can't fit the assigned data, a free should be done
+        if ((elements_in_assigned.size() + extra) > 0 && (elements_in_assigned.size() + extra) < elements_to_assign.size())
         {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
-
-        // Ensure we really stole the buffer by just moving the pointer
-        hud_assert_eq(reinterpret_cast<const uptr>(assigned.data()), to_assigned_buffer_address);
+        else
+        {
+            hud_assert_eq(assigned.allocator().free_count(), previous_free_count);
+        }
 
         // Ensure that the moved array is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
 
-        // Ensure the moved array was not freed and only one allocation was done ( at initilisation of the array )
         if ((elements_to_assign.size() + extra_2) > 0)
         {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
+            hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        hud_assert_eq(to_assign.allocator().free_count(), 0u);
+        else
+        {
+            hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
+            hud_assert_eq(to_assign.allocator().free_count(), 0u);
+        }
     };
 
     for (usize extra = 0; extra < 5; extra++)

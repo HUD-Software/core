@@ -8,7 +8,6 @@
 
 namespace hud
 {
-
     /**
      * `memory_allocation` describes an allocation that refer to a contiguous sequence of type type_t with the first element of the sequence at position zero.
      * Because memory_allocation represent an allocated memory on the heap, it can't be copied but it can be moved to give ownership of the allocated memory to another allocation.
@@ -20,6 +19,8 @@ namespace hud
     {
 
     public:
+        template<typename u_type_t>
+        using bind_other = memory_allocation<u_type_t>;
         /** Mutable slice iterator type */
         using iterator_type = random_access_iterator<type_t *>;
         /** Constant slice iterator type */
@@ -49,6 +50,18 @@ namespace hud
          * @param count The count of elements in the sequence
          */
         HD_FORCEINLINE constexpr memory_allocation(type_t *first, const usize count) noexcept
+            : begin_ptr(first)
+            , end_ptr(first + count)
+        {
+        }
+
+        /**
+         * Constructor for the `memory_allocation` class with a user-defined pointer and a specified number of elements.
+         * @param first The pointer to the first element of the contiguous sequence of elements
+         * @param count The count of elements in the sequence
+         */
+        template<typename u_type_t>
+        HD_FORCEINLINE constexpr memory_allocation(u_type_t *first, const usize count) noexcept
             : begin_ptr(first)
             , end_ptr(first + count)
         {

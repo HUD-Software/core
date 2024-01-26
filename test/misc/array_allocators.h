@@ -2,6 +2,7 @@
 #define HD_INC_TEST_ARRAY_ALLOCATORS_H
 #include <core/allocators/aligned_heap_allocator.h>
 #include <core/allocators/allocation.h>
+#include <core/allocators/allocator_traits.h>
 
 namespace hud_test
 {
@@ -12,14 +13,6 @@ namespace hud_test
 
         template<typename type_t>
         using memory_allocation_type = hud::memory_allocation<type_t>;
-        /** Do not propagate the allocator when container is moved. */
-        using propagate_on_container_move_assignment = hud::false_type;
-
-        /** Do not propagate the allocator when containes if copied. */
-        using propagate_on_container_copy_assignment = hud::false_type;
-
-        /** Do not propagate the allocator when containes if swapped. */
-        using propagate_on_container_swap = hud::false_type;
 
     public:
         /** Default constructor. */
@@ -131,4 +124,5 @@ namespace hud_test
 
 } // namespace hud_test
 
+// namespace hud
 #endif // HD_INC_TEST_ARRAY_ALLOCATORS_H

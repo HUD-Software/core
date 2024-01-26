@@ -37,9 +37,19 @@ namespace hud
         }
     };
 
+    template<>
+    struct allocator_traits<heap_allocator>
+    {
+        using is_always_equal = hud::true_type;
+        using copy_when_container_copy = hud::false_type;
+        using move_when_container_move = hud::false_type;
+        using swap_when_container_swap = hud::false_type;
+    };
+
     static_assert(hud::allocator_traits<heap_allocator>::is_always_equal::value);
     static_assert(!hud::allocator_traits<heap_allocator>::copy_when_container_copy::value);
     static_assert(!hud::allocator_traits<heap_allocator>::move_when_container_move::value);
+    static_assert(!hud::allocator_traits<heap_allocator>::swap_when_container_swap::value);
 } // namespace hud
 
 #endif // HD_INC_CORE_ALLOCATOR_HEAP_H

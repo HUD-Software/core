@@ -303,12 +303,12 @@ GTEST_TEST(optional, move_construct_non_bitwise_copy_constructible_same_type)
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
 
-    // Ensure the type is copyable but not moveable
+    // Ensure the type is copyable but not movable
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
     static_assert(hud::is_copy_constructible_v<type>);
     static_assert(!hud::is_move_constructible_v<type>);
 
-    // If type is copy constructible but not moveable,
+    // If type is copy constructible but not movable,
     // hud::optional<type> is still move constructible but call the copy constructor of type
     static_assert(!hud::is_bitwise_copy_constructible_v<hud::optional<type>>);
     static_assert(hud::is_move_constructible_v<hud::optional<type>>);

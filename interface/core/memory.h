@@ -373,7 +373,7 @@ namespace hud
         requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>)
         static constexpr void fast_move_or_copy_construct_array_then_destroy(type_t *destination, u_type_t *source, usize count) noexcept
         {
-            // If the source is bitwise copyable and bitwise moveable to destination then we make a copy instead of a move semantic
+            // If the source is bitwise copyable and bitwise movable to destination then we make a copy instead of a move semantic
             // This performs better that using move semantic that we do a memory move instead
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t>)
             {

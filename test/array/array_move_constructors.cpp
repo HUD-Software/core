@@ -1227,7 +1227,7 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type_diffe
             hud_assert_true(std::get<4>(result));
 
             // Ensure we are allocating only one time of not
-            // Bitwise moveable with same type should just stole the pointer without reallocating
+            // Bitwise movable with same type should just stole the pointer without reallocating
             // If allocator are not the same, a reallocation is done to allocate with the correct allocator
             hud_assert_eq(std::get<5>(result), 1u);
             hud_assert_eq(std::get<6>(result), 0u);

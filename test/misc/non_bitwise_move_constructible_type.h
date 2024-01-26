@@ -8,7 +8,7 @@ namespace hud_test
 {
 
     /**
-     * A move constructible type that is not a bitwise moveable type
+     * A move constructible type that is not a bitwise movable type
      * The id is copied in order to know which NonBitwiseMoveConstructibleType is the original NonBitwiseMoveConstructibleType.
      */
     struct NonBitwiseMoveConstructibleType
@@ -93,7 +93,7 @@ namespace hud_test
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType>);
 
     /**
-     * A move constructible type that is not a bitwise moveable type
+     * A move constructible type that is not a bitwise movable type
      * The id is copied in order to know which NonBitwiseMoveConstructibleType is the original NonBitwiseMoveConstructibleType.
      * This is similar to NonBitwiseMoveConstructibleType, it exist only have a type that is not the same as NonBitwiseMoveConstructibleType for tests
      */
@@ -144,7 +144,7 @@ namespace hud_test
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseMoveConstructibleType2>);
 
     /**
-     * A move constructible type that is not a bitwise moveable type
+     * A move constructible type that is not a bitwise movable type
      * The id is copied in order to know which NonBitwiseMoveConstructibleType is the original NonBitwiseMoveConstructibleType.
      * This type add a incremanation pointer information to the type used by NonBitwiseMoveConstructibleType4 when this type is constructed.
      */

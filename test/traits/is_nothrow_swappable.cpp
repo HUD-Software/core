@@ -4,15 +4,15 @@ namespace hud_test
 {
     struct moveable_2;
 
-    struct moveable
+    struct movable
     {
-        moveable(moveable &&);
-        moveable(moveable_2 &&);
+        movable(movable &&);
+        movable(moveable_2 &&);
     };
 
     struct moveable_2
     {
-        moveable_2(moveable &&);
+        moveable_2(movable &&);
         moveable_2(moveable_2 &&);
     };
 
@@ -61,10 +61,10 @@ namespace hud_test
 
 GTEST_TEST(traits, is_nothrow_swappable)
 {
-    hud_assert_false(hud::is_nothrow_swappable_v<hud_test::moveable>);
+    hud_assert_false(hud::is_nothrow_swappable_v<hud_test::movable>);
     hud_assert_false(hud::is_nothrow_swappable_v<hud_test::not_moveable>);
 
-    hud_assert_false((hud::is_nothrow_swappable_v<hud_test::moveable, hud_test::moveable_2>));
+    hud_assert_false((hud::is_nothrow_swappable_v<hud_test::movable, hud_test::moveable_2>));
     hud_assert_false((hud::is_nothrow_swappable_v<hud_test::not_moveable, hud_test::not_moveable_2>));
 
     hud_assert_true(hud::is_nothrow_swappable_v<hud_test::nothrow_moveable>);

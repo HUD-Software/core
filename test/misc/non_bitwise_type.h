@@ -7,7 +7,7 @@ namespace hud_test
 {
 
     /**
-     * A non bitwise constructible, copyable or moveable type
+     * A non bitwise constructible, copyable or movable type
      * The id is copied in order to know which non_bitwise_type is the original non_bitwise_type.
      */
     struct non_bitwise_type
