@@ -23,6 +23,7 @@
         "cmake.allowUnsupportedPresetsVersions": false,
         "cmake.launchBehavior": "breakAndReuseTerminal",
         "testMate.cpp.test.executables": "target/**/*{test}*",
+        "cmake.options.statusBarVisibility": "compact",
     },
     "extensions": {
         "recommendations": [

@@ -196,7 +196,7 @@ namespace hud
         static constexpr void copy_construct_array(type_t *destination, const u_type_t *source, usize count) noexcept
         {
             static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) copy constructor is throwable.hud::memory::copy_construct_array is not designed to allow throwable copy constructible type");
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t>)
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && count > 0u)
             {
                 hud::memory::copy(destination, source, count * sizeof(type_t));
             }

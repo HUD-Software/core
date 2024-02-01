@@ -24,6 +24,7 @@
 #include "../templates/move.h"
 #include "../templates/lexicographical_compare.h"
 #include "../iterators/random_access_iterator.h"
+#include "compressed_pair.h"
 #include <initializer_list>
 
 namespace hud
@@ -69,10 +70,10 @@ namespace hud
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const u_type_t *first, const usize element_number, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(element_number))
-            , end_ptr(data_at(element_number))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(element_number);
+            end_ptr = data_at(element_number);
             hud::memory::copy_construct_array(data(), first, element_number);
         }
 
@@ -87,10 +88,10 @@ namespace hud
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const u_type_t *first, const usize element_number, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(element_number + extra_element_count))
-            , end_ptr(data_at(element_number))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(element_number + extra_element_count);
+            end_ptr = data_at(element_number);
             hud::memory::copy_construct_array(data(), first, element_number);
         }
 
@@ -103,16 +104,13 @@ namespace hud
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr array(std::initializer_list<u_type_t> list, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(list.size()))
-            , end_ptr(data_at(list.size()))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(list.size());
+            end_ptr = data_at(list.size());
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
             // else it will fail at compile time if begin() is not a pointer
-            if (list.size() > 0u)
-            {
-                hud::memory::copy_construct_array(data(), list.begin(), list.size());
-            }
+            hud::memory::copy_construct_array(data(), list.begin(), list.size());
         }
 
         /**
@@ -125,16 +123,13 @@ namespace hud
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr array(std::initializer_list<u_type_t> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(list.size() + extra_element_count))
-            , end_ptr(data_at(list.size()))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(list.size() + extra_element_count);
+            end_ptr = data_at(list.size());
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
             // else it will fail at compile time if begin() is not a pointer
-            if (list.size() > 0u)
-            {
-                hud::memory::copy_construct_array(data(), list.begin(), list.size());
-            }
+            hud::memory::copy_construct_array(data(), list.begin(), list.size());
         }
 
         /**
@@ -143,10 +138,11 @@ namespace hud
          */
         constexpr explicit array(const array &other) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
-            : allocator_(other.allocator_)
-            , allocation(allocator_.template allocate<type_t>(other.max_count()))
-            , end_ptr(data_at(other.count()))
+            : compressed_allocator_(other.compressed_allocator_.first())
+
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count());
+            end_ptr = data_at(other.count());
             hud::memory::copy_construct_array(data(), other.data(), other.count());
         }
 
@@ -157,10 +153,11 @@ namespace hud
          */
         constexpr explicit array(const array &other, const allocator_type &allocator) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(other.max_count()))
-            , end_ptr(data_at(other.count()))
+            : compressed_allocator_(allocator)
+
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count());
+            end_ptr = data_at(other.count());
             hud::memory::copy_construct_array(data(), other.data(), other.count());
         }
 
@@ -172,10 +169,10 @@ namespace hud
 
         constexpr explicit array(const array &other, const usize extra_element_count) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
-            : allocator_(other.allocator_)
-            , allocation(allocator_.template allocate<type_t>(other.max_count() + extra_element_count))
-            , end_ptr(data_at(other.count()))
+            : compressed_allocator_(other.compressed_allocator_.first())
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count() + extra_element_count);
+            end_ptr = data_at(other.count());
             hud::memory::copy_construct_array(data(), other.data(), count());
         }
 
@@ -188,10 +185,10 @@ namespace hud
 
         constexpr explicit array(const array &other, const usize extra_element_count, const allocator_type &allocator) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(other.max_count() + extra_element_count))
-            , end_ptr(data_at(other.count()))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count() + extra_element_count);
+            end_ptr = data_at(other.count());
             hud::memory::copy_construct_array(data(), other.data(), count());
         }
 
@@ -205,10 +202,10 @@ namespace hud
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const array<u_type_t, u_allocator_t> &other, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(other.max_count()))
-            , end_ptr(data_at(other.count()))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count());
+            end_ptr = data_at(other.count());
             hud::memory::copy_construct_array(data(), other.data(), count());
         }
 
@@ -223,10 +220,10 @@ namespace hud
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
         constexpr explicit array(const array<u_type_t, u_allocator_t> &other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(other.max_count() + extra_element_count))
-            , end_ptr(data_at(other.count()))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count() + extra_element_count);
+            end_ptr = data_at(other.count());
             hud::memory::copy_construct_array(data(), other.data(), count());
         }
 
@@ -237,8 +234,7 @@ namespace hud
          */
         constexpr explicit array(array &&other) noexcept
         requires(hud::is_bitwise_move_constructible_v<type_t>)
-            : allocator_(hud::move(other.allocator_))
-            , allocation(hud::move(other.allocation))
+            : compressed_allocator_(hud::move(other.compressed_allocator_))
             , end_ptr(other.end_ptr)
         {
             other.leak();
@@ -255,15 +251,14 @@ namespace hud
         template<typename u_type_t>
         constexpr explicit array(array<u_type_t, allocator_t> &&other) noexcept
         requires(hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
-            : allocator_(hud::move(other.allocator_))
+            : compressed_allocator_(hud::move(other.compressed_allocator_.first()))
         {
-
             // We moving an array of bitwise movable constructible type where type_t != u_type_t We can't use reinterpret_cast to still the pointer
             // in constant evaluation. So we allocate a new allocation, move elements then free the moved allocation.
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
             {
-                allocation = allocator_.template allocate<type_t>(other.max_count());
+                compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count());
                 end_ptr = data_at(other.count());
                 hud::memory::move_or_copy_construct_array(data(), other.data(), count());
                 other.free_to_null();
@@ -271,7 +266,7 @@ namespace hud
             // LCOV_EXCL_STOP
             else
             {
-                allocation = other.allocation.template reinterpret_cast_to<type_t>();
+                compressed_allocator_.second() = other.compressed_allocator_.second().template reinterpret_cast_to<type_t>();
                 end_ptr = data_at(other.count());
                 other.leak();
             }
@@ -287,10 +282,10 @@ namespace hud
          */
         template<typename u_type_t, typename u_allocator_t>
         constexpr explicit array(array<u_type_t, u_allocator_t> &&other, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(other.max_count()))
-            , end_ptr(data_at(other.count()))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count());
+            end_ptr = data_at(other.count());
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
             // This optimisation works only if allocator do not share the same memory allocation, this case is not used in the engine
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
@@ -315,10 +310,10 @@ namespace hud
          */
         template<typename u_type_t, typename u_allocator_t>
         constexpr explicit array(array<u_type_t, u_allocator_t> &&other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
-            : allocator_(allocator)
-            , allocation(allocator_.template allocate<type_t>(other.max_count() + extra_element_count))
-            , end_ptr(data_at(other.count()))
+            : compressed_allocator_(allocator)
         {
+            compressed_allocator_.second() = compressed_allocator_.first().template allocate<type_t>(other.max_count() + extra_element_count);
+            end_ptr = data_at(other.count());
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
             // This optimisation works only if allocator do not share the same memory buffer, this case is not used in the engine
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
@@ -338,8 +333,8 @@ namespace hud
          */
         constexpr ~array() noexcept
         {
-            hud::memory::destroy_array(allocation.data(), count());
-            allocator_.free(allocation);
+            hud::memory::destroy_array(data(), count());
+            compressed_allocator_.first().free(compressed_allocator_.second());
         }
 
         /**
@@ -441,21 +436,21 @@ namespace hud
             // If we don't have enough place in allocated memory we need to reallocate.
             if (new_count > max_count())
             {
-                memory_allocation_type new_allocation = allocator_.template allocate<type_t>(new_count);
+                memory_allocation_type new_allocation = compressed_allocator_.first().template allocate<type_t>(new_count);
                 // Construct the element in-place
                 hud::memory::construct_at(new_allocation.data_at(old_count), hud::forward<args_t>(args)...);
                 // Relocate the element that are before the newly added element if any
                 if (old_count != 0u)
                 {
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), old_count);
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), old_count);
                 }
                 // Free the allocation and replace it with the newly created
                 free_allocation_and_replace_it(hud::move(new_allocation), new_count);
             }
             else
             {
-                hud::memory::construct_at(allocation.data_at(old_count), hud::forward<args_t>(args)...);
-                end_ptr = allocation.data_at(new_count);
+                hud::memory::construct_at(compressed_allocator_.second().data_at(old_count), hud::forward<args_t>(args)...);
+                end_ptr = compressed_allocator_.second().data_at(new_count);
             }
 
             return old_count;
@@ -493,7 +488,7 @@ namespace hud
             // if we don't have enough place in allocated memory we need to reallocate.
             if (new_count > max_count())
             {
-                memory_allocation_type new_allocation = allocator_.template allocate<type_t>(new_count);
+                memory_allocation_type new_allocation = compressed_allocator_.first().template allocate<type_t>(new_count);
                 // Construct the element in-place
                 hud::memory::construct_at(new_allocation.data_at(idx), hud::forward<args_t>(args)...);
                 // Relocate elements if any
@@ -502,7 +497,7 @@ namespace hud
                     // Relocate others before the emplaced element
                     hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), idx);
                     // Relocate others after the emplaced element
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data_at(idx + 1), allocation.data_at(idx), old_count - idx);
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data_at(idx + 1), compressed_allocator_.second().data_at(idx), old_count - idx);
                 }
                 // Free the allocation and replace it with the newly created
                 free_allocation_and_replace_it(hud::move(new_allocation), new_count);
@@ -510,7 +505,7 @@ namespace hud
             else
             {
                 // Relocate others after the emplaced element
-                type_t *emplace_ptr = allocation.data_at(idx);
+                type_t *emplace_ptr = compressed_allocator_.second().data_at(idx);
                 hud::memory::move_or_copy_construct_array_then_destroy_backward(emplace_ptr + 1, emplace_ptr, static_cast<usize>(end_ptr - emplace_ptr));
                 // Construct the element in-place
                 hud::memory::construct_at(emplace_ptr, hud::forward<args_t>(args)...);
@@ -606,10 +601,10 @@ namespace hud
             {
                 free_to_null();
             }
-            else if (end_ptr < allocation.data_end())
+            else if (end_ptr < compressed_allocator_.second().data_end())
             {
-                memory_allocation_type new_allocation = allocator_.template allocate<type_t>(count());
-                hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), count());
+                memory_allocation_type new_allocation = compressed_allocator_.first().template allocate<type_t>(count());
+                hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), compressed_allocator_.second().data(), count());
                 free_allocation_and_replace_it(hud::move(new_allocation), count());
             }
         }
@@ -643,7 +638,7 @@ namespace hud
                     hud::memory::move_or_copy_assign_array(first_items_to_relocate, first_items_to_move, end_ptr);
                     hud::memory::destroy_array(end_ptr, index);
                 }
-                end_ptr = allocation.data_at(remains);
+                end_ptr = compressed_allocator_.second().data_at(remains);
             }
         }
 
@@ -664,11 +659,11 @@ namespace hud
 
                 if (remains > 0)
                 {
-                    memory_allocation_type new_allocation = allocator_.template allocate<type_t>(remains);
+                    memory_allocation_type new_allocation = compressed_allocator_.first().template allocate<type_t>(remains);
                     // Move or copy elements before the removed element then destroy moved or copied elements from the old allocation
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), index);
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), index);
                     // Move or copy elements after the removed element then destroy moved or copied elements from the old allocation
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data_at(index), allocation.data_at(index + count_to_remove), remains - index);
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data_at(index), compressed_allocator_.second().data_at(index + count_to_remove), remains - index);
                     free_allocation_and_replace_it(hud::move(new_allocation), remains);
                 }
                 else
@@ -709,10 +704,10 @@ namespace hud
         {
             if (element_number > max_count())
             {
-                memory_allocation_type new_allocation = allocator_.template allocate<type_t>(element_number);
+                memory_allocation_type new_allocation = compressed_allocator_.first().template allocate<type_t>(element_number);
                 if (count() > 0u)
                 {
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), allocation.data(), count());
+                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), count());
                 }
                 free_allocation_and_replace_it(hud::move(new_allocation), count());
             }
@@ -726,8 +721,8 @@ namespace hud
         {
             if (count() > 0)
             {
-                hud::memory::destroy_array(allocation.data(), count());
-                end_ptr = allocation.data();
+                hud::memory::destroy_array(data(), count());
+                end_ptr = data();
             }
         }
 
@@ -739,7 +734,7 @@ namespace hud
         {
             if (count() > 0)
             {
-                hud::memory::destroy_array(allocation.data(), count());
+                hud::memory::destroy_array(data(), count());
                 free_to_null();
             }
         }
@@ -747,7 +742,7 @@ namespace hud
         /** Retreives number of elements in the array. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize count() const noexcept
         {
-            return static_cast<usize>(end_ptr - allocation.data());
+            return static_cast<usize>(end_ptr - data());
         }
 
         /** Retreives number of elements in the array in bytes. */
@@ -759,37 +754,37 @@ namespace hud
         /** Retreives maximum number of elements the array can contains. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize max_count() const noexcept
         {
-            return allocation.count();
+            return compressed_allocator_.second().count();
         }
 
         /** Retreives maximum number of elements the array can contains. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize max_byte_count() const noexcept
         {
-            return allocation.byte_count();
+            return compressed_allocator_.second().byte_count();
         }
 
         /** Retrieves the allocator. */
         [[nodiscard]] HD_FORCEINLINE constexpr const allocator_type &allocator() const noexcept
         {
-            return allocator_;
+            return compressed_allocator_.first();
         }
 
         /** Retrieves a constant pointer to the first element of the contiguous elements. */
         [[nodiscard]] HD_FORCEINLINE constexpr const type_t *data() const noexcept
         {
-            return allocation.data();
+            return compressed_allocator_.second().data();
         }
 
         /** Retrieves a pointer to the raw data first element of the contiguous elements. */
         [[nodiscard]] constexpr type_t *data() noexcept
         {
-            return allocation.data();
+            return compressed_allocator_.second().data();
         }
 
         /** Return the slack in number of elements. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize slack() const noexcept
         {
-            return static_cast<usize>(allocation.data_end() - end_ptr);
+            return static_cast<usize>(compressed_allocator_.second().data_end() - end_ptr);
         }
 
         /**
@@ -807,7 +802,7 @@ namespace hud
         /** Checks whether the array is empty of not. */
         [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
         {
-            return end_ptr == allocation.data();
+            return end_ptr == data();
         }
 
         /**
@@ -840,7 +835,7 @@ namespace hud
          */
         [[nodiscard]] HD_FORCEINLINE constexpr const slice<type_t> sub_slice(const usize first_index, const usize count) const noexcept
         {
-            return allocation.sub_slice(first_index, count);
+            return compressed_allocator_.second().sub_slice(first_index, count);
         }
 
         /** Retrieves reference on the first element. */
@@ -924,11 +919,11 @@ namespace hud
         {
             static_assert(hud::is_nothrow_swappable_v<type_t>, "swap(array<type_t>&) is throwable. array is not designed to allow throwable swappable components");
             hud::swap(end_ptr, other.end_ptr);
-            hud::swap(allocation, other.allocation);
             if constexpr (hud::allocator_traits<allocator_type>::swap_when_container_swap::value)
             {
-                hud::swap(allocator_, other.allocator_);
+                hud::swap(compressed_allocator_.first(), other.compressed_allocator_.first());
             }
+            hud::swap(compressed_allocator_.second(), other.compressed_allocator_.second());
         }
 
         /**
@@ -1092,7 +1087,7 @@ namespace hud
                 // Destroy existing
                 hud::memory::destroy_array(data(), count());
                 // Allocate a new allocation and copy construct source into it
-                memory_allocation_type new_allocation = allocator_.template allocate<type_t>(source_count);
+                memory_allocation_type new_allocation = compressed_allocator_.first().template allocate<type_t>(source_count);
                 hud::memory::copy_construct_array(new_allocation.data(), source, source_count);
                 // Save the newly allocated allocation
                 free_allocation_and_replace_it(hud::move(new_allocation), source_count);
@@ -1114,7 +1109,7 @@ namespace hud
                 {
                     hud::memory::copy_assign_array(data(), source, source_count);
                 }
-                end_ptr = allocation.data_at(source_count);
+                end_ptr = compressed_allocator_.second().data_at(source_count);
             }
         }
 
@@ -1161,7 +1156,7 @@ namespace hud
             // Move the allocator. This will do nothing if hud::allocator_traits<allocator_t>::move_when_container_move is hud::false_type
             if constexpr (hud::allocator_traits<allocator_t>::move_when_container_move::value)
             {
-                allocator_ = std::move(other.allocator_);
+                compressed_allocator_.first() = std::move(other.compressed_allocator_.first());
             }
 
             // If type_t is bitwise move assignable allocation is just moved.
@@ -1170,8 +1165,8 @@ namespace hud
             {
                 // Take ownership of the allocation and release ownership of the moved array
                 hud::memory::destroy_array(data(), count());
-                allocator_.free(allocation);
-                allocation = other.allocation.template reinterpret_cast_to<type_t>();
+                compressed_allocator_.first().free(compressed_allocator_.second());
+                compressed_allocator_.second() = other.compressed_allocator_.second().template reinterpret_cast_to<type_t>();
                 // allocation = memory_allocation_type {reinterpret_cast<type_t *>(other.allocation.data()), reinterpret_cast<type_t *>(other.allocation.data_end())};
                 end_ptr = reinterpret_cast<type_t *>(other.end_ptr);
 
@@ -1187,7 +1182,7 @@ namespace hud
                 {
                     // Delete existing elements
                     hud::memory::destroy_array(data(), count());
-                    memory_allocation_type new_allocation = allocator_.template allocate<type_t>(other.count());
+                    memory_allocation_type new_allocation = compressed_allocator_.first().template allocate<type_t>(other.count());
                     hud::memory::move_or_copy_construct_array(new_allocation.data(), other.data(), other.count());
                     free_allocation_and_replace_it(hud::move(new_allocation), other.count());
                 }
@@ -1212,7 +1207,7 @@ namespace hud
                         }
                         hud::memory::destroy_array(data() + other.count(), count() - other.count());
                     }
-                    end_ptr = allocation.data_at(other.count());
+                    end_ptr = compressed_allocator_.second().data_at(other.count());
                 }
 
                 // Free the moved memory
@@ -1232,7 +1227,7 @@ namespace hud
         constexpr void move_assign(array<u_type_t, u_allocator_t> &&other) noexcept
         {
             // Move the allocator.
-            allocator_ = std::move(other.allocator_);
+            compressed_allocator_.first() = std::move(other.compressed_allocator_.first());
 
             // If we need to reallocate, we destroy all elements before reallocating the allocation
             // Then we copy construct all elements of source in the allocation
@@ -1240,7 +1235,7 @@ namespace hud
             {
                 // Delete existing elements
                 hud::memory::destroy_array(data(), count());
-                memory_allocation_type new_allocation = allocator_.template allocate<type_t>(other.count());
+                memory_allocation_type new_allocation = compressed_allocator_.first().template allocate<type_t>(other.count());
                 hud::memory::move_or_copy_construct_array(new_allocation.data(), other.data(), other.count());
                 free_allocation_and_replace_it(hud::move(new_allocation), other.count());
             }
@@ -1267,7 +1262,7 @@ namespace hud
                     hud::memory::destroy_array(data() + other.count(), count() - other.count());
                 }
 
-                end_ptr = allocation.data_at(other.count());
+                end_ptr = compressed_allocator_.second().data_at(other.count());
             }
 
             // Free the moved memory
@@ -1283,22 +1278,22 @@ namespace hud
         free_allocation_and_replace_it(memory_allocation_type &&new_allocation, const usize new_count_of_element) noexcept
 
         {
-            allocator_.free(allocation);
-            allocation = hud::move(new_allocation);
-            end_ptr = allocation.data_at(new_count_of_element);
+            compressed_allocator_.first().free(compressed_allocator_.second());
+            compressed_allocator_.second() = hud::move(new_allocation);
+            end_ptr = compressed_allocator_.second().data_at(new_count_of_element);
         }
 
         /** Free the allocation and set everything to default */
         constexpr void free_to_null() noexcept
         {
-            allocator_.free(allocation);
+            compressed_allocator_.first().free(compressed_allocator_.second());
             leak();
         }
 
         /** Set all internal pointers to nullptr without freeing the memory. Be sure of what you are doing... */
         constexpr void leak() noexcept
         {
-            allocation.leak();
+            compressed_allocator_.second().leak();
             end_ptr = nullptr;
         }
 
@@ -1310,7 +1305,7 @@ namespace hud
          */
         [[nodiscard]] constexpr type_t *data_at(const usize index) const noexcept
         {
-            return allocation.data_at(index);
+            return compressed_allocator_.second().data_at(index);
         }
 
     private:
@@ -1319,10 +1314,10 @@ namespace hud
 
     private:
         /** The type of the allocator used. */
-        allocator_type allocator_;
+        hud::compressed_pair<allocator_type, memory_allocation_type> compressed_allocator_;
 
         /** The memory allocation. */
-        memory_allocation_type allocation;
+        // memory_allocation_type allocation;
 
         /** Pointer to the end of the element sequence. */
         type_t *end_ptr = nullptr;
