@@ -170,8 +170,8 @@ namespace hud
 
             template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
             explicit constexpr compress_pair_impl(u_compressed_type_1_t &&type_1, u_compressed_type_2_t &&type_2) noexcept
-                : type_1_(hud::forward<u_compressed_type_1_t>(type_1))
-                , compressed_type_2_t(hud::forward<u_compressed_type_2_t>(type_2))
+                : compressed_type_2_t(hud::forward<u_compressed_type_2_t>(type_2))
+                , type_1_(hud::forward<u_compressed_type_1_t>(type_1))
             {
                 static_assert(hud::is_nothrow_constructible_v<compressed_type_1_t, u_compressed_type_1_t>);
                 static_assert(hud::is_nothrow_constructible_v<compressed_type_2_t, u_compressed_type_2_t>);
@@ -180,8 +180,8 @@ namespace hud
             template<typename u_compressed_type_1_t>
             explicit constexpr compress_pair_impl(u_compressed_type_1_t &&type_1) noexcept
             requires(hud::is_same_v<compressed_type_1_t, hud::remove_cv_ref_t<u_compressed_type_1_t>>)
-                : type_1_(hud::forward<u_compressed_type_1_t>(type_1))
-                , compressed_type_2_t()
+                : compressed_type_2_t()
+                , type_1_(hud::forward<u_compressed_type_1_t>(type_1))
             {
                 static_assert(hud::is_nothrow_constructible_v<compressed_type_1_t, u_compressed_type_1_t>);
                 static_assert(hud::is_nothrow_default_constructible_v<compressed_type_2_t>);
@@ -190,8 +190,8 @@ namespace hud
             template<typename u_compressed_type_2_t>
             explicit constexpr compress_pair_impl(u_compressed_type_2_t &&type_2) noexcept
             requires(hud::is_same_v<compressed_type_2_t, hud::remove_cv_ref_t<u_compressed_type_2_t>>)
-                : compressed_type_1_t()
-                , compressed_type_2_t(hud::forward<u_compressed_type_2_t>(type_2))
+                : compressed_type_2_t(hud::forward<u_compressed_type_2_t>(type_2))
+                , compressed_type_1_t()
             {
                 static_assert(hud::is_nothrow_default_constructible_v<compressed_type_1_t>);
                 static_assert(hud::is_nothrow_constructible_v<compressed_type_2_t, u_compressed_type_2_t>);

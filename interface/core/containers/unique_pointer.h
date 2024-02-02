@@ -36,7 +36,7 @@
 #include "../templates/swap.h"
 #include "../templates/less.h"
 
-#include "tuple.h"
+#include "../containers/compressed_pair.h"
 #include "../hash.h"
 
 namespace hud
@@ -246,7 +246,7 @@ namespace hud
              */
             HD_FORCEINLINE constexpr unique_pointer_impl() noexcept
             requires(hud::is_default_constructible_v<deleter_type> && !hud::is_pointer_v<deleter_type>)
-                : inner(taginit)
+                : inner()
             {
                 static_assert(hud::is_nothrow_default_constructible_v<deleter_type>, "unique_pointer do not accept throwable default constructible deleter_type");
             }
@@ -256,9 +256,9 @@ namespace hud
              * unique_pointer do not accept throwable default constructible deleter
              * @param pointer The poiner to own
              */
-            HD_FORCEINLINE constexpr unique_pointer_impl(pointer_type pointer, tag_init) noexcept
+            HD_FORCEINLINE constexpr unique_pointer_impl(pointer_type pointer) noexcept
             requires(hud::is_default_constructible_v<deleter_type> && !hud::is_pointer_v<deleter_type>)
-                : inner(pointer, taginit)
+                : inner(pointer)
             {
                 static_assert(hud::is_nothrow_default_constructible_v<deleter_type>, "unique_pointer do not accept throwable default constructible deleter_type");
             }
@@ -332,26 +332,26 @@ namespace hud
             /** Retrieves the owned pointer. */
             [[nodiscard]] HD_FORCEINLINE constexpr pointer_type pointer() const noexcept
             {
-                return hud::get<0>(inner);
+                return inner.first();
             }
 
             /** Retrieves the deleter. */
             [[nodiscard]] HD_FORCEINLINE constexpr deleter_type &deleter() noexcept
             {
-                return hud::get<1>(inner);
+                return inner.second();
             }
 
             /** Retrieves a reference to the deleter. */
             [[nodiscard]] HD_FORCEINLINE constexpr const deleter_type &deleter() const noexcept
             {
-                return hud::get<1>(inner);
+                return inner.second();
             }
 
             /** Release the ownership of the pointer and return it without calling the deleter on the owned pointer. */
             [[nodiscard]] constexpr pointer_type leak() noexcept
             {
                 pointer_type old = pointer();
-                hud::get<0>(inner) = pointer_type();
+                inner.first() = pointer_type();
                 return old;
             }
 
@@ -371,7 +371,7 @@ namespace hud
             constexpr void reset(pointer_type ptr) noexcept
             {
                 pointer_type old_ptr = pointer();
-                hud::get<0>(inner) = ptr;
+                inner.first() = ptr;
                 deleter()(old_ptr);
             }
 
@@ -379,7 +379,7 @@ namespace hud
             HD_FORCEINLINE constexpr void reset(hud::ptr::null) noexcept
             {
                 deleter()(pointer());
-                hud::get<0>(inner) = pointer_type();
+                inner.first() = pointer_type();
             }
 
             /** Call the deleter on the owned pointer and taking no ownership. */
@@ -405,7 +405,7 @@ namespace hud
 
         protected:
             /** hud::tuple containing the pointer and the deleter */
-            hud::tuple<pointer_type, deleter_type> inner;
+            hud::compressed_pair<pointer_type, deleter_type> inner;
         };
     } // namespace details
 
@@ -444,7 +444,7 @@ namespace hud
          * @param pointer The poiner to own
          */
         HD_FORCEINLINE constexpr explicit unique_pointer(pointer_type pointer) noexcept
-            : base_type(pointer, taginit)
+            : base_type(pointer)
         {
         }
 
@@ -599,7 +599,7 @@ namespace hud
         template<typename u_ptr_t>
         requires(details::is_pointer_convertible_to_unique_pointer_array_v<unique_pointer, u_ptr_t>)
         HD_FORCEINLINE constexpr explicit unique_pointer(u_ptr_t pointer) noexcept
-            : base_type(pointer, taginit)
+            : base_type(pointer)
         {
         }
 
