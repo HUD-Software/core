@@ -346,6 +346,7 @@ namespace hud
          */
         template<typename u_type_t>
         constexpr array &operator=(std::initializer_list<u_type_t> list) noexcept
+        requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         {
             assign(list);
             return *this;
@@ -378,7 +379,7 @@ namespace hud
         requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         constexpr array &operator=(const array<u_type_t, u_allocator_t> &other) noexcept
         {
-            copy_assign(other.data(), other.count());
+            assign(other);
             return *this;
         }
 
@@ -390,6 +391,7 @@ namespace hud
          */
         template<typename u_type_t>
         constexpr void assign(std::initializer_list<u_type_t> list, const usize min_slack = 0) noexcept
+        requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         {
             // Be sure that the implementation is std::intilizer_list is a continuous array of memory
             // else it will fail at compile time if begin() is not a pointer
@@ -404,11 +406,26 @@ namespace hud
          * @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
         constexpr void assign(const array &other, const usize min_slack = 0) noexcept
+        requires(hud::is_copy_assignable_v<type_t>)
         {
             if (this != &other) [[likely]]
             {
-                copy_assign(other.data(), other.count());
+                copy_assign(other.data(), other.count(), min_slack);
             }
+        }
+
+        /**
+         * Copy assign another array. Optionally add a min_slack to allocate in the resulting copy.
+         * The copy assignement only grow allocation and never shrink allocation.
+         * No new allocation is done if the array contains enough memory to copy all elements, in other words we don't copy the capacity of the copied array.
+         * @param other The other array to copy
+         * @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
+         */
+        template<typename u_type_t, typename u_allocator_t>
+        requires(hud::is_copy_assignable_v<type_t, u_type_t>)
+        constexpr void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0) noexcept
+        {
+            copy_assign(other.data(), other.count(), min_slack);
         }
 
         /**

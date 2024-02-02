@@ -2,6 +2,7 @@
 #include "../misc/array_allocators.h"
 #include "../misc/leak_guard.h"
 
+// array &operator=(const array &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator)
 {
 
@@ -584,6 +585,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
     }
 }
 
+// array &operator=(const array<u_type_t, u_allocator_t> &other)
 GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator)
 {
 
@@ -1166,6 +1168,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
     }
 }
 
+// array &operator=(const array<u_type_t, u_allocator_t> &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator)
 {
 
@@ -1750,6 +1753,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
     }
 }
 
+// array &operator=(const array<u_type_t, u_allocator_t> &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator)
 {
 
@@ -2334,6 +2338,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
     }
 }
 
+// array &operator=(const array &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator)
 {
 
@@ -3173,6 +3178,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
     }
 }
 
+// array &operator=(const array<u_type_t, u_allocator_t> &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator)
 {
 
@@ -4012,6 +4018,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
     }
 }
 
+// array &operator=(const array<u_type_t, u_allocator_t> &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator)
 {
 
@@ -4854,6 +4861,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
     }
 }
 
+// array &operator=(const array<u_type_t, u_allocator_t> &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator)
 {
 
@@ -7056,6 +7064,7 @@ GTEST_TEST(array, copy_assign_array_different_allocator_call_destructor_of_eleme
     }
 }
 
+// array &operator=(const array &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self)
 {
 
@@ -7218,6 +7227,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self)
     }
 }
 
+// array &operator=(const array &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self)
 {
 

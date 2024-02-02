@@ -5,13 +5,14 @@ add_executable(test_core
 	allocator/allocation.cpp
 	allocator/heap_allocator.cpp
 	array/array_add.cpp
+	array/array_assign_copy.cpp
 	array/array_add_no_construct.cpp
 	array/array_add_to_ref.cpp
 	array/array_assignment.cpp
 	array/array_clear.cpp
 	array/array_comparison.cpp
 	array/array_constructors.cpp
-	array/array_copy_assign.cpp
+	array/array_copy_assign_operator.cpp
 	array/array_copy_constructors.cpp
 	array/array_destructor.cpp
 	array/array_emplace_at.cpp
@@ -20,7 +21,7 @@ add_executable(test_core
 	array/array_emplace_back_to_ref.cpp
 	array/array_iteration.cpp
 	array/array_misc.cpp
-	array/array_move_assign.cpp
+	array/array_move_assign_operator.cpp
 	array/array_move_constructors.cpp
 	array/array_remove_at.cpp
 	array/array_reserve.cpp
