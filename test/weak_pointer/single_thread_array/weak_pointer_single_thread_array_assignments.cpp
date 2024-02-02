@@ -532,19 +532,22 @@ GTEST_TEST(weak_pointer_array_not_safe, assign_shared_pointer_different_type)
 
 GTEST_TEST(weak_pointer_array_not_safe, copy_assign_shared_pointer_to_non_empty_weak_pointer)
 {
-    const auto test = [](){
+    const auto test = []()
+    {
         i32 dtor_count[2] = {0, 0};
-        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {new hud_test::non_bitwise_type[2] {
-            {1, &dtor_count[0]},
-            {2, &dtor_count[1]}
-        }}; // +1 shared_count
+        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {
+            new hud_test::non_bitwise_type[2] {
+                                               {1, &dtor_count[0]},
+                                               {2, &dtor_count[1]}}
+        }; // +1 shared_count
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_copy(shared_ptr);
 
         i32 dtor_count_2[2] = {0, 0};
-        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_2 { new hud_test::non_bitwise_type[2] {
-            {1, &dtor_count_2[0]},
-            {2, &dtor_count_2[1]}
-        }}; // +1 shared_count_2
+        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_2 {
+            new hud_test::non_bitwise_type[2] {
+                                               {1, &dtor_count_2[0]},
+                                               {2, &dtor_count_2[1]}}
+        }; // +1 shared_count_2
 
         const bool weak_ptr_own_type_pointer = weak_ptr_copy.lock().pointer() == shared_ptr.pointer();
         const bool weak_ptr_shared_counter_is_ok = weak_ptr_copy.shared_count() == 1u;
@@ -553,7 +556,7 @@ GTEST_TEST(weak_pointer_array_not_safe, copy_assign_shared_pointer_to_non_empty_
 
         const auto locked_weak_ptr_copy = weak_ptr_copy.lock(); // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             weak_ptr_own_type_pointer,
             weak_ptr_shared_counter_is_ok,
             locked_weak_ptr_copy.pointer() == shared_ptr_2.pointer(),
@@ -586,19 +589,22 @@ GTEST_TEST(weak_pointer_array_not_safe, copy_assign_shared_pointer_to_non_empty_
 
 GTEST_TEST(weak_pointer_array_not_safe, copy_assign_weak_pointer_to_non_empty_weak_pointer)
 {
-     const auto test = [](){
+    const auto test = []()
+    {
         i32 dtor_count[2] = {0, 0};
-        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {new hud_test::non_bitwise_type[2] {
-            {1, &dtor_count[0]},
-            {2, &dtor_count[1]}
-        }}; // +1 shared_count
+        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {
+            new hud_test::non_bitwise_type[2] {
+                                               {1, &dtor_count[0]},
+                                               {2, &dtor_count[1]}}
+        }; // +1 shared_count
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr(shared_ptr);
 
         i32 dtor_count_2[2] = {0, 0};
-        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_2 { new hud_test::non_bitwise_type[2] {
-            {1, &dtor_count_2[0]},
-            {2, &dtor_count_2[1]}
-        }}; // +1 shared_count_2
+        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_2 {
+            new hud_test::non_bitwise_type[2] {
+                                               {1, &dtor_count_2[0]},
+                                               {2, &dtor_count_2[1]}}
+        }; // +1 shared_count_2
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_2(shared_ptr_2);
 
         const bool weak_ptr_own_type_pointer = weak_ptr.lock().pointer() == shared_ptr.pointer();
@@ -608,10 +614,10 @@ GTEST_TEST(weak_pointer_array_not_safe, copy_assign_weak_pointer_to_non_empty_we
 
         weak_ptr = weak_ptr_2;
 
-        const auto locked_weak_ptr = weak_ptr.lock(); // +1 shared_count
+        const auto locked_weak_ptr = weak_ptr.lock();     // +1 shared_count
         const auto locked_weak_ptr_2 = weak_ptr_2.lock(); // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             weak_ptr_own_type_pointer,
             weak_ptr_shared_counter_is_ok,
             weak_ptr_2_own_type_pointer,
@@ -659,19 +665,22 @@ GTEST_TEST(weak_pointer_array_not_safe, copy_assign_weak_pointer_to_non_empty_we
 
 GTEST_TEST(weak_pointer_array_not_safe, move_assign_weak_pointer_to_non_empty_weak_pointer)
 {
-     const auto test = [](){
+    const auto test = []()
+    {
         i32 dtor_count[2] = {0, 0};
-        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {new hud_test::non_bitwise_type[2] {
-            {1, &dtor_count[0]},
-            {2, &dtor_count[1]}
-        }}; // +1 shared_count
+        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr {
+            new hud_test::non_bitwise_type[2] {
+                                               {1, &dtor_count[0]},
+                                               {2, &dtor_count[1]}}
+        }; // +1 shared_count
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr(shared_ptr);
 
-       i32 dtor_count_2[2] = {0, 0};
-        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_2 { new hud_test::non_bitwise_type[2] {
-            {1, &dtor_count_2[0]},
-            {2, &dtor_count_2[1]}
-        }}; // +1 shared_count_2
+        i32 dtor_count_2[2] = {0, 0};
+        hud::shared_pointer<hud_test::non_bitwise_type[2]> shared_ptr_2 {
+            new hud_test::non_bitwise_type[2] {
+                                               {1, &dtor_count_2[0]},
+                                               {2, &dtor_count_2[1]}}
+        }; // +1 shared_count_2
         hud::weak_pointer<hud_test::non_bitwise_type[2]> weak_ptr_2(shared_ptr_2);
 
         const bool weak_ptr_own_type_pointer = weak_ptr.lock().pointer() == shared_ptr.pointer();
@@ -681,10 +690,10 @@ GTEST_TEST(weak_pointer_array_not_safe, move_assign_weak_pointer_to_non_empty_we
 
         weak_ptr = hud::move(weak_ptr_2);
 
-        const auto locked_weak_ptr = weak_ptr.lock(); // +1 shared_count
+        const auto locked_weak_ptr = weak_ptr.lock();     // +1 shared_count
         const auto locked_weak_ptr_2 = weak_ptr_2.lock(); // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             weak_ptr_own_type_pointer,
             weak_ptr_shared_counter_is_ok,
             weak_ptr_2_own_type_pointer,
@@ -763,7 +772,7 @@ GTEST_TEST(weak_pointer_array_not_safe, copy_assign_weak_pointer_to_same_weak_po
             locked_weak_ptr.pointer()[1].move_constructor_count() == 0u,
             dtor_count[0] == 0,
             dtor_count[1] == 0,
-            };
+        };
     };
 
     // Non constant
@@ -837,7 +846,7 @@ GTEST_TEST(weak_pointer_array_not_safe, move_assign_weak_pointer_to_same_weak_po
             locked_weak_ptr.pointer()[1].move_constructor_count() == 0u,
             dtor_count[0] == 0,
             dtor_count[1] == 0,
-            };
+        };
     };
 
     // Non constant

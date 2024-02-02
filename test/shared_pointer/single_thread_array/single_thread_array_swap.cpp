@@ -25,7 +25,8 @@ GTEST_TEST(shared_pointer_array_not_safe, swap_with_empty)
                 is_pointer_correct,
                 shared_count_before == 1u,
                 shared_ptr.pointer() == nullptr,
-                shared_ptr.shared_count() == 0u};
+                shared_ptr.shared_count() == 0u
+            };
         };
 
         // Non constant
@@ -77,7 +78,8 @@ GTEST_TEST(shared_pointer_array_not_safe, swap_with_empty)
                 is_pointer_correct,
                 shared_count_before == 1u,
                 shared_ptr.pointer() == nullptr,
-                shared_ptr.shared_count() == 0u};
+                shared_ptr.shared_count() == 0u
+            };
         };
 
         // Non constant
@@ -138,7 +140,8 @@ GTEST_TEST(shared_pointer_array_not_safe, swap_same_type)
                 shared_ptr.pointer() == ptr2,
                 shared_ptr.shared_count() == 1u,
                 shared_ptr_2.pointer() == ptr,
-                shared_ptr_2.shared_count() == 1u};
+                shared_ptr_2.shared_count() == 1u
+            };
         };
 
         // Non constant
@@ -199,7 +202,8 @@ GTEST_TEST(shared_pointer_array_not_safe, swap_same_type)
                 shared_ptr.pointer() == ptr2,
                 shared_ptr.shared_count() == 1u,
                 shared_ptr_2.pointer() == ptr,
-                shared_ptr_2.shared_count() == 1u};
+                shared_ptr_2.shared_count() == 1u
+            };
         };
 
         // Non constant

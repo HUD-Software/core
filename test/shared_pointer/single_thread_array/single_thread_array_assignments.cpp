@@ -452,7 +452,8 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_an_empty_same_type)
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count() == 0u,
             dtor_count[0] == 1,
-            dtor_count[1] == 1};
+            dtor_count[1] == 1
+        };
     };
 
     // Non constant
@@ -495,7 +496,8 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_nullptr)
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count() == 0u,
             dtor_count[0] == 1,
-            dtor_count[1] == 1};
+            dtor_count[1] == 1
+        };
     };
 
     // Non constant
@@ -536,7 +538,8 @@ GTEST_TEST(shared_pointer_array_not_safe, copy_assignement_same_shared_pointer)
             shared_ptr.pointer() == type,
             shared_ptr.shared_count() == 1u,
             dtor_count[0] == 0,
-            dtor_count[1] == 0};
+            dtor_count[1] == 0
+        };
     };
 
     // Non constant
@@ -577,7 +580,8 @@ GTEST_TEST(shared_pointer_array_not_safe, move_assignement_same_shared_pointer)
             shared_ptr.pointer() == type,
             shared_ptr.shared_count() == 1u,
             dtor_count[0] == 0,
-            dtor_count[1] == 0};
+            dtor_count[1] == 0
+        };
     };
 
     // Non constant

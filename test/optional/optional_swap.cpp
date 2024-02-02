@@ -12,7 +12,8 @@ GTEST_TEST(optional, swap_empty_with_empty_trivial_type)
         option.swap(option2);
         return std::tuple {
             option.has_value(),
-            option2.has_value()};
+            option2.has_value()
+        };
     };
 
     // Non constant
@@ -42,7 +43,8 @@ GTEST_TEST(optional, swap_empty_with_empty_non_trivial_type)
         option.swap(option2);
         return std::tuple {
             option.has_value(),
-            option2.has_value()};
+            option2.has_value()
+        };
     };
 
     // Non constant
@@ -73,7 +75,8 @@ GTEST_TEST(optional, swap_empty_with_non_empty_trivial_type)
         return std::tuple {
             option.has_value(),
             option.value(),
-            option2.has_value()};
+            option2.has_value()
+        };
     };
 
     // Non constant
@@ -105,7 +108,8 @@ GTEST_TEST(optional, swap_empty_with_non_empty_non_trivial_type)
         option.swap(option2);
         return std::tuple {
             option.has_value(),
-            option2.has_value()};
+            option2.has_value()
+        };
     };
 
     // Non constant
@@ -137,7 +141,8 @@ GTEST_TEST(optional, swap_non_empty_with_non_empty_trivial_type)
             option.has_value(),
             option.value(),
             option2.has_value(),
-            option2.value()};
+            option2.value()
+        };
     };
 
     // Non constant
@@ -173,7 +178,8 @@ GTEST_TEST(optional, swap_non_empty_with_non_empty_non_trivial_type)
             option.has_value(),
             option.value().id(),
             option2.has_value(),
-            option2.value().id()};
+            option2.value().id()
+        };
     };
 
     // Non constant
@@ -207,7 +213,8 @@ GTEST_TEST(optional, hud_swap_empty_with_empty_trivial_type)
         hud::swap(option, option2);
         return std::tuple {
             option.has_value(),
-            option2.has_value()};
+            option2.has_value()
+        };
     };
 
     // Non constant
@@ -237,7 +244,8 @@ GTEST_TEST(optional, hud_swap_empty_with_empty_non_trivial_type)
         hud::swap(option, option2);
         return std::tuple {
             option.has_value(),
-            option2.has_value()};
+            option2.has_value()
+        };
     };
 
     // Non constant
@@ -268,7 +276,8 @@ GTEST_TEST(optional, hud_swap_empty_with_non_empty_trivial_type)
         return std::tuple {
             option.has_value(),
             option.value(),
-            option2.has_value()};
+            option2.has_value()
+        };
     };
 
     // Non constant
@@ -300,7 +309,8 @@ GTEST_TEST(optional, hud_swap_empty_with_non_empty_non_trivial_type)
         hud::swap(option, option2);
         return std::tuple {
             option.has_value(),
-            option2.has_value()};
+            option2.has_value()
+        };
     };
 
     // Non constant
@@ -332,7 +342,8 @@ GTEST_TEST(optional, hud_swap_non_empty_with_non_empty_trivial_type)
             option.has_value(),
             option.value(),
             option2.has_value(),
-            option2.value()};
+            option2.value()
+        };
     };
 
     // Non constant
@@ -368,7 +379,8 @@ GTEST_TEST(optional, hud_swap_non_empty_with_non_empty_non_trivial_type)
             option.has_value(),
             option.value().id(),
             option2.has_value(),
-            option2.value().id()};
+            option2.value().id()
+        };
     };
 
     // Non constant
