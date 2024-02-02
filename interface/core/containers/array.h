@@ -24,6 +24,7 @@
 #include "../templates/move.h"
 #include "../templates/lexicographical_compare.h"
 #include "../iterators/random_access_iterator.h"
+#include "../templates/max.h"
 #include "compressed_pair.h"
 #include <initializer_list>
 
@@ -82,7 +83,7 @@ namespace hud
          * @tparam u_type_tU the element type of the raw data to copy.
          * @param first The pointer to the first element of the contiguous sequence of elements of type u_type_t
          * @param element_number The number of elements in the sequence to copy
-         * @param extra_element_count (Optional) Number of extra element memory to allocate. Extra allocation is not construct
+         * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
         template<typename u_type_t>
@@ -338,17 +339,15 @@ namespace hud
         }
 
         /**
-         * Copy assign another array.
-         * @tparam u_type_t The element type of the std::intializer_list
-         * @param list The std::initilizer_list to assign
+         * Copy assign a std::initializer_list
+         * @tparam u_type_t The element type of the std::initializer_list
+         * @param list The std::initializer_list to assign
          * @return *this
          */
         template<typename u_type_t>
         constexpr array &operator=(std::initializer_list<u_type_t> list) noexcept
         {
-            // Be sure that the implementation is std::intilizer_list is a continuous array of memory
-            // else it will fail at compile time if begin() is not a pointer
-            copy_assign(list.begin(), list.size());
+            assign(list);
             return *this;
         }
 
@@ -362,10 +361,7 @@ namespace hud
         constexpr array &operator=(const array &other) noexcept
         requires(hud::is_copy_assignable_v<type_t>)
         {
-            if (this != &other) [[likely]]
-            {
-                copy_assign(other.data(), other.count());
-            }
+            assign(other);
             return *this;
         }
 
@@ -384,6 +380,35 @@ namespace hud
         {
             copy_assign(other.data(), other.count());
             return *this;
+        }
+
+        /**
+         * Copy assign a std::initializer_list. Optionally add a min_slack to allocate in the resulting copy.
+         * @tparam u_type_t The element type of the std::initializer_list
+         * @param list The std::initializer_list to assign
+         * @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
+         */
+        template<typename u_type_t>
+        constexpr void assign(std::initializer_list<u_type_t> list, const usize min_slack = 0) noexcept
+        {
+            // Be sure that the implementation is std::intilizer_list is a continuous array of memory
+            // else it will fail at compile time if begin() is not a pointer
+            copy_assign(list.begin(), list.size(), min_slack);
+        }
+
+        /**
+         * Copy assign another array. Optionally add a min_slack to allocate in the resulting copy.
+         * The copy assignement only grow allocation and never shrink allocation.
+         * No new allocation is done if the array contains enough memory to copy all elements, in other words we don't copy the capacity of the copied array.
+         * @param other The other array to copy
+         * @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
+         */
+        constexpr void assign(const array &other, const usize min_slack = 0) noexcept
+        {
+            if (this != &other) [[likely]]
+            {
+                copy_assign(other.data(), other.count());
+            }
         }
 
         /**
@@ -1070,23 +1095,24 @@ namespace hud
 
     private:
         /**
-         * Copy assign a source_count elements from the source of data to the array.
+         * Copy assign a source_count elements from the source of data to the array. Optionally add a min_slack to allocate in the resulting copy.
          * @tparam u_type_t The element type of the other array
          * @param source The source of data to copy
          * @param source_count Element count in the source to copy
+         * @param min_slack Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
         template<typename u_type_t>
-        constexpr void copy_assign(const u_type_t *source, const usize source_count) noexcept
+        constexpr void copy_assign(const u_type_t *source, const usize source_count, const usize min_slack = 0) noexcept
         {
             // Grow the allocation if we don't have enough room
             // If we need to reallocate, we destroy all elements before reallocating the allocation
             // Then we copy construct all elements of source in the allocation
-            if (source_count > max_count())
+            if (source_count + min_slack > max_count())
             {
                 // Destroy existing
                 hud::memory::destroy_array(data(), count());
                 // Allocate a new allocation and copy construct source into it
-                memory_allocation_type new_allocation = allocator_().template allocate<type_t>(source_count);
+                memory_allocation_type new_allocation = allocator_().template allocate<type_t>(source_count + min_slack);
                 hud::memory::copy_construct_array(new_allocation.data(), source, source_count);
                 // Save the newly allocated allocation
                 free_allocation_and_replace_it(hud::move(new_allocation), source_count);
