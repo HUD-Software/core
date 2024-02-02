@@ -139,6 +139,7 @@ add_executable(test_core
 	traits/is_default_constructible..cpp
 	traits/is_derived_from.cpp
 	traits/is_destructible.cpp
+	traits/is_empty.cpp
 	traits/is_enum.cpp
 	traits/is_explicitly_constructible.cpp
 	traits/is_explicitly_copy_constructible.cpp

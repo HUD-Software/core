@@ -38,15 +38,14 @@ namespace hud
         } // LCOV_EXCL_STOP
 
         /** Abort the program if condition is true. */
+        // LCOV_EXCL_START ( We don't covert the abort )
         static HD_FORCEINLINE void abort_if(const bool condition) noexcept
         {
-            // LCOV_EXCL_START ( We don't covert the abort )
             if (condition)
             {
                 abort();
             }
-            // LCOV_EXCL_STOP
-        }
+        } // LCOV_EXCL_STOP
     };
 } // namespace hud
 
