@@ -1,5 +1,10 @@
 #include <core/containers/shared_pointer.h>
 
+GTEST_TEST(shared_pointer_not_safe, less_or_equal_size_as_std_unique_ptr)
+{
+    GTEST_ASSERT_LE(sizeof(hud::shared_pointer<i32>), sizeof(std::shared_ptr<i32>));
+}
+
 GTEST_TEST(shared_pointer_not_safe, single_thread_pointer_return_object)
 {
 
@@ -8,7 +13,8 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_pointer_return_object)
         auto ptr = new hud_test::non_bitwise_type(15, nullptr);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(ptr);
         return std::tuple {
-            shared_ptr.pointer() == ptr};
+            shared_ptr.pointer() == ptr
+        };
     };
 
     // Non constant
@@ -35,7 +41,8 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_empty_pointer_return_nullptr)
     {
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr;
         return std::tuple {
-            shared_ptr.pointer() == nullptr};
+            shared_ptr.pointer() == nullptr
+        };
     };
 
     // Non constant
@@ -64,7 +71,8 @@ GTEST_TEST(shared_pointer_not_safe, single_thread_is_owning)
         hud::shared_pointer<hud_test::non_bitwise_type> empty_shared_ptr;
         return std::tuple {
             shared_ptr.is_owning(),
-            empty_shared_ptr.is_owning()};
+            empty_shared_ptr.is_owning()
+        };
     };
 
     // Non constant
@@ -95,7 +103,8 @@ GTEST_TEST(shared_pointer_not_safe, cast_to_bool)
         hud::shared_pointer<hud_test::non_bitwise_type> empty_shared_ptr;
         return std::tuple {
             static_cast<bool>(shared_ptr),
-            static_cast<bool>(empty_shared_ptr)};
+            static_cast<bool>(empty_shared_ptr)
+        };
     };
 
     // Non constant
@@ -125,7 +134,8 @@ GTEST_TEST(shared_pointer_not_safe, operator_dereference)
         auto ptr = new hud_test::non_bitwise_type(15, nullptr);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(ptr);
         return std::tuple {
-            &(*shared_ptr) == ptr};
+            &(*shared_ptr) == ptr
+        };
     };
 
     // Non constant
@@ -153,7 +163,8 @@ GTEST_TEST(shared_pointer_not_safe, operator_arrow)
         auto ptr = new hud_test::non_bitwise_type(15, nullptr);
         hud::shared_pointer<hud_test::non_bitwise_type> shared_ptr(ptr);
         return std::tuple {
-            shared_ptr.operator->() == ptr};
+            shared_ptr.operator->() == ptr
+        };
     };
 
     // Non constant
@@ -191,7 +202,8 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_empty)
             is_pointer_correct,
             shared_ptr.pointer() == nullptr,
             is_pointer_empty_correct,
-            empty_shared_ptr.pointer() == nullptr};
+            empty_shared_ptr.pointer() == nullptr
+        };
     };
 
     // Non constant
@@ -235,7 +247,8 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_nullptr)
             is_pointer_correct,
             shared_ptr.pointer() == nullptr,
             is_pointer_empty_correct,
-            empty_shared_ptr.pointer() == nullptr};
+            empty_shared_ptr.pointer() == nullptr
+        };
     };
 
     // Non constant
@@ -417,7 +430,8 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_empty_should_not_delete_if_other_re
             have_2_references,
             shared_ptr.pointer() == nullptr,
             second_shared_ptr.pointer() == ptr,
-            second_shared_ptr.shared_count() == 1u};
+            second_shared_ptr.shared_count() == 1u
+        };
     };
 
     // Non constant
@@ -473,7 +487,8 @@ GTEST_TEST(shared_pointer_not_safe, reset_to_other_pointer_should_not_delete_if_
             shared_ptr.pointer() == other_ptr,
             shared_ptr.shared_count() == 1u,
             second_shared_ptr.pointer() == ptr,
-            second_shared_ptr.shared_count() == 1u};
+            second_shared_ptr.shared_count() == 1u
+        };
     };
 
     // Non constant
@@ -522,7 +537,8 @@ GTEST_TEST(shared_pointer_not_safe, make_shared)
             shared_ptr.shared_count() == 1u,
             hud::is_same_v<decltype(shared_ptr_2.pointer()), hud_test::non_bitwise_type *>,
             shared_ptr_2->id() == 123,
-            shared_ptr_2.shared_count() == 1u};
+            shared_ptr_2.shared_count() == 1u
+        };
     };
 
     // Non constant
