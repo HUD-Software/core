@@ -26,7 +26,8 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_same_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -104,7 +105,8 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_different_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -168,7 +170,8 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_an_empty_same_type)
         return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -203,7 +206,8 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_nullptr)
         return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -247,7 +251,8 @@ GTEST_TEST(shared_pointer_safe, move_assignement_same_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -307,7 +312,8 @@ GTEST_TEST(shared_pointer_safe, move_assignement_different_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -359,7 +365,8 @@ GTEST_TEST(shared_pointer_safe, move_assignement_an_empty_same_type)
         return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -394,7 +401,8 @@ GTEST_TEST(shared_pointer_safe, move_assignement_nullptr)
         return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -429,7 +437,8 @@ GTEST_TEST(shared_pointer_safe, copy_assignement_same_shared_pointer)
         return std::tuple {
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -464,7 +473,8 @@ GTEST_TEST(shared_pointer_safe, move_assignement_same_shared_pointer)
         return std::tuple {
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant

@@ -1021,7 +1021,7 @@ namespace hud
     }
 
     /**
-     * Constructs a unique_pointer that owns a pointer of type type_t. The arguments are hud::forward to the constructor of type_t.
+     * Constructs a unique_pointer that owns a pointer of type type_t.
      * This overload only participates in overload resolution if type_t is not an array type
      * @tparam type_t Type of the unique_pointer's pointer
      * @tparam args_t The type_t constructor arguments
