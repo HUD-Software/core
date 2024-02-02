@@ -47,7 +47,6 @@ namespace hud_test
 
 GTEST_TEST(unique_pointer_array, less_or_equal_size_as_std_unique_ptr)
 {
-    GTEST_ASSERT_LE(sizeof(hud::unique_pointer<i32>), sizeof(std::unique_ptr<i32>));
     GTEST_ASSERT_LE(sizeof(hud::unique_pointer<i32[]>), sizeof(std::unique_ptr<i32[]>));
 }
 

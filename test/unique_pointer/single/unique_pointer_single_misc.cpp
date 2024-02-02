@@ -44,6 +44,11 @@ namespace hud_test
 
 // LCOV_EXCL_STOP
 
+GTEST_TEST(unique_pointer, less_or_equal_size_as_std_unique_ptr)
+{
+    GTEST_ASSERT_LE(sizeof(hud::unique_pointer<i32>), sizeof(std::unique_ptr<i32>));
+}
+
 GTEST_TEST(unique_pointer, pointer)
 {
 
@@ -54,7 +59,8 @@ GTEST_TEST(unique_pointer, pointer)
         hud::unique_pointer<i32> p2;
         return std::tuple {
             p.pointer() == ptr,
-            p2.pointer() == nullptr};
+            p2.pointer() == nullptr
+        };
     };
 
     // Non constant
@@ -81,7 +87,8 @@ GTEST_TEST(unique_pointer, is_owning)
         hud::unique_pointer<i32> p2;
         return std::tuple {
             p.is_owning(),
-            p2.is_owning()};
+            p2.is_owning()
+        };
     };
 
     // Non constant
@@ -108,7 +115,8 @@ GTEST_TEST(unique_pointer, cast_bool)
         hud::unique_pointer<i32> p2;
         return std::tuple {
             static_cast<bool>(p),
-            static_cast<bool>(p2)};
+            static_cast<bool>(p2)
+        };
     };
 
     // Non constant
@@ -183,7 +191,8 @@ GTEST_TEST(unique_pointer, deleter)
             !hud::is_const_v<hud::remove_reference_t<decltype(p.deleter())>>,
             hud::is_const_v<hud::remove_reference_t<decltype(p_const.deleter())>>,
             p.deleter().destructor_counter() == &dtor_counter,
-            p_const.deleter().destructor_counter() == &dtor_counter};
+            p_const.deleter().destructor_counter() == &dtor_counter
+        };
     };
 
     // Non constant
@@ -219,7 +228,8 @@ GTEST_TEST(unique_pointer, release)
             hud::is_same_v<decltype(released_ptr), hud_test::non_bitwise_type *>,
             hud::is_same_v<decltype(const_released_ptr), const hud_test::non_bitwise_type *>,
             released_ptr == ptr,
-            const_released_ptr == ptr_const};
+            const_released_ptr == ptr_const
+        };
         delete ptr;
         delete const_released_ptr;
         return result;
@@ -262,7 +272,8 @@ GTEST_TEST(unique_pointer, reset)
             is_not_null,
             is_null,
             is_not_null_2,
-            is_null_2};
+            is_null_2
+        };
     };
 
     // Non constant
