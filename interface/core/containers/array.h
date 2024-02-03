@@ -288,7 +288,7 @@ namespace hud
             allocation_() = allocator_().template allocate<type_t>(other.max_count());
             end_ptr = data_at(other.count());
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
-            // This optimisation works only if allocator do not share the same memory allocation, this case is not used in the engine
+            // This optimization works only if allocator do not share the same memory allocation, this case is not used in the engine
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             {
                 hud::memory::copy(data(), other.data(), byte_count());
@@ -316,7 +316,7 @@ namespace hud
             allocation_() = allocator_().template allocate<type_t>(other.max_count() + extra_element_count);
             end_ptr = data_at(other.count());
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
-            // This optimisation works only if allocator do not share the same memory buffer, this case is not used in the engine
+            // This optimization works only if allocator do not share the same memory buffer, this case is not used in the engine
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             {
                 hud::memory::copy(data(), other.data(), byte_count());
@@ -429,25 +429,22 @@ namespace hud
         }
 
         /**
-         * Move assign another array<u_type_t> with the same allocator.
+         * Move assign another array.
          * Never assume that the move assignement will keep the capacity of the moved array.
-         * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimisation
+         * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
          * @param other The other array to move
          */
         constexpr array &operator=(array &&other) noexcept
         requires(hud::is_move_assignable_v<type_t>)
         {
-            if (this != &other) [[likely]]
-            {
-                move_assign(hud::move(other));
-            }
+            assign(hud::move(other));
             return *this;
         }
 
         /**
-         * Move assign another array<u_type_t> with the same allocator.
+         * Move assign another array<u_type_t, u_allocator_t>
          * Never assume that the move assignement will keep the capacity of the moved array.
-         * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimisation
+         * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
          * If u_type_t is bitwise movable to type_t, the allocator is just moved, else it call the type_t's move constructor is called for each element.
          * @tparam u_type_t The element type of the other array
          * @tparam u_allocator_t The alloctor type of the other array
@@ -457,8 +454,41 @@ namespace hud
         requires(hud::is_move_assignable_v<type_t, u_type_t>)
         constexpr array &operator=(array<u_type_t, u_allocator_t> &&other) noexcept
         {
-            move_assign(hud::forward<array<u_type_t, u_allocator_t>>(other));
+            assign(hud::forward<array<u_type_t, u_allocator_t>>(other));
             return *this;
+        }
+
+        /**
+         * Move assign another array. Optionally add a min_slack to allocate in the resulting copy.
+         * Never assume that the move assignement will keep the capacity of the moved array.
+         * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
+         * @param other The other array to move
+         * @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
+         */
+        constexpr void assign(array &&other, const usize min_slack = 0) noexcept
+        requires(hud::is_move_assignable_v<type_t>)
+        {
+            if (this != &other) [[likely]]
+            {
+                move_assign(hud::move(other), min_slack);
+            }
+        }
+
+        /**
+         * Move assign another array<u_type_t> with the same allocator. Optionally add a min_slack to allocate in the resulting copy.
+         * Never assume that the move assignement will keep the capacity of the moved array.
+         * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
+         * If u_type_t is bitwise movable to type_t, the allocator is just moved, else it call the type_t's move constructor is called for each element.
+         * @tparam u_type_t The element type of the other array
+         * @tparam u_allocator_t The alloctor type of the other array
+         * @param other The other array to move
+         *  @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
+         */
+        template<typename u_type_t, typename u_allocator_t>
+        requires(hud::is_move_assignable_v<type_t, u_type_t>)
+        constexpr void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0) noexcept
+        {
+            move_assign(hud::forward<array<u_type_t, u_allocator_t>>(other), min_slack);
         }
 
         /**
@@ -1186,14 +1216,15 @@ namespace hud
         }
 
         /**
-         * Move-assigns another array if the array type and allocator are the same.
+         * Move-assigns another array if the array type and allocator are the same. Optionally add a min_slack to allocate in the resulting copy.
          * If type_t is bitwise movable, ownership of the internal allocation is transferred to this by stealing the pointer.
          * If type_t is not bitwise movable to type_t, or if allocators are different, the pointer is not stolen.
          * In such cases, the move constructor of type_t is called for each element.
          * @param other The other array to move
+         * @param min_slack Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
         template<typename u_type_t>
-        constexpr void move_assign(array<u_type_t, allocator_t> &&other) noexcept
+        constexpr void move_assign(array<u_type_t, allocator_t> &&other, const usize min_slack = 0) noexcept
         {
             // Move the allocator. This will do nothing if hud::allocator_traits<allocator_t>::move_when_container_move is hud::false_type
             if constexpr (hud::allocator_traits<allocator_t>::move_when_container_move::value)
@@ -1209,7 +1240,6 @@ namespace hud
                 hud::memory::destroy_array(data(), count());
                 allocator_().free(allocation_());
                 allocation_() = other.allocation_().template reinterpret_cast_to<type_t>();
-                // allocation = memory_allocation_type {reinterpret_cast<type_t *>(other.allocation.data()), reinterpret_cast<type_t *>(other.allocation.data_end())};
                 end_ptr = reinterpret_cast<type_t *>(other.end_ptr);
 
                 // Remove ownership
@@ -1258,15 +1288,16 @@ namespace hud
         }
 
         /**
-         * Move assign another array if the array is not the same type
+         * Move assign another array if the array is not the same type. Optionally add a min_slack to allocate in the resulting copy.
          * If u_type_t is bitwise movable to type_t and the allocator are the same, the internal allocation ownership is given to this by stealing the pointer
          * If u_type_t is not bitwise movable to type_t or allocators are differents, it do not still the pointer and call the type_t's move constructor is called for each element.
          * @tparam u_type_t The element type of the other array
          * @tparam u_allocator_t The allocator type of the other array
          * @param other The other array to move
+         * @param min_slack Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
         template<typename u_type_t, typename u_allocator_t>
-        constexpr void move_assign(array<u_type_t, u_allocator_t> &&other) noexcept
+        constexpr void move_assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0) noexcept
         {
             // Move the allocator.
             allocator_() = std::move(other.allocator_());
