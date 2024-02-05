@@ -1234,7 +1234,7 @@ namespace hud
 
             // If type_t is bitwise move assignable allocation is just moved.
             // This optimization is not possible in a constant evaluated context due to the use of reinterpret_cast.
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_assignable_v<type_t, u_type_t>)
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_assignable_v<type_t, u_type_t> && other.slack() >= min_slack)
             {
                 // Take ownership of the allocation and release ownership of the moved array
                 hud::memory::destroy_array(data(), count());
@@ -1250,11 +1250,11 @@ namespace hud
             {
                 // If we need to reallocate, we destroy all elements before reallocating the allocation
                 // Then we copy construct all elements of source in the allocation
-                if (other.count() > max_count())
+                if (other.count() + min_slack > max_count())
                 {
                     // Delete existing elements
                     hud::memory::destroy_array(data(), count());
-                    memory_allocation_type new_allocation = allocator_().template allocate<type_t>(other.count());
+                    memory_allocation_type new_allocation = allocator_().template allocate<type_t>(other.count() + min_slack);
                     hud::memory::move_or_copy_construct_array(new_allocation.data(), other.data(), other.count());
                     free_allocation_and_replace_it(hud::move(new_allocation), other.count());
                 }
@@ -1304,11 +1304,11 @@ namespace hud
 
             // If we need to reallocate, we destroy all elements before reallocating the allocation
             // Then we copy construct all elements of source in the allocation
-            if (other.count() > max_count())
+            if (other.count() + min_slack > max_count())
             {
                 // Delete existing elements
                 hud::memory::destroy_array(data(), count());
-                memory_allocation_type new_allocation = allocator_().template allocate<type_t>(other.count());
+                memory_allocation_type new_allocation = allocator_().template allocate<type_t>(other.count() + min_slack);
                 hud::memory::move_or_copy_construct_array(new_allocation.data(), other.data(), other.count());
                 free_allocation_and_replace_it(hud::move(new_allocation), other.count());
             }
