@@ -3,7 +3,7 @@
 #include "../misc/leak_guard.h"
 
 // void assign(const array &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator_no_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator_no_min_slack)
 {
 
     using type = i32;
@@ -586,7 +586,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
 }
 
 // void assign(const array &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator_with_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator_with_min_slack)
 {
     using type = i32;
 
@@ -1170,7 +1170,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator_no_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator_no_min_slack)
 {
     using type = i32;
 
@@ -1752,7 +1752,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator_with_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator_with_min_slack)
 {
     using type = i32;
 
@@ -2337,7 +2337,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator_no_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator_no_min_slack)
 {
 
     using source_type = i32;
@@ -2922,7 +2922,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator_with_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator_with_min_slack)
 {
 
     using source_type = i32;
@@ -3509,7 +3509,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator_no_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator_no_min_slack)
 {
 
     using source_type = i32;
@@ -4094,7 +4094,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator_with_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator_with_min_slack)
 {
 
     using source_type = i32;
@@ -4681,7 +4681,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator_no_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -5521,7 +5521,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator_with_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -6363,7 +6363,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator_no_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -7203,7 +7203,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator_with_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -8045,7 +8045,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator_no_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator_no_min_slack)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -8888,7 +8888,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator_with_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator_with_min_slack)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -9733,7 +9733,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator_no_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator_no_min_slack)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -10576,7 +10576,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator_with_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator_with_min_slack)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -11421,7 +11421,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_no_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_no_min_slack)
 {
 
     using type = i32;
@@ -11584,7 +11584,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_no_extra)
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_with_extra)
+GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_with_min_slack)
 {
     using type = i32;
 
@@ -11748,7 +11748,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_with_extr
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_no_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -11955,7 +11955,7 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_no_ex
 }
 
 // void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_with_extra)
+GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
