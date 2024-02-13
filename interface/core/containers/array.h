@@ -1154,12 +1154,13 @@ namespace hud
             // Grow the allocation if we don't have enough room
             // If we need to reallocate, we destroy all elements before reallocating the allocation
             // Then we copy construct all elements of source in the allocation
-            if (source_count + min_slack > max_count())
+            const usize max_count_requested = source_count + min_slack;
+            if (max_count_requested > max_count())
             {
                 // Destroy existing
                 hud::memory::destroy_array(data(), count());
                 // Allocate a new allocation and copy construct source into it
-                memory_allocation_type new_allocation = allocator_().template allocate<type_t>(source_count + min_slack);
+                memory_allocation_type new_allocation = allocator_().template allocate<type_t>(max_count_requested);
                 hud::memory::copy_construct_array(new_allocation.data(), source, source_count);
                 // Save the newly allocated allocation
                 free_allocation_and_replace_it(hud::move(new_allocation), source_count);
@@ -1250,11 +1251,12 @@ namespace hud
             {
                 // If we need to reallocate, we destroy all elements before reallocating the allocation
                 // Then we copy construct all elements of source in the allocation
-                if (other.count() + min_slack > max_count())
+                const usize max_count_requested = other.count() + min_slack;
+                if (max_count_requested > max_count())
                 {
                     // Delete existing elements
                     hud::memory::destroy_array(data(), count());
-                    memory_allocation_type new_allocation = allocator_().template allocate<type_t>(other.count() + min_slack);
+                    memory_allocation_type new_allocation = allocator_().template allocate<type_t>(max_count_requested);
                     hud::memory::move_or_copy_construct_array(new_allocation.data(), other.data(), other.count());
                     free_allocation_and_replace_it(hud::move(new_allocation), other.count());
                 }

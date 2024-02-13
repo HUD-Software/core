@@ -235,7 +235,7 @@ namespace hud
                 static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(u_type_t&&) constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
             }
 
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t> && count > 0u)
             {
                 hud::memory::move(destination, source, count * sizeof(type_t));
             }

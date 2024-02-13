@@ -22,6 +22,7 @@ add_executable(test_core
 	array/array_iteration.cpp
 	array/array_misc.cpp
 	array/array_move_assign_operator.cpp
+	array/array_move_assign.cpp
 	array/array_move_constructors.cpp
 	array/array_remove_at.cpp
 	array/array_reserve.cpp

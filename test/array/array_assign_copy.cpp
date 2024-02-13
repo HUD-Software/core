@@ -4111,7 +4111,7 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
             hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
             hud::array<source_type, hud_test::array_allocator_2<alignof(source_type)>> to_assign(elements_to_assign);
 
-            assigned.assign(to_assign, 1);
+            assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
