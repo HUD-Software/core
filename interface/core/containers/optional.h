@@ -318,7 +318,7 @@ namespace hud
          * If the inner type is neither copy assignable, the optional is explictly not copy assignable.
          * @tparam type_t Inner type
          */
-        template<typename type_t, bool IsCopyAssignTrivial = is_trivially_copy_constructible_v<type_t> &&is_trivially_copy_assignable_v<type_t> &&hud::is_trivially_destructible_v<type_t>, bool IsCopyAssignDeleted = hud::is_copy_constructible_v<type_t> &&hud::is_copy_assignable_v<type_t>>
+        template<typename type_t, bool IsCopyAssignTrivial = is_trivially_copy_constructible_v<type_t> && is_trivially_copy_assignable_v<type_t> && hud::is_trivially_destructible_v<type_t>, bool IsCopyAssignDeleted = hud::is_copy_constructible_v<type_t> && hud::is_copy_assignable_v<type_t>>
         struct optional_copy_assign_base
             : optional_move_base<type_t>
         {
@@ -363,7 +363,7 @@ namespace hud
          * If the inner type is neither move assignable, the optional is explictly not move assignable.
          * @tparam type_t Inner type
          */
-        template<typename type_t, bool IsMoveAssignTrivial = is_trivially_move_assignable_v<type_t> &&is_trivially_move_constructible_v<type_t> &&hud::is_trivially_destructible_v<type_t>, bool IsMoveAssignDeleted = hud::is_move_constructible_v<type_t> &&hud::is_move_assignable_v<type_t>>
+        template<typename type_t, bool IsMoveAssignTrivial = is_trivially_move_assignable_v<type_t> && is_trivially_move_constructible_v<type_t> && hud::is_trivially_destructible_v<type_t>, bool IsMoveAssignDeleted = hud::is_move_constructible_v<type_t> && hud::is_move_assignable_v<type_t>>
         struct optional_move_assign_base
             : optional_copy_assign_base<type_t>
         {
@@ -638,7 +638,7 @@ namespace hud
             return hud::move(super_type::value());
         }
 
-        /** Retrieves a const l-value reference to the contained value */
+        /** Retrieves a l-value reference to the contained value */
         [[nodiscard]] constexpr type_t &&value() && noexcept
         {
             return hud::move(super_type::value());

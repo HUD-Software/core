@@ -258,7 +258,8 @@ GTEST_TEST(pair, copy_constructor_trivial_type_same_type)
         hud::memory::construct_at(pair, other);
         const auto result = std::tuple {
             pair->first,
-            pair->second};
+            pair->second
+        };
         hud::memory::free_array(pair, 1);
         return result;
     };
@@ -412,7 +413,8 @@ GTEST_TEST(pair, copy_constructor_trivial_type_different_type)
         hud::memory::construct_at(pair, other);
         const auto result = std::tuple {
             pair->first,
-            pair->second};
+            pair->second
+        };
         hud::memory::free_array(pair, 1);
         return result;
     };
@@ -544,7 +546,8 @@ GTEST_TEST(pair, move_constructor_trivial_type_same_type)
         hud::memory::construct_at(pair, hud::move(other));
         const auto result = std::tuple {
             pair->first,
-            pair->second};
+            pair->second
+        };
         hud::memory::free_array(pair, 1);
         return result;
     };
@@ -747,7 +750,8 @@ GTEST_TEST(pair, move_constructor_trivial_type_different_type)
         hud::memory::construct_at(pair, hud::move(other));
         const auto result = std::tuple {
             pair->first,
-            pair->second};
+            pair->second
+        };
         hud::memory::free_array(pair, 1);
         return result;
     };
@@ -884,7 +888,8 @@ GTEST_TEST(pair, param_copy_constructor_trivial_type_same_type)
         hud::memory::construct_at(pair, t1, t2);
         const auto result = std::tuple {
             pair->first,
-            pair->second};
+            pair->second
+        };
         hud::memory::free_array(pair, 1);
         return result;
     };
@@ -921,7 +926,8 @@ GTEST_TEST(pair, param_copy_constructor_trivial_type_different_type)
         hud::memory::construct_at(pair, t1, t2);
         const auto result = std::tuple {
             pair->first,
-            pair->second};
+            pair->second
+        };
         hud::memory::free_array(pair, 1);
         return result;
     };
@@ -1166,7 +1172,8 @@ GTEST_TEST(pair, param_move_constructor_trivial_type_same_type)
         hud::memory::construct_at(pair, hud::forward<Type1>(t1), hud::forward<Type2>(t2));
         const auto result = std::tuple {
             pair->first,
-            pair->second};
+            pair->second
+        };
         hud::memory::free_array(pair, 1);
         return result;
     };
@@ -1368,7 +1375,8 @@ GTEST_TEST(pair, param_move_constructor_trivial_type_different_type)
         hud::memory::construct_at(pair, hud::forward<OtherType1>(t1), hud::forward<OtherType2>(t2));
         const auto result = std::tuple {
             pair->first,
-            pair->second};
+            pair->second
+        };
         hud::memory::free_array(pair, 1);
         return result;
     };

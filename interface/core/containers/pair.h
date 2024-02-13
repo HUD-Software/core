@@ -59,7 +59,6 @@ namespace hud
          * pair do not accept throwable default constructible components.
          */
         constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_implicitly_default_constructible_v<second_type>)) pair() noexcept
-        requires(hud::is_default_constructible_v<first_type> && hud::is_default_constructible_v<second_type>)
             : first()
             , second()
         {
@@ -71,7 +70,7 @@ namespace hud
          * Initialization copy constructor.
          * This involves individually constructing its two component, with an initialization that depends on the constructor.
          * Member first is constructed with f and member second with s.
-         * pair do not accept throwable default constructible components.
+         * pair do not accept throwable copy constructible components.
          * @param f An object of the same type of first, or some other type implicitly convertible to it.
          * @param s An object of the same type of second, or some other type implicitly convertible to it.
          */
@@ -88,7 +87,7 @@ namespace hud
          * Initialization move constructor.
          * This involves individually constructing its two component, with an initialization that depends on the constructor.
          * Member first is constructed with f and member second with s.
-         * pair do not accept throwable default constructible components.
+         * pair do not accept throwable move constructible components.
          * @tparam u_type_t Type of the f component.
          * @tparam v_type_t Type of the s component.
          * @param f An object of the same type of first, or some other type implicitly convertible to it.
@@ -107,19 +106,21 @@ namespace hud
 
         /**
          * Copy constructor.
-         * This involves individually constructing its two component, with an initialization that depends on the constructor.
+         * This involves individually constructing its two components, with an initialization that depends on the constructor.
          * The object is initialized with the contents of the other pair object.
-         * The corresponding members of other is passed to the constructor of each of its members.
-         * pair do not accept throwable default constructible components.
+         * The corresponding members of 'other' are passed to the constructor of each of its members.
+         * pair does not accept throwable copy constructible components.
          * @param other Another pair object.
          */
-        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>)) pair(const pair &other) noexcept = default;
+        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>)) pair(const pair &other) noexcept
+        requires(hud::is_nothrow_copy_constructible_v<first_type> && hud::is_nothrow_copy_constructible_v<second_type>)
+        = default;
 
         /**
-         * This involves individually constructing its two component, with an initialization that depends on the constructor.
+         * This involves individually constructing its two components, with an initialization that depends on the constructor.
          * The object is initialized with the contents of the other pair object.
-         * The corresponding members of other is passed to the constructor of each of its members.
-         * pair do not accept throwable default constructible components.
+         * The corresponding members of 'other' are passed to the constructor of each of its members.
+         * Pairs do not accept throwable copy-constructible components.
          * @tparam u_type1_t Type of the first component.
          * @tparam u_type2_t Type of the second component.
          * @param other Another pair object.
@@ -137,20 +138,22 @@ namespace hud
 
         /**
          * Move constructor.
-         * This involves individually constructing its two component, with an initialization that depends on the constructor.
+         * This involves individually constructing its two components, with an initialization that depends on the constructor.
          * The object is initialized with the contents of the other pair object.
-         * The corresponding members of other is forward to the constructor of each of its members.
-         * pair do not accept throwable move constructible components.
+         * The corresponding members of 'other' are forwarded to the constructor of each of its members.
+         * Pairs do not accept throwable move-constructible components.
          * @param other Another pair object.
          */
-        constexpr explicit(!(hud::is_convertible_v<first_type, first_type> && hud::is_convertible_v<second_type, second_type>)) pair(pair &&other) noexcept = default;
+        constexpr explicit(!(hud::is_convertible_v<first_type, first_type> && hud::is_convertible_v<second_type, second_type>)) pair(pair &&other) noexcept
+        requires(hud::is_nothrow_move_constructible_v<first_type> && hud::is_nothrow_move_constructible_v<second_type>)
+        = default;
 
         /**
          * Move constructor.
-         * This involves individually constructing its two component, with an initialization that depends on the constructor.
+         * This involves individually constructing its two components, with an initialization that depends on the constructor.
          * The object is initialized with the contents of the other pair object.
-         * The corresponding members of other is forward to the constructor of each of its members.
-         * pair do not accept throwable default constructible components.
+         * The corresponding members of 'other' are forwarded to the constructor of each of its members.
+         * Pairs do not accept throwable move-constructible components.
          * @tparam u_type1_t Type of the first component.
          * @tparam u_type2_t Type of the second component.
          * @param other Another pair object.
