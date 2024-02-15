@@ -29,7 +29,7 @@ GTEST_TEST(compressed_pair, sizeof_pair_is_sizeof_inner_types)
 {
     hud_assert_eq(sizeof(hud::compressed_pair<empty, u64>), sizeof(u64));
     hud_assert_eq(sizeof(hud::compressed_pair<u64, empty>), sizeof(u64));
-    hud_assert_eq(sizeof(hud::compressed_pair<empty, empty>), sizeof(empty) * 2);
+    hud_assert_eq(sizeof(hud::compressed_pair<empty, empty>), sizeof(empty) + sizeof(empty));
     hud_assert_eq(sizeof(hud::compressed_pair<empty, empty2>), sizeof(empty));
 }
 
