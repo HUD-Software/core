@@ -1057,7 +1057,7 @@ namespace hud
         /** The type of 'first' */
         using first_type = typename super_type::first_type;
         /** The type of 'second' */
-        using second_type = typename super_type::secondfirst_type;
+        using second_type = typename super_type::second_type;
 
     public:
         /** Default construct first and second */
