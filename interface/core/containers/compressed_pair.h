@@ -1,5 +1,6 @@
 #ifndef HD_INC_CORE_COMPRESSED_TYPE_H
 #define HD_INC_CORE_COMPRESSED_TYPE_H
+#include "../minimal.h"
 #include "../traits/is_empty.h"
 #include "../traits/is_same.h"
 #include "../traits/remove_cv_ref.h"
@@ -9,6 +10,11 @@
 #include "../traits/is_nothrow_move_constructible.h"
 #include "../traits/is_convertible.h"
 #include "../traits/is_implicitly_default_constructible.h"
+#include "../traits/is_nothrow_swappable.h"
+#include "../traits/decay.h"
+#include "../templates/swap.h"
+#include "tuple_size.h"
+#include "tuple_element.h"
 
 namespace hud
 {
@@ -54,20 +60,21 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is constructed with 'f', and member 'second' with 's'.
              * compressed_pair do not accept throwable move-constructible components.
+             *
              * @tparam u_type_t Type of the 'f' component.
              * @tparam v_type_t Type of the 's' component.
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-            requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, u_compressed_type_1_t>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1, u_compressed_type_2_t &&type_2) noexcept
-                : type_1_(hud::forward<u_compressed_type_1_t>(type_1))
-                , type_2_(hud::forward<u_compressed_type_2_t>(type_2))
+            template<typename u_type_t, typename v_type_t>
+            requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, u_type_t>))
+                compress_pair_impl(u_type_t &&type_1, v_type_t &&type_2) noexcept
+                : type_1_(hud::forward<u_type_t>(type_1))
+                , type_2_(hud::forward<v_type_t>(type_2))
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /**
@@ -75,17 +82,17 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is constructed with 'f', and member 'second' is default-constructed.
              * compressed_pair does not accept throwable move-constructible components.
-             * @tparam u_compressed_type_1_t Type of the 'f' component.
+             * @tparam u_type_t Type of the 'f' component.
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t>
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_implicitly_default_constructible_v<second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1) noexcept
-            requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_compressed_type_1_t>>)
-                : type_1_(hud::forward<u_compressed_type_1_t>(type_1))
+            template<typename u_type_t>
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_implicitly_default_constructible_v<second_type>))
+                compress_pair_impl(u_type_t &&type_1) noexcept
+            requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_type_t>>)
+                : type_1_(hud::forward<u_type_t>(type_1))
                 , type_2_()
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
                 static_assert(hud::is_nothrow_default_constructible_v<second_type>, "second_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
             }
 
@@ -94,18 +101,18 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is default-constructed, and member 'second' is constructed with 's'.
              * compressed_pair does not accept throwable move-constructible components.
-             * @tparam u_compressed_type_2_t Type of the 's' component.
+             * @tparam v_type_t Type of the 's' component.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_2_t>
-            constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_2_t &&type_2) noexcept
-            requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<u_compressed_type_2_t>>)
+            template<typename v_type_t>
+            constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+                compress_pair_impl(v_type_t &&type_2) noexcept
+            requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<v_type_t>>)
                 : type_1_()
-                , type_2_(hud::forward<u_compressed_type_2_t>(type_2))
+                , type_2_(hud::forward<v_type_t>(type_2))
             {
                 static_assert(hud::is_nothrow_default_constructible_v<first_type>, "first_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /** Copy assignment. */
@@ -128,13 +135,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const first_type &&first() const && noexcept
             {
-                return std::move<first_type>(type_1_);
+                return hud::move(type_1_);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&first() && noexcept
             {
-                return std::move<first_type>(type_1_);
+                return hud::move(type_1_);
             }
 
             /** Retrieves the reference to the second element. */
@@ -152,13 +159,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const second_type &&second() const && noexcept
             {
-                return std::move<second_type>(type_2_);
+                return hud::move(type_2_);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&second() && noexcept
             {
-                return std::move<second_type>(type_2_);
+                return hud::move(type_2_);
             }
 
         private:
@@ -208,15 +215,15 @@ namespace hud
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-            requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1, u_compressed_type_2_t &&type_2) noexcept
-                : first_type(hud::forward<u_compressed_type_1_t>(type_1))
-                , type_2_(hud::forward<u_compressed_type_2_t>(type_2))
+            template<typename u_type_t, typename v_type_t>
+            requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+                compress_pair_impl(u_type_t &&type_1, v_type_t &&type_2) noexcept
+                : first_type(hud::forward<u_type_t>(type_1))
+                , type_2_(hud::forward<v_type_t>(type_2))
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /**
@@ -224,17 +231,17 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is constructed with 'f', and member 'second' is default-constructed.
              * compressed_pair does not accept throwable move-constructible components.
-             * @tparam u_compressed_type_1_t Type of the 'f' component.
+             * @tparam u_type_t Type of the 'f' component.
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t>
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_implicitly_default_constructible_v<second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1) noexcept
-            requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_compressed_type_1_t>>)
-                : first_type(hud::forward<u_compressed_type_1_t>(type_1))
+            template<typename u_type_t>
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_implicitly_default_constructible_v<second_type>))
+                compress_pair_impl(u_type_t &&type_1) noexcept
+            requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_type_t>>)
+                : first_type(hud::forward<u_type_t>(type_1))
                 , type_2_()
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
                 static_assert(hud::is_nothrow_default_constructible_v<second_type>, "second_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
             }
 
@@ -243,18 +250,18 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is default-constructed, and member 'second' is constructed with 's'.
              * compressed_pair does not accept throwable move-constructible components.
-             * @tparam u_compressed_type_2_t Type of the 's' component.
+             * @tparam v_type_t Type of the 's' component.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_2_t>
-            constexpr explicit(!hud::is_implicitly_default_constructible_v<first_type> && (hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_2_t &&type_2) noexcept
-            requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<u_compressed_type_2_t>>)
+            template<typename v_type_t>
+            constexpr explicit(!hud::is_implicitly_default_constructible_v<first_type> && (hud::is_convertible_v<v_type_t &&, second_type>))
+                compress_pair_impl(v_type_t &&type_2) noexcept
+            requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<v_type_t>>)
                 : first_type()
-                , type_2_(hud::forward<u_compressed_type_2_t>(type_2))
+                , type_2_(hud::forward<v_type_t>(type_2))
             {
                 static_assert(hud::is_nothrow_default_constructible_v<first_type>, "first_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /** Copy assignment. */
@@ -277,13 +284,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const first_type &&first() const && noexcept
             {
-                return std::move<first_type>(*this);
+                return hud::move(*this);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&first() && noexcept
             {
-                return std::move<first_type>(*this);
+                return hud::move(*this);
             }
 
             /** Retrieves the reference to the second element. */
@@ -301,13 +308,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const second_type &&second() const && noexcept
             {
-                return std::move<second_type>(type_2_);
+                return hud::move(type_2_);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&second() && noexcept
             {
-                return std::move<second_type>(type_2_);
+                return hud::move(type_2_);
             }
 
         private:
@@ -362,15 +369,15 @@ namespace hud
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-            requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1, u_compressed_type_2_t &&type_2) noexcept
-                : second_type(hud::forward<u_compressed_type_2_t>(type_2))
-                , type_1_(hud::forward<u_compressed_type_1_t>(type_1))
+            template<typename u_type_t, typename v_type_t>
+            requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+                compress_pair_impl(u_type_t &&type_1, v_type_t &&type_2) noexcept
+                : second_type(hud::forward<v_type_t>(type_2))
+                , type_1_(hud::forward<u_type_t>(type_1))
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /**
@@ -378,17 +385,17 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is constructed with 'f', and member 'second' is default-constructed.
              * compressed_pair does not accept throwable move-constructible components.
-             * @tparam u_compressed_type_1_t Type of the 'f' component.
+             * @tparam u_type_t Type of the 'f' component.
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t>
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_implicitly_default_constructible_v<second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1) noexcept
-            requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_compressed_type_1_t>>)
+            template<typename u_type_t>
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_implicitly_default_constructible_v<second_type>))
+                compress_pair_impl(u_type_t &&type_1) noexcept
+            requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_type_t>>)
                 : second_type()
-                , type_1_(hud::forward<u_compressed_type_1_t>(type_1))
+                , type_1_(hud::forward<u_type_t>(type_1))
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
                 static_assert(hud::is_nothrow_default_constructible_v<second_type>, "second_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
             }
 
@@ -397,18 +404,18 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is default-constructed, and member 'second' is constructed with 's'.
              * compressed_pair does not accept throwable move-constructible components.
-             * @tparam u_compressed_type_2_t Type of the 's' component.
+             * @tparam v_type_t Type of the 's' component.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_2_t>
-            constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_2_t &&type_2) noexcept
-            requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<u_compressed_type_2_t>>)
-                : second_type(hud::forward<u_compressed_type_2_t>(type_2))
+            template<typename v_type_t>
+            constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+                compress_pair_impl(v_type_t &&type_2) noexcept
+            requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<v_type_t>>)
+                : second_type(hud::forward<v_type_t>(type_2))
                 , first_type()
             {
                 static_assert(hud::is_nothrow_default_constructible_v<first_type>, "first_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /** Retrieves the reference to the first element. */
@@ -426,13 +433,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const first_type &&first() const && noexcept
             {
-                return std::move<first_type>(type_1_);
+                return hud::move(type_1_);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&first() && noexcept
             {
-                return std::move<first_type>(type_1_);
+                return hud::move(type_1_);
             }
 
             /** Retrieves the reference to the second element. */
@@ -450,13 +457,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const second_type &&second() const && noexcept
             {
-                return std::move<second_type>(*this);
+                return hud::move(*this);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&second() && noexcept
             {
-                return std::move<second_type>(*this);
+                return hud::move(*this);
             }
 
         private:
@@ -512,15 +519,15 @@ namespace hud
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-            requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1, u_compressed_type_2_t &&type_2) noexcept
-                : first_type(hud::forward<u_compressed_type_1_t>(type_1))
-                , second_type(hud::forward<u_compressed_type_2_t>(type_2))
+            template<typename u_type_t, typename v_type_t>
+            requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+                compress_pair_impl(u_type_t &&type_1, v_type_t &&type_2) noexcept
+                : first_type(hud::forward<u_type_t>(type_1))
+                , second_type(hud::forward<v_type_t>(type_2))
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /**
@@ -528,17 +535,17 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is constructed with 'f', and member 'second' is default-constructed.
              * compressed_pair does not accept throwable move-constructible components.
-             * @tparam u_compressed_type_1_t Type of the 'f' component.
+             * @tparam u_type_t Type of the 'f' component.
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t>
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_implicitly_default_constructible_v<second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1) noexcept
-            requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_compressed_type_1_t>>)
-                : first_type(hud::forward<u_compressed_type_1_t>(type_1))
+            template<typename u_type_t>
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_implicitly_default_constructible_v<second_type>))
+                compress_pair_impl(u_type_t &&type_1) noexcept
+            requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_type_t>>)
+                : first_type(hud::forward<u_type_t>(type_1))
                 , second_type()
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
                 static_assert(hud::is_nothrow_default_constructible_v<second_type>, "second_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
             }
 
@@ -547,18 +554,18 @@ namespace hud
              * This involves individually constructing its two components, with an initialization that depends on the constructor.
              * Member 'first' is default-constructed, and member 'second' is constructed with 's'.
              * compressed_pair does not accept throwable move-constructible components.
-             * @tparam u_compressed_type_2_t Type of the 's' component.
+             * @tparam v_type_t Type of the 's' component.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_2_t>
-            constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_2_t &&type_2) noexcept
-            requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<u_compressed_type_2_t>>)
+            template<typename v_type_t>
+            constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+                compress_pair_impl(v_type_t &&type_2) noexcept
+            requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<v_type_t>>)
                 : first_type()
-                , second_type(hud::forward<u_compressed_type_2_t>(type_2))
+                , second_type(hud::forward<v_type_t>(type_2))
             {
                 static_assert(hud::is_nothrow_default_constructible_v<first_type>, "first_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /** Retrieves the reference to the first element. */
@@ -576,13 +583,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const first_type &&first() const && noexcept
             {
-                return std::move<first_type>(*this);
+                return hud::move(*this);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&first() && noexcept
             {
-                return std::move<first_type>(*this);
+                return hud::move(*this);
             }
 
             /** Retrieves the reference to the second element. */
@@ -600,13 +607,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const second_type &&second() const && noexcept
             {
-                return std::move<second_type>(*this);
+                return hud::move(*this);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&second() && noexcept
             {
-                return std::move<second_type>(*this);
+                return hud::move(*this);
             }
         };
 
@@ -657,15 +664,15 @@ namespace hud
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-            requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_convertible_v<u_compressed_type_1_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1, u_compressed_type_2_t &&type_2) noexcept
-                : type_1_(hud::forward<u_compressed_type_1_t>(type_1))
-                , type_2_(hud::forward<u_compressed_type_2_t>(type_2))
+            template<typename u_type_t, typename v_type_t>
+            requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<u_type_t &&, second_type>))
+                compress_pair_impl(u_type_t &&type_1, v_type_t &&type_2) noexcept
+                : type_1_(hud::forward<u_type_t>(type_1))
+                , type_2_(hud::forward<v_type_t>(type_2))
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /** Retrieves the reference to the first element. */
@@ -683,13 +690,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const first_type &&first() const && noexcept
             {
-                return std::move<first_type>(type_1_);
+                return hud::move(type_1_);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&first() && noexcept
             {
-                return std::move<first_type>(type_1_);
+                return hud::move(type_1_);
             }
 
             /** Retrieves the reference to the second element. */
@@ -707,13 +714,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const second_type &&second() const && noexcept
             {
-                return std::move<second_type>(type_2_);
+                return hud::move(type_2_);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&second() && noexcept
             {
-                return std::move<second_type>(type_2_);
+                return hud::move(type_2_);
             }
 
         private:
@@ -788,15 +795,15 @@ namespace hud
              * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
              * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
              */
-            template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-            requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-            constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-                compress_pair_impl(u_compressed_type_1_t &&type_1, u_compressed_type_2_t &&type_2) noexcept
-                : compressed_type_t(hud::forward<u_compressed_type_1_t>(type_1))
-                , type_2_(hud::forward<u_compressed_type_2_t>(type_2))
+            template<typename u_type_t, typename v_type_t>
+            requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+            constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+                compress_pair_impl(u_type_t &&type_1, v_type_t &&type_2) noexcept
+                : compressed_type_t(hud::forward<u_type_t>(type_1))
+                , type_2_(hud::forward<v_type_t>(type_2))
             {
-                static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
             /** Retrieves the reference to the first element. */
@@ -814,13 +821,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const first_type &&first() const && noexcept
             {
-                return std::move<first_type>(*this);
+                return hud::move(*this);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&first() && noexcept
             {
-                return std::move<first_type>(*this);
+                return hud::move(*this);
             }
 
             /** Retrieves the reference to the second element. */
@@ -838,13 +845,13 @@ namespace hud
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr const second_type &&second() const && noexcept
             {
-                return std::move<second_type>(type_2_);
+                return hud::move(type_2_);
             }
 
             /** Retrieves the const l-value reference to the first element. */
             [[nodiscard]] constexpr first_type &&second() && noexcept
             {
-                return std::move<second_type>(type_2_);
+                return hud::move(type_2_);
             }
 
         private:
@@ -893,18 +900,37 @@ namespace hud
          * The object is initialized with the contents of the other compressed_pair object.
          * The corresponding members of 'other' are passed to the constructor of each of its members.
          * Compressed pairs do not accept throwable copy-constructible components.
-         * @tparam u_compressed_type_1_t Type of the first component.
-         * @tparam u_compressed_type_2_t Type of the second component.
+         * @tparam u_type_t Type of the first component.
+         * @tparam v_type_t Type of the second component.
          * @param other Another compressed_pair object.
          */
-        template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-        requires(hud::is_copy_constructible_v<first_type, u_compressed_type_1_t> && hud::is_copy_constructible_v<second_type, u_compressed_type_2_t>)
-        constexpr explicit(!(hud::is_convertible_v<const u_compressed_type_1_t &, first_type> && hud::is_convertible_v<const u_compressed_type_2_t &, second_type>))
-            compressed_pair(const compressed_pair<u_compressed_type_1_t, u_compressed_type_2_t> &other) noexcept
-            : super_type(other)
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_copy_constructible_v<first_type, u_type_t> && hud::is_copy_constructible_v<second_type, v_type_t>)
+        constexpr explicit(!(hud::is_convertible_v<const u_type_t &, first_type> && hud::is_convertible_v<const v_type_t &, second_type>))
+            compressed_pair(const compressed_pair<u_type_t, v_type_t> &other) noexcept
+            : super_type(other.first(), other.second())
         {
-            static_assert(hud::is_nothrow_copy_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-            static_assert(hud::is_nothrow_copy_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+        }
+
+        /**
+         * Initialization copy constructor.
+         * This involves individually constructing its two components, with an initialization that depends on the constructor.
+         * Member 'first' is constructed with 'f', and member 'second' with 's'.
+         * compressed_pair do not accept throwable move-constructible components.
+         * @tparam u_type_t Type of the 'f' component.
+         * @tparam v_type_t Type of the 's' component.
+         * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
+         * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
+         */
+        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>))
+            compressed_pair(const first_type &f, const second_type &s) noexcept
+        requires(hud::is_copy_constructible_v<first_type> && hud::is_copy_constructible_v<second_type>)
+            : super_type(f, s)
+        {
+            static_assert(hud::is_nothrow_copy_constructible_v<first_type>, "first_type(const first_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<second_type>, "second_type(const second_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
         }
 
         /**
@@ -926,18 +952,18 @@ namespace hud
          * The object is initialized with the contents of the other compressed_pair object.
          * The corresponding members of 'other' are forwarded to the constructor of each of its members.
          * Pairs do not accept throwable move-constructible components.
-         * @tparam u_type1_t Type of the first component.
-         * @tparam u_type2_t Type of the second component.
+         * @tparam u_type_t Type of the first component.
+         * @tparam v_type_t Type of the second component.
          * @param other Another compressed_pair object.
          */
-        template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-        requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-        constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t, first_type> && hud::is_convertible_v<u_compressed_type_2_t, second_type>))
-            compressed_pair(compressed_pair<u_compressed_type_1_t, u_compressed_type_2_t> &&other) noexcept
-            : super_type(hud::forward<compressed_pair<u_compressed_type_1_t, u_compressed_type_2_t>>(other))
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+        constexpr explicit(!(hud::is_convertible_v<u_type_t, first_type> && hud::is_convertible_v<v_type_t, second_type>))
+            compressed_pair(compressed_pair<u_type_t, v_type_t> &&other) noexcept
+            : super_type(hud::move(other.first()), hud::move(other.second()))
         {
-            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_compressed_type_1_t>, "first_type(u_type1_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
-            static_assert(hud::is_nothrow_move_constructible_v<second_type, u_compressed_type_2_t>, "second_type(u_compressed_type_2_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
         }
 
         /**
@@ -972,14 +998,14 @@ namespace hud
          * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
          * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
          */
-        template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-        requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-        constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t &&, first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-            compressed_pair(u_compressed_type_1_t &&f, u_compressed_type_2_t &&s) noexcept
-            : super_type(hud::forward<u_compressed_type_1_t>(f), hud::forward<u_compressed_type_2_t>(s))
+        template<typename u_type_t = first_type, typename v_type_t = second_type>
+        requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+        constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+            compressed_pair(u_type_t &&f, v_type_t &&s) noexcept
+            : super_type(hud::forward<u_type_t>(f), hud::forward<v_type_t>(s))
         {
-            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_compressed_type_1_t>, "first_type(u_compressed_type_1_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
-            static_assert(hud::is_nothrow_move_constructible_v<second_type, u_compressed_type_2_t>, "second_type(u_compressed_type_2_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
         }
 
         /**
@@ -987,16 +1013,16 @@ namespace hud
          * This involves individually constructing its two components, with an initialization that depends on the constructor.
          * Member 'first' is constructed with 'f', and member 'second' is default-constructed.
          * compressed_pair does not accept throwable move-constructible components.
-         * @tparam u_compressed_type_1_t Type of the 'f' component.
+         * @tparam u_type_t Type of the 'f' component.
          * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
          */
-        template<typename u_compressed_type_1_t>
-        requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_compressed_type_1_t>>)
+        template<typename u_type_t>
+        requires(hud::is_same_v<first_type, hud::remove_cv_ref_t<u_type_t>>)
         constexpr explicit(!(hud::is_convertible_v<first_type, first_type>))
-            compressed_pair(u_compressed_type_1_t &&f) noexcept
-            : super_type(hud::forward<u_compressed_type_1_t>(f))
+            compressed_pair(u_type_t &&f) noexcept
+            : super_type(hud::forward<u_type_t>(f))
         {
-            static_assert(hud::is_nothrow_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             static_assert(hud::is_nothrow_default_constructible_v<second_type>, "second_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
         }
 
@@ -1005,40 +1031,78 @@ namespace hud
          * This involves individually constructing its two components, with an initialization that depends on the constructor.
          * Member 'first' is default-constructed, and member 'second' is constructed with 's'.
          * compressed_pair does not accept throwable move-constructible components.
-         * @tparam u_compressed_type_2_t Type of the 's' component.
+         * @tparam v_type_t Type of the 's' component.
          * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
          */
-        template<typename u_compressed_type_2_t>
-        requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<u_compressed_type_2_t>>)
-        constexpr explicit compressed_pair(u_compressed_type_2_t &&s) noexcept
-            : super_type(hud::forward<u_compressed_type_2_t>(s))
+        template<typename v_type_t>
+        requires(hud::is_same_v<second_type, hud::remove_cv_ref_t<v_type_t>>)
+        constexpr explicit compressed_pair(v_type_t &&s) noexcept
+            : super_type(hud::forward<v_type_t>(s))
         {
             static_assert(hud::is_nothrow_default_constructible_v<first_type>, "first_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
-            static_assert(hud::is_nothrow_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
         }
 
         /** Retrieves the reference to the first element. */
-        [[nodiscard]] constexpr first_type &first() noexcept
+        [[nodiscard]] constexpr first_type &first() & noexcept
         {
             return super_type::first();
         }
 
         /** Retrieves the const reference to the first element. */
-        [[nodiscard]] constexpr const first_type &first() const noexcept
+        [[nodiscard]] constexpr const first_type &first() const & noexcept
         {
             return super_type::first();
         }
 
+        /** Retrieves the const l-value reference to the first element. */
+        [[nodiscard]] constexpr const first_type &&first() const && noexcept
+        {
+            return hud::move(super_type::first());
+        }
+
+        /** Retrieves the const l-value reference to the first element. */
+        [[nodiscard]] constexpr first_type &&first() && noexcept
+        {
+            return hud::move(super_type::first());
+        }
+
         /** Retrieves the reference to the second element. */
-        [[nodiscard]] constexpr second_type &second() noexcept
+        [[nodiscard]] constexpr second_type &second() & noexcept
         {
             return super_type::second();
         }
 
         /** Retrieves the const reference to the second element. */
-        [[nodiscard]] constexpr const second_type &second() const noexcept
+        [[nodiscard]] constexpr const second_type &second() const & noexcept
         {
             return super_type::second();
+        }
+
+        /** Retrieves the const l-value reference to the first element. */
+        [[nodiscard]] constexpr const second_type &&second() const && noexcept
+        {
+            return hud::move(super_type::second());
+        }
+
+        /** Retrieves the const l-value reference to the first element. */
+        [[nodiscard]] constexpr first_type &&second() && noexcept
+        {
+            return hud::move(super_type::second());
+        }
+
+        /**
+         * Exchanges the contents of the compressed_pair object with the contents of other.
+         * compressed_pair do not accept throwable swap components.
+         * @param other The other compressed_pair to swap
+         */
+        constexpr void swap(compressed_pair &other) noexcept
+        requires(hud::is_swappable_v<first_type> && hud::is_swappable_v<second_type>)
+        {
+            static_assert(hud::is_nothrow_swappable_v<first_type>, "swap(first_type,first_type) is throwable. compressed_pair is not designed to allow throwable swappable components");
+            static_assert(hud::is_nothrow_swappable_v<second_type>, "swap(second_type,second_type) is throwable. compressed_pair is not designed to allow throwable swappable components");
+            hud::swap(first(), other.first());
+            hud::swap(second(), other.second());
         }
     };
 
@@ -1082,18 +1146,37 @@ namespace hud
          * The object is initialized with the contents of the other compressed_pair object.
          * The corresponding members of 'other' are passed to the constructor of each of its members.
          * Compressed pairs do not accept throwable copy-constructible components.
-         * @tparam u_compressed_type_1_t Type of the first component.
-         * @tparam u_compressed_type_2_t Type of the second component.
+         * @tparam u_type_t Type of the first component.
+         * @tparam v_type_t Type of the second component.
          * @param other Another compressed_pair object.
          */
-        template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-        requires(hud::is_copy_constructible_v<first_type, u_compressed_type_1_t> && hud::is_copy_constructible_v<second_type, u_compressed_type_2_t>)
-        constexpr explicit(!(hud::is_convertible_v<const u_compressed_type_1_t &, first_type> && hud::is_convertible_v<const u_compressed_type_2_t &, second_type>))
-            compressed_pair(const compressed_pair<u_compressed_type_1_t, u_compressed_type_2_t> &other) noexcept
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_copy_constructible_v<first_type, u_type_t> && hud::is_copy_constructible_v<second_type, v_type_t>)
+        constexpr explicit(!(hud::is_convertible_v<const u_type_t &, first_type> && hud::is_convertible_v<const v_type_t &, second_type>))
+            compressed_pair(const compressed_pair<u_type_t, v_type_t> &other) noexcept
             : super_type(other.first(), other.second())
         {
-            static_assert(hud::is_nothrow_copy_constructible_v<first_type, u_compressed_type_1_t>, "first_type(const u_compressed_type_1_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-            static_assert(hud::is_nothrow_copy_constructible_v<second_type, u_compressed_type_2_t>, "second_type(const u_compressed_type_2_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+        }
+
+        /**
+         * Initialization copy constructor.
+         * This involves individually constructing its two components, with an initialization that depends on the constructor.
+         * Member 'first' is constructed with 'f', and member 'second' with 's'.
+         * compressed_pair do not accept throwable move-constructible components.
+         * @tparam u_type_t Type of the 'f' component.
+         * @tparam v_type_t Type of the 's' component.
+         * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
+         * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
+         */
+        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>))
+            compressed_pair(const first_type &f, const second_type &s) noexcept
+        requires(hud::is_copy_constructible_v<first_type> && hud::is_copy_constructible_v<second_type>)
+            : super_type(f, s)
+        {
+            static_assert(hud::is_nothrow_copy_constructible_v<first_type>, "first_type(const first_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<second_type>, "second_type(const second_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
         }
 
         /**
@@ -1115,18 +1198,18 @@ namespace hud
          * The object is initialized with the contents of the other compressed_pair object.
          * The corresponding members of 'other' are forwarded to the constructor of each of its members.
          * Pairs do not accept throwable move-constructible components.
-         * @tparam u_type1_t Type of the first component.
-         * @tparam u_type2_t Type of the second component.
+         * @tparam u_type_t Type of the first component.
+         * @tparam v_type_t Type of the second component.
          * @param other Another compressed_pair object.
          */
-        template<typename u_compressed_type_1_t, typename u_compressed_type_2_t>
-        requires(hud::is_move_constructible_v<first_type, u_compressed_type_1_t> && hud::is_move_constructible_v<second_type, u_compressed_type_2_t>)
-        constexpr explicit(!(hud::is_convertible_v<u_compressed_type_1_t, first_type> && hud::is_convertible_v<u_compressed_type_2_t, second_type>))
-            compressed_pair(compressed_pair<u_compressed_type_1_t, u_compressed_type_2_t> &&other) noexcept
-            : super_type(hud::forward<u_compressed_type_1_t>(other.first()), hud::forward<u_compressed_type_2_t>(other.second()))
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+        constexpr explicit(!(hud::is_convertible_v<u_type_t, first_type> && hud::is_convertible_v<v_type_t, second_type>))
+            compressed_pair(compressed_pair<u_type_t, v_type_t> &&other) noexcept
+            : super_type(hud::move(other.first()), hud::move(other.second()))
         {
-            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_compressed_type_1_t>, "first_type(u_type1_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
-            static_assert(hud::is_nothrow_move_constructible_v<second_type, u_compressed_type_2_t>, "second_type(u_compressed_type_2_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
         }
 
         /**
@@ -1139,13 +1222,14 @@ namespace hud
          * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
          * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
          */
-        template<typename u_compressed_type_t, typename u_compressed_type_2_t>
-        constexpr explicit(!(hud::is_convertible_v<u_compressed_type_t &&, first_type> && hud::is_convertible_v<u_compressed_type_2_t &&, second_type>))
-            compressed_pair(u_compressed_type_t &&type_1, u_compressed_type_2_t &&type_2) noexcept
-            : super_type(hud::forward<u_compressed_type_t>(type_1), hud::forward<u_compressed_type_2_t>(type_2))
+        template<typename u_type_t = first_type, typename v_type_t = second_type>
+        requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
+        constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
+            compressed_pair(u_type_t &&f, v_type_t &&s) noexcept
+            : super_type(hud::forward<u_type_t>(f), hud::forward<v_type_t>(s))
         {
-            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_compressed_type_t>, "first_type(u_compressed_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
-            static_assert(hud::is_nothrow_move_constructible_v<second_type, u_compressed_type_2_t>, "second_type(u_compressed_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
         }
 
         /**
@@ -1171,29 +1255,205 @@ namespace hud
         = default;
 
         /** Retrieves the reference to the first element. */
-        [[nodiscard]] constexpr compressed_type_t &first() & noexcept
+        [[nodiscard]] constexpr first_type &first() & noexcept
         {
             return super_type::first();
         }
 
         /** Retrieves the const reference to the first element. */
-        [[nodiscard]] constexpr const compressed_type_t &first() const & noexcept
+        [[nodiscard]] constexpr const first_type &first() const & noexcept
         {
             return super_type::first();
         }
 
+        /** Retrieves the const l-value reference to the first element. */
+        [[nodiscard]] constexpr const first_type &&first() const && noexcept
+        {
+            return hud::move(super_type::first());
+        }
+
+        /** Retrieves the const l-value reference to the first element. */
+        [[nodiscard]] constexpr first_type &&first() && noexcept
+        {
+            return hud::move(super_type::first());
+        }
+
         /** Retrieves the reference to the second element. */
-        [[nodiscard]] constexpr compressed_type_t &second() & noexcept
+        [[nodiscard]] constexpr second_type &second() & noexcept
         {
             return super_type::second();
         }
 
         /** Retrieves the const reference to the second element. */
-        [[nodiscard]] constexpr const compressed_type_t &second() const & noexcept
+        [[nodiscard]] constexpr const second_type &second() const & noexcept
         {
             return super_type::second();
         }
+
+        /** Retrieves the const l-value reference to the first element. */
+        [[nodiscard]] constexpr const second_type &&second() const && noexcept
+        {
+            return hud::move(super_type::second());
+        }
+
+        /** Retrieves the const l-value reference to the first element. */
+        [[nodiscard]] constexpr first_type &&second() && noexcept
+        {
+            return hud::move(super_type::second());
+        }
+
+        /**
+         * Exchanges the contents of the compressed_pair object with the contents of other.
+         * compressed_pair do not accept throwable swap components.
+         * @param other The other compressed_pair to swap
+         */
+        constexpr void swap(compressed_pair &other) noexcept
+        requires(hud::is_swappable_v<first_type> && hud::is_swappable_v<second_type>)
+        {
+            static_assert(hud::is_nothrow_swappable_v<first_type>, "swap(first_type,first_type) is throwable. compressed_pair is not designed to allow throwable swappable components");
+            static_assert(hud::is_nothrow_swappable_v<second_type>, "swap(second_type,second_type) is throwable. compressed_pair is not designed to allow throwable swappable components");
+            hud::swap(first(), other.first);
+            hud::swap(second(), other.second);
+        }
     };
+
+    /**
+     * swap specialization for compressed_pair
+     * @tparam first_type Type of the first component in pacompressed_pairir
+     * @tparam second_type Type of the second component in compressed_pair
+     * @param a The compressed_pair to swap with b
+     * @param b The compressed_pair to swap with a
+     */
+    template<typename first_type, typename second_type>
+    requires(hud::is_swappable_v<first_type> && hud::is_swappable_v<second_type>)
+    static constexpr void swap(compressed_pair<first_type, second_type> &a, compressed_pair<first_type, second_type> &b) noexcept
+    {
+        a.swap(b);
+    }
+
+    /**
+     * Creates a compressed_pair object, deducing the target type from the types of arguments.
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @return compressed_pair<V1, V2> where V1 is hud::decay_t<first_type> and V2 is hud::decay_t<second_type>
+     */
+    template<typename first_type, typename second_type>
+    [[nodiscard]] constexpr hud::compressed_pair<hud::decay_t<first_type>, hud::decay_t<second_type>> make_compressed_pair(first_type &&value_1, second_type &&value_2) noexcept
+    {
+        return hud::compressed_pair<hud::decay_t<first_type>, hud::decay_t<second_type>>(hud::forward<first_type>(value_1), hud::forward<second_type>(value_2));
+    }
+
+    /**
+     * tuple_size specialization for compressed_pair
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     */
+    template<typename first_type, typename second_type>
+    struct tuple_size<hud::compressed_pair<first_type, second_type>>
+        : hud::integral_constant<usize, 2>
+    {
+    };
+
+    /**
+     * tuple_element specilization for compressed_pair
+     * @tparam idx_to_reach Index of the type to reach
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     */
+    template<usize idx_to_reach, typename first_type, typename second_type>
+    struct tuple_element<idx_to_reach, compressed_pair<first_type, second_type>>
+    {
+        static_assert(idx_to_reach < 2, "compressed_pair index out of bounds");
+        using type = hud::conditional_t<idx_to_reach == 0, first_type, second_type>;
+    };
+
+    /**
+     * Retrieves a lvalue reference to the member first if index is 0, second if index is 1.
+     * @tparam element_index The index of the element
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param compressed_pair The compressed_pair to access
+     * @return LValue reference to the member first if index is 0, second if index is 1.
+     */
+    template<usize element_index, typename first_type, typename second_type>
+    [[nodiscard]] constexpr hud::tuple_element_t<element_index, compressed_pair<first_type, second_type>> &get(compressed_pair<first_type, second_type> &compressed_pair) noexcept
+    {
+        static_assert(element_index < 2, "pacompressed_pairir index out of bounds");
+        if constexpr (element_index == 0)
+        {
+            return compressed_pair.first();
+        }
+        else if constexpr (element_index == 1)
+        {
+            return compressed_pair.second();
+        }
+    }
+
+    /**
+     * Retrieves a lvalue reference to the member first if index is 0, second if index is 1.
+     * @tparam element_index The index of the element
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param compressed_pair The compressed_pair to access
+     * @return LValue reference to the member first if index is 0, second if index is 1.
+     */
+    template<usize element_index, typename first_type, typename second_type>
+    [[nodiscard]] constexpr const hud::tuple_element_t<element_index, const compressed_pair<first_type, second_type>> &get(const compressed_pair<first_type, second_type> &compressed_pair) noexcept
+    {
+        static_assert(element_index < 2, "pair index out of bounds");
+        if constexpr (element_index == 0)
+        {
+            return compressed_pair.first();
+        }
+        else if constexpr (element_index == 1)
+        {
+            return compressed_pair.second();
+        }
+    }
+
+    /**
+     * Retrieves an rvalue reference to the member first if index is 0, second if index is 1.
+     * @tparam element_index The index of the element
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param compressed_pair The compressed_pair to access
+     * @return RValue reference to the member first if index is 0, second if index is 1.
+     */
+    template<usize element_index, typename first_type, typename second_type>
+    [[nodiscard]] constexpr hud::tuple_element_t<element_index, compressed_pair<first_type, second_type>> &&get(compressed_pair<first_type, second_type> &&compressed_pair) noexcept
+    {
+        static_assert(element_index < 2, "compressed_pair index out of bounds");
+        if constexpr (element_index == 0)
+        {
+            return hud::forward<first_type &&>(compressed_pair.first());
+        }
+        else if constexpr (element_index == 1)
+        {
+            return hud::forward<second_type &&>(compressed_pair.second());
+        }
+    }
+
+    /**
+     * Retrieves an rvalue reference to the member first if index is 0, second if index is 1.
+     * @tparam element_index The index of the element
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param compressed_pair The compressed_pair to access
+     * @return RValue reference to the member first if index is 0, second if index is 1.
+     */
+    template<usize element_index, typename first_type, typename second_type>
+    [[nodiscard]] constexpr const hud::tuple_element_t<element_index, compressed_pair<first_type, second_type>> &&get(const compressed_pair<first_type, second_type> &&compressed_pair) noexcept
+    {
+        static_assert(element_index < 2, "compressed_pair index out of bounds");
+        if constexpr (element_index == 0)
+        {
+            return hud::forward<const first_type &&>(compressed_pair.first());
+        }
+        else if constexpr (element_index == 1)
+        {
+            return hud::forward<const second_type &&>(compressed_pair.second());
+        }
+    }
 
 } // namespace hud
 

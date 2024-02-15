@@ -1,20 +1,20 @@
-#include <core/containers/pair.h>
+#include <core/containers/compressed_pair.h>
 
-GTEST_TEST(pair, swap_empty_trivial_type)
+GTEST_TEST(compressed_pair, swap_empty_trivial_type)
 {
 
-    // Pair::swap
+    // compressed_pair::swap
     {
 
-        const auto test = [](hud::pair<i32, wchar> a, hud::pair<i32, wchar> b)
+        const auto test = [](hud::compressed_pair<i32, wchar> a, hud::compressed_pair<i32, wchar> b)
         {
             static_assert(hud::is_swappable_v<usize, usize>);
             a.swap(b);
             return std::tuple {
-                a.first,
-                a.second,
-                b.first,
-                b.second
+                a.first(),
+                a.second(),
+                b.first(),
+                b.second()
             };
         };
 
@@ -41,15 +41,15 @@ GTEST_TEST(pair, swap_empty_trivial_type)
 
     // hud::swap
     {
-        const auto test = [](hud::pair<i32, wchar> a, hud::pair<i32, wchar> b)
+        const auto test = [](hud::compressed_pair<i32, wchar> a, hud::compressed_pair<i32, wchar> b)
         {
             static_assert(hud::is_swappable_v<usize, usize>);
             swap(a, b);
             return std::tuple {
-                a.first,
-                a.second,
-                b.first,
-                b.second
+                a.first(),
+                a.second(),
+                b.first(),
+                b.second()
             };
         };
 

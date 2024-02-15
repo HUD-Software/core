@@ -49,6 +49,8 @@ add_executable(test_core
 	atomics/atomics_store.cpp
 	atomics/atomics_thread_fence.cpp
 	compressed_pair/compressed_pair_constructors.cpp
+	compressed_pair/compressed_pair_misc.cpp
+	compressed_pair/compressed_pair_swap.cpp
 	hash/city_hash.cpp
 	hash/crc32.cpp
 	hash/hash.cpp
