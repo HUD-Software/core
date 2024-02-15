@@ -115,10 +115,10 @@ namespace hud
                 static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
-            /** Copy assignment. */
-            constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
-            /** Move assignment. */
-            constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
+            // /** Copy assignment. */
+            // constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
+            // /** Move assignment. */
+            // constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
 
             /** Retrieves the reference to the first element. */
             [[nodiscard]] constexpr first_type &first() & noexcept
@@ -264,10 +264,10 @@ namespace hud
                 static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
             }
 
-            /** Copy assignment. */
-            constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
-            /** Move assignment. */
-            constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
+            // /** Copy assignment. */
+            // constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
+            // /** Move assignment. */
+            // constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
 
             /** Retrieves the reference to the first element. */
             [[nodiscard]] constexpr first_type &first() & noexcept
@@ -353,11 +353,11 @@ namespace hud
             constexpr explicit(!(hud::is_convertible_v<first_type, first_type> && hud::is_convertible_v<second_type, second_type>))
                 compress_pair_impl(compress_pair_impl &&) = default;
 
-            /** Copy assignment. */
-            constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
+            // /** Copy assignment. */
+            // constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
 
-            /** Move assignment. */
-            constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
+            // /** Move assignment. */
+            // constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
 
             /**
              * Initialization move constructor.
@@ -503,11 +503,11 @@ namespace hud
             constexpr explicit(!(hud::is_convertible_v<first_type, first_type> && hud::is_convertible_v<second_type, second_type>))
                 compress_pair_impl(compress_pair_impl &&) = default;
 
-            /** Copy assignment. */
-            constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
+            // /** Copy assignment. */
+            // constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
 
-            /** Move assignment. */
-            constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
+            // /** Move assignment. */
+            // constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
 
             /**
              * Initialization move constructor.
@@ -648,11 +648,11 @@ namespace hud
             constexpr explicit(!(hud::is_convertible_v<first_type, first_type> && hud::is_convertible_v<second_type, second_type>))
                 compress_pair_impl(compress_pair_impl &&) = default;
 
-            /** Copy assignment. */
-            constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
+            // /** Copy assignment. */
+            // constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
 
-            /** Move assignment. */
-            constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
+            // /** Move assignment. */
+            // constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
 
             /**
              * Initialization move constructor.
@@ -862,8 +862,8 @@ namespace hud
 
     /**
      * `compressed_pair` is closely related to `hud::pair`.
-     * However, if either of the template arguments represents an empty class, the Empty Base Class Optimization (EBCO) is applied to reduce the size of the pair.
-     * The two members of the pair can be accessed using the member functions `first()` and `second()`.
+     * However, if either of the template arguments represents an empty class, the Empty Base Class Optimization (EBCO) is applied to reduce the size of the compressed_pair.
+     * The two members of the compressed_pair can be accessed using the member functions `first()` and `second()`.
      */
     template<typename compressed_type_1_t, typename compressed_type_2_t>
     class compressed_pair
@@ -929,8 +929,8 @@ namespace hud
         requires(hud::is_copy_constructible_v<first_type> && hud::is_copy_constructible_v<second_type>)
             : super_type(f, s)
         {
-            static_assert(hud::is_nothrow_copy_constructible_v<first_type>, "first_type(const first_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
-            static_assert(hud::is_nothrow_copy_constructible_v<second_type>, "second_type(const second_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<first_type>, "first_type(const first_type&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<second_type>, "second_type(const second_type&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
         }
 
         /**
@@ -962,31 +962,83 @@ namespace hud
             compressed_pair(compressed_pair<u_type_t, v_type_t> &&other) noexcept
             : super_type(hud::move(other.first()), hud::move(other.second()))
         {
-            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
-            static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
+        }
+
+        /**
+         * Assigns other as the new content for the pcompressed_pairair object.
+         * Perform copy assignments, with the elements of its argument preserving their values after the call.
+         * compressed_pair do not accept throwable copy assignable components.
+         * @param other Another compressed_pair object.
+         * @return *this
+         */
+        constexpr compressed_pair &operator=(const compressed_pair &other) noexcept
+        requires(hud::is_copy_assignable_v<first_type> && hud::is_copy_assignable_v<second_type>)
+        {
+            static_assert(hud::is_nothrow_copy_assignable_v<first_type>, "first_type& first_type::operator=(const first_type&) is throwable. compressed_pair is not designed to allow throwable copy assignable components");
+            static_assert(hud::is_nothrow_copy_assignable_v<second_type>, "second_type& second_type::operator=(const second_type&) is throwable. compressed_pair is not designed to allow throwable copy assignable components");
+            first() = other.first();
+            second() = other.second();
+            return *this;
         }
 
         /**
          * Assigns other as the new content for the compressed_pair object.
          * Perform copy assignments, with the elements of its argument preserving their values after the call.
          * compressed_pair do not accept throwable copy assignable components.
+         * @tparam u_type_t Type of the first component.
+         * @tparam v_type_t Type of the second component.
          * @param other Another compressed_pair object.
          * @return *this
          */
-        constexpr compressed_pair &operator=(const compressed_pair &)
-        requires(hud::is_nothrow_copy_assignable_v<first_type> && hud::is_nothrow_copy_assignable_v<second_type>)
-        = default;
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_assignable_v<first_type &, const u_type_t &> && hud::is_copy_assignable_v<second_type, v_type_t>)
+        constexpr compressed_pair &operator=(const compressed_pair<u_type_t, v_type_t> &other) noexcept
+        {
+            static_assert(hud::is_nothrow_copy_assignable_v<first_type, u_type_t>, "first_type& first_type::operator=(const u_type_t&) is throwable. compressed_pair is not designed to allow throwable copy assignable components");
+            static_assert(hud::is_nothrow_copy_assignable_v<second_type, v_type_t>, "second_type& second_type::operator=(const v_type_t&) is throwable. compressed_pair is not designed to allow throwable copy assignable components");
+            first() = other.first();
+            second() = other.second();
+            return *this;
+        }
 
         /**
          * Assigns other as the new content for the compressed_pair object.
          * Perform move assignments, which, for elements of types supporting move semantics implies that these elements of other are left in an unspecified but valid state.
          * compressed_pair do not accept throwable move assignable components.
+         * @param other Another pair object.
+         * @return *this
+         */
+        constexpr compressed_pair &operator=(compressed_pair &&other) noexcept
+        requires(hud::is_move_assignable_v<first_type> && hud::is_move_assignable_v<second_type>)
+        {
+            static_assert(hud::is_nothrow_move_assignable_v<first_type>, "first_type& first_type::operator=(first_type&&) is throwable. compressed_pair is not designed to allow throwable move assignable components");
+            static_assert(hud::is_nothrow_move_assignable_v<second_type>, "second_type& second_type::operator=(second_type&&) is throwable. compressed_pair is not designed to allow throwable move assignable components");
+            first() = hud::forward<first_type>(other.first());
+            second() = hud::forward<second_type>(other.second());
+            return *this;
+        }
+
+        /**
+         * Assigns other as the new content for the compressed_pair object.
+         * Perform move assignments, which, for elements of types supporting move semantics implies that these elements of other are left in an unspecified but valid state.
+         * compressed_pair do not accept throwable move assignable components.
+         * @tparam u_type_t Type of the first component.
+         * @tparam v_type_t Type of the second component.
          * @param other Another compressed_pair object.
          * @return *this
          */
-        constexpr compressed_pair &operator=(compressed_pair &&)
-        requires(hud::is_nothrow_move_assignable_v<first_type> && hud::is_nothrow_move_assignable_v<second_type>)
-        = default;
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_assignable_v<first_type &, u_type_t &&> && hud::is_assignable_v<second_type &, v_type_t &&>)
+        constexpr compressed_pair &operator=(compressed_pair<u_type_t, v_type_t> &&other) noexcept
+        {
+            static_assert(hud::is_nothrow_assignable_v<first_type &, u_type_t &&>, "first_type& first_type::operator=(u_type_t&&) is throwable. compressed_pair is not designed to allow throwable move assignable components");
+            static_assert(hud::is_nothrow_assignable_v<second_type &, v_type_t &&>, "second_type& second_type::operator=(v_type_t&&) is throwable. compressed_pair is not designed to allow throwable move assignable components");
+            first() = hud::forward<u_type_t>(other.first());
+            second() = hud::forward<v_type_t>(other.second());
+            return *this;
+        }
 
         /**
          * Initialization move constructor.
@@ -1175,8 +1227,8 @@ namespace hud
         requires(hud::is_copy_constructible_v<first_type> && hud::is_copy_constructible_v<second_type>)
             : super_type(f, s)
         {
-            static_assert(hud::is_nothrow_copy_constructible_v<first_type>, "first_type(const first_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
-            static_assert(hud::is_nothrow_copy_constructible_v<second_type>, "second_type(const second_type&) copy constructor is throwable. pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<first_type>, "first_type(const first_type&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<second_type>, "second_type(const second_type&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
         }
 
         /**
@@ -1208,8 +1260,8 @@ namespace hud
             compressed_pair(compressed_pair<u_type_t, v_type_t> &&other) noexcept
             : super_type(hud::move(other.first()), hud::move(other.second()))
         {
-            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
-            static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
+            static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. compressed_pair is not designed to allow throwable move constructible components");
         }
 
         /**
@@ -1233,26 +1285,100 @@ namespace hud
         }
 
         /**
-         * Assigns other as the new content for the compressed_pair object.
+         * Assigns other as the new content for the pcompressed_pairair object.
          * Perform copy assignments, with the elements of its argument preserving their values after the call.
          * compressed_pair do not accept throwable copy assignable components.
          * @param other Another compressed_pair object.
          * @return *this
          */
-        constexpr compressed_pair &operator=(const compressed_pair &)
-        requires(hud::is_nothrow_copy_assignable_v<first_type> && hud::is_nothrow_copy_assignable_v<second_type>)
-        = default;
+        constexpr compressed_pair &operator=(const compressed_pair &other) noexcept
+        requires(hud::is_copy_assignable_v<first_type> && hud::is_copy_assignable_v<second_type>)
+        {
+            static_assert(hud::is_nothrow_copy_assignable_v<first_type>, "first_type& first_type::operator=(const first_type&) is throwable. compressed_pair is not designed to allow throwable copy assignable components");
+            static_assert(hud::is_nothrow_copy_assignable_v<second_type>, "second_type& second_type::operator=(const second_type&) is throwable. compressed_pair is not designed to allow throwable copy assignable components");
+            first() = other.first();
+            second() = other.second();
+            return *this;
+        }
+
+        /**
+         * Assigns other as the new content for the compressed_pair object.
+         * Perform copy assignments, with the elements of its argument preserving their values after the call.
+         * compressed_pair do not accept throwable copy assignable components.
+         * @tparam u_type_t Type of the first component.
+         * @tparam v_type_t Type of the second component.
+         * @param other Another compressed_pair object.
+         * @return *this
+         */
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_assignable_v<first_type &, const u_type_t &> && hud::is_copy_assignable_v<second_type, v_type_t>)
+        constexpr compressed_pair &operator=(const compressed_pair<u_type_t, v_type_t> &other) noexcept
+        {
+            static_assert(hud::is_nothrow_copy_assignable_v<first_type, u_type_t>, "first_type& first_type::operator=(const u_type_t&) is throwable. compressed_pair is not designed to allow throwable copy assignable components");
+            static_assert(hud::is_nothrow_copy_assignable_v<second_type, v_type_t>, "second_type& second_type::operator=(const v_type_t&) is throwable. compressed_pair is not designed to allow throwable copy assignable components");
+            first() = other.first();
+            second() = other.second();
+            return *this;
+        }
 
         /**
          * Assigns other as the new content for the compressed_pair object.
          * Perform move assignments, which, for elements of types supporting move semantics implies that these elements of other are left in an unspecified but valid state.
          * compressed_pair do not accept throwable move assignable components.
+         * @param other Another pair object.
+         * @return *this
+         */
+        constexpr compressed_pair &operator=(compressed_pair &&other) noexcept
+        requires(hud::is_move_assignable_v<first_type> && hud::is_move_assignable_v<second_type>)
+        {
+            static_assert(hud::is_nothrow_move_assignable_v<first_type>, "first_type& first_type::operator=(first_type&&) is throwable. compressed_pair is not designed to allow throwable move assignable components");
+            static_assert(hud::is_nothrow_move_assignable_v<second_type>, "second_type& second_type::operator=(second_type&&) is throwable. compressed_pair is not designed to allow throwable move assignable components");
+            first() = hud::forward<first_type>(other.first());
+            second() = hud::forward<second_type>(other.second());
+            return *this;
+        }
+
+        /**
+         * Assigns other as the new content for the compressed_pair object.
+         * Perform move assignments, which, for elements of types supporting move semantics implies that these elements of other are left in an unspecified but valid state.
+         * compressed_pair do not accept throwable move assignable components.
+         * @tparam u_type_t Type of the first component.
+         * @tparam v_type_t Type of the second component.
          * @param other Another compressed_pair object.
          * @return *this
          */
-        constexpr compressed_pair &operator=(compressed_pair &&)
-        requires(hud::is_nothrow_move_assignable_v<first_type> && hud::is_nothrow_move_assignable_v<second_type>)
-        = default;
+        template<typename u_type_t, typename v_type_t>
+        requires(hud::is_assignable_v<first_type &, u_type_t &&> && hud::is_assignable_v<second_type &, v_type_t &&>)
+        constexpr compressed_pair &operator=(compressed_pair<u_type_t, v_type_t> &&other) noexcept
+        {
+            static_assert(hud::is_nothrow_assignable_v<first_type &, u_type_t &&>, "first_type& first_type::operator=(u_type_t&&) is throwable. compressed_pair is not designed to allow throwable move assignable components");
+            static_assert(hud::is_nothrow_assignable_v<second_type &, v_type_t &&>, "second_type& second_type::operator=(v_type_t&&) is throwable. compressed_pair is not designed to allow throwable move assignable components");
+            first() = hud::forward<u_type_t>(other.first());
+            second() = hud::forward<v_type_t>(other.second());
+            return *this;
+        }
+
+        // /**
+        //  * Assigns other as the new content for the compressed_pair object.
+        //  * Perform copy assignments, with the elements of its argument preserving their values after the call.
+        //  * compressed_pair do not accept throwable copy assignable components.
+        //  * @param other Another compressed_pair object.
+        //  * @return *this
+        //  */
+        // constexpr compressed_pair &operator=(const compressed_pair &)
+        // requires(hud::is_nothrow_copy_assignable_v<first_type> && hud::is_nothrow_copy_assignable_v<second_type>)
+        // = default;
+
+        // /**
+        //  * Assigns other as the new content for the compressed_pair object.
+        //  * Perform move assignments, which, for elements of types supporting move semantics implies that these elements of other are left in an unspecified but valid state.
+        //  * compressed_pair do not accept throwable move assignable components.
+        //  * @param other Another compressed_pair object.
+        //  * @return *this
+        //  */
+        // constexpr compressed_pair &operator=(compressed_pair &&)
+        // requires(hud::is_nothrow_move_assignable_v<first_type> && hud::is_nothrow_move_assignable_v<second_type>)
+        // = default;
 
         /** Retrieves the reference to the first element. */
         [[nodiscard]] constexpr first_type &first() & noexcept
@@ -1378,7 +1504,7 @@ namespace hud
     template<usize element_index, typename first_type, typename second_type>
     [[nodiscard]] constexpr hud::tuple_element_t<element_index, compressed_pair<first_type, second_type>> &get(compressed_pair<first_type, second_type> &compressed_pair) noexcept
     {
-        static_assert(element_index < 2, "pacompressed_pairir index out of bounds");
+        static_assert(element_index < 2, "compressed_pair index out of bounds");
         if constexpr (element_index == 0)
         {
             return compressed_pair.first();
@@ -1400,7 +1526,7 @@ namespace hud
     template<usize element_index, typename first_type, typename second_type>
     [[nodiscard]] constexpr const hud::tuple_element_t<element_index, const compressed_pair<first_type, second_type>> &get(const compressed_pair<first_type, second_type> &compressed_pair) noexcept
     {
-        static_assert(element_index < 2, "pair index out of bounds");
+        static_assert(element_index < 2, "compressed_pair index out of bounds");
         if constexpr (element_index == 0)
         {
             return compressed_pair.first();
