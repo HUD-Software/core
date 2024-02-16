@@ -52,6 +52,7 @@ add_executable(test_core
 	compressed_pair/compressed_pair_misc.cpp
 	compressed_pair/compressed_pair_swap.cpp
 	compressed_pair/compressed_pair_assignments.cpp
+	compressed_pair/compressed_pair_comparison.cpp
 	hash/city_hash.cpp
 	hash/crc32.cpp
 	hash/hash.cpp

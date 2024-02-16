@@ -756,106 +756,6 @@ namespace hud
         class compress_pair_impl<compressed_type_t, compressed_type_t, true, true>
             : protected compress_pair_impl<compressed_type_t, compressed_type_t, false, false>
         {
-            // public:
-            //     using first_type = compressed_type_t;
-            //     using second_type = compressed_type_t;
-
-            // public:
-            //     /** Default constructor. */
-            //     constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_implicitly_default_constructible_v<second_type>))
-            //         compress_pair_impl() noexcept
-            //         : first_type()
-            //         , type_2_()
-            //     {
-            //         static_assert(hud::is_nothrow_default_constructible_v<first_type>, "first_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
-            //         static_assert(hud::is_nothrow_default_constructible_v<second_type>, "second_type default constructor is throwable. compress_pair is not designed to allow throwable default constructible components");
-            //     }
-
-            // /** Copy constructor. */
-            // constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>))
-            //     compress_pair_impl(const compress_pair_impl &) = default;
-
-            // /** Move constructor. */
-            // constexpr explicit(!(hud::is_convertible_v<first_type, first_type> && hud::is_convertible_v<second_type, second_type>))
-            //     compress_pair_impl(compress_pair_impl &&) = default;
-
-            // /** Copy assignment. */
-            // constexpr compress_pair_impl &operator=(const compress_pair_impl &) = default;
-
-            // /** Move assignment. */
-            // constexpr compress_pair_impl &operator=(compress_pair_impl &&) = default;
-
-            // /**
-            //  * Initialization move constructor.
-            //  * This involves individually constructing its two components, with an initialization that depends on the constructor.
-            //  * Member 'first' is constructed with 'f', and member 'second' with 's'.
-            //  * compressed_pair do not accept throwable move-constructible components.
-            //  * @tparam u_type_t Type of the 'f' component.
-            //  * @tparam v_type_t Type of the 's' component.
-            //  * @param f An object of the same type as 'first', or some other type implicitly convertible to it.
-            //  * @param s An object of the same type as 'second', or some other type implicitly convertible to it.
-            //  */
-            // template<typename u_type_t, typename v_type_t>
-            // requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
-            // constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
-            //     compress_pair_impl(u_type_t &&type_1, v_type_t &&type_2) noexcept
-            //     : compressed_type_t(hud::forward<u_type_t>(type_1))
-            //     , type_2_(hud::forward<v_type_t>(type_2))
-            // {
-            //     static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t>, "first_type(const u_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-            //     static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t>, "second_type(const v_type_t&) copy constructor is throwable. compressed_pair is not designed to allow throwable copy constructible components");
-            // }
-
-            // /** Retrieves the reference to the first element. */
-            // [[nodiscard]] constexpr first_type &first() & noexcept
-            // {
-            //     return *this;
-            // }
-
-            // /** Retrieves the const reference to the first element. */
-            // [[nodiscard]] constexpr const first_type &first() const & noexcept
-            // {
-            //     return *this;
-            // }
-
-            // /** Retrieves the const l-value reference to the first element. */
-            // [[nodiscard]] constexpr const first_type &&first() const && noexcept
-            // {
-            //     return hud::move(*this);
-            // }
-
-            // /** Retrieves the const l-value reference to the first element. */
-            // [[nodiscard]] constexpr first_type &&first() && noexcept
-            // {
-            //     return hud::move(*this);
-            // }
-
-            // /** Retrieves the reference to the second element. */
-            // [[nodiscard]] constexpr second_type &second() & noexcept
-            // {
-            //     return type_2_;
-            // }
-
-            // /** Retrieves the const reference to the second element. */
-            // [[nodiscard]] constexpr const second_type &second() const & noexcept
-            // {
-            //     return type_2_;
-            // }
-
-            // /** Retrieves the const l-value reference to the first element. */
-            // [[nodiscard]] constexpr const second_type &&second() const && noexcept
-            // {
-            //     return hud::move(type_2_);
-            // }
-
-            // /** Retrieves the const l-value reference to the first element. */
-            // [[nodiscard]] constexpr first_type &&second() && noexcept
-            // {
-            //     return hud::move(type_2_);
-            // }
-
-            // private:
-            //     compressed_type_t type_2_;
         };
 
     } // namespace details::compressed_pair
@@ -1156,6 +1056,26 @@ namespace hud
             hud::swap(first(), other.first());
             hud::swap(second(), other.second());
         }
+
+        /**
+         * Tests if both elements of left and right are equal, that is, compares left.first() with right.first() and left.second() with right.second().
+         * @param right The right compressed_pair of the comperand operator
+         * @return true if both elements of left are equal both elements of right, false otherwise
+         */
+        [[nodiscard]] constexpr bool operator==(const compressed_pair &right) const noexcept
+        {
+            return first() == right.first() && second() == right.second();
+        }
+
+        /**
+         * Compares this to left lexicographically by operator<, that is, compares the first elements and only if they are equivalent, compares the second elements.
+         * @param right The right compressed_pair of the comperand operator
+         * @return true if first<right.first. Otherwise, if right.first<left.first, returns false. Otherwise, if left.second<right.second, returns true. Otherwise, returns false.
+         */
+        [[nodiscard]] constexpr bool operator<(const compressed_pair &right) const noexcept
+        {
+            return first() < right.first() || (!(right.first() < first()) && second() < right.second());
+        }
     };
 
     /**
@@ -1441,6 +1361,26 @@ namespace hud
             hud::swap(first(), other.first);
             hud::swap(second(), other.second);
         }
+
+        /**
+         * Tests if both elements of left and right are equal, that is, compares left.first() with right.first() and left.second() with right.second().
+         * @param right The right compressed_pair of the comperand operator
+         * @return true if both elements of left are equal both elements of right, false otherwise
+         */
+        [[nodiscard]] constexpr bool operator==(const compressed_pair &right) const noexcept
+        {
+            return first() == right.first() && second() == right.second();
+        }
+
+        /**
+         * Compares this to left lexicographically by operator<, that is, compares the first elements and only if they are equivalent, compares the second elements.
+         * @param right The right compressed_pair of the comperand operator
+         * @return true if first<right.first. Otherwise, if right.first<left.first, returns false. Otherwise, if left.second<right.second, returns true. Otherwise, returns false.
+         */
+        [[nodiscard]] constexpr bool operator<(const compressed_pair &right) const noexcept
+        {
+            return first() < right.first() || (!(right.first() < first()) && second() < right.second());
+        }
     };
 
     /**
@@ -1579,6 +1519,90 @@ namespace hud
         {
             return hud::forward<const second_type &&>(compressed_pair.second());
         }
+    }
+
+    /**
+     * Tests if both elements of left and right are equal, that is, compares left.first() with right.first() and left.second() with right.second().
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param left The left compressed_pair of the comperand operator
+     * @param right The right compressed_pair of the comperand operator
+     * @return true if both elements of left are equal both elements of right, false otherwise
+     */
+    template<typename first_type, typename second_type>
+    [[nodiscard]] constexpr bool operator==(const compressed_pair<first_type, second_type> &left, const compressed_pair<first_type, second_type> &right) noexcept
+    {
+        return left.operator==(right);
+    }
+
+    /**
+     * Tests if elements of left or right are not equal, that is, compares left.first with right.first and left.second with right.second.
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param left The left compressed_pair of the comperand operator
+     * @param right The right compressed_pair of the comperand operator
+     * @return true if elements of left are not equals to elements of right, false otherwise
+     */
+    template<typename first_type, typename second_type>
+    [[nodiscard]] constexpr bool operator!=(const compressed_pair<first_type, second_type> &left, const compressed_pair<first_type, second_type> &right) noexcept
+    {
+        return !(left == right);
+    }
+
+    /**
+     * Compares right and left lexicographically by operator<, that is, compares the first elements and only if they are equivalent, compares the second elements.
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param left The left compressed_pair of the comperand operator
+     * @param right The right compressed_pair of the comperand operator
+     * @return true if left.first<right.first. Otherwise, if right.first<left.first, returns false. Otherwise, if left.second<right.second, returns true. Otherwise, returns false.
+     */
+    template<typename first_type, typename second_type>
+    [[nodiscard]] constexpr bool operator<(const compressed_pair<first_type, second_type> &left, const compressed_pair<first_type, second_type> &right) noexcept
+    {
+        return left.operator==(right);
+    }
+
+    /**
+     * Compares right and left lexicographically by operator<, that is, compares the first elements and only if they are equivalent, compares the second elements.
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param left The left compressed_pair of the comperand operator
+     * @param right The right compressed_pair of the comperand operator
+     * @return true if right.first<left.first. Otherwise, if left.first<right.first, returns false. Otherwise, if right.second<left.second, returns true. Otherwise, returns false.
+     */
+    template<typename first_type, typename second_type>
+    [[nodiscard]] constexpr bool operator>(const compressed_pair<first_type, second_type> &left, const compressed_pair<first_type, second_type> &right) noexcept
+    {
+        return right < left;
+    }
+
+    /**
+     * Compares right and left lexicographically by operator<, that is, compares the first elements and only if they are equivalent, compares the second elements.
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param left The left compressed_pair of the comperand operator
+     * @param right The right compressed_pair of the comperand operator
+     * @return false if right.first<left.first. Otherwise, if left.first<right.first, returns true. Otherwise, if right.second<left.second, returns false. Otherwise, returns true.
+     */
+    template<typename first_type, typename second_type>
+    [[nodiscard]] constexpr bool operator<=(const compressed_pair<first_type, second_type> &left, const compressed_pair<first_type, second_type> &right) noexcept
+    {
+        return !(right < left);
+    }
+
+    /**
+     * Compares right and left lexicographically by operator<, that is, compares the first elements and only if they are equivalent, compares the second elements.
+     * @tparam first_type Type of the first component
+     * @tparam second_type Type of the second component
+     * @param left The left compressed_pair of the comperand operator
+     * @param right The right compressed_pair of the comperand operator
+     * @return false if left.first<right.first. Otherwise, if right.first<left.first, returns true. Otherwise, if left.second<right.second, returns false. Otherwise, returns true.
+     */
+    template<typename first_type, typename second_type>
+    [[nodiscard]] constexpr bool operator>=(const compressed_pair<first_type, second_type> &left, const compressed_pair<first_type, second_type> &right) noexcept
+    {
+        return !(left < right);
     }
 
 } // namespace hud
