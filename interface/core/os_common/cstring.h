@@ -23,7 +23,7 @@ namespace hud::os::common
          */
         static HD_FORCEINLINE bool is_pure_ansi([[maybe_unused]] const ansichar *const string) noexcept
         {
-            return true;
+            return string != nullptr;
         }
 
         /**
