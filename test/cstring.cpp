@@ -15,6 +15,8 @@ namespace hud_test
 
 GTEST_TEST(cstring, is_pure_ansi)
 {
+    hud_assert_false(hud::cstring::is_pure_ansi(nullptr));
+
     for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
     {
         ansichar text[2] = {cur, '\0'};
@@ -36,6 +38,7 @@ GTEST_TEST(cstring, is_pure_ansi)
 
 GTEST_TEST(cstring, is_pure_ansi_safe)
 {
+    hud_assert_false(hud::cstring::is_pure_ansi_safe(nullptr));
     for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
     {
         const ansichar text[2] = {cur, '\0'};

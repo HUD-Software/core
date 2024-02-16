@@ -12,6 +12,7 @@ namespace hud::os::windows
 
     struct debugger
     {
+        // LCOV_EXCL_START ( We don't covert the code that break the debugger )
 
         /** Checks whether the calling process is being debugged by a user-mode debugger. */
         static HD_FORCEINLINE bool is_present() noexcept
@@ -20,14 +21,15 @@ namespace hud::os::windows
         }
 
         /** Break the debugger if the calling process is being debugged by a user-mode debugger. */
-        // LCOV_EXCL_START ( We don't covert the code that break the debugger )
         static HD_FORCEINLINE void break_here() noexcept
         {
             if (is_present())
             {
                 ::DebugBreak();
             }
-        } // LCOV_EXCL_STOP
+        }
+
+        // LCOV_EXCL_STOP
     };
 
 } // namespace hud::os::windows

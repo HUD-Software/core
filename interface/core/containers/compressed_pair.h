@@ -1278,28 +1278,6 @@ namespace hud
             return *this;
         }
 
-        // /**
-        //  * Assigns other as the new content for the compressed_pair object.
-        //  * Perform copy assignments, with the elements of its argument preserving their values after the call.
-        //  * compressed_pair do not accept throwable copy assignable components.
-        //  * @param other Another compressed_pair object.
-        //  * @return *this
-        //  */
-        // constexpr compressed_pair &operator=(const compressed_pair &)
-        // requires(hud::is_nothrow_copy_assignable_v<first_type> && hud::is_nothrow_copy_assignable_v<second_type>)
-        // = default;
-
-        // /**
-        //  * Assigns other as the new content for the compressed_pair object.
-        //  * Perform move assignments, which, for elements of types supporting move semantics implies that these elements of other are left in an unspecified but valid state.
-        //  * compressed_pair do not accept throwable move assignable components.
-        //  * @param other Another compressed_pair object.
-        //  * @return *this
-        //  */
-        // constexpr compressed_pair &operator=(compressed_pair &&)
-        // requires(hud::is_nothrow_move_assignable_v<first_type> && hud::is_nothrow_move_assignable_v<second_type>)
-        // = default;
-
         /** Retrieves the reference to the first element. */
         [[nodiscard]] constexpr first_type &first() & noexcept
         {
