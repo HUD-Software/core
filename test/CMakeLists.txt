@@ -553,5 +553,5 @@ endif()
 
 if(COVERAGE)
 	include(../coverage.cmake)
-	enable_gcov_coverage(test_core core)
+	enable_coverage(test_core core)
 endif()
