@@ -1,7 +1,6 @@
 #ifndef HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H
 #include <core/minimal.h>
-#include <type_traits>
 #include <core/traits/is_bitwise_copy_constructible.h>
 
 namespace hud_test
@@ -68,7 +67,8 @@ namespace hud_test
         i32 unique_id = 0;
     };
 
-    static_assert(std::is_copy_constructible_v<NonBitwiseCopyConstructibleType>);
+    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType>);
+    static_assert(!hud::is_move_constructible_v<NonBitwiseCopyConstructibleType>);
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType>);
 
     /**
@@ -103,8 +103,9 @@ namespace hud_test
         }
     };
 
-    static_assert(std::is_constructible_v<NonBitwiseCopyConstructibleType2, const NonBitwiseCopyConstructibleType &>);
-    static_assert(std::is_copy_constructible_v<NonBitwiseCopyConstructibleType2>);
+    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType2, NonBitwiseCopyConstructibleType>);
+    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType2>);
+    static_assert(!hud::is_move_constructible_v<NonBitwiseCopyConstructibleType>);
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType2>);
 
     /**
@@ -152,8 +153,7 @@ namespace hud_test
         i32 *increment = nullptr;
     };
 
-    static_assert(std::is_constructible_v<NonBitwiseCopyConstructibleType3, const NonBitwiseCopyConstructibleType3 &>);
-    static_assert(std::is_copy_constructible_v<NonBitwiseCopyConstructibleType3>);
+    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType3>);
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType3>);
 
     struct NonBitwiseCopyConstructibleType4 : public NonBitwiseCopyConstructibleType3
@@ -205,8 +205,8 @@ namespace hud_test
         i32 increment_value = -1;
     };
 
-    static_assert(std::is_constructible_v<NonBitwiseCopyConstructibleType4, const NonBitwiseCopyConstructibleType3 &>);
-    static_assert(std::is_copy_constructible_v<NonBitwiseCopyConstructibleType4>);
+    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType4, NonBitwiseCopyConstructibleType3>);
+    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType4>);
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType4>);
     static_assert(!hud::is_move_constructible_v<NonBitwiseCopyConstructibleType4, NonBitwiseCopyConstructibleType3>);
 

@@ -108,6 +108,7 @@ add_executable(test_core
 	shared_pointer/single_thread_array/single_thread_array_destructor.cpp
 	shared_pointer/single_thread_array/single_thread_array_misc.cpp
 	shared_pointer/single_thread_array/single_thread_array_swap.cpp
+	templates/templates_exchange.cpp
 	templates/templates_bit_cast.cpp
 	templates/templates_declval.cpp
 	templates/templates_default_deleter.cpp

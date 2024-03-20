@@ -1,7 +1,6 @@
 #ifndef HD_INC_MISC_NON_BITWISE_MOVE_CONSTRUCTIBLE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_MOVE_CONSTRUCTIBLE_TYPE_H
 #include <core/minimal.h>
-#include <type_traits>
 #include <core/traits/is_bitwise_move_constructible.h>
 
 namespace hud_test
@@ -87,9 +86,9 @@ namespace hud_test
         i32 unique_id = -1;
     };
 
-    static_assert(std::is_move_constructible_v<NonBitwiseMoveConstructibleType>);
+    static_assert(hud::is_move_constructible_v<NonBitwiseMoveConstructibleType>);
     static_assert(!hud::is_bitwise_move_constructible_v<NonBitwiseMoveConstructibleType>);
-    static_assert(std::is_copy_constructible_v<NonBitwiseCopyConstructibleType>);
+    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType>);
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType>);
 
     /**
@@ -136,11 +135,9 @@ namespace hud_test
         }
     };
 
-    static_assert(std::is_move_constructible_v<NonBitwiseMoveConstructibleType2>);
+    static_assert(hud::is_move_constructible_v<NonBitwiseMoveConstructibleType2>);
     static_assert(!hud::is_bitwise_move_constructible_v<NonBitwiseMoveConstructibleType2>);
-    static_assert(std::is_constructible_v<NonBitwiseMoveConstructibleType2, NonBitwiseMoveConstructibleType &&>);
-    // static_assert(std::is_constructible_v<NonBitwiseMoveConstructibleType2, const NonBitwiseMoveConstructibleType&>);
-    // static_assert(std::is_copy_constructible_v<NonBitwiseMoveConstructibleType2>);
+    static_assert(!hud::is_bitwise_move_constructible_v<NonBitwiseMoveConstructibleType2, NonBitwiseMoveConstructibleType>);
     static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseMoveConstructibleType2>);
 
     /**

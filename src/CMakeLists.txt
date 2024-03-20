@@ -58,6 +58,7 @@ set( interface
 	../interface/core/templates/declval.h
 	../interface/core/templates/default_deleter.h
 	../interface/core/templates/equal.h
+	../interface/core/templates/exchange.h
 	../interface/core/templates/forward.h
 	../interface/core/templates/greater.h
 	../interface/core/templates/greater_equal.h

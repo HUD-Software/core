@@ -1,7 +1,6 @@
 #ifndef HD_INC_MISC_NON_BITWISE_COPY_ASSIGNABLE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_COPY_ASSIGNABLE_TYPE_H
 #include <core/minimal.h>
-#include <type_traits>
 #include <core/traits/is_bitwise_copy_assignable.h>
 #include <core/traits/is_bitwise_copy_constructible.h>
 
@@ -100,8 +99,8 @@ namespace hud_test
         i32 unique_id = 0;
     };
 
-    static_assert(std::is_copy_assignable_v<non_bitwise_copy_assignable_type>);
-    static_assert(std::is_copy_constructible_v<non_bitwise_copy_assignable_type>);
+    static_assert(hud::is_copy_assignable_v<non_bitwise_copy_assignable_type>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_assignable_type>);
     static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_copy_assignable_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type>);
 
@@ -151,9 +150,9 @@ namespace hud_test
         constexpr non_bitwise_copy_assignable_type_2 &operator=(const non_bitwise_copy_assignable_type_2 &other) noexcept = default;
     };
 
-    static_assert(std::is_copy_assignable_v<non_bitwise_copy_assignable_type_2>);
-    static_assert(std::is_copy_constructible_v<non_bitwise_copy_assignable_type_2>);
-    static_assert(std::is_constructible_v<non_bitwise_copy_assignable_type_2, const non_bitwise_copy_assignable_type &>);
+    static_assert(hud::is_copy_assignable_v<non_bitwise_copy_assignable_type_2>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_assignable_type_2>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_assignable_type_2, non_bitwise_copy_assignable_type>);
     static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_copy_assignable_type_2>);
     static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type_2>);
 
@@ -214,9 +213,8 @@ namespace hud_test
         i32 *increment = nullptr;
     };
 
-    static_assert(std::is_copy_assignable_v<non_bitwise_copy_assignable_type_3>);
-    static_assert(std::is_copy_constructible_v<non_bitwise_copy_assignable_type_3>);
-    static_assert(std::is_constructible_v<non_bitwise_copy_assignable_type_3, const non_bitwise_copy_assignable_type_3 &>);
+    static_assert(hud::is_copy_assignable_v<non_bitwise_copy_assignable_type_3>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_assignable_type_3>);
     static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_copy_assignable_type_3>);
     static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type_3>);
 
@@ -287,9 +285,9 @@ namespace hud_test
         i32 increment_value = -1;
     };
 
-    static_assert(std::is_copy_assignable_v<non_bitwise_copy_assignable_type_4>);
-    static_assert(std::is_copy_constructible_v<non_bitwise_copy_assignable_type_4>);
-    static_assert(std::is_constructible_v<non_bitwise_copy_assignable_type_4, const non_bitwise_copy_assignable_type_3 &>);
+    static_assert(hud::is_copy_assignable_v<non_bitwise_copy_assignable_type_4>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_assignable_type_4>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_assignable_type_4, non_bitwise_copy_assignable_type_3>);
     static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_copy_assignable_type_4>);
     static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type_4>);
 } // namespace hud_test

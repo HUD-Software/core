@@ -1,7 +1,6 @@
 #ifndef HD_INC_MISC_NON_BITWISE_MOVE_ASSIGNABLE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_MOVE_ASSIGNABLE_TYPE_H
 #include <core/minimal.h>
-#include <type_traits>
 #include <core/traits/is_bitwise_move_assignable.h>
 #include <core/traits/is_bitwise_move_constructible.h>
 
@@ -126,8 +125,8 @@ namespace hud_test
         i32 unique_id = 0;
     };
 
-    static_assert(std::is_move_assignable_v<non_bitwise_move_assignable_type>);
-    static_assert(std::is_move_constructible_v<non_bitwise_move_assignable_type>);
+    static_assert(hud::is_move_assignable_v<non_bitwise_move_assignable_type>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_move_assignable_type>);
     static_assert(!hud::is_bitwise_move_assignable_v<non_bitwise_move_assignable_type>);
     static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_move_assignable_type>);
 
@@ -186,9 +185,9 @@ namespace hud_test
         constexpr non_bitwise_move_assignable_type2 &operator=(non_bitwise_move_assignable_type2 &&other) noexcept = default;
     };
 
-    static_assert(std::is_move_assignable_v<non_bitwise_move_assignable_type>);
-    static_assert(std::is_move_constructible_v<non_bitwise_move_assignable_type2>);
-    static_assert(std::is_constructible_v<non_bitwise_move_assignable_type2, non_bitwise_move_assignable_type &&>);
+    static_assert(hud::is_move_assignable_v<non_bitwise_move_assignable_type>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_move_assignable_type2>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_move_assignable_type2, non_bitwise_move_assignable_type>);
     static_assert(!hud::is_bitwise_move_assignable_v<non_bitwise_move_assignable_type2>);
     static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_move_assignable_type2>);
 
@@ -268,9 +267,8 @@ namespace hud_test
         i32 *increment = nullptr;
     };
 
-    static_assert(std::is_move_assignable_v<non_bitwise_move_assignable_type3>);
-    static_assert(std::is_move_constructible_v<non_bitwise_move_assignable_type3>);
-    static_assert(std::is_constructible_v<non_bitwise_move_assignable_type3, non_bitwise_move_assignable_type3 &&>);
+    static_assert(hud::is_move_assignable_v<non_bitwise_move_assignable_type3>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_move_assignable_type3>);
     static_assert(!hud::is_bitwise_move_assignable_v<non_bitwise_move_assignable_type3>);
     static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_move_assignable_type3>);
 
@@ -367,9 +365,9 @@ namespace hud_test
         i32 increment_value = -1;
     };
 
-    static_assert(std::is_move_assignable_v<non_bitwise_move_assignable_type4>);
-    static_assert(std::is_move_constructible_v<non_bitwise_move_assignable_type4>);
-    static_assert(std::is_constructible_v<non_bitwise_move_assignable_type4, non_bitwise_move_assignable_type3 &&>);
+    static_assert(hud::is_move_assignable_v<non_bitwise_move_assignable_type4>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_move_assignable_type4>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_move_assignable_type4, non_bitwise_move_assignable_type3>);
     static_assert(!hud::is_bitwise_move_assignable_v<non_bitwise_move_assignable_type4>);
     static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_move_assignable_type4>);
 } // namespace hud_test

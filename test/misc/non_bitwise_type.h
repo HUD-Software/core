@@ -1,7 +1,6 @@
 #ifndef HD_INC_MISC_NON_BITWISE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_TYPE_H
 #include <core/minimal.h>
-#include <type_traits>
 
 namespace hud_test
 {
@@ -200,19 +199,19 @@ namespace hud_test
         return left.id() == id;
     }
 
-    static_assert(std::is_move_constructible_v<non_bitwise_type>);
-    static_assert(std::is_copy_constructible_v<non_bitwise_type>);
-    static_assert(std::is_move_assignable_v<non_bitwise_type>);
-    static_assert(std::is_copy_assignable_v<non_bitwise_type>);
-    static_assert(std::is_destructible_v<non_bitwise_type>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_type>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_type>);
+    static_assert(hud::is_move_assignable_v<non_bitwise_type>);
+    static_assert(hud::is_copy_assignable_v<non_bitwise_type>);
+    static_assert(hud::is_destructible_v<non_bitwise_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_type>);
     static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_type>);
     static_assert(!hud::is_bitwise_copy_assignable_v<non_bitwise_type>);
     static_assert(!hud::is_bitwise_move_assignable_v<non_bitwise_type>);
-    
+
     // Bug: Waiting for GCC 13 (Bug 93413 - Defaulted constexpr Destructor not being found during constant evaluation)
     // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93413
-    template<typename=void>
+    template<typename = void>
     struct non_bitwise_type2_gcc : public non_bitwise_type
     {
 
