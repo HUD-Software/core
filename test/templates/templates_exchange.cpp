@@ -36,17 +36,17 @@ GTEST_TEST(templates, exchange_non_trivial_move_assignable_same_type)
         hud_assert_eq(t.copy_assign_count(), 1u);
         hud_assert_eq(t.move_assign_count(), 0u);
         hud_assert_eq(t.copy_constructor_count(), 0u);
-        hud_assert_eq(t.move_constructor_count(), 0U);
+        hud_assert_eq(t.move_constructor_count(), 0u);
         hud_assert_eq(t1.id(), 3);
         hud_assert_eq(t1.copy_assign_count(), 0u);
         hud_assert_eq(t1.move_assign_count(), 0u);
         hud_assert_eq(t1.copy_constructor_count(), 0u);
-        hud_assert_eq(t1.move_constructor_count(), 0U);
+        hud_assert_eq(t1.move_constructor_count(), 0u);
         hud_assert_eq(old.id(), 2);
         hud_assert_eq(old.copy_assign_count(), 0u);
         hud_assert_eq(old.move_assign_count(), 0u);
         hud_assert_eq(old.copy_constructor_count(), 0u);
-        hud_assert_eq(old.move_constructor_count(), 1U);
+        hud_assert_eq(old.move_constructor_count(), 1u);
     }
 
     // When new_value is r-reference
@@ -59,17 +59,17 @@ GTEST_TEST(templates, exchange_non_trivial_move_assignable_same_type)
         hud_assert_eq(t.copy_assign_count(), 0u);
         hud_assert_eq(t.move_assign_count(), 1u);
         hud_assert_eq(t.copy_constructor_count(), 0u);
-        hud_assert_eq(t.move_constructor_count(), 0U);
+        hud_assert_eq(t.move_constructor_count(), 0u);
         hud_assert_eq(t1.id(), 3);
         hud_assert_eq(t1.copy_assign_count(), 0u);
         hud_assert_eq(t1.move_assign_count(), 0u);
         hud_assert_eq(t1.copy_constructor_count(), 0u);
-        hud_assert_eq(t1.move_constructor_count(), 0U);
+        hud_assert_eq(t1.move_constructor_count(), 0u);
         hud_assert_eq(old.id(), 2);
         hud_assert_eq(old.copy_assign_count(), 0u);
         hud_assert_eq(old.move_assign_count(), 0u);
         hud_assert_eq(old.copy_constructor_count(), 0u);
-        hud_assert_eq(old.move_constructor_count(), 1U);
+        hud_assert_eq(old.move_constructor_count(), 1u);
     }
 }
 
@@ -85,17 +85,17 @@ GTEST_TEST(templates, exchange_non_trivial_move_assignable_different_type)
         hud_assert_eq(t.copy_assign_count(), 1u);
         hud_assert_eq(t.move_assign_count(), 0u);
         hud_assert_eq(t.copy_constructor_count(), 0u);
-        hud_assert_eq(t.move_constructor_count(), 0U);
+        hud_assert_eq(t.move_constructor_count(), 0u);
         hud_assert_eq(t1.id(), 3);
         hud_assert_eq(t1.copy_assign_count(), 0u);
         hud_assert_eq(t1.move_assign_count(), 0u);
         hud_assert_eq(t1.copy_constructor_count(), 0u);
-        hud_assert_eq(t1.move_constructor_count(), 0U);
+        hud_assert_eq(t1.move_constructor_count(), 0u);
         hud_assert_eq(old.id(), 2);
         hud_assert_eq(old.copy_assign_count(), 0u);
         hud_assert_eq(old.move_assign_count(), 0u);
         hud_assert_eq(old.copy_constructor_count(), 0u);
-        hud_assert_eq(old.move_constructor_count(), 1U);
+        hud_assert_eq(old.move_constructor_count(), 1u);
     }
 
     // When new_value is r-reference
@@ -105,19 +105,19 @@ GTEST_TEST(templates, exchange_non_trivial_move_assignable_different_type)
         hud_test::non_bitwise_move_assignable_type old = hud::exchange(t, hud::move(t1));
 
         hud_assert_eq(t.id(), 3);
-        hud_assert_eq(t.copy_assign_count(), 1u);
-        hud_assert_eq(t.move_assign_count(), 0u);
+        hud_assert_eq(t.copy_assign_count(), 0u);
+        hud_assert_eq(t.move_assign_count(), 1u);
         hud_assert_eq(t.copy_constructor_count(), 0u);
-        hud_assert_eq(t.move_constructor_count(), 0U);
+        hud_assert_eq(t.move_constructor_count(), 0u);
         hud_assert_eq(t1.id(), 3);
         hud_assert_eq(t1.copy_assign_count(), 0u);
         hud_assert_eq(t1.move_assign_count(), 0u);
         hud_assert_eq(t1.copy_constructor_count(), 0u);
-        hud_assert_eq(t1.move_constructor_count(), 0U);
+        hud_assert_eq(t1.move_constructor_count(), 0u);
         hud_assert_eq(old.id(), 2);
         hud_assert_eq(old.copy_assign_count(), 0u);
         hud_assert_eq(old.move_assign_count(), 0u);
         hud_assert_eq(old.copy_constructor_count(), 0u);
-        hud_assert_eq(old.move_constructor_count(), 1U);
+        hud_assert_eq(old.move_constructor_count(), 1u);
     }
 }
