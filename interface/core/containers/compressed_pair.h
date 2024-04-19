@@ -998,54 +998,6 @@ namespace hud
         using super_type::first;
         using super_type::second;
 
-        // /** Retrieves the reference to the first element. */
-        // [[nodiscard]] constexpr first_type &first() & noexcept
-        // {
-        //     return super_type::first();
-        // }
-
-        // /** Retrieves the const reference to the first element. */
-        // [[nodiscard]] constexpr const first_type &first() const & noexcept
-        // {
-        //     return super_type::first();
-        // }
-
-        // /** Retrieves the const l-value reference to the first element. */
-        // [[nodiscard]] constexpr const first_type &&first() const && noexcept
-        // {
-        //     return hud::move(super_type::first());
-        // }
-
-        // /** Retrieves the const l-value reference to the first element. */
-        // [[nodiscard]] constexpr first_type &&first() && noexcept
-        // {
-        //     return hud::move(super_type::first());
-        // }
-
-        // /** Retrieves the reference to the second element. */
-        // [[nodiscard]] constexpr second_type &second() & noexcept
-        // {
-        //     return super_type::second();
-        // }
-
-        // /** Retrieves the const reference to the second element. */
-        // [[nodiscard]] constexpr const second_type &second() const & noexcept
-        // {
-        //     return super_type::second();
-        // }
-
-        // /** Retrieves the const l-value reference to the first element. */
-        // [[nodiscard]] constexpr const second_type &&second() const && noexcept
-        // {
-        //     return hud::move(super_type::second());
-        // }
-
-        // /** Retrieves the const l-value reference to the first element. */
-        // [[nodiscard]] constexpr first_type &&second() && noexcept
-        // {
-        //     return hud::move(super_type::second());
-        // }
-
         /**
          * Exchanges the contents of the compressed_pair object with the contents of other.
          * compressed_pair do not accept throwable swap components.
