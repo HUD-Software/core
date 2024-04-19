@@ -56,6 +56,7 @@ add_executable(test_core
 	hash/city_hash.cpp
 	hash/crc32.cpp
 	hash/hash.cpp
+	hashmap/hashmap_constructors.cpp
 	iterators/random_access_iterator.cpp
 	memory/memory_alignment.cpp
 	memory/memory_allocation.cpp

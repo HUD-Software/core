@@ -2,7 +2,7 @@
 #define HD_INC_CORE_ALLOCATOR_ALIGNED_HEAP_H
 #include "../memory.h"
 #include "../traits/is_power_of_two.h"
-#include "allocation.h"
+#include "memory_allocation.h"
 #include "allocator_traits.h"
 
 namespace hud

@@ -78,6 +78,6 @@ SpacesInLineCommentPrefix:
   Maximum: 1
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-
+InitializerList::Pack: Never
 ---
 

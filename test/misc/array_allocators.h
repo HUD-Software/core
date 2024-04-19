@@ -1,7 +1,7 @@
 #ifndef HD_INC_TEST_ARRAY_ALLOCATORS_H
 #define HD_INC_TEST_ARRAY_ALLOCATORS_H
 #include <core/allocators/aligned_heap_allocator.h>
-#include <core/allocators/allocation.h>
+#include <core/allocators/memory_allocation.h>
 #include <core/allocators/allocator_traits.h>
 
 namespace hud_test
@@ -78,25 +78,25 @@ namespace hud_test
             allocator.free(buffer);
         }
 
-        /** Retrieves count of allocation done. */
+        /** Retrieves the count of allocations done. */
         constexpr u32 allocation_count() const noexcept
         {
             return count_of_alloc;
         }
 
-        /** Retrieves count of free done. */
+        /** Retrieves the count of free done. */
         constexpr u32 free_count() const noexcept
         {
             return count_of_free;
         }
 
-        /** Retrieves count of move assignement done. */
+        /** Retrieves the count of move assignement done. */
         constexpr u32 move_assign_count() const noexcept
         {
             return count_of_move_assign;
         }
 
-        /** Retrieves count of move construction done. */
+        /** Retrieves the count of move construction done. */
         constexpr u32 move_construct_count() const noexcept
         {
             return count_of_move_construct;

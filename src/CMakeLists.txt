@@ -5,29 +5,30 @@ cmake_minimum_required(VERSION 3.24)
 # source_files variable is a list all files in Implementation and Interface directory
 set( src
 	hash/crc32.cpp
+	containers/hashmap.cpp
 )
-
 #Linux implementations
 if(UNIX AND NOT APPLE)
-set( src ${src}
-	os_linux/debugger.cpp
-	precompiled.h
-)
+	set( src ${src}
+		os_linux/debugger.cpp
+	)
 endif()
 
 set( interface
 	../interface/core/allocators/aligned_heap_allocator.h
-	../interface/core/allocators/allocation.h
+	../interface/core/allocators/memory_allocation.h
 	../interface/core/allocators/allocator_traits.h
 	../interface/core/allocators/heap_allocator.h
 	../interface/core/containers/aligned_buffer.h
 	../interface/core/containers/array.h
+	../interface/core/containers/compressed_pair.h
+	../interface/core/containers/hashmap.h
 	../interface/core/containers/optional.h
 	../interface/core/containers/pair.h
 	../interface/core/containers/shared_pointer.h
-	../interface/core/containers/tuple.h
 	../interface/core/containers/tuple_element.h
 	../interface/core/containers/tuple_size.h
+	../interface/core/containers/tuple.h
 	../interface/core/containers/unique_pointer.h
 	../interface/core/hash/city_hash.h
 	../interface/core/hash/crc32.h

@@ -68,13 +68,13 @@ namespace hud_test
             return *this;
         }
 
-        /** Retrieves count of copy assignement done */
+        /** Retrieves the count of copy assignement done */
         [[nodiscard]] constexpr u32 copy_assign_count() const noexcept
         {
             return copy_assigned_count;
         }
 
-        /** Retrieves count of copy construction done */
+        /** Retrieves the count of copy construction done */
         [[nodiscard]] constexpr u32 copy_constructor_count() const noexcept
         {
             return copy_construct_count;

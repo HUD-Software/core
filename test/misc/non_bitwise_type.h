@@ -130,31 +130,31 @@ namespace hud_test
             }
         }
 
-        /** Retrieves count of move assignement done */
+        /** Retrieves the count of move assignement done */
         [[nodiscard]] constexpr u32 move_assign_count() const noexcept
         {
             return move_assigned_count;
         }
 
-        /** Retrieves count of copy assignement done */
+        /** Retrieves the count of copy assignement done */
         [[nodiscard]] constexpr u32 copy_assign_count() const noexcept
         {
             return copy_assigned_count;
         }
 
-        /** Retrieves count of constructor done */
+        /** Retrieves the count of constructor done */
         [[nodiscard]] constexpr u32 constructor_count() const noexcept
         {
             return param_construct_count;
         }
 
-        /** Retrieves count of move construction done */
+        /** Retrieves the count of move construction done */
         [[nodiscard]] constexpr u32 move_constructor_count() const noexcept
         {
             return move_construct_count;
         }
 
-        /** Retrieves count of copy construction done */
+        /** Retrieves the count of copy construction done */
         [[nodiscard]] constexpr u32 copy_constructor_count() const noexcept
         {
             return copy_construct_count;

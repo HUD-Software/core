@@ -48,19 +48,19 @@ namespace hud_test
         {
         }
 
-        /** Retrieves count of move constructor done */
+        /** Retrieves the count of move constructor done */
         [[nodiscard]] constexpr u32 move_constructor_count() const noexcept
         {
             return move_construct_count;
         }
 
-        /** Retrieves count of copy construction done */
+        /** Retrieves the count of copy construction done */
         [[nodiscard]] constexpr u32 copy_constructor_count() const noexcept
         {
             return copy_construct_count;
         }
 
-        /** Retrieves count of constructor done */
+        /** Retrieves the count of constructor done */
         [[nodiscard]] constexpr u32 constructor_count() const noexcept
         {
             return ctor_count;

@@ -42,7 +42,7 @@ namespace hud_test
         {
         }
 
-        /** Retrieves count of copy construction done */
+        /** Retrieves the count of copy construction done */
         [[nodiscard]] constexpr u32 copy_constructor_count() const noexcept
         {
             return copy_construct_count;
