@@ -1054,16 +1054,18 @@ namespace hud
     requires(hud::is_bounded_array_v<type_t>)
     void make_unique(args_t &&...) = delete;
 
-    /**
-     * Hash function for unique_pointer<type_t>
-     * @tparam type_t Type of the unique_pointer's pointer
-     * @param ptr The unique_pointer<type_t> to hash
-     * @return The hash of ptr
-     */
+    /** Specialization of the hash function for unique_pointer */
     template<typename type_t>
-    constexpr u32 hash(const unique_pointer<type_t> &ptr) noexcept
+    constexpr u32 hash_32(const unique_pointer<type_t> &ptr) noexcept
     {
-        return hud::hash(ptr.pointer());
+        return hud::hash_32(ptr.pointer());
+    }
+
+    /** Specialization of the hash function for unique_pointer */
+    template<typename type_t>
+    constexpr u64 hash_64(const unique_pointer<type_t> &ptr) noexcept
+    {
+        return hud::hash_64(ptr.pointer());
     }
 
 } // namespace hud

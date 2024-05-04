@@ -1415,10 +1415,18 @@ namespace hud
 
     /** Specialization of the hash function for shared_pointer */
     template<typename type_t, thread_safety_e thread_safety>
-    HD_FORCEINLINE u32 hash(const shared_pointer<type_t, thread_safety> &ptr) noexcept
+    HD_FORCEINLINE u32 hash_32(const shared_pointer<type_t, thread_safety> &ptr) noexcept
     {
         // Simply hash the pointer
-        return hash(ptr.pointer());
+        return hash_32(ptr.pointer());
+    }
+
+    /** Specialization of the hash function for shared_pointer */
+    template<typename type_t, thread_safety_e thread_safety>
+    HD_FORCEINLINE u64 hash_64(const shared_pointer<type_t, thread_safety> &ptr) noexcept
+    {
+        // Simply hash the pointer
+        return hash_64(ptr.pointer());
     }
 
 } // namespace hud

@@ -27,7 +27,7 @@ namespace hud::os::common
 
         // Floating point types
         using f32 = float;  // 32 bits f32 (IEEE 754)
-        using f64 = double; // 64 bits f32 (IEEE 754)
+        using f64 = double; // 64 bits f64 (IEEE 754)
 
 #if defined(HD_TARGET_32_BITS)
                             // Pointer types

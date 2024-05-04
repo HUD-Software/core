@@ -653,13 +653,25 @@ GTEST_TEST(shared_pointer_array_not_safe, make_shared)
     // constant evaluation do not allowed to reinterpret_cast the storage of the value to a pointer to that value
 }
 
-GTEST_TEST(shared_pointer_array_not_safe, hash)
+GTEST_TEST(shared_pointer_array_not_safe, hash_32)
 {
 
     const auto test = []()
     {
         hud::shared_pointer<i32[2]> ptr(new i32[2] {1, 2});
-        return hud::hash(ptr) == hud::hash(ptr.pointer());
+        return hud::hash_32(ptr) == hud::hash_32(ptr.pointer());
+    };
+
+    hud_assert_true(test());
+}
+
+GTEST_TEST(shared_pointer_array_not_safe, hash_64)
+{
+
+    const auto test = []()
+    {
+        hud::shared_pointer<i32[2]> ptr(new i32[2] {1, 2});
+        return hud::hash_64(ptr) == hud::hash_64(ptr.pointer());
     };
 
     hud_assert_true(test());

@@ -351,7 +351,7 @@ GTEST_TEST(unique_pointer_array, make_unique)
     //}
 }
 
-GTEST_TEST(unique_pointer_array, hash)
+GTEST_TEST(unique_pointer_array, hash_32)
 {
 
     const auto test = []()
@@ -361,7 +361,27 @@ GTEST_TEST(unique_pointer_array, hash)
             {2, nullptr}
         };
         hud::unique_pointer<hud_test::non_bitwise_type[]> p(ptr);
-        return hud::hash(p) == hud::hash(ptr);
+        return hud::hash_32(p) == hud::hash_32(ptr);
+    };
+
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(result);
+    }
+}
+
+GTEST_TEST(unique_pointer_array, hash_64)
+{
+
+    const auto test = []()
+    {
+        hud_test::non_bitwise_type *ptr = new hud_test::non_bitwise_type[2] {
+            {1, nullptr},
+            {2, nullptr}
+        };
+        hud::unique_pointer<hud_test::non_bitwise_type[]> p(ptr);
+        return hud::hash_64(p) == hud::hash_64(ptr);
     };
 
     // Non constant

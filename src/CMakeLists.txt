@@ -23,6 +23,7 @@ set( interface
 	../interface/core/containers/array.h
 	../interface/core/containers/compressed_pair.h
 	../interface/core/containers/hashmap.h
+	../interface/core/containers/hashset.h
 	../interface/core/containers/optional.h
 	../interface/core/containers/pair.h
 	../interface/core/containers/shared_pointer.h
@@ -198,8 +199,8 @@ set( interface
 	../interface/core/cstring.h
 	../interface/core/debugger.h
 	../interface/core/defines.h
-	../interface/core/hash
 	../interface/core/hash.h
+	../interface/core/i128.h
 	../interface/core/iterators
 	../interface/core/math.h
 	../interface/core/memory.h

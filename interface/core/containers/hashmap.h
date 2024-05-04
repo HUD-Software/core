@@ -4,13 +4,22 @@
 #include "../allocators/heap_allocator.h"
 #include "../traits/add_lvalue_reference.h"
 #include "optional.h"
+#include "pair.h"
+#include "../hash.h"
 
 namespace hud
 {
     namespace details::hashmap
     {
-        template<typename key_t> struct default_hasher
+        template<typename key_t>
+        struct default_hasher
         {
+            using key_type = key_t;
+
+            [[nodiscard]] u64 operator()(const key_type &key) const noexcept
+            {
+                return hud::hash_64(key);
+            }
         };
 
         template<typename key_t> struct default_equal
@@ -27,12 +36,22 @@ namespace hud
 
         extern const control_e EMPTY_GROUP[32];
 
-        template<typename value_t>
+        template<typename key_t, typename value_t>
+        struct slot
+            : hud::pair<key_t, value_t>
+        {
+            using key_type = hud::pair<key_t, value_t>::first_type;
+            using value_type = hud::pair<key_t, value_t>::second_type;
+        };
+
+        template<typename slot_t>
         class iterator
         {
-            using value_type = value_t;
-            using pointer_type = value_type *;
-            using reference_type = hud::add_lvalue_reference<value_t>;
+            using slot_type = slot_t;
+            using key_type = slot_type::key_type;
+            using value_type = slot_type::value_type;
+            using pointer_type = slot_type *;
+            using reference_type = hud::add_lvalue_reference<slot_type>;
 
             iterator()
             {
@@ -40,7 +59,7 @@ namespace hud
 
             reference_type operator*() const
             {
-                return unchecked_deref();
+                return *slot_;
             }
 
             pointer_type operator->() const
@@ -82,30 +101,43 @@ namespace hud
         };
 
         template<
-            typename key_t,
-            typename value_t,
-            typename hash_t = details::hashmap::default_hasher<key_t>,
-            typename key_equal_t = details::hashmap::default_equal<key_t>,
-            typename allocator_t = heap_allocator>
+            typename slot_t,
+            typename hash_t,
+            typename key_equal_t,
+            typename allocator_t>
         class hashmap_impl
         {
         protected:
+            /** Type of the slot. */
+            using slot_type = slot_t;
             /** Type of the key. */
-            using key_type = key_t;
+            using key_type = slot_type::key_type;
             /** Type of the value. */
-            using value_type = value_t;
+            using value_type = slot_type::value_type;
             /** Type of the hash function. */
             using hash_type = hash_t;
             /****/
-            using iterator = iterator<value_type>;
+            using iterator = iterator<slot_type>;
 
         public:
-            constexpr hashmap_impl()
+            constexpr hashmap_impl() noexcept
                 : control_(const_cast<control_e *>(&EMPTY_GROUP[16])) // Point to the sentinel in the empty group, const_cast is ok, EMPTY_GROUP is used only when the table is empty
             {
             }
 
-            hud::optional<iterator> insert();
+            constexpr hud::optional<iterator> insert(const key_type &key, const value_type &value) noexcept
+            {
+                return find_or_prepare_insert(key);
+            }
+
+        private:
+            constexpr hud::optional<iterator> find_or_prepare_insert(const key_type &key)
+            {
+                // TODO: prefetch control bloc
+                // Hash the key
+                u64 hash = hash_type {}(key);
+                return hud::nullopt;
+            }
 
         private:
             /**
@@ -134,10 +166,11 @@ namespace hud
         typename key_equal_t = details::hashmap::default_equal<key_t>,
         typename allocator_t = heap_allocator>
     class hashmap
-        : details::hashmap::hashmap_impl<key_t, value_t, hash_t, key_equal_t, allocator_t>
+        : details::hashmap::hashmap_impl<details::hashmap::slot<key_t, value_t>, hash_t, key_equal_t, allocator_t>
+
     {
     private:
-        using super = details::hashmap::hashmap_impl<key_t, value_t, hash_t, key_equal_t, allocator_t>;
+        using super = details::hashmap::hashmap_impl<details::hashmap::slot<key_t, value_t>, hash_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
@@ -148,6 +181,8 @@ namespace hud
         using typename super::value_type;
 
         using super::super;
+
+        using super::insert;
     };
 } // namespace hud
 

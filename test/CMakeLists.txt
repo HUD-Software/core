@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.24)
 
-add_executable(test_core
+set( src
 	allocator/aligned_heap_allocator.cpp
 	allocator/allocation.cpp
 	allocator/heap_allocator.cpp
@@ -55,8 +55,13 @@ add_executable(test_core
 	compressed_pair/compressed_pair_comparison.cpp
 	hash/city_hash.cpp
 	hash/crc32.cpp
-	hash/hash.cpp
+	hash/hash_32.cpp
+	hash/hash_64.cpp
+	hashmap/hashmap_insert.cpp
 	hashmap/hashmap_constructors.cpp
+	hashmap/hashmap_misc.cpp
+	hashset/hashset_constructors.cpp
+	hashset/hashset_misc.cpp
 	iterators/random_access_iterator.cpp
 	memory/memory_alignment.cpp
 	memory/memory_allocation.cpp
@@ -283,12 +288,23 @@ add_executable(test_core
 	compilation.cpp
 	cstring.cpp
 	debugger.cpp
+	i128.cpp
 	main.cpp
 	precompiled.h
 	slice.cpp
 	types.cpp
+	u128.cpp
 	uuid.cpp
 )
+
+add_executable(test_core ${src})
+
+# set_target_properties(test_core PROPERTIES
+#                       UNITY_BUILD_MODE BATCH
+#                       UNITY_BUILD_BATCH_SIZE 8
+#                       )
+
+# set_target_properties(test_core PROPERTIES UNITY_BUILD ON UNITY_BUILD_MODE BATCH)
 
 set_target_properties(test_core
     PROPERTIES
