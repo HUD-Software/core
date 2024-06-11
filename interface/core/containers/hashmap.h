@@ -40,16 +40,16 @@ namespace hud
         struct slot
             : hud::pair<key_t, value_t>
         {
-            using key_type = hud::pair<key_t, value_t>::first_type;
-            using value_type = hud::pair<key_t, value_t>::second_type;
+            using key_type = typename hud::pair<key_t, value_t>::first_type;
+            using value_type = typename hud::pair<key_t, value_t>::second_type;
         };
 
         template<typename slot_t>
         class iterator
         {
             using slot_type = slot_t;
-            using key_type = slot_type::key_type;
-            using value_type = slot_type::value_type;
+            using key_type = typename slot_type::key_type;
+            using value_type = typename slot_type::value_type;
             using pointer_type = slot_type *;
             using reference_type = hud::add_lvalue_reference<slot_type>;
 
@@ -111,13 +111,13 @@ namespace hud
             /** Type of the slot. */
             using slot_type = slot_t;
             /** Type of the key. */
-            using key_type = slot_type::key_type;
+            using key_type = typename slot_type::key_type;
             /** Type of the value. */
-            using value_type = slot_type::value_type;
+            using value_type = typename slot_type::value_type;
             /** Type of the hash function. */
             using hash_type = hash_t;
             /****/
-            using iterator = iterator<slot_type>;
+            using iterator = hud::details::hashmap::iterator<slot_type>;
 
         public:
             constexpr hashmap_impl() noexcept

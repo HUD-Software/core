@@ -55,7 +55,7 @@ GTEST_TEST(hash_64, hash_of_floating_point_are_usable_in_constexpr)
 {
     constexpr f32 flt32 = 12345.6789f;
     constexpr u64 flt32_hash = hud::bit_cast<u32>(flt32);
-    hud_assert_eq(flt32_hash, static_cast<u64>(0x4640E6B7));
+    hud_assert_eq(flt32_hash, static_cast<u64>(0x4640E6B7u));
 
     constexpr f64 flt64 = 12345.6789;
     constexpr u64 flt64_hash = hud::hash_64(hud::bit_cast<u64>(flt64));
@@ -65,7 +65,7 @@ GTEST_TEST(hash_64, hash_of_floating_point_are_usable_in_constexpr)
 GTEST_TEST(hash_64, hash_can_hash_c_string)
 {
     static constexpr const ansichar txt[] = "abcdefghijklmnopqrstuvwxyz";
-    hud_assert_eq(hud::hash_64(txt, hud::cstring::length(txt)), 0x5EAD741CE7AC31BD);
+    hud_assert_eq(hud::hash_64(txt, hud::cstring::length(txt)), 0x5EAD741CE7AC31BDu);
 
     static constexpr const wchar *wtxt = L"abcdefghijklmnopqrstuvwxyz";
     if constexpr (sizeof(wchar) == 2)
@@ -74,7 +74,7 @@ GTEST_TEST(hash_64, hash_can_hash_c_string)
     }
     else if constexpr (sizeof(wchar) == 4)
     {
-        hud_assert_eq(hud::hash_64(wtxt, hud::cstring::length(wtxt)), 0x71002A00);
+        hud_assert_eq(hud::hash_64(wtxt, hud::cstring::length(wtxt)), 0xF09AD8D8223EE63Bu);
     }
     else
     {

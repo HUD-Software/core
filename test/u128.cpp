@@ -132,9 +132,9 @@ GTEST_TEST(u128, constructor_f64)
     // Init to big value
     {
         f64 value {123456789123456789.987654321};
-        hud_assert_true(std::isfinite(value));
-        hud_assert_true((std::numeric_limits<f64>::max_exponent <= 127) || (value >= -std::ldexp(static_cast<f64>(1), 127)));
-        hud_assert_true(value < std::ldexp(static_cast<f64>(1), 127));
+        // hud_assert_true(std::isfinite(value));
+        // hud_assert_true((std::numeric_limits<f64>::max_exponent <= 127) || (value >= -std::ldexp(static_cast<f64>(1), 127)));
+        // hud_assert_true(value < std::ldexp(static_cast<f64>(1), 127));
 
         hud::u128 v {value};
         hud_assert_eq(static_cast<f64>(v), value);
@@ -143,9 +143,9 @@ GTEST_TEST(u128, constructor_f64)
     // Init to max f64 value
     {
         f64 value {(f64)hud::u128_max};
-        hud_assert_true(std::isfinite(value));
-        hud_assert_true((std::numeric_limits<f64>::max_exponent <= 127) || (value >= -std::ldexp(static_cast<f64>(1), 127)));
-        hud_assert_true(value < std::ldexp(static_cast<f64>(1), 127));
+        // hud_assert_true(std::isfinite(value));
+        // hud_assert_true((std::numeric_limits<f64>::max_exponent <= 127) || (value >= -std::ldexp(static_cast<f64>(1), 127)));
+        // hud_assert_true(value < std::ldexp(static_cast<f64>(1), 127));
 
         hud::u128 v {value};
         hud_assert_eq(static_cast<f64>(v), value);

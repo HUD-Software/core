@@ -239,6 +239,7 @@ namespace hud
         // MulResultType m = a + b;
         // m *= kMul;
         // return static_cast<uint64_t>(m ^ (m >> (sizeof(m) * 8 / 2)));
+        return 0;
     }
 } // namespace hud
 

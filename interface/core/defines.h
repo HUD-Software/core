@@ -57,6 +57,11 @@
             #endif
         #endif
         #define HD_CORE_DLL
+
+        // Use intrinsics __int128 if __SIZEOF_INT128__ is defined
+        #if defined(__SIZEOF_INT128__)
+            #define HD_INTRINSIC_INT128_SUPPORTED 1
+        #endif
     #else
         #error Unsupported compiler for Linux
     #endif

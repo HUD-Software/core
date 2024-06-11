@@ -1,9 +1,10 @@
+#include <core/minimal.h>
 #include <core/containers/hashmap.h>
 
 namespace hud::details::hashmap
 {
 
-    alignas(16) static constexpr const control_e EMPTY_GROUP[32] {
+    alignas(16) constexpr const control_e EMPTY_GROUP[32] {
         details::hashmap::control_e {0}, // 0
         details::hashmap::control_e {0},
         details::hashmap::control_e {0},

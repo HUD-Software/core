@@ -12,16 +12,16 @@ namespace hud::os::common
         static constexpr ansichar ANSI_NULL_CHARACTER = '\0';
         static constexpr wchar WIDE_NULL_CHARACTER = L'\0';
 
-        /** Check whether the character is a pure ansi character (Always return true). */
+        /** Check whether the character is a pure ansi character. */
         static HD_FORCEINLINE constexpr bool is_pure_ansi([[maybe_unused]] const ansichar character) noexcept
         {
-            return true;
+            return character & 0x80 == 0;
         }
 
         /** Check whether the character is a pure ansi character. */
         static HD_FORCEINLINE constexpr bool is_pure_ansi(const wchar character) noexcept
         {
-            return character <= ansichar_max;
+            return character & 0x80 == 0;
         }
 
         /** Check whether the character is a null character '\0'. */

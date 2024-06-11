@@ -21,9 +21,22 @@ namespace hud::os::common
          * @param string The null-terminated string
          * @return Always return true
          */
-        static HD_FORCEINLINE bool is_pure_ansi([[maybe_unused]] const ansichar *const string) noexcept
+        static HD_FORCEINLINE bool is_pure_ansi([[maybe_unused]] const ansichar *string) noexcept
         {
-            return string != nullptr;
+            if (string == nullptr)
+            {
+                return false;
+            }
+
+            while (!character::is_null(*string))
+            {
+                if (!character::is_pure_ansi(*string))
+                {
+                    return false;
+                }
+                string++;
+            }
+            return true;
         }
 
         /**
