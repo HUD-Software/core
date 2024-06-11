@@ -73,6 +73,20 @@ namespace hud
         {
         }
 
+#if HD_INTRINSIC_INT128_SUPPORTED
+        /** Construct a i128 from __int128. */
+        i128(__int128 value) noexcept
+            : super(value)
+        {
+        }
+
+        /** Construct a i128 from __int128. */
+        i128(unsigned __int128 value) noexcept
+            : super(value)
+        {
+        }
+#endif
+
         /** Retrieves the low part of the i128. */
         [[nodiscard]] constexpr u64 low() const noexcept
         {
@@ -271,6 +285,20 @@ namespace hud
             : super(value)
         {
         }
+
+#if HD_INTRINSIC_INT128_SUPPORTED
+        /** Construct a i128 from __int128. */
+        u128(__int128 value) noexcept
+            : super(value)
+        {
+        }
+
+        /** Construct a i128 from __int128. */
+        u128(unsigned __int128 value) noexcept
+            : super(value)
+        {
+        }
+#endif
 
         /** Retrieves the low part of the u128. */
         [[nodiscard]] constexpr u64 low() const noexcept

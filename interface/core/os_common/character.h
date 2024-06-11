@@ -15,13 +15,13 @@ namespace hud::os::common
         /** Check whether the character is a pure ansi character. */
         static HD_FORCEINLINE constexpr bool is_pure_ansi([[maybe_unused]] const ansichar character) noexcept
         {
-            return character & 0x80 == 0;
+            return (character & 0x80) == 0;
         }
 
         /** Check whether the character is a pure ansi character. */
         static HD_FORCEINLINE constexpr bool is_pure_ansi(const wchar character) noexcept
         {
-            return character & 0x80 == 0;
+            return (character & ~0x7F) == 0;
         }
 
         /** Check whether the character is a null character '\0'. */

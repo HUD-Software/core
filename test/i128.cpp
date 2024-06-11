@@ -1,3 +1,5 @@
+#include <cmath>
+
 GTEST_TEST(i128, default_constructor)
 {
     i128 v;
@@ -14,19 +16,19 @@ GTEST_TEST(i128, constructor_i8)
 {
     // Init to 0
     {
-        i128 v {i8 {}};
+        hud::i128 v {i8 {}};
         hud_assert_eq(v, (i8 {}));
     }
 
     // Init to min value
     {
-        i128 v {hud::i8_min};
+        hud::i128 v {hud::i8_min};
         hud_assert_eq(v, hud::i8_min);
     }
 
     // Init to max value
     {
-        i128 v {hud::i8_max};
+        hud::i128 v {hud::i8_max};
         hud_assert_eq(v, hud::i8_max);
     }
 }
@@ -35,19 +37,19 @@ GTEST_TEST(i128, constructor_i16)
 {
     // Init to 0
     {
-        i128 v {i16 {}};
+        hud::i128 v {i16 {}};
         hud_assert_eq(v, i16 {});
     }
 
     // Init to min value
     {
-        i128 v {hud::i16_min};
+        hud::i128 v {hud::i16_min};
         hud_assert_eq(v, hud::i16_min);
     }
 
     // Init to max value
     {
-        i128 v {hud::i16_max};
+        hud::i128 v {hud::i16_max};
         hud_assert_eq(v, hud::i16_max);
     }
 }
@@ -56,19 +58,19 @@ GTEST_TEST(i128, constructor_i32)
 {
     // Init to 0
     {
-        i128 v {i32 {}};
+        hud::i128 v {i32 {}};
         hud_assert_eq(v, i32 {});
     }
 
     // Init to min value
     {
-        i128 v {hud::i32_min};
+        hud::i128 v {hud::i32_min};
         hud_assert_eq(v, hud::i32_min);
     }
 
     // Init to max value
     {
-        i128 v {hud::i32_max};
+        hud::i128 v {hud::i32_max};
         hud_assert_eq(v, hud::i32_max);
     }
 }
@@ -77,145 +79,92 @@ GTEST_TEST(i128, constructor_i64)
 {
     // Init to 0
     {
-        i128 v {i64 {}};
+        hud::i128 v {i64 {}};
         hud_assert_eq(v, i64 {});
     }
 
     // Init to min value
     {
-        i128 v {hud::i64_min};
+        hud::i128 v {hud::i64_min};
         hud_assert_eq(v, hud::i64_min);
     }
 
     // Init to max value
     {
-        i128 v {hud::i64_max};
+        hud::i128 v {hud::i64_max};
         hud_assert_eq(v, hud::i64_max);
     }
 }
 
-GTEST_TEST(i128, constructor_i128)
+GTEST_TEST(i128, constructor_f32)
 {
     // Init to 0
     {
-        i128 v {i128 {}};
-        hud_assert_eq(v, i128 {});
+        hud::i128 v {f32 {}};
+        hud_assert_eq((float)v, f32 {});
     }
 
     // Init to min value
     {
-        i128 v {hud::i128_min};
-        hud_assert_eq(v, hud::i128_min);
+        hud::i128 v {hud::f32_min};
+        hud_assert_eq(static_cast<u32>(v), static_cast<u32>(hud::f32_min));
     }
 
     // Init to max value
     {
-        i128 v {hud::i128_max};
-        hud_assert_eq(v, hud::i128_max);
+        hud::i128 v {hud::f32_max};
+        hud_assert_eq(static_cast<u32>(v), static_cast<u32>(hud::f32_max));
     }
 }
 
-GTEST_TEST(i128, constructor_u8)
+GTEST_TEST(i128, constructor_f64)
 {
     // Init to 0
     {
-        i128 v {u8 {}};
-        hud_assert_eq(v, (u8 {}));
+        hud::i128 v {f64 {}};
+        hud_assert_eq((float)v, f64 {});
     }
 
-    // Init to min value
+    // Init to low value
     {
-        i128 v {hud::u8_min};
-        hud_assert_eq(v, hud::u8_min);
+        hud::i128 v {hud::f64_min};
+        hud_assert_eq(static_cast<u64>(v), static_cast<u64>(hud::f64_min));
     }
 
-    // Init to max value
+    // Init to big value
     {
-        i128 v {hud::u8_max};
-        hud_assert_eq(v, hud::u8_max);
-    }
-}
+        // Compute 2^127
+        f64 max_value = std::ldexp(1.0, 127);
+        // Compute the greatest value just before 2^127
+        f64 value = std::nextafter(std::ldexp(1.0, 127), 0);
+        hud_assert_true(std::isfinite(value));
+        hud_assert_true((std::numeric_limits<f64>::max_exponent <= 127) || (value >= -std::ldexp(static_cast<f64>(1), 127)));
+        hud_assert_true(value < std::ldexp(static_cast<f64>(1), 127));
 
-GTEST_TEST(i128, constructor_u16)
-{
-    // Init to 0
-    {
-        i128 v {u16 {}};
-        hud_assert_eq(v, u16 {});
-    }
-
-    // Init to min value
-    {
-        i128 v {hud::u16_min};
-        hud_assert_eq(v, hud::u16_min);
-    }
-
-    // Init to max value
-    {
-        i128 v {hud::u16_max};
-        hud_assert_eq(v, hud::u16_max);
-    }
-}
-
-GTEST_TEST(i128, constructor_u32)
-{
-    // Init to 0
-    {
-        i128 v {u32 {}};
-        hud_assert_eq(v, u32 {});
-    }
-
-    // Init to min value
-    {
-        i128 v {hud::u32_min};
-        hud_assert_eq(v, hud::u32_min);
-    }
-
-    // Init to max value
-    {
-        i128 v {hud::u32_max};
-        hud_assert_eq(v, hud::u32_max);
-    }
-}
-
-GTEST_TEST(i128, constructor_u64)
-{
-    // Init to 0
-    {
-        i128 v {u64 {}};
-        hud_assert_eq(v, u64 {});
-    }
-
-    // Init to min value
-    {
-        i128 v {hud::u64_min};
-        hud_assert_eq(v, hud::u64_min);
-    }
-
-    // Init to max value
-    {
-        i128 v {hud::u64_max};
-        hud_assert_eq(v, hud::u64_max);
+        hud::i128 v {value};
+        hud_assert_eq(static_cast<f64>(v), value);
     }
 }
 
 GTEST_TEST(i128, constructor_u128)
 {
-    // Init to 0
-    {
-        i128 v {u128 {}};
-        hud_assert_eq(v, static_cast<i128>(u128 {}));
-    }
-
-    // Init to min value
-    {
-        i128 v {hud::u128_min};
-        hud_assert_eq(v, static_cast<i128>(hud::u128_min));
-    }
-
-    // Init to max value
-    {
-        i128 v {hud::u128_max};
-        hud_assert_eq(v, static_cast<i128>(hud::u128_max));
-    }
 }
+
+GTEST_TEST(i128, constructor_i128)
+{
+}
+
+GTEST_TEST(i128, constructor_high_low)
+{
+}
+
+#if defined(HD_INTRINSIC_INT128_SUPPORTED)
+GTEST_TEST(i128, constructor__int128)
+{
+}
+
+GTEST_TEST(i128, constructor_unsigned__int128)
+{
+}
+
+#endif

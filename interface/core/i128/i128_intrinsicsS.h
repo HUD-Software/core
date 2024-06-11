@@ -37,9 +37,9 @@ namespace hud
          * constexpr and avoids undefined behavior.
          * Compilers like Clang, GCC, and MSVC optimize this operation to a no-op on x86-64 architectures.
          */
-        constexpr i64 bit_cast_to_signed_i64(u64 v)
+        constexpr i64 bit_cast_to_signed_i64(u64 value)
         {
-            return v & (u64 {1} << 63) ? ~static_cast<i64>(~v) : static_cast<i64>(v);
+            return value & (u64 {1} << 63) ? ~static_cast<i64>(~value) : static_cast<i64>(value);
         }
 
         struct alignas(16) i128_intrinsics
@@ -107,13 +107,13 @@ namespace hud
             /** Retrieves the low part of the u64. */
             [[nodiscard]] constexpr u64 low() const noexcept
             {
-                return static_cast<u64>(value_ & ~u64 {0});
+                return bit_cast_to_signed_i64(static_cast<u64>(static_cast<unsigned __int128>(value_) >> 64));
             }
 
             /** Retrieves the high part of the i64. */
             [[nodiscard]] constexpr i64 high() const noexcept
             {
-                return bit_cast_to_signed_i64(static_cast<u64>(static_cast<unsigned __int128>(value_) >> 64));
+                return static_cast<u64>(value_ & ~u64 {0});
             }
 
             /** Cast to bool. */
@@ -288,13 +288,13 @@ namespace hud
             /** Retrieves the low part of the u64. */
             [[nodiscard]] constexpr u64 low() const noexcept
             {
-                return static_cast<u64>(value_ & ~u64 {0});
+                return static_cast<u64>(value_ >> 64);
             }
 
             /** Retrieves the high part of the i64. */
             [[nodiscard]] constexpr u64 high() const noexcept
             {
-                return static_cast<u64>(value_ >> 64);
+                return static_cast<u64>(value_ & ~u64 {0});
             }
 
             /** Cast to bool. */
