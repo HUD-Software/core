@@ -7,11 +7,13 @@
 
 namespace hud
 {
-    class i128;
-    class u128;
+    // class i128;
+    // class u128;
 
     namespace details::i128
     {
+        struct u128_intrinsics;
+
         /**
          * This function converts an unsigned 128-bit integer to a signed 128-bit integer
          * while preserving the underlying binary representation. If the 128th bit (bit 127)
@@ -90,7 +92,7 @@ namespace hud
             }
 
             /** Construct a i128 from i128. */
-            explicit constexpr i128_intrinsics(hud::u128 value) noexcept;
+            explicit constexpr i128_intrinsics(u128_intrinsics value) noexcept;
 
             /** Construct a i128 from f32. */
             i128_intrinsics(f32 value) noexcept
@@ -271,7 +273,10 @@ namespace hud
             }
 
             /** Construct a i128 from i128. */
-            explicit constexpr u128_intrinsics(hud::i128 value) noexcept;
+            explicit constexpr u128_intrinsics(i128_intrinsics value) noexcept
+                : value_(static_cast<unsigned __int128>(value))
+            {
+            }
 
             /** Construct a i128 from f32. */
             constexpr u128_intrinsics(f32 value) noexcept
@@ -403,6 +408,12 @@ namespace hud
         };
 
         using u128_impl = u128_intrinsics;
+
+        constexpr i128_intrinsics::i128_intrinsics(u128_intrinsics value) noexcept
+            : value_(static_cast<__int128>(value))
+        {
+        }
+
     } // namespace details::i128
 } // namespace hud
 

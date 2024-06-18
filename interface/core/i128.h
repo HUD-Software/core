@@ -12,6 +12,7 @@
 #else
     #include "i128/i128_portable.h"
 #endif
+#include "math.h"
 
 namespace hud
 {
@@ -21,83 +22,21 @@ namespace hud
     class alignas(16) i128
         : protected details::i128::i128_impl
     {
+
     private:
+        friend u128;
         using super = details::i128::i128_impl;
 
     public:
-        /** Default constructor. */
-        constexpr i128() = default;
+        using super::super;
 
-        /** Construct a i128 from low and high part. */
-        constexpr i128(i64 high, u64 low) noexcept
-            : super(low, high)
-        {
-        }
-
-        /** Constructor i128 from i32. */
-        constexpr i128(i32 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Constructor i128 from u32. */
-        constexpr i128(u32 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Constructor i128 from i64. */
-        constexpr i128(i64 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Constructor i128 from u64. */
-        constexpr i128(u64 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Constructor i128 from u128. */
+        /** Construct a i128 from u128. */
         explicit constexpr i128(u128 value) noexcept;
 
-        /** Construct a i128 from f32. */
-        i128(f32 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Construct a i128 from f64. */
-        i128(f64 value) noexcept
-            : super(value)
-        {
-        }
-
-#if HD_INTRINSIC_INT128_SUPPORTED
-        /** Construct a i128 from __int128. */
-        i128(__int128 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Construct a i128 from __int128. */
-        i128(unsigned __int128 value) noexcept
-            : super(value)
-        {
-        }
-#endif
-
-        /** Retrieves the low part of the i128. */
-        [[nodiscard]] constexpr u64 low() const noexcept
-        {
-            return super::low();
-        }
-
         /** Retrieves the high part of the i128. */
-        [[nodiscard]] constexpr i64 high() const noexcept
-        {
-            return super::high();
-        }
+        using super::high;
+        /** Retrieves the low part of the i128. */
+        using super::low;
 
         /** Cast to bool. */
         [[nodiscard]] constexpr explicit operator bool() const noexcept
@@ -225,92 +164,25 @@ namespace hud
         return !(left == right);
     }
 
-    static inline constexpr i128 i128_max = i128 {i64_max, u64_max};
-    static inline constexpr i128 i128_min = i128 {i64_min, 0u};
-
     class alignas(16) u128
         : protected details::i128::u128_impl
     {
     private:
+        friend i128;
         using super = details::i128::u128_impl;
 
     public:
-        /** Default constructor. */
-        constexpr u128() = default;
+        using super::super;
 
-        /** Construct a u128 from low and high part. */
-        constexpr u128(u64 high, u64 low) noexcept
-            : super(low, high)
-        {
-        }
-
-        /** Constructor u128 from i32. */
-        constexpr u128(i32 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Constructor u128 from u32. */
-        constexpr u128(u32 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Constructor u128 from i64. */
-        constexpr u128(i64 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Constructor u128 from u64. */
-        constexpr u128(u64 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Constructor u128 from u128. */
         explicit constexpr u128(i128 value) noexcept
-            : super(value)
+            : super(static_cast<super>(value))
         {
         }
 
-        /** Construct a u128 from f32. */
-        u128(f32 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Construct a u128 from f64. */
-        u128(f64 value) noexcept
-            : super(value)
-        {
-        }
-
-#if HD_INTRINSIC_INT128_SUPPORTED
-        /** Construct a i128 from __int128. */
-        u128(__int128 value) noexcept
-            : super(value)
-        {
-        }
-
-        /** Construct a i128 from __int128. */
-        u128(unsigned __int128 value) noexcept
-            : super(value)
-        {
-        }
-#endif
-
-        /** Retrieves the low part of the u128. */
-        [[nodiscard]] constexpr u64 low() const noexcept
-        {
-            return super::low();
-        }
-
-        /** Retrieves the high part of the u128. */
-        [[nodiscard]] constexpr u64 high() const noexcept
-        {
-            return super::high();
-        }
+        /** Retrieves the high part of the i128. */
+        using super::high;
+        /** Retrieves the low part of the i128. */
+        using super::low;
 
         /** Cast to bool. */
         [[nodiscard]] constexpr explicit operator bool() const noexcept
@@ -439,25 +311,13 @@ namespace hud
         return !(left == right);
     }
 
-    static inline constexpr u128 u128_max = u128 {u64_max, u64_max};
-    static inline constexpr u128 u128_min = u128 {u64_min, 0u};
-
-#if HD_INTRINSIC_INT128_SUPPORTED
-    namespace details::i128
+    /** Construct a i128 from u128. */
+    constexpr i128::i128(u128 value) noexcept
+        : super(static_cast<super>(value))
     {
-        /** Construct a i128 from i128. */
-        constexpr i128_intrinsics::i128_intrinsics(hud::u128 value) noexcept
-            : value_(static_cast<__int128>(value))
-        {
-        }
+    }
 
-        constexpr u128_intrinsics::u128_intrinsics(hud::i128 value) noexcept
-            : value_(static_cast<unsigned __int128>(value))
-        {
-        }
-
-    } // namespace details::i128
-#else
+#if !HD_INTRINSIC_INT128_SUPPORTED
     namespace details::i128
     {
         /** Construct a i128 from u128. */
@@ -486,13 +346,28 @@ namespace hud
         {
         }
     } // namespace details::i128
-
 #endif
 
-    constexpr i128::i128(u128 value) noexcept
-        : super(value)
+    static inline constexpr i128 i128_max = i128 {i64_max, u64_max};
+    static inline constexpr i128 i128_min = i128 {i64_min, 0u};
+
+    static inline constexpr u128 u128_max = u128 {u64_max, u64_max};
+    static inline constexpr u128 u128_min = u128 {u64_min, 0u};
+
+    namespace math
     {
-    }
+        template<> struct limits<i128>
+        {
+            static constexpr i128 min {hud::i128_min};
+            static constexpr i128 max {hud::i128_max};
+        };
+
+        template<> struct limits<u128>
+        {
+            static constexpr u128 min {hud::u128_min};
+            static constexpr u128 max {hud::u128_max};
+        };
+    } // namespace math
 
 } // namespace hud
 
