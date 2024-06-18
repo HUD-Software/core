@@ -8,7 +8,7 @@
 #endif
 
 #if HD_INTRINSIC_INT128_SUPPORTED
-    #include "i128/i128_intrinsicsS.h"
+    #include "i128/i128_intrinsics.h"
 #else
     #include "i128/i128_portable.h"
 #endif
