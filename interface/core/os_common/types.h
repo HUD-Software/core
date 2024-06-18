@@ -76,11 +76,23 @@ namespace hud::os::common
         static inline constexpr ansichar ansichar_max = i8_max;
         static inline constexpr ansichar ansichar_min = i8_min;
 
+        // Largest finite f32 value.
         static inline constexpr f32 f32_max = 3.402823466e+38F;
-        static inline constexpr f32 f32_min = 1.175494351e-38F;
+        // Smallest finite f32 value.
+        static inline constexpr f32 f32_min = -f32_max;
+        // Smallest positive normal f32 value.
+        static inline constexpr f32 f32_min_positive = 1.175494351e-38F;
+        // Number of significant digits in base 2.
+        static inline constexpr u32 f32_mantissa_digit = 24;
 
+        // Largest finite f64 value.
         static inline constexpr f64 f64_max = 1.7976931348623158e+308;
-        static inline constexpr f64 f64_min = 2.2250738585072014e-308;
+        // Smallest finite f64 value.
+        static inline constexpr f64 f64_min = -f64_max;
+        // Smallest positive normal f64 value.
+        static inline constexpr f64 f64_min_positive = 2.2250738585072014e-308;
+        // Number of significant digits in base 2.
+        static inline constexpr u32 f64_mantissa_digit = 53;
 
 #if defined(HD_TARGET_32_BITS)
         static inline constexpr uptr uptr_max = u32_max;

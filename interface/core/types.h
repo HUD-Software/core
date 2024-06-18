@@ -52,22 +52,39 @@ namespace hud
     using ptr = types::ptr; // contains pointer types
 
     // Min-Max unsigned common type
+
+    // Highest postive value of a u8
     static inline constexpr u8 u8_max = types::u8_max;
+    // Lowest postive value of a u8
     static inline constexpr u8 u8_min = types::u8_min;
+    // Highest postive value of a u16
     static inline constexpr u16 u16_max = types::u16_max;
+    // Lowest postive value of a u16
     static inline constexpr u16 u16_min = types::u16_min;
+    // Highest postive value of a u32
     static inline constexpr u32 u32_max = types::u32_max;
+    // Lowest postive value of a u32
     static inline constexpr u32 u32_min = types::u32_min;
+    // Highest postive value of a u64
     static inline constexpr u64 u64_max = types::u64_max;
+    // Lowest postive value of a u64
     static inline constexpr u64 u64_min = types::u64_min;
 
+    // Highest postive value of a i8
     static inline constexpr i8 i8_max = types::i8_max;
+    // Lowest negative value of a i8
     static inline constexpr i8 i8_min = types::i8_min;
+    // Highest postive value of a i16
     static inline constexpr i16 i16_max = types::i16_max;
+    // Lowest negative value of a i16
     static inline constexpr i16 i16_min = types::i16_min;
+    // Highest postive value of a i32
     static inline constexpr i32 i32_max = types::i32_max;
+    // Lowest postive value of a i32
     static inline constexpr i32 i32_min = types::i32_min;
+    // Highest postive value of a i64
     static inline constexpr i64 i64_max = types::i64_max;
+    // Lowest postive value of a i64
     static inline constexpr i64 i64_min = types::i64_min;
 
     static inline constexpr ansichar ansichar_max = types::ansichar_max;
@@ -76,11 +93,22 @@ namespace hud
     static inline constexpr wchar wchar_max = types::wchar_max;
     static inline constexpr wchar wchar_min = types::wchar_min;
 
+    // Largest finite f32 value.
     static inline constexpr f32 f32_max = types::f32_max;
+    // Smallest finite f32 value.
     static inline constexpr f32 f32_min = types::f32_min;
-
+    // Smallest positive normal f32 value.
+    static inline constexpr f32 f32_min_positive = types::f32_min_positive;
+    // Number of significant digits in base 2.
+    static inline constexpr u32 f32_mantissa_digit = types::f32_mantissa_digit;
+    // Largest finite f64 value.
     static inline constexpr f64 f64_max = types::f64_max;
+    // Smallest finite f64 value.
     static inline constexpr f64 f64_min = types::f64_min;
+    // Smallest positive normal f64 value.
+    static inline constexpr f64 f64_min_positive = types::f64_min_positive;
+    // Number of significant digits in base 2.
+    static inline constexpr u32 f64_mantissa_digit = types::f32_mantissa_digit;
 
     static inline constexpr uptr uptr_max = types::uptr_max;
     static inline constexpr uptr uptr_min = types::uptr_min;
@@ -187,10 +215,12 @@ static_assert(hud::wchar_max == hud::i32_max, "wchar_max != i32_max");
 static_assert(hud::wchar_min == hud::i32_min, "wchar_max != hud::i32_min");
 #endif
 
-static_assert(hud::f32_max == 3.402823466e+38F, "f32_max!= 3.402823466e+38F");
-static_assert(hud::f32_min == 1.175494351e-38F, "f32_min!= 1.175494351e-38F");
-static_assert(hud::f64_max == 1.7976931348623158e+308, "f64_max!= 1.7976931348623158e+308");
-static_assert(hud::f64_min == 2.2250738585072014e-308, "f64_min!= 2.2250738585072014e-308");
+static_assert(hud::f32_max == 3.402823466e+38F, "f32_max != 3.402823466e+38F");
+static_assert(hud::f32_min == -3.402823466e+38F, "f32_min != -3.402823466e+38F");
+static_assert(hud::f32_min_positive == 1.175494351e-38F, "f32_min_positive != 1.175494351e-38F");
+static_assert(hud::f64_max == 1.7976931348623158e+308, "f64_max != 1.7976931348623158e+308");
+static_assert(hud::f64_min == -1.7976931348623158e+308, "f64_min != -1.7976931348623158e+308");
+static_assert(hud::f64_min_positive == 2.2250738585072014e-308, "f64_min_positive != 2.2250738585072014e-308");
 
 #if defined(HD_TARGET_32_BITS)
 static_assert(hud::iptr_max == 2147483647, "iptr_max!= 2147483647");

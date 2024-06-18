@@ -94,9 +94,11 @@ GTEST_TEST(types, limits)
     hud_assert_eq(hud::wchar_min, std::numeric_limits<wchar>::min());
 
     hud_assert_eq(hud::f32_max, std::numeric_limits<f32>::max());
-    hud_assert_eq(hud::f32_min, std::numeric_limits<f32>::min());
+    hud_assert_eq(hud::f32_min, std::numeric_limits<f32>::lowest());
+    hud_assert_eq(hud::f32_min_positive, std::numeric_limits<f32>::min());
     hud_assert_eq(hud::f64_max, std::numeric_limits<f64>::max());
-    hud_assert_eq(hud::f64_min, std::numeric_limits<f64>::min());
+    hud_assert_eq(hud::f64_min, std::numeric_limits<f64>::lowest());
+    hud_assert_eq(hud::f64_min_positive, std::numeric_limits<f64>::min());
 
     hud_assert_eq(hud::uptr_max, std::numeric_limits<uptr>::max());
     hud_assert_eq(hud::uptr_min, std::numeric_limits<uptr>::min());

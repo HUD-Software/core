@@ -104,15 +104,17 @@ GTEST_TEST(u128, constructor_f32)
         hud_assert_eq((float)v, f32 {});
     }
 
-    // Init to min value
+    // Init to min positive value
     {
-        f64 value = hud::f32_min;
-        // Vérifier que nous ne sommes ni NaN ou infinite
+        f64 value = hud::f32_min_positive;
+        // Check value is not NaN or infinite
         hud_assert_true(std::isfinite(value));
-        // Vérifier que nous sommes un nombre positif
+        // Ensure we are positive
         hud_assert_true(value > -1);
 
         hud::u128 v {hud::f32_min};
+
+        // Cast to u32 because f32_min is the lowest positive value of an f32
         hud_assert_eq(static_cast<u32>(v), static_cast<u32>(value));
     }
 
@@ -122,9 +124,9 @@ GTEST_TEST(u128, constructor_f32)
         f32 value = std::nextafterf(std::numeric_limits<f32>::max(), 0.0);
 
         hud::u128 v {value};
-        // Vérifier que nous ne sommes ni NaN ou infinite
+        // Check value is not NaN or infinite
         hud_assert_true(std::isfinite(value));
-        // Vérifier que nous sommes un nombre positif
+        // Ensure we are positive
         hud_assert_true(value > -1);
 
         hud_assert_eq(static_cast<f32>(v), value);
@@ -139,14 +141,14 @@ GTEST_TEST(u128, constructor_f64)
         hud_assert_eq((float)v, f64 {});
     }
 
-    // Init to low value
+    // Init to min positive value
     {
-        f64 value = hud::f64_min;
-        // Vérifier que nous ne sommes ni NaN ou infinite
+        f64 value = hud::f64_min_positive;
+        // Check value is not NaN or infinite
         hud_assert_true(std::isfinite(value));
-        // Vérifier que nous sommes un nombre positif
-        hud_assert_true(value > (f64)-1);
-        // Vérifier que la valeur est inférieur à 2^128
+        // Ensure we are positive
+        hud_assert_true(value > -1);
+        // Check value is lower than 2^128
         hud_assert_true(value < std::ldexp(static_cast<f64>(1), 128));
 
         hud::u128 v {value};
@@ -158,11 +160,11 @@ GTEST_TEST(u128, constructor_f64)
         // Compute the greatest value just before 2^128
         f64 value = std::nextafter(std::ldexp(1.0, 128), 0.0);
 
-        // Vérifier que nous ne sommes ni NaN ou infinite
+        // Check value is not NaN or infinite
         hud_assert_true(std::isfinite(value));
-        // Vérifier que nous sommes un nombre positif
+        // Ensure we are positive
         hud_assert_true(value > -1);
-        // Vérifier que la valeur est inférieur à 2^128
+        // Check value is lower than 2^128
         hud_assert_true(value < std::ldexp(static_cast<f64>(1), 128));
 
         hud::u128 v {value};
@@ -258,6 +260,24 @@ GTEST_TEST(u128, constructor__int128)
 
 GTEST_TEST(u128, constructor_unsigned__int128)
 {
+    // Init to 0
+    {
+        unsigned __int128 value {0};
+        hud::u128 v {value};
+        hud_assert_eq(v, static_cast<hud::u128>(hud::i128 {0}));
+    }
+
+    // Init to min value
+    {
+        hud::u128 v {hud::i128_min};
+        hud_assert_eq(v, static_cast<hud::u128>(hud::i128_min));
+    }
+
+    // Init to max value
+    {
+        hud::u128 v {hud::i128_max};
+        hud_assert_eq(v, static_cast<hud::u128>(hud::i128_max));
+    }
 }
 
 #endif
