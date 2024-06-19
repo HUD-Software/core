@@ -545,6 +545,27 @@ namespace hud
                 return intrinsic_value_;
             }
 
+            /** Logical OR */
+            constexpr u128_intrinsics &operator|=(u128_intrinsics right)
+            {
+                intrinsic_value_ |= right.intrinsic_value_;
+                return *this;
+            }
+
+            /** Logical AND */
+            constexpr u128_intrinsics &operator&=(u128_intrinsics right)
+            {
+                intrinsic_value_ &= right.intrinsic_value_;
+                return *this;
+            }
+
+            /** Logical XOR */
+            constexpr u128_intrinsics &operator^=(u128_intrinsics right)
+            {
+                intrinsic_value_ ^= right.intrinsic_value_;
+                return *this;
+            }
+
             unsigned __int128 intrinsic_value_;
         };
 
