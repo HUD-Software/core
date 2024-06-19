@@ -8,9 +8,6 @@
 
 namespace hud
 {
-    // class i128;
-    // class u128;
-
     namespace details::i128
     {
         struct u128_intrinsics;
@@ -52,43 +49,43 @@ namespace hud
 
             /** Construct a i128 from low and high part. */
             constexpr i128_intrinsics(i64 high, u64 low) noexcept
-                : value_ {bit_cast_to_signed_int128(static_cast<unsigned __int128>(high) << 64 | low)}
+                : intrinsic_value_ {bit_cast_to_signed_int128(static_cast<unsigned __int128>(high) << 64 | low)}
             {
             }
 
             /** Construct a i128 from i32. */
             constexpr i128_intrinsics(i32 value) noexcept
-                : value_ {value}
+                : intrinsic_value_ {value}
             {
             }
 
             /** Construct a i128 from u32. */
             constexpr i128_intrinsics(u32 value) noexcept
-                : value_ {value}
+                : intrinsic_value_ {value}
             {
             }
 
             /** Construct a i128 from i64. */
             constexpr i128_intrinsics(i64 value) noexcept
-                : value_ {value}
+                : intrinsic_value_ {value}
             {
             }
 
             /** Construct a i128 from u64. */
             constexpr i128_intrinsics(u64 value) noexcept
-                : value_ {value}
+                : intrinsic_value_ {value}
             {
             }
 
             /** Construct a i128 from __int128. */
             constexpr i128_intrinsics(__int128 value) noexcept
-                : value_ {value}
+                : intrinsic_value_ {value}
             {
             }
 
             /** Construct a i128 from __int128. */
             constexpr i128_intrinsics(unsigned __int128 value) noexcept
-                : value_ {static_cast<__int128>(value)}
+                : intrinsic_value_ {static_cast<__int128>(value)}
             {
             }
 
@@ -97,131 +94,131 @@ namespace hud
 
             /** Construct a i128 from f32. */
             constexpr i128_intrinsics(f32 value) noexcept
-                : value_ {static_cast<__int128>(value)}
+                : intrinsic_value_ {static_cast<__int128>(value)}
             {
             }
 
             /** Construct a i128 from f64. */
             constexpr i128_intrinsics(f64 value) noexcept
-                : value_ {static_cast<__int128>(value)}
+                : intrinsic_value_ {static_cast<__int128>(value)}
             {
             }
 
             /** Retrieves the low part of the u64. */
             [[nodiscard]] constexpr u64 low() const noexcept
             {
-                return static_cast<u64>(value_ & ~u64 {0});
+                return static_cast<u64>(intrinsic_value_ & ~u64 {0});
             }
 
             /** Retrieves the high part of the i64. */
             [[nodiscard]] constexpr i64 high() const noexcept
             {
-                return bit_cast_to_signed_i64(static_cast<u64>(static_cast<unsigned __int128>(value_) >> 64));
+                return bit_cast_to_signed_i64(static_cast<u64>(static_cast<unsigned __int128>(intrinsic_value_) >> 64));
             }
 
             /** Cast to bool. */
             [[nodiscard]] explicit constexpr operator bool() const noexcept
             {
-                return value_ != 0u;
+                return intrinsic_value_ != 0u;
             }
 
             /** Cast to i8. */
             [[nodiscard]] explicit constexpr operator i8() const noexcept
             {
-                return static_cast<i8>(value_);
+                return static_cast<i8>(intrinsic_value_);
             }
 
             /** Cast to u8. */
             [[nodiscard]] explicit constexpr operator u8() const noexcept
             {
-                return static_cast<u8>(value_);
+                return static_cast<u8>(intrinsic_value_);
             }
 
             /** Cast to i16. */
             [[nodiscard]] explicit constexpr operator i16() const noexcept
             {
-                return static_cast<i16>(value_);
+                return static_cast<i16>(intrinsic_value_);
             }
 
             /** Cast to u16. */
             [[nodiscard]] explicit constexpr operator u16() const noexcept
             {
-                return static_cast<u16>(value_);
+                return static_cast<u16>(intrinsic_value_);
             }
 
             /** Cast to i32. */
             [[nodiscard]] explicit constexpr operator i32() const noexcept
             {
-                return static_cast<i32>(value_);
+                return static_cast<i32>(intrinsic_value_);
             }
 
             /** Cast to u32. */
             [[nodiscard]] explicit constexpr operator u32() const noexcept
             {
-                return static_cast<u32>(value_);
+                return static_cast<u32>(intrinsic_value_);
             }
 
             /** Cast to i64. */
             [[nodiscard]] explicit constexpr operator i64() const noexcept
             {
-                return static_cast<i64>(value_);
+                return static_cast<i64>(intrinsic_value_);
             }
 
             /** Cast to u64. */
             [[nodiscard]] explicit constexpr operator u64() const noexcept
             {
-                return value_;
+                return intrinsic_value_;
             }
 
             /** Cast to ansichar. */
             [[nodiscard]] explicit constexpr operator ansichar() const noexcept
             {
-                return static_cast<ansichar>(value_);
+                return static_cast<ansichar>(intrinsic_value_);
             }
 
             /** Cast to wchar. */
             [[nodiscard]] explicit constexpr operator wchar() const noexcept
             {
-                return static_cast<wchar>(value_);
+                return static_cast<wchar>(intrinsic_value_);
             }
 
             /** Cast to char16. */
             [[nodiscard]] explicit constexpr operator char16() const noexcept
             {
-                return static_cast<char16>(value_);
+                return static_cast<char16>(intrinsic_value_);
             }
 
             /** Cast to char32. */
             [[nodiscard]] explicit constexpr operator char32() const noexcept
             {
-                return static_cast<char32>(value_);
+                return static_cast<char32>(intrinsic_value_);
             }
 
             /** Cast to f32. */
             [[nodiscard]] explicit constexpr operator f32() const noexcept
             {
-                return static_cast<f32>(value_);
+                return static_cast<f32>(intrinsic_value_);
             }
 
             /** Cast to f64. */
             [[nodiscard]] explicit constexpr operator f64() const noexcept
             {
-                return static_cast<f64>(value_);
+                return static_cast<f64>(intrinsic_value_);
             }
 
             /** Cast to __int128. */
             [[nodiscard]] explicit constexpr operator __int128() const noexcept
             {
-                return value_;
+                return intrinsic_value_;
             }
 
             /** Cast to unsigned __int128. */
             [[nodiscard]] explicit constexpr operator unsigned __int128() const noexcept
             {
-                return static_cast<unsigned __int128>(value_);
+                return static_cast<unsigned __int128>(intrinsic_value_);
             }
 
-            __int128 value_;
+            __int128 intrinsic_value_;
         };
 
         /**
@@ -230,9 +227,9 @@ namespace hud
          * @param right The right i128_intrinsics to compare
          * @param true if right and left i128_intrinsics are equal, false otherwise
          */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const i128_intrinsics &left, const i128_intrinsics &right) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(i128_intrinsics left, i128_intrinsics right) noexcept
         {
-            return left.value_ == right.value_;
+            return left.intrinsic_value_ == right.intrinsic_value_;
         }
 
         /**
@@ -241,9 +238,9 @@ namespace hud
          * @param right The right i128_intrinsics to compare
          * @param true if right and left i128_intrinsics are not equal, false otherwise
          */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const i128_intrinsics &left, const i128_intrinsics &right) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(i128_intrinsics left, i128_intrinsics right) noexcept
         {
-            return left.value_ != right.value_;
+            return left.intrinsic_value_ != right.intrinsic_value_;
         }
 
         /**
@@ -252,9 +249,9 @@ namespace hud
          * @param right The right i128_intrinsics to compare
          * @param true if left is less than right, false otherwise
          */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(const i128_intrinsics &left, const i128_intrinsics &right) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(i128_intrinsics left, i128_intrinsics right) noexcept
         {
-            return left.value_ < right.value_;
+            return left.intrinsic_value_ < right.intrinsic_value_;
         }
 
         /**
@@ -263,9 +260,9 @@ namespace hud
          * @param right The right i128_intrinsics to compare
          * @param true if left is less or equal than right, false otherwise
          */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(const i128_intrinsics &left, const i128_intrinsics &right) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(i128_intrinsics left, i128_intrinsics right) noexcept
         {
-            return left.value_ <= right.value_;
+            return left.intrinsic_value_ <= right.intrinsic_value_;
         }
 
         /**
@@ -274,9 +271,9 @@ namespace hud
          * @param right The right i128_intrinsics to compare
          * @param true if left is greater than right, false otherwise
          */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(const i128_intrinsics &left, const i128_intrinsics &right) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(i128_intrinsics left, i128_intrinsics right) noexcept
         {
-            return left.value_ > right.value_;
+            return left.intrinsic_value_ > right.intrinsic_value_;
         }
 
         /**
@@ -285,9 +282,39 @@ namespace hud
          * @param right The right i128_intrinsics to compare
          * @param true if left is greater or equal than right, false otherwise
          */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(const i128_intrinsics &left, const i128_intrinsics &right) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(i128_intrinsics left, i128_intrinsics right) noexcept
         {
-            return left.value_ >= right.value_;
+            return left.intrinsic_value_ >= right.intrinsic_value_;
+        }
+
+        /** Add left to right and return the result. */
+        [[nodiscard]] constexpr i128_intrinsics operator+(i128_intrinsics left, i128_intrinsics right)
+        {
+            return left.intrinsic_value_ + right.intrinsic_value_;
+        }
+
+        /** Subtract rght to left and return the result. */
+        [[nodiscard]] constexpr i128_intrinsics operator-(i128_intrinsics left, i128_intrinsics right)
+        {
+            return left.intrinsic_value_ - right.intrinsic_value_;
+        }
+
+        /** Multiply left to right and return the result. */
+        [[nodiscard]] constexpr i128_intrinsics operator*(i128_intrinsics left, i128_intrinsics right)
+        {
+            return left.intrinsic_value_ * right.intrinsic_value_;
+        }
+
+        /** Divide left to right and return the result. */
+        [[nodiscard]] constexpr i128_intrinsics operator/(i128_intrinsics left, i128_intrinsics right)
+        {
+            return left.intrinsic_value_ / right.intrinsic_value_;
+        }
+
+        /** Retrieves the remainder of left divided by right and returns the result. */
+        [[nodiscard]] constexpr i128_intrinsics operator%(i128_intrinsics left, i128_intrinsics right)
+        {
+            return left.intrinsic_value_ % right.intrinsic_value_;
         }
 
         using i128_impl = i128_intrinsics;
@@ -299,49 +326,49 @@ namespace hud
 
             /** Construct a u128 from low and high part. */
             constexpr u128_intrinsics(u64 high, u64 low) noexcept
-                : value_ {static_cast<unsigned __int128>(high) << 64 | low}
+                : intrinsic_value_ {static_cast<unsigned __int128>(high) << 64 | low}
             {
             }
 
             /** Construct a i128 from i32. */
             constexpr u128_intrinsics(i32 value) noexcept
-                : value_ {static_cast<unsigned __int128>(value)}
+                : intrinsic_value_ {static_cast<unsigned __int128>(value)}
             {
             }
 
             /** Construct a i128 from u32. */
             constexpr u128_intrinsics(u32 value) noexcept
-                : value_ {value}
+                : intrinsic_value_ {value}
             {
             }
 
             /** Construct a i128 from i64. */
             constexpr u128_intrinsics(i64 value) noexcept
-                : value_ {static_cast<unsigned __int128>(value)}
+                : intrinsic_value_ {static_cast<unsigned __int128>(value)}
             {
             }
 
             /** Construct a i128 from u64. */
             constexpr u128_intrinsics(u64 value) noexcept
-                : value_ {value}
+                : intrinsic_value_ {value}
             {
             }
 
             /** Construct a i128 from __int128. */
             constexpr u128_intrinsics(__int128 value) noexcept
-                : value_ {static_cast<unsigned __int128>(value)}
+                : intrinsic_value_ {static_cast<unsigned __int128>(value)}
             {
             }
 
             /** Construct a i128 from __int128. */
             constexpr u128_intrinsics(unsigned __int128 value) noexcept
-                : value_ {value}
+                : intrinsic_value_ {value}
             {
             }
 
             /** Construct a i128 from i128. */
             explicit constexpr u128_intrinsics(i128_intrinsics value) noexcept
-                : value_ {static_cast<unsigned __int128>(value)}
+                : intrinsic_value_ {static_cast<unsigned __int128>(value)}
             {
             }
 
@@ -352,7 +379,7 @@ namespace hud
                 hud::check(hud::math::is_finite(value));
                 // Ensure we are positive
                 hud::check(value > -1);
-                value_ = static_cast<unsigned __int128>(value);
+                intrinsic_value_ = static_cast<unsigned __int128>(value);
             }
 
             /** Construct a i128 from f64. */
@@ -364,125 +391,125 @@ namespace hud
                 hud::check(value > -1);
                 // Check value is lower than 2^128
                 hud::check(value < hud::math::ldexp(static_cast<f64>(1), 128));
-                value_ = static_cast<unsigned __int128>(value);
+                intrinsic_value_ = static_cast<unsigned __int128>(value);
             }
 
             ///////////////////////////
             /** Retrieves the low part of the u64. */
             [[nodiscard]] constexpr u64 low() const noexcept
             {
-                return static_cast<u64>(value_ & ~u64 {0});
+                return static_cast<u64>(intrinsic_value_ & ~u64 {0});
             }
 
             /** Retrieves the high part of the i64. */
             [[nodiscard]] constexpr u64 high() const noexcept
             {
-                return static_cast<u64>(value_ >> 64);
+                return static_cast<u64>(intrinsic_value_ >> 64);
             }
 
             /** Cast to bool. */
             [[nodiscard]] explicit constexpr operator bool() const noexcept
             {
-                return value_ != 0u;
+                return intrinsic_value_ != 0u;
             }
 
             /** Cast to i8. */
             [[nodiscard]] explicit constexpr operator i8() const noexcept
             {
-                return static_cast<i8>(value_);
+                return static_cast<i8>(intrinsic_value_);
             }
 
             /** Cast to u8. */
             [[nodiscard]] explicit constexpr operator u8() const noexcept
             {
-                return static_cast<u8>(value_);
+                return static_cast<u8>(intrinsic_value_);
             }
 
             /** Cast to i16. */
             [[nodiscard]] explicit constexpr operator i16() const noexcept
             {
-                return static_cast<i16>(value_);
+                return static_cast<i16>(intrinsic_value_);
             }
 
             /** Cast to u16. */
             [[nodiscard]] explicit constexpr operator u16() const noexcept
             {
-                return static_cast<u16>(value_);
+                return static_cast<u16>(intrinsic_value_);
             }
 
             /** Cast to i32. */
             [[nodiscard]] explicit constexpr operator i32() const noexcept
             {
-                return static_cast<i32>(value_);
+                return static_cast<i32>(intrinsic_value_);
             }
 
             /** Cast to u32. */
             [[nodiscard]] explicit constexpr operator u32() const noexcept
             {
-                return static_cast<u32>(value_);
+                return static_cast<u32>(intrinsic_value_);
             }
 
             /** Cast to i64. */
             [[nodiscard]] explicit constexpr operator i64() const noexcept
             {
-                return static_cast<i64>(value_);
+                return static_cast<i64>(intrinsic_value_);
             }
 
             /** Cast to u64. */
             [[nodiscard]] explicit constexpr operator u64() const noexcept
             {
-                return value_;
+                return intrinsic_value_;
             }
 
             /** Cast to ansichar. */
             [[nodiscard]] explicit constexpr operator ansichar() const noexcept
             {
-                return static_cast<ansichar>(value_);
+                return static_cast<ansichar>(intrinsic_value_);
             }
 
             /** Cast to wchar. */
             [[nodiscard]] explicit constexpr operator wchar() const noexcept
             {
-                return static_cast<wchar>(value_);
+                return static_cast<wchar>(intrinsic_value_);
             }
 
             /** Cast to char16. */
             [[nodiscard]] explicit constexpr operator char16() const noexcept
             {
-                return static_cast<char16>(value_);
+                return static_cast<char16>(intrinsic_value_);
             }
 
             /** Cast to char32. */
             [[nodiscard]] explicit constexpr operator char32() const noexcept
             {
-                return static_cast<char32>(value_);
+                return static_cast<char32>(intrinsic_value_);
             }
 
             /** Cast to f32. */
             [[nodiscard]] explicit constexpr operator f32() const noexcept
             {
-                return static_cast<f32>(value_);
+                return static_cast<f32>(intrinsic_value_);
             }
 
             /** Cast to f64. */
             [[nodiscard]] explicit constexpr operator f64() const noexcept
             {
-                return static_cast<f64>(value_);
+                return static_cast<f64>(intrinsic_value_);
             }
 
             /** Cast to __int128. */
             [[nodiscard]] explicit constexpr operator __int128() const noexcept
             {
-                return bit_cast_to_signed_int128(static_cast<__int128>(value_));
+                return bit_cast_to_signed_int128(static_cast<__int128>(intrinsic_value_));
             }
 
             /** Cast to unsigned __int128. */
             [[nodiscard]] explicit constexpr operator unsigned __int128() const noexcept
             {
-                return value_;
+                return intrinsic_value_;
             }
 
-            unsigned __int128 value_;
+            unsigned __int128 intrinsic_value_;
         };
 
         /**
@@ -491,9 +518,9 @@ namespace hud
          * @param right The right u128_intrinsics to compare
          * @param true if right and left u128_intrinsics are equal, false otherwise
          */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const u128_intrinsics &left, const u128_intrinsics &right) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(u128_intrinsics left, u128_intrinsics right) noexcept
         {
-            return left.value_ == right.value_;
+            return left.intrinsic_value_ == right.intrinsic_value_;
         }
 
         /**
@@ -502,9 +529,9 @@ namespace hud
          * @param right The right u128_intrinsics to compare
          * @param true if right and left u128_intrinsics are not equal, false otherwise
          */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const i128_intrinsics &left, const u128_intrinsics &right) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(i128_intrinsics left, u128_intrinsics right) noexcept
         {
-            return left.value_ != right.value_;
+            return left.intrinsic_value_ != right.intrinsic_value_;
         }
 
         /**
@@ -513,9 +540,9 @@ namespace hud
          * @param right The right u128_intrinsics to compare
          * @param true if left is less than right, false otherwise
          */
-        [[nodiscard]] constexpr bool operator<(const u128_intrinsics &left, const u128_intrinsics &right) noexcept
+        [[nodiscard]] constexpr bool operator<(u128_intrinsics left, const u128_intrinsics right) noexcept
         {
-            return left.value_ < right.value_;
+            return left.intrinsic_value_ < right.intrinsic_value_;
         }
 
         /**
@@ -524,9 +551,9 @@ namespace hud
          * @param right The right u128_intrinsics to compare
          * @param true if left is less or equal than right, false otherwise
          */
-        [[nodiscard]] constexpr bool operator<=(const u128_intrinsics &left, const u128_intrinsics &right) noexcept
+        [[nodiscard]] constexpr bool operator<=(u128_intrinsics left, u128_intrinsics right) noexcept
         {
-            return left.value_ <= right.value_;
+            return left.intrinsic_value_ <= right.intrinsic_value_;
         }
 
         /**
@@ -535,9 +562,9 @@ namespace hud
          * @param right The right u128_intrinsics to compare
          * @param true if left is greater than right, false otherwise
          */
-        [[nodiscard]] constexpr bool operator>(const u128_intrinsics &left, const u128_intrinsics &right) noexcept
+        [[nodiscard]] constexpr bool operator>(u128_intrinsics left, u128_intrinsics right) noexcept
         {
-            return left.value_ > right.value_;
+            return left.intrinsic_value_ > right.intrinsic_value_;
         }
 
         /**
@@ -546,15 +573,45 @@ namespace hud
          * @param right The right u128_intrinsics to compare
          * @param true if left is greater or equal than right, false otherwise
          */
-        [[nodiscard]] constexpr bool operator>=(const u128_intrinsics &left, const u128_intrinsics &right) noexcept
+        [[nodiscard]] constexpr bool operator>=(u128_intrinsics left, u128_intrinsics right) noexcept
         {
-            return left.value_ >= right.value_;
+            return left.intrinsic_value_ >= right.intrinsic_value_;
+        }
+
+        /** Add left to right and return the result. */
+        [[nodiscard]] constexpr u128_intrinsics operator+(u128_intrinsics left, u128_intrinsics right)
+        {
+            return left.intrinsic_value_ + right.intrinsic_value_;
+        }
+
+        /** Subtract rght to left and return the result. */
+        [[nodiscard]] constexpr u128_intrinsics operator-(u128_intrinsics left, u128_intrinsics right)
+        {
+            return left.intrinsic_value_ - right.intrinsic_value_;
+        }
+
+        /** Multiply left to right and return the result. */
+        [[nodiscard]] constexpr u128_intrinsics operator*(u128_intrinsics left, u128_intrinsics right)
+        {
+            return left.intrinsic_value_ * right.intrinsic_value_;
+        }
+
+        /** Divide left to right and return the result. */
+        [[nodiscard]] constexpr u128_intrinsics operator/(u128_intrinsics left, u128_intrinsics right)
+        {
+            return left.intrinsic_value_ / right.intrinsic_value_;
+        }
+
+        /** Retrieves the remainder of left divided by right and returns the result. */
+        [[nodiscard]] constexpr u128_intrinsics operator%(u128_intrinsics left, u128_intrinsics right)
+        {
+            return left.intrinsic_value_ % right.intrinsic_value_;
         }
 
         using u128_impl = u128_intrinsics;
 
         constexpr i128_intrinsics::i128_intrinsics(u128_intrinsics value) noexcept
-            : value_(static_cast<__int128>(value))
+            : intrinsic_value_(static_cast<__int128>(value))
         {
         }
 

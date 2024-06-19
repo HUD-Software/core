@@ -25,117 +25,188 @@ namespace hud
         : public details::i128::i128_impl
     {
     private:
-        using super = details::i128::i128_impl;
+        using i128_impl = details::i128::i128_impl;
 
     public:
-        using super::super;
+        using i128_impl::i128_impl;
 
         /** Construct a i128 from u128. */
         constexpr i128(u128 value) noexcept;
 
         /** Retrieves the high part of the i128. */
-        using super::high;
+        using i128_impl::high;
         /** Retrieves the low part of the i128. */
-        using super::low;
+        using i128_impl::low;
 
         /** Cast to bool. */
-        using super::operator bool;
+        using i128_impl::operator bool;
         /** Cast to i8. */
-        using super::operator i8;
+        using i128_impl::operator i8;
         /** Cast to u8. */
-        using super::operator u8;
+        using i128_impl::operator u8;
         /** Cast to i16. */
-        using super::operator i16;
+        using i128_impl::operator i16;
         /** Cast to u16. */
-        using super::operator u16;
+        using i128_impl::operator u16;
         /** Cast to i32. */
-        using super::operator i32;
+        using i128_impl::operator i32;
         /** Cast to u32. */
-        using super::operator u32;
+        using i128_impl::operator u32;
         /** Cast to i64. */
-        using super::operator i64;
+        using i128_impl::operator i64;
         /** Cast to u64. */
-        using super::operator u64;
+        using i128_impl::operator u64;
         /** Cast to ansichar. */
-        using super::operator ansichar;
+        using i128_impl::operator ansichar;
         /** Cast to wchar. */
-        using super::operator wchar;
+        using i128_impl::operator wchar;
         /** Cast to char16. */
-        using super::operator char16;
+        using i128_impl::operator char16;
         /** Cast to char32. */
-        using super::operator char32;
+        using i128_impl::operator char32;
         /** Cast to f32. */
-        using super::operator f32;
+        using i128_impl::operator f32;
         /** Cast to f64. */
-        using super::operator f64;
+        using i128_impl::operator f64;
 #if HD_INTRINSIC_INT128_SUPPORTED
         /** Cast to __int128. */
-        using super::operator __int128;
+        using i128_impl::operator __int128;
         /** Cast to unsigned __int128. */
-        using super::operator unsigned __int128;
+        using i128_impl::operator unsigned __int128;
 #endif
+        /** Add left to right and return the result. */
+        [[nodiscard]] constexpr i128 operator+(i128 right)
+        {
+            return static_cast<i128_impl>(*this) + static_cast<i128_impl>(right);
+        }
+
+        /** Subtract rght to left and return the result. */
+        [[nodiscard]] constexpr i128 operator-(i128 right)
+        {
+            return static_cast<i128_impl>(*this) - static_cast<i128_impl>(right);
+        }
+
+        /** Multiply left to right and return the result. */
+        [[nodiscard]] constexpr i128 operator*(i128 right)
+        {
+            return static_cast<i128_impl>(*this) * static_cast<i128_impl>(right);
+        }
+
+        /** Divide left to right and return the result. */
+        [[nodiscard]] constexpr i128 operator/(i128 right)
+        {
+            return static_cast<i128_impl>(*this) / static_cast<i128_impl>(right);
+        }
+
+        /** Retrieves the remainder of left divided by right and returns the result. */
+        [[nodiscard]] constexpr i128 operator%(i128 right)
+        {
+            return static_cast<i128_impl>(*this) % static_cast<i128_impl>(right);
+        }
+
+    private:
+        constexpr i128(i128_impl impl) noexcept
+            : i128_impl(impl)
+        {
+        }
     };
 
     class alignas(16) u128
         : public details::i128::u128_impl
     {
     private:
-        using super = details::i128::u128_impl;
+        using u128_impl = details::i128::u128_impl;
 
     public:
-        using super::super;
+        using u128_impl::u128_impl;
 
         constexpr u128(i128 value) noexcept
-            : super(static_cast<super>(value))
+            : u128_impl(static_cast<u128_impl>(value))
         {
         }
 
         /** Retrieves the high part of the i128. */
-        using super::high;
+        using u128_impl::high;
         /** Retrieves the low part of the i128. */
-        using super::low;
+        using u128_impl::low;
 
         /** Cast to bool. */
-        using super::operator bool;
+        using u128_impl::operator bool;
         /** Cast to i8. */
-        using super::operator i8;
+        using u128_impl::operator i8;
         /** Cast to u8. */
-        using super::operator u8;
+        using u128_impl::operator u8;
         /** Cast to i16. */
-        using super::operator i16;
+        using u128_impl::operator i16;
         /** Cast to u16. */
-        using super::operator u16;
+        using u128_impl::operator u16;
         /** Cast to i32. */
-        using super::operator i32;
+        using u128_impl::operator i32;
         /** Cast to u32. */
-        using super::operator u32;
+        using u128_impl::operator u32;
         /** Cast to i64. */
-        using super::operator i64;
+        using u128_impl::operator i64;
         /** Cast to u64. */
-        using super::operator u64;
+        using u128_impl::operator u64;
         /** Cast to ansichar. */
-        using super::operator ansichar;
+        using u128_impl::operator ansichar;
         /** Cast to wchar. */
-        using super::operator wchar;
+        using u128_impl::operator wchar;
         /** Cast to char16. */
-        using super::operator char16;
+        using u128_impl::operator char16;
         /** Cast to char32. */
-        using super::operator char32;
+        using u128_impl::operator char32;
         /** Cast to f32. */
-        using super::operator f32;
+        using u128_impl::operator f32;
         /** Cast to f64. */
-        using super::operator f64;
+        using u128_impl::operator f64;
 #if HD_INTRINSIC_INT128_SUPPORTED
         /** Cast to __int128. */
-        using super::operator __int128;
+        using u128_impl::operator __int128;
         /** Cast to unsigned __int128. */
-        using super::operator unsigned __int128;
+        using u128_impl::operator unsigned __int128;
 #endif
+
+        /** Add left to right and return the result. */
+        [[nodiscard]] constexpr u128 operator+(u128 right)
+        {
+            return static_cast<u128_impl>(*this) + static_cast<u128_impl>(right);
+        }
+
+        /** Subtract rght to left and return the result. */
+        [[nodiscard]] constexpr u128 operator-(u128 right)
+        {
+            return static_cast<u128_impl>(*this) - static_cast<u128_impl>(right);
+        }
+
+        /** Multiply left to right and return the result. */
+        [[nodiscard]] constexpr u128 operator*(u128 right)
+        {
+            return static_cast<u128_impl>(*this) * static_cast<u128_impl>(right);
+        }
+
+        /** Divide left to right and return the result. */
+        [[nodiscard]] constexpr u128 operator/(u128 right)
+        {
+            return static_cast<u128_impl>(*this) / static_cast<u128_impl>(right);
+        }
+
+        /** Retrieves the remainder of left divided by right and returns the result. */
+        [[nodiscard]] constexpr u128 operator%(u128 right)
+        {
+            return static_cast<u128_impl>(*this) % static_cast<u128_impl>(right);
+        }
+
+    private:
+        constexpr u128(u128_impl s) noexcept
+            : u128_impl(s)
+        {
+        }
     };
 
     /** Construct a i128 from u128. */
     constexpr i128::i128(u128 value) noexcept
-        : super(static_cast<super>(value))
+        : i128_impl(static_cast<i128_impl>(value))
     {
     }
 
