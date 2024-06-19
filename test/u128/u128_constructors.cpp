@@ -106,13 +106,8 @@ GTEST_TEST(u128, constructor_f32)
 
     // Init to min positive value
     {
-        f64 value = hud::f32_min_positive;
-        // Check value is not NaN or infinite
-        hud_assert_true(std::isfinite(value));
-        // Ensure we are positive
-        hud_assert_true(value > -1);
-
-        hud::u128 v {hud::f32_min};
+        f32 value = hud::f32_min_positive;
+        hud::u128 v {value};
 
         // Cast to u32 because f32_min is the lowest positive value of an f32
         hud_assert_eq(static_cast<u32>(v), static_cast<u32>(value));
@@ -122,12 +117,7 @@ GTEST_TEST(u128, constructor_f32)
     {
         // Compute the greatest value just before 2^128
         f32 value = std::nextafterf(std::numeric_limits<f32>::max(), 0.0);
-
         hud::u128 v {value};
-        // Check value is not NaN or infinite
-        hud_assert_true(std::isfinite(value));
-        // Ensure we are positive
-        hud_assert_true(value > -1);
 
         hud_assert_eq(static_cast<f32>(v), value);
     }
@@ -144,29 +134,14 @@ GTEST_TEST(u128, constructor_f64)
     // Init to min positive value
     {
         f64 value = hud::f64_min_positive;
-        // Check value is not NaN or infinite
-        hud_assert_true(std::isfinite(value));
-        // Ensure we are positive
-        hud_assert_true(value > -1);
-        // Check value is lower than 2^128
-        hud_assert_true(value < std::ldexp(static_cast<f64>(1), 128));
-
         hud::u128 v {value};
-        hud_assert_eq(static_cast<u64>(v), static_cast<u64>(hud::f64_min));
+        hud_assert_eq(static_cast<u64>(v), static_cast<u64>(hud::f64_min_positive));
     }
 
     // Init to big value
     {
         // Compute the greatest value just before 2^128
         f64 value = std::nextafter(std::ldexp(1.0, 128), 0.0);
-
-        // Check value is not NaN or infinite
-        hud_assert_true(std::isfinite(value));
-        // Ensure we are positive
-        hud_assert_true(value > -1);
-        // Check value is lower than 2^128
-        hud_assert_true(value < std::ldexp(static_cast<f64>(1), 128));
-
         hud::u128 v {value};
         hud_assert_eq(static_cast<f64>(v), value);
     }

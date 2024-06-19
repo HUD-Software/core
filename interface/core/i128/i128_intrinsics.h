@@ -347,17 +347,16 @@ namespace hud
 
             /** Construct a i128 from f32. */
             constexpr u128_intrinsics(f32 value) noexcept
-                : value_ {static_cast<unsigned __int128>(value)}
             {
                 // Check value is not NaN or infinite
                 hud::check(hud::math::is_finite(value));
                 // Ensure we are positive
                 hud::check(value > -1);
+                value_ = static_cast<unsigned __int128>(value);
             }
 
             /** Construct a i128 from f64. */
             constexpr u128_intrinsics(f64 value) noexcept
-                : value_ {static_cast<unsigned __int128>(value)}
             {
                 // Check value is not NaN or infinite
                 hud::check(hud::math::is_finite(value));
@@ -365,6 +364,7 @@ namespace hud
                 hud::check(value > -1);
                 // Check value is lower than 2^128
                 hud::check(value < hud::math::ldexp(static_cast<f64>(1), 128));
+                value_ = static_cast<unsigned __int128>(value);
             }
 
             ///////////////////////////

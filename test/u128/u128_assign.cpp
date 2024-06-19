@@ -141,7 +141,7 @@ GTEST_TEST(u128, assign_f64)
 
         hud::u128 v {hud::u128_max};
         v = value;
-        hud_assert_eq(static_cast<u64>(v), static_cast<u64>(hud::f64_min));
+        hud_assert_eq(static_cast<u64>(v), static_cast<u64>(hud::f64_min_positive));
     }
 
     // Init to big value
