@@ -55,6 +55,8 @@ namespace hud::os::common
         };
 
         // Min-Max unsigned common type
+        static inline constexpr bool bool_max = true;
+        static inline constexpr bool bool_min = false;
         static inline constexpr u8 u8_max = 0xFF;
         static inline constexpr u8 u8_min = 0x00;
         static inline constexpr u16 u16_max = 0xFFFF;

@@ -53,44 +53,50 @@ namespace hud
 
     // Min-Max unsigned common type
 
-    // Highest postive value of a u8
+    // Highest bool value.
+    static inline constexpr bool bool_max = types::u8_max;
+    // Lowest bool value.
+    static inline constexpr bool bool_min = types::u8_min;
+    // Highest positive u8 value.
     static inline constexpr u8 u8_max = types::u8_max;
-    // Lowest postive value of a u8
+    // Lowest positive u8 value.
     static inline constexpr u8 u8_min = types::u8_min;
-    // Highest postive value of a u16
+    // Highest positive u16 value.
     static inline constexpr u16 u16_max = types::u16_max;
-    // Lowest postive value of a u16
+    // Lowest positive u16 value.
     static inline constexpr u16 u16_min = types::u16_min;
-    // Highest postive value of a u32
+    // Highest positive u32 value.
     static inline constexpr u32 u32_max = types::u32_max;
-    // Lowest postive value of a u32
+    // Lowest positive u32 value.
     static inline constexpr u32 u32_min = types::u32_min;
-    // Highest postive value of a u64
+    // Highest positive u64 value.
     static inline constexpr u64 u64_max = types::u64_max;
-    // Lowest postive value of a u64
+    // Lowest positive u64 value.
     static inline constexpr u64 u64_min = types::u64_min;
 
-    // Highest postive value of a i8
+    // Highest positive i8 value.
     static inline constexpr i8 i8_max = types::i8_max;
-    // Lowest negative value of a i8
+    // Lowest negative i8 value.
     static inline constexpr i8 i8_min = types::i8_min;
-    // Highest postive value of a i16
+    // Highest positive i16 value.
     static inline constexpr i16 i16_max = types::i16_max;
-    // Lowest negative value of a i16
+    // Lowest negative i16 value.
     static inline constexpr i16 i16_min = types::i16_min;
-    // Highest postive value of a i32
+    // Highest positive i32 value.
     static inline constexpr i32 i32_max = types::i32_max;
-    // Lowest postive value of a i32
+    // Lowest negative i32 value.
     static inline constexpr i32 i32_min = types::i32_min;
-    // Highest postive value of a i64
+    // Highest positive i64 value.
     static inline constexpr i64 i64_max = types::i64_max;
-    // Lowest postive value of a i64
+    // Lowest negative i64 value.
     static inline constexpr i64 i64_min = types::i64_min;
-
+    // Highest positive ansichar value.
     static inline constexpr ansichar ansichar_max = types::ansichar_max;
+    // Lowest negative ansichar value.
     static inline constexpr ansichar ansichar_min = types::ansichar_min;
-
+    // Highest positive wchar value.
     static inline constexpr wchar wchar_max = types::wchar_max;
+    // Lowest negative wchar value.
     static inline constexpr wchar wchar_min = types::wchar_min;
 
     // Largest finite f32 value.
@@ -110,18 +116,28 @@ namespace hud
     // Number of significant digits in base 2.
     static inline constexpr u32 f64_mantissa_digit = types::f32_mantissa_digit;
 
+    // Highest positive uptr value.
     static inline constexpr uptr uptr_max = types::uptr_max;
+    // Lowest positive uptr value.
     static inline constexpr uptr uptr_min = types::uptr_min;
+    // Highest positive iptr value.
     static inline constexpr iptr iptr_max = types::iptr_max;
+    // Lowest negative iptr value.
     static inline constexpr iptr iptr_min = types::iptr_min;
+    // Highest positive usize value.
     static inline constexpr usize usize_max = types::usize_max;
+    // Lowest negative usize value.
     static inline constexpr usize usize_min = types::usize_min;
+    // Highest positive isize value.
     static inline constexpr isize isize_max = types::isize_max;
+    // Lowest negative isize value.
     static inline constexpr isize isize_min = types::isize_min;
-
+    // Highest positive index value.
     static inline constexpr usize index_min = types::usize_min;
+    // Lowest positive index value.
     static inline constexpr usize index_max = types::usize_max - 1;
-    static inline constexpr usize index_none = static_cast<usize>(-1);
+    // Invalid index value.
+    static inline constexpr usize index_none = types::usize_max;
 
 } // namespace hud
 

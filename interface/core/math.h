@@ -19,6 +19,7 @@ namespace hud
         static constexpr type_t min {hud::type_t##_min}; \
         static constexpr type_t max {hud::type_t##_max}; \
     };
+        hud_limits_for(bool);
         hud_limits_for(i8);
         hud_limits_for(u8);
         hud_limits_for(i16);
