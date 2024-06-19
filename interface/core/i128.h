@@ -20,11 +20,10 @@ namespace hud
     class u128;
 
     class alignas(16) i128
-        : protected details::i128::i128_impl
+        : public details::i128::i128_impl
     {
 
     private:
-        friend u128;
         using super = details::i128::i128_impl;
 
     public:
@@ -165,10 +164,9 @@ namespace hud
     }
 
     class alignas(16) u128
-        : protected details::i128::u128_impl
+        : public details::i128::u128_impl
     {
     private:
-        friend i128;
         using super = details::i128::u128_impl;
 
     public:
