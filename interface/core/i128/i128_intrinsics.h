@@ -317,6 +317,42 @@ namespace hud
             return left.intrinsic_value_ % right.intrinsic_value_;
         }
 
+        /** Negate the i128_intrinsics.  */
+        [[nodiscard]] constexpr i128_intrinsics operator-(i128_intrinsics value)
+        {
+            return -(value.intrinsic_value_);
+        }
+
+        /** Check if the i128_intrinsics is zero. */
+        [[nodiscard]] constexpr bool operator!(i128_intrinsics value)
+        {
+            return !(value.intrinsic_value_);
+        }
+
+        /** Invert i128_intrinsics bits. */
+        [[nodiscard]] constexpr i128_intrinsics operator~(i128_intrinsics value)
+        {
+            return ~(value.intrinsic_value_);
+        }
+
+        /** Logical OR */
+        [[nodiscard]] constexpr i128_intrinsics operator|(i128_intrinsics left, i128_intrinsics right)
+        {
+            return left.intrinsic_value_ | right.intrinsic_value_;
+        }
+
+        /** Logical AND */
+        [[nodiscard]] constexpr i128_intrinsics operator&(i128_intrinsics left, i128_intrinsics right)
+        {
+            return left.intrinsic_value_ & right.intrinsic_value_;
+        }
+
+        /** Logical XOR */
+        [[nodiscard]] constexpr i128_intrinsics operator^(i128_intrinsics left, i128_intrinsics right)
+        {
+            return left.intrinsic_value_ ^ right.intrinsic_value_;
+        }
+
         using i128_impl = i128_intrinsics;
 
         struct alignas(16) u128_intrinsics
@@ -606,6 +642,42 @@ namespace hud
         [[nodiscard]] constexpr u128_intrinsics operator%(u128_intrinsics left, u128_intrinsics right)
         {
             return left.intrinsic_value_ % right.intrinsic_value_;
+        }
+
+        /** Negate the u128_intrinsics.  */
+        [[nodiscard]] constexpr u128_intrinsics operator-(u128_intrinsics value)
+        {
+            return -(value.intrinsic_value_);
+        }
+
+        /** Check if the u128_intrinsics is zero. */
+        [[nodiscard]] constexpr bool operator!(u128_intrinsics value)
+        {
+            return !(value.intrinsic_value_);
+        }
+
+        /** Invert u128_intrinsics bits. */
+        [[nodiscard]] constexpr u128_intrinsics operator~(u128_intrinsics value)
+        {
+            return ~(value.intrinsic_value_);
+        }
+
+        /** Logical OR */
+        [[nodiscard]] constexpr u128_intrinsics operator|(u128_intrinsics left, u128_intrinsics right)
+        {
+            return left.intrinsic_value_ | right.intrinsic_value_;
+        }
+
+        /** Logical AND */
+        [[nodiscard]] constexpr u128_intrinsics operator&(u128_intrinsics left, u128_intrinsics right)
+        {
+            return left.intrinsic_value_ & right.intrinsic_value_;
+        }
+
+        /** Logical XOR */
+        [[nodiscard]] constexpr u128_intrinsics operator^(u128_intrinsics left, u128_intrinsics right)
+        {
+            return left.intrinsic_value_ ^ right.intrinsic_value_;
         }
 
         using u128_impl = u128_intrinsics;

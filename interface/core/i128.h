@@ -74,35 +74,6 @@ namespace hud
         /** Cast to unsigned __int128. */
         using i128_impl::operator unsigned __int128;
 #endif
-        /** Add left to right and return the result. */
-        [[nodiscard]] constexpr i128 operator+(i128 right)
-        {
-            return static_cast<i128_impl>(*this) + static_cast<i128_impl>(right);
-        }
-
-        /** Subtract rght to left and return the result. */
-        [[nodiscard]] constexpr i128 operator-(i128 right)
-        {
-            return static_cast<i128_impl>(*this) - static_cast<i128_impl>(right);
-        }
-
-        /** Multiply left to right and return the result. */
-        [[nodiscard]] constexpr i128 operator*(i128 right)
-        {
-            return static_cast<i128_impl>(*this) * static_cast<i128_impl>(right);
-        }
-
-        /** Divide left to right and return the result. */
-        [[nodiscard]] constexpr i128 operator/(i128 right)
-        {
-            return static_cast<i128_impl>(*this) / static_cast<i128_impl>(right);
-        }
-
-        /** Retrieves the remainder of left divided by right and returns the result. */
-        [[nodiscard]] constexpr i128 operator%(i128 right)
-        {
-            return static_cast<i128_impl>(*this) % static_cast<i128_impl>(right);
-        }
 
     private:
         constexpr i128(i128_impl impl) noexcept
@@ -166,42 +137,6 @@ namespace hud
         /** Cast to unsigned __int128. */
         using u128_impl::operator unsigned __int128;
 #endif
-
-        /** Add left to right and return the result. */
-        [[nodiscard]] constexpr u128 operator+(u128 right)
-        {
-            return static_cast<u128_impl>(*this) + static_cast<u128_impl>(right);
-        }
-
-        /** Subtract rght to left and return the result. */
-        [[nodiscard]] constexpr u128 operator-(u128 right)
-        {
-            return static_cast<u128_impl>(*this) - static_cast<u128_impl>(right);
-        }
-
-        /** Multiply left to right and return the result. */
-        [[nodiscard]] constexpr u128 operator*(u128 right)
-        {
-            return static_cast<u128_impl>(*this) * static_cast<u128_impl>(right);
-        }
-
-        /** Divide left to right and return the result. */
-        [[nodiscard]] constexpr u128 operator/(u128 right)
-        {
-            return static_cast<u128_impl>(*this) / static_cast<u128_impl>(right);
-        }
-
-        /** Retrieves the remainder of left divided by right and returns the result. */
-        [[nodiscard]] constexpr u128 operator%(u128 right)
-        {
-            return static_cast<u128_impl>(*this) % static_cast<u128_impl>(right);
-        }
-
-    private:
-        constexpr u128(u128_impl s) noexcept
-            : u128_impl(s)
-        {
-        }
     };
 
     /** Construct a i128 from u128. */

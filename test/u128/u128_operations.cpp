@@ -36,3 +36,45 @@ GTEST_TEST(u128, modulus)
     hud_assert_eq(hud::u128 {0} % hud::u128_max, hud::u128 {0});
     hud_assert_eq(hud::u128_max % hud::u128_max, hud::u128 {0});
 }
+
+GTEST_TEST(u128, negate)
+{
+    hud_assert_eq(-hud::u128 {0}, hud::u128 {0});
+    hud_assert_eq(-hud::u128 {2}, hud::u128_max - 1);
+}
+
+GTEST_TEST(u128, not )
+{
+    hud_assert_true(!hud::u128 {0});
+    hud_assert_false(!hud::u128 {1});
+    hud_assert_false(!hud::u128_max);
+}
+
+GTEST_TEST(u128, invert_bits)
+{
+    hud_assert_eq(~hud::u128 {0}, hud::u128_max);
+    hud_assert_eq(~hud::u128_max, hud::u128 {0});
+    hud_assert_eq((~hud::u128 {hud::u64_max, 0}), (hud::u128 {0, hud::u64_max}));
+}
+
+GTEST_TEST(u128, logical_or)
+{
+    hud_assert_eq(hud::u128 {0} | hud::u128 {1}, hud::u128 {1});
+    hud_assert_eq(hud::u128 {2} | hud::u128 {1}, hud::u128 {3});
+    hud_assert_eq(hud::u128 {0} | hud::u128_max, hud::u128_max);
+}
+
+GTEST_TEST(u128, logical_and)
+{
+    hud_assert_eq(hud::u128 {0} & hud::u128 {1}, hud::u128 {0});
+    hud_assert_eq(hud::u128 {2} & hud::u128 {3}, hud::u128 {2});
+    hud_assert_eq(hud::u128 {0} & hud::u128_max, hud::u128 {0});
+}
+
+GTEST_TEST(u128, logical_xor)
+{
+    hud_assert_eq(hud::u128 {0} ^ hud::u128 {1}, hud::u128 {1});
+    hud_assert_eq(hud::u128 {2} ^ hud::u128 {3}, hud::u128 {1});
+    hud_assert_eq(hud::u128 {0} ^ hud::u128_max, hud::u128_max);
+    hud_assert_eq(hud::u128_max ^ hud::u128_max, hud::u128 {0});
+}
