@@ -13,6 +13,7 @@ namespace hud::os::windows
     {
         static inline constexpr wchar wchar_max = u16_max;
         static inline constexpr wchar wchar_min = u16_min;
+        static inline constexpr wchar wchar_min_positive = u16_min_positive;
     };
 
 } // namespace hud::os::windows

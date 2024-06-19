@@ -1,4 +1,5 @@
 #include <core/containers/unique_pointer.h>
+#include <core/traits/is_const.h>
 #include <memory>
 
 // LCOV_EXCL_START

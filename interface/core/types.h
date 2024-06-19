@@ -54,50 +54,84 @@ namespace hud
     // Min-Max unsigned common type
 
     // Highest bool value.
-    static inline constexpr bool bool_max = types::u8_max;
+    static inline constexpr bool bool_max = types::bool_max;
     // Lowest bool value.
-    static inline constexpr bool bool_min = types::u8_min;
+    static inline constexpr bool bool_min = types::bool_min;
+    // Lowest positive bool value.
+    static inline constexpr bool bool_min_positive = types::bool_min_positive;
     // Highest positive u8 value.
     static inline constexpr u8 u8_max = types::u8_max;
-    // Lowest positive u8 value.
+    // Lowest u8 value.
     static inline constexpr u8 u8_min = types::u8_min;
+    // Lowest positive u8 value.
+    static inline constexpr u8 u8_min_positive = types::u8_min_positive;
     // Highest positive u16 value.
     static inline constexpr u16 u16_max = types::u16_max;
-    // Lowest positive u16 value.
+    // Lowest u16 value.
     static inline constexpr u16 u16_min = types::u16_min;
+    // Lowest positive u16 value.
+    static inline constexpr u16 u16_min_positive = types::u16_min_positive;
     // Highest positive u32 value.
     static inline constexpr u32 u32_max = types::u32_max;
-    // Lowest positive u32 value.
+    // Lowest u32 value.
     static inline constexpr u32 u32_min = types::u32_min;
+    // Lowest positive u32 value.
+    static inline constexpr u32 u32_min_positive = types::u32_min_positive;
     // Highest positive u64 value.
     static inline constexpr u64 u64_max = types::u64_max;
-    // Lowest positive u64 value.
+    // Lowest u64 value.
     static inline constexpr u64 u64_min = types::u64_min;
+    // Lowest positive u64 value.
+    static inline constexpr u64 u64_min_positive = types::u64_min_positive;
 
     // Highest positive i8 value.
     static inline constexpr i8 i8_max = types::i8_max;
     // Lowest negative i8 value.
     static inline constexpr i8 i8_min = types::i8_min;
+    // Lowest positive i8 value.
+    static inline constexpr i8 i8_min_positive = types::i8_min_positive;
     // Highest positive i16 value.
     static inline constexpr i16 i16_max = types::i16_max;
     // Lowest negative i16 value.
     static inline constexpr i16 i16_min = types::i16_min;
+    // Lowest positive i16 value.
+    static inline constexpr i16 i16_min_positive = types::i16_min_positive;
     // Highest positive i32 value.
     static inline constexpr i32 i32_max = types::i32_max;
     // Lowest negative i32 value.
     static inline constexpr i32 i32_min = types::i32_min;
+    // Lowest positive i32 value.
+    static inline constexpr i32 i32_min_positive = types::i32_min_positive;
     // Highest positive i64 value.
     static inline constexpr i64 i64_max = types::i64_max;
     // Lowest negative i64 value.
     static inline constexpr i64 i64_min = types::i64_min;
+    // Lowest positive i64 value.
+    static inline constexpr i64 i64_min_positive = types::i64_min_positive;
     // Highest positive ansichar value.
     static inline constexpr ansichar ansichar_max = types::ansichar_max;
     // Lowest negative ansichar value.
     static inline constexpr ansichar ansichar_min = types::ansichar_min;
+    // Lowest positive ansichar value.
+    static inline constexpr ansichar ansichar_min_positive = types::ansichar_min_positive;
     // Highest positive wchar value.
     static inline constexpr wchar wchar_max = types::wchar_max;
     // Lowest negative wchar value.
     static inline constexpr wchar wchar_min = types::wchar_min;
+    // Lowest positive wchar value.
+    static inline constexpr wchar wchar_min_positive = types::wchar_min_positive;
+    // Highest positive char16 value.
+    static inline constexpr char16 char16_max = types::char16_max;
+    // Lowest negative char16 value.
+    static inline constexpr char16 char16_min = types::char16_min;
+    // Lowest positive char16 value.
+    static inline constexpr char16 char16_min_positive = types::char16_min_positive;
+    // Highest positive char32 value.
+    static inline constexpr char32 char32_max = types::char32_max;
+    // Lowest negative char32 value.
+    static inline constexpr char32 char32_min = types::char32_min;
+    // Lowest positive char32 value.
+    static inline constexpr char32 char32_min_positive = types::char32_min_positive;
 
     // Largest finite f32 value.
     static inline constexpr f32 f32_max = types::f32_max;

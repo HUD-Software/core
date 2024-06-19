@@ -1,4 +1,4 @@
-#include <cmath>
+#include <cmath> // std::nextafter, std::ldexp
 
 GTEST_TEST(u128, default_constructor)
 {
@@ -106,7 +106,7 @@ GTEST_TEST(u128, constructor_f32)
 
     // Init to min positive value
     {
-        f64 value = hud::f32_min_positive;
+        f32 value = hud::f32_min_positive;
         // Check value is not NaN or infinite
         hud_assert_true(std::isfinite(value));
         // Ensure we are positive
@@ -120,8 +120,8 @@ GTEST_TEST(u128, constructor_f32)
 
     // Init to max value
     {
-        // Compute the greatest value just before 2^128
-        f32 value = std::nextafterf(std::numeric_limits<f32>::max(), 0.0);
+        // Compute the greatest value
+        f32 value = hud::f32_max;
 
         hud::u128 v {value};
         // Check value is not NaN or infinite

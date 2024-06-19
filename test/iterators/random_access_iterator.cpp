@@ -1,4 +1,5 @@
 #include <core/iterators/random_access_iterator.h>
+#include <core/traits/is_const.h>
 
 GTEST_TEST(random_access_iterator, check_const_correctness)
 {
@@ -30,7 +31,8 @@ GTEST_TEST(random_access_iterator, constructor)
         hud::random_access_iterator<const_array_type> it_const(arr_const);
         return std::tuple {
             it.operator->() == &arr[0],
-            it_const.operator->() == &arr_const[0]};
+            it_const.operator->() == &arr_const[0]
+        };
     };
 
     // Non constant
@@ -140,7 +142,8 @@ GTEST_TEST(random_access_iterator, operator_pre_increment)
             (++it).operator->() == &arr[3],
             *it == arr[3],
             (++it).operator->() == &arr[4],
-            *it == arr[4]};
+            *it == arr[4]
+        };
         hud::random_access_iterator<const_array_type> it_const(arr_const);
         const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[0],
@@ -152,10 +155,12 @@ GTEST_TEST(random_access_iterator, operator_pre_increment)
             (++it_const).operator->() == &arr_const[3],
             *it_const == arr_const[3],
             (++it_const).operator->() == &arr_const[4],
-            *it_const == arr_const[4]};
+            *it_const == arr_const[4]
+        };
         return std::tuple {
             mutable_it,
-            const_it};
+            const_it
+        };
     };
 
     // Non constant
@@ -237,7 +242,8 @@ GTEST_TEST(random_access_iterator, operator_post_increment)
             (it++).operator->() == &arr[2],
             *it == arr[3],
             (it++).operator->() == &arr[3],
-            *it == arr[4]};
+            *it == arr[4]
+        };
         hud::random_access_iterator<const_array_type> it_const(arr_const);
         const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[0],
@@ -249,10 +255,12 @@ GTEST_TEST(random_access_iterator, operator_post_increment)
             (it_const++).operator->() == &arr_const[2],
             *it_const == arr_const[3],
             (it_const++).operator->() == &arr_const[3],
-            *it_const == arr_const[4]};
+            *it_const == arr_const[4]
+        };
         return std::tuple {
             mutable_it,
-            const_it};
+            const_it
+        };
     };
 
     // Non constant
@@ -328,17 +336,20 @@ GTEST_TEST(random_access_iterator, operator_increment_assign)
             it.operator->() == &arr[0],
             *it == arr[0],
             (it += 1).operator->() == &arr[1],
-            *it == arr[1]};
+            *it == arr[1]
+        };
 
         hud::random_access_iterator<const_array_type> it_const(arr_const);
         const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[0],
             *it_const == arr_const[0],
             (it_const += 1).operator->() == &arr_const[1],
-            *it_const == arr_const[1]};
+            *it_const == arr_const[1]
+        };
         return std::tuple {
             mutable_it,
-            const_it};
+            const_it
+        };
     };
 
     // Non constant
@@ -391,7 +402,8 @@ GTEST_TEST(random_access_iterator, operator_increment)
             it.operator->() == &arr[0],
             *it == arr[0],
             res_it.operator->() == &arr[1],
-            *res_it == arr[1]};
+            *res_it == arr[1]
+        };
 
         hud::random_access_iterator<const_array_type> it_const(arr_const);
         hud::random_access_iterator<const_array_type> res_it_const = it_const + 1;
@@ -399,10 +411,12 @@ GTEST_TEST(random_access_iterator, operator_increment)
             it_const.operator->() == &arr_const[0],
             *it_const == arr[0],
             res_it_const.operator->() == &arr_const[1],
-            *res_it_const == arr_const[1]};
+            *res_it_const == arr_const[1]
+        };
         return std::tuple {
             mutable_it,
-            const_it};
+            const_it
+        };
     };
 
     // Non constant
@@ -460,7 +474,8 @@ GTEST_TEST(random_access_iterator, operator_pre_decrement)
             (--it).operator->() == &arr[1],
             *it == arr[1],
             (--it).operator->() == &arr[0],
-            *it == arr[0]};
+            *it == arr[0]
+        };
         hud::random_access_iterator<const_array_type> it_const(arr_const, 4);
         const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[4],
@@ -472,10 +487,12 @@ GTEST_TEST(random_access_iterator, operator_pre_decrement)
             (--it_const).operator->() == &arr_const[1],
             *it_const == arr_const[1],
             (--it_const).operator->() == &arr_const[0],
-            *it_const == arr_const[0]};
+            *it_const == arr_const[0]
+        };
         return std::tuple {
             mutable_it,
-            const_it};
+            const_it
+        };
     };
 
     // Non constant
@@ -557,7 +574,8 @@ GTEST_TEST(random_access_iterator, operator_post_decrement)
             (it--).operator->() == &arr[2],
             *it == arr[1],
             (it--).operator->() == &arr[1],
-            *it == arr[0]};
+            *it == arr[0]
+        };
         hud::random_access_iterator<const_array_type> it_const(arr_const, 4);
         const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[4],
@@ -569,10 +587,12 @@ GTEST_TEST(random_access_iterator, operator_post_decrement)
             (it_const--).operator->() == &arr_const[2],
             *it_const == arr_const[1],
             (it_const--).operator->() == &arr_const[1],
-            *it_const == arr_const[0]};
+            *it_const == arr_const[0]
+        };
         return std::tuple {
             mutable_it,
-            const_it};
+            const_it
+        };
     };
 
     // Non constant
@@ -648,17 +668,20 @@ GTEST_TEST(random_access_iterator, operator_decrement_assign)
             it.operator->() == &arr[4],
             *it == arr[4],
             (it -= 1).operator->() == &arr[3],
-            *it == arr[3]};
+            *it == arr[3]
+        };
 
         hud::random_access_iterator<const_array_type> it_const(arr_const, 4);
         const auto const_it = std::tuple {
             it_const.operator->() == &arr_const[4],
             *it_const == arr_const[4],
             (it_const -= 1).operator->() == &arr_const[3],
-            *it_const == arr_const[3]};
+            *it_const == arr_const[3]
+        };
         return std::tuple {
             mutable_it,
-            const_it};
+            const_it
+        };
     };
 
     // Non constant
@@ -711,7 +734,8 @@ GTEST_TEST(random_access_iterator, operator_decrement)
             it.operator->() == &arr[4],
             *it == arr[4],
             res_it.operator->() == &arr[3],
-            *res_it == arr[3]};
+            *res_it == arr[3]
+        };
 
         hud::random_access_iterator<const_array_type> it_const(arr_const, 4);
         hud::random_access_iterator<const_array_type> res_it_const = it_const - 1;
@@ -719,10 +743,12 @@ GTEST_TEST(random_access_iterator, operator_decrement)
             it_const.operator->() == &arr_const[4],
             *it_const == arr[4],
             res_it_const.operator->() == &arr_const[3],
-            *res_it_const == arr_const[3]};
+            *res_it_const == arr_const[3]
+        };
         return std::tuple {
             mutable_it,
-            const_it};
+            const_it
+        };
     };
 
     // Non constant
@@ -774,7 +800,8 @@ GTEST_TEST(random_access_iterator, equal_operator)
             it == it_same,
             it == it_not_same,
             it != it_not_same,
-            it != it_same};
+            it != it_same
+        };
     };
 
     // Non constant

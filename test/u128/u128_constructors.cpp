@@ -262,8 +262,7 @@ GTEST_TEST(u128, constructor_unsigned__int128)
 {
     // Init to 0
     {
-        unsigned __int128 value {0};
-        hud::u128 v {value};
+        hud::u128 v {(unsigned __int128) {0}};
         hud_assert_eq(v, static_cast<hud::u128>(hud::i128 {0}));
     }
 

@@ -23,6 +23,9 @@ GTEST_TEST(types, size)
     {
         hud_assert_eq(sizeof(wchar), 4u);
     }
+    hud_assert_eq(sizeof(char16), 2u);
+    hud_assert_eq(sizeof(char32), 4u);
+
     hud_assert_eq(sizeof(f32), 4u);
     hud_assert_eq(sizeof(f64), 8u);
 
@@ -40,6 +43,9 @@ GTEST_TEST(types, size)
         hud_assert_eq(sizeof(isize), 4u);
         hud_assert_eq(sizeof(usize), 4u);
     }
+
+    hud_assert_eq(sizeof(i128), 16u);
+    hud_assert_eq(sizeof(u128), 16u);
 }
 
 GTEST_TEST(types, signed_unsigned)
@@ -59,12 +65,16 @@ GTEST_TEST(types, signed_unsigned)
 #else // HD_OS_LINUX
     hud_assert_true(hud::is_signed_v<wchar>);
 #endif
+    hud_assert_true(hud::is_unsigned_v<char16>);
+    hud_assert_true(hud::is_unsigned_v<char32>);
     hud_assert_true(hud::is_signed_v<f32>);
     hud_assert_true(hud::is_signed_v<f64>);
     hud_assert_true(hud::is_signed_v<iptr>);
     hud_assert_true(hud::is_unsigned_v<uptr>);
     hud_assert_true(hud::is_signed_v<isize>);
     hud_assert_true(hud::is_unsigned_v<usize>);
+    hud_assert_true(hud::is_signed_v<i128>);
+    hud_assert_true(hud::is_unsigned_v<u128>);
 }
 
 GTEST_TEST(types, limits)
@@ -92,6 +102,12 @@ GTEST_TEST(types, limits)
 
     hud_assert_eq(hud::wchar_max, std::numeric_limits<wchar>::max());
     hud_assert_eq(hud::wchar_min, std::numeric_limits<wchar>::min());
+
+    hud_assert_eq(hud::char16_max, std::numeric_limits<char16>::max());
+    hud_assert_eq(hud::char16_min, std::numeric_limits<char16>::min());
+
+    hud_assert_eq(hud::char32_max, std::numeric_limits<char32>::max());
+    hud_assert_eq(hud::char32_min, std::numeric_limits<char32>::min());
 
     hud_assert_eq(hud::f32_max, std::numeric_limits<f32>::max());
     hud_assert_eq(hud::f32_min, std::numeric_limits<f32>::lowest());

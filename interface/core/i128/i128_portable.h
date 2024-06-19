@@ -33,7 +33,6 @@ namespace hud
 
         static inline void u128_from_f64(f64 value, u64 &high, u64 &low) noexcept
         {
-
             // TODO, put this in cpp and use hud functions
 
             // Check not NaN

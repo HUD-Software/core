@@ -1,5 +1,5 @@
-#ifndef HD_INC_OSABSTRACTIONLAYER_MEMORY_H
-#define HD_INC_OSABSTRACTIONLAYER_MEMORY_H
+#ifndef HD_INC_CORE_MEMORY_H
+#define HD_INC_CORE_MEMORY_H
 #include "traits/is_bitwise_comparable.h"
 #include "traits/is_bitwise_copy_assignable.h"
 #include "traits/is_bitwise_copy_constructible.h"
@@ -521,4 +521,4 @@ namespace hud
 
 } // namespace hud
 
-#endif // HD_INC_OSABSTRACTIONLAYER_MEMORY_H
+#endif // HD_INC_CORE_MEMORY_H

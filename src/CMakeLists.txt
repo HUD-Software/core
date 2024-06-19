@@ -37,6 +37,7 @@ set( interface
 	../interface/core/os_common/atomics.h
 	../interface/core/os_common/character.h
 	../interface/core/os_common/cstring.h
+	../interface/core/os_common/math.h
 	../interface/core/os_common/memory.h
 	../interface/core/os_common/types.h
 	../interface/core/os_common/uuid.h
@@ -44,6 +45,7 @@ set( interface
 	../interface/core/os_linux/character.h
 	../interface/core/os_linux/cstring.h
 	../interface/core/os_linux/debugger.h
+	../interface/core/os_linux/math.h
 	../interface/core/os_linux/memory.h
 	../interface/core/os_linux/types.h
 	../interface/core/os_linux/uuid.h
@@ -52,6 +54,7 @@ set( interface
 	../interface/core/os_windows/character.h
 	../interface/core/os_windows/cstring.h
 	../interface/core/os_windows/debugger.h
+	../interface/core/os_windows/math.h
 	../interface/core/os_windows/memory.h
 	../interface/core/os_windows/types.h
 	../interface/core/os_windows/uuid.h
@@ -200,6 +203,7 @@ set( interface
 	../interface/core/debugger.h
 	../interface/core/defines.h
 	../interface/core/hash.h
+	../interface/core/limits.h
 	../interface/core/i128.h
 	../interface/core/iterators
 	../interface/core/math.h

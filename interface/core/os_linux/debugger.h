@@ -9,7 +9,6 @@ namespace hud::os::linux
 {
     struct debugger
     {
-
         /** Checks whether the calling process is being debugged by a user-mode debugger. */
         static bool is_present() noexcept;
 

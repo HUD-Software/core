@@ -253,7 +253,9 @@ set( src
 	tuple/tuple_swap.cpp
 	tuple/tuple_element.cpp
 	tuple/tuple_size.cpp
+	u128/u128_assign.cpp
 	u128/u128_cast.cpp
+	u128/u128_comparisons.cpp
 	u128/u128_constructors.cpp
 	u128/u128_operations.cpp
 	unique_pointer/array/unique_pointer_array_assignments.cpp
@@ -292,6 +294,7 @@ set( src
 	cstring.cpp
 	debugger.cpp
 	main.cpp
+	math.cpp
 	precompiled.h
 	slice.cpp
 	types.cpp

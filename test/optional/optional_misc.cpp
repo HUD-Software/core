@@ -1,5 +1,5 @@
 #include <core/containers/optional.h>
-#include <optional>
+#include <core/traits/is_const.h>
 
 GTEST_TEST(optional, less_or_equal_size_as_std_optional)
 {
@@ -157,7 +157,8 @@ GTEST_TEST(optional, value_or)
             hud::move(option_empty).value_or(type {456, nullptr}).id(),
             hud::move(option_non_empty).value_or(type {456, nullptr}).id(),
             hud::move(const_option_empty).value_or(type {456, nullptr}).id(),
-            hud::move(const_option_non_empty).value_or(type {456, nullptr}).id()};
+            hud::move(const_option_non_empty).value_or(type {456, nullptr}).id()
+        };
     };
 
     // Non constant
@@ -198,7 +199,8 @@ GTEST_TEST(optional, operator_arrow)
         const hud::optional<type> const_option {hud::in_place, 456, nullptr};
         return std::tuple {
             option->id(),
-            const_option->id()};
+            const_option->id()
+        };
     };
 
     // Non constant
@@ -227,7 +229,8 @@ GTEST_TEST(optional, operator_dereference)
         const hud::optional<type> const_option {hud::in_place, 456, nullptr};
         return std::tuple {
             (*option).id(),
-            (*const_option).id()};
+            (*const_option).id()
+        };
     };
 
     // Non constant
@@ -298,7 +301,8 @@ GTEST_TEST(optional, reset_call_destructor_if_T_is_not_trivially_destructible)
             has_value_before,
             destructor_count_before,
             option.has_value(),
-            destructor_count};
+            destructor_count
+        };
     };
 
     // Non constant

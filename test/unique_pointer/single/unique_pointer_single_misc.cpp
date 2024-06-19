@@ -1,4 +1,5 @@
 #include <core/containers/unique_pointer.h>
+#include <core/traits/is_const.h>
 
 // LCOV_EXCL_START
 namespace hud_test

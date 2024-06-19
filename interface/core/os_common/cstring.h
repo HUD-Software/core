@@ -1,5 +1,5 @@
-#ifndef HD_INC_OSABSTRACTIONLAYER_OS_COMMON_CSTRING_H
-#define HD_INC_OSABSTRACTIONLAYER_OS_COMMON_CSTRING_H
+#ifndef HD_INC_CORE_OS_COMMON_CSTRING_H
+#define HD_INC_CORE_OS_COMMON_CSTRING_H
 #include "../character.h"
 #include "../assert.h"
 #include "../traits/is_one_of_types.h"
@@ -588,4 +588,4 @@ namespace hud::os::common
 
 } // namespace hud::os::common
 
-#endif // HD_INC_OSABSTRACTIONLAYER_OS_COMMON_CSTRING_H
+#endif // HD_INC_CORE_OS_COMMON_CSTRING_H
