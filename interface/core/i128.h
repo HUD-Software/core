@@ -365,6 +365,22 @@ namespace hud
             static constexpr u128 min {hud::u128_min};
             static constexpr u128 max {hud::u128_max};
         };
+
+#if HD_INTRINSIC_INT128_SUPPORTED
+
+        template<> struct limits<__int128>
+        {
+            static constexpr __int128 min {static_cast<__int128>(i128_min)};
+            static constexpr __int128 max {static_cast<__int128>(i128_max)};
+        };
+
+        template<> struct limits<unsigned __int128>
+        {
+            static constexpr unsigned __int128 min {static_cast<unsigned __int128>(u128_min)};
+            static constexpr unsigned __int128 max {static_cast<unsigned __int128>(u128_max)};
+        };
+
+#endif
     } // namespace math
 
 } // namespace hud

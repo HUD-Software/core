@@ -28,6 +28,7 @@ namespace hud
         hud_limits_for(u32);
         hud_limits_for(i64);
         hud_limits_for(u64);
+#undef hud_limits_for
 
         /**
          * Check wheter the given number is a power of two or not
