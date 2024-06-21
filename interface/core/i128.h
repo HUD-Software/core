@@ -31,7 +31,12 @@ namespace hud
         using i128_impl::i128_impl;
 
         /** Construct a i128 from u128. */
-        constexpr i128(u128 value) noexcept;
+        HD_FORCEINLINE constexpr i128(u128 value) noexcept;
+
+        HD_FORCEINLINE constexpr i128(i128_impl impl) noexcept
+            : i128_impl(impl)
+        {
+        }
 
         /** Retrieves the high part of the i128. */
         using i128_impl::high;
@@ -74,12 +79,6 @@ namespace hud
         /** Cast to unsigned __int128. */
         using i128_impl::operator unsigned __int128;
 #endif
-
-    private:
-        constexpr i128(i128_impl impl) noexcept
-            : i128_impl(impl)
-        {
-        }
     };
 
     class alignas(16) u128
@@ -91,8 +90,13 @@ namespace hud
     public:
         using u128_impl::u128_impl;
 
-        constexpr u128(i128 value) noexcept
+        HD_FORCEINLINE constexpr u128(i128 value) noexcept
             : u128_impl(static_cast<u128_impl>(value))
+        {
+        }
+
+        HD_FORCEINLINE constexpr u128(u128_impl impl) noexcept
+            : u128_impl(impl)
         {
         }
 

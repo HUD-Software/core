@@ -218,140 +218,188 @@ namespace hud
                 return static_cast<unsigned __int128>(intrinsic_value_);
             }
 
+            /** Checks whether other i128_intrinsics is equal to this */
+            [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ == other.intrinsic_value_;
+            }
+
+            /** Checks whether other i128_intrinsics is not equal to this */
+            [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ != other.intrinsic_value_;
+            }
+
+            /** Checks whether other i128_intrinsics is less than this */
+            [[nodiscard]] constexpr bool operator<(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ < other.intrinsic_value_;
+            }
+
+            /** Checks whether other i128_intrinsics is less or equal than this */
+            [[nodiscard]] constexpr bool operator<=(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ <= other.intrinsic_value_;
+            }
+
+            /** Checks whether other i128_intrinsics is greater than this */
+            [[nodiscard]] constexpr bool operator>(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ > other.intrinsic_value_;
+            }
+
+            /** Checks whether other i128_intrinsics is greater or equal than this */
+            [[nodiscard]] constexpr bool operator>=(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ >= other.intrinsic_value_;
+            }
+
+            /** Add this to other and return the result. */
+            [[nodiscard]] constexpr i128_intrinsics operator+(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ + other.intrinsic_value_;
+            }
+
+            /** Subtract this to other and return the result. */
+            [[nodiscard]] constexpr i128_intrinsics operator-(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ - other.intrinsic_value_;
+            }
+
+            /** Multiply this to other and return the result. */
+            [[nodiscard]] constexpr i128_intrinsics operator*(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ * other.intrinsic_value_;
+            }
+
+            /** Divide this to other and return the result. */
+            [[nodiscard]] constexpr i128_intrinsics operator/(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ / other.intrinsic_value_;
+            }
+
+            /** Retrieves the remainder of this divided by other and returns the result. */
+            [[nodiscard]] constexpr i128_intrinsics operator%(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ % other.intrinsic_value_;
+            }
+
+            /** Negate this. */
+            [[nodiscard]] constexpr i128_intrinsics operator-() const noexcept
+            {
+                return -(intrinsic_value_);
+            }
+
+            /** Check if this is zero. */
+            [[nodiscard]] constexpr bool operator!() const noexcept
+            {
+                return !(intrinsic_value_);
+            }
+
+            /** Invert this bits. */
+            [[nodiscard]] constexpr i128_intrinsics operator~() const noexcept
+            {
+                return ~(intrinsic_value_);
+            }
+
+            /** Retrieves logical this OR other and return the result.*/
+            [[nodiscard]] constexpr i128_intrinsics operator|(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ | other.intrinsic_value_;
+            }
+
+            /** Retrieves logical this AND other and return the result.*/
+            [[nodiscard]] constexpr i128_intrinsics operator&(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ & other.intrinsic_value_;
+            }
+
+            /** Retrieves logical this XOR other and return the result.*/
+            [[nodiscard]] constexpr i128_intrinsics operator^(i128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ ^ other.intrinsic_value_;
+            }
+
+            /** Logical OR */
+            constexpr i128_intrinsics &operator|=(i128_intrinsics right) noexcept
+            {
+                intrinsic_value_ |= right.intrinsic_value_;
+                return *this;
+            }
+
+            /** Logical AND */
+            constexpr i128_intrinsics &operator&=(i128_intrinsics right) noexcept
+            {
+                intrinsic_value_ &= right.intrinsic_value_;
+                return *this;
+            }
+
+            /** Logical XOR */
+            constexpr i128_intrinsics &operator^=(i128_intrinsics right) noexcept
+            {
+                intrinsic_value_ ^= right.intrinsic_value_;
+                return *this;
+            }
+
+            /** Post increment this. */
+            constexpr i128_intrinsics operator++(i32) noexcept
+            {
+                i128_intrinsics tmp(*this);
+                intrinsic_value_ += 1;
+                return tmp;
+            }
+
+            /** Pre increment this. */
+            constexpr i128_intrinsics &operator++() noexcept
+            {
+                intrinsic_value_ += 1;
+                return *this;
+            }
+
+            /** Post decrement this. */
+            constexpr i128_intrinsics operator--(i32) noexcept
+            {
+                i128_intrinsics tmp(*this);
+                intrinsic_value_ -= 1;
+                return tmp;
+            }
+
+            /** Pre decrement this. */
+            constexpr i128_intrinsics &operator--() noexcept
+            {
+                intrinsic_value_ -= 1;
+                return *this;
+            }
+
+            /** Left shift this and return the result */
+            constexpr i128_intrinsics operator<<(i32 amount) const noexcept
+            {
+                return intrinsic_value_ << amount;
+            }
+
+            /** Right shift this and return the result */
+            const i128_intrinsics operator>>(i32 amount) const noexcept
+            {
+                return intrinsic_value_ >> amount;
+            }
+
+            /** Left shift this and return the result */
+            constexpr i128_intrinsics &operator<<=(i32 amount) noexcept
+            {
+                intrinsic_value_ <<= amount;
+                return *this;
+            }
+
+            /** Right shift this and return the result */
+            const i128_intrinsics &operator>>=(i32 amount) noexcept
+            {
+                intrinsic_value_ >>= amount;
+                return *this;
+            }
+
+        private:
             __int128 intrinsic_value_;
         };
-
-        /**
-         * Checks whether right and left i128_intrinsics are equal.
-         * @param left The left i128_intrinsics to compare
-         * @param right The right i128_intrinsics to compare
-         * @param true if right and left i128_intrinsics are equal, false otherwise
-         */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(i128_intrinsics left, i128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ == right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether right and left i128_intrinsics are not equal.
-         * @param left The left i128_intrinsics to compare
-         * @param right The right i128_intrinsics to compare
-         * @param true if right and left i128_intrinsics are not equal, false otherwise
-         */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(i128_intrinsics left, i128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ != right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether left is less than right i128_intrinsics.
-         * @param left The left i128_intrinsics to compare
-         * @param right The right i128_intrinsics to compare
-         * @param true if left is less than right, false otherwise
-         */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(i128_intrinsics left, i128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ < right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether left is less or equal than right i128_intrinsics.
-         * @param left The left i128_intrinsics to compare
-         * @param right The right i128_intrinsics to compare
-         * @param true if left is less or equal than right, false otherwise
-         */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(i128_intrinsics left, i128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ <= right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether left is greater than right i128_intrinsics.
-         * @param left The left i128_intrinsics to compare
-         * @param right The right i128_intrinsics to compare
-         * @param true if left is greater than right, false otherwise
-         */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(i128_intrinsics left, i128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ > right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether left is greater or equal than right i128_intrinsics.
-         * @param left The left i128_intrinsics to compare
-         * @param right The right i128_intrinsics to compare
-         * @param true if left is greater or equal than right, false otherwise
-         */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(i128_intrinsics left, i128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ >= right.intrinsic_value_;
-        }
-
-        /** Add left to right and return the result. */
-        [[nodiscard]] constexpr i128_intrinsics operator+(i128_intrinsics left, i128_intrinsics right)
-        {
-            return left.intrinsic_value_ + right.intrinsic_value_;
-        }
-
-        /** Subtract rght to left and return the result. */
-        [[nodiscard]] constexpr i128_intrinsics operator-(i128_intrinsics left, i128_intrinsics right)
-        {
-            return left.intrinsic_value_ - right.intrinsic_value_;
-        }
-
-        /** Multiply left to right and return the result. */
-        [[nodiscard]] constexpr i128_intrinsics operator*(i128_intrinsics left, i128_intrinsics right)
-        {
-            return left.intrinsic_value_ * right.intrinsic_value_;
-        }
-
-        /** Divide left to right and return the result. */
-        [[nodiscard]] constexpr i128_intrinsics operator/(i128_intrinsics left, i128_intrinsics right)
-        {
-            return left.intrinsic_value_ / right.intrinsic_value_;
-        }
-
-        /** Retrieves the remainder of left divided by right and returns the result. */
-        [[nodiscard]] constexpr i128_intrinsics operator%(i128_intrinsics left, i128_intrinsics right)
-        {
-            return left.intrinsic_value_ % right.intrinsic_value_;
-        }
-
-        /** Negate the i128_intrinsics.  */
-        [[nodiscard]] constexpr i128_intrinsics operator-(i128_intrinsics value)
-        {
-            return -(value.intrinsic_value_);
-        }
-
-        /** Check if the i128_intrinsics is zero. */
-        [[nodiscard]] constexpr bool operator!(i128_intrinsics value)
-        {
-            return !(value.intrinsic_value_);
-        }
-
-        /** Invert i128_intrinsics bits. */
-        [[nodiscard]] constexpr i128_intrinsics operator~(i128_intrinsics value)
-        {
-            return ~(value.intrinsic_value_);
-        }
-
-        /** Logical OR */
-        [[nodiscard]] constexpr i128_intrinsics operator|(i128_intrinsics left, i128_intrinsics right)
-        {
-            return left.intrinsic_value_ | right.intrinsic_value_;
-        }
-
-        /** Logical AND */
-        [[nodiscard]] constexpr i128_intrinsics operator&(i128_intrinsics left, i128_intrinsics right)
-        {
-            return left.intrinsic_value_ & right.intrinsic_value_;
-        }
-
-        /** Logical XOR */
-        [[nodiscard]] constexpr i128_intrinsics operator^(i128_intrinsics left, i128_intrinsics right)
-        {
-            return left.intrinsic_value_ ^ right.intrinsic_value_;
-        }
 
         using i128_impl = i128_intrinsics;
 
@@ -545,161 +593,188 @@ namespace hud
                 return intrinsic_value_;
             }
 
+            /** Checks whether other u128_intrinsics is equal to this */
+            [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ == other.intrinsic_value_;
+            }
+
+            /** Checks whether other u128_intrinsics is not equal to this */
+            [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ != other.intrinsic_value_;
+            }
+
+            /** Checks whether other u128_intrinsics is less than this */
+            [[nodiscard]] constexpr bool operator<(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ < other.intrinsic_value_;
+            }
+
+            /** Checks whether other u128_intrinsics is less or equal than this */
+            [[nodiscard]] constexpr bool operator<=(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ <= other.intrinsic_value_;
+            }
+
+            /** Checks whether other u128_intrinsics is greater than this */
+            [[nodiscard]] constexpr bool operator>(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ > other.intrinsic_value_;
+            }
+
+            /** Checks whether other u128_intrinsics is greater or equal than this */
+            [[nodiscard]] constexpr bool operator>=(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ >= other.intrinsic_value_;
+            }
+
+            /** Add this to other and return the result. */
+            [[nodiscard]] constexpr u128_intrinsics operator+(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ + other.intrinsic_value_;
+            }
+
+            /** Subtract this to other and return the result. */
+            [[nodiscard]] constexpr u128_intrinsics operator-(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ - other.intrinsic_value_;
+            }
+
+            /** Multiply this to other and return the result. */
+            [[nodiscard]] constexpr u128_intrinsics operator*(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ * other.intrinsic_value_;
+            }
+
+            /** Divide this to other and return the result. */
+            [[nodiscard]] constexpr u128_intrinsics operator/(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ / other.intrinsic_value_;
+            }
+
+            /** Retrieves the remainder of this divided by other and returns the result. */
+            [[nodiscard]] constexpr u128_intrinsics operator%(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ % other.intrinsic_value_;
+            }
+
+            /** Negate this. */
+            [[nodiscard]] constexpr u128_intrinsics operator-() const noexcept
+            {
+                return -(intrinsic_value_);
+            }
+
+            /** Check if this is zero. */
+            [[nodiscard]] constexpr bool operator!() const noexcept
+            {
+                return !(intrinsic_value_);
+            }
+
+            /** Invert this bits. */
+            [[nodiscard]] constexpr u128_intrinsics operator~() const noexcept
+            {
+                return ~(intrinsic_value_);
+            }
+
+            /** Retrieves logical this OR other and return the result.*/
+            [[nodiscard]] constexpr u128_intrinsics operator|(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ | other.intrinsic_value_;
+            }
+
+            /** Retrieves logical this AND other and return the result.*/
+            [[nodiscard]] constexpr u128_intrinsics operator&(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ & other.intrinsic_value_;
+            }
+
+            /** Retrieves logical this XOR other and return the result.*/
+            [[nodiscard]] constexpr u128_intrinsics operator^(u128_intrinsics other) const noexcept
+            {
+                return intrinsic_value_ ^ other.intrinsic_value_;
+            }
+
             /** Logical OR */
-            constexpr u128_intrinsics &operator|=(u128_intrinsics right)
+            constexpr u128_intrinsics &operator|=(u128_intrinsics right) noexcept
             {
                 intrinsic_value_ |= right.intrinsic_value_;
                 return *this;
             }
 
             /** Logical AND */
-            constexpr u128_intrinsics &operator&=(u128_intrinsics right)
+            constexpr u128_intrinsics &operator&=(u128_intrinsics right) noexcept
             {
                 intrinsic_value_ &= right.intrinsic_value_;
                 return *this;
             }
 
             /** Logical XOR */
-            constexpr u128_intrinsics &operator^=(u128_intrinsics right)
+            constexpr u128_intrinsics &operator^=(u128_intrinsics right) noexcept
             {
                 intrinsic_value_ ^= right.intrinsic_value_;
                 return *this;
             }
 
+            /** Post increment this. */
+            constexpr u128_intrinsics operator++(i32) noexcept
+            {
+                u128_intrinsics tmp(*this);
+                intrinsic_value_ += 1;
+                return tmp;
+            }
+
+            /** Pre increment this. */
+            constexpr u128_intrinsics &operator++() noexcept
+            {
+                intrinsic_value_ += 1;
+                return *this;
+            }
+
+            /** Post decrement this. */
+            constexpr u128_intrinsics operator--(i32) noexcept
+            {
+                u128_intrinsics tmp(*this);
+                intrinsic_value_ -= 1;
+                return tmp;
+            }
+
+            /** Pre decrement this. */
+            constexpr u128_intrinsics &operator--() noexcept
+            {
+                intrinsic_value_ -= 1;
+                return *this;
+            }
+
+            /** Left shift this and return the result */
+            constexpr u128_intrinsics operator<<(i32 amount) const noexcept
+            {
+                return intrinsic_value_ << amount;
+            }
+
+            /** Right shift this and return the result */
+            const u128_intrinsics operator>>(i32 amount) const noexcept
+            {
+                return intrinsic_value_ >> amount;
+            }
+
+            /** Left shift this and return the result */
+            constexpr u128_intrinsics &operator<<=(i32 amount) noexcept
+            {
+                intrinsic_value_ <<= amount;
+                return *this;
+            }
+
+            /** Right shift this and return the result */
+            const u128_intrinsics &operator>>=(i32 amount) noexcept
+            {
+                intrinsic_value_ >>= amount;
+                return *this;
+            }
+
+        private:
             unsigned __int128 intrinsic_value_;
         };
-
-        /**
-         * Checks whether right and left u128_intrinsics are equal.
-         * @param left The left u128_intrinsics to compare
-         * @param right The right u128_intrinsics to compare
-         * @param true if right and left u128_intrinsics are equal, false otherwise
-         */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(u128_intrinsics left, u128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ == right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether right and left u128_intrinsics are not equal.
-         * @param left The left u128_intrinsics to compare
-         * @param right The right u128_intrinsics to compare
-         * @param true if right and left u128_intrinsics are not equal, false otherwise
-         */
-        [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(i128_intrinsics left, u128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ != right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether left is less than right u128_intrinsics.
-         * @param left The left u128_intrinsics to compare
-         * @param right The right u128_intrinsics to compare
-         * @param true if left is less than right, false otherwise
-         */
-        [[nodiscard]] constexpr bool operator<(u128_intrinsics left, const u128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ < right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether left is less or equal than right u128_intrinsics.
-         * @param left The left u128_intrinsics to compare
-         * @param right The right u128_intrinsics to compare
-         * @param true if left is less or equal than right, false otherwise
-         */
-        [[nodiscard]] constexpr bool operator<=(u128_intrinsics left, u128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ <= right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether left is greater than right u128_intrinsics.
-         * @param left The left u128_intrinsics to compare
-         * @param right The right u128_intrinsics to compare
-         * @param true if left is greater than right, false otherwise
-         */
-        [[nodiscard]] constexpr bool operator>(u128_intrinsics left, u128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ > right.intrinsic_value_;
-        }
-
-        /**
-         * Checks whether left is greater or equal than right u128_intrinsics.
-         * @param left The left u128_intrinsics to compare
-         * @param right The right u128_intrinsics to compare
-         * @param true if left is greater or equal than right, false otherwise
-         */
-        [[nodiscard]] constexpr bool operator>=(u128_intrinsics left, u128_intrinsics right) noexcept
-        {
-            return left.intrinsic_value_ >= right.intrinsic_value_;
-        }
-
-        /** Add left to right and return the result. */
-        [[nodiscard]] constexpr u128_intrinsics operator+(u128_intrinsics left, u128_intrinsics right)
-        {
-            return left.intrinsic_value_ + right.intrinsic_value_;
-        }
-
-        /** Subtract rght to left and return the result. */
-        [[nodiscard]] constexpr u128_intrinsics operator-(u128_intrinsics left, u128_intrinsics right)
-        {
-            return left.intrinsic_value_ - right.intrinsic_value_;
-        }
-
-        /** Multiply left to right and return the result. */
-        [[nodiscard]] constexpr u128_intrinsics operator*(u128_intrinsics left, u128_intrinsics right)
-        {
-            return left.intrinsic_value_ * right.intrinsic_value_;
-        }
-
-        /** Divide left to right and return the result. */
-        [[nodiscard]] constexpr u128_intrinsics operator/(u128_intrinsics left, u128_intrinsics right)
-        {
-            return left.intrinsic_value_ / right.intrinsic_value_;
-        }
-
-        /** Retrieves the remainder of left divided by right and returns the result. */
-        [[nodiscard]] constexpr u128_intrinsics operator%(u128_intrinsics left, u128_intrinsics right)
-        {
-            return left.intrinsic_value_ % right.intrinsic_value_;
-        }
-
-        /** Negate the u128_intrinsics.  */
-        [[nodiscard]] constexpr u128_intrinsics operator-(u128_intrinsics value)
-        {
-            return -(value.intrinsic_value_);
-        }
-
-        /** Check if the u128_intrinsics is zero. */
-        [[nodiscard]] constexpr bool operator!(u128_intrinsics value)
-        {
-            return !(value.intrinsic_value_);
-        }
-
-        /** Invert u128_intrinsics bits. */
-        [[nodiscard]] constexpr u128_intrinsics operator~(u128_intrinsics value)
-        {
-            return ~(value.intrinsic_value_);
-        }
-
-        /** Logical OR */
-        [[nodiscard]] constexpr u128_intrinsics operator|(u128_intrinsics left, u128_intrinsics right)
-        {
-            return left.intrinsic_value_ | right.intrinsic_value_;
-        }
-
-        /** Logical AND */
-        [[nodiscard]] constexpr u128_intrinsics operator&(u128_intrinsics left, u128_intrinsics right)
-        {
-            return left.intrinsic_value_ & right.intrinsic_value_;
-        }
-
-        /** Logical XOR */
-        [[nodiscard]] constexpr u128_intrinsics operator^(u128_intrinsics left, u128_intrinsics right)
-        {
-            return left.intrinsic_value_ ^ right.intrinsic_value_;
-        }
 
         using u128_impl = u128_intrinsics;
 

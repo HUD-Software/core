@@ -127,3 +127,37 @@ GTEST_TEST(u128, logical_xor_equal)
     v3 ^= hud::u128_max;
     hud_assert_eq(v3, hud::u128 {0});
 }
+
+GTEST_TEST(u128, post_increment)
+{
+    hud::u128 v0;
+    hud::u128 res = v0++;
+}
+
+GTEST_TEST(u128, pre_increment)
+{
+}
+
+GTEST_TEST(u128, post_decrement)
+{
+}
+
+GTEST_TEST(u128, pre_decrement)
+{
+}
+
+GTEST_TEST(u128, left_shit)
+{
+}
+
+GTEST_TEST(u128, right_shift)
+{
+}
+
+GTEST_TEST(u128, left_shit_equal)
+{
+}
+
+GTEST_TEST(u128, right_shift_equal)
+{
+}
