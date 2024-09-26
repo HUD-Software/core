@@ -1,16 +1,19 @@
 GTEST_TEST(i128, addition)
 {
     hud_assert_eq(hud::i128 {1} + hud::i128 {2}, hud::i128 {3});
-    // Check for overflow of i128; works if it's a two's complement representation.
-    hud_assert_eq(hud::i128 {1} + hud::i128_max, hud::i128_min);
+// Check for overflow of i128; works if it's a two's complement representation.
+#if !USE_ADDRESS_SANITIZER
+    hud_assert_eq(hud::i128 {1} + hud::i128_max, hud::i128_min); // Signed integer overflow is undefined behaviour
+#endif
 }
 
 GTEST_TEST(i128, subtraction)
 {
     hud_assert_eq(hud::i128 {3} - hud::i128 {2}, hud::i128 {1});
-
-    // Check for underflow of i128; works if it's a two's complement representation.
-    hud_assert_eq(hud::i128_min - hud::i128 {1}, hud::i128_max);
+// Check for underflow of i128; works if it's a two's complement representation.
+#if !USE_ADDRESS_SANITIZER
+    hud_assert_eq(hud::i128_min - hud::i128 {1}, hud::i128_max); // Signed integer overflow is undefined behaviour
+#endif
 }
 
 GTEST_TEST(i128, division)
@@ -23,8 +26,10 @@ GTEST_TEST(i128, multiplication)
 {
     hud_assert_eq(hud::i128 {2} * hud::i128 {2}, hud::i128 {4});
     hud_assert_eq(hud::i128 {3} * hud::i128 {0}, hud::i128 {0});
-    // Check for overflow of i128; works if it's a two's complement representation.
-    hud_assert_eq(hud::i128_max * hud::i128 {2}, i128 {-2});
+// Check for overflow of i128; works if it's a two's complement representation.
+#if !USE_ADDRESS_SANITIZER
+    hud_assert_eq(hud::i128_max * hud::i128 {2}, i128 {-2}); // Signed integer overflow is undefined behaviour
+#endif
 }
 
 GTEST_TEST(i128, modulus)
