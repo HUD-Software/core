@@ -130,34 +130,92 @@ GTEST_TEST(u128, logical_xor_equal)
 
 GTEST_TEST(u128, post_increment)
 {
-    hud::u128 v0;
+    hud::u128 v0 {0};
     hud::u128 res = v0++;
+    hud_assert_eq(v0, hud::u128 {1});
+    hud_assert_eq(res, hud::u128 {0});
 }
 
 GTEST_TEST(u128, pre_increment)
 {
+    hud::u128 v0 {0};
+    hud::u128 res = ++v0;
+    hud_assert_eq(v0, hud::u128 {1});
+    hud_assert_eq(res, hud::u128 {1});
 }
 
 GTEST_TEST(u128, post_decrement)
 {
+    hud::u128 v0 {hud::u128_max};
+    hud::u128 res = v0--;
+    hud_assert_eq(v0, hud::u128 {hud::u128_max - 1});
+    hud_assert_eq(res, hud::u128 {hud::u128_max});
 }
 
 GTEST_TEST(u128, pre_decrement)
 {
+    hud::u128 v0 {hud::u128_max};
+    hud::u128 res = --v0;
+    hud_assert_eq(v0, hud::u128 {hud::u128_max - 1});
+    hud_assert_eq(res, hud::u128 {hud::u128_max - 1});
 }
 
 GTEST_TEST(u128, left_shit)
 {
+    {
+        hud::u128 v0 {1};
+        hud::u128 res = v0 << 1;
+        hud_assert_eq(v0, hud::u128 {1});
+        hud_assert_eq(res, hud::u128 {2});
+    }
+    {
+        hud::u128 v0 {hud::u64_max};
+        hud::u128 res = v0 << 1;
+        hud_assert_eq(v0, hud::u128 {hud::u64_max});
+        hud_assert_eq(res, hud::u128(1u, hud::u64_max << 1));
+    }
 }
 
 GTEST_TEST(u128, right_shift)
 {
+    {
+        hud::u128 v0 {2};
+        hud::u128 res = v0 >> 1;
+        hud_assert_eq(v0, hud::u128 {2});
+        hud_assert_eq(res, hud::u128 {1});
+    }
+    {
+        hud::u128 v0 {hud::u64_max};
+        hud::u128 res = v0 >> 1;
+        hud_assert_eq(v0, hud::u128 {hud::u64_max});
+        hud_assert_eq(res, hud::u128(0u, hud::u64_max >> 1));
+    }
 }
 
 GTEST_TEST(u128, left_shit_equal)
 {
+    {
+        hud::u128 v0 {1};
+        v0 <<= 1;
+        hud_assert_eq(v0, hud::u128 {2});
+    }
+    {
+        hud::u128 v0 {hud::u64_max};
+        v0 <<= 1;
+        hud_assert_eq(v0, hud::u128(1u, hud::u64_max << 1));
+    }
 }
 
 GTEST_TEST(u128, right_shift_equal)
 {
+    {
+        hud::u128 v0 {2};
+        v0 >>= 1;
+        hud_assert_eq(v0, hud::u128 {1});
+    }
+    {
+        hud::u128 v0 {hud::u64_max};
+        v0 >>= 1;
+        hud_assert_eq(v0, hud::u128(0u, hud::u64_max >> 1));
+    }
 }

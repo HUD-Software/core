@@ -778,6 +778,7 @@ namespace hud
 
         using u128_impl = u128_intrinsics;
 
+        /** Construct a i128 from i128. */
         constexpr i128_intrinsics::i128_intrinsics(u128_intrinsics value) noexcept
             : intrinsic_value_(static_cast<__int128>(value))
         {

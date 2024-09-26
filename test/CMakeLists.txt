@@ -62,6 +62,11 @@ set( src
 	hashmap/hashmap_misc.cpp
 	hashset/hashset_constructors.cpp
 	hashset/hashset_misc.cpp
+	i128/i128_assign.cpp
+	i128/i128_cast.cpp
+	i128/i128_comparisons.cpp
+	i128/i128_constructors.cpp
+	i128/i128_operations.cpp
 	iterators/random_access_iterator.cpp
 	memory/memory_alignment.cpp
 	memory/memory_allocation.cpp
