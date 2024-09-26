@@ -321,23 +321,23 @@ namespace hud
             }
 
             /** Logical OR */
-            constexpr i128_intrinsics &operator|=(i128_intrinsics right) noexcept
+            constexpr i128_intrinsics &operator|=(i128_intrinsics other) noexcept
             {
-                intrinsic_value_ |= right.intrinsic_value_;
+                intrinsic_value_ |= other.intrinsic_value_;
                 return *this;
             }
 
             /** Logical AND */
-            constexpr i128_intrinsics &operator&=(i128_intrinsics right) noexcept
+            constexpr i128_intrinsics &operator&=(i128_intrinsics other) noexcept
             {
-                intrinsic_value_ &= right.intrinsic_value_;
+                intrinsic_value_ &= other.intrinsic_value_;
                 return *this;
             }
 
             /** Logical XOR */
-            constexpr i128_intrinsics &operator^=(i128_intrinsics right) noexcept
+            constexpr i128_intrinsics &operator^=(i128_intrinsics other) noexcept
             {
-                intrinsic_value_ ^= right.intrinsic_value_;
+                intrinsic_value_ ^= other.intrinsic_value_;
                 return *this;
             }
 
@@ -478,7 +478,6 @@ namespace hud
                 intrinsic_value_ = static_cast<unsigned __int128>(value);
             }
 
-            ///////////////////////////
             /** Retrieves the low part of the u64. */
             [[nodiscard]] constexpr u64 low() const noexcept
             {
@@ -696,23 +695,23 @@ namespace hud
             }
 
             /** Logical OR */
-            constexpr u128_intrinsics &operator|=(u128_intrinsics right) noexcept
+            constexpr u128_intrinsics &operator|=(u128_intrinsics other) noexcept
             {
-                intrinsic_value_ |= right.intrinsic_value_;
+                intrinsic_value_ |= other.intrinsic_value_;
                 return *this;
             }
 
             /** Logical AND */
-            constexpr u128_intrinsics &operator&=(u128_intrinsics right) noexcept
+            constexpr u128_intrinsics &operator&=(u128_intrinsics other) noexcept
             {
-                intrinsic_value_ &= right.intrinsic_value_;
+                intrinsic_value_ &= other.intrinsic_value_;
                 return *this;
             }
 
             /** Logical XOR */
-            constexpr u128_intrinsics &operator^=(u128_intrinsics right) noexcept
+            constexpr u128_intrinsics &operator^=(u128_intrinsics other) noexcept
             {
-                intrinsic_value_ ^= right.intrinsic_value_;
+                intrinsic_value_ ^= other.intrinsic_value_;
                 return *this;
             }
 
