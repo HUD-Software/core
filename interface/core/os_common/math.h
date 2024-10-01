@@ -8,6 +8,7 @@
 #include "../templates/bit_cast.h"
 #include <cmath>
 #include <limits>
+#include "../traits/is_constant_evaluated.h"
 
 namespace hud::os::common
 {

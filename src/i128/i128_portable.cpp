@@ -1,4 +1,4 @@
-#if HD_INTRINSIC_INT128_SUPPORTED
+#if !HD_INTRINSIC_INT128_SUPPORTED
     #include <core/minimal.h>
     #include <core/assert.h>
     #include <core/i128.h>
@@ -119,7 +119,7 @@ namespace hud
             // Check value is not NaN or infinite
             hud::check(hud::math::is_finite(value));
             // Ensure we fit in a i128 and value is between [-2^127, 2^127]
-            hud::check((std::numeric_limits<f32>::max_exponent <= 127) || (value >= -hud::math::ldexp(f32 {1}, 127)) && value < hud::math::ldexp(f32 {1}, 127));
+            hud::check((std::numeric_limits<f32>::max_exponent <= 127) || ((value >= -hud::math::ldexp(f32 {1}, 127)) && value < hud::math::ldexp(f32 {1}, 127)));
             // // Ensure value is between [-2^127, 2^127]
             // hud::check(value >= -hud::math::ldexp(f32 {1}, 127));
             // hud::check(value < hud::math::ldexp(f32 {1}, 127));
@@ -138,7 +138,7 @@ namespace hud
             // Check value is not NaN or infinite
             hud::check(hud::math::is_finite(value));
             // Ensure we fit in a i128  // Ensure value is between [-2^127, 2^127]
-            hud::check((std::numeric_limits<f64>::max_exponent <= 127) || (value >= -hud::math::ldexp(f64 {1}, 127)) && value < hud::math::ldexp(f64 {1}, 127));
+            hud::check((std::numeric_limits<f64>::max_exponent <= 127) || ((value >= -hud::math::ldexp(f64 {1}, 127)) && value < hud::math::ldexp(f64 {1}, 127)));
             // hud::check(std::numeric_limits<f64>::max_exponent <= 127);
             // // Ensure value is between [-2^127, 2^127]
             // hud::check(value >= -hud::math::ldexp(f64 {1}, 127));
