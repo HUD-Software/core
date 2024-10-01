@@ -395,10 +395,10 @@ namespace hud::os::common
             // Implementation from boost https://live.boost.org/doc/libs/1_85_0/boost/math/ccmath/ldexp.hpp
             if (hud::is_constant_evaluated())
             {
-                return abs(value) == type_t {0.f} ? value :
-                       isinf(value)               ? value :
-                       isnan(value)               ? value :
-                                                    [value, exp]() mutable
+                return math::abs(value) == type_t {0.f} ? value :
+                       !math::is_finite(value)          ? value :
+                       math::is_nan(value)              ? value :
+                                                          [value, exp]() mutable
                 {
                     while (exp > 0)
                     {
