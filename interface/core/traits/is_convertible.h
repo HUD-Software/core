@@ -8,6 +8,7 @@
     #include "is_function.h"
     #include "is_array.h"
     #include "../templates/declval.h"
+
 #endif
 
 namespace hud
@@ -23,21 +24,21 @@ namespace hud
     namespace details
     {
 
-        template<class T>
-        auto test_returnable(int) -> decltype(void(static_cast<T (*)()>(nullptr)), hud::true_type {});
+        template<class type_t>
+        auto test_returnable(int) -> decltype(void(static_cast<type_t (*)()>(nullptr)), hud::true_type {});
         template<class>
         auto test_returnable(...) -> hud::false_type;
 
-        template<class From, class To>
-        auto test_implicitly_convertible(int) -> decltype(void(hud::declval<void (&)(To)>()(hud::declval<From>())), hud::true_type {});
+        template<class from_t, class to_t>
+        auto test_implicitly_convertible(int) -> decltype(void(hud::declval<void (&)(to_t)>()(hud::declval<from_t>())), hud::true_type {});
         template<class, class>
         auto test_implicitly_convertible(...) -> hud::false_type;
 
     } // namespace details
 
-    template<class From, class To>
+    template<class from_t, class to_t>
     struct is_convertible
-        : std::bool_constant<(decltype(details::test_returnable<To>(0))::value && decltype(details::test_implicitly_convertible<From, To>(0))::value) || (hud::is_void<From>::value && hud::is_void<To>::value)>
+        : hud::bool_constant<(decltype(details::test_returnable<to_t>(0))::value && decltype(details::test_implicitly_convertible<from_t, to_t>(0))::value) || (hud::is_void<from_t>::value && hud::is_void<to_t>::value)>
     {
     };
 

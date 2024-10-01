@@ -238,7 +238,7 @@ namespace hud
             [[nodiscard]] constexpr i128_portable operator*(i128_portable other) const noexcept;
 
             /** Multiply this to other and return this. */
-            i128_portable &operator*=(i128_portable other) noexcept
+            constexpr i128_portable &operator*=(i128_portable other) noexcept
             {
                 *this = *this * other;
                 return *this;
@@ -247,7 +247,7 @@ namespace hud
             /** Divide this to other and return the result. */
             [[nodiscard]] i128_portable operator/(i128_portable other) const noexcept;
 
-            /** Multiply this to other and return this. */
+            /** Divide this to other and return this. */
             i128_portable &operator/=(i128_portable other) noexcept
             {
                 *this = *this / other;

@@ -256,7 +256,7 @@ namespace hud::os::common
          * @param value The value to test
          * @return true if value if finite, false otherwise
          */
-        [[nodiscard]] static bool is_finite(const float value) noexcept
+        [[nodiscard]] static constexpr bool is_finite(const float value) noexcept
         {
             return (hud::bit_cast<u32>(value) & 0x7F800000U) != 0x7F800000U;
         }
@@ -266,7 +266,7 @@ namespace hud::os::common
          * @param value The value to test
          * @return true if value if finite, false otherwise
          */
-        [[nodiscard]] static bool is_finite(const double value) noexcept
+        [[nodiscard]] static constexpr bool is_finite(const double value) noexcept
         {
             return (hud::bit_cast<u64>(value) & 0x7FF0000000000000ULL) != 0x7FF0000000000000ULL;
         }
