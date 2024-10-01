@@ -248,7 +248,7 @@ endif()
 target_include_directories(core PUBLIC ../interface)
 
 
-#target_precompile_headers(core PRIVATE precompiled.h)
+target_precompile_headers(core PRIVATE precompiled.h)
 
 # Add defines
 target_compile_definitions(

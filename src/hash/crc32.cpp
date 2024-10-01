@@ -1,4 +1,3 @@
-#include <core/minimal.h>
 #include <core/hash/crc32.h>
 #include <core/memory.h>
 

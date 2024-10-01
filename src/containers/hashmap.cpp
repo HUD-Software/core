@@ -1,4 +1,3 @@
-#include <core/minimal.h>
 #include <core/containers/hashmap.h>
 
 namespace hud::details::hashmap
