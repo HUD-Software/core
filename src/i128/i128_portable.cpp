@@ -1,9 +1,10 @@
-#include <core/minimal.h>
-#include <core/assert.h>
-#include <core/i128.h>
-#include <core/math.h>
+#if HD_INTRINSIC_INT128_SUPPORTED
+    #include <core/minimal.h>
+    #include <core/assert.h>
+    #include <core/i128.h>
+    #include <core/math.h>
 
-#include <limits>
+    #include <limits>
 
 namespace hud
 {
@@ -152,7 +153,7 @@ namespace hud
             low = result.low_;
         }
 
-#if defined(HD_LITTLE_ENDIAN)
+    #if defined(HD_LITTLE_ENDIAN)
 
         i128_portable::i128_portable(f32 value) noexcept
         {
@@ -232,8 +233,10 @@ namespace hud
             return remainder;
         }
 
-#elif defined(HD_BIG_ENDIAN)
+    #elif defined(HD_BIG_ENDIAN)
 
-#endif
+    #endif
     } // namespace details::i128
 } // namespace hud
+
+#endif // HD_INTRINSIC_INT128_SUPPORTED

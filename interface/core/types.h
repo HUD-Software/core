@@ -327,4 +327,9 @@ using ptr = hud::ptr; // contains pointer types
 
 #endif
 
+#include <core/i128.h>
+#if defined(HD_GLOBAL_NAMESPACE_TYPES)
+using u128 = hud::u128; // 128 bits unsigned integer
+using i128 = hud::i128; // 128 bits signed integer
+#endif
 #endif // HD_INC_CORE_TYPES_H
