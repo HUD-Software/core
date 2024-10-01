@@ -1,12 +1,8 @@
 #ifndef HD_INC_CORE_I128_I128_PORTABLE_H
 #define HD_INC_CORE_I128_I128_PORTABLE_H
-// #include "../assert.h"
-#include <math.h> //ldexpf, ld
 #include "../limits.h"
 #include "../math.h"
 #include "../assert.h"
-
-// #include <limits>
 
 namespace hud
 {
