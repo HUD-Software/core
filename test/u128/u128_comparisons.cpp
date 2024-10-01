@@ -1,3 +1,4 @@
+#include <core/i128.h>
 
 GTEST_TEST(u128, operator_equal)
 {

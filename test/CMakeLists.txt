@@ -67,6 +67,7 @@ set( src
 	i128/i128_comparisons.cpp
 	i128/i128_constructors.cpp
 	i128/i128_operations.cpp
+	i128/i128_misc.cpp
 	iterators/random_access_iterator.cpp
 	memory/memory_alignment.cpp
 	memory/memory_allocation.cpp
@@ -263,6 +264,7 @@ set( src
 	u128/u128_comparisons.cpp
 	u128/u128_constructors.cpp
 	u128/u128_operations.cpp
+	u128/u128_misc.cpp
 	unique_pointer/array/unique_pointer_array_assignments.cpp
 	unique_pointer/array/unique_pointer_array_comparison.cpp
 	unique_pointer/array/unique_pointer_array_constructors.cpp

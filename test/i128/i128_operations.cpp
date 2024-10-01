@@ -1,3 +1,5 @@
+#include <core/i128.h>
+
 GTEST_TEST(i128, addition)
 {
     hud_assert_eq(hud::i128 {1} + hud::i128 {2}, hud::i128 {3});
@@ -20,12 +22,23 @@ GTEST_TEST(i128, division)
 {
     hud_assert_eq(hud::i128 {2} / hud::i128 {2}, hud::i128 {1});
     hud_assert_eq(hud::i128 {3} / hud::i128 {2}, hud::i128 {1});
+    hud_assert_eq(hud::i128 {10} / hud::i128 {2}, hud::i128 {5});
+    hud_assert_eq(hud::i128 {-6} / hud::i128 {3}, hud::i128 {-2});
+    hud_assert_eq(hud::i128 {9} / hud::i128 {3}, hud::i128 {3});
+
+    hud_assert_eq((hud::i128 {0x7FFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF} / hud::i128 {0, 2}), (hud::i128 {0x3FFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF}));
+    hud_assert_eq((hud::i128 {(i64)0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF} / hud::i128 {0, 1}), (hud::i128 {(i64)0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF}));
+    hud_assert_eq((hud::i128 {0x7FFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF} / hud::i128 {0, 3}), (hud::i128 {0x2AAAAAAAAAAAAAAA, 0xAAAAAAAAAAAAAAAA}));
 }
 
 GTEST_TEST(i128, multiplication)
 {
     hud_assert_eq(hud::i128 {2} * hud::i128 {2}, hud::i128 {4});
     hud_assert_eq(hud::i128 {3} * hud::i128 {0}, hud::i128 {0});
+    hud_assert_eq(hud::i128 {3} * hud::i128 {2}, hud::i128 {6});
+    hud_assert_eq(hud::i128 {0} * hud::i128 {10}, hud::i128 {0});
+    hud_assert_eq(hud::i128 {-3} * hud::i128 {4}, hud::i128 {-12});
+    hud_assert_eq(hud::i128 {7} * hud::i128 {5}, hud::i128 {35});
 // Check for overflow of i128; works if it's a two's complement representation.
 #if !USE_ADDRESS_SANITIZER
     hud_assert_eq(hud::i128_max * hud::i128 {2}, i128 {-2}); // Signed integer overflow is undefined behaviour

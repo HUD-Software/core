@@ -1,3 +1,4 @@
+#include <core/i128.h>
 #include <cmath> // std::isfinite, std::nextafter,std::ldexp
 #include <core/math.h>
 
@@ -103,7 +104,7 @@ GTEST_TEST(i128, assign_f32)
     {
         hud::i128 v {hud::i128_max};
         v = f32 {};
-        hud_assert_eq((float)v, f32 {});
+        hud_assert_eq((f32)v, f32 {});
     }
 
     // Init to min value

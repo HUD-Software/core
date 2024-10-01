@@ -1,3 +1,4 @@
+#include <core/i128.h>
 #include <cmath> // std::isfinite, std::nextafter,std::ldexp
 #include <core/math.h>
 

@@ -1,4 +1,5 @@
 
+#include <core/i128.h>
 #include <cmath> // std::nextafter, std::ldexp
 
 GTEST_TEST(u128, cast)

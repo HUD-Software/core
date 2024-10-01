@@ -695,7 +695,7 @@ namespace hud::os::common
             return compare_greater(buffer1, buffer2, buffer_size);
         }
 
-        /** Reverse bits of a 32 bits integral type */
+        /** Reverse bits of a 32 bits integral type. */
         [[nodiscard]] static constexpr u32 reverse_bits(u32 integral) noexcept
         {
             integral = (integral << 16) | (integral >> 16);

@@ -43,9 +43,6 @@ GTEST_TEST(types, size)
         hud_assert_eq(sizeof(isize), 4u);
         hud_assert_eq(sizeof(usize), 4u);
     }
-
-    hud_assert_eq(sizeof(i128), 16u);
-    hud_assert_eq(sizeof(u128), 16u);
 }
 
 GTEST_TEST(types, signed_unsigned)
@@ -73,8 +70,6 @@ GTEST_TEST(types, signed_unsigned)
     hud_assert_true(hud::is_unsigned_v<uptr>);
     hud_assert_true(hud::is_signed_v<isize>);
     hud_assert_true(hud::is_unsigned_v<usize>);
-    hud_assert_true(hud::is_signed_v<i128>);
-    hud_assert_true(hud::is_unsigned_v<u128>);
 }
 
 GTEST_TEST(types, limits)
@@ -125,11 +120,4 @@ GTEST_TEST(types, limits)
     hud_assert_eq(hud::usize_min, std::numeric_limits<usize>::min());
     hud_assert_eq(hud::isize_max, std::numeric_limits<isize>::max());
     hud_assert_eq(hud::isize_min, std::numeric_limits<isize>::min());
-
-#if HD_INTRINSIC_INT128_SUPPORTED
-    hud_assert_eq(hud::i128_min, std::numeric_limits<__int128>::min());
-    hud_assert_eq(hud::i128_max, std::numeric_limits<__int128>::max());
-    hud_assert_eq(hud::u128_min, std::numeric_limits<unsigned __int128>::min());
-    hud_assert_eq(hud::u128_max, std::numeric_limits<unsigned __int128>::max());
-#endif
 }

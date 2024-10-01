@@ -634,10 +634,24 @@ namespace hud
                 return intrinsic_value_ + other.intrinsic_value_;
             }
 
+            /** Add this to other and return this. */
+            [[nodiscard]] constexpr u128_intrinsics &operator+=(u128_intrinsics other) noexcept
+            {
+                *this = *this + other;
+                return *this;
+            }
+
             /** Subtract this to other and return the result. */
             [[nodiscard]] constexpr u128_intrinsics operator-(u128_intrinsics other) const noexcept
             {
                 return intrinsic_value_ - other.intrinsic_value_;
+            }
+
+            /** Subtract this to other and return this. */
+            [[nodiscard]] constexpr u128_intrinsics &operator-=(u128_intrinsics other) noexcept
+            {
+                *this = *this - other;
+                return *this;
             }
 
             /** Multiply this to other and return the result. */
@@ -646,16 +660,37 @@ namespace hud
                 return intrinsic_value_ * other.intrinsic_value_;
             }
 
+            /** Multiply this to other and return this. */
+            [[nodiscard]] constexpr u128_intrinsics &operator*=(u128_intrinsics other) noexcept
+            {
+                *this = *this * other;
+                return *this;
+            }
+
             /** Divide this to other and return the result. */
             [[nodiscard]] constexpr u128_intrinsics operator/(u128_intrinsics other) const noexcept
             {
                 return intrinsic_value_ / other.intrinsic_value_;
             }
 
+            /** Divide this to other and return this. */
+            [[nodiscard]] constexpr u128_intrinsics &operator/=(u128_intrinsics other) noexcept
+            {
+                *this = *this / other;
+                return *this;
+            }
+
             /** Retrieves the remainder of this divided by other and returns the result. */
             [[nodiscard]] constexpr u128_intrinsics operator%(u128_intrinsics other) const noexcept
             {
                 return intrinsic_value_ % other.intrinsic_value_;
+            }
+
+            /** Retrieves the remainder of this divided by other, result in this and returns this. */
+            [[nodiscard]] constexpr u128_intrinsics &operator%=(u128_intrinsics other) noexcept
+            {
+                *this = *this / other;
+                return *this;
             }
 
             /** Negate this. */

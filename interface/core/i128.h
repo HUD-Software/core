@@ -31,9 +31,9 @@ namespace hud
         using i128_impl::i128_impl;
 
         /** Construct a i128 from u128. */
-        HD_FORCEINLINE constexpr i128(u128 value) noexcept;
+        constexpr i128(u128 value) noexcept;
 
-        HD_FORCEINLINE constexpr i128(i128_impl impl) noexcept
+        constexpr i128(i128_impl impl) noexcept
             : i128_impl(impl)
         {
         }
@@ -90,12 +90,12 @@ namespace hud
     public:
         using u128_impl::u128_impl;
 
-        HD_FORCEINLINE constexpr u128(i128 value) noexcept
+        constexpr u128(i128 value) noexcept
             : u128_impl(static_cast<u128_impl>(value))
         {
         }
 
-        HD_FORCEINLINE constexpr u128(u128_impl impl) noexcept
+        constexpr u128(u128_impl impl) noexcept
             : u128_impl(impl)
         {
         }
@@ -149,37 +149,6 @@ namespace hud
     {
     }
 
-#if !HD_INTRINSIC_INT128_SUPPORTED
-    namespace details::i128
-    {
-        /** Construct a i128 from u128. */
-        constexpr i128_little::i128_little(hud::u128 value) noexcept
-            : low_(value.low())
-            , high_(static_cast<i64>(value.high()))
-        {
-        }
-
-        /** Construct a i128 from u128. */
-        constexpr i128_big::i128_big(hud::u128 value) noexcept
-            : high_(static_cast<i64>(value.high()))
-            , low_(value.low())
-        {
-        }
-
-        constexpr u128_little::u128_little(hud::i128 value) noexcept
-            : low_(value.low())
-            , high_(static_cast<u64>(value.high()))
-        {
-        }
-
-        constexpr u128_big::u128_big(hud::i128 value) noexcept
-            : high_(static_cast<u64>(value.high()))
-            , low_(value.low())
-        {
-        }
-    } // namespace details::i128
-#endif
-
     static inline constexpr i128 i128_max = i128 {i64_max, u64_max};
     static inline constexpr i128 i128_min = i128 {i64_min, 0u};
 
@@ -225,6 +194,10 @@ namespace hud
         : hud::true_type
     {
     };
-} // namespace hud
 
+} // namespace hud
+#if defined(HD_GLOBAL_NAMESPACE_TYPES)
+using u128 = hud::u128; // 128 bits unsigned integer
+using i128 = hud::i128; // 128 bits signed integer
+#endif
 #endif // HD_INC_CORE_I128_H

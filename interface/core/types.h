@@ -175,8 +175,6 @@ namespace hud
 
 } // namespace hud
 
-#include "i128.h"
-
 // Statically check for type size
 static_assert(sizeof(bool) == 1, "sizeof(hud::bool) != 1 byte");
 static_assert(sizeof(hud::i8) == 1, "sizeof(hud::i8) != 1 byte");
@@ -295,18 +293,16 @@ static_assert(hud::isize_min == (-9223372036854775807 - 1), "isize_min!= 0");
 // Redefine types in the global namespace if requested
 #if defined(HD_GLOBAL_NAMESPACE_TYPES)
 // Unsigned common types
-using u8 = hud::u8;     // 8 bits unsigned integer
-using u16 = hud::u16;   // 16 bits unsigned integer
-using u32 = hud::u32;   // 32 bits unsigned integer
-using u64 = hud::u64;   // 64 bits unsigned integer
-using u128 = hud::u128; // 128 bits unsigned integer
+using u8 = hud::u8;   // 8 bits unsigned integer
+using u16 = hud::u16; // 16 bits unsigned integer
+using u32 = hud::u32; // 32 bits unsigned integer
+using u64 = hud::u64; // 64 bits unsigned integer
 
 // Signed common types
-using i8 = hud::i8;     // 8 bits signed integer
-using i16 = hud::i16;   // 16 bits signed integer
-using i32 = hud::i32;   // 32 bits signed integer
-using i64 = hud::i64;   // 64 bits signed integer
-using i128 = hud::i128; // 128 bits signed integer
+using i8 = hud::i8;   // 8 bits signed integer
+using i16 = hud::i16; // 16 bits signed integer
+using i32 = hud::i32; // 32 bits signed integer
+using i64 = hud::i64; // 64 bits signed integer
 
 // characteracter common types
 using ansichar = hud::ansichar; // 8 bits character

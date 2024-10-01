@@ -1,4 +1,5 @@
 #include <core/math.h>
+#include <core/limits.h>
 
 GTEST_TEST(math, limits)
 {

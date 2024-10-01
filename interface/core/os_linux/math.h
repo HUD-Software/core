@@ -12,24 +12,27 @@ namespace hud::os::linux
     struct math
         : public os::common::math
     {
-
+        /** Compute the natual logarithm of value. */
         template<typename type_t>
         [[nodiscard]] static type_t log(const type_t value) noexcept
         {
             return __builtin_log(value);
         }
 
+        /** Compute the natual logarithm of value. */
         [[nodiscard]] static f32 log(const f32 value) noexcept
         {
             return __builtin_logf(value);
         }
 
+        /** Compute the square root of value. */
         template<typename type_t>
         [[nodiscard]] static type_t sqrt(const type_t value) noexcept
         {
             return __builtin_sqrt(value);
         }
 
+        /** Compute the square root of value. */
         [[nodiscard]] static f32 sqrt(const f32 value) noexcept
         {
             return __builtin_sqrtf(value);

@@ -12,14 +12,13 @@
 namespace hud
 {
     struct math :
-    #if defined(HD_OS_WINDOWS)
+#if defined(HD_OS_WINDOWS)
         os::windows::math
-    #elif defined(HD_OS_LINUX)
+#elif defined(HD_OS_LINUX)
         os::linux::math
-    #endif
+#endif
     {
 
-      
     }; // namespace math
 
 } // namespace hud

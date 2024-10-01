@@ -1,3 +1,5 @@
+#include <core/i128.h>
+
 GTEST_TEST(u128, addition)
 {
     hud_assert_eq(hud::u128 {1} + hud::u128 {2}, hud::u128 {3});

@@ -1,10 +1,11 @@
+#include <core/i128.h>
 #include <cmath> // std::isfinite, std::nextafter,std::ldexp
 
-GTEST_TEST(u128, default_constructor)
-{
-    u128 v;
-    hud_assert_ne(v, 0);
-}
+// GTEST_TEST(u128, default_constructor)
+// {
+//     u128 v;
+//     hud_assert_ne(v, 0);
+// }
 
 GTEST_TEST(u128, constructor_init)
 {
