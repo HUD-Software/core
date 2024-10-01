@@ -9,7 +9,7 @@
     #error i128.h must be included after or in types.h
 #endif
 
-#if HD_INTRINSIC_INT128_SUPPORTED
+#if defined(HD_INTRINSIC_INT128_SUPPORTED)
     #include "i128/i128_intrinsics.h"
 #else
     #include "i128/i128_portable.h"
@@ -73,7 +73,7 @@ namespace hud
         using i128_impl::operator f32;
         /** Cast to f64. */
         using i128_impl::operator f64;
-#if HD_INTRINSIC_INT128_SUPPORTED
+#if defined(HD_INTRINSIC_INT128_SUPPORTED)
         /** Cast to __int128. */
         using i128_impl::operator __int128;
         /** Cast to unsigned __int128. */
@@ -135,7 +135,7 @@ namespace hud
         using u128_impl::operator f32;
         /** Cast to f64. */
         using u128_impl::operator f64;
-#if HD_INTRINSIC_INT128_SUPPORTED
+#if defined(HD_INTRINSIC_INT128_SUPPORTED)
         /** Cast to __int128. */
         using u128_impl::operator __int128;
         /** Cast to unsigned __int128. */
@@ -167,7 +167,7 @@ namespace hud
         static constexpr u128 max {hud::u128_max};
     };
 
-#if HD_INTRINSIC_INT128_SUPPORTED
+#if defined(HD_INTRINSIC_INT128_SUPPORTED)
 
     template<> struct limits<__int128>
     {

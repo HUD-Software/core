@@ -4,7 +4,7 @@ GTEST_TEST(i128, addition)
 {
     hud_assert_eq(hud::i128 {1} + hud::i128 {2}, hud::i128 {3});
 // Check for overflow of i128; works if it's a two's complement representation.
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     hud_assert_eq(hud::i128 {1} + hud::i128_max, hud::i128_min); // Signed integer overflow is undefined behaviour
 #endif
 }
@@ -15,7 +15,7 @@ GTEST_TEST(i128, addition_equal)
     a += hud::i128 {2};
     hud_assert_eq(a, hud::i128 {3});
 // Check for overflow of i128; works if it's a two's complement representation.
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     hud::i128 b {1};
     b += hud::i128_max;
     hud_assert_eq(b, hud::i128_min); // Signed integer overflow is undefined behaviour
@@ -26,7 +26,7 @@ GTEST_TEST(i128, subtraction)
 {
     hud_assert_eq(hud::i128 {3} - hud::i128 {2}, hud::i128 {1});
 // Check for underflow of i128; works if it's a two's complement representation.
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     hud_assert_eq(hud::i128_min - hud::i128 {1}, hud::i128_max); // Signed integer overflow is undefined behaviour
 #endif
 }
@@ -37,7 +37,7 @@ GTEST_TEST(i128, subtraction_equal)
     a -= hud::i128 {2};
     hud_assert_eq(a, hud::i128 {1});
 // Check for underflow of i128; works if it's a two's complement representation.
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     hud::i128 b {hud::i128_min};
     b -= hud::i128 {1};
     hud_assert_eq(b, hud::i128_max); // Signed integer overflow is undefined behaviour
@@ -95,7 +95,7 @@ GTEST_TEST(i128, multiplication)
     hud_assert_eq(hud::i128 {-3} * hud::i128 {4}, hud::i128 {-12});
     hud_assert_eq(hud::i128 {7} * hud::i128 {5}, hud::i128 {35});
 // Check for overflow of i128; works if it's a two's complement representation.
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     hud_assert_eq(hud::i128_max * hud::i128 {2}, i128 {-2}); // Signed integer overflow is undefined behaviour
 #endif
 }
@@ -121,7 +121,7 @@ GTEST_TEST(i128, multiplication_equal)
     f *= hud::i128 {5};
     hud_assert_eq(f, hud::i128 {35});
 // Check for overflow of i128; works if it's a two's complement representation.
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     hud::i128 g {hud::i128_max};
     g *= hud::i128 {2};
     hud_assert_eq(g, i128 {-2}); // Signed integer overflow is undefined behaviour

@@ -15,12 +15,12 @@
             #define HD_FORCEINLINE __forceinline // Overrides the cost/benefit analysis and relies on the judgment of the programmer instead
         #endif
 
-        #define HD_RESTRICT __restrict                     // Indicates that a symbol is not aliased in the current scope.
-        #define NOMINMAX                                   // Do not defines min and max macro
-        #undef RSIZE_MAX                                   // MSVC deinfed RSIZE_MAX to (SIZE_MAX >> 1) in limit.h. This is C11 that is not implemented by every compiler. Use hud::cstring::RSIZE_MAX instead.
-        #define USE_ADDRESS_SANITIZER __SANITIZE_ADDRESS__ // The __SANITIZE_ADDRESS__ preprocessor macro is defined as 1 when /fsanitize=address is set
-        #define HD_DLL_EXPORT __declspec(dllexport)        // Export a library symbol
-        #define HD_DLL_IMPORT __declspec(dllimport)        // Import a library symbol
+        #define HD_RESTRICT __restrict                        // Indicates that a symbol is not aliased in the current scope.
+        #define NOMINMAX                                      // Do not defines min and max macro
+        #undef RSIZE_MAX                                      // MSVC deinfed RSIZE_MAX to (SIZE_MAX >> 1) in limit.h. This is C11 that is not implemented by every compiler. Use hud::cstring::RSIZE_MAX instead.
+        #define HD_USE_ADDRESS_SANITIZER __SANITIZE_ADDRESS__ // The __SANITIZE_ADDRESS__ preprocessor macro is defined as 1 when /fsanitize=address is set
+        #define HD_DLL_EXPORT __declspec(dllexport)           // Export a library symbol
+        #define HD_DLL_IMPORT __declspec(dllimport)           // Import a library symbol
         #if defined(HD_CORE_DLL_EXPORT)
             #define HD_CORE_DLL HD_DLL_EXPORT
         #elif defined(HD_CORE_DLL_IMPORT)
@@ -49,11 +49,11 @@
 
         #if defined(HD_COMPILER_CLANG)
             #if __has_feature(address_sanitizer)
-                #define USE_ADDRESS_SANITIZER 1
+                #define HD_USE_ADDRESS_SANITIZER 1
             #endif
         #elif defined(HD_COMPILER_GCC) && defined(__SANITIZE_ADDRESS__)
             #if defined(__SANITIZE_ADDRESS__)
-                #define USE_ADDRESS_SANITIZER 1
+                #define HD_USE_ADDRESS_SANITIZER 1
             #endif
         #endif
         #define HD_CORE_DLL

@@ -20,7 +20,7 @@ GTEST_TEST(u128, subtraction_equal)
     a -= hud::u128 {2};
     hud_assert_eq(a, hud::u128 {1});
 // Check for underflow of u128; works if it's a two's complement representation.
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     hud::u128 b {hud::u128_min};
     b -= hud::u128 {1};
     hud_assert_eq(b, hud::u128_max); // Signed integer overflow is undefined behaviour
@@ -102,7 +102,7 @@ GTEST_TEST(u128, multiplication_equal)
     f *= hud::u128 {5};
     hud_assert_eq(f, hud::u128 {35});
 // Check for overflow of u128; works if it's a two's complement representation.
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     hud::u128 g {hud::u128_max};
     g *= hud::u128 {2};
     hud_assert_eq(g, hud::u128_max - 1); // Signed integer overflow is undefined behaviour

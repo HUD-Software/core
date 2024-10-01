@@ -11,7 +11,7 @@ GTEST_TEST(i128, cast)
     };
     hud_test::for_each_type<bool, i8, u8, i16, u16, i32, u32, i64, u64, ansichar, wchar, char16, char32, i128, i128>()(lambda);
 
-#if HD_INTRINSIC_INT128_SUPPORTED
+#if defined(HD_INTRINSIC_INT128_SUPPORTED)
     hud_test::for_each_type<__int128, unsigned __int128>()(lambda);
 #endif
 

@@ -50,7 +50,7 @@ GTEST_TEST(math, limits)
     hud_assert_eq(hud::limits<isize>::max, std::numeric_limits<isize>::max());
     hud_assert_eq(hud::limits<isize>::min, std::numeric_limits<isize>::min());
 
-#if HD_INTRINSIC_INT128_SUPPORTED
+#if defined(HD_INTRINSIC_INT128_SUPPORTED)
     hud_assert_eq(hud::limits<i128>::max, std::numeric_limits<__int128>::max());
     hud_assert_eq(hud::limits<i128>::min, std::numeric_limits<__int128>::min());
     hud_assert_eq(hud::limits<u128>::max, std::numeric_limits<unsigned __int128>::max());

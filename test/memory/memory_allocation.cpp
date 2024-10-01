@@ -12,7 +12,7 @@ GTEST_TEST(memory, allocate)
         hud_test::LeakGuard leak_guard(ptr);
         hud_assert_ne(ptr, nullptr);
 
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
         // Allocation should failed (usize_max is too big)  and allocate should return nullptr
         void *ptr_2 = hud::memory::allocate(hud::usize_max);
         hud_test::LeakGuard leak_guard_2(ptr_2);
@@ -43,7 +43,7 @@ GTEST_TEST(memory, allocate_zero)
     hud_assert_eq(*static_cast<u32 *>(ptr), 0u);
     hud_assert_eq(*(static_cast<u32 *>(ptr) + 1), 0u);
 
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
     // Allocation should failed (usize_max is too big)  and allocate should return nullptr
     void *ptr_2 = hud::memory::allocate_zero(hud::usize_max);
     hud_test::LeakGuard leak_guard_2(ptr_2);
@@ -62,7 +62,7 @@ GTEST_TEST(memory, allocate_align)
         hud_assert_ne(ptr, nullptr);
         hud_assert_true(hud::memory::is_pointer_aligned(ptr, aligment));
 
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
         // Allocation should failed (usize_max is too big)  and allocate should return nullptr
         void *ptr_2 = hud::memory::allocate_align(hud::usize_max - (hud::memory::ALIGNED_MALLOC_HEADER_SIZE + aligment), aligment);
         hud_test::AlignLeakGuard leak_guard_2(ptr_2);
@@ -84,7 +84,7 @@ GTEST_TEST(memory, allocate_align_zero)
         hud_assert_eq(*static_cast<u32 *>(ptr), 0u);
         hud_assert_eq(*(static_cast<u32 *>(ptr) + 1), 0u);
 
-#if !USE_ADDRESS_SANITIZER
+#if !HD_USE_ADDRESS_SANITIZER
         // Allocation should failed (usize_max is too big)  and allocate should return nullptr
         void *ptr_2 = hud::memory::allocate_align_zero(hud::usize_max - (hud::memory::ALIGNED_MALLOC_HEADER_SIZE + aligment), aligment);
         hud_test::AlignLeakGuard leak_guard_2(ptr_2);
