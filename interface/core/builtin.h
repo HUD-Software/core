@@ -1,6 +1,10 @@
 #ifndef HD_INC_CORE_BUILTIN_H
 #define HD_INC_CORE_BUILTIN_H
 
+#if !defined(__has_builtin)
+    #error __has_builtin need to be defined.
+#endif
+
 #if defined(HD_COMPILER_GCC) || defined(HD_COMPILER_CLANG)
     #define HD_HAS_BUILTIN_IS_CONVERTIBLE_TO __has_builtin(__is_convertible_to)                 // Clang and GCC maybe defined __is_convertible_to builtin
     #define HD_HAS_BUILTIN_IS_TRIVIALLY_DESTRUCTIBLE __has_builtin(__is_trivially_destructible) // Clang and GCC maybe defined __is_trivially_destructible builtin
@@ -19,6 +23,7 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_ADD __has_builtin(__atomic_fetch_add)                   // Clang and GCC maybe defined __atomic_fetch_add builtin
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB __has_builtin(__atomic_fetch_sub)                   // Clang and GCC maybe defined __atomic_fetch_sub builtin
     #define HD_HAS_BUILTIN_DEBUGTRAP __has_builtin(__builtin_debugtrap)                         // Clang and GCC maybe defined __builtin_debugtrap builtin
+    #define HD_HAS_BUILTIN_ASSUME __has_builtin(__builtin_assume)                               // Clang and GCC maybe defined __builtin_assume builtin
 
 #elif defined(HD_COMPILER_CLANG_CL)
     #define HD_HAS_BUILTIN_IS_CONVERTIBLE_TO __has_builtin(__is_convertible_to)                 // Clang-cl maybe defined __is_convertible_to builtin
@@ -38,6 +43,7 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_ADD __has_builtin(__atomic_fetch_add)                   // Clang-cl maybe defined __atomic_fetch_add builtin
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB __has_builtin(__atomic_fetch_sub)                   // Clang-cl maybe defined __atomic_fetch_sub builtin
     #define HD_HAS_BUILTIN_DEBUGTRAP __has_builtin(__builtin_debugtrap)                         // Clang-cl maybe defined __builtin_debugtrap builtin
+    #define HD_HAS_BUILTIN_ASSUME __has_builtin(__builtin_assume)                               // Clang and GCC maybe defined __builtin_assume builtin
 
 #elif defined(HD_COMPILER_MSVC)
     #define HD_HAS_BUILTIN_IS_CONVERTIBLE_TO 1         // MSVC defined __is_convertible_to builtin
@@ -57,36 +63,7 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_ADD 0          // MSVC don't have __atomic_fetch_add builtin
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB 0          // MSVC don't have __atomic_fetch_sub builtin
     #define HD_HAS_BUILTIN_DEBUGTRAP 0                 // MSVC don't have __builtin_debugtrap builtin
-
-#endif
-
-/** Check that builtin checks is complete */
-#ifndef HD_HAS_BUILTIN_IS_CONVERTIBLE_TO
-    #error has __is_convertible_to builtin is not defined
-#endif
-#ifndef HD_HAS_BUILTIN_IS_TRIVIALLY_DESTRUCTIBLE
-    #error has __is_trivially_destructible builtin is not defined
-#endif
-#ifndef HD_HAS_BUILTIN_BUILTIN_BSWAP32
-    #error has __builtin_bswap32 builtin is not defined
-#endif
-#ifndef HD_HAS_BUILTIN_BULITIN_BSWAP64
-    #error has __builtin_bswap64 builtin is not defined
-#endif
-#ifndef HD_HAS_BUILTIN_BULITIN_ROTATELEFT32
-    #error has __builtin_rotateleft32 builtin is not defined
-#endif
-#ifndef HD_HAS_BUILTIN_BULITIN_ROTATELEFT64
-    #error has __builtin_rotateleft64 builtin is not defined
-#endif
-#ifndef HD_HAS_BUILTIN_BULITIN_ROTATERIGHT32
-    #error has __builtin_rotateright32 builtin is not defined
-#endif
-#ifndef HD_HAS_BUILTIN_BULITIN_ROTATERIGHT64
-    #error has __builtin_rotateright64 builtin is not defined
-#endif
-#ifndef HD_HAS_BUILTIN_ATOMIC_THREAD_FENCE
-    #error has __atomic_thread_fence builtin is not defined
+    #define HD_HAS_BUILTIN_ASSUME 1                    // MSVC defined __assume builtin
 #endif
 
 #endif // HD_INC_CORE_BUILTIN_H

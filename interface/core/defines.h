@@ -28,7 +28,7 @@
         #else
             #define HD_CORE_DLL
         #endif
-
+        #define HD_ASSUME(cond) __assume(cond) //
     #else
         #error Unsupported compiler for Windows
     #endif
@@ -47,6 +47,9 @@
         #define HD_RESTRICT __restrict__ // Indicates that a symbol is not aliased in the current scope.
         #define __STDC_WANT_LIB_EXT1__ 1 // Enable bounds-checked functions ( ISO C Safe Array Functions : memcpy_s, strcpy_s, snwprintf_s, etc... )
 
+        #if defined(HD_HAS_BUILTIN_ASSUME)
+            #define HD_ASSUME(cond) __builtin_assume(cond)
+        #endif
         #if defined(HD_COMPILER_CLANG)
             #if __has_feature(address_sanitizer)
                 #define HD_USE_ADDRESS_SANITIZER 1
