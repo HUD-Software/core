@@ -1,4 +1,4 @@
-#if HD_INTRINSIC_INT128_SUPPORTED
+#if !HD_INTRINSIC_INT128_SUPPORTED
     #include <core/minimal.h>
     #include <core/assert.h>
     #include <core/i128.h>
