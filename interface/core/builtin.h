@@ -1,7 +1,7 @@
 #ifndef HD_INC_CORE_BUILTIN_H
 #define HD_INC_CORE_BUILTIN_H
 
-#if !defined(__has_builtin)
+#if (defined(HD_COMPILER_GCC) || defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_CLANG_CL)) && !defined(__has_builtin)
     #error __has_builtin need to be defined.
 #endif
 
