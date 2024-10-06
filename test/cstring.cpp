@@ -18,23 +18,23 @@ GTEST_TEST(cstring, is_pure_ansi)
     hud_assert_false(hud::cstring::is_pure_ansi((ansichar *)nullptr));
     hud_assert_false(hud::cstring::is_pure_ansi((wchar *)nullptr));
 
-    // for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
-    // {
-    //     ansichar text[2] = {cur, '\0'};
-    //     hud_assert_true(hud::cstring::is_pure_ansi(text));
-    // }
-    // for (wchar cur = 0; cur < hud::wchar_max; cur++)
-    // {
-    //     wchar text[2] = {cur, L'\0'};
-    //     if (hud::character::is_pure_ansi(cur))
-    //     {
-    //         hud_assert_true(hud::cstring::is_pure_ansi(text));
-    //     }
-    //     else
-    //     {
-    //         hud_assert_false(hud::cstring::is_pure_ansi(text));
-    //     }
-    // }
+    for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
+    {
+        ansichar text[2] = {cur, '\0'};
+        hud_assert_true(hud::cstring::is_pure_ansi(text));
+    }
+    for (wchar cur = 0; cur < hud::wchar_max; cur++)
+    {
+        wchar text[2] = {cur, L'\0'};
+        if (hud::character::is_pure_ansi(cur))
+        {
+            hud_assert_true(hud::cstring::is_pure_ansi(text));
+        }
+        else
+        {
+            hud_assert_false(hud::cstring::is_pure_ansi(text));
+        }
+    }
 }
 
 GTEST_TEST(cstring, is_pure_ansi_safe)
@@ -42,23 +42,23 @@ GTEST_TEST(cstring, is_pure_ansi_safe)
     hud_assert_false(hud::cstring::is_pure_ansi_safe((ansichar *)nullptr, 1));
     hud_assert_false(hud::cstring::is_pure_ansi_safe((wchar *)nullptr, 1));
 
-    // for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
-    // {
-    //     const ansichar text[2] = {cur, '\0'};
-    //     hud_assert_true(hud::cstring::is_pure_ansi_safe(text, 1));
-    // }
-    // for (wchar cur = 0; cur < hud::wchar_max; cur++)
-    // {
-    //     const wchar text[2] = {cur, L'\0'};
-    //     if (hud::character::is_pure_ansi(cur))
-    //     {
-    //         hud_assert_true(hud::cstring::is_pure_ansi_safe(text, 1));
-    //     }
-    //     else
-    //     {
-    //         hud_assert_false(hud::cstring::is_pure_ansi_safe(text, 1));
-    //     }
-    // }
+    for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
+    {
+        const ansichar text[2] = {cur, '\0'};
+        hud_assert_true(hud::cstring::is_pure_ansi_safe(text, 1));
+    }
+    for (wchar cur = 0; cur < hud::wchar_max; cur++)
+    {
+        const wchar text[2] = {cur, L'\0'};
+        if (hud::character::is_pure_ansi(cur))
+        {
+            hud_assert_true(hud::cstring::is_pure_ansi_safe(text, 1));
+        }
+        else
+        {
+            hud_assert_false(hud::cstring::is_pure_ansi_safe(text, 1));
+        }
+    }
 }
 
 GTEST_TEST(cstring, is_null_or_empty)
