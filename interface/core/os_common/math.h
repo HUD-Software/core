@@ -47,8 +47,9 @@ namespace hud::os::common
          * @return true if value is a power of two, false otherwise
          */
         template<typename type_t>
-        requires(hud::is_integral_v<type_t>)
         [[nodiscard]] static constexpr bool is_power_of_two(const type_t value) noexcept
+        requires(hud::is_integral_v<type_t>)
+
         {
             return value && !(value & (value - 1));
         }

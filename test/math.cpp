@@ -75,8 +75,106 @@ GTEST_TEST(math, is_finite)
     hud_assert_false(hud::math::is_finite(hud::math::sqrt((f64)-1.0)));
 }
 
-GTEST_TEST(math, log)
+GTEST_TEST(math, is_power_of_two)
 {
+    // signed integer
+    hud_assert_false(hud::math::is_power_of_two(0));
+    hud_assert_true(hud::math::is_power_of_two(1));
+    hud_assert_true(hud::math::is_power_of_two(2));
+    hud_assert_false(hud::math::is_power_of_two(3));
+    hud_assert_true(hud::math::is_power_of_two(4));
+
+    // unsigned integer
+    hud_assert_false(hud::math::is_power_of_two(0u));
+    hud_assert_true(hud::math::is_power_of_two(1u));
+    hud_assert_true(hud::math::is_power_of_two(2u));
+    hud_assert_false(hud::math::is_power_of_two(3u));
+    hud_assert_true(hud::math::is_power_of_two(4u));
+}
+
+GTEST_TEST(math, is_in_range_inclusive)
+{
+    // signed integer
+    hud_assert_false(hud::math::is_in_range_inclusive(-2, -1, 1));
+    hud_assert_true(hud::math::is_in_range_inclusive(-1, -1, 1));
+    hud_assert_true(hud::math::is_in_range_inclusive(0, -1, 1));
+    hud_assert_true(hud::math::is_in_range_inclusive(1, -1, 1));
+    hud_assert_false(hud::math::is_in_range_inclusive(2, -1, 1));
+
+    // unsigned integer
+    hud_assert_false(hud::math::is_in_range_inclusive(0u, 1u, 2u));
+    hud_assert_true(hud::math::is_in_range_inclusive(1u, 1u, 2u));
+    hud_assert_true(hud::math::is_in_range_inclusive(2u, 1u, 2u));
+    hud_assert_false(hud::math::is_in_range_inclusive(3u, 1u, 2u));
+
+    // 32 bits floating point
+    hud_assert_false(hud::math::is_in_range_inclusive(-2.0f, -1.0f, 1.0f));
+    hud_assert_false(hud::math::is_in_range_inclusive(-1.000001f, -1.0f, 1.0f));
+    hud_assert_true(hud::math::is_in_range_inclusive(-1.0f, -1.0f, 1.0f));
+    hud_assert_true(hud::math::is_in_range_inclusive(0.0f, -1.0f, 1.0f));
+    hud_assert_true(hud::math::is_in_range_inclusive(1.0f, -1.0f, 1.0f));
+    hud_assert_false(hud::math::is_in_range_inclusive(1.000001f, -1.0f, 1.0f));
+    hud_assert_false(hud::math::is_in_range_inclusive(2.0f, -1.0f, 1.0f));
+
+    // 64 bits floating point
+    hud_assert_false(hud::math::is_in_range_inclusive(-2.0, -1.0, 1.0));
+    hud_assert_false(hud::math::is_in_range_inclusive(-1.000001, -1.0, 1.0));
+    hud_assert_true(hud::math::is_in_range_inclusive(-1.0, -1.0, 1.0));
+    hud_assert_true(hud::math::is_in_range_inclusive(0.0, -1.0, 1.0));
+    hud_assert_true(hud::math::is_in_range_inclusive(1.0, -1.0, 1.0));
+    hud_assert_false(hud::math::is_in_range_inclusive(1.000001, -1.0, 1.0));
+    hud_assert_false(hud::math::is_in_range_inclusive(2.0, -1.0, 1.0));
+}
+
+GTEST_TEST(math, floor_log2)
+{
+    hud_assert_eq(hud::math::floor_log2((u32)0), 0);
+    hud_assert_eq(hud::math::floor_log2((u64)0), 0);
+
+    hud_assert_eq(hud::math::floor_log2((u32)1), 0);
+    hud_assert_eq(hud::math::floor_log2((u64)1), 0);
+    hud_assert_eq(hud::math::floor_log2((u32)2), 1);
+    hud_assert_eq(hud::math::floor_log2((u64)2), 1);
+    hud_assert_eq(hud::math::floor_log2((u32)4), 2);
+    hud_assert_eq(hud::math::floor_log2((u64)4), 2);
+    hud_assert_eq(hud::math::floor_log2((u32)8), 3);
+    hud_assert_eq(hud::math::floor_log2((u64)8), 3);
+    hud_assert_eq(hud::math::floor_log2((u32)16), 4);
+    hud_assert_eq(hud::math::floor_log2((u64)16), 4);
+    hud_assert_eq(hud::math::floor_log2((u32)32), 5);
+    hud_assert_eq(hud::math::floor_log2((u64)32), 5);
+    hud_assert_eq(hud::math::floor_log2((u32)64), 6);
+    hud_assert_eq(hud::math::floor_log2((u64)64), 6);
+    hud_assert_eq(hud::math::floor_log2((u32)128), 7);
+    hud_assert_eq(hud::math::floor_log2((u64)128), 7);
+    hud_assert_eq(hud::math::floor_log2((u32)256), 8);
+    hud_assert_eq(hud::math::floor_log2((u64)256), 8);
+    hud_assert_eq(hud::math::floor_log2((u32)512), 9);
+    hud_assert_eq(hud::math::floor_log2((u64)512), 9);
+    hud_assert_eq(hud::math::floor_log2((u32)1024), 10);
+    hud_assert_eq(hud::math::floor_log2((u64)1024), 10);
+
+    hud_assert_eq(hud::math::floor_log2((u32)3), 1);    // log2(3) ≈ 1.585
+    hud_assert_eq(hud::math::floor_log2((u64)3), 1);    // log2(3) ≈ 1.585
+    hud_assert_eq(hud::math::floor_log2((u32)5), 2);    // log2(5) ≈ 2.322
+    hud_assert_eq(hud::math::floor_log2((u64)5), 2);    // log2(5) ≈ 2.322
+    hud_assert_eq(hud::math::floor_log2((u32)6), 2);    // log2(6) ≈ 2.585
+    hud_assert_eq(hud::math::floor_log2((u64)6), 2);    // log2(6) ≈ 2.585
+    hud_assert_eq(hud::math::floor_log2((u32)9), 3);    // log2(9) ≈ 3.169
+    hud_assert_eq(hud::math::floor_log2((u64)9), 3);    // log2(9) ≈ 3.169
+    hud_assert_eq(hud::math::floor_log2((u32)100), 6);  // log2(100) ≈ 6.644
+    hud_assert_eq(hud::math::floor_log2((u64)100), 6);  // log2(100) ≈ 6.644
+    hud_assert_eq(hud::math::floor_log2((u32)1000), 9); // log2(1000) ≈ 9.965
+    hud_assert_eq(hud::math::floor_log2((u64)1000), 9); // log2(1000) ≈ 9.965
+
+    hud_assert_eq(hud::math::floor_log2((u32)1023), 9);        // log2(1023) ≈ 9.993
+    hud_assert_eq(hud::math::floor_log2((u64)1023), 9);        // log2(1023) ≈ 9.993
+    hud_assert_eq(hud::math::floor_log2((u32)65535), 15);      // log2(65535) ≈ 15.999
+    hud_assert_eq(hud::math::floor_log2((u64)65535), 15);      // log2(65535) ≈ 15.999
+    hud_assert_eq(hud::math::floor_log2((u32)1048576), 20);    // log2(1048576) = 20
+    hud_assert_eq(hud::math::floor_log2((u64)1048576), 20);    // log2(1048576) = 20
+    hud_assert_eq(hud::math::floor_log2((u32)2147483647), 30); // log2(2147483647) ≈ 30.999
+    hud_assert_eq(hud::math::floor_log2((u64)2147483647), 30); // log2(2147483647) ≈ 30.999
 }
 
 GTEST_TEST(math, sqrt)
