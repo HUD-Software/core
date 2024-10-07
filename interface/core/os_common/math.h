@@ -166,8 +166,8 @@ namespace hud::os::common
 #if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_GCC)
             return __builtin_clz(value);
 #elif defined(HD_COMPILER_MSVC)
-            unsigned long result = 0;
-            if (_BitScanReverse(&result, value))
+            u32 result = 0;
+            if (_BitScanReverse((unsigned long *)&result, value))
             {
                 return 31 - result;
             }
@@ -187,19 +187,19 @@ namespace hud::os::common
             return __builtin_clzll(value);
 #elif defined(HD_COMPILER_MSVC)
     #if defined(HD_TARGET_X64)
-            unsigned long result = 0;
-            if (_BitScanReverse64(&result, value))
+            u32 result = 0;
+            if (_BitScanReverse64((unsigned long *)&result, value))
             {
                 return 63 - result;
             }
             return 64;
     #else
-            unsigned long result = 0;
-            if ((value >> 32) && _BitScanReverse(&result, static_cast<u32>(value >> 32)))
+            u32 result = 0;
+            if ((value >> 32) && _BitScanReverse((unsigned long *)&result, static_cast<u32>(value >> 32)))
             {
                 return 31 - result;
             }
-            if (_BitScanReverse(&result, static_cast<u32>(value)))
+            if (_BitScanReverse((unsigned long *)&result, static_cast<u32>(value)))
             {
                 return 63 - result;
             }
@@ -210,11 +210,20 @@ namespace hud::os::common
 #endif
         }
 
+        enum class fpclassify_e
+        {
+            subnormal = FP_SUBNORMAL,
+            zero = FP_ZERO,
+            nan = FP_NAN,
+            infinite = FP_INFINITE,
+            normal = FP_NORMAL
+        };
+
         /**
          * Categorizes floating point value num into the following categories: zero, subnormal, normal, infinite, NAN.
          * @param value The value to categorize.
          * @return FP_INFINITE, FP_NAN, FP_NORMAL, FP_SUBNORMAL, FP_ZERO */
-        [[nodiscard]] static constexpr int fpclassify(double value) noexcept
+        [[nodiscard]] static constexpr fpclassify_e fpclassify(f64 value) noexcept
         {
             // FROM musl __fpclassify.c
             union
@@ -225,17 +234,17 @@ namespace hud::os::common
 
             int e = u.i >> 52 & 0x7ff;
             if (!e)
-                return u.i << 1 ? FP_SUBNORMAL : FP_ZERO;
+                return u.i << 1 ? fpclassify_e::subnormal : fpclassify_e::zero;
             if (e == 0x7ff)
-                return u.i << 12 ? FP_NAN : FP_INFINITE;
-            return FP_NORMAL;
+                return u.i << 12 ? fpclassify_e::nan : fpclassify_e::infinite;
+            return fpclassify_e::normal;
         }
 
         /**
          * Categorizes floating point value num into the following categories: zero, subnormal, normal, infinite, NAN.
          * @param value The value to categorize.
          * @return FP_INFINITE, FP_NAN, FP_NORMAL, FP_SUBNORMAL, FP_ZERO */
-        [[nodiscard]] static constexpr int fpclassify(float value) noexcept
+        [[nodiscard]] static constexpr fpclassify_e fpclassify(f32 value) noexcept
         {
             // FROM musl __fpclassifyf.c
             union
@@ -246,10 +255,10 @@ namespace hud::os::common
 
             int e = u.i >> 23 & 0xff;
             if (!e)
-                return u.i << 1 ? FP_SUBNORMAL : FP_ZERO;
+                return u.i << 1 ? fpclassify_e::subnormal : fpclassify_e::zero;
             if (e == 0xff)
-                return u.i << 9 ? FP_NAN : FP_INFINITE;
-            return FP_NORMAL;
+                return u.i << 9 ? fpclassify_e::nan : fpclassify_e::infinite;
+            return fpclassify_e::normal;
         }
 
         /**
@@ -296,7 +305,7 @@ namespace hud::os::common
          */
         [[nodiscard]] static bool is_normal(const float value) noexcept
         {
-            return fpclassify(value) == FP_NORMAL;
+            return fpclassify(value) == fpclassify_e::normal;
         }
 
         /** Check if the given floating point number is a normal value
@@ -305,7 +314,7 @@ namespace hud::os::common
          */
         [[nodiscard]] static bool is_normal(const double value) noexcept
         {
-            return fpclassify(value) == FP_NORMAL;
+            return fpclassify(value) == fpclassify_e::normal;
         }
 
         // template<typename type_t>
