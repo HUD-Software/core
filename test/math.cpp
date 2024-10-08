@@ -261,3 +261,109 @@ GTEST_TEST(math, count_leading_zero_u64)
     hud_assert_eq(hud::math::count_leading_zero(uint64_t(0x1000000000000000)), 3); // 3 leading zeros
     hud_assert_eq(hud::math::count_leading_zero(uint64_t(0x2000000000000000)), 2); // 2 leading zeros
 }
+
+GTEST_TEST(math, fpclassify_f32)
+{
+    hud_assert_eq(hud::math::fpclassify(f32(1.0f)), hud::math::fpclassify_e::normal);
+    hud_assert_eq(hud::math::fpclassify(f32(0.0f)), hud::math::fpclassify_e::zero);
+    hud_assert_eq(hud::math::fpclassify(f32(-0.0f)), hud::math::fpclassify_e::zero);
+    hud_assert_eq(hud::math::fpclassify(std::numeric_limits<f32>::infinity()), hud::math::fpclassify_e::infinite);
+    hud_assert_eq(hud::math::fpclassify(-std::numeric_limits<f32>::infinity()), hud::math::fpclassify_e::infinite);
+    hud_assert_eq(hud::math::fpclassify(std::numeric_limits<f32>::quiet_NaN()), hud::math::fpclassify_e::nan);
+    hud_assert_eq(hud::math::fpclassify(f32(1e-40f)), hud::math::fpclassify_e::subnormal);
+}
+
+GTEST_TEST(math, fpclassify_f64)
+{
+    hud_assert_eq(hud::math::fpclassify(f64(1.0)), hud::math::fpclassify_e::normal);
+    hud_assert_eq(hud::math::fpclassify(f64(0.0)), hud::math::fpclassify_e::zero);
+    hud_assert_eq(hud::math::fpclassify(f64(-0.0)), hud::math::fpclassify_e::zero);
+    hud_assert_eq(hud::math::fpclassify(std::numeric_limits<f64>::infinity()), hud::math::fpclassify_e::infinite);
+    hud_assert_eq(hud::math::fpclassify(-std::numeric_limits<f64>::infinity()), hud::math::fpclassify_e::infinite);
+    hud_assert_eq(hud::math::fpclassify(std::numeric_limits<f64>::quiet_NaN()), hud::math::fpclassify_e::nan);
+    hud_assert_eq(hud::math::fpclassify(f64(1e-320)), hud::math::fpclassify_e::subnormal);
+}
+
+GTEST_TEST(math, is_finite_f32)
+{
+    hud_assert_true(hud::math::is_finite(f32(1.0f)));
+    hud_assert_true(hud::math::is_finite(f32(0.0f)));
+    hud_assert_true(hud::math::is_finite(f32(-1.0f)));
+    hud_assert_true(hud::math::is_finite(f32(-0.0f)));
+    hud_assert_false(hud::math::is_finite(std::numeric_limits<f32>::infinity()));
+    hud_assert_false(hud::math::is_finite(std::numeric_limits<f32>::quiet_NaN()));
+    hud_assert_true(hud::math::is_finite(f32(1e-40f)));
+}
+
+GTEST_TEST(math, is_finite_f64)
+{
+    hud_assert_true(hud::math::is_finite(f64(1.0)));
+    hud_assert_true(hud::math::is_finite(f64(0.0)));
+    hud_assert_true(hud::math::is_finite(f64(-1.0)));
+    hud_assert_true(hud::math::is_finite(f64(-0.0)));
+    hud_assert_false(hud::math::is_finite(std::numeric_limits<f64>::infinity()));
+    hud_assert_false(hud::math::is_finite(std::numeric_limits<f64>::quiet_NaN()));
+    hud_assert_true(hud::math::is_finite(f64(1e-320)));
+}
+
+GTEST_TEST(math, is_nan_f32)
+{
+    hud_assert_false(hud::math::is_nan(f32(1.0f)));
+    hud_assert_false(hud::math::is_nan(f32(0.0f)));
+    hud_assert_false(hud::math::is_nan(f32(-1.0f)));
+    hud_assert_false(hud::math::is_nan(f32(-0.0f)));
+    hud_assert_false(hud::math::is_nan(std::numeric_limits<f32>::infinity()));
+    hud_assert_true(hud::math::is_nan(std::numeric_limits<f32>::quiet_NaN()));
+    hud_assert_false(hud::math::is_nan(f32(1e-40f)));
+}
+
+GTEST_TEST(math, is_nan_f64)
+{
+    hud_assert_false(hud::math::is_nan(f64(1.0)));
+    hud_assert_false(hud::math::is_nan(f64(0.0)));
+    hud_assert_false(hud::math::is_nan(f64(-1.0)));
+    hud_assert_false(hud::math::is_nan(f64(-0.0)));
+    hud_assert_false(hud::math::is_nan(std::numeric_limits<f64>::infinity()));
+    hud_assert_true(hud::math::is_nan(std::numeric_limits<f64>::quiet_NaN()));
+    hud_assert_false(hud::math::is_nan(f64(1e-320)));
+}
+
+GTEST_TEST(math, is_normal_f32)
+{
+    hud_assert_true(hud::math::is_normal(f32(1.0f)));
+    hud_assert_false(hud::math::is_normal(f32(0.0f)));
+    hud_assert_true(hud::math::is_normal(f32(-1.0f)));
+    hud_assert_false(hud::math::is_normal(f32(-0.0f)));
+    hud_assert_false(hud::math::is_normal(std::numeric_limits<f32>::infinity()));
+    hud_assert_false(hud::math::is_normal(std::numeric_limits<f32>::quiet_NaN()));
+    hud_assert_false(hud::math::is_normal(f32(1e-40f)));
+}
+
+GTEST_TEST(math, is_normal_f64)
+{
+    hud_assert_true(hud::math::is_normal(f64(1.0)));
+    hud_assert_false(hud::math::is_normal(f64(0.0)));
+    hud_assert_true(hud::math::is_normal(f64(-1.0)));
+    hud_assert_false(hud::math::is_normal(f64(-0.0)));
+    hud_assert_false(hud::math::is_normal(std::numeric_limits<f64>::infinity()));
+    hud_assert_false(hud::math::is_normal(std::numeric_limits<f64>::quiet_NaN()));
+    hud_assert_false(hud::math::is_normal(f64(1e-320)));
+}
+
+GTEST_TEST(math, abs)
+{
+    // i32
+    hud_assert_eq(hud::math::abs(i32(5)), 5);  // Positive value
+    hud_assert_eq(hud::math::abs(i32(-5)), 5); // Negative value
+    hud_assert_eq(hud::math::abs(i32(0)), 0);  // Zero
+
+    // f32
+    hud_assert_eq(hud::math::abs(f32(5.5f)), 5.5f);  // Positive float value
+    hud_assert_eq(hud::math::abs(f32(-5.5f)), 5.5f); // Negative float value
+    hud_assert_eq(hud::math::abs(f32(0.0f)), 0.0f);  // Zero as float
+
+    // f64
+    hud_assert_eq(hud::math::abs(f64(5.5f)), 5.5f);  // Positive float value
+    hud_assert_eq(hud::math::abs(f64(-5.5f)), 5.5f); // Negative float value
+    hud_assert_eq(hud::math::abs(f64(0.0f)), 0.0f);  // Zero as float
+}

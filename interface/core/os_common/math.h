@@ -266,7 +266,7 @@ namespace hud::os::common
          * @param value The value to test
          * @return true if value if finite, false otherwise
          */
-        [[nodiscard]] static constexpr bool is_finite(const float value) noexcept
+        [[nodiscard]] static constexpr bool is_finite(const f32 value) noexcept
         {
             return (hud::bit_cast<u32>(value) & 0x7F800000U) != 0x7F800000U;
         }
@@ -276,7 +276,7 @@ namespace hud::os::common
          * @param value The value to test
          * @return true if value if finite, false otherwise
          */
-        [[nodiscard]] static constexpr bool is_finite(const double value) noexcept
+        [[nodiscard]] static constexpr bool is_finite(const f64 value) noexcept
         {
             return (hud::bit_cast<u64>(value) & 0x7FF0000000000000ULL) != 0x7FF0000000000000ULL;
         }
@@ -285,7 +285,7 @@ namespace hud::os::common
          * @param value The value to test
          * @return true if value is infinite, false otherwise
          */
-        [[nodiscard]] static constexpr bool is_nan(const float value) noexcept
+        [[nodiscard]] static constexpr bool is_nan(const f32 value) noexcept
         {
             return (hud::bit_cast<u32>(value) & 0x7FFFFFFFU) > 0x7F800000U;
         }
@@ -294,7 +294,7 @@ namespace hud::os::common
          * @param value The value to test
          * @return true if value is infinite, false otherwise
          */
-        [[nodiscard]] static constexpr bool is_nan(const double value) noexcept
+        [[nodiscard]] static constexpr bool is_nan(const f64 value) noexcept
         {
             return (hud::bit_cast<u64>(value) & 0x7FFFFFFFFFFFFFFFULL) > 0x7FF0000000000000ULL;
         }
@@ -303,7 +303,7 @@ namespace hud::os::common
          * @param value The value to test
          * @return true if value is infinite, false otherwise
          */
-        [[nodiscard]] static bool is_normal(const float value) noexcept
+        [[nodiscard]] static bool is_normal(const f32 value) noexcept
         {
             return fpclassify(value) == fpclassify_e::normal;
         }
@@ -312,58 +312,10 @@ namespace hud::os::common
          * @param value The value to test
          * @return true if value is infinite, false otherwise
          */
-        [[nodiscard]] static bool is_normal(const double value) noexcept
+        [[nodiscard]] static bool is_normal(const f64 value) noexcept
         {
             return fpclassify(value) == fpclassify_e::normal;
         }
-
-        // template<typename type_t>
-        // [[nodiscard]] static constexpr type_t is_inf(type_t value) noexcept
-        // {
-        //     if (hud::is_constant_evaluated())
-        //     {
-        //         if constexpr (std::numeric_limits<type_t>::is_signed)
-        //         {
-        //             return value == std::numeric_limits<type_t>::infinity() || -value == std::numeric_limits<type_t>::infinity();
-        //         }
-        //         else
-        //         {
-        //             return value == std::numeric_limits<type_t>::infinity();
-        //         }
-        //     }
-        //     else
-        //     {
-        //         if constexpr (!std::is_integral_v<type_t>)
-        //         {
-        //             return std::isinf(value);
-        //         }
-        //         else
-        //         {
-        //             return std::isinf(static_cast<f64>(value));
-        //         }
-        //     }
-        // }
-
-        // template<typename type_t>
-        // [[nodiscard]] static constexpr type_t is_nan(type_t value) noexcept
-        // {
-        //     // Implementation from boost https://live.boost.org/doc/libs/1_85_0/boost/math/ccmath/isnan.hpp
-        //     if (hud::is_constant_evaluated())
-        //     {
-        //         return value != value;
-        //     }
-        //     else
-        //     {
-        //         if constexpr (!hud::is_integral_v<type_t>)
-        //         {
-        //             return std::isnan(value);
-        //         }
-        //         else
-        //         {
-        //             return std::isnan(static_cast<f64>(value));
-        //         }
-        //     }
-        // }
 
         template<typename type_t>
         [[nodiscard]] static constexpr type_t abs(type_t value) noexcept
@@ -373,21 +325,21 @@ namespace hud::os::common
 
         /** Returns 1, 0, or -1 depending on relation of value to 0 */
         template<class type_t>
-        static constexpr type_t Sign(const type_t value)
+        static constexpr type_t sign(const type_t value)
         {
             return (value > (type_t)0) ? (type_t)1 : ((value < (type_t)0) ? (type_t)-1 : (type_t)0);
         }
 
         /** Returns higher value in a generic way */
         template<class type_t>
-        static constexpr type_t Max(const type_t a, const type_t b)
+        static constexpr type_t max(const type_t a, const type_t b)
         {
             return (b < a) ? a : b;
         }
 
         /** Returns lower value in a generic way */
         template<class type_t>
-        static constexpr type_t Min(const type_t a, const type_t b)
+        static constexpr type_t min(const type_t a, const type_t b)
         {
             return (a < b) ? a : b;
         }
