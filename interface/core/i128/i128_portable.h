@@ -1066,9 +1066,6 @@ namespace hud
             hud::check(hud::math::is_finite(value));
             // Ensure we fit in a i128 and value is between [-2^127, 2^127]
             hud::check((std::numeric_limits<f32>::max_exponent <= 127) || ((value >= -hud::math::ldexp(f32 {1}, 127)) && value < hud::math::ldexp(f32 {1}, 127)));
-            // // Ensure value is between [-2^127, 2^127]
-            // hud::check(value >= -hud::math::ldexp(f32 {1}, 127));
-            // hud::check(value < hud::math::ldexp(f32 {1}, 127));
 
             // We must convert the absolute value and then negate as needed, because
             // floating point types are typically sign-magnitude. Otherwise, the
@@ -1085,10 +1082,6 @@ namespace hud
             hud::check(hud::math::is_finite(value));
             // Ensure we fit in a i128  // Ensure value is between [-2^127, 2^127]
             hud::check((std::numeric_limits<f64>::max_exponent <= 127) || ((value >= -hud::math::ldexp(f64 {1}, 127)) && value < hud::math::ldexp(f64 {1}, 127)));
-            // hud::check(std::numeric_limits<f64>::max_exponent <= 127);
-            // // Ensure value is between [-2^127, 2^127]
-            // hud::check(value >= -hud::math::ldexp(f64 {1}, 127));
-            // hud::check(value < hud::math::ldexp(f64 {1}, 127));
 
             // We must convert the absolute value and then negate as needed, because
             // floating point types are typically sign-magnitude. Otherwise, the

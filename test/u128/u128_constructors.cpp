@@ -34,6 +34,27 @@ GTEST_TEST(u128, constructor_i8)
     }
 }
 
+GTEST_TEST(u128, constructor_u8)
+{
+    // Init to 0
+    {
+        hud::u128 v {u8 {}};
+        hud_assert_eq(v, (u8 {}));
+    }
+
+    // Init to min value
+    {
+        hud::u128 v {hud::u8_min};
+        hud_assert_eq(v, hud::u8_min);
+    }
+
+    // Init to max value
+    {
+        hud::u128 v {hud::u8_max};
+        hud_assert_eq(v, hud::u8_max);
+    }
+}
+
 GTEST_TEST(u128, constructor_i16)
 {
     // Init to 0
@@ -52,6 +73,27 @@ GTEST_TEST(u128, constructor_i16)
     {
         hud::u128 v {hud::i16_max};
         hud_assert_eq(v, hud::i16_max);
+    }
+}
+
+GTEST_TEST(u128, constructor_u16)
+{
+    // Init to 0
+    {
+        hud::u128 v {u16 {}};
+        hud_assert_eq(v, u16 {});
+    }
+
+    // Init to min value
+    {
+        hud::u128 v {hud::u16_min};
+        hud_assert_eq(v, hud::u16_min);
+    }
+
+    // Init to max value
+    {
+        hud::u128 v {hud::u16_max};
+        hud_assert_eq(v, hud::u16_max);
     }
 }
 
@@ -76,6 +118,27 @@ GTEST_TEST(u128, constructor_i32)
     }
 }
 
+GTEST_TEST(u128, constructor_u32)
+{
+    // Init to 0
+    {
+        hud::u128 v {u32 {}};
+        hud_assert_eq(v, u32 {});
+    }
+
+    // Init to min value
+    {
+        hud::u128 v {hud::u32_min};
+        hud_assert_eq(v, hud::u32_min);
+    }
+
+    // Init to max value
+    {
+        hud::u128 v {hud::u32_max};
+        hud_assert_eq(v, hud::u32_max);
+    }
+}
+
 GTEST_TEST(u128, constructor_i64)
 {
     // Init to 0
@@ -94,6 +157,27 @@ GTEST_TEST(u128, constructor_i64)
     {
         hud::u128 v {hud::i64_max};
         hud_assert_eq(v, hud::i64_max);
+    }
+}
+
+GTEST_TEST(u128, constructor_u64)
+{
+    // Init to 0
+    {
+        hud::u128 v {u64 {}};
+        hud_assert_eq(v, u64 {});
+    }
+
+    // Init to min value
+    {
+        hud::u128 v {hud::u64_min};
+        hud_assert_eq(v, hud::u64_min);
+    }
+
+    // Init to max value
+    {
+        hud::u128 v {hud::u64_max};
+        hud_assert_eq(v, hud::u64_max);
     }
 }
 
