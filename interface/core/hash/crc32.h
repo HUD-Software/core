@@ -22,6 +22,8 @@ namespace hud::hash_algorithm
          * Intent to be used only for test validation
          */
         [[nodiscard]] static HD_CORE_DLL bool is_lookup_table_values_correct() noexcept;
+
+        [[nodiscard]] static HD_CORE_DLL u32 combine(u32 crc1, u32 crc2, usize count_crc2) noexcept;
     };
 
 } // namespace hud::hash_algorithm

@@ -222,24 +222,15 @@ namespace hud
     static u64 combine_64(u64 a, u64 b)
     {
         // From abseil 64 bit hash mix
-        /** Unsigned 128 bits value */
-        // TODO: Replace with hud::u128
-        struct u128
-        {
-            u64 low;
-            u64 high;
-        };
-
-        static constexpr uint64_t kMul = sizeof(size_t) == 4 ? uint64_t {0xcc9e2d51} : uint64_t {0x9ddfea08eb382d69};
+        static constexpr u64 kMul = sizeof(size_t) == 4 ? u64 {0xcc9e2d51} : u64 {0x9ddfea08eb382d69};
         using MulResultType = hud::conditional_t<sizeof(uptr) == 4, u64, u128>;
         // We do the addition in 64-bit space to make sure the 128-bit
         // multiplication is fast. If we were to do it as MultType the compiler has
         // to assume that the high word is non-zero and needs to perform 2
         // multiplications instead of one.
-        // MulResultType m = a + b;
-        // m *= kMul;
-        // return static_cast<uint64_t>(m ^ (m >> (sizeof(m) * 8 / 2)));
-        return 0;
+        MulResultType m = a + b;
+        m *= kMul;
+        return static_cast<u64>(m ^ (m >> (sizeof(m) * 8 / 2)));
     }
 } // namespace hud
 

@@ -660,13 +660,7 @@ namespace hud
             constexpr u128_portable operator*(u128_portable other) const noexcept
             {
     #if defined(HD_COMPILER_MSVC) && defined(HD_TARGET_X64)
-                if (!hud::is_constant_evaluated())
-                {
-                    u64 carry;
-                    u64 low = _umul128(low_, other.low_, &carry);
-                    return u128_portable(low_ * other.high_ + high_ * other.low_ + carry, low);
-                }
-                else
+                if (hud::is_constant_evaluated())
                 {
                     u64 a32 = low_ >> 32;
                     u64 a00 = low_ & 0xffffffff;
@@ -676,6 +670,12 @@ namespace hud
                     result += u128_portable(a32 * b00) << 32;
                     result += u128_portable(a00 * b32) << 32;
                     return result;
+                }
+                else
+                {
+                    u64 carry;
+                    u64 low = _umul128(low_, other.low_, &carry);
+                    return u128_portable(low_ * other.high_ + high_ * other.low_ + carry, low);
                 }
     #else
                 u64 a32 = low_ >> 32;
