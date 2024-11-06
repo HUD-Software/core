@@ -690,7 +690,7 @@ namespace hud
             }
 
             /** Multiply this to other and return this. */
-            u128_portable &operator*=(u128_portable other) noexcept
+            constexpr u128_portable &operator*=(u128_portable other) noexcept
             {
                 *this = *this * other;
                 return *this;
@@ -706,7 +706,7 @@ namespace hud
             }
 
             /** Divide this to other and return this. */
-            u128_portable &operator/=(u128_portable other) noexcept
+            constexpr u128_portable &operator/=(u128_portable other) noexcept
             {
                 *this = *this / other;
                 return *this;
@@ -722,7 +722,7 @@ namespace hud
             }
 
             /** Retrieves the remainder of this divided by other, result in this and returns this. */
-            u128_portable &operator%=(u128_portable other) noexcept
+            constexpr u128_portable &operator%=(u128_portable other) noexcept
             {
                 *this = *this % other;
                 return *this;
@@ -841,7 +841,7 @@ namespace hud
             }
 
             /** Right shift this and return the result */
-            const u128_portable operator>>(i32 amount) const noexcept
+            constexpr const u128_portable operator>>(i32 amount) const noexcept
             {
                 // uint64_t shifts of >= 64 are undefined, so we will need some
                 // special-casing.
