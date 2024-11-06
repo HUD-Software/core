@@ -35,8 +35,7 @@ namespace hud::hash_algorithm
          * @param seed The seed to use. Default is 0.
          * @return The CRC32 of the buffer
          */
-        [[nodiscard]] static HD_CORE_DLL u32
-        hash(const u8 *buffer, usize count, const u32 seed = 0) noexcept;
+        [[nodiscard]] static HD_CORE_DLL u32 hash(const u8 *buffer, usize count, const u32 seed = 0) noexcept;
 
         /**
          * Combine 2 crc32 hash

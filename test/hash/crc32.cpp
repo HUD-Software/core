@@ -1,7 +1,5 @@
 #include <core/hash/crc32.h>
 #include <slice_by_8/crc.h> // Intel Slice-by-8
-// #include <zlib.h>           // zlib
-
 #include <core/cstring.h>
 
 static constexpr const ansichar *txt = "abcdefghijklmnopqrstuvwxyz";
@@ -119,6 +117,5 @@ GTEST_TEST(hash, combine)
     const u32 result_1 = hud::hash_algorithm::crc32::hash((const u8 *)(txt), hud::cstring::length(txt), 0);
     const u32 result_2 = hud::hash_algorithm::crc32::hash((const u8 *)(txt_test), hud::cstring::length(txt_test), 0);
     const u32 result = hud::hash_algorithm::crc32::combine(result_1, result_2, hud::cstring::length(txt_test));
-
-    // hud_assert_eq(result, 0x);
+    hud_assert_eq(result, 0x5579202Fu);
 }

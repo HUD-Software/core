@@ -571,17 +571,6 @@ FetchContent_MakeAvailable(cityhash)
 
 target_link_libraries( test_core PRIVATE cityhash )
 
-# Add zlib dependency
-message("Fetching zlib...")
-include(FetchContent)
-FetchContent_Declare(
-    zlib
-    GIT_REPOSITORY  https://github.com/madler/zlib.git
-)
-FetchContent_MakeAvailable(zlib)
-
-target_link_libraries( test_core PRIVATE zlib )
-
 # Add the executable test
 add_test(NAME core COMMAND test_core --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
 

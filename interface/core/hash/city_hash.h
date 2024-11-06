@@ -133,7 +133,7 @@ namespace hud::hash_algorithm
          * @param b The second value to combine
          * @return The combined value
          */
-        constexpr u32 combine(u32 a, u32 b) noexcept
+        constexpr u32 combine_32(u32 a, u32 b) noexcept
         {
             a *= C1;
             a = hud::memory::rotate_left(a, 15);
@@ -194,7 +194,7 @@ namespace hud::hash_algorithm
                 c ^= b;
             }
             return avalanche_mixer(
-                combine(b, combine(static_cast<u32>(length), c))
+                combine_32(b, combine_32(static_cast<u32>(length), c))
             );
         }
 
@@ -211,7 +211,7 @@ namespace hud::hash_algorithm
             b += fetch_32(key + length - 4);
             c += fetch_32(key + ((length >> 1) & 4));
             return avalanche_mixer(
-                combine(c, combine(b, combine(a, d)))
+                combine_32(c, combine_32(b, combine_32(a, d)))
             );
         }
 
@@ -232,7 +232,7 @@ namespace hud::hash_algorithm
             u32 h = static_cast<u32>(length);
 
             return avalanche_mixer(
-                combine(f, combine(e, combine(d, combine(c, combine(b, combine(a, h))))))
+                combine_32(f, combine_32(e, combine_32(d, combine_32(c, combine_32(b, combine_32(a, h))))))
             );
         }
 
@@ -396,6 +396,26 @@ namespace hud::hash_algorithm
             return weak_hash_len_32_with_seeds(fetch_64(key), fetch_64(key + 8), fetch_64(key + 16), fetch_64(key + 24), a, b);
         }
 
+        /**
+         * Combine two 64 bits value
+         * From abseil https://github.com/abseil/abseil-cpp
+         * @param a The first value to combine
+         * @param b The second value to combine
+         * @return The combined value
+         */
+        constexpr u64 combine_64(u64 a, u64 b) noexcept
+        {
+            // From abseil 64 bit hash mix
+            static constexpr u64 kMul = sizeof(size_t) == 4 ? u64 {0xcc9e2d51} : u64 {0x9ddfea08eb382d69};
+            using MulResultType = hud::conditional_t<sizeof(uptr) == 4, u64, ::u128>;
+            // We do the addition in 64-bit space to make sure the 128-bit
+            // multiplication is fast. If we were to do it as MultType the compiler has
+            // to assume that the high word is non-zero and needs to perform 2
+            // multiplications instead of one.
+            MulResultType m = a + b;
+            m *= kMul;
+            return static_cast<u64>(m ^ (m >> (sizeof(m) * 8 / 2)));
+        }
     } // namespace details
 
     struct city_hash
@@ -407,9 +427,9 @@ namespace hud::hash_algorithm
          * @param b The second value to combine
          * @return The 32 bits combined value
          */
-        [[nodiscard]] static constexpr u32 combine(u32 a, u32 b) noexcept
+        [[nodiscard]] static constexpr u32 combine_32(u32 a, u32 b) noexcept
         {
-            return details::combine(a, b);
+            return details::combine_32(a, b);
         }
 
         /**
@@ -538,6 +558,17 @@ namespace hud::hash_algorithm
                 length -= 64;
             } while (length != 0);
             return details::hash_64_len_16(details::hash_64_len_16(v.low, w.low) + details::shift_mix(y) * details::K1 + z, details::hash_64_len_16(v.high, w.high) + x);
+        }
+
+        /**
+         * Combine two 64 bits value
+         * @param a The first value to combine
+         * @param b The second value to combine
+         * @return The 64 bits combined value
+         */
+        [[nodiscard]] static constexpr u64 combine_64(u64 a, u64 b) noexcept
+        {
+            return details::combine_64(a, b);
         }
     };
 
