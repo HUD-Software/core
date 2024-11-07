@@ -79,13 +79,6 @@ namespace hud::hash_algorithm
         static constexpr u32 C1 = 0xcc9e2d51;
         static constexpr u32 C2 = 0x1b873593;
 
-        /** Unsigned 128 bits value */
-        struct u128
-        {
-            u64 low;
-            u64 high;
-        };
-
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
         [[nodiscard]] static constexpr u32 unaligned_load32(const ansichar *buffer)
         {
@@ -342,9 +335,9 @@ namespace hud::hash_algorithm
         {
             // Murmur-inspired hashing.
             const u64 kMul = 0x9ddfea08eb382d69ULL;
-            u64 a = (hash.low ^ hash.high) * kMul;
+            u64 a = (hash.low() ^ hash.high()) * kMul;
             a ^= (a >> 47);
-            u64 b = (hash.high ^ a) * kMul;
+            u64 b = (hash.high() ^ a) * kMul;
             b ^= (b >> 47);
             b *= kMul;
             return b;
@@ -358,7 +351,7 @@ namespace hud::hash_algorithm
          */
         [[nodiscard]] static constexpr u64 hash_64_len_16(u64 low, u64 high) noexcept
         {
-            return hash_128_to_64(u128 {low, high});
+            return hash_128_to_64(u128 {high, low});
         }
 
         /**
@@ -380,7 +373,7 @@ namespace hud::hash_algorithm
             a += x;
             a += y;
             b += hud::memory::rotate_right(a, 44);
-            return u128 {a + z, b + c};
+            return u128 {b + c, a + z};
         }
 
         /**
@@ -404,7 +397,7 @@ namespace hud::hash_algorithm
          */
         [[nodiscard]] static constexpr u64 combine_64(u64 a, u64 b) noexcept
         {
-            return hash_128_to_64(u128 {b, a});
+            return hash_128_to_64(u128 {a, b});
         }
 
     } // namespace details
@@ -529,26 +522,26 @@ namespace hud::hash_algorithm
             u64 x = details::fetch_64(buffer + length - 40);
             u64 y = details::fetch_64(buffer + length - 16) + details::fetch_64(buffer + length - 56);
             u64 z = details::hash_64_len_16(details::fetch_64(buffer + length - 48) + length, details::fetch_64(buffer + length - 24));
-            details::u128 v = details::weak_hash_len_32_with_seeds(buffer + length - 64, length, z);
-            details::u128 w = details::weak_hash_len_32_with_seeds(buffer + length - 32, y + details::K1, x);
+            u128 v = details::weak_hash_len_32_with_seeds(buffer + length - 64, length, z);
+            u128 w = details::weak_hash_len_32_with_seeds(buffer + length - 32, y + details::K1, x);
             x = x * details::K1 + details::fetch_64(buffer);
 
             // Decrease len to the nearest multiple of 64, and operate on 64-byte chunks.
             length = (length - 1) & ~static_cast<usize>(63);
             do
             {
-                x = hud::memory::rotate_right(x + y + v.low + details::fetch_64(buffer + 8), 37) * details::K1;
-                y = hud::memory::rotate_right(y + v.high + details::fetch_64(buffer + 48), 42) * details::K1;
-                x ^= w.high;
-                y += v.low + details::fetch_64(buffer + 40);
-                z = hud::memory::rotate_right(z + w.low, 33) * details::K1;
-                v = details::weak_hash_len_32_with_seeds(buffer, v.high * details::K1, x + w.low);
-                w = details::weak_hash_len_32_with_seeds(buffer + 32, z + w.high, y + details::fetch_64(buffer + 16));
+                x = hud::memory::rotate_right(x + y + v.low() + details::fetch_64(buffer + 8), 37) * details::K1;
+                y = hud::memory::rotate_right(y + v.high() + details::fetch_64(buffer + 48), 42) * details::K1;
+                x ^= w.high();
+                y += v.low() + details::fetch_64(buffer + 40);
+                z = hud::memory::rotate_right(z + w.low(), 33) * details::K1;
+                v = details::weak_hash_len_32_with_seeds(buffer, v.high() * details::K1, x + w.low());
+                w = details::weak_hash_len_32_with_seeds(buffer + 32, z + w.high(), y + details::fetch_64(buffer + 16));
                 swap(z, x);
                 buffer += 64;
                 length -= 64;
             } while (length != 0);
-            return details::hash_64_len_16(details::hash_64_len_16(v.low, w.low) + details::shift_mix(y) * details::K1 + z, details::hash_64_len_16(v.high, w.high) + x);
+            return details::hash_64_len_16(details::hash_64_len_16(v.low(), w.low()) + details::shift_mix(y) * details::K1 + z, details::hash_64_len_16(v.high(), w.high()) + x);
         }
 
         /**
