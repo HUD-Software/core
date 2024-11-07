@@ -115,7 +115,7 @@ namespace hud
     }
 
     /** Combine two 32 bits value. */
-    static u64 combine_32(u64 a, u64 b)
+    [[nodiscard]] static constexpr u64 combine_32(u64 a, u64 b) noexcept
     {
         return hud::hash_algorithm::city_hash::combine_32(a, b);
     }
@@ -219,7 +219,7 @@ namespace hud
     }
 
     /** Combine two 64 bits value. */
-    static u64 combine_64(u64 a, u64 b)
+    [[nodiscard]] static constexpr u64 combine_64(u64 a, u64 b) noexcept
     {
         return hud::hash_algorithm::city_hash::combine_64(a, b);
     }

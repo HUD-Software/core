@@ -15,7 +15,7 @@ et porttitor lacus tempor.Nulla non libero porta, faucibus ex eleifend, sodales 
 Mauris molestie, dolor non porttitor lobortis, erat nunc fringilla nulla, a consequat justo odio ut lorem.Cras maximus tristique erat, sit amet facilisis urna euismod in.\
 Maecenas sit amet congue magna.Donec nisl mauris, tempus eu mauris eget, iaculis sodales libero.Nulla hendrerit bibendum magna, at egestas leo semper ac.Donec porttitor ut orci id ornare.Praesent id nunc risus.Fusce consequat tortor at enim cursus, sed mattis lorem gravida.Orci varius. ";
 
-GTEST_TEST(hash, cityhash_hash32)
+GTEST_TEST(cityhash, hash32)
 {
     // hash32 of nullptr
     u32 hash_nullptr = hud::hash_algorithm::city_hash::hash_32(nullptr, 0);
@@ -41,7 +41,7 @@ GTEST_TEST(hash, cityhash_hash32)
     hud_assert_eq(hash, CityHash32(lipsum, hud::cstring::length(lipsum)));
 }
 
-GTEST_TEST(hash, cityhash_hash32_is_usable_in_constexpr)
+GTEST_TEST(cityhash, hash32_is_usable_in_constexpr)
 {
     constexpr u32 hash_nullptr = hud::hash_algorithm::city_hash::hash_32(nullptr, 0);
     hud_assert_eq(hash_nullptr, 0XDC56D17A);
@@ -52,7 +52,7 @@ GTEST_TEST(hash, cityhash_hash32_is_usable_in_constexpr)
     hud_assert_eq(hash_lipsum, CityHash32(lipsum, hud::cstring::length(lipsum)));
 }
 
-GTEST_TEST(hash, cityhash_hash64)
+GTEST_TEST(cityhash, hash64)
 {
     // hash64 of nullptr
     hud_assert_eq(hud::hash_algorithm::city_hash::hash_64(nullptr, 0), 0X9AE16A3B2F90404Full);
@@ -66,9 +66,13 @@ GTEST_TEST(hash, cityhash_hash64)
         u64 out = hud::hash_algorithm::city_hash::hash_64(key, i);
         hud_assert_eq(hud_test::city_hash_64_result[i], out);
     }
+
+    constexpr const usize len = hud::cstring::length("key");
+    hud_assert_eq(hud::hash_algorithm::city_hash::hash_64("key", len), 0x0BB7560E11262CDB);
+    hud_assert_eq(hud::hash_algorithm::city_hash::hash_64((const ansichar *)&len, sizeof(len)), 0x64C856FF72C54198u);
 }
 
-GTEST_TEST(hash, cityhash_hash64_is_usable_in_constexpr)
+GTEST_TEST(cityhash, hash64_is_usable_in_constexpr)
 {
     constexpr u64 hash_nullptr = hud::hash_algorithm::city_hash::hash_64(nullptr, 0);
     hud_assert_eq(hash_nullptr, 0x9AE16A3B2F90404Full);
@@ -79,7 +83,7 @@ GTEST_TEST(hash, cityhash_hash64_is_usable_in_constexpr)
     hud_assert_eq(hash_lipsum, CityHash64(lipsum, hud::cstring::length(lipsum)));
 }
 
-GTEST_TEST(hash, cityhash_hash128)
+GTEST_TEST(cityhash, hash128)
 {
     // hash128 of nullptr
     uint128 hash = CityHash128(nullptr, 0);
@@ -96,4 +100,16 @@ GTEST_TEST(hash, cityhash_hash128)
         u64 out = hud::hash_algorithm::city_hash::hash_64(key, i);
         hud_assert_eq(hud_test::city_hash_64_result[i], out);
     }
+}
+
+GTEST_TEST(cityhash, combine)
+{
+    // This result come from abseil with modification of the hash combine to use the Hash128to64 to combine 2 64 bits hash
+    constexpr const usize len = hud::cstring::length("key");
+    u64 hash = hud::hash_algorithm::city_hash::hash_64("key", len);
+    u64 combined = hud::hash_algorithm::city_hash::combine_64(0, hash);
+    hud_assert_eq(combined, 0xCEAAB8E77B74C2E7u);
+
+    u64 hash_2 = hud::hash_algorithm::city_hash::hash_64((const ansichar *)&len, sizeof(len));
+    hud_assert_eq(hud::hash_algorithm::city_hash::combine_64(combined, hash_2), 0x746D68F6EB969EB7u);
 }
