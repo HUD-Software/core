@@ -406,7 +406,7 @@ namespace hud::hash_algorithm
         constexpr u64 combine_64(u64 a, u64 b) noexcept
         {
             // From abseil 64 bit hash mix
-            static constexpr u64 kMul = sizeof(size_t) == 4 ? u64 {0xcc9e2d51} : u64 {0x9ddfea08eb382d69};
+            constexpr const u64 kMul = sizeof(usize) == 4 ? u64 {0xcc9e2d51} : u64 {0x9ddfea08eb382d69};
             using MulResultType = hud::conditional_t<sizeof(uptr) == 4, u64, ::u128>;
             // We do the addition in 64-bit space to make sure the 128-bit
             // multiplication is fast. If we were to do it as MultType the compiler has
