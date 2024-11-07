@@ -413,7 +413,7 @@ namespace hud
             }
 
             /** Right shift this and return the result */
-            const i128_intrinsics operator>>(i32 amount) const noexcept
+            constexpr const i128_intrinsics operator>>(i32 amount) const noexcept
             {
                 return intrinsic_value_ >> amount;
             }
@@ -426,7 +426,7 @@ namespace hud
             }
 
             /** Right shift this and return the result */
-            const i128_intrinsics &operator>>=(i32 amount) noexcept
+            constexpr const i128_intrinsics &operator>>=(i32 amount) noexcept
             {
                 intrinsic_value_ >>= amount;
                 return *this;
@@ -822,7 +822,7 @@ namespace hud
             }
 
             /** Right shift this and return the result */
-            const u128_intrinsics operator>>(i32 amount) const noexcept
+            constexpr const u128_intrinsics operator>>(i32 amount) const noexcept
             {
                 return intrinsic_value_ >> amount;
             }
@@ -835,7 +835,7 @@ namespace hud
             }
 
             /** Right shift this and return the result */
-            const u128_intrinsics &operator>>=(i32 amount) noexcept
+            cosntexpr const u128_intrinsics &operator>>=(i32 amount) noexcept
             {
                 intrinsic_value_ >>= amount;
                 return *this;
