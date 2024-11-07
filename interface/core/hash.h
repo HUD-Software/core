@@ -115,7 +115,7 @@ namespace hud
     }
 
     /** Combine two 32 bits value. */
-    [[nodiscard]] static constexpr u64 combine_32(u64 a, u64 b) noexcept
+    [[nodiscard]] static constexpr u32 combine_32(u32 a, u32 b) noexcept
     {
         return hud::hash_algorithm::city_hash::combine_32(a, b);
     }
@@ -223,6 +223,19 @@ namespace hud
     {
         return hud::hash_algorithm::city_hash::combine_64(a, b);
     }
+
+    struct Hasher32
+    {
+        template<typename T>
+        [[nodiscard]] constexpr u32 operator()(const T &value) noexcept
+        {
+            state_ = hud::combine_32(state_, hud::hash_32(value));
+            return state_;
+        }
+
+        u32 state_ {0}; // Default is 0, but can be a seed
+    };
+
 } // namespace hud
 
 #endif // HD_INC_CORE_HASH_H
