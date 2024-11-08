@@ -17,10 +17,19 @@ namespace hud
         {
             using key_type = key_t;
 
-            // [[nodiscard]] u64 operator()(const key_type &key) const noexcept
-            // {
-            //     return hud::hash_64(key);
-            // }
+            /** The hasher hash ansichar and wchar with their size. */
+            template<typename... type_t>
+            [[nodiscard]] constexpr hasher_64 &operator()(const ansichar *value, const usize length) noexcept
+            {
+                return hud::hasher_64::hash(value, length).hash(reinterpret_cast<const ansichar *>(&length), sizeof(length));
+            }
+
+            /** The hasher hash ansichar and wchar with their size. */
+            template<typename... type_t>
+            [[nodiscard]] constexpr hasher_64 &operator()(const ansichar *value) noexcept
+            {
+                return (*this)(value, hud::cstring::length(value));
+            }
         };
 
         template<typename key_t> struct default_equal
@@ -103,7 +112,7 @@ namespace hud
 
         template<
             typename slot_t,
-            typename hash_t,
+            typename hasher_t,
             typename key_equal_t,
             typename allocator_t>
         class hashmap_impl
@@ -116,7 +125,7 @@ namespace hud
             /** Type of the value. */
             using value_type = typename slot_type::value_type;
             /** Type of the hash function. */
-            using hash_type = hash_t;
+            using hasher_type = hasher_t;
             /****/
             using iterator = hud::details::hashmap::iterator<slot_type>;
 
@@ -136,7 +145,7 @@ namespace hud
             {
                 // TODO: prefetch control bloc
                 // Hash the key
-                u64 hash = hash_type {}(key);
+                u64 hash = hasher_type {}(key);
                 return hud::nullopt;
             }
 
@@ -175,7 +184,7 @@ namespace hud
 
     public:
         /** Type of the hash function. */
-        using typename super::hash_type;
+        using typename super::hasher_type;
         /** Type of the key. */
         using typename super::key_type;
         /** Type of the value. */
