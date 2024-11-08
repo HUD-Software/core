@@ -128,5 +128,13 @@ GTEST_TEST(hash_32, hash_enumeration_are_usable_in_constexpr)
 GTEST_TEST(hash_32, hash_can_hash_pointers)
 {
     const u32 *ptr = nullptr;
-    hud_assert_eq(hud::hash_32(ptr), reinterpret_cast<uptr>(ptr));
+    hud_assert_eq(hud::hash_32(static_cast<const void *>(ptr)), reinterpret_cast<uptr>(ptr));
+}
+
+GTEST_TEST(hash_32, hasher32)
+{
+    constexpr const usize len = hud::cstring::length("key");
+    hud::hasher_32 hasher;
+    hud_assert_eq(hasher("key", len), 0x105695BEu);
+    hud_assert_eq(hasher((const ansichar *)&len, sizeof(len)), 0xE638A9DBu);
 }

@@ -39,6 +39,10 @@ GTEST_TEST(cityhash, hash32)
     // Test with the lipsum
     const u32 hash = hud::hash_algorithm::city_hash::hash_32(lipsum, hud::cstring::length(lipsum));
     hud_assert_eq(hash, CityHash32(lipsum, hud::cstring::length(lipsum)));
+
+    // Test with "key"
+    constexpr const usize len = hud::cstring::length("key");
+    hud_assert_eq(hud::hash_algorithm::city_hash::hash_32("key", len), 0x1096A99Du);
 }
 
 GTEST_TEST(cityhash, hash32_is_usable_in_constexpr)
@@ -67,9 +71,13 @@ GTEST_TEST(cityhash, hash64)
         hud_assert_eq(hud_test::city_hash_64_result[i], out);
     }
 
+    // Test with the lipsum
+    const u64 hash = hud::hash_algorithm::city_hash::hash_64(lipsum, hud::cstring::length(lipsum));
+    hud_assert_eq(hash, CityHash64(lipsum, hud::cstring::length(lipsum)));
+
+    // Test with "key"
     constexpr const usize len = hud::cstring::length("key");
     hud_assert_eq(hud::hash_algorithm::city_hash::hash_64("key", len), 0x0BB7560E11262CDB);
-    hud_assert_eq(hud::hash_algorithm::city_hash::hash_64((const ansichar *)&len, sizeof(len)), 0x64C856FF72C54198u);
 }
 
 GTEST_TEST(cityhash, hash64_is_usable_in_constexpr)
@@ -79,6 +87,7 @@ GTEST_TEST(cityhash, hash64_is_usable_in_constexpr)
     hud_assert_eq(CityHash64(nullptr, 0), hash_nullptr);
 
     constexpr u64 hash_lipsum = hud::hash_algorithm::city_hash::hash_64(lipsum, hud::cstring::length(lipsum));
+
     // Test with the lipsum
     hud_assert_eq(hash_lipsum, CityHash64(lipsum, hud::cstring::length(lipsum)));
 }
@@ -102,7 +111,19 @@ GTEST_TEST(cityhash, hash128)
     }
 }
 
-GTEST_TEST(cityhash, combine)
+GTEST_TEST(cityhash, combine_32)
+{
+    // This result come from abseil with modification of the hash combine to use the Hash128to64 to combine 2 32 bits hash
+    constexpr const usize len = hud::cstring::length("key");
+    u32 hash = hud::hash_algorithm::city_hash::hash_32("key", len);
+    u32 combined = hud::hash_algorithm::city_hash::combine_32(0, hash);
+    hud_assert_eq(combined, 0x105695BEu);
+
+    u32 hash_2 = hud::hash_algorithm::city_hash::hash_32((const ansichar *)&len, sizeof(len));
+    hud_assert_eq(hud::hash_algorithm::city_hash::combine_32(combined, hash_2), 0xE638A9DBu);
+}
+
+GTEST_TEST(cityhash, combine_64)
 {
     // This result come from abseil with modification of the hash combine to use the Hash128to64 to combine 2 64 bits hash
     constexpr const usize len = hud::cstring::length("key");

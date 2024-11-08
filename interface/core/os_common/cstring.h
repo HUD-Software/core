@@ -13,8 +13,9 @@ namespace hud::os::common
 
     struct cstring
     {
-        static constexpr u32 RSIZE_MAX_STR {4UL << 10};         // 4KB
-        static constexpr usize RSIZE_MAX {hud::usize_max >> 1}; // Largest acceptable size for bounds-checked functions
+        static constexpr u32 RSIZE_MAX_STR {4UL << 10}; // 4KB
+
+        // static constexpr u64 RSIZE_MAX {hud::usize_max >> 1}; // Largest acceptable size for bounds-checked functions
 
         /**
          * Test whether null-terminated string contains only pure ansi characters.
@@ -492,9 +493,24 @@ namespace hud::os::common
          * @param string Null-terminated string
          * @return Length of the string
          */
-        static HD_FORCEINLINE usize length(const wchar *string) noexcept
+        [[nodiscard]] static constexpr usize length(const wchar *string) noexcept
         {
-            return wcslen(string);
+            if (hud::is_constant_evaluated())
+            {
+                // LCOV_EXCL_START
+                usize string_length = 0;
+                while (*string != '\0')
+                {
+                    string_length++;
+                    string++;
+                }
+                return string_length;
+                // LCOV_EXCL_STOP
+            }
+            else
+            {
+                return wcslen(string);
+            }
         }
 
         /**

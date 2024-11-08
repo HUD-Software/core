@@ -82,6 +82,31 @@ GTEST_TEST(hash_64, hash_can_hash_c_string)
     }
 }
 
+GTEST_TEST(hash_64, hash_can_hash_c_string_are_usable_in_constexpr)
+{
+    static constexpr const ansichar txt[] = "abcdefghijklmnopqrstuvwxyz";
+    constexpr u64 hash_a = hud::hash_64(txt, hud::cstring::length(txt));
+    hud_assert_eq(hash_a, 0x5EAD741CE7AC31BDu);
+
+    // Not Possible, wchar* cannot be cast to ansichar at compile time
+    //
+    // static constexpr const wchar *wtxt = L"abcdefghijklmnopqrstuvwxyz";
+    // if constexpr (sizeof(wchar) == 2)
+    // {
+    //     constexpr u64 hash_w = hud::hash_64(wtxt, hud::cstring::length(wtxt));
+    //     hud_assert_eq(hash_w, 0xE66EDE359E692EBBu);
+    // }
+    // else if constexpr (sizeof(wchar) == 4)
+    // {
+    //     constexpr u64 hash_w = hud::hash_64(wtxt, hud::cstring::length(wtxt));
+    //     hud_assert_eq(hash_w, 0xF09AD8D8223EE63Bu);
+    // }
+    // else
+    // {
+    //     FAIL();
+    // }
+}
+
 GTEST_TEST(hash_64, hash_can_hash_enumeration)
 {
     enum class E : u32
@@ -127,5 +152,13 @@ GTEST_TEST(hash_64, hash_enumeration_are_usable_in_constexpr)
 GTEST_TEST(hash_64, hash_can_hash_pointers)
 {
     const u64 *ptr = nullptr;
-    hud_assert_eq(hud::hash_64(ptr), reinterpret_cast<uptr>(ptr));
+    hud_assert_eq(hud::hash_64(static_cast<const void *>(ptr)), reinterpret_cast<uptr>(ptr));
+}
+
+GTEST_TEST(hash_64, hasher64)
+{
+    constexpr const usize len = hud::cstring::length("key");
+    hud::hasher_64 hasher;
+    hud_assert_eq(hasher("key", len), 0xCEAAB8E77B74C2E7u);
+    hud_assert_eq(hasher((const ansichar *)&len, sizeof(len)), 0x746D68F6EB969EB7u);
 }

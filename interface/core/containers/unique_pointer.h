@@ -1058,14 +1058,14 @@ namespace hud
     template<typename type_t>
     constexpr u32 hash_32(const unique_pointer<type_t> &ptr) noexcept
     {
-        return hud::hash_32(ptr.pointer());
+        return hud::hash_32(static_cast<const void *>(ptr.pointer()));
     }
 
     /** Specialization of the hash function for unique_pointer */
     template<typename type_t>
     constexpr u64 hash_64(const unique_pointer<type_t> &ptr) noexcept
     {
-        return hud::hash_64(ptr.pointer());
+        return hud::hash_64(static_cast<const void *>(ptr.pointer()));
     }
 
 } // namespace hud

@@ -13,13 +13,14 @@ namespace hud
     {
         template<typename key_t>
         struct default_hasher
+            : hud::hasher_64
         {
             using key_type = key_t;
 
-            [[nodiscard]] u64 operator()(const key_type &key) const noexcept
-            {
-                return hud::hash_64(key);
-            }
+            // [[nodiscard]] u64 operator()(const key_type &key) const noexcept
+            // {
+            //     return hud::hash_64(key);
+            // }
         };
 
         template<typename key_t> struct default_equal

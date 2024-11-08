@@ -6,6 +6,7 @@
 #include "traits/is_integral.h"
 #include "hash/city_hash.h"
 #include "templates/bit_cast.h"
+#include <core/cstring.h>
 
 namespace hud
 {
@@ -80,15 +81,43 @@ namespace hud
     }
 
     /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
-    [[nodiscard]] static inline u32 hash_32(const ansichar *value, usize length) noexcept
+    [[nodiscard]] static constexpr u32 hash_32(const ansichar *value, usize length) noexcept
     {
         return hud::hash_algorithm::city_hash::hash_32(value, length);
     }
 
-    /** Retrieves the 32 bits hash of a wchar null-terminated string. */
-    [[nodiscard]] static inline u32 hash_32(const wchar *value, usize length) noexcept
+    /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
+    [[nodiscard]] static constexpr u32 hash_32(const ansichar *const value) noexcept
     {
-        return hud::hash_algorithm::city_hash::hash_32(reinterpret_cast<const ansichar *>(value), length * sizeof(wchar));
+        return hash_32(value, hud::cstring::length(value));
+    }
+
+    /** Retrieves the 32 bits hash of a wchar null-terminated string. */
+    [[nodiscard]] static constexpr u32 hash_32(const wchar *value, usize length) noexcept
+    {
+        struct A
+        {
+            union
+            {
+                const ansichar *a_;
+                const wchar *w_;
+            };
+
+            constexpr A(const wchar *w)
+                : w_(w)
+            {
+            }
+        };
+
+        A a(value);
+        a.w_;
+        return hud::hash_algorithm::city_hash::hash_32(a.a_, length * sizeof(wchar));
+    }
+
+    /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
+    [[nodiscard]] static constexpr u32 hash_32(const wchar *const value) noexcept
+    {
+        return hash_32(value, hud::cstring::length(value));
     }
 
     /** Retrieves the 32 bits hash of an enumeration. */
@@ -100,8 +129,7 @@ namespace hud
     }
 
     /** Retrieves the 32 bits hash of a pointer of a type type_t. */
-    template<typename type_t>
-    [[nodiscard]] static u32 hash_32(type_t *const pointer) noexcept
+    [[nodiscard]] static inline u32 hash_32(const void *const pointer) noexcept
     {
         const uptr ptr = reinterpret_cast<uptr>(pointer);
         if constexpr (sizeof(uptr) == 4)
@@ -184,15 +212,27 @@ namespace hud
     }
 
     /** Retrieves the 64 bits hash of a ansichar null-terminated string. */
-    [[nodiscard]] static inline u64 hash_64(const ansichar *value, usize length) noexcept
+    [[nodiscard]] static constexpr u64 hash_64(const ansichar *value, usize length) noexcept
     {
         return hud::hash_algorithm::city_hash::hash_64(value, length);
+    }
+
+    /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
+    [[nodiscard]] static constexpr u32 hash_64(const ansichar *const value) noexcept
+    {
+        return hash_64(value, hud::cstring::length(value));
     }
 
     /** Retrieves the 64 bits hash of a wchar null-terminated string. */
     [[nodiscard]] static inline u64 hash_64(const wchar *value, usize length) noexcept
     {
         return hud::hash_algorithm::city_hash::hash_64(reinterpret_cast<const ansichar *>(value), length * sizeof(wchar));
+    }
+
+    /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
+    [[nodiscard]] static inline u64 hash_64(const wchar *const value) noexcept
+    {
+        return hash_64(value, hud::cstring::length(value));
     }
 
     /** Retrieves the 64 bits hash of an enumeration. */
@@ -204,8 +244,7 @@ namespace hud
     }
 
     /** Retrieves the 64 bits hash of a pointer of a type type_t. */
-    template<typename type_t>
-    [[nodiscard]] static u64 hash_64(type_t *const pointer) noexcept
+    [[nodiscard]] static inline u64 hash_64(const void *const pointer) noexcept
     {
         const uptr ptr = reinterpret_cast<uptr>(pointer);
         if constexpr (sizeof(uptr) == 4)
@@ -224,16 +263,28 @@ namespace hud
         return hud::hash_algorithm::city_hash::combine_64(a, b);
     }
 
-    struct Hasher32
+    struct hasher_32
     {
-        template<typename T>
-        [[nodiscard]] constexpr u32 operator()(const T &value) noexcept
+        template<typename... type_t>
+        [[nodiscard]] constexpr u32 operator()(type_t &&...values) noexcept
         {
-            state_ = hud::combine_32(state_, hud::hash_32(value));
+            state_ = hud::combine_32(state_, hud::hash_32(hud::forward<type_t>(values)...));
             return state_;
         }
 
         u32 state_ {0}; // Default is 0, but can be a seed
+    };
+
+    struct hasher_64
+    {
+        template<typename... type_t>
+        [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
+        {
+            state_ = hud::combine_64(state_, hud::hash_64(hud::forward<type_t>(values)...));
+            return state_;
+        }
+
+        u64 state_ {0}; // Default is 0, but can be a seed
     };
 
 } // namespace hud
