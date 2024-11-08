@@ -137,4 +137,8 @@ GTEST_TEST(hash_32, hasher32)
     hud::hasher_32 hasher;
     hud_assert_eq(hasher("key", len), 0x105695BEu);
     hud_assert_eq(hasher((const ansichar *)&len, sizeof(len)), 0xE638A9DBu);
+
+    // Test that hasher can be called redundancy
+    u32 value = hud::hasher_32 {}("key").hash((const ansichar *)&len, sizeof(len));
+    hud_assert_eq(value, 0xE638A9DBu);
 }

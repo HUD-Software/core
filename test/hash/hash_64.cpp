@@ -161,4 +161,8 @@ GTEST_TEST(hash_64, hasher64)
     hud::hasher_64 hasher;
     hud_assert_eq(hasher("key", len), 0xCEAAB8E77B74C2E7u);
     hud_assert_eq(hasher((const ansichar *)&len, sizeof(len)), 0x746D68F6EB969EB7u);
+
+    // Test that hasher can be called redundancy
+    u64 value = hud::hasher_64 {}("key").hash((const ansichar *)&len, sizeof(len));
+    hud_assert_eq(value, 0x746D68F6EB969EB7u);
 }
