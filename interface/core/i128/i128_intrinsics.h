@@ -835,7 +835,7 @@ namespace hud
             }
 
             /** Right shift this and return the result */
-            cosntexpr const u128_intrinsics &operator>>=(i32 amount) noexcept
+            constexpr const u128_intrinsics &operator>>=(i32 amount) noexcept
             {
                 intrinsic_value_ >>= amount;
                 return *this;
