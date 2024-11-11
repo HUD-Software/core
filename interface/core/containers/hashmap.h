@@ -172,15 +172,15 @@ namespace hud
     template<
         typename key_t,
         typename value_t,
-        typename hash_t = details::hashmap::default_hasher<key_t>,
+        typename hasher_t = details::hashmap::default_hasher<key_t>,
         typename key_equal_t = details::hashmap::default_equal<key_t>,
         typename allocator_t = heap_allocator>
     class hashmap
-        : details::hashmap::hashmap_impl<details::hashmap::slot<key_t, value_t>, hash_t, key_equal_t, allocator_t>
+        : details::hashmap::hashmap_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
 
     {
     private:
-        using super = details::hashmap::hashmap_impl<details::hashmap::slot<key_t, value_t>, hash_t, key_equal_t, allocator_t>;
+        using super = details::hashmap::hashmap_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */

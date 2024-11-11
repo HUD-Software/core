@@ -18,20 +18,20 @@ namespace hud
 
     template<
         typename value_t,
-        typename hasher_type = details::hashmap::default_hasher<value_t>,
+        typename hasher_t = details::hashmap::default_hasher<value_t>,
         typename key_equal_t = details::hashmap::default_equal<value_t>,
         typename allocator_t = heap_allocator>
     class hashset
-        : details::hashmap::hashmap_impl<details::hashset::slot<value_t>, hasher_type, key_equal_t, allocator_t>
+        : details::hashmap::hashmap_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>
     {
     private:
-        using super = details::hashmap::hashmap_impl<details::hashset::slot<value_t>, hasher_type, key_equal_t, allocator_t>;
+        using super = details::hashmap::hashmap_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
-        using typename super::hasher_type;
+        using hasher_type = typename super::hasher_type;
         /** Type of the value. */
-        using typename super::value_type;
+        using value_type = typename super::value_type;
 
         using super::super;
     };
