@@ -3,6 +3,7 @@
 #include "../limits.h"
 #include "../math.h"
 #include "../assert.h"
+#include "../bits.h"
 
 namespace hud
 {
@@ -833,7 +834,7 @@ namespace hud
             /** Left shift this and return the result */
             constexpr u128_portable operator<<(i32 amount) const noexcept
             {
-                // uint64_t shifts of >= 64 are undefined, so we will need some
+                // u64 shifts of >= 64 are undefined, so we will need some
                 // special-casing.
                 return amount >= 64 ? u128_portable(low_ << (amount - 64), 0) :
                        amount == 0  ? *this :
@@ -843,7 +844,7 @@ namespace hud
             /** Right shift this and return the result */
             constexpr const u128_portable operator>>(i32 amount) const noexcept
             {
-                // uint64_t shifts of >= 64 are undefined, so we will need some
+                // u64 shifts of >= 64 are undefined, so we will need some
                 // special-casing.
                 return amount >= 64 ? u128_portable(0, high_ >> (amount - 64)) :
                        amount == 0  ? *this :
@@ -1002,11 +1003,11 @@ namespace hud
                 if (u64 hi = n.high_)
                 {
                     HD_ASSUME(hi != 0);
-                    return 127 - hud::math::count_leading_zero(hi);
+                    return 127 - hud::bits::leading_zero(hi);
                 }
                 const u64 low = n.low_;
                 HD_ASSUME(low != 0);
-                return 63 - hud::math::count_leading_zero(low);
+                return 63 - hud::bits::leading_zero(low);
             };
 
             // Left aligns the MSB of the denominator and the dividend.

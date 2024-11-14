@@ -13,7 +13,7 @@ GTEST_TEST(hash, crc32_lookup_table_is_correct)
 
     for (unsigned int i = 0; i <= 0xFF; i++)
     {
-        uint32_t crc = i;
+        u32 crc = i;
         for (unsigned int j = 0; j < 8; j++)
         {
             crc = (crc >> 1) ^ ((crc & 1) * hud::hash_algorithm::crc32::REFLECTED_POLYNOMIAL);
@@ -65,8 +65,8 @@ GTEST_TEST(hash, crc32_hash_unaligned)
 GTEST_TEST(hash, crc32_result_same_as_intel_implementation)
 {
     u32 runningcrc = ~0u;
-    hud_assert_eq(hud::hash_algorithm::crc32::hash((const u8 *)(txt), hud::cstring::length(txt), 0), ~crc32_sb8_64_bit(&runningcrc, (const u8 *)(txt), static_cast<uint32_t>(hud::cstring::length(txt)), 0, MODE_CONT));
-    hud_assert_eq(hud::hash_algorithm::crc32::hash((const u8 *)(txt_unaligned + 1), hud::cstring::length(txt_unaligned + 1), 0), ~crc32_sb8_64_bit(&runningcrc, (const u8 *)(txt_unaligned + 1), static_cast<uint32_t>(hud::cstring::length(txt_unaligned + 1)), 0, MODE_CONT));
+    hud_assert_eq(hud::hash_algorithm::crc32::hash((const u8 *)(txt), hud::cstring::length(txt), 0), ~crc32_sb8_64_bit(&runningcrc, (const u8 *)(txt), static_cast<u32>(hud::cstring::length(txt)), 0, MODE_CONT));
+    hud_assert_eq(hud::hash_algorithm::crc32::hash((const u8 *)(txt_unaligned + 1), hud::cstring::length(txt_unaligned + 1), 0), ~crc32_sb8_64_bit(&runningcrc, (const u8 *)(txt_unaligned + 1), static_cast<u32>(hud::cstring::length(txt_unaligned + 1)), 0, MODE_CONT));
 }
 
 // From zlib crc32.c

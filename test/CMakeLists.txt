@@ -48,9 +48,11 @@ set( src
 	atomics/atomics_load.cpp
 	atomics/atomics_store.cpp
 	atomics/atomics_thread_fence.cpp
-	bits/bits.cpp
-	bits/bits_rotate.cpp
+	bits/bits_leading_zero.cpp
 	bits/bits_reverse.cpp
+	bits/bits_rotate.cpp
+	bits/bits_trailing_zero.cpp
+	bits/bits.cpp
 	compressed_pair/compressed_pair_constructors.cpp
 	compressed_pair/compressed_pair_misc.cpp
 	compressed_pair/compressed_pair_swap.cpp

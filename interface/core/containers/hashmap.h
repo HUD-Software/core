@@ -73,6 +73,11 @@ namespace hud
                 return hud::bits::has_zero_byte(hud::bits::has_value_byte(value_, h2_hash));
             }
 
+            u64 mask_of_empty_slot()
+            {
+                return hud::bits::has_zero_byte(hud::bits::has_value_byte(value_, static_cast<u8>(control_e::empty)));
+            }
+
         private:
             u64 value_;
         };
@@ -236,6 +241,10 @@ namespace hud
                     // for (u32 i : g.match(H2(hash)))
                     // {
                     // }
+                    u64 mask_of_empty_slot = g.mask_of_empty_slot();
+                    if (mask_of_empty_slot != 0) [[likely]]
+                    {
+                    }
                 }
                 return hud::nullopt;
             }

@@ -137,6 +137,60 @@ namespace hud::os::windows
                 return _rotr64(value, static_cast<i32>(shift));
             }
         }
+
+        /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u32 value) noexcept
+        {
+            if (value == 0)
+                return 32;
+
+#if defined(HD_COMPILER_CLANG_CL)
+            return __builtin_clz(value);
+#elif defined(HD_COMPILER_MSVC)
+
+            u32 result = 0;
+            if (_BitScanReverse((unsigned long *)&result, value))
+            {
+                return 31 - result;
+            }
+            return 32;
+#else
+            return os::common::bits(value);
+#endif
+        }
+
+        /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u64 value) noexcept
+        {
+            if (value == 0)
+                return 64;
+
+#if defined(HD_COMPILER_CLANG_CL)
+            return __builtin_clzll(value);
+#elif defined(HD_COMPILER_MSVC)
+    #if defined(HD_TARGET_X64)
+            u32 result = 0;
+            if (_BitScanReverse64((unsigned long *)&result, value))
+            {
+                return 63 - result;
+            }
+            return 64;
+    #else
+            u32 result = 0;
+            if ((value >> 32) && _BitScanReverse((unsigned long *)&result, static_cast<u32>(value >> 32)))
+            {
+                return 31 - result;
+            }
+            if (_BitScanReverse((unsigned long *)&result, static_cast<u32>(value)))
+            {
+                return 63 - result;
+            }
+            return 64;
+    #endif
+#else
+            return os::common::bits(value);
+#endif
+        }
     };
 } // namespace hud::os::windows
 

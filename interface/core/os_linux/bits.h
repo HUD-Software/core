@@ -9,12 +9,13 @@
 namespace hud::os::linux
 {
     struct bits : public os::common::bits
-    { /**
-       * Reverses the order of bytes in an integer.
-       * Convert from little-endian to big-endian conversion and inverse.
-       * @param value The integer
-       * @param The integer the order of bytes reversed
-       */
+    {
+        /**
+         * Reverses the order of bytes in an integer.
+         * Convert from little-endian to big-endian conversion and inverse.
+         * @param value The integer
+         * @param The integer the order of bytes reversed
+         */
 
         static constexpr u32 reverse_bytes(const u32 value) noexcept
         {
@@ -103,7 +104,31 @@ namespace hud::os::linux
             return (value >> __r) | (value << ((64 - __r) % 64));
 #endif
         }
-    };
-} // namespace hud::os::linux
+
+        /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u32 value) noexcept
+        {
+            if (value == 0)
+                return 32;
+#if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
+            return __builtin_clz(value);
+#else
+            return os::common::bits::leading_zero(value);
+#endif
+        }
+
+        /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u64 value) noexcept
+        {
+            if (value == 0)
+                return 64;
+
+#if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
+            return __builtin_clzll(value);
+#else
+            return os::common::bits::leading_zero(value);
+#endif
+        };
+    } // namespace hud::os::linux
 
 #endif // HD_INC_CORE_OS_LINUX_BITS_H
