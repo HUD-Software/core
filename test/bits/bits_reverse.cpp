@@ -1,29 +1,14 @@
-#include <core/memory.h>
+#include <core/bits.h>
 
-GTEST_TEST(memory, reverse_bits)
-{
-
-    // Non constant
-    {
-        const u32 reverse_bits = hud::memory::reverse_bits(0x04C11DB7);
-        hud_assert_eq(reverse_bits, 0xEDB88320);
-    }
-
-    // Constant
-    {
-        constexpr u32 reverse_bits = hud::memory::reverse_bits(0x04C11DB7);
-        hud_assert_eq(reverse_bits, 0xEDB88320);
-    }
-}
-
-GTEST_TEST(memory, reverse)
+GTEST_TEST(bits, reverse_bytes)
 {
 
     auto test = []() -> std::tuple<u32, u64>
     {
         return {
-            hud::memory::reverse(u32 {0xAB00FF00}),
-            hud::memory::reverse(u64 {0x123456789ABCDEF})};
+            hud::bits::reverse_bytes(0xAB00FF00u),
+            hud::bits::reverse_bytes(0x123456789ABCDEFu)
+        };
     };
 
     // Non constant

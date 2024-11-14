@@ -8,6 +8,7 @@
 #include "../traits/is_bitwise_move_constructible.h"
 #include "../traits/is_bitwise_copy_constructible.h"
 #include "../traits/is_default_constructible.h"
+#include "../memory.h"
 
 namespace hud
 {

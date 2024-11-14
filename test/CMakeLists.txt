@@ -48,6 +48,9 @@ set( src
 	atomics/atomics_load.cpp
 	atomics/atomics_store.cpp
 	atomics/atomics_thread_fence.cpp
+	bits/bits.cpp
+	bits/bits_rotate.cpp
+	bits/bits_reverse.cpp
 	compressed_pair/compressed_pair_constructors.cpp
 	compressed_pair/compressed_pair_misc.cpp
 	compressed_pair/compressed_pair_swap.cpp
@@ -82,8 +85,6 @@ set( src
 	memory/memory_move_or_copy_assign.cpp
 	memory/memory_move_or_copy_construct_then_destroy.cpp
 	memory/memory_move_or_copy_construct_then_destroy_backward.cpp
-	memory/memory_reverse.cpp
-	memory/memory_rotate.cpp
 	memory/memory_set_zero.cpp
 	optional/optional_assignment.cpp
 	optional/optional_comparison.cpp

@@ -12,7 +12,6 @@
 
 namespace hud::os::common
 {
-
     struct memory
     {
 
@@ -695,15 +694,28 @@ namespace hud::os::common
             return compare_greater(buffer1, buffer2, buffer_size);
         }
 
-        /** Reverse bits of a 32 bits integral type. */
-        [[nodiscard]] static constexpr u32 reverse_bits(u32 integral) noexcept
+        /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
+        [[nodiscard]] static constexpr u32 unaligned_load32(const ansichar *buffer)
         {
-            integral = (integral << 16) | (integral >> 16);
-            integral = ((integral & 0x00ff00ff) << 8) | ((integral & 0xff00ff00) >> 8);
-            integral = ((integral & 0x0f0f0f0f) << 4) | ((integral & 0xf0f0f0f0) >> 4);
-            integral = ((integral & 0x33333333) << 2) | ((integral & 0xcccccccc) >> 2);
-            integral = ((integral & 0x55555555) << 1) | ((integral & 0xaaaaaaaa) >> 1);
-            return integral;
+            ansichar result[sizeof(u32)];
+            copy(result, buffer, sizeof(u32));
+            return hud::bit_cast<u32>(result);
+        }
+
+        /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
+        [[nodiscard]] static constexpr u64 unaligned_load64(const ansichar *buffer)
+        {
+            ansichar result[sizeof(u64)];
+            copy(result, buffer, sizeof(u64));
+            return hud::bit_cast<u64>(result);
+        }
+
+        /** Load 64 bits value and return it. */
+        [[nodiscard]] static constexpr u64 unaligned_load64(const void *ptr) noexcept
+        {
+            u64 value;
+            copy(&value, ptr, sizeof(u64));
+            return value;
         }
     };
 

@@ -1,4 +1,5 @@
 #include <core/hash/crc32.h>
+#include <core/bits.h>
 #include <core/memory.h>
 
 namespace hud::hash_algorithm
@@ -36,7 +37,7 @@ namespace hud::hash_algorithm
         const u8 *HD_RESTRICT current_u8 = buffer;
 
         // Consume all bits until we are 8 bits aligned
-        while (count && !memory::is_pointer_aligned(current_u8, 8))
+        while (count && !hud::memory::is_pointer_aligned(current_u8, 8))
         {
             crc = CRC32_LOOKUP[0][(crc ^ *current_u8++) & 0xff] ^ (crc >> 8);
             count--;
@@ -48,7 +49,7 @@ namespace hud::hash_algorithm
         {
             if constexpr (compilation::is_endianness(endianness_e::big))
             {
-                u32 one = *current_u32++ ^ hud::memory::reverse(crc);
+                u32 one = *current_u32++ ^ hud::bits::reverse_bits(crc);
                 u32 two = *current_u32++;
                 crc = CRC32_LOOKUP[0][two & 0xFF] ^ CRC32_LOOKUP[1][(two >> 8) & 0xFF] ^ CRC32_LOOKUP[2][(two >> 16) & 0xFF] ^ CRC32_LOOKUP[3][(two >> 24) & 0xFF] ^ CRC32_LOOKUP[4][one & 0xFF] ^ CRC32_LOOKUP[5][(one >> 8) & 0xFF] ^ CRC32_LOOKUP[6][(one >> 16) & 0xFF] ^ CRC32_LOOKUP[7][(one >> 24) & 0xFF];
             }
