@@ -711,11 +711,11 @@ namespace hud::os::common
         }
 
         /** Load 64 bits value and return it. */
-        [[nodiscard]] static constexpr u64 unaligned_load64(const void *ptr) noexcept
+        [[nodiscard]] static constexpr u64 unaligned_load64(const u8 *buffer) noexcept
         {
-            u64 value;
-            copy(&value, ptr, sizeof(u64));
-            return value;
+            u8 result[sizeof(u64)];
+            copy(result, buffer, sizeof(u64));
+            return hud::bit_cast<u64>(result);
         }
     };
 

@@ -62,7 +62,7 @@ namespace hud::os::common
 #if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_GCC)
             return u8(__builtin_clz((u32(value) << 1) | 1) - 23);
 #else
-            return 7 - floor_log2(u32(value));
+            return 7 - hud::math::floor_log2(u32(value));
 #endif
         }
 
