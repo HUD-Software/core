@@ -103,8 +103,8 @@ namespace hud::os::common
 
         [[nodiscard]] static constexpr u64 trailing_zero(u64 value) noexcept
         {
-            u64 c = 64;           // c sera le nombre de bits zéro à droite
-            value &= -i64(value); // Mask les bits de poids faible avec l'opération de complément à 2
+            u64 c = 64; // c will be the number of zero bits on the right
+            value &= -i64(value);
             if (value)
                 c--;
             if (value & 0x00000000FFFFFFFFu)

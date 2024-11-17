@@ -29,10 +29,10 @@ namespace hud::os::linux
 
             // 1. Generate 16 random bytes (=128 bits)
             alignas(16) u8 bytes[16];
-            i32 bytes_coun_copied = getrandom(bytes, sizeof(bytes), GRND_RANDOM);
+            i32 bytes_count_copied = getrandom(bytes, sizeof(bytes), GRND_RANDOM);
 
             // LCOV_EXCL_START ( Supposed never failed, else alternative is to read in /dev/{u}random )
-            if (bytes_coun_copied != sizeof(bytes))
+            if (bytes_count_copied != sizeof(bytes)) [[unlikely]]
             {
                 return false;
             }
