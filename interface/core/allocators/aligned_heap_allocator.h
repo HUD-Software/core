@@ -35,7 +35,7 @@ namespace hud
          * Free memory block
          * @param buffer The buffer to free
          */
-        template<typename type_t = u8>
+        template<typename type_t>
         constexpr void free(const memory_allocation_type<type_t> &buffer) noexcept
         {
             hud::memory::free_align(buffer.data(), buffer.count());

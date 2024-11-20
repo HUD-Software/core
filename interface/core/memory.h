@@ -51,8 +51,9 @@ namespace hud
     {
         /**
          * Call constructor of type.
-         * @tparam type_t Type to default construct
-         * @param address The address of the type type_t to default construct
+         * @tparam type_t Type to construct
+         * @param address The address of the type type_t to construct
+         * @param args Arguments forward to the type_t constructor
          */
         template<typename type_t, typename... args_t>
         requires(hud::is_constructible_v<type_t, args_t...>)

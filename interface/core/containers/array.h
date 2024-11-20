@@ -1349,8 +1349,7 @@ namespace hud
          * @param new_allocation The new allocation to move
          * @param new_count_of_element The new count of elements to set
          */
-        constexpr void
-        free_allocation_and_replace_it(memory_allocation_type &&new_allocation, const usize new_count_of_element) noexcept
+        constexpr void free_allocation_and_replace_it(memory_allocation_type &&new_allocation, const usize new_count_of_element) noexcept
 
         {
             allocator_().free(allocation_());

@@ -717,6 +717,14 @@ namespace hud::os::common
             copy(result, buffer, sizeof(u64));
             return hud::bit_cast<u64>(result);
         }
+
+        /** Load 64 bits value and return it. */
+        [[nodiscard]] static constexpr u64 unaligned_load64(const i8 *buffer) noexcept
+        {
+            i8 result[sizeof(u64)];
+            copy(result, buffer, sizeof(u64));
+            return hud::bit_cast<u64>(result);
+        }
     };
 
 } // namespace hud::os::common

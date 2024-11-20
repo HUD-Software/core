@@ -444,7 +444,8 @@ namespace hud
      *  - The member function reset() is called.
      */
     template<typename type_t>
-    class optional : details::optional_impl<type_t>
+    class optional
+        : details::optional_impl<type_t>
     {
         using super_type = details::optional_impl<type_t>;
 

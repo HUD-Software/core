@@ -121,6 +121,12 @@ namespace hud::os::common
                 c -= 1;
             return c;
         }
+
+        /**Check if the given is a valid power of two mask like 0x00FFFFFF. */
+        [[nodiscard]] static constexpr bool is_valid_power_of_two_mask(u64 value) noexcept
+        {
+            return ((value + 1) & value) == 0;
+        }
     };
 
 } // namespace hud::os::common
