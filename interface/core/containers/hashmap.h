@@ -100,6 +100,11 @@ namespace hud
             {
             }
 
+            [[nodiscard]] constexpr void set_byte(usize slot_index, byte_type value) noexcept
+            {
+                metadata_ptr_[slot_index] = value;
+            }
+
             /** Check if the metadata byte is empty. */
             [[nodiscard]]
             static constexpr bool is_byte_empty(byte_type byte_value) noexcept
@@ -150,7 +155,7 @@ namespace hud
                         return first_non_null_index();
                     }
 
-                    [[nodiscard]] mask &operator++() noexcept
+                    mask &operator++() noexcept
                     {
                         // Erase the last byte set to 0x80 by subtracting 1
                         // This will gives us 0x7F, applying AND 0x80 on it gives 0x00
@@ -612,12 +617,19 @@ namespace hud
             slot_type *slot_;
         };
 
+        struct find_result
+        {
+            usize metadata_index_;
+            usize slot_index_;
+        };
+
         template<
             typename slot_t,
             typename hasher_t,
             typename key_equal_t,
             typename allocator_t>
         class hashmap_impl
+
         {
         protected:
             /** Type of the slot. */
@@ -746,7 +758,7 @@ namespace hud
 
         private:
             /**
-             * Find the key.
+             * Find the key and add the H2 hash in the metadata
              * If the key is found, return the iterator
              * If not found insert the key but do not construct the value.
              * If the key*/
@@ -774,12 +786,17 @@ namespace hud
                         }
                     }
 
-                    // If we don't find the key, insert it but don't construct the value in the slot
+                    // Don't find the key
+                    // Insert H2 in metadata but don't construct the value in the slot
                     metadata::group_type::empty_mask empty_mask_of_group = group.mask_of_empty_slot();
                     if (empty_mask_of_group.has_free_slot()) [[likely]]
                     {
                         usize first_free_slot_index = slot_index + empty_mask_of_group.first_free_index() & max_slot_count_;
-                        return {insert_no_construct(hash, first_free_slot_index), true};
+                        first_free_slot_index = insert_no_construct(h1, H2(hash), first_free_slot_index);
+                        return {
+                            iterator_type {metadata_.metadata_start_at_slot_index(first_free_slot_index), slots_ + first_free_slot_index},
+                            true
+                        };
                     }
 
                     // Advance to next group (Maybe a metadata iterator taht iterate over groups can be better alternative)
@@ -789,18 +806,20 @@ namespace hud
             }
 
             /** Insert a slot index associated with the given h2 hash. */
-            [[nodiscard]] constexpr iterator_type insert_no_construct(u64 hash, usize slot_index) noexcept
+            [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u64 h2, usize slot_index) noexcept
             {
-                // If we reach the load factor grow the table, else use the given slot
+                // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
                 if (free_slot_before_grow() == 0)
                 {
                     grow_capacity(next_capacity());
-                    return find_first_empty_or_deleted(hash);
+                    slot_index = find_first_empty_or_deleted(h1);
                 }
-                else
-                {
-                    hud::check(false && "Not implemented");
-                }
+
+                metadata_.set_byte(slot_index, h2);
+                count_++;
+                free_slot_before_grow_--;
+
+                return slot_index;
             }
 
             constexpr void grow_capacity(usize slot_count) noexcept
@@ -812,7 +831,10 @@ namespace hud
 
                 // Create the buffer with metadata and slots
                 // Slots are aligned on alignof(slot_type)
+
+                // We cloned size of a group - 1 because we never reach the last cloned bytes
                 constexpr const usize num_cloned_bytes = metadata::group_type::SLOT_PER_GROUP - 1;
+                // Control size is the number of slot + sentinel + number of cloned bytes
                 const usize control_size = new_max_slot_count_ + 1 + num_cloned_bytes;
                 const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
                 const usize aligned_allocation_size = aligned_control_size + new_max_slot_count_ * sizeof(slot_type);
@@ -870,9 +892,8 @@ namespace hud
             /** Find the first empty or deleted slot for the given hash.
              * WARNING: This function works only if there is free or deleted slot available
              */
-            [[nodiscard]] constexpr iterator_type find_first_empty_or_deleted(u64 hash) const noexcept
+            [[nodiscard]] constexpr usize find_first_empty_or_deleted(u64 h1) const noexcept
             {
-                u64 h1 = H1(hash);
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index = h1 & max_slot_count_;
                 while (true)
@@ -883,8 +904,13 @@ namespace hud
                     {
                         u32 free_index = group_mask_that_match_h2.first_free_or_deleted_index();
                         usize slot_index_that_is_free_or_deleted = slot_index + free_index & max_slot_count_;
-                        slot_type *slot_that_match_h2 = slots_ + free_index;
-                        return iterator_type(metadata_.metadata_start_at_slot_index(slot_index_that_is_free_or_deleted), slot_that_match_h2);
+                        return slot_index_that_is_free_or_deleted;
+                        // slot_type *slot_that_match_h2 = slots_ + slot_index_that_is_free_or_deleted;
+                        // return find_result {
+                        //     slot_index_that_is_free_or_deleted,
+
+                        // };
+                        // iterator_type(metadata_.metadata_start_at_slot_index(slot_index_that_is_free_or_deleted), slot_that_match_h2);
                     }
 
                     // // If we have free slot, we don't find it
