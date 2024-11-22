@@ -66,6 +66,7 @@ set( src
 	hashmap/hashmap_constructors.cpp
 	hashmap/hashmap_misc.cpp
 	hashmap/hashmap_find.cpp
+	hashset/hashset_insert.cpp
 	hashset/hashset_constructors.cpp
 	hashset/hashset_misc.cpp
 	i128/i128_assign.cpp

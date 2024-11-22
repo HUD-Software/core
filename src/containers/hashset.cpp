@@ -1,6 +1,6 @@
-#include <core/containers/hashmap.h>
+#include <core/containers/hashset.h>
 
-namespace hud::details::hashmap
+namespace hud::details::hashset
 {
     // When the map is empty, we threat it as a full empty hashmap with capacity that is 0 in the hashmap.
     // This trick removed a if branch for empty hashmap
@@ -75,4 +75,4 @@ namespace hud::details::hashmap
     //     details::hashmap::control_empty, // 31
     // };
 
-} // namespace hud::details::hashmap
+} // namespace hud::details::hashset

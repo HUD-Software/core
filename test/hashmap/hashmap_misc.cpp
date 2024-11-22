@@ -35,7 +35,7 @@ GTEST_TEST(hashmap, hashmap_value_type_is_correct)
 GTEST_TEST(hashmap, metadata)
 {
     // Testing metadata byte filtering
-    using metadata_type = hud::details::hashmap::metadata;
+    using metadata_type = hud::details::hashset::metadata;
     hud_assert_true(metadata_type::is_byte_empty(metadata_type::empty_byte));
     hud_assert_false(metadata_type::is_byte_empty(metadata_type::deleted_byte));
     hud_assert_false(metadata_type::is_byte_empty(metadata_type::sentinel_byte));
