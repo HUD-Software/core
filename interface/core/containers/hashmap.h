@@ -18,20 +18,6 @@ namespace hud
             : hud::hasher_64
         {
             using key_type = key_t;
-
-            /** The hasher hash ansichar and wchar with their size. */
-            template<typename... type_t>
-            [[nodiscard]] constexpr hasher_64 &operator()(const ansichar *value, const usize length) noexcept
-            {
-                return hud::hasher_64::hash(value, length).hash(reinterpret_cast<const ansichar *>(&length), sizeof(length));
-            }
-
-            /** The hasher hash ansichar and wchar with their size. */
-            template<typename... type_t>
-            [[nodiscard]] constexpr hasher_64 &operator()(const ansichar *value) noexcept
-            {
-                return (*this)(value, hud::cstring::length(value));
-            }
         };
 
         template<typename key_t>
@@ -65,6 +51,11 @@ namespace hud
             {
                 return hud::get<1>(*this);
             }
+
+            [[nodiscard]] value_t &value() noexcept
+            {
+                return hud::get<1>(*this);
+            }
         };
 
         /** Retrives the H1 (57 first bit) of a hash. */
@@ -83,16 +74,20 @@ namespace hud
 
         struct metadata
         {
+
             // Metadata can be seen as a signed 8 bits value.
             // If the bit sign is set (value is negative), this means we don't have a value in the slot
             // Else this means we have a empty, deleted or sentinel
             using byte_type = i8;
             using slot_index = usize;
+            static const byte_type INIT_GROUP[32];
 
             // static constexpr byte_type full = 0b0hhhhhhh;  // h represents the H2 hash 7 bits.
             static constexpr byte_type empty_byte = 0b10000000;    // The slot is empty (0x80)
             static constexpr byte_type deleted_byte = 0b11111110;  // The slot is deleted (0xFE)
             static constexpr byte_type sentinel_byte = 0b11111111; // The slot is a sentinel, A sentinel is a special caracter that mark the end of the control for iteration (0xFF)
+
+            constexpr metadata() = default;
 
             /** Construct a metadata that start from the given pointer. */
             constexpr metadata(byte_type *metadata_ptr) noexcept
@@ -100,9 +95,14 @@ namespace hud
             {
             }
 
-            [[nodiscard]] constexpr void set_byte(usize slot_index, byte_type value) noexcept
+            /**
+             * Save the H2
+             */
+            [[nodiscard]] constexpr void set_h2(usize slot_index, byte_type h2, usize max_slot_count) noexcept
             {
-                metadata_ptr_[slot_index] = value;
+                // Save the h2 in the slot and also in the cloned byte
+                metadata_ptr_[slot_index] = h2;
+                metadata_ptr_[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = h2;
             }
 
             /** Check if the metadata byte is empty. */
@@ -136,7 +136,7 @@ namespace hud
             /** Portable group used to analyze a group. */
             struct portable_group
             {
-                static constexpr u64 SLOT_PER_GROUP = 8;
+                static constexpr usize SLOT_PER_GROUP = 8;
 
                 struct mask
                 {
@@ -316,13 +316,18 @@ namespace hud
 
             /** Group type used to iterate over the metadata. */
             using group_type = portable_group;
+            /**
+             * Number of byte that are cloned at the end of the metadata.
+             * We cloned size of a group - 1 because we never reach the last cloned bytes.
+             * */
+            static constexpr usize COUNT_CLONED_BYTE = group_type::SLOT_PER_GROUP - 1;
 
             [[nodiscard]] group_type group_of_slot_index(u32 index) const noexcept
             {
                 return group_type {metadata_ptr_ + index};
             }
 
-            [[nodiscard]] metadata metadata_start_at_slot_index(usize index) const noexcept
+            [[nodiscard]] metadata metadata_that_start_at_slot_index(usize index) const noexcept
             {
                 return metadata {metadata_ptr_ + index};
             }
@@ -338,224 +343,43 @@ namespace hud
             }
 
         private:
-            byte_type *metadata_ptr_;
+            byte_type *metadata_ptr_ {const_cast<metadata::byte_type *>(&INIT_GROUP[16])};
         };
 
-        // Control can be seen as a signed 8 bits value.
-        // If the bit sign is set (value is negative), this means we don't have a value in the slot
-        // Else this means we have a empty, deleted or sentinel
-        using control_type = i8;
+        // // Control can be seen as a signed 8 bits value.
+        // // If the bit sign is set (value is negative), this means we don't have a value in the slot
+        // // Else this means we have a empty, deleted or sentinel
+        // using control_type = i8;
 
-        static constexpr control_type control_empty = 0b10000000;    // The slot is empty
-        static constexpr control_type control_deleted = 0b11111110;  // The slot is deleted
-        static constexpr control_type control_sentinel = 0b11111111; // The slot is a sentinel, A sentinel is a special caracter that mark the end of the control for iteration
+        // static constexpr control_type control_empty = 0b10000000;    // The slot is empty
+        // static constexpr control_type control_deleted = 0b11111110;  // The slot is deleted
+        // static constexpr control_type control_sentinel = 0b11111111; // The slot is a sentinel, A sentinel is a special caracter that mark the end of the control for iteration
 
-        // full: 0b0hhhhhhh where h represents the H2 hash bits.
+        // // full: 0b0hhhhhhh where h represents the H2 hash bits.
 
-        [[nodiscard]]
-        static constexpr bool is_control_empty(control_type ctrl) noexcept
-        {
-            return ctrl == control_empty;
-        }
-
-        [[nodiscard]]
-        static constexpr bool is_control_deleted(control_type ctrl) noexcept
-        {
-            return ctrl == control_deleted;
-        }
-
-        [[nodiscard]]
-        static constexpr bool is_control_empty_or_deleted(control_type ctrl) noexcept
-        {
-            return ctrl < control_sentinel;
-        }
-
-        [[nodiscard]]
-        static constexpr bool is_control_full(control_type ctrl) noexcept
-        {
-            return ctrl >= 0;
-        }
-
-        extern const control_type INIT_GROUP[32];
-
-        // extern const control_type EMPTY_GROUP[32];
-
-        // struct group_portable_iterator
+        // [[nodiscard]]
+        // static constexpr bool is_control_empty(control_type ctrl) noexcept
         // {
-        //     constexpr group_portable_iterator(u64 mask) noexcept
-        //         : mask_(mask)
-        //     {
-        //     }
-
-        // [[nodiscard]] constexpr explicit operator bool() const noexcept
-        // {
-        //     return mask_ != 0;
+        //     return ctrl == control_empty;
         // }
 
-        // [[nodiscard]] constexpr u32 insertion_slot_offset() const noexcept
+        // [[nodiscard]]
+        // static constexpr bool is_control_deleted(control_type ctrl) noexcept
         // {
-        //     // Get number of trailing zero and divide it by 8 (>>3) to get the insert offset of the byte
-        //     return hud::bits::trailing_zero(mask_) >> 3;
+        //     return ctrl == control_deleted;
         // }
 
-        // u64 mask_;
-        // };
-
-        // struct group_portable
+        // [[nodiscard]]
+        // static constexpr bool is_control_empty_or_deleted(control_type ctrl) noexcept
         // {
-        //     using iterator_type = group_portable_iterator;
-        //     static constexpr u64 SLOT_PER_GROUP = 8;
-
-        // constexpr group_portable(const control_type *control) noexcept
-        //     : value_(hud::memory::unaligned_load64(static_cast<const i8 *>(control)))
-        // {
+        //     return ctrl < control_sentinel;
         // }
 
-        // constexpr iterator_type match(u8 h2_hash) const noexcept
+        // [[nodiscard]]
+        // static constexpr bool is_control_full(control_type ctrl) noexcept
         // {
-        //     return iterator_type {hud::bits::has_zero_byte(hud::bits::has_value_byte(value_, h2_hash))};
+        //     return ctrl >= 0;
         // }
-
-        // /** Retrieve a mask where empty slot byte have value 0x80 and non empty have value 0x00 */
-        // constexpr iterator_type mask_of_empty_slot() const noexcept
-        // {
-        //     // controls are
-        //     // empty : 0b10000000
-        //     // deleted : 0b11111110
-        //     // sentinel : 0b11111111
-        //     // To filter 10000000_11111110_11111111_01001010 to have 10000000_00000000_00000000_00000000
-        //     // We know that value that end with 0 can be empty, deleted or full but not sentinel
-        //     // We know that value that start with 10 is empty
-        //     // We know that value that start with 11 can be deleted and sentinel
-        //     // We know that value that start with 0 is full
-        //     //
-        //     // We can retrieves the end bit with the following
-        //     // 1 - We shift value by 6 bits to put the MSB 2 bit into MSB 2 bit -> 00111111_10111111_11010010_10000000
-        //     // 2 - Negate the shift value -> 11000000_01000000_00101101_01111111
-        //     // We have a mask where 0b11 is empty or full, 0x10 is deleted or full
-        //     // If we mask this with the value we can filter values that start with 0b10, (empty) AND values that end with 0x00 (empty or full)
-        //     // The result is (empty) AND (empty or full) = (empty)
-        //     // 3 - Mask filtered with real value with AND
-        //     //   10000000_11111110_11111111_01001010
-        //     // & 11000000_01000000_00101101_01111111
-        //     // = 10000000_01000000_00101101_01001010
-        //     // - At this point, we never have 0x80 for values that are empty
-        //     // 4 - Mask with 10000000_10000000_10000000_10000000
-        //     // - At this point we have only empty values
-        //     return (value_ & ~(value_ << 6)) & 0x8080808080808080UL;
-        // }
-
-        // constexpr iterator_type mask_of_empty_or_deleted_slot() const noexcept
-        // {
-        //     // controls are
-        //     // empty : 0b10000000
-        //     // deleted : 0b11111110
-        //     // sentinel : 0b11111111
-        //     // To filter 10000000_11111110_11111111_01001010 to have 10000000_00000000_00000000_00000000
-        //     // We know that value that end with 0 can be empty, deleted or full but not sentinel
-        //     // We know that value that start with 1 can be empty, deleted and sentinel
-        //     // We know that value that start with 0 is be full
-        //     //
-        //     // We can retrieves the end bit with the following
-        //     // 1 - We shift value by 7 bits to put the MSB bit into MSB bit -> 01111111_01111111_10100101_00000000
-        //     // 2 - Negate the shift value -> 10000000_10000000_01011010_11111111
-        //     //  We have a mask where 0b1 is empty, deleted or full
-        //     // If we mask this with the value we can filter values that start with 1 (empty, deleted or sentinel) AND values that end with 1 (empty, deleted or full)
-        //     // The result is (empty, deleted or sentinel) AND (empty, deleted or full) = (empty, deleted)
-        //     // 3 - Mask filtered with real value with AND
-        //     //   10000000_11111110_11111111_01001010
-        //     // & 10000000_10000000_01011010_11111111
-        //     // = 10000000_10000000_01011010_01001010
-        //     // - At this point, we never have 0x80 for values that are not empty or deleted
-        //     // 4 - Mask with 10000000_10000000_10000000_10000000 to clean bits
-        //     return (value_ & ~(value_ << 7)) & 0x8080808080808080UL;
-        // }
-
-        // constexpr iterator_type mask_of_full_slot() const noexcept
-        // {
-        //     // controls are
-        //     // empty : 0b10000000
-        //     // deleted : 0b11111110
-        //     // sentinel : 0b11111111
-        //     // To filter 10000000_11111110_11111111_01001010 to have 0000000_00000000_00000000_10000000
-        //     // We know that value that end with 0 can be empty, deleted or full but not sentinel
-        //     // We know that value that start with 1 can be empty, deleted and sentinel
-        //     // We know that value that start with 0 is be full
-        //     //
-        //     // We filter the value to set 1 if the MSB of the bit is 0
-        //     // 1 - We OR the value with 10000000_10000000_10000000_10000000
-        //     //   10000000_10000000_10000000_10000000
-        //     // ^ 10000000_11111110_11111111_01001010
-        //     // = 00000000_01111110_01111111_10000000
-        //     // 2 - Mask with 10000000_10000000_10000000_10000000 to clean bits
-        //     return (value_ ^ 0x8080808080808080UL) & 0x8080808080808080UL;
-        // }
-
-        // [[nodiscard]] constexpr bool
-        // operator==(const group_portable &other) const noexcept
-        // {
-        //     return value_ == other.value_;
-        // }
-
-        // [[nodiscard]] constexpr bool operator!=(const group_portable &other) const noexcept
-        // {
-        //     return value_ == other.value_;
-        // }
-
-        // private:
-        //     u64 value_;
-        // };
-
-        // using group = group_portable;
-
-        // template<typename group_t = group>
-        // class probe_seq
-        // {
-        // public:
-        //     constexpr probe_seq(u64 h1_hash, u64 slot_mask) noexcept
-        //     {
-        //         hud::check(hud::bits::is_valid_power_of_two_mask(slot_mask) && "Not a mask");
-        //         slot_mask_ = slot_mask;
-        //         slot_offset_ = h1_hash & slot_mask;
-        //     }
-
-        // u64 slot_offset() const
-        // {
-        //     return slot_offset_;
-        // }
-
-        // u64 compute_slot_offset(u64 i) const
-        // {
-        //     return (slot_offset_ + i) & slot_mask_;
-        // }
-
-        // void next_group()
-        // {
-        //     slot_index_of_group_ += group::SLOT_PER_GROUP;
-        //     // Followinf can be:  slot_offset_ = compute_slot_offset(slot_index_of_group_);
-        //     slot_offset_ += slot_index_of_group_;
-        //     slot_offset_ &= slot_mask_;
-        // }
-
-        // /**
-        //  * Retrieves the index of the group in multiple of the group size.
-        //  * Group 0 is (0 * group::SLOT_PER_GROUP)
-        //  * Group 1 is (1 * group::SLOT_PER_GROUP)
-        //  * Group 2 is (2 * group::SLOT_PER_GROUP)
-        //  * */
-        // u64 slot_index_of_group() const
-        // {
-        //     return slot_index_of_group_;
-        // }
-
-        // private:
-        //     /** Mask used to iterate over. */
-        //     u64 slot_mask_;
-        //     /** Byte offset */
-        //     u64 slot_offset_;
-        //     /** Byte index of the group in multiple of group size. */
-        //     u64 slot_index_of_group_ {0};
-        // };
 
         /** The hashmap iterator that iterate over elements. */
         template<typename slot_t>
@@ -648,26 +472,43 @@ namespace hud
             using memory_allocation_type = typename allocator_type::template memory_allocation_type<slot_type>;
 
         public:
-            constexpr hashmap_impl() noexcept
-                : metadata_(const_cast<metadata::byte_type *>(&INIT_GROUP[16]))
+            /**
+             * Insert a key/pair values in the hashmap.
+             * @param key The key associated with the `value`
+             * @param value The value associated with the `key`
+             * @return Reference to the value
+             */
+            constexpr value_type &insert_to_ref(key_type &&key, value_type &&value) noexcept
             {
-            }
-
-            // constexpr hashmap_impl() noexcept
-            //     : control_(const_cast<control_type *>(&EMPTY_GROUP[16])) // Point to the sentinel in the empty group, const_cast is ok, EMPTY_GROUP is used only when the table is empty
-            // {
-            // }
-
-            constexpr hud::optional<iterator_type> insert(key_type &&key, value_type &&value) noexcept
-            {
-                hud::pair<iterator_type, bool> res = find_or_insert_no_construct(key);
+                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+                slot_type *slot_ptr = slots_ + res.first;
                 if (res.second)
                 {
-                    hud::memory::template construct_at(&*(res.first), key, value);
+                    hud::memory::template construct_at(slot_ptr, key, value);
                 }
-                return res.first;
+                return slot_ptr->value();
             }
 
+            /**
+             * Insert a key/pair values in the hashmap.
+             * @param key The key associated with the `value`
+             * @param value The value associated with the `key`
+             * @return Reference to the value
+             */
+            constexpr iterator_type insert(key_type &&key, value_type &&value) noexcept
+            {
+                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+                slot_type *slot_ptr = slots_ + res.first;
+                if (res.second)
+                {
+                    hud::memory::template construct_at(slot_ptr, key, value);
+                }
+                return iterator_type(metadata_.metadata_start_at_slot_index(res.first), slot_ptr);
+            }
+
+            /**
+             *
+             */
             [[nodiscard]]
             constexpr hud::optional<iterator_type> find(key_type &&key) const noexcept
             {
@@ -699,70 +540,13 @@ namespace hud
                 }
             }
 
-            // constexpr void resize(usize new_max_slot_count) noexcept
-            // {
-            //     // Perform allocation of the buffer
-            //     // |-------------------|----------------/
-            //     // | control metadata  | Aligned slots  /
-            //     // |-------------------|----------------/
-            //     constexpr const usize num_cloned_bytes = group::SLOT_PER_GROUP - 1;
-            //     const usize control_size = max_count() + 1 + num_cloned_bytes;
-            //     // Compute the control_size that is a multiple of the slot_type alignement
-            //     // We are shure to allocate enough memory for control_size and we ensure to be align on alignof(slot_type) after this allocation size
-            //     // control_size is multiple of sizeof(slot_type)
-            //     const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
-            //     const usize aligned_allocation_size = aligned_control_size + new_max_slot_count * sizeof(slot_type);
-
-            // // Allocate the buffer that will contains control metadata and aligned slots
-            // memory_allocation_type allocation = allocator_.template allocate<slot_type>(aligned_allocation_size);
-
-            // // Save control metadata and slot pointers
-            // control_ = hud::bit_cast<control_type *>(allocation.data());
-            // slot_type *slot_ptr = hud::bit_cast<slot_type *>(control_ + aligned_control_size);
-            // hud::check(hud::memory::is_pointer_aligned(slot_ptr, alignof(slot_type)));
-
-            // // Update number of slot we should put into the table before a resizing rehash
-            // growth_left_ = max_growth_left() - count();
-
-            // // Reset control metadata
-            // hud::memory::set(control_, control_size, control_empty);
-            // control_[new_max_slot_count] = control_sentinel;
-
-            // // Old content was empty, stop there
-            // if (max_slot_count_ == 0)
-            //     return;
-
-            // for (usize i = 0; i != max_slot_count_; ++i)
-            // {
-            //     if (is_control_full(control_[i]))
-            //     {
-            //         u64 hash = hasher_type {}(slots_[i].key());
-            //         usize slot_index = find_first_non_full_slot_index(hash);
-            //     }
-            // }
-            // // find_first_non_null_slot(hash);
-            // // slots_
-
-            // max_slot_count_ = new_max_slot_count;
-            // }
-
-            // [[nodiscard]] constexpr usize max_count() const noexcept
-            // {
-            //     return max_slot_count_;
-            // }
-
-            // [[nodiscard]] constexpr usize count() const noexcept
-            // {
-            //     return count_;
-            // }
-
         private:
             /**
              * Find the key and add the H2 hash in the metadata
              * If the key is found, return the iterator
              * If not found insert the key but do not construct the value.
              * If the key*/
-            [[nodiscard]] constexpr hud::pair<iterator_type, bool> find_or_insert_no_construct(const key_type &key) noexcept
+            [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -779,24 +563,16 @@ namespace hud
                         slot_type *slot_that_match_h2 = slots_ + slot_index_that_match_h2;
                         if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
                         {
-                            return {
-                                iterator_type {metadata_.metadata_start_at_slot_index(slot_index_that_match_h2), slot_that_match_h2},
-                                false
-                            };
+                            return {slot_index_that_match_h2, false};
                         }
                     }
 
                     // Don't find the key
-                    // Insert H2 in metadata but don't construct the value in the slot
                     metadata::group_type::empty_mask empty_mask_of_group = group.mask_of_empty_slot();
                     if (empty_mask_of_group.has_free_slot()) [[likely]]
                     {
-                        usize first_free_slot_index = slot_index + empty_mask_of_group.first_free_index() & max_slot_count_;
-                        first_free_slot_index = insert_no_construct(h1, H2(hash), first_free_slot_index);
-                        return {
-                            iterator_type {metadata_.metadata_start_at_slot_index(first_free_slot_index), slots_ + first_free_slot_index},
-                            true
-                        };
+                        usize inserted_slot_index = insert_no_construct(h1, H2(hash));
+                        return {inserted_slot_index, true};
                     }
 
                     // Advance to next group (Maybe a metadata iterator taht iterate over groups can be better alternative)
@@ -806,17 +582,19 @@ namespace hud
             }
 
             /** Insert a slot index associated with the given h2 hash. */
-            [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u64 h2, usize slot_index) noexcept
+            [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u64 h2) noexcept
             {
                 // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
                 if (free_slot_before_grow() == 0)
                 {
                     grow_capacity(next_capacity());
-                    slot_index = find_first_empty_or_deleted(h1);
                 }
 
-                metadata_.set_byte(slot_index, h2);
+                // Find the first empty of deleted slot that can be used for this h1 hash
+                usize slot_index = find_first_empty_or_deleted(h1);
                 count_++;
+                metadata_.set_h2(slot_index, h2, max_slot_count_);
+
                 free_slot_before_grow_--;
 
                 return slot_index;
@@ -833,7 +611,7 @@ namespace hud
                 // Slots are aligned on alignof(slot_type)
 
                 // We cloned size of a group - 1 because we never reach the last cloned bytes
-                constexpr const usize num_cloned_bytes = metadata::group_type::SLOT_PER_GROUP - 1;
+                constexpr const usize num_cloned_bytes = metadata::COUNT_CLONED_BYTE;
                 // Control size is the number of slot + sentinel + number of cloned bytes
                 const usize control_size = new_max_slot_count_ + 1 + num_cloned_bytes;
                 const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
@@ -851,8 +629,8 @@ namespace hud
                 free_slot_before_grow_ = max_slot_before_grow(new_max_slot_count_) - count_;
 
                 // Reset control metadata
-                hud::memory::set(metadata_ptr, control_size, control_empty);
-                metadata_ptr[new_max_slot_count_] = control_sentinel;
+                hud::memory::set(metadata_ptr, control_size, metadata::empty_byte);
+                metadata_ptr[new_max_slot_count_] = metadata::sentinel_byte;
 
                 if (count_ > 0)
                 {
@@ -883,14 +661,15 @@ namespace hud
             /** Compute the size of the allocation needed for the given slot count. */
             [[nodiscard]] constexpr usize current_allocation_size() const noexcept
             {
-                constexpr const usize num_cloned_bytes = metadata::group_type::SLOT_PER_GROUP - 1;
-                const usize control_size = max_slot_count_ + 1 + num_cloned_bytes;
+                const usize control_size = max_slot_count_ + 1 + metadata::COUNT_CLONED_BYTE;
                 const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
                 return aligned_control_size + max_slot_count_ * sizeof(slot_type);
             }
 
-            /** Find the first empty or deleted slot for the given hash.
+            /** Find the first empty or deleted slot for the given h1.
              * WARNING: This function works only if there is free or deleted slot available
+             * @param h1 The H1 hash
+             * @return The first empty or deleted slot that can be used for h1 hash
              */
             [[nodiscard]] constexpr usize find_first_empty_or_deleted(u64 h1) const noexcept
             {
@@ -905,76 +684,13 @@ namespace hud
                         u32 free_index = group_mask_that_match_h2.first_free_or_deleted_index();
                         usize slot_index_that_is_free_or_deleted = slot_index + free_index & max_slot_count_;
                         return slot_index_that_is_free_or_deleted;
-                        // slot_type *slot_that_match_h2 = slots_ + slot_index_that_is_free_or_deleted;
-                        // return find_result {
-                        //     slot_index_that_is_free_or_deleted,
-
-                        // };
-                        // iterator_type(metadata_.metadata_start_at_slot_index(slot_index_that_is_free_or_deleted), slot_that_match_h2);
                     }
-
-                    // // If we have free slot, we don't find it
-                    // if (group.mask_of_empty_slot().has_free_slot())
-                    //     return hud::nullopt;
 
                     // Advance to next group (Maybe a metadata iterator taht iterate over groups can be better alternative)
                     slot_index += metadata::group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
             }
-
-            // constexpr hud::optional<iterator_type> find_or_prepare_insert(const key_type &key)
-            // {
-            //     // TODO: prefetch control bloc
-            //     // Hash the key
-            //     u64 hash = hasher_type {}(key);
-            //     probe_seq probe = probe_seq(H1(hash), max_slot_count_);
-            //     const control_type *control = control_;
-            //     while (true)
-            //     {
-            //         group g {control + probe.slot_offset()};
-            //         // for (u32 i : g.match(H2(hash)))
-            //         // {
-            //         // }
-            //         group::iterator_type mask_of_empty_slot = g.mask_of_empty_slot();
-            //         if (mask_of_empty_slot) [[likely]]
-            //         {
-            //             u64 insertion_slot_offset = mask_of_empty_slot.insertion_slot_offset();
-            //             u64 circular_slot_offset = probe.compute_slot_offset(insertion_slot_offset);
-            //             prepare_insert(hash, circular_slot_offset, probe.slot_index_of_group());
-            //         }
-            //     }
-            //     return hud::nullopt;
-            // }
-
-            // constexpr u64 prepare_insert(u64 hash, u64 circular_slot_offset, u64 slot_index_of_group)
-            // {
-            //     if (growth_left_ == 0)
-            //     {
-            //         // const usize old_capacity = max_count();
-            //         rehash_and_grow_if_necessary();
-            //     }
-            //     return 0;
-            // }
-
-            // constexpr void rehash_and_grow_if_necessary()
-            // {
-            //     const usize capacity = max_count();
-
-            // // Rehash in place if the current size is <= 25/32 of capacity.
-            // if (capacity > group::SLOT_PER_GROUP && count_ * uint64_t {32} <= capacity * uint64_t {25})
-            // {
-            // }
-            // else
-            // {
-            //     resize(capacity * 2);
-            // }
-            // }
-
-            // [[nodiscard]] constexpr usize next_capacity(usize capacity) const noexcept
-            // {
-            //     return capacity * 2;
-            // }
 
             /**
              * Compute the maximum number of slots we should put into the table before a resizing rehash.
@@ -993,28 +709,6 @@ namespace hud
                 // |         64          |      64−64/8            |            56            |
                 return metadata::group_type::SLOT_PER_GROUP == 8 && capacity == 7 ? 6 : capacity - capacity / 8;
             }
-
-            /** Return index of the first non full slot. */
-            // usize find_first_non_full_slot_index(u64 hash)
-            // {
-            //     // Get a probe for the given hash
-            //     probe_seq probe = probe_seq(H1(hash), max_slot_count_);
-            //     // If the probe is empty of delete return the offset directly
-            //     if (is_control_empty_or_deleted(control_[probe.slot_offset()]))
-            //         return probe.slot_offset();
-            //     while (true)
-            //     {
-            //         group g {control_ + probe.slot_offset()};
-            //         group::iterator_type mask_of_empty_or_deleted_slot = g.mask_of_empty_or_deleted_slot();
-            //         if (mask_of_empty_or_deleted_slot)
-            //         {
-            //             u64 group_insertion_slot_offset = mask_of_empty_or_deleted_slot.insertion_slot_offset();
-            //             return group_insertion_slot_offset;
-            //         }
-            //         probe.next_group();
-            //         hud::check(probe.slot_offset() <= max_slot_count_ && "Table is full");
-            //     }
-            // }
 
         private:
             /** The metadata of the hashmap. */
@@ -1060,7 +754,7 @@ namespace hud
         using typename super::value_type;
 
         /** Import super functions. */
-        using super::insert;
+        using super::insert_to_ref;
         using super::super;
     };
 } // namespace hud

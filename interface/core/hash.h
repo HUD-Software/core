@@ -11,9 +11,6 @@
 namespace hud
 {
 
-    template<typename type_t>
-    static inline u32 hash_32(const type_t) noexcept;
-
     /** Retrieves the 32 bits hash of a i8 value. */
     [[nodiscard]] static constexpr u32 hash_32(const i8 value) noexcept
     {
@@ -87,10 +84,11 @@ namespace hud
     }
 
     /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
-    [[nodiscard]] static constexpr u32 hash_32(const ansichar *const value) noexcept
-    {
-        return hash_32(value, hud::cstring::length(value));
-    }
+    // Remove it temporary, should be replaced by an explicit hash-64 string view
+    // [[nodiscard]] static constexpr u32 hash_32(const ansichar *const value) noexcept
+    // {
+    //     return hash_32(value, hud::cstring::length(value));
+    // }
 
     /** Retrieves the 32 bits hash of a wchar null-terminated string. */
     [[nodiscard]] static inline u32 hash_32(const wchar *value, usize length) noexcept
@@ -99,10 +97,11 @@ namespace hud
     }
 
     /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
-    [[nodiscard]] static inline u32 hash_32(const wchar *const value) noexcept
-    {
-        return hash_32(value, hud::cstring::length(value));
-    }
+    // Remove it temporary, should be replaced by an explicit hash-64 string view
+    // [[nodiscard]] static inline u32 hash_32(const wchar *const value) noexcept
+    // {
+    //     return hash_32(value, hud::cstring::length(value));
+    // }
 
     /** Retrieves the 32 bits hash of an enumeration. */
     template<typename type_t>
@@ -131,9 +130,6 @@ namespace hud
     {
         return hud::hash_algorithm::city_hash::combine_32(a, b);
     }
-
-    template<typename type_t>
-    static inline u64 hash_64(const type_t) noexcept;
 
     /** Retrieves the 64 bits hash of a i8 value. */
     [[nodiscard]] static constexpr u64 hash_64(const i8 value) noexcept
@@ -202,10 +198,11 @@ namespace hud
     }
 
     /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
-    [[nodiscard]] static constexpr u64 hash_64(const ansichar *const value) noexcept
-    {
-        return hash_64(value, hud::cstring::length(value));
-    }
+    // Remove it temporary, should be replaced by an explicit hash-64 string view
+    // [[nodiscard]] static constexpr u64 hash_64(const ansichar *const value) noexcept
+    // {
+    //     return hash_64(value, hud::cstring::length(value));
+    // }
 
     /** Retrieves the 64 bits hash of a wchar null-terminated string. */
     [[nodiscard]] static inline u64 hash_64(const wchar *value, usize length) noexcept
@@ -214,10 +211,11 @@ namespace hud
     }
 
     /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
-    [[nodiscard]] static inline u64 hash_64(const wchar *const value) noexcept
-    {
-        return hash_64(value, hud::cstring::length(value));
-    }
+    // Remove it temporary, should be replaced by an explicit hash-64 string view
+    // [[nodiscard]] static inline u64 hash_64(const wchar *const value) noexcept
+    // {
+    //     return hash_64(value, hud::cstring::length(value));
+    // }
 
     /** Retrieves the 64 bits hash of an enumeration. */
     template<typename type_t>

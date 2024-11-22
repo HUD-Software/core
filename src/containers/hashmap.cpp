@@ -2,7 +2,10 @@
 
 namespace hud::details::hashmap
 {
-    alignas(16) constexpr const control_type INIT_GROUP[32] {
+    // When the map is empty, we threat it as a full empty hashmap with capacity that is 0 in the hashmap.
+    // This trick removed a if branch for empty hashmap
+    // So when insert a new element we trigger a new allocation of 1 element
+    alignas(16) constexpr const metadata::byte_type metadata::INIT_GROUP[32] {
         metadata::byte_type {0}, // 0
         metadata::byte_type {0},
         metadata::byte_type {0},
@@ -19,7 +22,7 @@ namespace hud::details::hashmap
         metadata::byte_type {0},
         metadata::byte_type {0},
         metadata::byte_type {0},
-        metadata::sentinel_byte, // 16
+        metadata::sentinel_byte, // 16 <- New empty hashmap point here
         metadata::empty_byte,
         metadata::empty_byte,
         metadata::empty_byte,
