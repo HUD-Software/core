@@ -445,10 +445,10 @@ namespace hud
 
         public:
             /**
-             * Insert a key/pair values in the hashset.
+             * Insert a key in the hashset.
              * @param key The key associated with the `value`
-             * @param value The value associated with the `key`
-             * @return Reference to the value
+             * @param args List of arguments pass to `value_type` constructor after the `key` itself
+             * @return Reference to the `value`
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<value_type, args_t...>)
@@ -464,27 +464,10 @@ namespace hud
             }
 
             /**
-             * Insert a key/pair values in the hashmap.
+             * Insert a key in the hashset.
              * @param key The key associated with the `value`
-             * @param value The value associated with the `key`
-             * @return Reference to the value
-             */
-            constexpr iterator_type insert(key_type &&key, value_type &&value) noexcept
-            {
-                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-                slot_type *slot_ptr = slots_ + res.first;
-                if (res.second)
-                {
-                    hud::memory::template construct_at(slot_ptr, key, value);
-                }
-                return iterator_type(metadata_.metadata_start_at_slot_index(res.first), slot_ptr);
-            }
-
-            /**
-             * Insert a key/pair values in the hashmap.
-             * @param key The key associated with the `value`
-             * @param value The value associated with the `key`
-             * @return Reference to the value
+             * @param args List of arguments pass to `value_type` constructor after the `key` itself
+             * @return Iterator to the `value`
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<slot_type, args_t...>)
@@ -499,11 +482,9 @@ namespace hud
                 return iterator_type(metadata_.metadata_start_at_slot_index(res.first), slot_ptr);
             }
 
-            /**
-             *
-             */
+            /** Find a key and return an iterator to the value. */
             [[nodiscard]]
-            constexpr hud::optional<iterator_type> find(key_type &&key) const noexcept
+            constexpr iterator_type find(key_type &&key) const noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -525,12 +506,21 @@ namespace hud
 
                     // If we have free slot, we don't find it
                     if (group.mask_of_empty_slot().has_free_slot())
-                        return hud::nullopt;
+                    {
+                        return end();
+                    }
 
                     // Advance to next group (Maybe a metadata iterator taht iterate over groups can be better alternative)
                     slot_index += metadata::group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
+            }
+
+            /** Retrieves an iterator to the end of the array. */
+            [[nodiscard]]
+            constexpr iterator_type end() noexcept
+            {
+                return iterator_type(metadata_, slots_);
             }
 
         private:
