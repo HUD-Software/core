@@ -191,6 +191,24 @@ namespace hud
                         return hud::bits::trailing_zero(mask_value_) >> 3;
                     }
 
+                    [[nodiscard]]
+                    friend bool operator==(const mask &a, const mask &b)
+                    {
+                        return a.mask_value_ == b.mask_value_;
+                    }
+
+                    [[nodiscard]]
+                    friend bool operator!=(const mask &a, const mask &b)
+                    {
+                        return !(a == b);
+                    }
+
+                    [[nodiscard]]
+                    constexpr operator u64() const noexcept
+                    {
+                        return mask_value_;
+                    }
+
                 private:
                     u64 mask_value_;
                 };
@@ -227,16 +245,54 @@ namespace hud
                     }
                 };
 
+                struct full_mask
+                    : mask
+                {
+                    using mask::mask;
+
+                    [[nodiscard]] constexpr bool has_full_slot() const noexcept
+                    {
+                        return *this;
+                    }
+
+                    [[nodiscard]] constexpr u32 first_full_index() const noexcept
+                    {
+                        return first_non_null_index();
+                    }
+                };
+
+                struct full_or_sentinel_mask
+                    : mask
+                {
+                    using mask::mask;
+
+                    [[nodiscard]] constexpr bool has_full_slot() const noexcept
+                    {
+                        return *this;
+                    }
+
+                    [[nodiscard]] constexpr u32 first_full_index() const noexcept
+                    {
+                        return first_non_null_index();
+                    }
+                };
+
                 /** Load a 8 bytes metadata into the group. */
                 constexpr portable_group(const byte_type *metadata) noexcept
                     : value_(hud::memory::unaligned_load64(metadata))
+
                 {
                 }
 
                 /**Retrieve a mask where H2 matching metadata byte have value 0x80 and non matching have value 0x00. */
                 constexpr mask match(u8 h2_hash) const noexcept
                 {
-                    return mask {hud::bits::has_value_byte(value_, h2_hash)};
+                    // Mix of  From http://graphics.stanford.edu/~seander/bithacks.html#ZeroInWord
+                    // And http://graphics.stanford.edu/~seander/bithacks.html#ValueInWord
+                    constexpr uint64_t lsbs = 0x0101010101010101ULL;
+                    auto x = value_ ^ (lsbs * h2_hash);
+                    return mask {(x - lsbs) & ~x & 0x8080808080808080ULL};
+                    // return mask {hud::bits::has_value_byte(value_, h2_hash)};
                 }
 
                 /** Retrieve a mask where empty metadata bytes have value 0x80 and others have value 0x00. */
@@ -296,7 +352,7 @@ namespace hud
                 }
 
                 /** Retrieve a mask where full metadata bytes have value 0x80 and others have value 0x00. */
-                constexpr u64 mask_of_full_slot() const noexcept
+                constexpr full_mask mask_of_full_slot() const noexcept
                 {
                     // controls are
                     // empty : 0b10000000
@@ -398,7 +454,7 @@ namespace hud
 
             friend bool operator==(const iterator &a, const iterator &b)
             {
-                return a.control_ == b.control_;
+                return a.metadata_.data() == b.metadata_.data();
             }
 
             friend bool operator!=(const iterator &a, const iterator &b)
@@ -500,7 +556,7 @@ namespace hud
                         slot_type *slot_that_match_h2 = slots_ + slot_index_that_match_h2;
                         if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
                         {
-                            return iterator_type(metadata_.metadata_start_at_slot_index(slot_index_that_match_h2), slot_that_match_h2);
+                            return iterator_type(metadata_.metadata_that_start_at_slot_index(slot_index_that_match_h2), slot_that_match_h2);
                         }
                     }
 
@@ -517,10 +573,30 @@ namespace hud
             }
 
             /** Retrieves an iterator to the end of the array. */
+            [[nodiscard]] constexpr iterator_type begin() noexcept
+            {
+                return find_first_full();
+            }
+
+            /** Retrieves an iterator to the end of the array. */
+            [[nodiscard]]
+            constexpr const iterator_type begin() const noexcept
+            {
+                return find_first_full();
+            }
+
+            /** Retrieves an iterator to the end of the array. */
             [[nodiscard]]
             constexpr iterator_type end() noexcept
             {
-                return iterator_type(metadata_, slots_);
+                return iterator_type(metadata_.metadata_that_start_at_slot_index(max_slot_count_), slots_);
+            }
+
+            /** Retrieves an iterator to the end of the array. */
+            [[nodiscard]]
+            constexpr const iterator_type end() const noexcept
+            {
+                return iterator_type(metadata_.metadata_that_start_at_slot_index(max_slot_count_), slots_);
             }
 
         private:
@@ -619,8 +695,11 @@ namespace hud
                 {
                     // Move elements to new buffer if any
                     // Relocate slots to newly allocated buffer
+                    // for (auto &slot : *this)
+                    // {
+                    //     find_first_empty_or_deleted()
+                    // }
                     // Free old buffer
-
                     allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(metadata_.data()), current_allocation_size()});
                 }
 
@@ -675,6 +754,27 @@ namespace hud
                 }
             }
 
+            [[nodiscard]]
+            constexpr iterator_type find_first_full() noexcept
+            {
+                hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
+                usize slot_index = 0;
+                while (slot_index < max_slot_count_)
+                {
+                    metadata::group_type group = metadata_.group_of_slot_index(slot_index);
+                    metadata::group_type::full_mask group_mask = group.mask_of_full_slot();
+                    if (group_mask.has_full_slot())
+                    {
+                        u32 first_full_index = group_mask.first_full_index();
+                        return iterator_type {metadata_.metadata_that_start_at_slot_index(first_full_index), slots_ + first_full_index};
+                    }
+
+                    // Advance to next group (Maybe a metadata iterator that iterate over groups can be better alternative)
+                    slot_index += metadata::group_type::SLOT_PER_GROUP;
+                }
+                return end();
+            }
+
             /**
              * Compute the maximum number of slots we should put into the table before a resizing rehash.
              * Subtract the returned value with the number of slots `count()` to obtains the number of slots we can currently before a resizing rehash.
@@ -721,7 +821,8 @@ namespace hud
         typename key_equal_t = details::hashset::default_equal<value_t>,
         typename allocator_t = details::hashset::default_allocator<value_t>>
     class hashset
-        : details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>
+
     {
     private:
         using super = details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>;
@@ -731,10 +832,6 @@ namespace hud
         using hasher_type = typename super::hasher_type;
         /** Type of the value. */
         using value_type = typename super::value_type;
-
-        /** Import super functions. */
-        using super::insert_to_ref;
-        using super::super;
     };
 } // namespace hud
 

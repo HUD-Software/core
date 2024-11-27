@@ -71,7 +71,7 @@ namespace hud
         typename key_equal_t = details::hashmap::default_equal<key_t>,
         typename allocator_t = details::hashmap::default_allocator<details::hashmap::slot<key_t, value_t>>>
     class hashmap
-        : details::hashset::hashset_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
 
     {
     private:
@@ -84,10 +84,6 @@ namespace hud
         using typename super::key_type;
         /** Type of the value. */
         using typename super::value_type;
-
-        /** Import super functions. */
-        using super::insert_to_ref;
-        using super::super;
     };
 } // namespace hud
 

@@ -22,15 +22,15 @@ namespace hud::os::common
          *    result = 0x0000008000800000
          *    This indicates that a zero byte (0x00) is present in the word at byte index 2 and 4
          */
-        [[nodiscard]] static constexpr u64 has_zero_byte(u64 value) noexcept
-        {
-            // From http://graphics.stanford.edu/~seander/bithacks.html#ZeroInWord
-            // value= 0x1213140015001617
-            // value - 0x0101010101010101 = 0x111212FF13FF1516
-            // ~value                    = 0xEDECEBFFEAFFE9E8
-            // Final result after AND      = 0x0000008000800000
-            return ((value)-0x0101010101010101UL) & ~(value) & 0x8080808080808080UL;
-        }
+        // [[nodiscard]] static constexpr u64 has_zero_byte(u64 value) noexcept
+        // {
+        //     // From http://graphics.stanford.edu/~seander/bithacks.html#ZeroInWord
+        //     // value= 0x1213140015001617
+        //     // value - 0x0101010101010101 = 0x111212FF13FF1516
+        //     // ~value                    = 0xEDECEBFFEAFFE9E8
+        //     // Final result after AND      = 0x0000008000800000
+        //     return ((value)-0x0101010101010101UL) & ~(value) & 0x8080808080808080UL;
+        // }
 
         /**
          * Determines if a 64-bit word contains any byte equal to a given value
@@ -42,16 +42,16 @@ namespace hud::os::common
          *    result = 0x8000000000008000
          *    This indicates that `byte_value` is present in the word at byte index 1 and 7
          */
-        [[nodiscard]] static constexpr u64 has_value_byte(u64 value, u8 byte_value) noexcept
-        {
-            // From http://graphics.stanford.edu/~seander/bithacks.html#ValueInWord
-            // value = 0x1213140015001217
-            // byte_value = 0x12
-            // 0x0101010101010101ULL * byte_value = 0x1212121212121212
-            // value ^ (0x0101010101010101ULL * byte_value) = 0x0001061207120005
-            // Final result after has_zero_byte = 0x8000000000008000
-            return has_zero_byte(value ^ (0x0101010101010101ULL * byte_value));
-        }
+        // [[nodiscard]] static constexpr u64 has_value_byte(u64 value, u8 byte_value) noexcept
+        // {
+        //     // From http://graphics.stanford.edu/~seander/bithacks.html#ValueInWord
+        //     // value = 0x1213140015001217
+        //     // byte_value = 0x12
+        //     // 0x0101010101010101ULL * byte_value = 0x1212121212121212
+        //     // value ^ (0x0101010101010101ULL * byte_value) = 0x0001061207120005
+        //     // Final result after has_zero_byte = 0x8000000000008000
+        //     return has_zero_byte(value ^ (0x0101010101010101ULL * byte_value));
+        // }
 
         /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zero(u8 value) noexcept

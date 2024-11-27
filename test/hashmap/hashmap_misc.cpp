@@ -61,32 +61,35 @@ GTEST_TEST(hashmap, metadata)
     using mask_type = group_type::mask;
     using mask_empty_type = group_type::empty_mask;
     using mask_empty_or_deleted_type = group_type::empty_or_deleted_mask;
+    using mask_full_type = group_type::full_mask;
+    using mask_full_or_sentinel = group_type::full_or_sentinel_mask;
 
     u64 group_value = 0x80FEFF7F80FEFF7F;
     group_type g {reinterpret_cast<metadata_type::byte_type *>(&group_value)};
     hud_assert_eq(g.match(0x7F), mask_type {0x0000008000000080});
     hud_assert_eq(g.mask_of_empty_or_deleted_slot(), mask_empty_or_deleted_type {0x8080000080800000});
     hud_assert_eq(g.mask_of_empty_slot(), mask_empty_type {0x8000000080000000});
-    hud_assert_eq(g.mask_of_full_slot(), 0x0000008000000080);
+    hud_assert_eq(g.mask_of_full_slot(), mask_full_type {0x0000008000000080});
 
     // Test group at index
+    // empty (0x80), deleted (0xFE), sentinel (0xFF)
     u64 two_group[2] = {0x7F00806DFE002A6D, 0x807B00800000FEFF};
-    metadata_type meta(reinterpret_cast<metadata_type::byte_type *>(&two_group) /*const_cast<metadata_type::byte_type *>(&metadata_array[0])*/);
+    metadata_type meta(reinterpret_cast<metadata_type::byte_type *>(&two_group));
     group_type g0 = meta.group_of_slot_index(group_type::SLOT_PER_GROUP * 0);
     // Read first group
     hud_assert_eq(g0.match(0x7F), mask_type {0x8000000000000000});
     hud_assert_eq(g0.match(0x2A), mask_type {0x0000000000008000});
-    hud_assert_eq(g0.match(0x6D), mask_type {0x0000008000000000});
+    hud_assert_eq(g0.match(0x6D), mask_type {0x0000008000000080});
     hud_assert_eq(g0.mask_of_empty_or_deleted_slot(), mask_empty_or_deleted_type {0x0000800080000000});
     hud_assert_eq(g0.mask_of_empty_slot(), mask_empty_type {0x0000800000000000});
-    hud_assert_eq(g0.mask_of_full_slot(), 0x8080008000808080);
+    hud_assert_eq(g0.mask_of_full_slot(), mask_full_type {0x8080008000808080});
 
     group_type g1 = meta.group_of_slot_index(group_type::SLOT_PER_GROUP * 1);
     // Read second group
     hud_assert_eq(g1.match(0x7B), mask_type {0x0080000000000000});
     hud_assert_eq(g1.mask_of_empty_or_deleted_slot(), mask_empty_or_deleted_type {0x8000008000008000});
     hud_assert_eq(g1.mask_of_empty_slot(), mask_empty_type {0x8000008000000000});
-    hud_assert_eq(g1.mask_of_full_slot(), 0x0080800080800000);
+    hud_assert_eq(g1.mask_of_full_slot(), mask_full_type {0x0080800080800000});
 
     // Test find with group and iteration
     // Find the 2 indices of 0x6D in the group and iterate over it
