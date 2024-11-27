@@ -106,12 +106,26 @@ namespace hud::os::linux
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u8 value) noexcept
+        {
+            return leading_zero(u32 {value}) - 24;
+        }
+
+        /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u16 value) noexcept
+        {
+#if HD_HAS_BUILTIN_CLZS
+            return value == 0 ? 16 : __builtin_clzs(value);
+#else
+            return os::common::bits::leading_zero(value);
+#endif
+        }
+
+        /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zero(u32 value) noexcept
         {
-            if (value == 0)
-                return 32;
-#if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
-            return __builtin_clz(value);
+#if HD_HAS_BUILTIN_CLZ
+            return value == 0 ? 32 : __builtin_clz(value);
 #else
             return os::common::bits::leading_zero(value);
 #endif
@@ -120,15 +134,40 @@ namespace hud::os::linux
         /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zero(u64 value) noexcept
         {
-            if (value == 0)
-                return 64;
-
-#if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
-            return __builtin_clzll(value);
+#if HD_HAS_BUILTIN_CLZLL
+            return value == 0 ? 64 : __builtin_clzll(value);
 #else
             return os::common::bits::leading_zero(value);
 #endif
         };
+
+        [[nodiscard]] static constexpr u32 trailing_zero(u8 value) noexcept
+        {
+            return value == 0 ? 8 : trailing_zero(u32 {value});
+        }
+
+        [[nodiscard]] static constexpr u32 trailing_zero(u16 value) noexcept
+        {
+            return value == 0 ? 16 : trailing_zero(u32 {value});
+        }
+
+        [[nodiscard]] static constexpr u32 trailing_zero(u32 value) noexcept
+        {
+#if HD_HAS_BUILTIN_CTZ
+            return value == 0 ? 32 : __builtin_ctz(value);
+#else
+            return value == 0 ? 32 : os::common::bits::trailing_zero(value);
+#endif
+        }
+
+        [[nodiscard]] static constexpr u64 trailing_zero(u64 value) noexcept
+        {
+#if HD_HAS_BUILTIN_CTZLL
+            return value == 0 ? 64 : __builtin_ctzll(value);
+#else
+            return value == 0 ? 64 : os::common::bits::trailing_zero(value);
+#endif
+        }
     } // namespace hud::os::linux
 
 #endif // HD_INC_CORE_OS_LINUX_BITS_H

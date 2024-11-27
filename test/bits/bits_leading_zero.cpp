@@ -1,5 +1,29 @@
 #include <core/bits.h>
 
+GTEST_TEST(bits, leading_zero_u8)
+{
+    hud_assert_eq(hud::bits::leading_zero(u8(0)), 8);
+    hud_assert_eq(hud::bits::leading_zero(u8(1)), 7);
+    hud_assert_eq(hud::bits::leading_zero(u8(2)), 6);
+    hud_assert_eq(hud::bits::leading_zero(u8(0xFF)), 0);
+    hud_assert_eq(hud::bits::leading_zero(u8(0x80)), 0);
+    hud_assert_eq(hud::bits::leading_zero(u8(0x40)), 1);
+    hud_assert_eq(hud::bits::leading_zero(u8(0x0F)), 4);
+    hud_assert_eq(hud::bits::leading_zero(u8(0x10)), 3);
+}
+
+GTEST_TEST(bits, leading_zero_u16)
+{
+    hud_assert_eq(hud::bits::leading_zero(u16(0)), 16);
+    hud_assert_eq(hud::bits::leading_zero(u16(1)), 15);
+    hud_assert_eq(hud::bits::leading_zero(u16(2)), 14);
+    hud_assert_eq(hud::bits::leading_zero(u16(0xFFFF)), 0);
+    hud_assert_eq(hud::bits::leading_zero(u16(0x8000)), 0);
+    hud_assert_eq(hud::bits::leading_zero(u16(0x4000)), 1);
+    hud_assert_eq(hud::bits::leading_zero(u16(0x0F00)), 4);
+    hud_assert_eq(hud::bits::leading_zero(u16(0x1000)), 3);
+}
+
 GTEST_TEST(bits, leading_zero_u32)
 {
     hud_assert_eq(hud::bits::leading_zero(u32(0)), 32);

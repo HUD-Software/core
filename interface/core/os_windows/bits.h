@@ -139,14 +139,29 @@ namespace hud::os::windows
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u8 value) noexcept
+        {
+            return leading_zero(u32 {value}) - 24;
+        }
+
+        /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u16 value) noexcept
+        {
+#if HD_HAS_BUILTIN_CLZS
+            return value == 0 ? 16 : __builtin_clzs(value);
+#else
+            return leading_zero(u32 {value}) - 16;
+#endif
+        }
+
+        /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zero(u32 value) noexcept
         {
+#if HD_HAS_BUILTIN_CLZ
+            return value == 0 ? 32 : __builtin_clz(value);
+#else
             if (value == 0)
                 return 32;
-
-#if defined(HD_COMPILER_CLANG_CL)
-            return __builtin_clz(value);
-#elif defined(HD_COMPILER_MSVC)
 
             u32 result = 0;
             if (_BitScanReverse((unsigned long *)&result, value))
@@ -154,20 +169,17 @@ namespace hud::os::windows
                 return 31 - result;
             }
             return 32;
-#else
-            return os::common::bits(value);
 #endif
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zero(u64 value) noexcept
         {
+#if HD_HAS_BUILTIN_CLZLL
+            return value == 0 ? 64 : __builtin_clzll(value);
+#else
             if (value == 0)
                 return 64;
-
-#if defined(HD_COMPILER_CLANG_CL)
-            return __builtin_clzll(value);
-#elif defined(HD_COMPILER_MSVC)
     #if defined(HD_TARGET_X64)
             u32 result = 0;
             if (_BitScanReverse64((unsigned long *)&result, value))
@@ -187,8 +199,53 @@ namespace hud::os::windows
             }
             return 64;
     #endif
+#endif
+        }
+
+        [[nodiscard]] static constexpr u32 trailing_zero(u8 value) noexcept
+        {
+            return value == 0 ? 8 : trailing_zero(u32 {value});
+        }
+
+        [[nodiscard]] static constexpr u32 trailing_zero(u16 value) noexcept
+        {
+            return value == 0 ? 16 : trailing_zero(u32 {value});
+        }
+
+        [[nodiscard]] static constexpr u32 trailing_zero(u32 value) noexcept
+        {
+#if HD_HAS_BUILTIN_CTZ
+            return value == 0 ? 32 : __builtin_ctz(value);
 #else
-            return os::common::bits(value);
+            if (value == 0)
+                return 32;
+            u32 result = 0;
+            _BitScanForward((unsigned long *)&result, value);
+            return result;
+#endif
+        }
+
+        [[nodiscard]] static constexpr u64 trailing_zero(u64 value) noexcept
+        {
+#if HD_HAS_BUILTIN_CTZLL
+            return value == 0 ? 64 : __builtin_ctzll(value);
+#else
+            if (value == 0)
+                return 64;
+    #if defined(HD_TARGET_X64)
+            u64 result = 0;
+            _BitScanForward64((unsigned long *)&result, value);
+            return result;
+    #else
+            u32 result = 0;
+            if (static_cast<u32>(value) == 0)
+            {
+                _BitScanForward((unsigned long *)&result, static_cast<u32>(value >> 32));
+                return result + 32;
+            }
+            _BitScanForward((unsigned long *)&result, static_cast<u32>(value));
+            return result;
+    #endif
 #endif
         }
     };

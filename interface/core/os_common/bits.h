@@ -56,30 +56,57 @@ namespace hud::os::common
         /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zero(u8 value) noexcept
         {
-            if (value == 0)
-                return 8;
+            return leading_zero(u16 {value}) - 8;
+        }
 
-#if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_GCC)
-            return u8(__builtin_clz((u32(value) << 1) | 1) - 23);
-#else
-            return 7 - hud::math::floor_log2(u32(value));
-#endif
+        /** Returns the number of consecutive 0 bits in the value. */
+        [[nodiscard]] static constexpr u32 leading_zero(u16 value) noexcept
+        {
+            return leading_zero(u32 {value}) - 16;
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zero(u32 value) noexcept
         {
-            if (value == 0)
-                return 32;
-            return 31 - hud::math::floor_log2(u32(value));
+            return value == 0 ? 32 : 31 - hud::math::floor_log2(u32(value));
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zero(u64 value) noexcept
         {
-            if (value == 0)
-                return 64;
-            return 63 - hud::math::floor_log2(value);
+            return value == 0 ? 64 : 63 - hud::math::floor_log2(value);
+        }
+
+        [[nodiscard]] static constexpr u32 trailing_zero(u8 value) noexcept
+        {
+            u8 c = 8; // c will be the number of zero bits on the right
+            value &= -i8(value);
+            if (value)
+                c--;
+            if (value & 0x0Fu)
+                c -= 4;
+            if (value & 0x33u)
+                c -= 2;
+            if (value & 055u)
+                c -= 1;
+            return c;
+        }
+
+        [[nodiscard]] static constexpr u32 trailing_zero(u16 value) noexcept
+        {
+            u16 c = 16; // c will be the number of zero bits on the right
+            value &= -i16(value);
+            if (value)
+                c--;
+            if (value & 0x00FFu)
+                c -= 8;
+            if (value & 0x0F0Fu)
+                c -= 4;
+            if (value & 0x3333u)
+                c -= 2;
+            if (value & 0x5555u)
+                c -= 1;
+            return c;
         }
 
         [[nodiscard]] static constexpr u32 trailing_zero(u32 value) noexcept
