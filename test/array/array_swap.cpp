@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 
 GTEST_TEST(array, swap_empty_array_do_nothing)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type a, b;
     hud_assert_eq(a.data(), nullptr);
@@ -50,7 +50,7 @@ GTEST_TEST(array, swap_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     i32 a_destructor_called[2] = {false, false};
     array_type a;
@@ -140,7 +140,7 @@ GTEST_TEST(array, swap_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type a;
     a.reserve(4);

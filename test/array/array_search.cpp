@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 
 GTEST_TEST(array, find_first_index_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -35,7 +35,7 @@ GTEST_TEST(array, find_first_index_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -65,7 +65,7 @@ GTEST_TEST(array, find_last_index_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -95,7 +95,7 @@ GTEST_TEST(array, find_last_index_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -125,7 +125,7 @@ GTEST_TEST(array, find_first_index_by_predicate_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -161,7 +161,7 @@ GTEST_TEST(array, find_first_index_by_predicate_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -197,7 +197,7 @@ GTEST_TEST(array, find_last_index_by_predicate_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -233,7 +233,7 @@ GTEST_TEST(array, find_last_index_by_predicate_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -269,7 +269,7 @@ GTEST_TEST(array, contains_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -299,7 +299,7 @@ GTEST_TEST(array, contains_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -329,7 +329,7 @@ GTEST_TEST(array, contains_by_predicate_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 
@@ -365,7 +365,7 @@ GTEST_TEST(array, contains_by_predicate_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
 

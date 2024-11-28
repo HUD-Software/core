@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 
 GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_same_allocator)
 {
@@ -7,7 +7,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_same_alloc
     using type = i32;
 
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
-    using AllocatorType = hud_test::array_allocator<alignof(type)>;
+    using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
     using CopiedType = hud::array<type, AllocatorType>;
 
     // No extra
@@ -303,8 +303,8 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_
     using type = i32;
 
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
-    using AllocatorType = hud_test::array_allocator<alignof(type)>;
-    using AllocatorType2 = hud_test::array_allocator_2<alignof(type)>;
+    using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
+    using AllocatorType2 = hud_test::allocator_watcher_2<alignof(type)>;
     using CopiedType = hud::array<type, AllocatorType>;
 
     // No extra
@@ -603,7 +603,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_same_
     using Type1 = i32;
     using Type2 = u32;
 
-    using AllocatorType = hud_test::array_allocator<alignof(Type1)>;
+    using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<Type1, Type2>);
@@ -908,8 +908,8 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_diffe
     using Type1 = i32;
     using Type2 = u32;
 
-    using AllocatorType = hud_test::array_allocator<alignof(Type1)>;
-    using AllocatorType2 = hud_test::array_allocator_2<alignof(Type2)>;
+    using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
+    using AllocatorType2 = hud_test::allocator_watcher_2<alignof(Type2)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorType, AllocatorType2>);
@@ -1214,7 +1214,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_same_a
 
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::NonBitwiseCopyConstructibleType;
-    using AllocatorType = hud_test::array_allocator<alignof(type)>;
+    using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
@@ -1519,8 +1519,8 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_differ
 
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::NonBitwiseCopyConstructibleType;
-    using AllocatorType = hud_test::array_allocator<alignof(type)>;
-    using AllocatorType2 = hud_test::array_allocator_2<alignof(type)>;
+    using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
+    using AllocatorType2 = hud_test::allocator_watcher_2<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorType, AllocatorType2>);
@@ -1827,7 +1827,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_s
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using AllocatorType = hud_test::array_allocator<alignof(Type1)>;
+    using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<Type1, Type2>);
@@ -2132,8 +2132,8 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_d
     /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = hud_test::NonBitwiseCopyConstructibleType;
     using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using AllocatorType = hud_test::array_allocator<alignof(Type1)>;
-    using AllocatorType2 = hud_test::array_allocator_2<alignof(Type2)>;
+    using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
+    using AllocatorType2 = hud_test::allocator_watcher_2<alignof(Type2)>;
 
     // Ensure we test with different allocator
     static_assert(!std::is_same_v<AllocatorType, AllocatorType2>);

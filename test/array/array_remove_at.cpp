@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 
 GTEST_TEST(array, remove_at_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // remove_at(const index index)
     {
@@ -322,7 +322,7 @@ GTEST_TEST(array, remove_at_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // remove_at(const index index)
     {
@@ -454,7 +454,7 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // remove_at(const index index)
     {
@@ -768,7 +768,7 @@ GTEST_TEST(array, remove_at_shrink_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // remove_at(const index index)
     {

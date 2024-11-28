@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 #include "../misc/leak_guard.h"
 
 // array &operator=(array &&other)
@@ -14,8 +14,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
 
             assigned = hud::move(to_assign);
 
@@ -217,8 +217,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned = hud::move(to_assign);
 
@@ -905,8 +905,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::array_allocator_2<alignof(type)>> to_assign(elements_to_assign);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
 
             assigned = hud::move(to_assign);
 
@@ -1109,8 +1109,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
 
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::array_allocator_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned = hud::move(to_assign);
 
@@ -1798,8 +1798,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
 
     auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept
     {
-        hud::array<type1, hud_test::array_allocator<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::array_allocator<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::array<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
@@ -1895,8 +1895,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
 
     auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept
     {
-        hud::array<type1, hud_test::array_allocator<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::array_allocator_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::array<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
@@ -2023,8 +2023,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
-        hud::array<type, hud_test::array_allocator<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
+        hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
         for (const type &element : assigned)
@@ -2195,8 +2195,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
-        hud::array<type, hud_test::array_allocator_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
+        hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
         for (const type &element : assigned)
@@ -2370,8 +2370,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type1, hud_test::array_allocator<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::array_allocator<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::array<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
         for (const type1 &element : assigned)
@@ -2545,8 +2545,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type1, hud_test::array_allocator<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::array_allocator_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::array<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
         for (const type1 &element : assigned)
@@ -2712,8 +2712,8 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements)
             *destructor_counter = 0;
         }
 
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
+        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
+        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
 
         // Ensure assigned copy constructor is set to 1
         for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
@@ -2849,8 +2849,8 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
             *destructor_counter = 0;
         }
 
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
+        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
+        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
 
         // Ensure assigned copy constructor is set to 1
         for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
@@ -2980,7 +2980,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self)
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> arr(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
 
             const type *data_before = arr.data();
             arr = hud::move(arr);
@@ -3041,7 +3041,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self)
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
 
             const type *data_before = arr.data();
             arr = hud::move(arr);
@@ -3142,7 +3142,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self)
     {
         const auto test = [](std::initializer_list<i32> &&elements_in_assigned)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> arr(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
             const type *data_before = arr.data();
             arr = hud::move(arr);
 
@@ -3224,7 +3224,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self)
     {
         const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
             const type *data_before = arr.data();
             arr = hud::move(arr);
 

@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 
 GTEST_TEST(array, less_or_equal_size_as_std_vector)
 {
@@ -10,7 +10,7 @@ GTEST_TEST(array, count_return_count_of_element)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Count return 0 if array is empty
     {
@@ -36,7 +36,7 @@ GTEST_TEST(array, count_return_count_of_element)
 GTEST_TEST(array, byte_count_return_count_of_bytes_of_all_elements)
 {
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Count return 0 if array is empty
     {
@@ -63,7 +63,7 @@ GTEST_TEST(array, max_count_return_allocated_count_of_element)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Max_count return 0 if array is empty
     {
@@ -90,7 +90,7 @@ GTEST_TEST(array, max_count_return_allocated_count_of_element)
 GTEST_TEST(array, max_byte_count_return_count_of_bytes_of_all_elements)
 {
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Max_count return 0 if array is empty
     {
@@ -118,7 +118,7 @@ GTEST_TEST(array, allocator_return_the_allocator)
 {
 
     using type = usize;
-    using allocator_type = hud_test::array_allocator<alignof(type)>;
+    using allocator_type = hud_test::allocator_watcher<alignof(type)>;
     using array_type = hud::array<type, allocator_type>;
 
     // Check that the default id is not the one we use to test if the allocator is really the one given to the constructor
@@ -134,7 +134,7 @@ GTEST_TEST(array, data_return_nullptr_if_array_is_empty)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     hud_assert_eq(array.data(), nullptr);
@@ -144,7 +144,7 @@ GTEST_TEST(array, data_return_pointer_to_the_first_element_if_array_is_not_empty
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array({1, 2});
     hud_assert_ne(array.data(), nullptr);
@@ -155,7 +155,7 @@ GTEST_TEST(array, slack_return_zero_if_array_is_empty)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     hud_assert_eq(array.slack(), 0u);
@@ -165,7 +165,7 @@ GTEST_TEST(array, slack_return_zero_if_count_equal_max_count_of_non_empty_array)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array({1, 2});
     hud_assert_false(array.is_empty());
@@ -177,7 +177,7 @@ GTEST_TEST(array, slack_return_extra_element_allocated_memory_of_non_empty_array
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array({1, 2});
     array.reserve(4);
@@ -190,7 +190,7 @@ GTEST_TEST(array, is_valid_index_retur_false_for_empty_array)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     hud_assert_eq(array.data(), nullptr);
@@ -207,7 +207,7 @@ GTEST_TEST(array, is_valid_index_check_if_an_index_can_be_used_to_acces_an_eleme
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array({1, 2}, 2);
     hud_assert_ne(array.data(), nullptr);
@@ -227,7 +227,7 @@ GTEST_TEST(array, is_empty_return_if_array_contains_elements_or_not)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     hud_assert_true(array.is_empty());
@@ -247,7 +247,7 @@ GTEST_TEST(array, operator_indexed_accessor_return_the_element_at_the_given_inde
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Non const array
     {
@@ -268,7 +268,7 @@ GTEST_TEST(array, sub_slice_return_a_slice_on_elements_in_the_array)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Non const array
     {
@@ -291,7 +291,7 @@ GTEST_TEST(array, first_return_the_first_element_in_the_array)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Non const array
     {
@@ -310,7 +310,7 @@ GTEST_TEST(array, first_return_the_first_nth_element_in_the_array)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Non const array
     {
@@ -329,7 +329,7 @@ GTEST_TEST(array, last_return_the_last_element_in_the_array)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Non const array
     {
@@ -348,7 +348,7 @@ GTEST_TEST(array, last_return_the_last_nth_element_in_the_array)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     // Non const array
     {

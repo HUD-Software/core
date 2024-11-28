@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 
 GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type, type>);
     static_assert(hud::is_copy_constructible_v<type, type>);
 
@@ -211,7 +211,7 @@ GTEST_TEST(array, add_to_ref_by_copy_construct_bitwise_copy_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(hud::is_bitwise_copy_constructible_v<type, type>);
 
     // With reallocation
@@ -402,7 +402,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_move_constructible_ty
 {
 
     using type = hud_test::NonBitwiseMoveConstructibleType;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
     static_assert(hud::is_move_constructible_v<type>);
 
@@ -606,7 +606,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_bitwise_move_constructible_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(hud::is_bitwise_move_constructible_v<type>);
 
     // With reallocation
@@ -793,7 +793,7 @@ GTEST_TEST(array, add_to_ref_by_move_construct_non_bitwise_copy_constructible_ty
 {
 
     using type = hud_test::NonBitwiseCopyConstructibleType;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
     static_assert(hud::is_copy_constructible_v<type>);
 

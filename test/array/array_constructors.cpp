@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 
 GTEST_TEST(array, default_constructor_should_allocate_no_memory)
 {
@@ -103,7 +103,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
         // test with allocator no extra
         {
             auto test_with_allocator = [](const type_t* raw, usize element_count) {
-                hud::array<type_t, hud_test::array_allocator<alignof(type_t)>> array(raw, element_count, hud_test::array_allocator<alignof(type_t)>{});
+                hud::array<type_t, hud_test::allocator_watcher<alignof(type_t)>> array(raw, element_count, hud_test::allocator_watcher<alignof(type_t)>{});
                 bool all_values_copied = true;
 
                 // Ensure values are correclty copied
@@ -246,7 +246,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                     // Test with allocator with extra
                     {
                         auto test_with_allocator = [](const type_t* raw, usize element_count) {
-                            hud::array<type_t, hud_test::array_allocator<alignof(type_t)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(type_t)>{});
+                            hud::array<type_t, hud_test::allocator_watcher<alignof(type_t)>> array(raw, element_count, extra, hud_test::allocator_watcher<alignof(type_t)>{});
                             bool all_values_copied = true;
 
                             // Ensure values are correclty copied
@@ -420,7 +420,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
     {
         auto test_with_allocator = [](const type *raw, usize element_count)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> array(raw, element_count, hud_test::array_allocator<alignof(type)> {});
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> array(raw, element_count, hud_test::allocator_watcher<alignof(type)> {});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
@@ -611,7 +611,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                 {
                     auto test_with_allocator = [](const type *raw, usize element_count)
                     {
-                        hud::array<type, hud_test::array_allocator<alignof(type)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(type)> {});
+                        hud::array<type, hud_test::allocator_watcher<alignof(type)>> array(raw, element_count, extra, hud_test::allocator_watcher<alignof(type)> {});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
@@ -791,7 +791,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                 // test with allocator no extra
                 {
                     auto test_with_allocator = [](const U* raw, usize element_count) {
-                        hud::array<type_t, hud_test::array_allocator<alignof(type_t)>> array(raw, element_count, hud_test::array_allocator<alignof(type_t)>{});
+                        hud::array<type_t, hud_test::allocator_watcher<alignof(type_t)>> array(raw, element_count, hud_test::allocator_watcher<alignof(type_t)>{});
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
@@ -934,7 +934,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                             // Test with allocator with extra
                             {
                                 auto test_with_allocator = [](const U* raw, usize element_count) {
-                                    hud::array<type_t, hud_test::array_allocator<alignof(type_t)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(type_t)>{});
+                                    hud::array<type_t, hud_test::allocator_watcher<alignof(type_t)>> array(raw, element_count, extra, hud_test::allocator_watcher<alignof(type_t)>{});
                                     bool all_values_copied = true;
 
                                     // Ensure values are correclty copied
@@ -1111,7 +1111,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
     {
         auto test_with_allocator = [](const Type1 *raw, usize element_count)
         {
-            hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(raw, element_count, hud_test::array_allocator<alignof(Type2)> {});
+            hud::array<Type2, hud_test::allocator_watcher<alignof(Type2)>> array(raw, element_count, hud_test::allocator_watcher<alignof(Type2)> {});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
@@ -1302,7 +1302,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                 {
                     auto test_with_allocator = [](const Type1 *raw, usize element_count)
                     {
-                        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(raw, element_count, extra, hud_test::array_allocator<alignof(Type2)> {});
+                        hud::array<Type2, hud_test::allocator_watcher<alignof(Type2)>> array(raw, element_count, extra, hud_test::allocator_watcher<alignof(Type2)> {});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
@@ -1473,7 +1473,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
     {
         auto test_with_allocator = [](std::initializer_list<type> initializer)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, hud_test::array_allocator<alignof(type)> {});
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> array(initializer, hud_test::allocator_watcher<alignof(type)> {});
             bool all_values_copied = true;
 
             // Ensure values are correclty copied
@@ -1612,7 +1612,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                 {
                     auto test_with_allocator = [](std::initializer_list<i32> initializer)
                     {
-                        hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, extra, hud_test::array_allocator<alignof(type)> {});
+                        hud::array<type, hud_test::allocator_watcher<alignof(type)>> array(initializer, extra, hud_test::allocator_watcher<alignof(type)> {});
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
@@ -1761,7 +1761,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
     {
         auto test_with_allocator = [](std::initializer_list<Type1> initializer)
         {
-            hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, hud_test::array_allocator<alignof(Type2)> {});
+            hud::array<Type2, hud_test::allocator_watcher<alignof(Type2)>> array(initializer, hud_test::allocator_watcher<alignof(Type2)> {});
             bool all_values_copied = true;
 
             // Ensure values are correclty copied
@@ -1900,7 +1900,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                 {
                     auto test_with_allocator = [](std::initializer_list<Type1> initializer)
                     {
-                        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, extra, hud_test::array_allocator<alignof(Type2)> {});
+                        hud::array<Type2, hud_test::allocator_watcher<alignof(Type2)>> array(initializer, extra, hud_test::allocator_watcher<alignof(Type2)> {});
                         bool all_values_copied = true;
 
                         // Ensure values are correclty copied
@@ -2069,7 +2069,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
     {
         auto test_with_allocator = [](std::initializer_list<type> initializer)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, hud_test::array_allocator<alignof(type)> {});
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> array(initializer, hud_test::allocator_watcher<alignof(type)> {});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
@@ -2252,7 +2252,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                 {
                     auto test_with_allocator = [](std::initializer_list<type> initializer)
                     {
-                        hud::array<type, hud_test::array_allocator<alignof(type)>> array(initializer, extra, hud_test::array_allocator<alignof(type)> {});
+                        hud::array<type, hud_test::allocator_watcher<alignof(type)>> array(initializer, extra, hud_test::allocator_watcher<alignof(type)> {});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;
@@ -2442,7 +2442,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
     {
         auto test_with_allocator = [](std::initializer_list<Type1> initializer)
         {
-            hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, hud_test::array_allocator<alignof(Type2)> {});
+            hud::array<Type2, hud_test::allocator_watcher<alignof(Type2)>> array(initializer, hud_test::allocator_watcher<alignof(Type2)> {});
 
             // Ensure values are correclty copied in order
             bool all_values_copied_in_order = true;
@@ -2625,7 +2625,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                 {
                     auto test_with_allocator = [](std::initializer_list<Type1> initializer)
                     {
-                        hud::array<Type2, hud_test::array_allocator<alignof(Type2)>> array(initializer, extra, hud_test::array_allocator<alignof(Type2)> {});
+                        hud::array<Type2, hud_test::allocator_watcher<alignof(Type2)>> array(initializer, extra, hud_test::allocator_watcher<alignof(Type2)> {});
 
                         // Ensure values are correclty copied in order
                         bool all_values_copied_in_order = true;

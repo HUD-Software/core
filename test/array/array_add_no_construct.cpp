@@ -1,12 +1,12 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 #include <core/memory.h>
 
 GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 {
 
     using type = hud_test::NonDefaultConstructibleType;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_constructible_v<type>);
 
     // test with reallocation

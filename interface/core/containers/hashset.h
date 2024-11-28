@@ -50,7 +50,6 @@ namespace hud
         {
         };
 
-        template<typename slot_t>
         struct default_allocator
             : hud::heap_allocator
         {
@@ -369,10 +368,21 @@ namespace hud
             using reference_type = hud::add_lvalue_reference_t<slot_type>;
 
         public:
+            iterator(control_type *control_ptr)
+                : control_ptr_(control_ptr)
+            {
+                hud::check(control_ptr != nullptr);
+                HD_ASSUME(control_ptr != nullptr);
+            }
+
             iterator(control_type *control_ptr, slot_type *slot_ptr)
                 : control_ptr_(control_ptr)
                 , slot_ptr_(slot_ptr)
             {
+                hud::check(control_ptr != nullptr);
+                HD_ASSUME(control_ptr != nullptr);
+                hud::check(slot_ptr_ != nullptr);
+                HD_ASSUME(slot_ptr_ != nullptr);
             }
 
             reference_type operator*() const
@@ -389,11 +399,12 @@ namespace hud
                 return slot_ptr_;
             }
 
-            // PRECONDITION: not an end() iterator.
             iterator &operator++()
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
+                control_ptr_++;
+                slot_ptr_++;
                 // skip all empty slot after the current one
                 while (control::is_byte_empty_or_deleted(*control_ptr_))
                 {
@@ -401,11 +412,9 @@ namespace hud
                     control_ptr_ += shift;
                     slot_ptr_ += shift;
                 }
-                // If we reach the sentinel set ctrl to nullptr
                 return *this;
             }
 
-            // PRECONDITION: not an end() iterator.
             iterator operator++(int)
             {
                 auto tmp = *this;
@@ -469,7 +478,7 @@ namespace hud
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<value_type, args_t...>)
-            constexpr value_type &insert_to_ref(key_type &&key, args_t &&...args) noexcept
+            constexpr value_type &add_to_ref(key_type &&key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
                 slot_type *slot_ptr = slots_ + res.first;
@@ -487,8 +496,8 @@ namespace hud
              * @return Iterator to the `value`
              */
             template<typename... args_t>
-            requires(hud::is_constructible_v<slot_type, args_t...>)
-            constexpr iterator_type insert(key_type &&key, args_t &&...args) noexcept
+            requires(hud::is_constructible_v<value_type, args_t...>)
+            constexpr iterator_type add(key_type &&key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
                 slot_type *slot_ptr = slots_ + res.first;
@@ -496,7 +505,7 @@ namespace hud
                 {
                     hud::memory::template construct_at(slot_ptr, key, hud::forward<args_t>(args)...);
                 }
-                return iterator_type(metadata_start_at_slot_index(control_ptr_, res.first), slot_ptr);
+                return iterator_type(control_ptr_ + res.first, slot_ptr);
             }
 
             /** Find a key and return an iterator to the value. */
@@ -533,6 +542,36 @@ namespace hud
                 }
             }
 
+            /** Retrieves the allocator. */
+            [[nodiscard]] HD_FORCEINLINE constexpr const allocator_type &allocator() const noexcept
+            {
+                return allocator_;
+            }
+
+            /** Return the slack in number of elements. */
+            [[nodiscard]] HD_FORCEINLINE constexpr usize slack() const noexcept
+            {
+                return free_slot_before_grow_;
+            }
+
+            /** Checks whether the array is empty of not. */
+            [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
+            {
+                return count_ != 0;
+            }
+
+            /** Retreives number of elements in the array. */
+            [[nodiscard]] HD_FORCEINLINE constexpr usize count() const noexcept
+            {
+                return count_;
+            }
+
+            /** Retreives maximum number of elements the array can contains. */
+            [[nodiscard]] HD_FORCEINLINE constexpr usize max_count() const noexcept
+            {
+                return max_slot_count_;
+            }
+
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]] constexpr iterator_type begin() noexcept
             {
@@ -550,14 +589,14 @@ namespace hud
             [[nodiscard]]
             constexpr iterator_type end() noexcept
             {
-                return iterator_type(control_ptr_ + max_slot_count_, slots_);
+                return iterator_type(control_ptr_ + max_slot_count_);
             }
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]]
             constexpr const iterator_type end() const noexcept
             {
-                return iterator_type(control_ptr_ + max_slot_count_, slots_);
+                return iterator_type(control_ptr_ + max_slot_count_);
             }
 
         private:
@@ -641,16 +680,16 @@ namespace hud
                 memory_allocation_type allocation = allocator_.template allocate<slot_type>(aligned_allocation_size);
 
                 // Save control and slot pointers
-                control_type *control_ptr = hud::bit_cast<control_type *>(allocation.data());
-                slot_type *slot_ptr = hud::bit_cast<slot_type *>(control_ptr + aligned_control_size);
-                hud::check(hud::memory::is_pointer_aligned(slot_ptr, alignof(slot_type)));
+                control_type *new_control_ptr = hud::bit_cast<control_type *>(allocation.data());
+                slot_type *new_slot_ptr = hud::bit_cast<slot_type *>(new_control_ptr + aligned_control_size);
+                hud::check(hud::memory::is_pointer_aligned(new_slot_ptr, alignof(slot_type)));
 
                 // Update number of slot we should put into the table before a resizing rehash
                 free_slot_before_grow_ = max_slot_before_grow(new_max_slot_count_) - count_;
 
                 // Reset control metadata
-                hud::memory::set(control_ptr, control_size, empty_byte);
-                control_ptr[new_max_slot_count_] = sentinel_byte;
+                hud::memory::set(new_control_ptr, control_size, empty_byte);
+                new_control_ptr[new_max_slot_count_] = sentinel_byte;
 
                 // If we have elements, insert them to the new buffer
                 if (count_ > 0)
@@ -659,13 +698,22 @@ namespace hud
                     // Relocate slots to newly allocated buffer
                     for (auto &slot : *this)
                     {
+                        // Compute the hash
+                        u64 hash = hasher_type {}(slot.key());
+                        // Find H1 slot index
+                        u64 h1 = H1(hash);
+                        usize slot_index = find_first_empty_or_deleted(new_control_ptr, new_max_slot_count_, h1);
+                        // Save h2 in control h1 index
+                        control::set_h2(new_control_ptr, slot_index, H2(hash), new_max_slot_count_);
+                        // Move old slot to new slot
+                        hud::memory::move_or_copy_construct_then_destroy(new_slot_ptr + slot_index, hud::move(slot));
                     }
                     // Free old buffer
                     allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr_), current_allocation_size()});
                 }
 
-                control_ptr_ = control_ptr;
-                slots_ = slot_ptr;
+                control_ptr_ = new_control_ptr;
+                slots_ = new_slot_ptr;
                 max_slot_count_ = new_max_slot_count_;
             }
 
@@ -738,7 +786,7 @@ namespace hud
 
             /**
              * Compute the maximum number of slots we should put into the table before a resizing rehash.
-             * Subtract the returned value with the number of slots `count()` to obtains the number of slots we can currently before a resizing rehash.
+             * Subtract the returned value with the number of slots `count()` to obtains the number of slots we can currently use before a resizing rehash.
              */
             [[nodiscard]] constexpr usize max_slot_before_grow(usize capacity) noexcept
             {
@@ -776,14 +824,21 @@ namespace hud
 
     } // namespace details::hashset
 
+    template<typename value_t>
+    using hashset_default_hasher = details::hashset::default_hasher<value_t>;
+
+    template<typename value_t>
+    using hashset_default_key_equal = details::hashset::default_equal<value_t>;
+
+    using hashset_default_allocator = details::hashset::default_allocator;
+
     template<
         typename value_t,
-        typename hasher_t = details::hashset::default_hasher<value_t>,
-        typename key_equal_t = details::hashset::default_equal<value_t>,
-        typename allocator_t = details::hashset::default_allocator<value_t>>
+        typename hasher_t = hashset_default_hasher<value_t>,
+        typename key_equal_t = hashset_default_key_equal<value_t>,
+        typename allocator_t = hashset_default_allocator>
     class hashset
         : public details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>
-
     {
     private:
         using super = details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>;

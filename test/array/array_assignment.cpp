@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 #include "../misc/leak_guard.h"
 
 // array &operator=(std::initializer_list<u_type_t>)
@@ -14,7 +14,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
 
             assigned = elements_to_assign;
 
@@ -150,7 +150,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
 
             assigned = elements_to_assign;
 
@@ -393,7 +393,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
 
             assigned = elements_to_assign;
 
@@ -529,7 +529,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra);
 
             assigned = elements_to_assign;
 
@@ -769,7 +769,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
 
             assigned = elements_to_assign;
 
@@ -981,7 +981,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
 
             assigned = elements_to_assign;
 
@@ -1335,7 +1335,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
 
             assigned = elements_to_assign;
 
@@ -1546,7 +1546,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra);
 
             assigned = elements_to_assign;
 
@@ -1928,7 +1928,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
             hud_test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assigned);
             hud_test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
 
-            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned);
+            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned);
 
             // LCOV_EXCL_START
             switch (count_to_assigned)
@@ -2144,7 +2144,7 @@ GTEST_TEST(array, assign_std_initializer_list_call_destructor_of_elements)
             hud_test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assigned);
             hud_test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assigned);
 
-            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned, extra);
+            hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned, extra);
 
             // LCOV_EXCL_START
             switch (count_to_assigned)
@@ -2419,7 +2419,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
 
             assigned.assign(elements_to_assign, 0);
 
@@ -2555,7 +2555,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
 
             assigned.assign(elements_to_assign);
 
@@ -2796,7 +2796,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
 
             assigned.assign(elements_to_assign, 1);
 
@@ -2932,7 +2932,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_same_ty
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
 
             assigned.assign(elements_to_assign, 1);
 
@@ -3175,7 +3175,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
 
             assigned.assign(elements_to_assign);
 
@@ -3311,7 +3311,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra);
 
             assigned.assign(elements_to_assign);
 
@@ -3554,7 +3554,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
 
             assigned.assign(elements_to_assign, 1);
 
@@ -3690,7 +3690,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_bitwise_copy_assignable_differe
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra);
 
             assigned.assign(elements_to_assign);
 
@@ -3930,7 +3930,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
 
             assigned.assign(elements_to_assign);
 
@@ -4142,7 +4142,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
     {
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra, std::initializer_list<type> elements_to_assign)
         {
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
 
             assigned.assign(elements_to_assign);
 
@@ -4494,7 +4494,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
         const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
         {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
 
             assigned.assign(elements_to_assign, extra_assign);
 
@@ -4706,7 +4706,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_sam
         const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra, std::initializer_list<type> elements_to_assign)
         {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::array_allocator<alignof(type)>> assigned(elements_in_assigned, extra);
+            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
 
             assigned.assign(elements_to_assign, extra_assign);
 
@@ -5060,7 +5060,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
 
             assigned.assign(elements_to_assign);
 
@@ -5271,7 +5271,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
     {
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra, std::initializer_list<source_type> elements_to_assign)
         {
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra);
 
             assigned.assign(elements_to_assign);
 
@@ -5626,7 +5626,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
         {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
 
             assigned.assign(elements_to_assign, extra_assign);
 
@@ -5838,7 +5838,7 @@ GTEST_TEST(array, assign_std_initializer_list_of_non_bitwise_copy_assignable_dif
         const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra, std::initializer_list<source_type> elements_to_assign)
         {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::array_allocator<alignof(destination_type)>> assigned(elements_in_assigned, extra);
+            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra);
 
             assigned.assign(elements_to_assign, extra_assign);
 

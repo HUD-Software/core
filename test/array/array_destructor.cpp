@@ -1,5 +1,5 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 #include <core/templates/bit_cast.h>
 
 GTEST_TEST(array, destructor_call_elements_destructors)
@@ -15,7 +15,7 @@ GTEST_TEST(array, destructor_call_elements_destructors)
 
             bool all_destructor_are_not_called = true;
             {
-                hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> array(dtor_order_ptr, 2);
+                hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> array(dtor_order_ptr, 2);
                 // Ensure element's destructors are not called
                 for (usize index = 0; index < 2; index++)
                 {
@@ -73,7 +73,7 @@ GTEST_TEST(array, destructor_call_elements_destructors)
 
             bool all_destructor_are_not_called = true;
             {
-                hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::array_allocator<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> array(dtor_order_ptr, 2, 4);
+                hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> array(dtor_order_ptr, 2, 4);
                 // Ensure element's destructors are not called
                 for (usize index = 0; index < 2; index++)
                 {

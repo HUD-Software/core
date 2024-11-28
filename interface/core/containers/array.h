@@ -828,7 +828,7 @@ namespace hud
             return allocation_().count();
         }
 
-        /** Retreives maximum number of elements the array can contains. */
+        /** Retreives maximum number bytes the array can contains. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize max_byte_count() const noexcept
         {
             return allocation_().byte_count();
@@ -1000,13 +1000,13 @@ namespace hud
         /**
          * Find the fist index of a given element where the predicate array[index] == to_find is true.
          * Given comparand must be comparable with type_t operator==.
-         * @param CompType The comparand type used to compare
+         * @param compared_t The comparand type used to compare
          * @param to_find The element to find
          * @return first index of the element where the predicate array[index] == element is true, hud::index_none otherwise
          */
-        template<typename CompType>
-        requires(hud::is_comparable_with_equal_v<type_t, CompType>)
-        [[nodiscard]] usize find_first_index(const CompType &to_find) const
+        template<typename compared_t>
+        requires(hud::is_comparable_with_equal_v<type_t, compared_t>)
+        [[nodiscard]] usize find_first_index(const compared_t &to_find) const
         {
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
@@ -1024,13 +1024,13 @@ namespace hud
         /**
          * Find the last index of an element where the predicate array[index] == to_find is true.
          * Given comparand must be comparable with type_t operator==.
-         * @param CompType The comparand type used to compare
+         * @param compared_t The comparand type used to compare
          * @param to_find The element to find
          * @return last index of the element where the predicate array[index] == element is true, hud::index_none otherwise
          */
-        template<typename CompType>
-        requires(hud::is_comparable_with_equal_v<type_t, CompType>)
-        [[nodiscard]] usize find_last_index(const CompType &to_find) const
+        template<typename compared_t>
+        requires(hud::is_comparable_with_equal_v<type_t, compared_t>)
+        [[nodiscard]] usize find_last_index(const compared_t &to_find) const
         {
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
@@ -1048,12 +1048,12 @@ namespace hud
 
         /**
          * Find the fist index of an element where the user-defined predicate return true.
-         * @tparam UnaryPredicate The Unary predicate to use
+         * @tparam unary_t The Unary predicate to use
          * @param predicate The predicate to use
          * @return first index of the element matching the predicate, hud::index_none otherwise
          */
-        template<typename UnaryPredicate>
-        [[nodiscard]] usize find_first_index_by_predicate(const UnaryPredicate predicate) const
+        template<typename unary_t>
+        [[nodiscard]] usize find_first_index_by_predicate(const unary_t predicate) const
         {
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
@@ -1070,12 +1070,12 @@ namespace hud
 
         /**
          * Find the last index of a given element where the user-defined predicate return true.
-         * @tparam UnaryPredicate The Unary predicate to use
+         * @tparam unary_t The Unary predicate to use
          * @param predicate The predicate to use
          * @return last index of the element matching the predicate, hud::index_none otherwise
          */
-        template<typename UnaryPredicate>
-        [[nodiscard]] usize find_last_index_by_predicate(const UnaryPredicate predicate) const
+        template<typename unary_t>
+        [[nodiscard]] usize find_last_index_by_predicate(const unary_t predicate) const
         {
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
@@ -1093,25 +1093,25 @@ namespace hud
 
         /**
          * Checks whether an element is contained in the array or not.
-         * @param CompType The comparand type used to compare
+         * @param compared_t The comparand type used to compare
          * @param to_find The element to find
          * @return true if the element is contained in the array, false otherwise
          */
-        template<typename CompType>
-        requires(hud::is_comparable_with_equal_v<type_t, CompType>)
-        [[nodiscard]] bool contains(const CompType &to_find) const
+        template<typename compared_t>
+        requires(hud::is_comparable_with_equal_v<type_t, compared_t>)
+        [[nodiscard]] bool contains(const compared_t &to_find) const
         {
             return find_first_index(to_find) != hud::index_none;
         }
 
         /**
          * Checks whether an element match the user-defined predicate is contained in the array or not.
-         * @tparam UnaryPredicate The Unary predicate to use
+         * @tparam unary_t The Unary predicate to use
          * @param predicate The predicate to use
          * @return true if an element match the user-defined predicate is contained in the array, false otherwise
          */
-        template<typename UnaryPredicate>
-        [[nodiscard]] bool contains_by_predicate(const UnaryPredicate predicate) const
+        template<typename unary_t>
+        [[nodiscard]] bool contains_by_predicate(const unary_t predicate) const
         {
             return find_first_index_by_predicate(predicate) != hud::index_none;
         }

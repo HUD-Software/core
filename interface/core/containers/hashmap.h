@@ -56,7 +56,6 @@ namespace hud
         {
         };
 
-        template<typename slot_t>
         struct default_allocator
             : hud::heap_allocator
         {
@@ -64,16 +63,25 @@ namespace hud
 
     } // namespace details::hashmap
 
+    template<typename key_t>
+    using hashmap_default_hasher = details::hashmap::default_hasher<key_t>;
+
+    template<typename key_t>
+    using hashmap_default_key_equal = details::hashmap::default_equal<key_t>;
+
+    using hashmap_default_allocator = details::hashmap::default_allocator;
+
     template<
         typename key_t,
         typename value_t,
-        typename hasher_t = details::hashmap::default_hasher<key_t>,
-        typename key_equal_t = details::hashmap::default_equal<key_t>,
-        typename allocator_t = details::hashmap::default_allocator<details::hashmap::slot<key_t, value_t>>>
+        typename hasher_t = hashmap_default_hasher<key_t>,
+        typename key_equal_t = hashmap_default_key_equal<key_t>,
+        typename allocator_t = hashmap_default_allocator>
     class hashmap
         : public details::hashset::hashset_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
 
     {
+
     private:
         using super = details::hashset::hashset_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>;
 

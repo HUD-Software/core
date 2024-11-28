@@ -1,5 +1,5 @@
-#ifndef HD_INC_TEST_ARRAY_ALLOCATORS_H
-#define HD_INC_TEST_ARRAY_ALLOCATORS_H
+#ifndef HD_INC_TEST_ALLOCATORS_WATCHER_H
+#define HD_INC_TEST_ALLOCATORS_WATCHER_H
 #include <core/allocators/aligned_heap_allocator.h>
 #include <core/allocators/memory_allocation.h>
 #include <core/allocators/allocator_traits.h>
@@ -7,7 +7,7 @@
 namespace hud_test
 {
     template<u32 alignement>
-    struct array_allocator
+    struct allocator_watcher
     {
         using allocator_type = hud::aligned_heap_allocator<alignement>;
 
@@ -16,19 +16,19 @@ namespace hud_test
 
     public:
         /** Default constructor. */
-        constexpr array_allocator() noexcept = default;
+        constexpr allocator_watcher() noexcept = default;
 
         /** Construct allocator with a unique id. */
-        constexpr array_allocator(u32 id) noexcept
+        constexpr allocator_watcher(u32 id) noexcept
             : unique_id(id)
         {
         }
 
         /** Copy constructor. */
-        constexpr array_allocator(const array_allocator &other) noexcept = default;
+        constexpr allocator_watcher(const allocator_watcher &other) noexcept = default;
 
         /** Move construct the array allocator. */
-        constexpr array_allocator(array_allocator &&) noexcept
+        constexpr allocator_watcher(allocator_watcher &&) noexcept
             : count_of_move_construct(1)
         {
             // Ignore the move of informations,
@@ -36,7 +36,7 @@ namespace hud_test
         }
 
         /** Move assign the array allocator. */
-        constexpr array_allocator &operator=(array_allocator &&) noexcept
+        constexpr allocator_watcher &operator=(allocator_watcher &&) noexcept
         {
             // Ignore the move of informations
             // Just increment counter for tests
@@ -45,7 +45,7 @@ namespace hud_test
         }
 
         /** Copy assign the array allocator. */
-        constexpr array_allocator &operator=(const array_allocator &) noexcept = default;
+        constexpr allocator_watcher &operator=(const allocator_watcher &) noexcept = default;
 
         /**
          * Allocate memory block
@@ -118,11 +118,11 @@ namespace hud_test
     };
 
     template<u32 alignement>
-    struct array_allocator_2 : public array_allocator<alignement>
+    struct allocator_watcher_2 : public allocator_watcher<alignement>
     {
     };
 
 } // namespace hud_test
 
 // namespace hud
-#endif // HD_INC_TEST_ARRAY_ALLOCATORS_H
+#endif // HD_INC_TEST_ALLOCATORS_WATCHER_H

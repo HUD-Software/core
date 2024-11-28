@@ -1,11 +1,11 @@
 #include <core/containers/array.h>
-#include "../misc/array_allocators.h"
+#include "../misc/allocator_watcher.h"
 
 GTEST_TEST(array, clear_destroy_but_keep_allocated_memory_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     i32 destructor_called[2] = {false, false};
     array_type array;
@@ -40,7 +40,7 @@ GTEST_TEST(array, clear_destroy_but_keep_allocated_memory_with_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     array.reserve(2);
@@ -70,7 +70,7 @@ GTEST_TEST(array, clear_empty_do_nothing_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     hud_assert_eq(array.data(), nullptr);
@@ -91,7 +91,7 @@ GTEST_TEST(array, clear_empty_do_nothing_with_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     hud_assert_eq(array.data(), nullptr);
@@ -112,7 +112,7 @@ GTEST_TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_non_trivia
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     i32 destructor_called[2] = {false, false};
     array_type array;
@@ -145,7 +145,7 @@ GTEST_TEST(array, clear_shrink_destroy_but_keep_allocated_memory_with_trivial_ty
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     array.reserve(2);
@@ -173,7 +173,7 @@ GTEST_TEST(array, clear_shrink_empty_do_nothing_with_non_trivial_type)
 {
 
     using type = hud_test::non_bitwise_type;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     hud_assert_eq(array.data(), nullptr);
@@ -194,7 +194,7 @@ GTEST_TEST(array, clear_shrink_empty_do_nothing_with_trivial_type)
 {
 
     using type = usize;
-    using array_type = hud::array<type, hud_test::array_allocator<alignof(type)>>;
+    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 
     array_type array;
     hud_assert_eq(array.data(), nullptr);
