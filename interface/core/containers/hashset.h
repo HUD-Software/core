@@ -496,7 +496,9 @@ namespace hud
             /** Type of the hash function. */
             using hasher_type = hasher_t;
             /** Type of the iterator/ */
-            using iterator_type = hud::details::hashset::iterator<slot_type>;
+            using iterator = hud::details::hashset::iterator<slot_type>;
+            /** Type of the iterator/ */
+            using const_iterator = hud::details::hashset::iterator<const slot_type>;
             /**  Type of the allocator. */
             using allocator_type = allocator_t;
             /** The type of allocation done by the allocator. */
@@ -508,6 +510,11 @@ namespace hud
                 clear_shrink();
             }
 
+            /**
+             * Remove all elements.
+             * Calls the destructor of each element if they are not trivially destructible,
+             * but does not release the allocated memory.
+             */
             constexpr void clear() noexcept
             {
                 if (!hud::is_trivially_destructible_v<slot_type>)
@@ -532,6 +539,11 @@ namespace hud
                 }
             }
 
+            /**
+             * Remove all elements.
+             * Calls the destructor of each element if they are not trivially destructible,
+             * and then releases the allocated memory.
+             */
             constexpr void clear_shrink() noexcept
             {
                 if (max_slot_count_ > 0)
@@ -569,7 +581,7 @@ namespace hud
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<value_type, args_t...>)
-            constexpr iterator_type add(key_type &&key, args_t &&...args) noexcept
+            constexpr iterator add(key_type &&key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
                 slot_type *slot_ptr = slot_ptr_ + res.first;
@@ -577,12 +589,12 @@ namespace hud
                 {
                     hud::memory::template construct_at(slot_ptr, key, hud::forward<args_t>(args)...);
                 }
-                return iterator_type(control_ptr_ + res.first, slot_ptr);
+                return {control_ptr_ + res.first, slot_ptr};
             }
 
             /** Find a key and return an iterator to the value. */
             [[nodiscard]]
-            constexpr iterator_type find(key_type &&key) const noexcept
+            constexpr iterator find(key_type &&key) const noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -598,7 +610,7 @@ namespace hud
                         slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
                         if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
                         {
-                            return iterator_type(control_ptr_ + slot_index_that_match_h2, slot_that_match_h2);
+                            return {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
                         }
                     }
 
@@ -645,30 +657,30 @@ namespace hud
             }
 
             /** Retrieves an iterator to the end of the array. */
-            [[nodiscard]] constexpr iterator_type begin() noexcept
+            [[nodiscard]] constexpr iterator begin() noexcept
             {
                 return find_first_full();
             }
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]]
-            constexpr const iterator_type begin() const noexcept
+            constexpr const iterator begin() const noexcept
             {
                 return find_first_full();
             }
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]]
-            constexpr iterator_type end() noexcept
+            constexpr iterator end() noexcept
             {
-                return iterator_type(control_ptr_ + max_slot_count_);
+                return iterator(control_ptr_ + max_slot_count_);
             }
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]]
-            constexpr const iterator_type end() const noexcept
+            constexpr const iterator end() const noexcept
             {
-                return iterator_type(control_ptr_ + max_slot_count_);
+                return iterator(control_ptr_ + max_slot_count_);
             }
 
         private:
@@ -836,7 +848,7 @@ namespace hud
             }
 
             [[nodiscard]]
-            constexpr iterator_type find_first_full() noexcept
+            constexpr iterator find_first_full() noexcept
             {
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index = 0;
@@ -847,7 +859,7 @@ namespace hud
                     if (group_mask.has_full_slot())
                     {
                         u32 first_full_index = group_mask.first_full_index();
-                        return iterator_type {control_ptr_ + first_full_index, slot_ptr_ + first_full_index};
+                        return {control_ptr_ + first_full_index, slot_ptr_ + first_full_index};
                     }
 
                     // Advance to next group (Maybe a metadata iterator that iterate over groups can be better alternative)
