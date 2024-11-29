@@ -19,17 +19,17 @@ namespace hud
             using key_type = value_t;
             using value_type = value_t;
 
-            [[nodiscard]] const key_type &key() const noexcept
+            [[nodiscard]] constexpr const key_type &key() const noexcept
             {
                 return value_;
             }
 
-            [[nodiscard]] const value_type &value() const noexcept
+            [[nodiscard]] constexpr const value_type &value() const noexcept
             {
                 return value_;
             }
 
-            [[nodiscard]] value_type &value() noexcept
+            [[nodiscard]] constexpr value_type &value() noexcept
             {
                 return value_;
             }
@@ -96,12 +96,12 @@ namespace hud
                     return mask_value_ != 0;
                 }
 
-                [[nodiscard]] u32 operator*() const noexcept
+                [[nodiscard]] constexpr u32 operator*() const noexcept
                 {
                     return first_non_null_index();
                 }
 
-                mask &operator++() noexcept
+                constexpr mask &operator++() noexcept
                 {
                     // Erase the last byte set to 0x80 by subtracting 1
                     // This will gives us 0x7F, applying AND 0x80 on it gives 0x00
@@ -131,13 +131,13 @@ namespace hud
                 }
 
                 [[nodiscard]]
-                friend bool operator==(const mask &a, const mask &b)
+                friend constexpr bool operator==(const mask &a, const mask &b)
                 {
                     return a.mask_value_ == b.mask_value_;
                 }
 
                 [[nodiscard]]
-                friend bool operator!=(const mask &a, const mask &b)
+                friend constexpr bool operator!=(const mask &a, const mask &b)
                 {
                     return !(a == b);
                 }
@@ -312,7 +312,40 @@ namespace hud
         /** Group type used to iterate over the metadata. */
         using group_type = portable_group;
 
-        extern const control_type INIT_GROUP[32];
+        alignas(16) constexpr const control_type INIT_GROUP[32] {
+            control_type {0}, // 0
+            control_type {0},
+            control_type {0},
+            control_type {0},
+            control_type {0}, // 4
+            control_type {0},
+            control_type {0},
+            control_type {0},
+            control_type {0}, // 8
+            control_type {0},
+            control_type {0},
+            control_type {0},
+            control_type {0}, // 12
+            control_type {0},
+            control_type {0},
+            control_type {0},
+            sentinel_byte, // 16 <- New empty hashmap point here
+            empty_byte,
+            empty_byte,
+            empty_byte,
+            empty_byte, // 20
+            empty_byte,
+            empty_byte,
+            empty_byte,
+            empty_byte, // 24
+            empty_byte,
+            empty_byte,
+            empty_byte,
+            empty_byte, // 28
+            empty_byte,
+            empty_byte,
+            empty_byte, // 31
+        };
 
         struct control
         {
@@ -368,14 +401,14 @@ namespace hud
             using reference_type = hud::add_lvalue_reference_t<slot_type>;
 
         public:
-            iterator(control_type *control_ptr)
+            constexpr iterator(control_type *control_ptr)
                 : control_ptr_(control_ptr)
             {
                 hud::check(control_ptr != nullptr);
                 HD_ASSUME(control_ptr != nullptr);
             }
 
-            iterator(control_type *control_ptr, slot_type *slot_ptr)
+            constexpr iterator(control_type *control_ptr, slot_type *slot_ptr)
                 : control_ptr_(control_ptr)
                 , slot_ptr_(slot_ptr)
             {
@@ -385,21 +418,21 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
-            reference_type operator*() const
+            constexpr reference_type operator*() const
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
                 return *slot_ptr_;
             }
 
-            pointer_type operator->() const
+            constexpr pointer_type operator->() const
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
                 return slot_ptr_;
             }
 
-            iterator &operator++()
+            constexpr iterator &operator++()
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
@@ -415,19 +448,19 @@ namespace hud
                 return *this;
             }
 
-            iterator operator++(int)
+            constexpr iterator operator++(int)
             {
                 auto tmp = *this;
                 ++*this;
                 return tmp;
             }
 
-            friend bool operator==(const iterator &a, const iterator &b)
+            friend constexpr bool operator==(const iterator &a, const iterator &b)
             {
                 return a.control_ptr_ == b.control_ptr_;
             }
 
-            friend bool operator!=(const iterator &a, const iterator &b)
+            friend constexpr bool operator!=(const iterator &a, const iterator &b)
             {
                 return !(a == b);
             }
@@ -470,6 +503,44 @@ namespace hud
             using memory_allocation_type = typename allocator_type::template memory_allocation_type<slot_type>;
 
         public:
+            constexpr ~hashset_impl() noexcept
+            {
+                clear_shrink();
+            }
+
+            constexpr void clear() noexcept
+            {
+                if (!hud::is_trivially_destructible_v<slot_type>)
+                {
+                    if (max_slot_count_ > 0)
+                    {
+                        size_t remaining_slots = count();
+                        control_type *ctrl = control_ptr_;
+                        slot_type *slot = slot_ptr_;
+                        while (remaining_slots != 0)
+                        {
+                            group_type group {ctrl};
+                            for (u32 full_index : group.mask_of_full_slot())
+                            {
+                                hud::memory::destroy(slot_ptr_[full_index]);
+                                --remaining_slots;
+                            }
+                            ctrl += group_type::SLOT_PER_GROUP;
+                            slot += group_type::SLOT_PER_GROUP;
+                        }
+                    }
+                }
+            }
+
+            constexpr void clear_shrink() noexcept
+            {
+                if (max_slot_count_ > 0)
+                {
+                    clear();
+                    allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr_), current_allocation_size()});
+                }
+            }
+
             /**
              * Insert a key in the hashset.
              * @param key The key associated with the `value`
@@ -479,9 +550,10 @@ namespace hud
             template<typename... args_t>
             requires(hud::is_constructible_v<value_type, args_t...>)
             constexpr value_type &add_to_ref(key_type &&key, args_t &&...args) noexcept
+
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-                slot_type *slot_ptr = slots_ + res.first;
+                slot_type *slot_ptr = slot_ptr_ + res.first;
                 if (res.second)
                 {
                     hud::memory::template construct_at(slot_ptr, key, hud::forward<args_t>(args)...);
@@ -500,7 +572,7 @@ namespace hud
             constexpr iterator_type add(key_type &&key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-                slot_type *slot_ptr = slots_ + res.first;
+                slot_type *slot_ptr = slot_ptr_ + res.first;
                 if (res.second)
                 {
                     hud::memory::template construct_at(slot_ptr, key, hud::forward<args_t>(args)...);
@@ -523,7 +595,7 @@ namespace hud
                     for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
                     {
                         usize slot_index_that_match_h2 = slot_index + group_index_that_match_h2 & max_slot_count_;
-                        slot_type *slot_that_match_h2 = slots_ + slot_index_that_match_h2;
+                        slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
                         if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
                         {
                             return iterator_type(control_ptr_ + slot_index_that_match_h2, slot_that_match_h2);
@@ -619,7 +691,7 @@ namespace hud
                     for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
                     {
                         usize slot_index_that_match_h2 = slot_index + group_index_that_match_h2 & max_slot_count_;
-                        slot_type *slot_that_match_h2 = slots_ + slot_index_that_match_h2;
+                        slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
                         if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
                         {
                             return {slot_index_that_match_h2, false};
@@ -713,7 +785,7 @@ namespace hud
                 }
 
                 control_ptr_ = new_control_ptr;
-                slots_ = new_slot_ptr;
+                slot_ptr_ = new_slot_ptr;
                 max_slot_count_ = new_max_slot_count_;
             }
 
@@ -775,7 +847,7 @@ namespace hud
                     if (group_mask.has_full_slot())
                     {
                         u32 first_full_index = group_mask.first_full_index();
-                        return iterator_type {control_ptr_ + first_full_index, slots_ + first_full_index};
+                        return iterator_type {control_ptr_ + first_full_index, slot_ptr_ + first_full_index};
                     }
 
                     // Advance to next group (Maybe a metadata iterator that iterate over groups can be better alternative)
@@ -807,7 +879,7 @@ namespace hud
             control_type *control_ptr_ {const_cast<control_type *>(&INIT_GROUP[16])};
 
             /** Pointer to the slot segment. */
-            slot_type *slots_;
+            slot_type *slot_ptr_;
 
             /** Max count of slot in the map. Always a power of two mask value. */
             usize max_slot_count_ {0};

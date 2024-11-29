@@ -13,55 +13,75 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_type)
     {
         hashmap_type map;
 
-        const auto it_0 = map.add(1, 11);
+        const auto it_1st = map.add(1, 11);
 
         const auto first_element_result = std::tuple {
-            *it_0,
+            *it_1st,
             map.count(),
             map.max_count(),
             map.allocator().allocation_count(),
             map.allocator().free_count(),
         };
 
-        // // Add same element
-        // const u64 value_0 = map.add(1, 11);
-        // const auto second_element_result = std::tuple {
-        //     index_1,
-        //     array.data() != nullptr,
-        //     array.count(),
-        //     array.max_count(),
-        //     array[0].copy_assign_count(),
-        //     array[0].copy_constructor_count(),
-        //     array[1].copy_assign_count(),
-        //     array[1].copy_constructor_count(),
-        //     array.allocator().allocation_count(),
-        //     array.allocator().free_count()
-        // };
+        const auto it_same = map.add(1, 00);
+        // Add same element
+        const auto same_element_result = std::tuple {
+            *it_same,
+            map.count(),
+            map.max_count(),
+            map.allocator().allocation_count(),
+            map.allocator().free_count(),
+        };
 
-        // // Add 2nd element
-        // const u64 value_0 = map.add(1, 22);
-        // const auto second_element_result = std::tuple {
-        //     index_1,
-        //     array.data() != nullptr,
-        //     array.count(),
-        //     array.max_count(),
-        //     array[0].copy_assign_count(),
-        //     array[0].copy_constructor_count(),
-        //     array[1].copy_assign_count(),
-        //     array[1].copy_constructor_count(),
-        //     array.allocator().allocation_count(),
-        //     array.allocator().free_count()
-        // };
+        const auto it_2nd = map.add(2, 22);
+        // Add 2nd element
+        const auto second_element_result = std::tuple {
+            *it_2nd,
+            map.count(),
+            map.max_count(),
+            map.allocator().allocation_count(),
+            map.allocator().free_count(),
+        };
 
         return std::tuple {
-            first_element_result
+            first_element_result,
+            same_element_result,
+            second_element_result
         };
     };
 
-    constexpr auto result = test();
+    auto result = test();
 
     // Non Constant
     {
+        const auto result = test();
+
+        // First element is correctly added
+        const auto first_element_result = std::get<0>(result);
+        hud_assert_eq(std::get<0>(first_element_result).key(), 1u);
+        hud_assert_eq(std::get<0>(first_element_result).value(), 11u);
+        hud_assert_eq(std::get<1>(first_element_result), 1u);
+        hud_assert_eq(std::get<2>(first_element_result), 1u);
+        hud_assert_eq(std::get<3>(first_element_result), 1u);
+        hud_assert_eq(std::get<4>(first_element_result), 0u);
+
+        // Same element
+        const auto same_element_result = std::get<1>(result);
+        hud_assert_eq(std::get<0>(same_element_result).key(), 1u);
+        hud_assert_eq(std::get<0>(same_element_result).value(), 11u);
+        hud_assert_eq(std::get<1>(same_element_result), 1u);
+        hud_assert_eq(std::get<2>(same_element_result), 1u);
+        hud_assert_eq(std::get<3>(same_element_result), 1u);
+        hud_assert_eq(std::get<4>(same_element_result), 0u);
+
+        // 2nd element
+        const auto second_element_result = std::get<2>(result);
+        hud_assert_eq(std::get<0>(second_element_result).key(), 2u);
+        hud_assert_eq(std::get<0>(second_element_result).value(), 22u);
+        hud_assert_eq(std::get<1>(second_element_result), 2u);
+        hud_assert_eq(std::get<2>(second_element_result), 3u);
+        hud_assert_eq(std::get<3>(second_element_result), 2u);
+        hud_assert_eq(std::get<4>(second_element_result), 1u);
     }
     // Constant
     {
@@ -70,4 +90,5 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_type)
     // hud_assert_eq(map.insert_to_ref(1, 11), 11);
     // u64 res1 = map.insert_to_ref(2, 22);
     // res = map.insert_to_ref(3, 33);
-    // }
+    //
+}

@@ -264,7 +264,7 @@ namespace hud
         }
 
         /** Retrieves the value of the `hasher_32`. */
-        [[nodiscard]] operator u32() const noexcept
+        [[nodiscard]] constexpr operator u32() const noexcept
         {
             return state_;
         }
@@ -299,7 +299,7 @@ namespace hud
         }
 
         /** Retrieves the value of the `hasher_64`. */
-        [[nodiscard]] operator u64() const noexcept
+        [[nodiscard]] constexpr operator u64() const noexcept
         {
             return state_;
         }

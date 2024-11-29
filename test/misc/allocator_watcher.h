@@ -68,8 +68,8 @@ namespace hud_test
          * Free memory block
          * @param slice The slice to free
          */
-        template<typename type_t = u8>
-        constexpr void free(memory_allocation_type<type_t> &buffer) noexcept
+        template<typename type_t>
+        constexpr void free(const memory_allocation_type<type_t> &buffer) noexcept
         {
             if (!buffer.is_empty())
             {
