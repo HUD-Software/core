@@ -200,14 +200,14 @@ namespace hud
                 }
             };
 
-            /** Load a 8 bytes metadata into the group. */
-            constexpr portable_group(const control_type *metadata) noexcept
-                : value_(hud::memory::unaligned_load64(metadata))
+            /** Load a 8 bytes control into the group. */
+            constexpr portable_group(const control_type *control) noexcept
+                : value_(hud::memory::unaligned_load64(control))
 
             {
             }
 
-            /**Retrieve a mask where H2 matching metadata byte have value 0x80 and non matching have value 0x00. */
+            /**Retrieve a mask where H2 matching control byte have value 0x80 and non matching have value 0x00. */
             constexpr mask match(u8 h2_hash) const noexcept
             {
                 // Mix of  From http://graphics.stanford.edu/~seander/bithacks.html#ZeroInWord
@@ -217,7 +217,7 @@ namespace hud
                 return mask {(x - lsbs) & ~x & 0x8080808080808080ULL};
             }
 
-            /** Retrieve a mask where empty metadata bytes have value 0x80 and others have value 0x00. */
+            /** Retrieve a mask where empty control bytes have value 0x80 and others have value 0x00. */
             constexpr empty_mask mask_of_empty_slot() const noexcept
             {
                 // controls are
@@ -246,7 +246,7 @@ namespace hud
                 return (value_ & ~(value_ << 6)) & 0x8080808080808080UL;
             }
 
-            /** Retrieve a mask where empty and deleted metadata bytes have value 0x80 and others have value 0x00. */
+            /** Retrieve a mask where empty and deleted control bytes have value 0x80 and others have value 0x00. */
             constexpr empty_or_deleted_mask mask_of_empty_or_deleted_slot() const noexcept
             {
                 // controls are
@@ -273,7 +273,7 @@ namespace hud
                 return (value_ & ~(value_ << 7)) & 0x8080808080808080UL;
             }
 
-            /** Retrieve a mask where full metadata bytes have value 0x80 and others have value 0x00. */
+            /** Retrieve a mask where full control bytes have value 0x80 and others have value 0x00. */
             constexpr full_mask mask_of_full_slot() const noexcept
             {
                 // controls are
@@ -309,7 +309,7 @@ namespace hud
             u64 value_;
         };
 
-        /** Group type used to iterate over the metadata. */
+        /** Group type used to iterate over the control. */
         using group_type = portable_group;
 
         alignas(16) constexpr const control_type INIT_GROUP[32] {
@@ -361,32 +361,39 @@ namespace hud
                 control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = h2;
             }
 
-            /** Check if the metadata byte is empty. */
+            /** Check if the control byte is empty. */
             [[nodiscard]]
             static constexpr bool is_byte_empty(control_type byte_value) noexcept
             {
                 return byte_value == empty_byte;
             }
 
-            /** Check if the metadata byte is deleted. */
+            /** Check if the control byte is deleted. */
             [[nodiscard]]
             static constexpr bool is_byte_deleted(control_type byte_value) noexcept
             {
                 return byte_value == deleted_byte;
             }
 
-            /** Check if the metadata byte is empty or deleted. */
+            /** Check if the control byte is empty or deleted. */
             [[nodiscard]]
             static constexpr bool is_byte_empty_or_deleted(control_type byte_value) noexcept
             {
                 return byte_value < sentinel_byte;
             }
 
-            /** Check if the metadata byte is full. */
+            /** Check if the control byte is full. */
             [[nodiscard]]
             static constexpr bool is_byte_full(control_type byte_value) noexcept
             {
                 return byte_value >= 0;
+            }
+
+            /** Check if the control byte is deleted. */
+            [[nodiscard]]
+            static constexpr bool is_byte_sentinel(control_type byte_value) noexcept
+            {
+                return byte_value == sentinel_byte;
             }
         };
 
@@ -466,7 +473,7 @@ namespace hud
             }
 
         private:
-            // The metadata to iterate over
+            // The control to iterate over
             control_type *control_ptr_;
             // The current slot we are iterating. Keep uninitialized.
             slot_type *slot_ptr_;
@@ -620,7 +627,7 @@ namespace hud
                         return end();
                     }
 
-                    // Advance to next group (Maybe a metadata iterator taht iterate over groups can be better alternative)
+                    // Advance to next group (Maybe a control iterator taht iterate over groups can be better alternative)
                     slot_index += group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
@@ -664,7 +671,7 @@ namespace hud
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]]
-            constexpr const iterator begin() const noexcept
+            constexpr const_iterator begin() const noexcept
             {
                 return find_first_full();
             }
@@ -673,14 +680,14 @@ namespace hud
             [[nodiscard]]
             constexpr iterator end() noexcept
             {
-                return iterator(control_ptr_ + max_slot_count_);
+                return iterator(control_ptr_sentinel());
             }
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]]
-            constexpr const iterator end() const noexcept
+            constexpr const_iterator end() const noexcept
             {
-                return iterator(control_ptr_ + max_slot_count_);
+                return iterator(control_ptr_sentinel());
             }
 
         private:
@@ -750,53 +757,52 @@ namespace hud
 
                 // Create the buffer with control and slots
                 // Slots are aligned on alignof(slot_type)
+                control_type *old_control_ptr = control_ptr_;
+                slot_type *old_slot_ptr = slot_ptr_;
+                usize old_max_slot_count = max_slot_count_;
+                max_slot_count_ = new_max_slot_count;
 
                 // We cloned size of a group - 1 because we never reach the last cloned bytes
                 constexpr const usize num_cloned_bytes = control::COUNT_CLONED_BYTE;
                 // Control size is the number of slot + sentinel + number of cloned bytes
-                const usize control_size = new_max_slot_count + 1 + num_cloned_bytes;
+                const usize control_size = max_slot_count_ + 1 + num_cloned_bytes;
                 const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
-                const usize aligned_allocation_size = aligned_control_size + new_max_slot_count * sizeof(slot_type);
+                const usize aligned_allocation_size = aligned_control_size + max_slot_count_ * sizeof(slot_type);
 
-                // Allocate the buffer that will contains controls  and aligned slots
-                memory_allocation_type allocation = allocator_.template allocate<slot_type>(aligned_allocation_size);
-
-                // Save control and slot pointers
-                control_type *new_control_ptr = hud::bit_cast<control_type *>(allocation.data());
-                slot_type *new_slot_ptr = hud::bit_cast<slot_type *>(new_control_ptr + aligned_control_size);
-                hud::check(hud::memory::is_pointer_aligned(new_slot_ptr, alignof(slot_type)));
+                // Allocate the buffer that will contains controls and aligned slots
+                control_ptr_ = hud::bit_cast<control_type *>(allocator_.template allocate<slot_type>(aligned_allocation_size).data());
+                slot_ptr_ = hud::bit_cast<slot_type *>(control_ptr_ + aligned_control_size);
+                hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
 
                 // Update number of slot we should put into the table before a resizing rehash
-                free_slot_before_grow_ = max_slot_before_grow(new_max_slot_count) - count_;
+                free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
 
-                // Reset control metadata
-                hud::memory::set(new_control_ptr, control_size, empty_byte);
-                new_control_ptr[new_max_slot_count] = sentinel_byte;
+                // Set control to empty ending with sentinel
+                hud::memory::set(control_ptr_, control_size, empty_byte);
+                control_ptr_[max_slot_count_] = sentinel_byte;
 
                 // If we have elements, insert them to the new buffer
                 if (count_ > 0)
                 {
                     // Move elements to new buffer if any
                     // Relocate slots to newly allocated buffer
-                    for (auto &slot : *this)
+                    for (auto it = const_iterator {old_control_ptr, old_slot_ptr};
+                         it != const_iterator(old_control_ptr + old_max_slot_count);
+                         ++it)
                     {
                         // Compute the hash
-                        u64 hash = hasher_type {}(slot.key());
+                        u64 hash = hasher_type {}(it->key());
                         // Find H1 slot index
                         u64 h1 = H1(hash);
-                        usize slot_index = find_first_empty_or_deleted(new_control_ptr, new_max_slot_count, h1);
+                        usize slot_index = find_first_empty_or_deleted(control_ptr_, old_max_slot_count, h1);
                         // Save h2 in control h1 index
-                        control::set_h2(new_control_ptr, slot_index, H2(hash), new_max_slot_count);
+                        control::set_h2(control_ptr_, slot_index, H2(hash), old_max_slot_count);
                         // Move old slot to new slot
-                        hud::memory::move_or_copy_construct_then_destroy(new_slot_ptr + slot_index, hud::move(slot));
+                        hud::memory::move_or_copy_construct_then_destroy(slot_ptr_ + slot_index, hud::move(*it));
                     }
                     // Free old buffer
-                    allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr_), current_allocation_size()});
+                    allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(old_control_ptr), current_allocation_size()});
                 }
-
-                control_ptr_ = new_control_ptr;
-                slot_ptr_ = new_slot_ptr;
-                max_slot_count_ = new_max_slot_count;
             }
 
             [[nodiscard]] constexpr usize free_slot_before_grow() const noexcept
@@ -860,7 +866,7 @@ namespace hud
                         return {control_ptr_ + first_full_index, slot_ptr_ + first_full_index};
                     }
 
-                    // Advance to next group (Maybe a metadata iterator that iterate over groups can be better alternative)
+                    // Advance to next group (Maybe a control iterator that iterate over groups can be better alternative)
                     slot_index += group_type::SLOT_PER_GROUP;
                 }
                 return end();
@@ -884,8 +890,15 @@ namespace hud
                 return group_type::SLOT_PER_GROUP == 8 && capacity == 7 ? 6 : capacity - capacity / 8;
             }
 
+            [[nodiscard]]
+            constexpr control_type *control_ptr_sentinel() const noexcept
+            {
+                hud::check(control::is_byte_sentinel(control_ptr_[max_slot_count_]));
+                return control_ptr_ + max_slot_count_;
+            }
+
         private:
-            /** The metadata of the hashmap. */
+            /** The control of the hashmap. */
             control_type *control_ptr_ {const_cast<control_type *>(&INIT_GROUP[16])};
 
             /** Pointer to the slot segment. */
