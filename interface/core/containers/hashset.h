@@ -556,7 +556,8 @@ namespace hud
                 if (max_slot_count_ > 0)
                 {
                     clear();
-                    allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr_), current_allocation_size()});
+                    free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
+                    // allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr_), current_allocation_size()});
                 }
             }
 
@@ -756,23 +757,22 @@ namespace hud
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
 
                 // Create the buffer with control and slots
-                // Slots are aligned on alignof(slot_type)
+                // Slots are aligned based on alignof(slot_type)
+                // In the case of a constant-evaluated context, slot_ptr_ may be uninitialized when the map is created
+                // To satisfy the compiler, initialize it to nullptr in this case
+                if (hud::is_constant_evaluated() && control_ptr_ == &INIT_GROUP[16])
+                {
+                    slot_ptr_ = nullptr;
+                }
                 control_type *old_control_ptr = control_ptr_;
                 slot_type *old_slot_ptr = slot_ptr_;
                 usize old_max_slot_count = max_slot_count_;
                 max_slot_count_ = new_max_slot_count;
 
-                // We cloned size of a group - 1 because we never reach the last cloned bytes
-                constexpr const usize num_cloned_bytes = control::COUNT_CLONED_BYTE;
-                // Control size is the number of slot + sentinel + number of cloned bytes
-                const usize control_size = max_slot_count_ + 1 + num_cloned_bytes;
-                const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
-                const usize aligned_allocation_size = aligned_control_size + max_slot_count_ * sizeof(slot_type);
-
-                // Allocate the buffer that will contains controls and aligned slots
-                control_ptr_ = hud::bit_cast<control_type *>(allocator_.template allocate<slot_type>(aligned_allocation_size).data());
-                slot_ptr_ = hud::bit_cast<slot_type *>(control_ptr_ + aligned_control_size);
-                hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
+                // Allocate the buffer that will contain controls and aligned slots
+                // In a constant-evaluated context, bit_cast cannot be used with pointers
+                // To satisfy the compiler, allocate controls and slots in two separate allocations
+                usize control_size = allocate_control_and_slot(max_slot_count_);
 
                 // Update number of slot we should put into the table before a resizing rehash
                 free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
@@ -800,8 +800,23 @@ namespace hud
                         // Move old slot to new slot
                         hud::memory::move_or_copy_construct_then_destroy(slot_ptr_ + slot_index, hud::move(*it));
                     }
+
+                    free_control_and_slot(old_control_ptr, old_slot_ptr, old_max_slot_count);
                     // Free old buffer
-                    allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(old_control_ptr), current_allocation_size()});
+                    // In a constant-evaluated context, bit_cast cannot be used with pointers
+                    // and allocation is done in two separate allocation
+                    // if (hud::is_constant_evaluated())
+                    // {
+                    //     const usize old_control_size = old_max_slot_count + 1 + num_cloned_bytes;
+                    //     const uptr old_aligned_control_size = hud::memory::align_address(old_control_size, sizeof(slot_type));
+                    //     allocator_.template free<control_type>({old_control_ptr, old_aligned_control_size});
+                    //     const usize old_slot_size = old_max_slot_count * sizeof(slot_type);
+                    //     allocator_.template free<slot_type>({old_slot_ptr, old_slot_size});
+                    // }
+                    // else
+                    // {
+                    // allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(old_control_ptr), current_allocation_size()});
+                    //}
                 }
             }
 
@@ -895,6 +910,53 @@ namespace hud
             {
                 hud::check(control::is_byte_sentinel(control_ptr_[max_slot_count_]));
                 return control_ptr_ + max_slot_count_;
+            }
+
+            constexpr usize allocate_control_and_slot(usize max_count) noexcept
+            {
+                // We cloned size of a group - 1 because we never reach the last cloned bytes
+                constexpr const usize num_cloned_bytes = control::COUNT_CLONED_BYTE;
+                // Control size is the number of slot + sentinel + number of cloned bytes
+                const usize control_size = max_count + 1 + num_cloned_bytes;
+                const usize slot_size = max_count * sizeof(slot_type);
+
+                const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
+                const usize aligned_allocation_size = aligned_control_size + slot_size;
+
+                if (hud::is_constant_evaluated())
+                {
+                    control_ptr_ = allocator_.template allocate<control_type>(aligned_control_size).data();
+                    slot_ptr_ = allocator_.template allocate<slot_type>(slot_size).data();
+                }
+                else
+                {
+                    control_ptr_ = hud::bit_cast<control_type *>(allocator_.template allocate<slot_type>(aligned_allocation_size).data());
+                    slot_ptr_ = hud::bit_cast<slot_type *>(control_ptr_ + aligned_control_size);
+                    hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
+                }
+                return control_size;
+            }
+
+            constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize max_slot_count) noexcept
+            {
+                // In a constant-evaluated context, bit_cast cannot be used with pointers
+                // and allocation is done in two separate allocation
+                if (hud::is_constant_evaluated())
+                {
+                    // We cloned size of a group - 1 because we never reach the last cloned bytes
+                    constexpr const usize num_cloned_bytes = control::COUNT_CLONED_BYTE;
+                    // Control size is the number of slot + sentinel + number of cloned bytes
+                    const usize control_size = max_slot_count + 1 + num_cloned_bytes;
+                    const usize slot_size = max_slot_count * sizeof(slot_type);
+                    const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
+                    // const usize aligned_allocation_size = aligned_control_size + slot_size;
+                    allocator_.template free<control_type>({control_ptr, aligned_control_size});
+                    allocator_.template free<slot_type>({slot_ptr, slot_size});
+                }
+                else
+                {
+                    allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr), current_allocation_size()});
+                }
             }
 
         private:

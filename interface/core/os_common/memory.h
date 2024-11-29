@@ -70,7 +70,7 @@ namespace hud::os::common
          * @return true if the pointer is aligned, false otherwise
          */
         template<typename type_t>
-        [[nodiscard]] static constexpr bool is_pointer_aligned(const type_t *const pointer, const u32 alignment) noexcept
+        [[nodiscard]] static bool is_pointer_aligned(const type_t *const pointer, const u32 alignment) noexcept
         {
             return is_address_aligned(reinterpret_cast<const uptr>(pointer), alignment);
         }

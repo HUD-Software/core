@@ -17,27 +17,27 @@ namespace hud
             using key_type = typename hud::pair<key_t, value_t>::first_type;
             using value_type = typename hud::pair<key_t, value_t>::second_type;
 
-            [[nodiscard]] const key_t &key() const noexcept
+            [[nodiscard]] constexpr const key_t &key() const noexcept
             {
                 return hud::get<0>(*this);
             }
 
-            [[nodiscard]] const value_t &value() const & noexcept
+            [[nodiscard]] constexpr const value_t &value() const & noexcept
             {
                 return hud::get<1>(*this);
             }
 
-            [[nodiscard]] value_t &value() & noexcept
+            [[nodiscard]] constexpr value_t &value() & noexcept
             {
                 return hud::get<1>(*this);
             }
 
-            [[nodiscard]] const value_t &&value() const && noexcept
+            [[nodiscard]] constexpr const value_t &&value() const && noexcept
             {
                 return hud::move(hud::get<1>(*this));
             }
 
-            [[nodiscard]] value_t &&value() && noexcept
+            [[nodiscard]] constexpr value_t &&value() && noexcept
             {
                 return hud::move(hud::get<1>(*this));
             }
