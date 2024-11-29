@@ -743,12 +743,10 @@ namespace hud
                 return slot_index;
             }
 
-            constexpr void grow_capacity(usize slot_count) noexcept
+            constexpr void grow_capacity(usize new_max_slot_count) noexcept
             {
-                hud::check(slot_count > max_slot_count_ && "Grow need a bigger value");
+                hud::check(new_max_slot_count > max_slot_count_ && "Grow need a bigger value");
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
-
-                usize new_max_slot_count_ = slot_count;
 
                 // Create the buffer with control and slots
                 // Slots are aligned on alignof(slot_type)
@@ -756,9 +754,9 @@ namespace hud
                 // We cloned size of a group - 1 because we never reach the last cloned bytes
                 constexpr const usize num_cloned_bytes = control::COUNT_CLONED_BYTE;
                 // Control size is the number of slot + sentinel + number of cloned bytes
-                const usize control_size = new_max_slot_count_ + 1 + num_cloned_bytes;
+                const usize control_size = new_max_slot_count + 1 + num_cloned_bytes;
                 const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
-                const usize aligned_allocation_size = aligned_control_size + new_max_slot_count_ * sizeof(slot_type);
+                const usize aligned_allocation_size = aligned_control_size + new_max_slot_count * sizeof(slot_type);
 
                 // Allocate the buffer that will contains controls  and aligned slots
                 memory_allocation_type allocation = allocator_.template allocate<slot_type>(aligned_allocation_size);
@@ -769,11 +767,11 @@ namespace hud
                 hud::check(hud::memory::is_pointer_aligned(new_slot_ptr, alignof(slot_type)));
 
                 // Update number of slot we should put into the table before a resizing rehash
-                free_slot_before_grow_ = max_slot_before_grow(new_max_slot_count_) - count_;
+                free_slot_before_grow_ = max_slot_before_grow(new_max_slot_count) - count_;
 
                 // Reset control metadata
                 hud::memory::set(new_control_ptr, control_size, empty_byte);
-                new_control_ptr[new_max_slot_count_] = sentinel_byte;
+                new_control_ptr[new_max_slot_count] = sentinel_byte;
 
                 // If we have elements, insert them to the new buffer
                 if (count_ > 0)
@@ -786,9 +784,9 @@ namespace hud
                         u64 hash = hasher_type {}(slot.key());
                         // Find H1 slot index
                         u64 h1 = H1(hash);
-                        usize slot_index = find_first_empty_or_deleted(new_control_ptr, new_max_slot_count_, h1);
+                        usize slot_index = find_first_empty_or_deleted(new_control_ptr, new_max_slot_count, h1);
                         // Save h2 in control h1 index
-                        control::set_h2(new_control_ptr, slot_index, H2(hash), new_max_slot_count_);
+                        control::set_h2(new_control_ptr, slot_index, H2(hash), new_max_slot_count);
                         // Move old slot to new slot
                         hud::memory::move_or_copy_construct_then_destroy(new_slot_ptr + slot_index, hud::move(slot));
                     }
@@ -798,7 +796,7 @@ namespace hud
 
                 control_ptr_ = new_control_ptr;
                 slot_ptr_ = new_slot_ptr;
-                max_slot_count_ = new_max_slot_count_;
+                max_slot_count_ = new_max_slot_count;
             }
 
             [[nodiscard]] constexpr usize free_slot_before_grow() const noexcept
