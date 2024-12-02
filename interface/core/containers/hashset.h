@@ -16,6 +16,7 @@ namespace hud
         template<typename value_t>
         struct slot
         {
+            using type = value_t;
             using key_type = value_t;
             using value_type = value_t;
 
@@ -351,14 +352,23 @@ namespace hud
         {
             static constexpr usize COUNT_CLONED_BYTE = group_type::SLOT_PER_GROUP - 1;
 
-            /**
-             * Save the H2
-             */
+            /** Save the H2 */
             static constexpr void set_h2(control_type *control_ptr, usize slot_index, control_type h2, usize max_slot_count) noexcept
             {
                 // Save the h2 in the slot and also in the cloned byte
                 control_ptr[slot_index] = h2;
                 control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = h2;
+            }
+
+            /** Skip all empty or deleted control. */
+            static constexpr control_type *skip_empty_or_deleted(control_type *control_ptr)
+            {
+                // skip all empty slot after the current one
+                while (control::is_byte_empty_or_deleted(*control_ptr))
+                {
+                    control_ptr += group_type {control_ptr}.count_leading_empty_or_deleted();
+                }
+                return control_ptr;
             }
 
             /** Check if the control byte is empty. */
@@ -397,14 +407,15 @@ namespace hud
             }
         };
 
-        /** The hashmap iterator that iterate over elements. */
+        /** The hashmap iterator_impl that iterate over elements. */
         template<typename slot_t>
         class iterator
         {
             using slot_type = slot_t;
+            using type = slot_type::type;
             using key_type = typename slot_type::key_type;
             using value_type = typename slot_type::value_type;
-            using pointer_type = slot_type *;
+            using pointer_type = hud::add_pointer_t<slot_type>;
             using reference_type = hud::add_lvalue_reference_t<slot_type>;
 
         public:
@@ -443,15 +454,12 @@ namespace hud
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
+                // Skip the current full
                 control_ptr_++;
-                slot_ptr_++;
-                // skip all empty slot after the current one
-                while (control::is_byte_empty_or_deleted(*control_ptr_))
-                {
-                    u32 shift = group_type {control_ptr_}.count_leading_empty_or_deleted();
-                    control_ptr_ += shift;
-                    slot_ptr_ += shift;
-                }
+                // Skip all emptry or deleted
+                control_type *full_or_sentinel = control::skip_empty_or_deleted(control_ptr_);
+                slot_ptr_ += full_or_sentinel - control_ptr_;
+                control_ptr_ = full_or_sentinel;
                 return *this;
             }
 
@@ -802,21 +810,6 @@ namespace hud
                     }
 
                     free_control_and_slot(old_control_ptr, old_slot_ptr, old_max_slot_count);
-                    // Free old buffer
-                    // In a constant-evaluated context, bit_cast cannot be used with pointers
-                    // and allocation is done in two separate allocation
-                    // if (hud::is_constant_evaluated())
-                    // {
-                    //     const usize old_control_size = old_max_slot_count + 1 + num_cloned_bytes;
-                    //     const uptr old_aligned_control_size = hud::memory::align_address(old_control_size, sizeof(slot_type));
-                    //     allocator_.template free<control_type>({old_control_ptr, old_aligned_control_size});
-                    //     const usize old_slot_size = old_max_slot_count * sizeof(slot_type);
-                    //     allocator_.template free<slot_type>({old_slot_ptr, old_slot_size});
-                    // }
-                    // else
-                    // {
-                    // allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(old_control_ptr), current_allocation_size()});
-                    //}
                 }
             }
 

@@ -13,7 +13,7 @@ namespace hud
         {
             using super = hud::pair<key_t, value_t>;
             using super::super;
-
+            using type = super;
             using key_type = typename hud::pair<key_t, value_t>::first_type;
             using value_type = typename hud::pair<key_t, value_t>::second_type;
 
