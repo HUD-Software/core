@@ -659,7 +659,7 @@ GTEST_TEST(shared_pointer_array_not_safe, hash_32)
     const auto test = []()
     {
         hud::shared_pointer<i32[2]> ptr(new i32[2] {1, 2});
-        return hud::hash_32(ptr) == hud::hash_32(static_cast<const void *>(ptr.pointer()));
+        return hud::hash_32<decltype(ptr)> {}(ptr) == hud::hash_32<const void *> {}(static_cast<const void *>(ptr.pointer()));
     };
 
     hud_assert_true(test());
@@ -671,7 +671,7 @@ GTEST_TEST(shared_pointer_array_not_safe, hash_64)
     const auto test = []()
     {
         hud::shared_pointer<i32[2]> ptr(new i32[2] {1, 2});
-        return hud::hash_64(ptr) == hud::hash_64(static_cast<const void *>(ptr.pointer()));
+        return hud::hash_64<decltype(ptr)> {}(ptr) == hud::hash_64<const void *> {}(static_cast<const void *>(ptr.pointer()));
     };
 
     hud_assert_true(test());

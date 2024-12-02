@@ -362,7 +362,7 @@ GTEST_TEST(unique_pointer_array, hash_32)
             {2, nullptr}
         };
         hud::unique_pointer<hud_test::non_bitwise_type[]> p(ptr);
-        return hud::hash_32(p) == hud::hash_32(static_cast<const void *>(ptr));
+        return hud::hash_32<decltype(p)> {}(p) == hud::hash_32<const void *> {}(static_cast<const void *>(ptr));
     };
 
     // Non constant
@@ -382,7 +382,7 @@ GTEST_TEST(unique_pointer_array, hash_64)
             {2, nullptr}
         };
         hud::unique_pointer<hud_test::non_bitwise_type[]> p(ptr);
-        return hud::hash_64(p) == hud::hash_64(static_cast<const void *>(ptr));
+        return hud::hash_64<decltype(p)> {}(p) == hud::hash_64<const void *> {}(static_cast<const void *>(ptr));
     };
 
     // Non constant

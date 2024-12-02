@@ -1055,18 +1055,26 @@ namespace hud
     void make_unique(args_t &&...) = delete;
 
     /** Specialization of the hash function for unique_pointer */
-    template<typename type_t>
-    constexpr u32 hash_32(const unique_pointer<type_t> &ptr) noexcept
-    {
-        return hud::hash_32(static_cast<const void *>(ptr.pointer()));
-    }
 
-    /** Specialization of the hash function for unique_pointer */
     template<typename type_t>
-    constexpr u64 hash_64(const unique_pointer<type_t> &ptr) noexcept
+    struct hash_32<unique_pointer<type_t>>
     {
-        return hud::hash_64(static_cast<const void *>(ptr.pointer()));
-    }
+        [[nodiscard]] constexpr u32 operator()(const unique_pointer<type_t> &ptr) const
+        {
+            // Simply hash the pointer
+            return hud::hash_32<const void *> {}(static_cast<const void *>(ptr.pointer()));
+        }
+    };
+
+    template<typename type_t>
+    struct hash_64<unique_pointer<type_t>>
+    {
+        [[nodiscard]] constexpr u64 operator()(const unique_pointer<type_t> &ptr) const
+        {
+            // Simply hash the pointer
+            return hud::hash_64<const void *> {}(static_cast<const void *>(ptr.pointer()));
+        }
+    };
 
 } // namespace hud
 

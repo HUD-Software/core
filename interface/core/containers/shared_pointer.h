@@ -1415,19 +1415,24 @@ namespace hud
 
     /** Specialization of the hash function for shared_pointer */
     template<typename type_t, thread_safety_e thread_safety>
-    HD_FORCEINLINE u32 hash_32(const shared_pointer<type_t, thread_safety> &ptr) noexcept
+    struct hash_32<shared_pointer<type_t, thread_safety>>
     {
-        // Simply hash the pointer
-        return hash_32(static_cast<const void *>(ptr.pointer()));
-    }
+        [[nodiscard]] constexpr u32 operator()(const shared_pointer<type_t, thread_safety> &ptr) const
+        {
+            // Simply hash the pointer
+            return hud::hash_32<const void *> {}(static_cast<const void *>(ptr.pointer()));
+        }
+    };
 
-    /** Specialization of the hash function for shared_pointer */
     template<typename type_t, thread_safety_e thread_safety>
-    HD_FORCEINLINE u64 hash_64(const shared_pointer<type_t, thread_safety> &ptr) noexcept
+    struct hash_64<shared_pointer<type_t, thread_safety>>
     {
-        // Simply hash the pointer
-        return hash_64(static_cast<const void *>(ptr.pointer()));
-    }
+        [[nodiscard]] constexpr u64 operator()(const shared_pointer<type_t, thread_safety> &ptr) const
+        {
+            // Simply hash the pointer
+            return hud::hash_64<const void *> {}(static_cast<const void *>(ptr.pointer()));
+        }
+    };
 
 } // namespace hud
 

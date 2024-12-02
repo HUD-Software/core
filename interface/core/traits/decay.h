@@ -24,10 +24,14 @@ namespace hud
     struct decay
     {
     private:
-        using NoRefType = hud::remove_reference_t<type_t>;
+        using no_ref_type = hud::remove_reference_t<type_t>;
 
     public:
-        using type = hud::conditional_t<is_array_v<NoRefType>, hud::remove_extent_t<NoRefType> *, hud::conditional_t<is_function_v<NoRefType>, add_pointer_t<NoRefType>, remove_cv_t<NoRefType>>>;
+        using type = hud::conditional_t<is_array_v<no_ref_type>, // If array, remove extent and add pointer
+                                        hud::add_pointer_t<hud::remove_extent_t<no_ref_type>>,
+                                        hud::conditional_t<is_function_v<no_ref_type>, // Else if function, make a pointer to function
+                                                           add_pointer_t<no_ref_type>,
+                                                           remove_cv_t<no_ref_type>>>; // Else remove const volative
     };
 
     /** Equivalent of typename decay<type_t>::type. */
