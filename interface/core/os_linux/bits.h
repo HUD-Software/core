@@ -168,6 +168,7 @@ namespace hud::os::linux
             return value == 0 ? 64 : os::common::bits::trailing_zero(value);
 #endif
         }
-    }; // namespace hud::os::linux
+    };
+} // namespace hud::os::linux
 
 #endif // HD_INC_CORE_OS_LINUX_BITS_H

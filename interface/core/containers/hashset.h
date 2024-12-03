@@ -423,7 +423,7 @@ namespace hud
                 : control_ptr_(control_ptr)
             {
                 hud::check(control_ptr != nullptr);
-                HD_ASSUME(control_ptr != nullptr);
+                HD_ASSUME((control_ptr != nullptr));
             }
 
             constexpr iterator(control_type *control_ptr, slot_type *slot_ptr)

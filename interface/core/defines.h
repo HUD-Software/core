@@ -47,9 +47,28 @@
         #define HD_RESTRICT __restrict__ // Indicates that a symbol is not aliased in the current scope.
         #define __STDC_WANT_LIB_EXT1__ 1 // Enable bounds-checked functions ( ISO C Safe Array Functions : memcpy_s, strcpy_s, snwprintf_s, etc... )
 
-        #if defined(HD_HAS_BUILTIN_ASSUME)
-            #define HD_ASSUME(cond) __builtin_assume(cond)
+        #if !defined(HD_RELEASE)
+
         #endif
+        #if defined(HD_COMPILER_CLANG) && defined(HD_HAS_BUILTIN_ASSUME)
+            #define HD_ASSUME(cond) __builtin_assume(cond)
+        #else
+            #if defined(HD_HAS_BUILTIN_UNREACHABLE)
+                #define HD_ASSUME(cond)              \
+                    do                               \
+                    {                                \
+                        if (!(cond))                 \
+                            __builtin_unreachable(); \
+                    } while (false)
+            #else
+                #define HD_ASSUME                           \
+                    do                                      \
+                    {                                       \
+                        static_cast<void>(false && (cond)); \
+                    } while (false)
+            #endif
+        #endif
+
         #if defined(HD_COMPILER_CLANG)
             #if __has_feature(address_sanitizer)
                 #define HD_USE_ADDRESS_SANITIZER 1

@@ -1002,10 +1002,12 @@ namespace hud
             {
                 if (u64 hi = n.high_)
                 {
+                    hud::check(hi != 0);
                     HD_ASSUME(hi != 0);
                     return 127 - hud::bits::leading_zero(hi);
                 }
                 const u64 low = n.low_;
+                hud::check(low != 0);
                 HD_ASSUME(low != 0);
                 return 63 - hud::bits::leading_zero(low);
             };

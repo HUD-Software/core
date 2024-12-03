@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.24)
 # source_files variable is a list all files in Implementation and Interface directory
 set( src
 	hash/crc32.cpp
-	containers/hashset.cpp
 )
 #Linux implementations
 if(UNIX AND NOT APPLE)

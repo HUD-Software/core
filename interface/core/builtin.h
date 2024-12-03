@@ -24,6 +24,7 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB __has_builtin(__atomic_fetch_sub)
     #define HD_HAS_BUILTIN_DEBUGTRAP __has_builtin(__builtin_debugtrap)
     #define HD_HAS_BUILTIN_ASSUME __has_builtin(__builtin_assume)
+    #define HD_HAS_BUILTIN_UNREACHABLE __has_builtin(__builtin_unreachable)
     #define HD_HAS_BUILTIN_CLZS __has_builtin(__builtin_clzs)
     #define HD_HAS_BUILTIN_CLZ __has_builtin(__builtin_clz)
     #define HD_HAS_BUILTIN_CLZLL __has_builtin(__builtin_clzll)
@@ -49,6 +50,7 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB __has_builtin(__atomic_fetch_sub)
     #define HD_HAS_BUILTIN_DEBUGTRAP __has_builtin(__builtin_debugtrap)
     #define HD_HAS_BUILTIN_ASSUME __has_builtin(__builtin_assume)
+    #define HD_HAS_BUILTIN_UNREACHABLE __has_builtin(__builtin_unreachable)
     #define HD_HAS_BUILTIN_CLZS __has_builtin(__builtin_clzs)
     #define HD_HAS_BUILTIN_CLZ __has_builtin(__builtin_clz)
     #define HD_HAS_BUILTIN_CLZLL __has_builtin(__builtin_clzll)
@@ -74,6 +76,7 @@
     #define HD_HAS_BUILTIN_ATOMIC_FETCH_SUB 0
     #define HD_HAS_BUILTIN_DEBUGTRAP 0
     #define HD_HAS_BUILTIN_ASSUME 1
+    #define HD_HAS_BUILTIN_UNREACHABLE 0
     #define HD_HAS_BUILTIN_CLZS 0
     #define HD_HAS_BUILTIN_CLZ 0
     #define HD_HAS_BUILTIN_CLZLL 0
