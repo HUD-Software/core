@@ -412,7 +412,7 @@ namespace hud
         class iterator
         {
             using slot_type = slot_t;
-            using type = slot_type::type;
+            using type = typename slot_type::type;
             using key_type = typename slot_type::key_type;
             using value_type = typename slot_type::value_type;
             using pointer_type = hud::add_pointer_t<slot_type>;
