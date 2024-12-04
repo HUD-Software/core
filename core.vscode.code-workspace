@@ -24,6 +24,7 @@
         "cmake.launchBehavior": "breakAndReuseTerminal",
         "testMate.cpp.test.executables": "target/**/*{test}*",
         "cmake.options.statusBarVisibility": "compact",
+        "cmake.outputLogEncoding": "utf8",
         "debug.showVariableTypes": true,
     },
     "extensions": {
