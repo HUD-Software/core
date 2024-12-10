@@ -240,8 +240,8 @@ if(MSVC)
 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		# Disable compiler batching to fix a clang-cl bug when activate --coverage
 		# See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
-		set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
-		set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
+		set_property(TARGET ${project_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
+		set_property(TARGET ${lib_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
 
 		target_compile_options(${project_name} PRIVATE --coverage)
 		target_compile_options(${lib_name} PRIVATE --coverage)
@@ -252,7 +252,7 @@ if(MSVC)
 		message("${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\${CMAKE_CXX_COMPILER_PATH}\\lib\\windows\\")
 		# Need to link manually LLVM Bug 40877
 		# See: https://bugs.llvm.org/show_bug.cgi?id=40877
-		target_link_libraries(test_core PRIVATE "clang_rt.profile-x86_64.lib")
+		target_link_libraries(${project_name} PRIVATE "clang_rt.profile-x86_64.lib")
 
 
 		add_custom_command( 

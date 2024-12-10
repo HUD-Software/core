@@ -525,6 +525,15 @@ namespace hud
                 clear_shrink();
             }
 
+            /** Reserve memory for at least `count` element and regenerates the hash table. */
+            constexpr void reserve(usize count) noexcept
+            {
+                if (count > max_slot_count_)
+                {
+                    grow_capacity(count);
+                }
+            }
+
             /**
              * Remove all elements.
              * Calls the destructor of each element if they are not trivially destructible,

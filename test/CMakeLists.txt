@@ -529,12 +529,12 @@ target_link_libraries(test_core PRIVATE core)
 if (core_type STREQUAL SHARED_LIBRARY)
 	# If we load shared library define HD_CORE_DLL_IMPORT
     target_compile_definitions(test_core PRIVATE HD_CORE_DLL_IMPORT)
-	# Copyo the shared library next to test_core binary
+	# Copy the shared library next to test_core binary
 	add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:core> $<TARGET_FILE_DIR:test_core>)
 endif()
 
 # Add Google test dependency
-message("Fetching HUD-Software/google-test...")
+message("Fetching google-test...")
 include(FetchContent)
 FetchContent_Declare(
 	google_test 
