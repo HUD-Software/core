@@ -2,6 +2,7 @@
 #define HD_INC_CORE_MATH_MATH_H
 #include "../templates/bit_cast.h"
 #include "../traits/is_constant_evaluated.h"
+#include <cmath> // FP_SUBNORMAL, etc...
 
 namespace hud
 {
