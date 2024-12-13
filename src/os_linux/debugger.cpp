@@ -1,9 +1,9 @@
-#include <core/os_linux/debugger.h>
+#include <core/debugger/debugger_linux.h>
 #include <fcntl.h>  // open
 #include <unistd.h> // read
 #include <string.h> // strstr
 
-namespace hud::os::linux
+namespace hud::linux
 {
     bool debugger::is_present() noexcept
     {
@@ -37,4 +37,4 @@ namespace hud::os::linux
         // LCOV_EXCL_STOP
         return found[sizeof(TRACERPID) - 1] != '0';
     }
-} // namespace hud::os::linux
+} // namespace hud::linux
