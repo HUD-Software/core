@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 
+set(test_project_name test_core)
+
 set( src
 	allocator/aligned_heap_allocator.cpp
 	allocator/allocation.cpp
@@ -313,40 +315,40 @@ set( src
 	uuid.cpp
 )
 
-add_executable(test_core ${src})
+add_executable(${test_project_name} ${src})
 
-# set_target_properties(test_core PROPERTIES
+# set_target_properties(${test_project_name} PROPERTIES
 #                       UNITY_BUILD_MODE BATCH
 #                       UNITY_BUILD_BATCH_SIZE 8
 #                       )
 
-# set_target_properties(test_core PROPERTIES UNITY_BUILD ON UNITY_BUILD_MODE BATCH)
+# set_target_properties(${test_project_name} PROPERTIES UNITY_BUILD ON UNITY_BUILD_MODE BATCH)
 
-set_target_properties(test_core
+set_target_properties(${test_project_name}
     PROPERTIES
         CXX_STANDARD 20
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
 )
 if(MSVC)
-	#target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /Os /EHsc /GR- /utf-8)
-	target_compile_options( test_core PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
+	#target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /Os /EHsc /GR- /utf-8)
+	target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
 endif()
 
-get_target_property(core_type core TYPE)
+get_target_property(core_type ${lib_name} TYPE)
 
 
 	# if(MSVC)
 	# 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	# 		# MSVC ASAN is limited
 	# 		# https://devblogs.microsoft.com/cppblog/addresssanitizer-asan-for-windows-with-msvc/#compiling-with-asan-from-the-console
-	# 		target_compile_options(test_core PRIVATE /fsanitize=address /INCREMENTAL:NO /Zi)
-	# 		target_compile_options(core PRIVATE /fsanitize=address /INCREMENTAL:NO /Zi)
-	# 		target_compile_definitions(test_core PRIVATE _DISABLE_VECTOR_ANNOTATION)
+	# 		target_compile_options(${test_project_name} PRIVATE /fsanitize=address /INCREMENTAL:NO /Zi)
+	# 		target_compile_options(${lib_name} PRIVATE /fsanitize=address /INCREMENTAL:NO /Zi)
+	# 		target_compile_definitions(${test_project_name} PRIVATE _DISABLE_VECTOR_ANNOTATION)
 	# 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
-	# 		add_custom_command(TARGET test_core POST_BUILD 
-	# 			COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
-	# 			COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
+	# 		add_custom_command(TARGET ${test_project_name} POST_BUILD 
+	# 			COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:${test_project_name}>
+	# 			COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:${test_project_name}>
 	# 		)
 	# 	endif()
 	# 	if( CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -358,35 +360,35 @@ get_target_property(core_type core TYPE)
 	# 	endif()
 	# elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	# # https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
-	# 	target_compile_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-	# 	target_link_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-	# 	target_compile_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-	# 	target_link_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# 	target_compile_options(${test_project_name} PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# 	target_link_options(${test_project_name} PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# 	target_compile_options(${lib_name} PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# 	target_link_options(${lib_name} PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
 	# endif()
 	# # if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 
 	# # 	# MSVC ASAN is limited
 	# # 	# https://devblogs.microsoft.com/cppblog/addresssanitizer-asan-for-windows-with-msvc/#compiling-with-asan-from-the-console
-	# # 	target_compile_options(test_core PRIVATE /fsanitize=address)
-	# # 	target_compile_options(core PRIVATE /fsanitize=address)
-	# # 	target_compile_definitions(test_core PRIVATE _DISABLE_VECTOR_ANNOTATION)
+	# # 	target_compile_options(${test_project_name} PRIVATE /fsanitize=address)
+	# # 	target_compile_options(${lib_name} PRIVATE /fsanitize=address)
+	# # 	target_compile_definitions(${test_project_name} PRIVATE _DISABLE_VECTOR_ANNOTATION)
 	# # 	get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
-	# # 	add_custom_command(TARGET test_core POST_BUILD 
-	# # 		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>
-	# # 		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:test_core>)
+	# # 	add_custom_command(TARGET ${test_project_name} POST_BUILD 
+	# # 		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll $<TARGET_FILE_DIR:${test_project_name}>
+	# # 		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:${test_project_name}>)
 	# # endif()
 	# # if( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	# # 	# https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
-	# # 	target_compile_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-	# # 	target_link_options(test_core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-	# # 	target_compile_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
-	# # 	target_link_options(core PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# # 	target_compile_options(${test_project_name} PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# # 	target_link_options(${test_project_name} PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# # 	target_compile_options(${lib_name} PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
+	# # 	target_link_options(${lib_name} PRIVATE -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fsanitize=float-divide-by-zero -fsanitize=float-cast-overflow -fno-sanitize=null -fno-sanitize=alignment)
 	# # endif()
 
 ##endif()
 
 
-#enable_coverage(test_core core)
+#enable_coverage(${test_project_name} ${lib_name})
 
 # if(COVERAGE AND MSVC)
 # 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
@@ -396,29 +398,29 @@ get_target_property(core_type core TYPE)
 # 			message(FATAL_ERROR "Code coverage on Windows need Microsoft.CodeCoverage.Console.exe available in Visual Studio 2022 17.3 Enterprise Edition")
 # 		endif()
 
-# 		target_link_options(test_core PRIVATE /PROFILE)
+# 		target_link_options(${test_project_name} PRIVATE /PROFILE)
 # 		add_custom_command(
-# 			TARGET test_core POST_BUILD
-# 			COMMENT "Instrument and Collect test_core.exe"
-# 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument Debug\\test_core.exe -s ..\\..\\test\\coverage.runsettings
-# 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Debug\\test_core.exe -o Debug\\coverage.msvc.cobertura -f cobertura -s ..\\..\\test\\coverage.runsettings
+# 			TARGET ${test_project_name} POST_BUILD
+# 			COMMENT "Instrument and Collect ${test_project_name}.exe"
+# 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} instrument Debug\\${test_project_name}.exe -s ..\\..\\test\\coverage.runsettings
+# 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect Debug\\${test_project_name}.exe -o Debug\\coverage.msvc.cobertura -f cobertura -s ..\\..\\test\\coverage.runsettings
 # 		)
 # 	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-# 		target_compile_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-# 		target_compile_options(core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+# 		target_compile_options(${test_project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+# 		target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 		
 # 		# Add clang lib path to libraries paths
 # 		get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
-# 		target_link_directories(test_core PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\${CMAKE_CXX_COMPILER_VERSION}\\lib\\windows\\")
+# 		target_link_directories(${test_project_name} PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\${CMAKE_CXX_COMPILER_VERSION}\\lib\\windows\\")
 
 
 # 		add_custom_command( 
-# 		 	TARGET test_core POST_BUILD
-# 		 	COMMENT "Run test_core.exe"
+# 		 	TARGET ${test_project_name} POST_BUILD
+# 		 	COMMENT "Run ${test_project_name}.exe"
 # 			COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./Debug/grcov-x86_64-pc-windows-msvc.zip
 # 			COMMAND Powershell.exe Expand-Archive -Path ./Debug/grcov-x86_64-pc-windows-msvc.zip -DestinationPath ./Debug/
-# 		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="core.profraw" ./Debug/test_core.exe
-# 			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse core.profraw -o core.profdata
+# 		 	COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./Debug/${test_project_name}.exe
+# 			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse ${lib_name}.profraw -o ${lib_name}.profdata
 # 			COMMAND ./Debug/grcov.exe --llvm -t html -b ./Debug/ -s ./../../
 # 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 # 					--branch
@@ -451,17 +453,17 @@ get_target_property(core_type core TYPE)
 
 # 	endif()
 # elseif(COVERAGE AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-# 	target_compile_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-# 	target_link_options(test_core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-# 	target_compile_options(core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-# 	target_link_options(core PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+# 	target_compile_options(${test_project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+# 	target_link_options(${test_project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+# 	target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+# 	target_link_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
 
 # 	add_custom_command(
-# 		TARGET test_core POST_BUILD
-# 		COMMENT "Run test_core.exe"
+# 		TARGET ${test_project_name} POST_BUILD
+# 		COMMENT "Run ${test_project_name}.exe"
 # 		COMMAND curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -
-# 		COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="core.profraw" ./test_core
-# 		COMMAND llvm-profdata merge -sparse core.profraw -o core.profdata
+# 		COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./${test_project_name}
+# 		COMMAND llvm-profdata merge -sparse ${lib_name}.profraw -o ${lib_name}.profdata
 # 		COMMAND ./grcov --llvm -t html -b . -s ./../../
 # 				--llvm-path /usr/bin/
 # 				--branch
@@ -492,11 +494,11 @@ get_target_property(core_type core TYPE)
 # 				..
 # 	)
 # endif()
-target_precompile_headers(test_core PRIVATE precompiled.h)
+target_precompile_headers(${test_project_name} PRIVATE precompiled.h)
 
 # Add defines
 target_compile_definitions(
-	test_core
+	${test_project_name}
 	PRIVATE
 	_HAS_EXCEPTIONS=0
 	_CRT_SECURE_NO_WARNINGS
@@ -525,12 +527,12 @@ target_compile_definitions(
 )
 
 # Add Core dependency
-target_link_libraries(test_core PRIVATE core)
+target_link_libraries(${test_project_name} PRIVATE ${lib_name})
 if (core_type STREQUAL SHARED_LIBRARY)
 	# If we load shared library define HD_CORE_DLL_IMPORT
-    target_compile_definitions(test_core PRIVATE HD_CORE_DLL_IMPORT)
-	# Copy the shared library next to test_core binary
-	add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:core> $<TARGET_FILE_DIR:test_core>)
+    target_compile_definitions(${test_project_name} PRIVATE HD_CORE_DLL_IMPORT)
+	# Copy the shared library next to ${test_project_name} binary
+	add_custom_command(TARGET ${test_project_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${lib_name}> $<TARGET_FILE_DIR:${test_project_name}>)
 endif()
 
 # Add Google test dependency
@@ -541,16 +543,16 @@ FetchContent_Declare(
 	GIT_REPOSITORY  https://github.com/google/googletest.git
 	GIT_TAG         v1.13.0
 )
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+# set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+# set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCED)
 set(BUILD_GTEST ON CACHE BOOL "" FORCE)
-set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCED)
 set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
 set(gtest_build_samples OFF CACHE BOOL "" FORCE)
 set(gtest_build_tests OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(google_test)
-target_link_libraries( test_core PRIVATE gtest )
-add_custom_command(TARGET test_core POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:gtest> $<TARGET_FILE_DIR:test_core>)
+target_link_libraries( ${test_project_name} PRIVATE gtest )
+#add_custom_command(TARGET ${test_project_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:gtest> $<TARGET_FILE_DIR:${test_project_name}>)
 
 # Add Intel slice-by-8 dependency
 message("Fetching HUD-Software/slice-by-8...")
@@ -558,11 +560,11 @@ include(FetchContent)
 FetchContent_Declare(
     slice_by_8 
     GIT_REPOSITORY  https://github.com/HUD-Software/slice-by-8.git
-    GIT_TAG         536f6c5a297ff6263c56944c9bb04358f5b0d7da
+    GIT_TAG         main
 )
 FetchContent_MakeAvailable(slice_by_8)
 
-target_link_libraries( test_core PRIVATE slice_by_8 )
+target_link_libraries( ${test_project_name} PRIVATE slice_by_8 )
 
 # Add Intel cityhash dependency
 message("Fetching HUD-Software/cityhash...")
@@ -570,22 +572,22 @@ include(FetchContent)
 FetchContent_Declare(
     cityhash
     GIT_REPOSITORY  https://github.com/HUD-Software/cityhash.git
-    GIT_TAG         01bb23df43fecd290b398c2e4314dff4c0dc0672
+    GIT_TAG         main
 )
 FetchContent_MakeAvailable(cityhash)
 
-target_link_libraries( test_core PRIVATE cityhash )
+target_link_libraries( ${test_project_name} PRIVATE cityhash )
 
 # Add the executable test
-add_test(NAME core COMMAND test_core --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
+add_test(NAME ${lib_name} COMMAND ${test_project_name} --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
 
 
 if(SANITIZER)
 	include(../sanitizer.cmake)
-	enable_sanitizer(test_core core)
+	enable_sanitizer(${test_project_name} ${lib_name})
 endif()
 
 if(COVERAGE)
 	include(../coverage.cmake)
-	enable_gcov_coverage(test_core core)
+	enable_gcov_coverage(${test_project_name} ${lib_name})
 endif()

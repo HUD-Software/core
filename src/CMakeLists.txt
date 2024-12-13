@@ -5,19 +5,26 @@ cmake_minimum_required(VERSION 3.24)
 # source_files variable is a list all files in Implementation and Interface directory
 set( src
 	hash/crc32.cpp
+	debugger.cpp
 )
-#Linux implementations
-if(UNIX AND NOT APPLE)
-	set( src ${src}
-		os_linux/debugger.cpp
-	)
-endif()
 
 set( interface
 	../interface/core/allocators/aligned_heap_allocator.h
 	../interface/core/allocators/memory_allocation.h
 	../interface/core/allocators/allocator_traits.h
 	../interface/core/allocators/heap_allocator.h
+	../interface/core/atomics/atomics_common.h
+	../interface/core/atomics/atomics_gcc.h
+	../interface/core/atomics/atomics_msvc_intel.h
+	../interface/core/atomics/atomics_msvc.h
+	../interface/core/bits/bits_common.h
+	../interface/core/bits/bits_linux.h
+	../interface/core/bits/bits_windows.h
+	../interface/core/bits/bits.h
+	../interface/core/character/character_common.h
+	../interface/core/character/character_linux.h
+	../interface/core/character/character_windows.h
+	../interface/core/character/character.h
 	../interface/core/containers/aligned_buffer.h
 	../interface/core/containers/array.h
 	../interface/core/containers/compressed_pair.h
@@ -33,31 +40,13 @@ set( interface
 	../interface/core/hash/city_hash.h
 	../interface/core/hash/crc32.h
 	../interface/core/iterators/random_access_iterator.h
-	../interface/core/os_common/atomics.h
-	../interface/core/os_common/character.h
-	../interface/core/os_common/cstring.h
-	../interface/core/os_common/math.h
-	../interface/core/os_common/memory.h
-	../interface/core/os_common/types.h
-	../interface/core/os_common/uuid.h
-	../interface/core/os_linux/atomics.h
-	../interface/core/os_linux/character.h
-	../interface/core/os_linux/cstring.h
-	../interface/core/os_linux/debugger.h
-	../interface/core/os_linux/math.h
-	../interface/core/os_linux/memory.h
-	../interface/core/os_linux/types.h
-	../interface/core/os_linux/uuid.h
-	../interface/core/os_windows/atomics.h
-	../interface/core/os_windows/atomics_intel.h
-	../interface/core/os_windows/character.h
-	../interface/core/os_windows/cstring.h
-	../interface/core/os_windows/debugger.h
-	../interface/core/os_windows/math.h
-	../interface/core/os_windows/memory.h
-	../interface/core/os_windows/types.h
-	../interface/core/os_windows/uuid.h
+	../interface/core/math/math.h
+	../interface/core/memory/memory.h
 	../interface/core/os_windows/windows_api.h
+	../interface/core/string/cstring/cstring_common.h
+	../interface/core/string/cstring/cstring_linux.h
+	../interface/core/string/cstring/cstring_windows.h
+	../interface/core/string/cstring/cstring.h
 	../interface/core/templates/bit_cast.h
 	../interface/core/templates/declval.h
 	../interface/core/templates/default_deleter.h
@@ -192,6 +181,14 @@ set( interface
 	../interface/core/traits/underlying_type.h
 	../interface/core/traits/void_t.h
 	../interface/core/traits/void_t.h
+	../interface/core/types/types_common.h
+	../interface/core/types/types_linux.h
+	../interface/core/types/types_windows.h
+	../interface/core/types/types.h
+	../interface/core/uuid/uuid_common.h
+	../interface/core/uuid/uuid_linux.h
+	../interface/core/uuid/uuid_windows.h
+	../interface/core/uuid/uuid.h
 	../interface/core/assert.h
 	../interface/core/atomics.h
 	../interface/core/character.h
@@ -208,9 +205,6 @@ set( interface
 	../interface/core/math.h
 	../interface/core/memory.h
 	../interface/core/minimal.h
-	../interface/core/os_common
-	../interface/core/os_linux
-	../interface/core/os_windows
 	../interface/core/slice.h
 	../interface/core/string.h
 	../interface/core/tag_init.h
@@ -225,32 +219,32 @@ set( interface
 source_group( TREE ${CMAKE_SOURCE_DIR} FILES ${interface} ${src})
 
 # Add OSLayer to the project
-add_library(core STATIC ${interface} ${src})
+add_library(${lib_name} STATIC ${interface} ${src})
 
 # Use C++ 20
-set_target_properties(core
+set_target_properties(${lib_name}
     PROPERTIES
         CXX_STANDARD 20
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
 )
 if(MSVC)
-	target_compile_options(  core PRIVATE /Zc:__cplusplus /std:c++20 /permissive- /EHsc /utf-8 )
-	#target_compile_options( core PRIVATE /Zc:__cplusplus /std:c++20 /EHsc /GR-)
+	target_compile_options(  ${lib_name} PRIVATE /Zc:__cplusplus /std:c++20 /permissive- /EHsc /utf-8 )
+	#target_compile_options( ${lib_name} PRIVATE /Zc:__cplusplus /std:c++20 /EHsc /GR-)
 # elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-# 	target_compile_options( core PRIVATE -fno-cxx-exceptions -fno-rtti)
+# 	target_compile_options( ${lib_name} PRIVATE -fno-cxx-exceptions -fno-rtti)
 endif()
 
 
 # Include Interface directory to inclusion path
-target_include_directories(core PUBLIC ../interface)
+target_include_directories(${lib_name} PUBLIC ../interface)
 
 
-target_precompile_headers(core PRIVATE precompiled.h)
+target_precompile_headers(${lib_name} PRIVATE precompiled.h)
 
 # Add defines
 target_compile_definitions(
-	core
+	${lib_name}
 	PRIVATE
 	_HAS_EXCEPTIONS=0
 	_CRT_SECURE_NO_WARNINGS
@@ -269,5 +263,5 @@ target_compile_definitions(
 
 # If we build as shared library define HD_CORE_DLL_EXPORT
 if(BUILD_SHARED_LIBS)
-    target_compile_definitions(core PRIVATE HD_CORE_DLL_EXPORT)
+    target_compile_definitions(${lib_name} PRIVATE HD_CORE_DLL_EXPORT)
 endif()

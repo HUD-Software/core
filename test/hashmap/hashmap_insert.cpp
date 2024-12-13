@@ -218,7 +218,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_eq(std::get<0>(first_element_result).first, 1u);
             hud_assert_eq(std::get<0>(first_element_result).second, 11u);
             hud_assert_eq(std::get<1>(first_element_result), 1u);
-            hud_assert_eq(std::get<2>(first_element_result), 1u);
+            hud_assert_eq(std::get<2>(first_element_result), 2u);
             hud_assert_eq(std::get<3>(first_element_result), 0u);
             hud_assert_eq(std::get<4>(first_element_result), 1u);
             hud_assert_eq(std::get<5>(first_element_result), 0u);
@@ -231,7 +231,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_eq(std::get<0>(same_element_result).first, 1u);
             hud_assert_eq(std::get<0>(same_element_result).second, 11u);
             hud_assert_eq(std::get<1>(same_element_result), 1u);
-            hud_assert_eq(std::get<2>(same_element_result), 1u);
+            hud_assert_eq(std::get<2>(same_element_result), 2u);
             hud_assert_eq(std::get<3>(same_element_result), 0u);
             hud_assert_eq(std::get<4>(same_element_result), 1u);
             hud_assert_eq(std::get<5>(same_element_result), 0u);
@@ -244,14 +244,15 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_eq(std::get<0>(second_element_result).first, 2u);
             hud_assert_eq(std::get<0>(second_element_result).second, 22u);
             hud_assert_eq(std::get<1>(second_element_result), 2u);
-            hud_assert_eq(std::get<2>(second_element_result), 3u);
+            hud_assert_eq(std::get<2>(second_element_result), 2u);
             hud_assert_eq(std::get<3>(second_element_result), 0u);
             hud_assert_eq(std::get<4>(second_element_result), 1u);
             hud_assert_eq(std::get<5>(second_element_result), 0u);
             hud_assert_eq(std::get<6>(second_element_result), 1u);
-            hud_assert_eq(std::get<7>(second_element_result), 2u);
-            hud_assert_eq(std::get<8>(second_element_result), 1u);
+            hud_assert_eq(std::get<7>(second_element_result), 1u);
+            hud_assert_eq(std::get<8>(second_element_result), 0u);
         }
+
         // Constant
         {
             constexpr auto result = test();
@@ -261,7 +262,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_eq(std::get<0>(first_element_result).first, 1u);
             hud_assert_eq(std::get<0>(first_element_result).second, 11u);
             hud_assert_eq(std::get<1>(first_element_result), 1u);
-            hud_assert_eq(std::get<2>(first_element_result), 1u);
+            hud_assert_eq(std::get<2>(first_element_result), 2u);
             hud_assert_eq(std::get<3>(first_element_result), 0u);
             hud_assert_eq(std::get<4>(first_element_result), 1u);
             hud_assert_eq(std::get<5>(first_element_result), 0u);
@@ -274,7 +275,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_eq(std::get<0>(same_element_result).first, 1u);
             hud_assert_eq(std::get<0>(same_element_result).second, 11u);
             hud_assert_eq(std::get<1>(same_element_result), 1u);
-            hud_assert_eq(std::get<2>(same_element_result), 1u);
+            hud_assert_eq(std::get<2>(same_element_result), 2u);
             hud_assert_eq(std::get<3>(same_element_result), 0u);
             hud_assert_eq(std::get<4>(same_element_result), 1u);
             hud_assert_eq(std::get<5>(same_element_result), 0u);
@@ -287,13 +288,13 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_eq(std::get<0>(second_element_result).first, 2u);
             hud_assert_eq(std::get<0>(second_element_result).second, 22u);
             hud_assert_eq(std::get<1>(second_element_result), 2u);
-            hud_assert_eq(std::get<2>(second_element_result), 3u);
+            hud_assert_eq(std::get<2>(second_element_result), 2u);
             hud_assert_eq(std::get<3>(second_element_result), 0u);
             hud_assert_eq(std::get<4>(second_element_result), 1u);
             hud_assert_eq(std::get<5>(second_element_result), 0u);
             hud_assert_eq(std::get<6>(second_element_result), 1u);
-            hud_assert_eq(std::get<7>(second_element_result), 4u);
-            hud_assert_eq(std::get<8>(second_element_result), 2u);
+            hud_assert_eq(std::get<7>(second_element_result), 2u);
+            hud_assert_eq(std::get<8>(second_element_result), 0u);
         }
     }
 }

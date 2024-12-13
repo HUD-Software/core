@@ -5,7 +5,6 @@
 
 namespace hud::os::linux
 {
-
     bool debugger::is_present() noexcept
     {
         // /proc/self/status contained TracerPid which is the PID of the process tracing this process ( 0 if not being traced )
