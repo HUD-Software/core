@@ -163,7 +163,7 @@ namespace hud::windows
             if (value == 0)
                 return 32;
             if (hud::is_constant_evaluated())
-                return os::common::bits::leading_zero(value);
+                return hud::common::bits::leading_zero(value);
             u32 result = 0;
             if (_BitScanReverse((unsigned long *)&result, value))
             {
@@ -182,7 +182,7 @@ namespace hud::windows
             if (value == 0)
                 return 64;
             if (hud::is_constant_evaluated())
-                return os::common::bits::leading_zero(value);
+                return hud::common::bits::leading_zero(value);
     #if defined(HD_TARGET_X64)
             u32 result = 0;
             if (_BitScanReverse64((unsigned long *)&result, value))

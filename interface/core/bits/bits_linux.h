@@ -118,7 +118,7 @@ namespace hud::linux
 #if HD_HAS_BUILTIN_CLZS
             return value == 0 ? 16 : __builtin_clzs(value);
 #else
-            return os::common::bits::leading_zero(value);
+            return hud::common::bits::leading_zero(value);
 #endif
         }
 
@@ -128,7 +128,7 @@ namespace hud::linux
 #if HD_HAS_BUILTIN_CLZ
             return value == 0 ? 32 : __builtin_clz(value);
 #else
-            return os::common::bits::leading_zero(value);
+            return hud::common::bits::leading_zero(value);
 #endif
         }
 
@@ -138,7 +138,7 @@ namespace hud::linux
 #if HD_HAS_BUILTIN_CLZLL
             return value == 0 ? 64 : __builtin_clzll(value);
 #else
-            return os::common::bits::leading_zero(value);
+            return hud::common::bits::leading_zero(value);
 #endif
         };
 
@@ -157,7 +157,7 @@ namespace hud::linux
 #if HD_HAS_BUILTIN_CTZ
             return value == 0 ? 32 : __builtin_ctz(value);
 #else
-            return value == 0 ? 32 : os::common::bits::trailing_zero(value);
+            return value == 0 ? 32 : hud::common::bits::trailing_zero(value);
 #endif
         }
 
@@ -166,7 +166,7 @@ namespace hud::linux
 #if HD_HAS_BUILTIN_CTZLL
             return value == 0 ? 64 : __builtin_ctzll(value);
 #else
-            return value == 0 ? 64 : os::common::bits::trailing_zero(value);
+            return value == 0 ? 64 : hud::common::bits::trailing_zero(value);
 #endif
         }
     };
