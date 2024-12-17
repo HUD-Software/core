@@ -165,7 +165,7 @@ namespace hud::linux
          * @param args Depending of the format, list of arguments
          * @return Number of character written, -1 if an error occurred.
          */
-        using hud::os::common::cstring::format_vargs;
+        using hud::common::cstring::format_vargs;
 
         /**
          * Write a formatted wchar to a wchar buffer (like printf does).

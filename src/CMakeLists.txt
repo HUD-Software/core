@@ -21,9 +21,6 @@ set( interface
 	../interface/core/bits/bits_linux.h
 	../interface/core/bits/bits_windows.h
 	../interface/core/bits/bits.h
-	../interface/core/character/character_common.h
-	../interface/core/character/character_linux.h
-	../interface/core/character/character_windows.h
 	../interface/core/character/character.h
 	../interface/core/containers/aligned_buffer.h
 	../interface/core/containers/array.h
