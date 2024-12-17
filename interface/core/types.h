@@ -3,4 +3,4 @@
 
 #include "types/types.h"
 
-#endif HD_INC_CORE_TYPES_H
+#endif // HD_INC_CORE_TYPES_H

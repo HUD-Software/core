@@ -8,6 +8,43 @@ namespace hud
 {
     struct math
     {
+        /** Compute the next power of two mask. */
+        [[nodiscard]] static constexpr u32 next_power_of_two_mask(u32 integral) noexcept
+        {
+            integral--;
+            integral |= integral >> 1;
+            integral |= integral >> 2;
+            integral |= integral >> 4;
+            integral |= integral >> 8;
+            integral |= integral >> 16;
+            return integral;
+        }
+
+        /** Compute the next power of two mask. */
+        [[nodiscard]] static constexpr u64 next_power_of_two_mask(u64 integral) noexcept
+        {
+            integral--;
+            integral |= integral >> 1;
+            integral |= integral >> 2;
+            integral |= integral >> 4;
+            integral |= integral >> 8;
+            integral |= integral >> 16;
+            integral |= integral >> 32;
+            return integral;
+        }
+
+        /** Compute the next power of two. */
+        [[nodiscard]] static constexpr u32 next_power_of_two(u32 integral) noexcept
+        {
+            return hud::math::next_power_of_two_mask(integral) + 1;
+        }
+
+        /** Compute the next power of two. */
+        [[nodiscard]] static constexpr u64 next_power_of_two(u64 integral) noexcept
+        {
+            return hud::math::next_power_of_two_mask(integral) + 1;
+        }
+
         /** Compute the natual logarithm of value. */
         template<typename type_t>
         [[nodiscard]] static type_t log(const type_t value) noexcept

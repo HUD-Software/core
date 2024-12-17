@@ -530,7 +530,7 @@ namespace hud
             {
                 if (count > max_slot_count_)
                 {
-                    grow_capacity(count);
+                    grow_capacity(hud::math::next_power_of_two(count) + 1);
                 }
             }
 
@@ -574,7 +574,6 @@ namespace hud
                 {
                     clear();
                     free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
-                    // allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr_), current_allocation_size()});
                 }
             }
 
