@@ -3,10 +3,10 @@
 #include "atomics_common.h"
 #include "../traits/remove_pointer.h"
 
-namespace hud::gcc::atomics
+namespace hud::gcc
 {
     struct atomics
-        : public hud::common::atomics::atomics
+        : public hud::common::atomics
     {
 
         /**
@@ -226,6 +226,6 @@ namespace hud::gcc::atomics
         }
     };
 
-} // namespace hud::gcc::atomics
+} // namespace hud::gcc
 
 #endif // HD_INC_CORE_ATOMICS_ATOMICS_GCC_H

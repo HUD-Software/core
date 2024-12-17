@@ -17,10 +17,10 @@ namespace hud
     using atomics =
 #if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_MSVC)
         // os::windows::atomics;
-        common::msvc::atomics;
+        hud::msvc::atomics;
 #elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
         // os::linux::atomics;
-        common::gcc::atomics;
+        hud::gcc::atomics;
 #else
     #error atomics not implemented for the platform
 #endif
@@ -61,9 +61,9 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Result of the addition
              */
-            HD_FORCEINLINE type_t add(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t add(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
-                return atomics::fetch_add(storage, value, order) + value;
+                return hud::atomics::fetch_add(storage, value, order) + value;
             }
 
             /**
@@ -72,7 +72,7 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Result of the addition
              */
-            HD_FORCEINLINE type_t add(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t add(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->add(value, order);
             }
@@ -83,9 +83,9 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Value of the atomic before the addition
              */
-            HD_FORCEINLINE type_t fetch_add(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t fetch_add(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
-                return atomics::fetch_add(storage, value, order);
+                return hud::atomics::fetch_add(storage, value, order);
             }
 
             /**
@@ -94,7 +94,7 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Value of the atomic before the addition
              */
-            HD_FORCEINLINE type_t fetch_add(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t fetch_add(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->fetch_add(value, order);
             }
@@ -105,7 +105,7 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Result of the substraction
              */
-            HD_FORCEINLINE type_t subtract(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t subtract(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return fetch_sub(value, order) - value;
             }
@@ -116,7 +116,7 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Result of the substraction
              */
-            HD_FORCEINLINE type_t subtract(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t subtract(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->subtract(value, order);
             }
@@ -127,9 +127,9 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Value of the atomic before the substraction
              */
-            HD_FORCEINLINE type_t fetch_sub(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t fetch_sub(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
-                return atomics::fetch_sub(storage, value, order);
+                return hud::atomics::fetch_sub(storage, value, order);
             }
 
             /**
@@ -138,55 +138,55 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Value of the atomic before the substraction
              */
-            HD_FORCEINLINE type_t fetch_sub(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t fetch_sub(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->fetch_sub(value, order);
             }
 
             /** Atomically increment the atomic value with a seq_cst memory order and return the incremented value of the atomic. */
-            HD_FORCEINLINE type_t increment(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t increment(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return add(static_cast<type_t>(1), order);
             }
 
             /** Atomically increment the atomic value with a seq_cst memory order and return the incremented value of the atomic. */
-            HD_FORCEINLINE type_t increment(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t increment(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->increment(order);
             }
 
             /** Atomically increment the atomic value with a seq_cst memory order and return the value of the atomic before the incrementation. */
-            HD_FORCEINLINE type_t fetch_increment(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t fetch_increment(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return fetch_add(static_cast<type_t>(1), order);
             }
 
             /** Atomically increment the atomic value with a seq_cst memory order and return the value of the atomic before the incrementation. */
-            HD_FORCEINLINE type_t fetch_increment(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t fetch_increment(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->fetch_increment(order);
             }
 
             /** Atomically decrement the atomic value with a seq_cst memory order and return the decremented value of the atomic. */
-            HD_FORCEINLINE type_t decrement(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t decrement(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return subtract(static_cast<type_t>(1), order);
             }
 
             /** Atomically decrement the atomic value with a seq_cst memory order and return the decremented value of the atomic. */
-            HD_FORCEINLINE type_t decrement(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t decrement(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->decrement(order);
             }
 
             /** Atomically decrement the atomic value with a seq_cst memory order and return the value of the atomic before the decrementation. */
-            HD_FORCEINLINE type_t fetch_decrement(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t fetch_decrement(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return fetch_sub(static_cast<type_t>(1), order);
             }
 
             /** Atomically Decrement the atomic value with a seq_cst memory order and return the value of the atomic before the decrementation. */
-            HD_FORCEINLINE type_t fetch_decrement(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t fetch_decrement(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->fetch_decrement(order);
             }
@@ -294,9 +294,9 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Result of the addition
              */
-            HD_FORCEINLINE type_t add(const isize value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t add(const isize value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
-                return atomics::fetch_add(storage, value, order) + value;
+                return hud::atomics::fetch_add(storage, value, order) + value;
             }
 
             /**
@@ -305,7 +305,7 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Result of the addition
              */
-            HD_FORCEINLINE type_t add(const isize value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t add(const isize value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->add(value, order);
             }
@@ -316,9 +316,9 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Value of the atomic before the addition
              */
-            HD_FORCEINLINE type_t fetch_add(const isize value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t fetch_add(const isize value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
-                return atomics::fetch_add(storage, value, order);
+                return hud::atomics::fetch_add(storage, value, order);
             }
 
             /**
@@ -327,7 +327,7 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Value of the atomic before the addition
              */
-            HD_FORCEINLINE type_t fetch_add(const isize value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t fetch_add(const isize value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->fetch_add(value, order);
             }
@@ -338,7 +338,7 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Result of the substraction
              */
-            HD_FORCEINLINE type_t subtract(const isize value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t subtract(const isize value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return fetch_sub(value, order) - value;
             }
@@ -349,7 +349,7 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Result of the substraction
              */
-            HD_FORCEINLINE type_t subtract(const isize value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t subtract(const isize value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->subtract(value, order);
             }
@@ -360,9 +360,9 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Value of the atomic before the substraction
              */
-            HD_FORCEINLINE type_t fetch_sub(const isize value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t fetch_sub(const isize value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
-                return atomics::fetch_sub(storage, value, order);
+                return hud::atomics::fetch_sub(storage, value, order);
             }
 
             /**
@@ -371,55 +371,55 @@ namespace hud
              * @param order Synchronization mode for the operation
              * @return Value of the atomic before the substraction
              */
-            HD_FORCEINLINE type_t fetch_sub(const isize value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t fetch_sub(const isize value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->fetch_sub(value, order);
             }
 
             /** Atomically increment the atomic value with a seq_cst memory order and return the incremented value of the atomic. */
-            HD_FORCEINLINE type_t increment(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t increment(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return add(1, order);
             }
 
             /** Atomically increment the atomic value with a seq_cst memory order and return the incremented value of the atomic. */
-            HD_FORCEINLINE type_t increment(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t increment(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->increment(order);
             }
 
             /** Atomically increment the atomic value with a seq_cst memory order and return the value of the atomic before the incrementation. */
-            HD_FORCEINLINE type_t fetch_increment(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t fetch_increment(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return fetch_add(1, order);
             }
 
             /** Atomically increment the atomic value with a seq_cst memory order and return the value of the atomic before the incrementation. */
-            HD_FORCEINLINE type_t fetch_increment(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t fetch_increment(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->fetch_increment(order);
             }
 
             /** Atomically decrement the atomic value with a seq_cst memory order and return the decremented value of the atomic. */
-            HD_FORCEINLINE type_t decrement(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t decrement(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return subtract(1, order);
             }
 
             /** Atomically decrement the atomic value with a seq_cst memory order and return the decremented value of the atomic. */
-            HD_FORCEINLINE type_t decrement(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t decrement(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->decrement(order);
             }
 
             /** Atomically decrement the atomic value with a seq_cst memory order and return the value of the atomic before the decrementation. */
-            HD_FORCEINLINE type_t fetch_decrement(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+            HD_FORCEINLINE type_t fetch_decrement(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
             {
                 return fetch_sub(1, order);
             }
 
             /** Atomically Decrement the atomic value with a seq_cst memory order and return the value of the atomic before the decrementation. */
-            HD_FORCEINLINE type_t fetch_decrement(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+            HD_FORCEINLINE type_t fetch_decrement(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
             {
                 return const_cast<atomic_impl *>(this)->fetch_decrement(order);
             }
@@ -554,9 +554,9 @@ namespace hud
          * @param value The value to store in the atomic
          * @param order The memory ordering fence applied by this operation. Possible values are relaxed, seq_cst and release
          */
-        HD_FORCEINLINE void store(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+        HD_FORCEINLINE void store(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
         {
-            atomics::store(this->storage, value, order);
+            hud::atomics::store(this->storage, value, order);
         }
 
         /**
@@ -564,7 +564,7 @@ namespace hud
          * @param value The value to store in the atomic
          * @param order The memory ordering fence applied by this operation. Possible values are relaxed, seq_cst and release
          */
-        HD_FORCEINLINE void store(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+        HD_FORCEINLINE void store(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
         {
             const_cast<atomic *>(this)->store(value, order);
         }
@@ -574,9 +574,9 @@ namespace hud
          * @param order The memory ordering fence applied by this operation.Possible values are relaxed, seq_cst, consumeand acquire
          * @return The loaded value of the atomic
          */
-        HD_FORCEINLINE type_t load(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) const noexcept
+        HD_FORCEINLINE type_t load(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) const noexcept
         {
-            return atomics::load(this->storage, order);
+            return hud::atomics::load(this->storage, order);
         }
 
         /**
@@ -584,7 +584,7 @@ namespace hud
          * @param order The memory ordering fence applied by this operation.Possible values are relaxed, seq_cst, consumeand acquire
          * @return The loaded value of the atomic
          */
-        HD_FORCEINLINE type_t load(atomics::memory_order_e order = atomics::memory_order_e::seq_cst) const volatile noexcept
+        HD_FORCEINLINE type_t load(hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) const volatile noexcept
         {
             return const_cast<atomic *>(this)->load(order);
         }
@@ -595,9 +595,9 @@ namespace hud
          * @param order Synchronization mode for the operation
          * @return The value of the atomic before exchange
          */
-        HD_FORCEINLINE type_t exchange(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+        HD_FORCEINLINE type_t exchange(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
         {
-            return atomics::exchange(this->storage, value, order);
+            return hud::atomics::exchange(this->storage, value, order);
         }
 
         /**
@@ -606,7 +606,7 @@ namespace hud
          * @param order Synchronization mode for the operation
          * @return The value of the atomic before exchange
          */
-        HD_FORCEINLINE type_t exchange(const type_t value, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+        HD_FORCEINLINE type_t exchange(const type_t value, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
         {
             return const_cast<atomic *>(this)->exchange(value, order);
         }
@@ -620,9 +620,9 @@ namespace hud
          * @param order The memory ordering fence applied by this operation
          * @return true if the value is replaced, false otherwise.
          */
-        HD_FORCEINLINE bool compare_exchange(type_t &expected, const type_t desired, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) noexcept
+        HD_FORCEINLINE bool compare_exchange(type_t &expected, const type_t desired, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) noexcept
         {
-            return atomics::compare_and_set(this->storage, expected, desired, order);
+            return hud::atomics::compare_and_set(this->storage, expected, desired, order);
         }
 
         /**
@@ -634,7 +634,7 @@ namespace hud
          * @param order The memory ordering fence applied by this operation
          * @return true if the value is replaced, false otherwise.
          */
-        HD_FORCEINLINE bool compare_exchange(type_t &expected, const type_t desired, atomics::memory_order_e order = atomics::memory_order_e::seq_cst) volatile noexcept
+        HD_FORCEINLINE bool compare_exchange(type_t &expected, const type_t desired, hud::atomics::memory_order_e order = hud::atomics::memory_order_e::seq_cst) volatile noexcept
         {
             return const_cast<atomic *>(this)->compare_exchange(expected, desired, order);
         }

@@ -9,7 +9,7 @@
     #error This file must be included only when targetting Windows OS
 #endif
 
-namespace hud::common::msvc
+namespace hud::msvc
 {
 
 #if defined(HD_TARGET_X86) | defined(HD_TARGET_X64)
@@ -19,6 +19,6 @@ namespace hud::common::msvc
     };
 #endif
 
-} // namespace hud::common::msvc
+} // namespace hud::msvc
 
 #endif // HD_INC_CORE_ATOMICS_ATOMICS_MSVC_H

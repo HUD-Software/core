@@ -1,7 +1,7 @@
 #ifndef HD_INC_CORE_ATOMICS_ATOMICS_COMMON_H
 #define HD_INC_CORE_ATOMICS_ATOMICS_COMMON_H
 
-namespace hud::common::atomics
+namespace hud::common
 {
     struct atomics
     {
@@ -42,6 +42,6 @@ namespace hud::common::atomics
             seq_cst
         };
     };
-} // namespace hud::common::atomics
+} // namespace hud::common
 
 #endif // HD_INC_CORE_ATOMICS_ATOMICS_COMMON_H

@@ -9,7 +9,7 @@
 #include "../traits/remove_pointer.h"
 #include "../memory.h"
 
-namespace hud::common::msvc
+namespace hud::msvc
 {
 
 /** Limits the compiler optimizations that can reorder memory accesses across the point of the call. */
@@ -25,7 +25,7 @@ namespace hud::common::msvc
 
     /** Implementation of atomic operations for Intel X86 and X86_64 */
     struct atomics_intel
-        : public hud::common::atomics::atomics
+        : public hud::common::atomics
     {
 
         /**
@@ -519,6 +519,6 @@ namespace hud::common::msvc
 
 #undef compiler_barrier
 
-} // namespace hud::common::msvc
+} // namespace hud::msvc
 
 #endif // HD_INC_CORE_ATOMICS_ATOMICS_MSVC_INTEL_H
