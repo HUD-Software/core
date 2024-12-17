@@ -23,7 +23,7 @@ namespace hud::linux
 #if HD_HAS_BUILTIN_BUILTIN_BSWAP32
             return __builtin_bswap32(value);
 #else
-    #error hud::os::linux::memory::reverse(u32) not defined
+    #error hud::gcc::linux::memory::reverse(u32) not defined
 #endif
         }
 
@@ -38,7 +38,7 @@ namespace hud::linux
 #if HD_HAS_BUILTIN_BULITIN_BSWAP64
             return __builtin_bswap64(value);
 #else
-    #error hud::os::linux::memory::reverse(u64) not defined
+    #error hud::gcc::linux::memory::reverse(u64) not defined
 #endif
         }
 

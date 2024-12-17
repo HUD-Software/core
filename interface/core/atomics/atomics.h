@@ -16,10 +16,8 @@ namespace hud
     /** Provides atomics operations. */
     using atomics =
 #if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_MSVC)
-        // os::windows::atomics;
         hud::msvc::atomics;
 #elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
-        // os::linux::atomics;
         hud::gcc::atomics;
 #else
     #error atomics not implemented for the platform
