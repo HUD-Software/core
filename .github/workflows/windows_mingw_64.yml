@@ -31,9 +31,9 @@ jobs:
       - name: Release
         run: |
           mkdir -p release
-          cp -R target/test/test_core.exe release -i
-          cp -R target/src/*.a release -i
-          cp -R interface/core release/core -i
+          cp -R target/test/test_core.exe release
+          cp -R target/src/*.a release
+          cp -R interface/core release/core
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
