@@ -16,7 +16,7 @@ namespace hud::common
             return integral;
         }
 
-        /** Determines if a 64-bit word contains any zero byte using a SIMD-like technique
+                /** Determines if a 64-bit word contains any zero byte using a SIMD-like technique
          * Example:
          *    value = 0x1213140015001617
          *    result = 0x0000008000800000
