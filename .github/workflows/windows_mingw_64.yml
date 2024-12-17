@@ -30,9 +30,10 @@ jobs:
       #     reporter: java-junit
       - name: Release
         run: |
-          xcopy target\test\Release release\ /s /y
-          xcopy target\src\Release release\ /s /y
-          xcopy src\cityhash release\cityhash\ /s /y
+          mkdir -p release
+          cp -R target/test/test_core.exe release -i
+          cp -R target/src/*.a release -i
+          cp -R interface/core release/core -i
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
