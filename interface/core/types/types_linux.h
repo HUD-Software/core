@@ -2,7 +2,7 @@
 #define HD_INC_CORE_TYPES_TYPES_LINUX_H
 #include "types_common.h"
 
-#if !defined(HD_OS_LINUX)
+#if !defined(HD_OS_LINUX) && !defined(HD_OS_BROWSER)
     #error This file must be included only when targetting Linux OS
 #endif
 

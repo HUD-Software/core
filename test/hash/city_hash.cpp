@@ -113,24 +113,35 @@ GTEST_TEST(cityhash, hash128)
 
 GTEST_TEST(cityhash, combine_32)
 {
-    // This result come from abseil with modification of the hash combine to use the Hash128to64 to combine 2 32 bits hash
-    constexpr const usize len = hud::cstring::length("key");
+    // This result come from abseil with modification of the hash seed 0 to use the Hash128to64 to combine 2 32 bits hash
+    const usize len = hud::cstring::length("key");
+
     u32 hash = hud::hash_algorithm::city_hash::hash_32("key", len);
     u32 combined = hud::hash_algorithm::city_hash::combine_32(0, hash);
     hud_assert_eq(combined, 0x105695BEu);
 
     u32 hash_2 = hud::hash_algorithm::city_hash::hash_32((const ansichar *)&len, sizeof(len));
-    hud_assert_eq(hud::hash_algorithm::city_hash::combine_32(combined, hash_2), 0xE638A9DBu);
+    hud_assert_eq(hash_2, 0x8D14653Fu);
+#if defined(HD_TARGET_32_BITS)
+    hud_assert_eq(hud::hash_algorithm::city_hash::combine_32(combined, hash_2), 0xE66FB46Bu);
+#else // HD_TARGET_64_BITS
+    hud_assert_eq(hud::hash_algorithm::city_hash::combine_32(combined, hash_2), 0xE66FB46Bu);
+#endif
 }
 
 GTEST_TEST(cityhash, combine_64)
 {
-    // This result come from abseil with modification of the hash combine to use the Hash128to64 to combine 2 64 bits hash
-    constexpr const usize len = hud::cstring::length("key");
+    // This result come from abseil with modification of the hash seed 0 to use the Hash128to64 to combine 2 64 bits hash
+    const usize len = hud::cstring::length("key");
     u64 hash = hud::hash_algorithm::city_hash::hash_64("key", len);
     u64 combined = hud::hash_algorithm::city_hash::combine_64(0, hash);
     hud_assert_eq(combined, 0xCEAAB8E77B74C2E7u);
 
     u64 hash_2 = hud::hash_algorithm::city_hash::hash_64((const ansichar *)&len, sizeof(len));
+    hud_assert_eq(hash_2, 0x253692A8EE00085Cu);
+#if defined(HD_TARGET_32_BITS)
+    hud_assert_eq(hud::hash_algorithm::city_hash::combine_64(combined, hash_2), 0x60A95A74371605F2);
+#else // HD_TARGET_64_BITS
     hud_assert_eq(hud::hash_algorithm::city_hash::combine_64(combined, hash_2), 0x746D68F6EB969EB7u);
+#endif
 }

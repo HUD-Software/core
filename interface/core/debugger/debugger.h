@@ -6,6 +6,8 @@
 #elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
     #include "debugger_linux.h"
     #include <stdlib.h> // abort
+#elif defined(HD_COMPILER_EMSCRIPTEN)
+    #include "debugger_browser.h"
 #else
     #error Targeted OS not supported
 #endif
@@ -18,6 +20,8 @@ namespace hud
     struct debugger : hud::windows::debugger
 #elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
     struct debugger : hud::linux::debugger
+#elif defined(HD_COMPILER_EMSCRIPTEN)
+    struct debugger : hud::browser::debugger
 #endif
     {
         /** Break the debugger if condition is false and if the calling process is being debugged by a user-mode debugger. */

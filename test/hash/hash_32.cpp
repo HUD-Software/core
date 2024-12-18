@@ -157,11 +157,19 @@ GTEST_TEST(hash_32, hasher32)
     constexpr const usize len = hud::cstring::length("key");
     hud::hasher_32 hasher;
     hud_assert_eq(hasher("key", len).result(), 0x105695BEu);
-    hud_assert_eq(hasher((const ansichar *)&len, sizeof(len)).result(), 0xE638A9DBu);
+#if defined(HD_TARGET_32_BITS)
+    hud_assert_eq(hasher((const ansichar *)&len, static_cast<usize>(sizeof(len))).result(), 0xE66FB46Bu);
+#else // HD_TARGET_64_BITS
+    hud_assert_eq(hasher((const ansichar *)&len, static_cast<usize>(sizeof(len))).result(), 0xE638A9DBu);
+#endif
 
     // Test that hasher can be called redundancy
-    u32 value = hud::hasher_32 {}("key", len).hash((const ansichar *)&len, sizeof(len)).result();
+    u32 value = hud::hasher_32 {}("key", len).hash((const ansichar *)&len, static_cast<usize>(sizeof(len))).result();
+#if defined(HD_TARGET_32_BITS)
+    hud_assert_eq(value, 0xE66FB46Bu);
+#else // HD_TARGET_64_BITS
     hud_assert_eq(value, 0xE638A9DBu);
+#endif
 }
 
 GTEST_TEST(hash_32, hash_custom_type)

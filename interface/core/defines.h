@@ -40,7 +40,7 @@
     #if defined(__SIZEOF_INT128__)
         #define HD_INTRINSIC_INT128_SUPPORTED 1
     #endif
-#elif defined(HD_COMPILER_CLANG)
+#elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_EMSCRIPTEN)
     #if defined(HD_DEBUG)
         #define HD_FORCEINLINE
     #else
@@ -104,6 +104,7 @@
         #define HD_CORE_DLL
     #endif
     #define HD_ASSUME(cond) __assume(cond)
+
 #endif
 
 #endif // HD_INC_CORE_DEFINES_H

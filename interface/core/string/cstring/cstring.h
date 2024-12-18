@@ -3,7 +3,7 @@
 
 #if defined(HD_OS_WINDOWS)
     #include "cstring_windows.h"
-#elif defined(HD_OS_LINUX)
+#elif defined(HD_OS_LINUX) || defined(HD_OS_BROWSER)
     #include "cstring_linux.h"
 #else
     #error Targeted OS not supported
@@ -16,7 +16,7 @@ namespace hud
     struct cstring :
 #if defined(HD_OS_WINDOWS)
         hud::windows::cstring
-#elif defined(HD_OS_LINUX)
+#elif defined(HD_OS_LINUX) || defined(HD_OS_BROWSER)
         hud::linux::cstring
 #endif
     {

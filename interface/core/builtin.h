@@ -1,11 +1,11 @@
 #ifndef HD_INC_CORE_BUILTIN_H
 #define HD_INC_CORE_BUILTIN_H
 
-#if (defined(HD_COMPILER_GCC) || defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_CLANG_CL)) && !defined(__has_builtin)
+#if (defined(HD_COMPILER_GCC) || defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_EMSCRIPTEN)) && !defined(__has_builtin)
     #error __has_builtin need to be defined.
 #endif
 
-#if defined(HD_COMPILER_GCC) || defined(HD_COMPILER_CLANG)
+#if defined(HD_COMPILER_GCC) || defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_EMSCRIPTEN)
     #define HD_HAS_BUILTIN_IS_CONVERTIBLE_TO __has_builtin(__is_convertible_to)
     #define HD_HAS_BUILTIN_IS_TRIVIALLY_DESTRUCTIBLE __has_builtin(__is_trivially_destructible)
     #define HD_HAS_BUILTIN_BUILTIN_BSWAP32 __has_builtin(__builtin_bswap32)

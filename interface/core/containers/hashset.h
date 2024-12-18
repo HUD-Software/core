@@ -592,7 +592,7 @@ namespace hud
                 slot_type *slot_ptr = slot_ptr_ + res.first;
                 if (res.second)
                 {
-                    hud::memory::template construct_at(slot_ptr, key, hud::forward<args_t>(args)...);
+                    hud::memory::construct_at<args_t...>(slot_ptr, key, hud::forward<args_t>(args)...);
                 }
                 return slot_ptr->value();
             }
@@ -611,7 +611,7 @@ namespace hud
                 slot_type *slot_ptr = slot_ptr_ + res.first;
                 if (res.second)
                 {
-                    hud::memory::template construct_at(slot_ptr, key, hud::forward<args_t>(args)...);
+                    hud::memory::construct_at(slot_ptr, key, hud::forward<args_t>(args)...);
                 }
                 return {control_ptr_ + res.first, slot_ptr};
             }

@@ -4,7 +4,7 @@
 #if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_MSVC)
     // #include "os_windows/atomics.h"
     #include "atomics_msvc.h"
-#elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
+#elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC) || defined(HD_COMPILER_EMSCRIPTEN)
     #include "atomics_gcc.h"
 #else
     #error Targeted OS not supported
@@ -17,7 +17,7 @@ namespace hud
     using atomics =
 #if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_MSVC)
         hud::msvc::atomics;
-#elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
+#elif defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC) || defined(HD_COMPILER_EMSCRIPTEN)
         hud::gcc::atomics;
 #else
     #error atomics not implemented for the platform

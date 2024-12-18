@@ -3,7 +3,11 @@
 #include "uuid_common.h"
 #include <sys/random.h>
 
-#if !defined(HD_OS_LINUX)
+#if defined(HD_OS_BROWSER)
+    #include <emscripten.h>
+#endif
+
+#if !defined(HD_OS_LINUX) && !defined(HD_OS_BROWSER)
     #error This file must be included only when targetting Linux OS
 #endif
 
@@ -29,6 +33,7 @@ namespace hud::linux
 
             // 1. Generate 16 random bytes (=128 bits)
             alignas(16) u8 bytes[16];
+#if defined(HD_OS_LINUX)
             i32 bytes_count_copied = getrandom(bytes, sizeof(bytes), GRND_RANDOM);
 
             // LCOV_EXCL_START ( Supposed never failed, else alternative is to read in /dev/{u}random )
@@ -36,8 +41,16 @@ namespace hud::linux
             {
                 return false;
             }
-            // LCOV_EXCL_STOP
-
+                // LCOV_EXCL_STOP
+#elif defined(HD_OS_BROWSER)
+            EM_ASM({
+            var bytes = new Uint8Array(16);
+            crypto.getRandomValues(bytes);
+            // Copier les octets dans la mémoire partagée de WebAssembly
+            for (var i = 0; i < 16; i++) {
+                HEAPU8[$0 + i] = bytes[i];
+            } }, &bytes[0]);
+#endif
             // 2. Set the four most significant bits of the 7th byte to 0100, so the high nibble is "4"
             bytes[6] = (bytes[6] & 0x0F) | 0x40;
 

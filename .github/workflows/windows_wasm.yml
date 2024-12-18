@@ -1,0 +1,43 @@
+name: Windows WebAssembly build & test
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-tests:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install MinGW dependencies
+        run: |
+            C:/msys64/usr/bin/pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain --noconfirm
+            $env:Path += ";C:\msys64\ucrt64\bin"
+      - name: Install Emscripten SDK
+        uses: mymindstorm/setup-emsdk@v14
+      - name: Generate
+        run: emcmake.bat cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
+      - name: Build
+        run: cmake --build target -- -j 8
+      - name: Test
+        run: ctest --test-dir target -j10 -C Release -T test --output-on-failure
+      # No test report for the moment
+      # - name: Test Report
+      #   uses: dorny/test-reporter@v1
+      #   if: success() || failure()
+      #   with:
+      #     name: Windows CityHash Test Report
+      #     path: target/test/test_*_report.xml
+      #     reporter: java-junit
+      - name: Release
+        run: |
+          xcopy target\test\test_cityhash.js release\ /s /y
+          xcopy target\test\test_cityhash.wasm release\ /s /y
+          xcopy target\src\libcityhash.a release\ /s /y
+          xcopy src\cityhash release\cityhash\ /s /y
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: windows_webassembly
+          path: release\**

@@ -13,6 +13,7 @@ windows 64 bit                    _WIN64 (implies _WIN32)
 NaCL                              __native_client__
 AsmJS                             __asmjs__
 Fuschia                           __Fuchsia__
+Emscripten                        __EMSCRIPTEN__
 
 ---- To check which compiler is used:
 Visual Studio       _MSC_VER
@@ -27,7 +28,8 @@ MinGW-w64 64bit     __MINGW64__
 __GNUC__ (e.g. 5) and __GNUC_MINOR__ (e.g. 1).
 __clang_major__, __clang_minor__, __clang_patchlevel__
 _MSC_VER and _MSC_FULL_VER
- __MINGW64_VERSION_MAJOR and __MINGW64_VERSION_MINOR
+__MINGW64_VERSION_MAJOR and __MINGW64_VERSION_MINOR
+__EMSCRIPTEN_major__, __EMSCRIPTEN_minor__, __EMSCRIPTEN_tiny__
 
 ---- To check which compiler architecture is used:
 msvc:
@@ -49,18 +51,22 @@ __aarch64__
     #define HD_OS_WINDOWS
 #elif defined(__linux__)
     #define HD_OS_LINUX
+#elif defined(__EMSCRIPTEN__)
+    #define HD_OS_BROWSER
 #else
     #error Unknown target OS defines
 #endif
 
 /** Detect compiler */
-#if defined(_MSC_VER) && !defined(__clang__)
-    #define HD_COMPILER_MSVC
-#endif
-
-#if defined(__clang__)
-    #if defined(_MSC_VER)
+#if defined(_MSC_VER)
+    #if defined(__clang__)
         #define HD_COMPILER_CLANG_CL
+    #else
+        #define HD_COMPILER_MSVC
+    #endif
+#elif defined(__clang__)
+    #if defined(__EMSCRIPTEN__)
+        #define HD_COMPILER_EMSCRIPTEN
     #else
         #define HD_COMPILER_CLANG
     #endif
@@ -78,6 +84,11 @@ __aarch64__
     #define HD_COMPILER_VERSION HD_COMPILER_CLANG_VERSION_MAJOR, HD_COMPILER_CLANG_VERSION_MINOR, HD_COMPILER_CLANG_VERSION_PATCH
 #elif defined(HD_COMPILER_GCC)
     #define HD_COMPILER_VERSION __GNUC__, __GNUC_MINOR__
+#elif defined(HD_COMPILER_EMSCRIPTEN)
+    #define HD_COMPILER_EMSCRIPTEN_VERSION_MAJOR __EMSCRIPTEN_major__
+    #define HD_COMPILER_EMSCRIPTEN_VERSION_MINOR __EMSCRIPTEN_minor__
+    #define HD_COMPILER_EMSCRIPTEN_VERSION_PATCH __EMSCRIPTEN_tiny__
+    #define HD_COMPILER_VERSION HD_COMPILER_EMSCRIPTEN_VERSION_MAJOR, HD_COMPILER_EMSCRIPTEN_VERSION_MINOR, HD_COMPILER_EMSCRIPTEN_VERSION_PATCH
 #else
     #error Unknown compiler version defines
 #endif
@@ -85,6 +96,7 @@ __aarch64__
 /** Detect target architecture */
 #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
     #if defined(_M_X64)
+        #error dsdsdsdsdds
         #define HD_TARGET_X64
     #elif defined(_M_IX86)
         #define HD_TARGET_X86
@@ -99,13 +111,19 @@ __aarch64__
     #elif defined(__x86_64__)
         #define HD_TARGET_X64
     #endif
+#elif defined(HD_COMPILER_EMSCRIPTEN)
+    #if defined(__LP64__)
+        #define HD_TARGET_WASM64
+    #else
+        #define HD_TARGET_WASM32
+    #endif
 #else
     #error Unknown target architecture defines
 #endif
 
-#if defined(HD_TARGET_X64) || defined(HD_TARGET_ARM64)
+#if defined(HD_TARGET_X64) || defined(HD_TARGET_ARM64) || defined(HD_TARGET_WASM64)
     #define HD_TARGET_64_BITS
-#elif defined(HD_TARGET_X86) || defined(HD_TARGET_ARM32)
+#elif defined(HD_TARGET_X86) || defined(HD_TARGET_ARM32) || defined(HD_TARGET_WASM32)
     #define HD_TARGET_32_BITS
 #else
     #error Unknown target architecture defines
@@ -115,6 +133,8 @@ __aarch64__
     #define HD_TARGET_X86_FAMILY
 #elif defined(HD_TARGET_ARM64) || defined(HD_TARGET_ARM32)
     #define HD_TARGET_ARM_FAMILY
+#elif defined(HD_TARGET_WASM64) || defined(HD_TARGET_WASM32)
+    #define HD_TARGET_WASM_FAMILY
 #else
     #error Unknown target family
 #endif
@@ -130,6 +150,8 @@ __aarch64__
     #else
         #error Unknown endianness defines
     #endif
+#elif defined(HD_OS_BROWSER)
+    #define HD_LITTLE_ENDIAN
 #else
     #error Unknown target OS for endianness defines
 #endif
@@ -138,10 +160,10 @@ __aarch64__
 #if !defined(HD_TARGET_32_BITS) && !defined(HD_TARGET_64_BITS)
     #error Architecture targeted not supported
 #endif
-#if !defined(HD_COMPILER_MSVC) && !defined(HD_COMPILER_CLANG_CL) && !defined(HD_COMPILER_CLANG) && !defined(HD_COMPILER_GCC)
+#if !defined(HD_COMPILER_MSVC) && !defined(HD_COMPILER_CLANG_CL) && !defined(HD_COMPILER_CLANG) && !defined(HD_COMPILER_GCC) && !defined(HD_COMPILER_EMSCRIPTEN)
     #error Compiler not supported
 #endif
-#if !defined(HD_OS_WINDOWS) && !defined(HD_OS_LINUX)
+#if !defined(HD_OS_WINDOWS) && !defined(HD_OS_LINUX) && !defined(HD_OS_BROWSER)
     #error Operating System targeted not supported
 #endif
 #if !defined(HD_DEBUG) && !defined(HD_DEBUGOPTIMIZED) && !defined(HD_RELEASE)

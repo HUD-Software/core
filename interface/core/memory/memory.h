@@ -811,7 +811,7 @@ namespace hud
             static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct_array_at is not designed to allow throwable constructible type");
             while (begin < end)
             {
-                hud::memory::template construct_at(begin++, hud::forward<args_t>(args)...);
+                hud::memory::construct_at<type_t, args_t...>(begin++, hud::forward<args_t>(args)...);
             }
         }
 
@@ -825,7 +825,7 @@ namespace hud
         static constexpr void default_construct(type_t *address) noexcept
         {
             static_assert(hud::is_nothrow_default_constructible_v<type_t>, "type_t default constructor is throwable.hud::memory::default_construct is not designed to allow throwable default constructible type");
-            hud::memory::template construct_at(address);
+            hud::memory::construct_at<type_t>(address);
         }
 
         /**
@@ -845,7 +845,7 @@ namespace hud
             }
             else
             {
-                hud::memory::template construct_array_at(begin, end);
+                hud::memory::construct_array_at<type_t>(begin, end);
             }
         }
 
@@ -880,7 +880,7 @@ namespace hud
             {
                 while (count)
                 {
-                    hud::memory::template destroy(*address);
+                    hud::memory::destroy<type_t>(*address);
                     address++;
                     count--;
                 }
@@ -909,7 +909,7 @@ namespace hud
             {
                 while (count)
                 {
-                    hud::memory::template construct_at(destination, *source);
+                    hud::memory::construct_at<type_t, u_type_t>(destination, *source);
                     destination++;
                     source++;
                     count--;
@@ -948,7 +948,7 @@ namespace hud
             {
                 while (count)
                 {
-                    hud::memory::template construct_at(destination, hud::move(*source));
+                    hud::memory::construct_at<type_t, u_type_t>(destination, hud::move(*source));
                     destination++;
                     source++;
                     count--;
@@ -1058,8 +1058,8 @@ namespace hud
         requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>)
         static constexpr void move_or_copy_construct_then_destroy(type_t *destination, u_type_t &&source) noexcept
         {
-            hud::memory::template construct_at(destination, hud::forward<u_type_t>(source));
-            hud::memory::template destroy(source);
+            hud::memory::construct_at<type_t, u_type_t>(destination, hud::forward<u_type_t>(source));
+            hud::memory::destroy<u_type_t>(source);
         }
 
         /**
@@ -1086,9 +1086,9 @@ namespace hud
             }
             else
             {
-                hud::memory::template move_or_copy_construct_array(destination, source, count);
+                hud::memory::move_or_copy_construct_array<type_t, u_type_t>(destination, source, count);
             }
-            hud::memory::template destroy_array(source, count);
+            hud::memory::destroy_array<u_type_t>(source, count);
         }
 
         /**
@@ -1110,7 +1110,7 @@ namespace hud
             if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             {
                 hud::memory::move(destination, source, count * sizeof(u_type_t));
-                hud::memory::template destroy_array(source, count);
+                hud::memory::destroy_array<u_type_t>(source, count);
             }
             else
             {
@@ -1120,7 +1120,7 @@ namespace hud
                 {
                     last_destination--;
                     last_source--;
-                    hud::memory::template move_or_copy_construct_then_destroy(last_destination, hud::move(*last_source));
+                    hud::memory::move_or_copy_construct_then_destroy<type_t, u_type_t>(last_destination, hud::move(*last_source));
                 }
             }
         }
@@ -1162,7 +1162,7 @@ namespace hud
 
                 while (count)
                 {
-                    if (!hud::memory::template equal(left, right))
+                    if (!hud::memory::equal<lhs_t, rhs_t>(left, right))
                     {
                         return false;
                     }
@@ -1211,7 +1211,7 @@ namespace hud
 
                 while (count)
                 {
-                    if (hud::memory::template not_equal(left, right))
+                    if (hud::memory::not_equal<lhs_t, rhs_t>(left, right))
                     {
                         return true;
                     }

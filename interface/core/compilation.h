@@ -12,6 +12,7 @@ namespace hud
         clang,
         clang_cl,
         gcc,
+        emscripten,
         unknown,
     };
 
@@ -20,6 +21,7 @@ namespace hud
     {
         windows,
         linux,
+        browser,
         unknown,
     };
 
@@ -30,6 +32,8 @@ namespace hud
         x64,
         arm32,
         arm64,
+        wasm32,
+        wasm64,
         unknown,
     };
 
@@ -64,6 +68,8 @@ namespace hud
             return compiler_e::msvc;
 #elif defined(HD_COMPILER_GCC)
             return compiler_e::gcc;
+#elif defined(HD_COMPILER_EMSCRIPTEN)
+            return compiler_e::emscripten;
 #else
             return compiler_e::unknown;
 #endif
@@ -88,6 +94,10 @@ namespace hud
             else if constexpr (get_compiler() == compiler_e::gcc)
             {
                 return "GNU gcc/G++";
+            }
+            else if constexpr (get_compiler() == compiler_e::gcc)
+            {
+                return "Emscripten";
             }
             else
             {
@@ -124,6 +134,10 @@ namespace hud
             return cpu_instruction_set_e::arm32;
 #elif defined(HD_TARGET_ARM64)
             return cpu_instruction_set_e::arm64;
+#elif defined(HD_TARGET_WASM32)
+            return cpu_instruction_set_e::wasm32;
+#elif defined(HD_TARGET_WASM64)
+            return cpu_instruction_set_e::wasm64;
 #else
             return cpu_instruction_set_e::unknown;
 #endif
@@ -142,6 +156,8 @@ namespace hud
             return os_e::windows;
 #elif defined(HD_OS_LINUX)
             return os_e::linux;
+#elif defined(HD_OS_BROWSER)
+            return os_e::browser;
 #else
             return os_e::unknown;
 #endif
