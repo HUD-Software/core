@@ -121,11 +121,13 @@ GTEST_TEST(cityhash, combine_32)
     hud_assert_eq(combined, 0x105695BEu);
 
     u32 hash_2 = hud::hash_algorithm::city_hash::hash_32((const ansichar *)&len, sizeof(len));
-    hud_assert_eq(hash_2, 0x8D14653Fu);
+
 #if defined(HD_TARGET_32_BITS)
+    hud_assert_eq(hash_2, 0x8D14653Fu);
     hud_assert_eq(hud::hash_algorithm::city_hash::combine_32(combined, hash_2), 0xE66FB46Bu);
 #else // HD_TARGET_64_BITS
-    hud_assert_eq(hud::hash_algorithm::city_hash::combine_32(combined, hash_2), 0xE66FB46Bu);
+    hud_assert_eq(hash_2, 0x33939AC1u);
+    hud_assert_eq(hud::hash_algorithm::city_hash::combine_32(combined, hash_2), 0xE638A9DBu);
 #endif
 }
 
@@ -138,10 +140,11 @@ GTEST_TEST(cityhash, combine_64)
     hud_assert_eq(combined, 0xCEAAB8E77B74C2E7u);
 
     u64 hash_2 = hud::hash_algorithm::city_hash::hash_64((const ansichar *)&len, sizeof(len));
-    hud_assert_eq(hash_2, 0x253692A8EE00085Cu);
 #if defined(HD_TARGET_32_BITS)
+    hud_assert_eq(hash_2, 0x253692A8EE00085Cu);
     hud_assert_eq(hud::hash_algorithm::city_hash::combine_64(combined, hash_2), 0x60A95A74371605F2);
 #else // HD_TARGET_64_BITS
+    hud_assert_eq(hash_2, 0x64C856FF72C54198u);
     hud_assert_eq(hud::hash_algorithm::city_hash::combine_64(combined, hash_2), 0x746D68F6EB969EB7u);
 #endif
 }
