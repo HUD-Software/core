@@ -96,7 +96,6 @@ __aarch64__
 /** Detect target architecture */
 #if defined(HD_COMPILER_MSVC) || defined(HD_COMPILER_CLANG_CL)
     #if defined(_M_X64)
-        #error dsdsdsdsdds
         #define HD_TARGET_X64
     #elif defined(_M_IX86)
         #define HD_TARGET_X86
