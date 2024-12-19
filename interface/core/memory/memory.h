@@ -511,6 +511,8 @@ namespace hud
             check(destination != nullptr);
             memset(destination, value, size);
             // Prevent compiler from removing the memset
+            // Add a volatile pointer to the memory and reaffect it to destination
+            // This prevent memset to be remove if the user don't use return value
             volatile unsigned char *p = (volatile unsigned char *)destination;
             destination = (void *)p;
             return destination;
