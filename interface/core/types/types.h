@@ -221,9 +221,9 @@ static_assert(!is_signed(hud::u32) && is_unsigned(hud::u32), "hud::u32 is signed
 static_assert(!is_signed(hud::u64) && is_unsigned(hud::u64), "hud::u64 is signed");
 static_assert(is_signed(hud::ansichar) && !is_unsigned(hud::ansichar), "hud::ansichar is not signed");
 #if defined(HD_OS_WINDOWS)
-static_assert(!is_signed(hud::wchar) && is_unsigned(hud::wchar), "hud::wchar is signed");
+static_assert(!is_signed(hud::wchar) && is_unsigned(hud::wchar), "hud::wchar is unsigned");
 #else
-static_assert(is_signed(hud::wchar) && !is_unsigned(hud::wchar), "hud::wchar is unsigned");
+static_assert(is_signed(hud::wchar) && !is_unsigned(hud::wchar), "hud::wchar is signed");
 #endif
 static_assert(is_signed(hud::iptr) && !is_unsigned(hud::iptr), "hud::iptr is not signed");
 static_assert(!is_signed(hud::uptr) && is_unsigned(hud::uptr), "hud::uptr is signed");

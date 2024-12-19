@@ -134,7 +134,11 @@ GTEST_TEST(memory, reallocate)
     *(ptr + 1) = 3;
     hud_assert_eq(*ptr, 2u);
     hud_assert_eq(*(ptr + 1), 3u);
+#if defined(HD_COMPILER_EMSCRIPTEN)
+    hud_assert_ne(hud::memory::reallocate(ptr, 0), nullptr);
+#else
     hud_assert_eq(hud::memory::reallocate(ptr, 0), nullptr);
+#endif
 
     // Do not free, it's already free
     guard.leak();
