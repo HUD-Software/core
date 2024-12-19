@@ -95,7 +95,7 @@ namespace hud
             {
                 return "GNU gcc/G++";
             }
-            else if constexpr (get_compiler() == compiler_e::gcc)
+            else if constexpr (get_compiler() == compiler_e::emscripten)
             {
                 return "Emscripten";
             }
@@ -117,8 +117,10 @@ namespace hud
             static_assert(get_compiler() != compiler_e::unknown, "Compiler is unkown");
 #if defined(HD_TARGET_64_BITS)
             return true;
-#else
+#elif defined(HD_TARGET_32_BITS)
             return false;
+#else
+    #error Neither 32 or 64 bits
 #endif
         }
 

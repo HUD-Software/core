@@ -176,6 +176,8 @@ __aarch64__
 static_assert(sizeof(void *) == 4, "HD_TARGET_32_BITS is defined but size of pointers are not 4 bytes");
 #elif defined(HD_TARGET_64_BITS)
 static_assert(sizeof(void *) == 8, "HD_TARGET_64_BITS is defined but size of pointers are not 8 bytes");
+#else
+    #error Target should be 32 bits or 64 bits
 #endif
 
 #endif // HD_INC_CORE_COMPILER_DEFINES_H

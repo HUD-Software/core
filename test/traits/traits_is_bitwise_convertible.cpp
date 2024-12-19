@@ -270,8 +270,22 @@ GTEST_TEST(traits, is_bitwise_convertible)
 #endif
     hud_assert_false((hud::is_bitwise_convertible_v<wchar, f32>));
     hud_assert_false((hud::is_bitwise_convertible_v<wchar, f64>));
-    hud_assert_false((hud::is_bitwise_convertible_v<wchar, iptr>));
-    hud_assert_false((hud::is_bitwise_convertible_v<wchar, uptr>));
+    if (sizeof(wchar) == sizeof(iptr))
+    {
+        hud_assert_true((hud::is_bitwise_convertible_v<wchar, iptr>));
+    }
+    else
+    {
+        hud_assert_false((hud::is_bitwise_convertible_v<wchar, iptr>));
+    }
+    if (sizeof(wchar) == sizeof(uptr))
+    {
+        hud_assert_true((hud::is_bitwise_convertible_v<wchar, uptr>));
+    }
+    else
+    {
+        hud_assert_false((hud::is_bitwise_convertible_v<wchar, uptr>));
+    }
 
     // char16
     hud_assert_false((hud::is_bitwise_convertible_v<char16, i8>));
@@ -378,7 +392,14 @@ GTEST_TEST(traits, is_bitwise_convertible)
     hud_assert_true((hud::is_bitwise_convertible_v<iptr, u64>));
 #endif
     hud_assert_false((hud::is_bitwise_convertible_v<iptr, ansichar>));
-    hud_assert_false((hud::is_bitwise_convertible_v<iptr, wchar>));
+    if (sizeof(wchar) == sizeof(iptr))
+    {
+        hud_assert_true((hud::is_bitwise_convertible_v<wchar, iptr>));
+    }
+    else
+    {
+        hud_assert_false((hud::is_bitwise_convertible_v<wchar, iptr>));
+    }
     hud_assert_false((hud::is_bitwise_convertible_v<iptr, char16>));
 #if defined(HD_TARGET_32_BITS)
     hud_assert_true((hud::is_bitwise_convertible_v<iptr, char32>));
@@ -410,7 +431,14 @@ GTEST_TEST(traits, is_bitwise_convertible)
     hud_assert_true((hud::is_bitwise_convertible_v<uptr, u64>));
 #endif
     hud_assert_false((hud::is_bitwise_convertible_v<uptr, ansichar>));
-    hud_assert_false((hud::is_bitwise_convertible_v<uptr, wchar>));
+    if (sizeof(wchar) == sizeof(uptr))
+    {
+        hud_assert_true((hud::is_bitwise_convertible_v<wchar, uptr>));
+    }
+    else
+    {
+        hud_assert_false((hud::is_bitwise_convertible_v<wchar, uptr>));
+    }
     hud_assert_false((hud::is_bitwise_convertible_v<uptr, char16>));
 #if defined(HD_TARGET_32_BITS)
     hud_assert_true((hud::is_bitwise_convertible_v<uptr, char32>));
