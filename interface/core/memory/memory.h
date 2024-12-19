@@ -512,8 +512,7 @@ namespace hud
             memset(destination, value, size);
             // Prevent compiler from removing the memset
             volatile unsigned char *p = (volatile unsigned char *)destination;
-            (void *)p;
-            return destination;
+            return (void *)p;
         }
 
         static constexpr void set_safe(u8 *destination, const usize size, const u8 value) noexcept

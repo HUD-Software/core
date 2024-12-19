@@ -27,15 +27,15 @@ jobs:
       #   uses: dorny/test-reporter@v1
       #   if: success() || failure()
       #   with:
-      #     name: Windows CityHash Test Report
+      #     name: Windows Core Test Report
       #     path: target/test/test_*_report.xml
       #     reporter: java-junit
       - name: Release
         run: |
-          xcopy target\test\test_cityhash.js release\ /s /y
-          xcopy target\test\test_cityhash.wasm release\ /s /y
-          xcopy target\src\libcityhash.a release\ /s /y
-          xcopy src\cityhash release\cityhash\ /s /y
+          xcopy target\test\test_core.js release\ /s /y
+          xcopy target\test\test_core.wasm release\ /s /y
+          xcopy target\src\libcore.a release\ /s /y
+          xcopy src\core release\core\ /s /y
       - name: Upload artifacts
         uses: actions/upload-artifact@v3.1.1
         with:
