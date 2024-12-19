@@ -498,6 +498,71 @@ namespace hud
         }
 
         /**
+         * Sets the first `size` bytes of the block of memory pointed to by `destination` to the specified `value`.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of bytes to set to the specified `value`.
+         * @param value The value to be set in the buffer.
+         * @return Pointer to the buffer `destination`.
+         */
+        static HD_FORCEINLINE void *set_safe(void *destination, const usize size, const u8 value) noexcept
+        {
+            // The behavior is undefined if destination is a null pointer.
+            check(destination != nullptr);
+            memset(destination, value, size);
+            // Prevent compiler from removing the memset
+            [[maybe_unused]] volatile unsigned char *p = (volatile unsigned char *)destination;
+            return destination;
+        }
+
+        static constexpr void set_safe(u8 *destination, const usize size, const u8 value) noexcept
+        {
+            if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
+            {
+                for (usize position = 0; position < size; position++)
+                {
+                    std::construct_at(destination + position, value);
+                }
+            }
+            // LCOV_EXCL_STOP
+            else
+            {
+                set_safe(static_cast<void *>(destination), size, value);
+            }
+        }
+
+        template<typename type_t>
+        static constexpr void set_safe(type_t *destination, const usize size, const u8 value) noexcept
+        requires(is_integral_v<type_t>)
+        {
+            if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
+            {
+                for (usize position = 0; position < size / sizeof(type_t); position++)
+                {
+                    std::construct_at(destination + position, value);
+                }
+            }
+            // LCOV_EXCL_STOP
+            else
+            {
+                set_safe(static_cast<void *>(destination), size, value);
+            }
+        }
+
+        /**
+         * Sets the block of memory referenced by buffer to the specified value.
+         * @param buffer The buffer memory to set to value
+         * @param value The value to be set
+         */
+        template<typename type_t, usize buffer_size>
+        static constexpr void set_safe(type_t (&buffer)[buffer_size], const u8 value) noexcept
+        {
+            set_safe(buffer, buffer_size * sizeof(type_t), value);
+        }
+
+        /**
          * Sets the first size bytes of the block of memory pointed by destination to zero.
          * @param destination Pointer to the buffer
          * @param size Number of bytes to set to zero
