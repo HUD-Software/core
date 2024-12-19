@@ -7,6 +7,7 @@ GTEST_TEST(atomic, default_constructor_of_integral_do_not_initialize_atomic)
                                                                                   {
         alignas(sizeof(type_t)) u8 a[sizeof(hud::atomic<type_t>)];
         hud::memory::set(a, hud::u8_max);
+        [[maybe_unused]] volatile unsigned char *p = (volatile unsigned char *)a;
 
         hud::atomic<type_t>* atomic = new (a) hud::atomic<type_t>;
         hud_assert_ne(atomic->load(), type_t{}); });
@@ -19,6 +20,7 @@ GTEST_TEST(atomic, default_constructor_of_pointer_do_not_initialize_atomic)
                                                                                   {
         alignas(type_t*) u8 a[sizeof(hud::atomic<type_t*>)];
         hud::memory::set(a, hud::u8_max);
+        [[maybe_unused]] volatile unsigned char *p = (volatile unsigned char *)a;
 
         hud::atomic<type_t*>* atomic = new (a) hud::atomic<type_t*>;
         hud_assert_ne(atomic->load(), (type_t*)nullptr); });
