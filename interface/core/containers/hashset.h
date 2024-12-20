@@ -530,7 +530,7 @@ namespace hud
             {
                 if (count > max_slot_count_)
                 {
-                    grow_capacity(hud::math::next_power_of_two(count) + 1);
+                    grow_capacity(hud::math::next_power_of_two(count + 1) - 1);
                 }
             }
 
