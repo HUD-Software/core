@@ -500,6 +500,7 @@ namespace hud
         /**
          * Sets the first `size` bytes of the block of memory pointed to by `destination` to the specified `value`.
          * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
          * @param destination Pointer to the memory buffer. Must not be null.
          * @param size Number of bytes to set to the specified `value`.
          * @param value The value to be set in the buffer.
