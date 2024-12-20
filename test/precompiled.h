@@ -1,6 +1,8 @@
 #ifndef HD_PRECOMPILED
 #define HD_PRECOMPILED
 #include <gtest/gtest.h>
+#include <catch2/catch_all.hpp>
+
 #include <core/minimal.h>
 
 #include "misc/default_constructible_type.h"

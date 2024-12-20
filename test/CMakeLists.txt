@@ -535,6 +535,17 @@ if (core_type STREQUAL SHARED_LIBRARY)
 	add_custom_command(TARGET ${test_project_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${lib_name}> $<TARGET_FILE_DIR:${test_project_name}>)
 endif()
 
+# Add Catch2 test dependency
+message("Fetching Catch2...")
+include(FetchContent)
+FetchContent_Declare(
+	catch2 
+	GIT_REPOSITORY  https://github.com/catchorg/Catch2.git
+	GIT_TAG         v3.7.1
+)
+FetchContent_MakeAvailable(catch2)
+target_link_libraries( ${test_project_name} PRIVATE Catch2::Catch2 )
+
 # Add Google test dependency
 message("Fetching google-test...")
 include(FetchContent)
@@ -579,7 +590,8 @@ FetchContent_MakeAvailable(cityhash)
 target_link_libraries( ${test_project_name} PRIVATE cityhash )
 
 # Add the executable test
-add_test(NAME ${lib_name} COMMAND ${test_project_name} --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
+add_test(NAME ${lib_name} COMMAND ${test_project_name} --break)
+#add_test(NAME ${lib_name} COMMAND ${test_project_name} --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
 
 
 if(SANITIZER)
