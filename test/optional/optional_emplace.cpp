@@ -28,7 +28,8 @@ GTEST_TEST(optional, emplace_move_inplace)
             option.value().copy_assign_count(),
             option.value().move_constructor_count(),
             option.value().copy_constructor_count(),
-            destructor_count};
+            destructor_count
+        };
     };
 
     // Non constant
@@ -113,7 +114,8 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_copy_constructible)
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -153,7 +155,8 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible)
             has_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -178,7 +181,7 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_copy_constructible)
 GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
 
@@ -221,7 +224,7 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_copy_constructible)
 GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructible)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
 
@@ -239,7 +242,8 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructib
             has_value_before,
             value_before,
             option.has_value(),
-            option.value().id()};
+            option.value().id()
+        };
     };
 
     // Non constant
@@ -279,7 +283,8 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_trivially_move_constructible)
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -319,7 +324,8 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible)
             has_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -344,7 +350,7 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_trivially_move_constructible)
 GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible)
 {
 
-    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using type = hud_test::non_bitwise_move_constructible_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
 
@@ -390,7 +396,7 @@ GTEST_TEST(optional, emplace_by_copy_in_empty_non_trivially_move_constructible)
 GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructible)
 {
 
-    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using type = hud_test::non_bitwise_move_constructible_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
 
@@ -414,7 +420,8 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructib
             option.has_value(),
             option.value().id(),
             option.value().copy_constructor_count(),
-            option.value().move_constructor_count()};
+            option.value().move_constructor_count()
+        };
     };
 
     // Non constant
@@ -462,7 +469,8 @@ GTEST_TEST(optional, emplace_by_move_in_empty_trivially_copy_constructible)
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -502,7 +510,8 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible)
             has_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -527,7 +536,7 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_copy_constructible)
 GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
     const auto test = [](const i32 value)
@@ -569,7 +578,7 @@ GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_copy_constructible)
 GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructible)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
 
     static_assert(!hud::is_trivially_copy_constructible_v<type>);
 
@@ -590,7 +599,8 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructib
             ctor_before,
             option.has_value(),
             option.value().id(),
-            option.value().copy_constructor_count()};
+            option.value().copy_constructor_count()
+        };
     };
 
     // Non constant
@@ -634,7 +644,8 @@ GTEST_TEST(optional, emplace_by_move_in_empty_trivially_move_constructible)
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -674,7 +685,8 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible)
             has_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -699,7 +711,7 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_trivially_move_constructible)
 GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible)
 {
 
-    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using type = hud_test::non_bitwise_move_constructible_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
 
@@ -745,7 +757,7 @@ GTEST_TEST(optional, emplace_by_move_in_empty_non_trivially_move_constructible)
 GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructible)
 {
 
-    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using type = hud_test::non_bitwise_move_constructible_type;
 
     static_assert(!hud::is_trivially_move_constructible_v<type>);
 
@@ -769,7 +781,8 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructib
             option.has_value(),
             option.value().id(),
             option.value().copy_constructor_count(),
-            option.value().move_constructor_count()};
+            option.value().move_constructor_count()
+        };
     };
 
     // Non constant

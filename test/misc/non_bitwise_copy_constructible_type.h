@@ -8,35 +8,35 @@ namespace hud_test
 
     /**
      * A copy constructible type that is not a bitwise copyable type
-     * The id is copied in order to know which NonBitwiseCopyConstructibleType is the original NonBitwiseCopyConstructibleType.
+     * The id is copied in order to know which non_bitwise_copy_constructible_type is the original non_bitwise_copy_constructible_type.
      */
-    struct NonBitwiseCopyConstructibleType
+    struct non_bitwise_copy_constructible_type
     {
     public:
         /**
          * Construct with a given id
          * @tparam Integral The integral type to set
-         * @param id The id of the NonBitwiseCopyConstructibleType
+         * @param id The id of the non_bitwise_copy_constructible_type
          */
-        constexpr NonBitwiseCopyConstructibleType() noexcept = default;
+        constexpr non_bitwise_copy_constructible_type() noexcept = default;
 
         /**
          * Construct with a given id
          * @tparam Integral The integral type to set
-         * @param id The id of the NonBitwiseCopyConstructibleType
+         * @param id The id of the non_bitwise_copy_constructible_type
          */
         template<typename Integral>
         requires(hud::is_integral_v<Integral>)
-        constexpr NonBitwiseCopyConstructibleType(Integral id) noexcept
+        constexpr non_bitwise_copy_constructible_type(Integral id) noexcept
             : unique_id(static_cast<i32>(id))
         {
         }
 
         /**
-         * Copy construct a NonBitwiseCopyConstructibleType
-         * @param other The NonBitwiseCopyConstructibleType to copy
+         * Copy construct a non_bitwise_copy_constructible_type
+         * @param other The non_bitwise_copy_constructible_type to copy
          */
-        constexpr NonBitwiseCopyConstructibleType(const NonBitwiseCopyConstructibleType &other) noexcept
+        constexpr non_bitwise_copy_constructible_type(const non_bitwise_copy_constructible_type &other) noexcept
             : copy_construct_count(other.copy_construct_count + 1)
             , unique_id(other.unique_id)
         {
@@ -54,10 +54,20 @@ namespace hud_test
             return unique_id;
         }
 
+        friend constexpr bool operator==(const non_bitwise_copy_constructible_type &a, const non_bitwise_copy_constructible_type &b) noexcept
+        {
+            return a.id() == b.id();
+        }
+
+        friend constexpr bool operator!=(const non_bitwise_copy_constructible_type &a, const non_bitwise_copy_constructible_type &b) noexcept
+        {
+            return !(a == b);
+        }
+
     private:
-        NonBitwiseCopyConstructibleType(NonBitwiseCopyConstructibleType &&other) = delete;
-        NonBitwiseCopyConstructibleType &operator=(const NonBitwiseCopyConstructibleType &) = delete;
-        NonBitwiseCopyConstructibleType &operator=(NonBitwiseCopyConstructibleType &&) = delete;
+        non_bitwise_copy_constructible_type(non_bitwise_copy_constructible_type &&other) = delete;
+        non_bitwise_copy_constructible_type &operator=(const non_bitwise_copy_constructible_type &) = delete;
+        non_bitwise_copy_constructible_type &operator=(non_bitwise_copy_constructible_type &&) = delete;
 
     private:
         /** Count of copy construction done */
@@ -67,73 +77,73 @@ namespace hud_test
         i32 unique_id = 0;
     };
 
-    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType>);
-    static_assert(!hud::is_move_constructible_v<NonBitwiseCopyConstructibleType>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_constructible_type>);
+    static_assert(!hud::is_move_constructible_v<non_bitwise_copy_constructible_type>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_constructible_type>);
 
     /**
      * A copy constructible type that is not a bitwise copyable type
-     * The id is copied in order to know which NonBitwiseCopyConstructibleType is the original NonBitwiseCopyConstructibleType.
+     * The id is copied in order to know which non_bitwise_copy_constructible_type is the original non_bitwise_copy_constructible_type.
      * This type can be construct with a hud_test::non_bitwise_copy_assignable_type
      */
-    struct NonBitwiseCopyConstructibleType2 : public NonBitwiseCopyConstructibleType
+    struct non_bitwise_copy_constructible_type2 : public non_bitwise_copy_constructible_type
     {
         /**
          * Construct with an id set to -1.
          * You can set the id with set_id().
          */
-        constexpr NonBitwiseCopyConstructibleType2() noexcept = default;
+        constexpr non_bitwise_copy_constructible_type2() noexcept = default;
 
         /**
          * Construct with a given id
-         * @param id The id of the NonBitwiseCopyConstructibleType2
+         * @param id The id of the non_bitwise_copy_constructible_type2
          */
-        constexpr NonBitwiseCopyConstructibleType2(i32 id) noexcept
-            : NonBitwiseCopyConstructibleType(id)
+        constexpr non_bitwise_copy_constructible_type2(i32 id) noexcept
+            : non_bitwise_copy_constructible_type(id)
         {
         }
 
         /**
-         * Copy construct a NonBitwiseCopyConstructibleType2
-         * @param other The NonBitwiseCopyConstructibleType2 to copy
+         * Copy construct a non_bitwise_copy_constructible_type2
+         * @param other The non_bitwise_copy_constructible_type2 to copy
          */
-        constexpr NonBitwiseCopyConstructibleType2(const NonBitwiseCopyConstructibleType &other) noexcept
-            : NonBitwiseCopyConstructibleType(other)
+        constexpr non_bitwise_copy_constructible_type2(const non_bitwise_copy_constructible_type &other) noexcept
+            : non_bitwise_copy_constructible_type(other)
         {
         }
     };
 
-    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType2, NonBitwiseCopyConstructibleType>);
-    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType2>);
-    static_assert(!hud::is_move_constructible_v<NonBitwiseCopyConstructibleType>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType2>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_constructible_type2, non_bitwise_copy_constructible_type>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_constructible_type2>);
+    static_assert(!hud::is_move_constructible_v<non_bitwise_copy_constructible_type>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_constructible_type2>);
 
     /**
      * A copy constructible type that is not a bitwise movable type
-     * The id is copied in order to know which NonBitwiseMoveConstructibleType is the original NonBitwiseMoveConstructibleType.
-     * This type add a incremanation pointer information to the type used by NonBitwiseMoveConstructibleType4 when this type is constructed.
+     * The id is copied in order to know which non_bitwise_move_constructible_type is the original non_bitwise_move_constructible_type.
+     * This type add a incremanation pointer information to the type used by non_bitwise_move_constructible_type4 when this type is constructed.
      */
-    struct NonBitwiseCopyConstructibleType3 : public NonBitwiseCopyConstructibleType2
+    struct non_bitwise_copy_constructible_type3 : public non_bitwise_copy_constructible_type2
     {
 
     public:
         /**
-         * Default construct NonBitwiseMoveConstructibleType3
+         * Default construct non_bitwise_move_constructible_type3
          * Set the incrementation pointer to nullptr
          */
-        constexpr NonBitwiseCopyConstructibleType3() noexcept
-            : NonBitwiseCopyConstructibleType2()
+        constexpr non_bitwise_copy_constructible_type3() noexcept
+            : non_bitwise_copy_constructible_type2()
         {
         }
 
-        constexpr NonBitwiseCopyConstructibleType3(i32 *increment_ptr) noexcept
-            : NonBitwiseCopyConstructibleType2()
+        constexpr non_bitwise_copy_constructible_type3(i32 *increment_ptr) noexcept
+            : non_bitwise_copy_constructible_type2()
             , increment(increment_ptr)
         {
         }
 
-        constexpr NonBitwiseCopyConstructibleType3(const NonBitwiseCopyConstructibleType3 &other) noexcept
-            : NonBitwiseCopyConstructibleType2(other)
+        constexpr non_bitwise_copy_constructible_type3(const non_bitwise_copy_constructible_type3 &other) noexcept
+            : non_bitwise_copy_constructible_type2(other)
             , increment(other.increment)
         {
             if (increment)
@@ -153,24 +163,24 @@ namespace hud_test
         i32 *increment = nullptr;
     };
 
-    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType3>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType3>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_constructible_type3>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_constructible_type3>);
 
-    struct NonBitwiseCopyConstructibleType4 : public NonBitwiseCopyConstructibleType3
+    struct non_bitwise_copy_constructible_type4 : public non_bitwise_copy_constructible_type3
     {
         /**
-         * Default construct NonBitwiseMoveConstructibleType4
+         * Default construct non_bitwise_move_constructible_type4
          * Set the incrementation pointer to nullptr
          */
-        constexpr NonBitwiseCopyConstructibleType4() noexcept = default;
+        constexpr non_bitwise_copy_constructible_type4() noexcept = default;
 
-        constexpr NonBitwiseCopyConstructibleType4(i32 *increment_ptr) noexcept
-            : NonBitwiseCopyConstructibleType3(increment_ptr)
+        constexpr non_bitwise_copy_constructible_type4(i32 *increment_ptr) noexcept
+            : non_bitwise_copy_constructible_type3(increment_ptr)
         {
         }
 
-        constexpr NonBitwiseCopyConstructibleType4(const NonBitwiseCopyConstructibleType4 &other) noexcept
-            : NonBitwiseCopyConstructibleType3(other)
+        constexpr non_bitwise_copy_constructible_type4(const non_bitwise_copy_constructible_type4 &other) noexcept
+            : non_bitwise_copy_constructible_type3(other)
         {
             if (incrementation_ptr())
             {
@@ -179,11 +189,11 @@ namespace hud_test
         }
 
         /**
-         * Copy construct a NonBitwiseMoveConstructibleType4
-         * @param other The NonBitwiseMoveConstructibleType3 to move
+         * Copy construct a non_bitwise_move_constructible_type4
+         * @param other The non_bitwise_move_constructible_type3 to move
          */
-        constexpr NonBitwiseCopyConstructibleType4(const NonBitwiseCopyConstructibleType3 &other) noexcept
-            : NonBitwiseCopyConstructibleType3(other)
+        constexpr non_bitwise_copy_constructible_type4(const non_bitwise_copy_constructible_type3 &other) noexcept
+            : non_bitwise_copy_constructible_type3(other)
         {
             if (incrementation_ptr())
             {
@@ -197,19 +207,39 @@ namespace hud_test
             return increment_value;
         }
 
-        constexpr NonBitwiseCopyConstructibleType4(NonBitwiseCopyConstructibleType4 &&other) = delete;
-        constexpr NonBitwiseCopyConstructibleType4(NonBitwiseCopyConstructibleType3 &&other) = delete;
+        constexpr non_bitwise_copy_constructible_type4(non_bitwise_copy_constructible_type4 &&other) = delete;
+        constexpr non_bitwise_copy_constructible_type4(non_bitwise_copy_constructible_type3 &&other) = delete;
 
     private:
         /** The value of the incrementation pointer whe the copy or move constructor is called */
         i32 increment_value = -1;
     };
 
-    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType4, NonBitwiseCopyConstructibleType3>);
-    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType4>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType4>);
-    static_assert(!hud::is_move_constructible_v<NonBitwiseCopyConstructibleType4, NonBitwiseCopyConstructibleType3>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_constructible_type4, non_bitwise_copy_constructible_type3>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_constructible_type4>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_constructible_type4>);
+    static_assert(!hud::is_move_constructible_v<non_bitwise_copy_constructible_type4, non_bitwise_copy_constructible_type3>);
 
 } // namespace hud_test
 
+namespace hud
+{
+    template<>
+    struct hash_32<hud_test::non_bitwise_copy_constructible_type>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_copy_constructible_type &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_copy_constructible_type>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_copy_constructible_type &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+} // namespace hud
 #endif // HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H

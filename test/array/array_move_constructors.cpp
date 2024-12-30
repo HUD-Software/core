@@ -1552,7 +1552,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type_same_a
 {
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
 
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
 
@@ -1938,7 +1938,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type_differ
 {
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
 
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
     using AllocatorType2 = hud_test::allocator_watcher_2<alignof(type)>;
@@ -2326,7 +2326,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type_same_a
 {
 
     /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
-    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using type = hud_test::non_bitwise_move_constructible_type;
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
 
     // Ensure we test with different allocator
@@ -2731,7 +2731,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type_differ
 {
 
     /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
-    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using type = hud_test::non_bitwise_move_constructible_type;
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
     using AllocatorType2 = hud_test::allocator_watcher_2<alignof(type)>;
 
@@ -3138,8 +3138,8 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type_s
 {
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
-    using Type1 = hud_test::NonBitwiseMoveConstructibleType;
-    using Type2 = hud_test::NonBitwiseMoveConstructibleType2;
+    using Type1 = hud_test::non_bitwise_move_constructible_type;
+    using Type2 = hud_test::non_bitwise_move_constructible_type2;
     using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
 
     // Ensure we test with different allocator and types
@@ -3544,8 +3544,8 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type_d
 {
 
     /** The array we move for test, we allocate also extra memory to test if we really move the count(), not the max_count() elements */
-    using Type1 = hud_test::NonBitwiseMoveConstructibleType;
-    using Type2 = hud_test::NonBitwiseMoveConstructibleType2;
+    using Type1 = hud_test::non_bitwise_move_constructible_type;
+    using Type2 = hud_test::non_bitwise_move_constructible_type2;
     using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
     using AllocatorType2 = hud_test::allocator_watcher_2<alignof(Type2)>;
 

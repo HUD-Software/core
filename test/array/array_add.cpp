@@ -4,7 +4,7 @@
 GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
 {
 
-    using type = hud_test::non_bitwise_copy_assignable_type;
+    using type = hud_test::non_bitwise_copy_constructible_type;
     using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type, type>);
     static_assert(hud::is_copy_constructible_v<type, type>);
@@ -23,7 +23,6 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array.data() != nullptr,
                 array.count(),
                 array.max_count(),
-                array[0].copy_assign_count(),
                 array[0].copy_constructor_count(),
                 array.allocator().allocation_count(),
                 array.allocator().free_count()
@@ -35,9 +34,7 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array.data() != nullptr,
                 array.count(),
                 array.max_count(),
-                array[0].copy_assign_count(),
                 array[0].copy_constructor_count(),
-                array[1].copy_assign_count(),
                 array[1].copy_constructor_count(),
                 array.allocator().allocation_count(),
                 array.allocator().free_count()
@@ -58,10 +55,9 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_true(std::get<1>(first_element_result));
             hud_assert_eq(std::get<2>(first_element_result), 1u);
             hud_assert_eq(std::get<3>(first_element_result), 1u);
-            hud_assert_eq(std::get<4>(first_element_result), 0u);
+            hud_assert_eq(std::get<4>(first_element_result), 1u);
             hud_assert_eq(std::get<5>(first_element_result), 1u);
-            hud_assert_eq(std::get<6>(first_element_result), 1u);
-            hud_assert_eq(std::get<7>(first_element_result), 0u);
+            hud_assert_eq(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
@@ -69,12 +65,10 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_true(std::get<1>(second_element_result));
             hud_assert_eq(std::get<2>(second_element_result), 2u);
             hud_assert_eq(std::get<3>(second_element_result), 2u);
-            hud_assert_eq(std::get<4>(second_element_result), 0u);
-            hud_assert_eq(std::get<5>(second_element_result), 2u);
-            hud_assert_eq(std::get<6>(second_element_result), 0u);
+            hud_assert_eq(std::get<4>(second_element_result), 2u);
+            hud_assert_eq(std::get<5>(second_element_result), 1u);
+            hud_assert_eq(std::get<6>(second_element_result), 2u);
             hud_assert_eq(std::get<7>(second_element_result), 1u);
-            hud_assert_eq(std::get<8>(second_element_result), 2u);
-            hud_assert_eq(std::get<9>(second_element_result), 1u);
         }
 
         // Constant
@@ -87,10 +81,9 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_true(std::get<1>(first_element_result));
             hud_assert_eq(std::get<2>(first_element_result), 1u);
             hud_assert_eq(std::get<3>(first_element_result), 1u);
-            hud_assert_eq(std::get<4>(first_element_result), 0u);
+            hud_assert_eq(std::get<4>(first_element_result), 1u);
             hud_assert_eq(std::get<5>(first_element_result), 1u);
-            hud_assert_eq(std::get<6>(first_element_result), 1u);
-            hud_assert_eq(std::get<7>(first_element_result), 0u);
+            hud_assert_eq(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
@@ -98,12 +91,10 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_true(std::get<1>(second_element_result));
             hud_assert_eq(std::get<2>(second_element_result), 2u);
             hud_assert_eq(std::get<3>(second_element_result), 2u);
-            hud_assert_eq(std::get<4>(second_element_result), 0u);
-            hud_assert_eq(std::get<5>(second_element_result), 2u);
-            hud_assert_eq(std::get<6>(second_element_result), 0u);
+            hud_assert_eq(std::get<4>(second_element_result), 2u);
+            hud_assert_eq(std::get<5>(second_element_result), 1u);
+            hud_assert_eq(std::get<6>(second_element_result), 2u);
             hud_assert_eq(std::get<7>(second_element_result), 1u);
-            hud_assert_eq(std::get<8>(second_element_result), 2u);
-            hud_assert_eq(std::get<9>(second_element_result), 1u);
         }
     }
 
@@ -122,7 +113,6 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array.data() != nullptr,
                 array.count(),
                 array.max_count(),
-                array[0].copy_assign_count(),
                 array[0].copy_constructor_count(),
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
@@ -134,9 +124,7 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
                 array.data() != nullptr,
                 array.count(),
                 array.max_count(),
-                array[0].copy_assign_count(),
                 array[0].copy_constructor_count(),
-                array[1].copy_assign_count(),
                 array[1].copy_constructor_count(),
                 array.allocator().allocation_count(),
                 array.allocator().free_count(),
@@ -157,10 +145,9 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_true(std::get<1>(first_element_result));
             hud_assert_eq(std::get<2>(first_element_result), 1u);
             hud_assert_eq(std::get<3>(first_element_result), 2u);
-            hud_assert_eq(std::get<4>(first_element_result), 0u);
+            hud_assert_eq(std::get<4>(first_element_result), 1u);
             hud_assert_eq(std::get<5>(first_element_result), 1u);
-            hud_assert_eq(std::get<6>(first_element_result), 1u);
-            hud_assert_eq(std::get<7>(first_element_result), 0u);
+            hud_assert_eq(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
@@ -168,12 +155,10 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_true(std::get<1>(second_element_result));
             hud_assert_eq(std::get<2>(second_element_result), 2u);
             hud_assert_eq(std::get<3>(second_element_result), 2u);
-            hud_assert_eq(std::get<4>(second_element_result), 0u);
+            hud_assert_eq(std::get<4>(second_element_result), 1u);
             hud_assert_eq(std::get<5>(second_element_result), 1u);
-            hud_assert_eq(std::get<6>(second_element_result), 0u);
-            hud_assert_eq(std::get<7>(second_element_result), 1u);
-            hud_assert_eq(std::get<8>(second_element_result), 1u);
-            hud_assert_eq(std::get<9>(second_element_result), 0u);
+            hud_assert_eq(std::get<6>(second_element_result), 1u);
+            hud_assert_eq(std::get<7>(second_element_result), 0u);
         }
 
         // Constant
@@ -186,10 +171,9 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_true(std::get<1>(first_element_result));
             hud_assert_eq(std::get<2>(first_element_result), 1u);
             hud_assert_eq(std::get<3>(first_element_result), 2u);
-            hud_assert_eq(std::get<4>(first_element_result), 0u);
+            hud_assert_eq(std::get<4>(first_element_result), 1u);
             hud_assert_eq(std::get<5>(first_element_result), 1u);
-            hud_assert_eq(std::get<6>(first_element_result), 1u);
-            hud_assert_eq(std::get<7>(first_element_result), 0u);
+            hud_assert_eq(std::get<6>(first_element_result), 0u);
 
             // Second element is correctly added
             const auto second_element_result = std::get<1>(result);
@@ -197,12 +181,10 @@ GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
             hud_assert_true(std::get<1>(second_element_result));
             hud_assert_eq(std::get<2>(second_element_result), 2u);
             hud_assert_eq(std::get<3>(second_element_result), 2u);
-            hud_assert_eq(std::get<4>(second_element_result), 0u);
+            hud_assert_eq(std::get<4>(second_element_result), 1u);
             hud_assert_eq(std::get<5>(second_element_result), 1u);
-            hud_assert_eq(std::get<6>(second_element_result), 0u);
-            hud_assert_eq(std::get<7>(second_element_result), 1u);
-            hud_assert_eq(std::get<8>(second_element_result), 1u);
-            hud_assert_eq(std::get<9>(second_element_result), 0u);
+            hud_assert_eq(std::get<6>(second_element_result), 1u);
+            hud_assert_eq(std::get<7>(second_element_result), 0u);
         }
     }
 }
@@ -401,7 +383,7 @@ GTEST_TEST(array, add_by_copy_construct_bitwise_copy_constructible_type)
 GTEST_TEST(array, add_by_move_construct_non_bitwise_move_constructible_type)
 {
 
-    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using type = hud_test::non_bitwise_move_constructible_type;
     using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
     static_assert(hud::is_move_constructible_v<type>);
@@ -792,7 +774,7 @@ GTEST_TEST(array, add_by_move_construct_bitwise_move_constructible_type)
 GTEST_TEST(array, add_by_move_construct_non_bitwise_copy_constructible_type)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
     using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
     static_assert(hud::is_copy_constructible_v<type>);

@@ -85,11 +85,11 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_bitwise_constr
 GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_copy_constructible_and_destructible_different_type)
 {
 
-    struct source_type : public hud_test::NonBitwiseCopyConstructibleType3
+    struct source_type : public hud_test::non_bitwise_copy_constructible_type3
         , hud_test::SetBoolToTrueWhenDestroyed
     {
         constexpr source_type(i32 *ctor_order, i32 *dtor_order) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType3(ctor_order)
+            : hud_test::non_bitwise_copy_constructible_type3(ctor_order)
             , hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
         {
         }
@@ -97,10 +97,10 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_co
         constexpr ~source_type() = default;
     };
 
-    struct destination_type : public hud_test::NonBitwiseCopyConstructibleType4
+    struct destination_type : public hud_test::non_bitwise_copy_constructible_type4
     {
         constexpr destination_type(const source_type &other) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType4(other)
+            : hud_test::non_bitwise_copy_constructible_type4(other)
         {
         }
     };
@@ -148,11 +148,11 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_co
 GTEST_TEST(memory, fast_move_or_copy_construct_then_destroy_non_bitwise_move_constructible_and_destructible_different_type)
 {
 
-    struct source_type : public hud_test::NonBitwiseMoveConstructibleType3
+    struct source_type : public hud_test::non_bitwise_move_constructible_type3
         , hud_test::SetBoolToTrueWhenDestroyed
     {
         constexpr source_type(i32 *ctor_order, i32 *dtor_order) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType3(ctor_order)
+            : hud_test::non_bitwise_move_constructible_type3(ctor_order)
             , hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
         {
         }
@@ -160,17 +160,17 @@ GTEST_TEST(memory, fast_move_or_copy_construct_then_destroy_non_bitwise_move_con
         constexpr ~source_type() = default;
     };
 
-    struct destination_type : public hud_test::NonBitwiseMoveConstructibleType4
+    struct destination_type : public hud_test::non_bitwise_move_constructible_type4
     {
         constexpr destination_type(source_type &&other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType4(std::forward<hud_test::NonBitwiseMoveConstructibleType3>(other))
+            : hud_test::non_bitwise_move_constructible_type4(std::forward<hud_test::non_bitwise_move_constructible_type3>(other))
         {
         }
 
         // MSVC call copy constructor instead of move constructor
         // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
         constexpr destination_type(const source_type &other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType4(other)
+            : hud_test::non_bitwise_move_constructible_type4(other)
         {
         }
     };
@@ -223,11 +223,11 @@ GTEST_TEST(memory, fast_move_or_copy_construct_then_destroy_non_bitwise_move_con
 GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_copy_constructible_and_destructible_same_type)
 {
 
-    struct type : public hud_test::NonBitwiseCopyConstructibleType4
+    struct type : public hud_test::non_bitwise_copy_constructible_type4
         , hud_test::SetBoolToTrueWhenDestroyed
     {
         constexpr type(i32 *ctor_order, i32 *dtor_order) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType4(ctor_order)
+            : hud_test::non_bitwise_copy_constructible_type4(ctor_order)
             , hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
         {
         }
@@ -279,11 +279,11 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_co
 GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_move_constructible_and_destructible_same_type)
 {
 
-    struct type : public hud_test::NonBitwiseMoveConstructibleType4
+    struct type : public hud_test::non_bitwise_move_constructible_type4
         , hud_test::SetBoolToTrueWhenDestroyed
     {
         constexpr type(i32 *ctor_order, i32 *dtor_order) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType4(ctor_order)
+            : hud_test::non_bitwise_move_constructible_type4(ctor_order)
             , hud_test::SetBoolToTrueWhenDestroyed(dtor_order)
         {
         }
@@ -291,13 +291,13 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_mo
         // MSVC call copy constructor instead of move constructor
         // https://developercommunity.visualstudio.com/t/constexpr-stdconstruct-at-do-not-works/1545985
         constexpr type(const type &other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType4(other)
+            : hud_test::non_bitwise_move_constructible_type4(other)
             , hud_test::SetBoolToTrueWhenDestroyed(other)
         {
         }
 
         constexpr type(type &&other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType4(std::forward<hud_test::NonBitwiseMoveConstructibleType4>(other))
+            : hud_test::non_bitwise_move_constructible_type4(std::forward<hud_test::non_bitwise_move_constructible_type4>(other))
             , hud_test::SetBoolToTrueWhenDestroyed(std::forward<hud_test::SetBoolToTrueWhenDestroyed>(other))
         {
         }

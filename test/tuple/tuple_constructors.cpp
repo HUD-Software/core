@@ -37,16 +37,16 @@ namespace hud_test
     static_assert(hud::is_implicitly_default_constructible_v<implicit_default_constructible>);
 
     struct explicitly_copy_constructible
-        : public hud_test::NonBitwiseCopyConstructibleType
+        : public hud_test::non_bitwise_copy_constructible_type
     {
 
         constexpr explicitly_copy_constructible(i32 id) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType(id)
+            : hud_test::non_bitwise_copy_constructible_type(id)
         {
         }
 
         explicit constexpr explicitly_copy_constructible(const explicitly_copy_constructible &other) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType(other)
+            : hud_test::non_bitwise_copy_constructible_type(other)
         {
         }
     };
@@ -54,16 +54,16 @@ namespace hud_test
     static_assert(hud::is_explicitly_copy_constructible_v<explicitly_copy_constructible>);
 
     struct explicitly_copy_constructible2
-        : public hud_test::NonBitwiseCopyConstructibleType2
+        : public hud_test::non_bitwise_copy_constructible_type2
     {
 
         constexpr explicitly_copy_constructible2(i32 id) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType2(id)
+            : hud_test::non_bitwise_copy_constructible_type2(id)
         {
         }
 
         explicit constexpr explicitly_copy_constructible2(const explicitly_copy_constructible &other) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType2(other)
+            : hud_test::non_bitwise_copy_constructible_type2(other)
         {
         }
     };
@@ -71,16 +71,16 @@ namespace hud_test
     static_assert(hud::is_explicitly_copy_constructible_v<explicitly_copy_constructible2, explicitly_copy_constructible>);
 
     struct implicitly_copy_constructible
-        : public hud_test::NonBitwiseCopyConstructibleType
+        : public hud_test::non_bitwise_copy_constructible_type
     {
 
         constexpr implicitly_copy_constructible(i32 id) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType(id)
+            : hud_test::non_bitwise_copy_constructible_type(id)
         {
         }
 
         constexpr implicitly_copy_constructible(const implicitly_copy_constructible &other) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType(other)
+            : hud_test::non_bitwise_copy_constructible_type(other)
         {
         }
     };
@@ -88,16 +88,16 @@ namespace hud_test
     static_assert(hud::is_implicitly_copy_constructible_v<implicitly_copy_constructible>);
 
     struct implicitly_copy_constructible2
-        : public hud_test::NonBitwiseCopyConstructibleType2
+        : public hud_test::non_bitwise_copy_constructible_type2
     {
 
         constexpr implicitly_copy_constructible2(i32 id) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType2(id)
+            : hud_test::non_bitwise_copy_constructible_type2(id)
         {
         }
 
         constexpr implicitly_copy_constructible2(const implicitly_copy_constructible &other) noexcept
-            : hud_test::NonBitwiseCopyConstructibleType2(other)
+            : hud_test::non_bitwise_copy_constructible_type2(other)
         {
         }
     };
@@ -105,21 +105,21 @@ namespace hud_test
     static_assert(hud::is_implicitly_copy_constructible_v<implicitly_copy_constructible2, implicitly_copy_constructible>);
 
     struct explicitly_move_constructible
-        : public hud_test::NonBitwiseMoveConstructibleType
+        : public hud_test::non_bitwise_move_constructible_type
     {
 
         constexpr explicitly_move_constructible(i32 id) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType(id)
+            : hud_test::non_bitwise_move_constructible_type(id)
         {
         }
 
         explicit constexpr explicitly_move_constructible(const explicitly_move_constructible &other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType(other)
+            : hud_test::non_bitwise_move_constructible_type(other)
         {
         }
 
         explicit constexpr explicitly_move_constructible(explicitly_move_constructible &&other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType(hud::move(other))
+            : hud_test::non_bitwise_move_constructible_type(hud::move(other))
         {
         }
     };
@@ -127,21 +127,21 @@ namespace hud_test
     static_assert(hud::is_explicitly_move_constructible_v<explicitly_move_constructible>);
 
     struct explicitly_move_constructible2
-        : public hud_test::NonBitwiseMoveConstructibleType2
+        : public hud_test::non_bitwise_move_constructible_type2
     {
 
         constexpr explicitly_move_constructible2(i32 id) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType2(id)
+            : hud_test::non_bitwise_move_constructible_type2(id)
         {
         }
 
         explicit constexpr explicitly_move_constructible2(const explicitly_move_constructible &other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType2(other)
+            : hud_test::non_bitwise_move_constructible_type2(other)
         {
         }
 
         explicit constexpr explicitly_move_constructible2(explicitly_move_constructible &&other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType2(hud::move(other))
+            : hud_test::non_bitwise_move_constructible_type2(hud::move(other))
         {
         }
     };
@@ -149,21 +149,21 @@ namespace hud_test
     static_assert(hud::is_explicitly_move_constructible_v<explicitly_move_constructible2, explicitly_move_constructible>);
 
     struct implicitly_move_constructible
-        : public hud_test::NonBitwiseMoveConstructibleType
+        : public hud_test::non_bitwise_move_constructible_type
     {
 
         constexpr implicitly_move_constructible(i32 id) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType(id)
+            : hud_test::non_bitwise_move_constructible_type(id)
         {
         }
 
         constexpr implicitly_move_constructible(const implicitly_move_constructible &other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType(other)
+            : hud_test::non_bitwise_move_constructible_type(other)
         {
         }
 
         constexpr implicitly_move_constructible(implicitly_move_constructible &&other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType(hud::move(other))
+            : hud_test::non_bitwise_move_constructible_type(hud::move(other))
         {
         }
     };
@@ -171,21 +171,21 @@ namespace hud_test
     static_assert(hud::is_implicitly_move_constructible_v<implicitly_move_constructible>);
 
     struct implicitly_move_constructible2
-        : public hud_test::NonBitwiseMoveConstructibleType2
+        : public hud_test::non_bitwise_move_constructible_type2
     {
 
         constexpr implicitly_move_constructible2(i32 id) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType2(id)
+            : hud_test::non_bitwise_move_constructible_type2(id)
         {
         }
 
         constexpr implicitly_move_constructible2(const implicitly_move_constructible &other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType2(other)
+            : hud_test::non_bitwise_move_constructible_type2(other)
         {
         }
 
         constexpr implicitly_move_constructible2(implicitly_move_constructible &&other) noexcept
-            : hud_test::NonBitwiseMoveConstructibleType2(hud::move(other))
+            : hud_test::non_bitwise_move_constructible_type2(hud::move(other))
         {
         }
     };
@@ -542,7 +542,8 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_same_types)
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -578,7 +579,8 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_different_types)
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -614,7 +616,8 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_same_types)
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -650,7 +653,8 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_different_types)
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -686,7 +690,8 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_same_ty
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -722,7 +727,8 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_differe
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
 
     // Non constant
@@ -759,7 +765,8 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_same_types)
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -795,7 +802,8 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_different_types)
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -831,7 +839,8 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_same_types)
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -867,7 +876,8 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_different_types)
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -903,7 +913,8 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_same_ty
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {
@@ -939,7 +950,8 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_differe
             hud::get<0>(tuple).id() == 1,
             hud::get<0>(tuple).copy_constructor_count() == 1u,
             hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u};
+            hud::get<1>(tuple).copy_constructor_count() == 1u
+        };
     };
     // Non constant
     {

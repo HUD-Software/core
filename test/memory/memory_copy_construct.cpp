@@ -83,8 +83,8 @@ GTEST_TEST(memory, copy_construct_array_bitwise_constructible_type)
 GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_different_type)
 {
 
-    using source_type = hud_test::NonBitwiseCopyConstructibleType3;
-    using destination_type = hud_test::NonBitwiseCopyConstructibleType4;
+    using source_type = hud_test::non_bitwise_copy_constructible_type3;
+    using destination_type = hud_test::non_bitwise_copy_constructible_type4;
     using ResultType = std::tuple<i32, i32>;
 
     static_assert(hud::is_copy_constructible_v<destination_type, source_type>);
@@ -121,7 +121,7 @@ GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_different_type
 GTEST_TEST(memory, copy_construct_array_non_bitwise_constructible_same_type)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType4;
+    using type = hud_test::non_bitwise_copy_constructible_type4;
     using ResultType = std::tuple<u32, i32, u32, i32>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);

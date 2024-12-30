@@ -325,7 +325,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
 GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_same_type)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
     // test with default allocator no extra
@@ -1016,8 +1016,8 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
 GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constructible_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type2;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type;
 
     // test with default allocator no extra
     {
@@ -1978,7 +1978,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
 GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_same_type)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
     // test with default allocator no extra
@@ -2350,8 +2350,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
 GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructible_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type2;
     static_assert(!std::is_same_v<Type1, Type2> && !hud::is_bitwise_copy_constructible_v<Type2, Type1>);
 
     // test with default allocator no extra

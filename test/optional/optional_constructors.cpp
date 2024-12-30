@@ -129,7 +129,8 @@ GTEST_TEST(optional, constructor_in_place_of_trivially_constructible_type)
         hud::optional<type> option(hud::in_place, destructor_counter);
         return std::tuple {
             option.has_value(),
-            option.value() == 42};
+            option.value() == 42
+        };
     };
 
     // Non constant
@@ -301,7 +302,7 @@ GTEST_TEST(optional, move_construct_bitwise_copy_constructible_same_type)
 GTEST_TEST(optional, move_construct_non_bitwise_copy_constructible_same_type)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
 
     // Ensure the type is copyable but not movable
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
@@ -322,7 +323,8 @@ GTEST_TEST(optional, move_construct_non_bitwise_copy_constructible_same_type)
             copied.has_value(),
             option.value().id() == copied.value().id(),
             option.value().copy_constructor_count(),
-            option.value().id()};
+            option.value().id()
+        };
     };
 
     // Non constant
@@ -408,7 +410,8 @@ GTEST_TEST(optional, move_construct_non_bitwise_move_constructible_same_type)
             option.value().copy_constructor_count(),
             option.value().move_constructor_count(),
             option.value().copy_assign_count(),
-            option.value().move_assign_count()};
+            option.value().move_assign_count()
+        };
     };
 
     // Non constant
@@ -451,7 +454,8 @@ GTEST_TEST(optional, param_constructor_bitwise_copy_constructible_same_type_by_c
         hud::optional<type> option(value);
         return std::tuple {
             option.has_value(),
-            option.value() == value};
+            option.value() == value
+        };
     };
 
     // Non constant
@@ -530,7 +534,8 @@ GTEST_TEST(optional, param_constructor_bitwise_move_constructible_same_type_by_m
         hud::optional<type> option(hud::move(value));
         return std::tuple {
             option.has_value(),
-            option.value() == value};
+            option.value() == value
+        };
     };
 
     // Non constant

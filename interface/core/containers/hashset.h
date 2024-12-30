@@ -603,9 +603,26 @@ namespace hud
              * @param args List of arguments pass to `value_type` constructor after the `key` itself
              * @return Iterator to the `value`
              */
+            constexpr iterator add(key_type &&key, value_type &&value) noexcept
+            {
+                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+                slot_type *slot_ptr = slot_ptr_ + res.first;
+                if (res.second)
+                {
+                    hud::memory::construct_at(slot_ptr, key, hud::move(value));
+                }
+                return {control_ptr_ + res.first, slot_ptr};
+            }
+
+            /**
+             * Insert a key in the hashset.
+             * @param key The key associated with the `value`
+             * @param args List of arguments pass to `value_type` constructor after the `key` itself
+             * @return Iterator to the `value`
+             */
             template<typename... args_t>
             requires(hud::is_constructible_v<value_type, args_t...>)
-            constexpr iterator add(key_type &&key, args_t &&...args) noexcept
+            constexpr iterator add(const key_type &key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
                 slot_type *slot_ptr = slot_ptr_ + res.first;
@@ -712,7 +729,7 @@ namespace hud
              * Find the key and add the H2 hash in the control
              * If the key is found, return the iterator
              * If not found insert the key but do not construct the value.
-             * If the key*/
+             */
             [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
             {
                 u64 hash = hasher_type {}(key);

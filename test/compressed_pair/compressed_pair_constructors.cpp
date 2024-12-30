@@ -390,8 +390,8 @@ GTEST_TEST(compressed_pair, copy_constructor_non_trivial_type_same_type)
 GTEST_TEST(compressed_pair, copy_constructor_non_trivial_copy_constructible_type_same_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(!hud::is_trivially_copy_constructible_v<Type1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
@@ -473,10 +473,10 @@ GTEST_TEST(compressed_pair, copy_constructor_trivial_type_different_type)
 GTEST_TEST(compressed_pair, copy_constructor_non_trivial_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseCopyConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type2;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_copy_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(hud::is_copy_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_copy_constructible_v<Type2, OtherType2>);
@@ -521,10 +521,10 @@ GTEST_TEST(compressed_pair, copy_constructor_non_trivial_type_different_type)
 GTEST_TEST(compressed_pair, copy_constructor_non_trivial_copy_constructible_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseCopyConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type2;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_copy_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(hud::is_copy_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_copy_constructible_v<Type2, OtherType2>);
@@ -678,8 +678,8 @@ GTEST_TEST(compressed_pair, move_constructor_non_trivial_type_same_type)
 GTEST_TEST(compressed_pair, move_constructor_non_trivial_copy_constructible_type_same_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(!hud::is_trivially_copy_constructible_v<Type1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
@@ -721,8 +721,8 @@ GTEST_TEST(compressed_pair, move_constructor_non_trivial_copy_constructible_type
 GTEST_TEST(compressed_pair, move_constructor_non_trivial_move_constructible_type_same_type)
 {
 
-    using Type1 = hud_test::NonBitwiseMoveConstructibleType;
-    using Type2 = hud_test::NonBitwiseMoveConstructibleType;
+    using Type1 = hud_test::non_bitwise_move_constructible_type;
+    using Type2 = hud_test::non_bitwise_move_constructible_type;
     static_assert(!hud::is_trivially_move_constructible_v<Type1>);
     static_assert(!hud::is_trivially_move_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
@@ -810,10 +810,10 @@ GTEST_TEST(compressed_pair, move_constructor_trivial_type_different_type)
 GTEST_TEST(compressed_pair, move_constructor_non_trivial_copy_constructible_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseCopyConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type2;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_copy_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(hud::is_copy_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_copy_constructible_v<Type2, OtherType2>);
@@ -858,10 +858,10 @@ GTEST_TEST(compressed_pair, move_constructor_non_trivial_copy_constructible_type
 GTEST_TEST(compressed_pair, move_constructor_non_trivial_move_constructible_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseMoveConstructibleType2;
-    using Type2 = hud_test::NonBitwiseMoveConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseMoveConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseMoveConstructibleType;
+    using Type1 = hud_test::non_bitwise_move_constructible_type2;
+    using Type2 = hud_test::non_bitwise_move_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_move_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_move_constructible_type;
     static_assert(hud::is_move_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_move_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_move_constructible_v<Type2, OtherType2>);
@@ -1056,8 +1056,8 @@ GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_type_same_type)
 GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_copy_constructible_type_same_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(!hud::is_trivially_copy_constructible_v<Type1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
@@ -1100,10 +1100,10 @@ GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_copy_constructibl
 GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseCopyConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type2;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_copy_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(hud::is_copy_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_copy_constructible_v<Type2, OtherType2>);
@@ -1148,10 +1148,10 @@ GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_type_different_ty
 GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_copy_constructible_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseCopyConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type2;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_copy_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(hud::is_copy_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_copy_constructible_v<Type2, OtherType2>);
@@ -1301,8 +1301,8 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_type_same_type)
 
 GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_copy_constructible_type_same_type)
 {
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(!hud::is_trivially_copy_constructible_v<Type1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     static_assert(hud::is_same_v<Type1, Type2>);
@@ -1345,8 +1345,8 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_copy_constructibl
 GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_move_constructible_type_same_type)
 {
 
-    using Type1 = hud_test::NonBitwiseMoveConstructibleType;
-    using Type2 = hud_test::NonBitwiseMoveConstructibleType;
+    using Type1 = hud_test::non_bitwise_move_constructible_type;
+    using Type2 = hud_test::non_bitwise_move_constructible_type;
     static_assert(!hud::is_trivially_move_constructible_v<Type1>);
     static_assert(!hud::is_trivially_move_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
@@ -1434,10 +1434,10 @@ GTEST_TEST(compressed_pair, param_move_constructor_trivial_type_different_type)
 GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseCopyConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type2;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_copy_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(hud::is_copy_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_copy_constructible_v<Type2, OtherType2>);
@@ -1482,10 +1482,10 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_type_different_ty
 GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_copy_constructible_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseCopyConstructibleType2;
-    using Type2 = hud_test::NonBitwiseCopyConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseCopyConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseCopyConstructibleType;
+    using Type1 = hud_test::non_bitwise_copy_constructible_type2;
+    using Type2 = hud_test::non_bitwise_copy_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_copy_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_copy_constructible_type;
     static_assert(hud::is_copy_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_copy_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_copy_constructible_v<Type2, OtherType2>);
@@ -1530,10 +1530,10 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_copy_constructibl
 GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_move_constructible_type_different_type)
 {
 
-    using Type1 = hud_test::NonBitwiseMoveConstructibleType2;
-    using Type2 = hud_test::NonBitwiseMoveConstructibleType2;
-    using OtherType1 = hud_test::NonBitwiseMoveConstructibleType;
-    using OtherType2 = hud_test::NonBitwiseMoveConstructibleType;
+    using Type1 = hud_test::non_bitwise_move_constructible_type2;
+    using Type2 = hud_test::non_bitwise_move_constructible_type2;
+    using OtherType1 = hud_test::non_bitwise_move_constructible_type;
+    using OtherType2 = hud_test::non_bitwise_move_constructible_type;
     static_assert(hud::is_move_constructible_v<Type1, OtherType1>);
     static_assert(!hud::is_trivially_move_constructible_v<Type1, OtherType1>);
     static_assert(hud::is_move_constructible_v<Type2, OtherType2>);

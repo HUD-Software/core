@@ -276,7 +276,7 @@ GTEST_TEST(array, emplace_back_can_construct_trivially_constructible_type)
 GTEST_TEST(array, emplace_back_can_copy_construct_non_bitwise_copy_constructible_type)
 {
 
-    using type = hud_test::NonBitwiseCopyConstructibleType;
+    using type = hud_test::non_bitwise_copy_constructible_type;
     using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
     static_assert(hud::is_copy_constructible_v<type>);
@@ -423,7 +423,7 @@ GTEST_TEST(array, emplace_back_can_copy_construct_bitwise_copy_constructible_typ
 GTEST_TEST(array, emplace_back_can_move_construct_non_bitwise_move_constructible_type)
 {
 
-    using type = hud_test::NonBitwiseMoveConstructibleType;
+    using type = hud_test::non_bitwise_move_constructible_type;
     using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
     static_assert(hud::is_move_constructible_v<type>);

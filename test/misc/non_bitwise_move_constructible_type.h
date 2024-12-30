@@ -8,30 +8,30 @@ namespace hud_test
 
     /**
      * A move constructible type that is not a bitwise movable type
-     * The id is copied in order to know which NonBitwiseMoveConstructibleType is the original NonBitwiseMoveConstructibleType.
+     * The id is copied in order to know which non_bitwise_move_constructible_type is the original non_bitwise_move_constructible_type.
      */
-    struct NonBitwiseMoveConstructibleType
+    struct non_bitwise_move_constructible_type
     {
 
-        constexpr NonBitwiseMoveConstructibleType() noexcept = default;
+        constexpr non_bitwise_move_constructible_type() noexcept = default;
 
         /**
          * Construct with a given id
          * @tparam Integral The integral type to set
-         * @param id The id of the NonBitwiseMoveConstructibleType
+         * @param id The id of the non_bitwise_move_constructible_type
          */
         template<typename Integral>
         requires(hud::is_integral_v<Integral>)
-        constexpr NonBitwiseMoveConstructibleType(Integral id) noexcept
+        constexpr non_bitwise_move_constructible_type(Integral id) noexcept
             : unique_id(static_cast<i32>(id))
         {
         }
 
         /**
-         * Copy construct a NonBitwiseMoveConstructibleType
-         * @param other The NonBitwiseMoveConstructibleType to copy
+         * Copy construct a non_bitwise_move_constructible_type
+         * @param other The non_bitwise_move_constructible_type to copy
          */
-        constexpr NonBitwiseMoveConstructibleType(const NonBitwiseMoveConstructibleType &other) noexcept
+        constexpr non_bitwise_move_constructible_type(const non_bitwise_move_constructible_type &other) noexcept
             : move_construct_count(other.move_construct_count)
             , copy_construct_count(other.copy_construct_count + 1)
             , unique_id(other.unique_id)
@@ -39,10 +39,10 @@ namespace hud_test
         }
 
         /**
-         * Move construct a NonBitwiseMoveConstructibleType
-         * @param other The NonBitwiseMoveConstructibleType to move
+         * Move construct a non_bitwise_move_constructible_type
+         * @param other The non_bitwise_move_constructible_type to move
          */
-        constexpr NonBitwiseMoveConstructibleType(NonBitwiseMoveConstructibleType &&other) noexcept
+        constexpr non_bitwise_move_constructible_type(non_bitwise_move_constructible_type &&other) noexcept
             : move_construct_count(other.move_construct_count + 1)
             , copy_construct_count(other.copy_construct_count)
             , unique_id(other.unique_id)
@@ -74,8 +74,8 @@ namespace hud_test
         }
 
     private:
-        NonBitwiseMoveConstructibleType &operator=(const NonBitwiseMoveConstructibleType &) = delete;
-        NonBitwiseMoveConstructibleType &operator=(NonBitwiseMoveConstructibleType &&) = delete;
+        non_bitwise_move_constructible_type &operator=(const non_bitwise_move_constructible_type &) = delete;
+        non_bitwise_move_constructible_type &operator=(non_bitwise_move_constructible_type &&) = delete;
 
     private:
         /** Informs if the move constructor was called or not during construction */
@@ -86,89 +86,89 @@ namespace hud_test
         i32 unique_id = -1;
     };
 
-    static_assert(hud::is_move_constructible_v<NonBitwiseMoveConstructibleType>);
-    static_assert(!hud::is_bitwise_move_constructible_v<NonBitwiseMoveConstructibleType>);
-    static_assert(hud::is_copy_constructible_v<NonBitwiseCopyConstructibleType>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseCopyConstructibleType>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_move_constructible_type>);
+    static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_move_constructible_type>);
+    static_assert(hud::is_copy_constructible_v<non_bitwise_copy_constructible_type>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_constructible_type>);
 
     /**
      * A move constructible type that is not a bitwise movable type
-     * The id is copied in order to know which NonBitwiseMoveConstructibleType is the original NonBitwiseMoveConstructibleType.
-     * This is similar to NonBitwiseMoveConstructibleType, it exist only have a type that is not the same as NonBitwiseMoveConstructibleType for tests
+     * The id is copied in order to know which non_bitwise_move_constructible_type is the original non_bitwise_move_constructible_type.
+     * This is similar to non_bitwise_move_constructible_type, it exist only have a type that is not the same as non_bitwise_move_constructible_type for tests
      */
-    struct NonBitwiseMoveConstructibleType2 : public NonBitwiseMoveConstructibleType
+    struct non_bitwise_move_constructible_type2 : public non_bitwise_move_constructible_type
     {
         /**
          * Construct with an id set to -1.
          * You can set the id with set_id().
          */
-        constexpr NonBitwiseMoveConstructibleType2() noexcept
-            : NonBitwiseMoveConstructibleType(-1)
+        constexpr non_bitwise_move_constructible_type2() noexcept
+            : non_bitwise_move_constructible_type(-1)
         {
         }
 
         /**
          * Construct with a given id
-         * @param id The id of the NonBitwiseMoveConstructibleType
+         * @param id The id of the non_bitwise_move_constructible_type
          */
-        constexpr NonBitwiseMoveConstructibleType2(i32 id) noexcept
-            : NonBitwiseMoveConstructibleType(id)
+        constexpr non_bitwise_move_constructible_type2(i32 id) noexcept
+            : non_bitwise_move_constructible_type(id)
         {
         }
 
         /**
-         * Copy construct a NonBitwiseMoveConstructibleType
-         * @param other The NonBitwiseMoveConstructibleType to move
+         * Copy construct a non_bitwise_move_constructible_type
+         * @param other The non_bitwise_move_constructible_type to move
          */
-        constexpr NonBitwiseMoveConstructibleType2(const NonBitwiseMoveConstructibleType &other) noexcept
-            : NonBitwiseMoveConstructibleType(other)
+        constexpr non_bitwise_move_constructible_type2(const non_bitwise_move_constructible_type &other) noexcept
+            : non_bitwise_move_constructible_type(other)
         {
         }
 
         /**
-         * Move construct a NonBitwiseMoveConstructibleType
-         * @param other The NonBitwiseMoveConstructibleType to move
+         * Move construct a non_bitwise_move_constructible_type
+         * @param other The non_bitwise_move_constructible_type to move
          */
-        constexpr NonBitwiseMoveConstructibleType2(NonBitwiseMoveConstructibleType &&other) noexcept
-            : NonBitwiseMoveConstructibleType(std::forward<NonBitwiseMoveConstructibleType>(other))
+        constexpr non_bitwise_move_constructible_type2(non_bitwise_move_constructible_type &&other) noexcept
+            : non_bitwise_move_constructible_type(std::forward<non_bitwise_move_constructible_type>(other))
         {
         }
     };
 
-    static_assert(hud::is_move_constructible_v<NonBitwiseMoveConstructibleType2>);
-    static_assert(!hud::is_bitwise_move_constructible_v<NonBitwiseMoveConstructibleType2>);
-    static_assert(!hud::is_bitwise_move_constructible_v<NonBitwiseMoveConstructibleType2, NonBitwiseMoveConstructibleType>);
-    static_assert(!hud::is_bitwise_copy_constructible_v<NonBitwiseMoveConstructibleType2>);
+    static_assert(hud::is_move_constructible_v<non_bitwise_move_constructible_type2>);
+    static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_move_constructible_type2>);
+    static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_move_constructible_type2, non_bitwise_move_constructible_type>);
+    static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_move_constructible_type2>);
 
     /**
      * A move constructible type that is not a bitwise movable type
-     * The id is copied in order to know which NonBitwiseMoveConstructibleType is the original NonBitwiseMoveConstructibleType.
-     * This type add a incremanation pointer information to the type used by NonBitwiseMoveConstructibleType4 when this type is constructed.
+     * The id is copied in order to know which non_bitwise_move_constructible_type is the original non_bitwise_move_constructible_type.
+     * This type add a incremanation pointer information to the type used by non_bitwise_move_constructible_type4 when this type is constructed.
      */
-    struct NonBitwiseMoveConstructibleType3 : public NonBitwiseMoveConstructibleType2
+    struct non_bitwise_move_constructible_type3 : public non_bitwise_move_constructible_type2
     {
 
     public:
         /**
-         * Default construct NonBitwiseMoveConstructibleType3
+         * Default construct non_bitwise_move_constructible_type3
          * Set the incrementation pointer to nullptr
          */
-        constexpr NonBitwiseMoveConstructibleType3() noexcept = default;
+        constexpr non_bitwise_move_constructible_type3() noexcept = default;
 
-        constexpr NonBitwiseMoveConstructibleType3(i32 *increment_ptr) noexcept
-            : NonBitwiseMoveConstructibleType2()
+        constexpr non_bitwise_move_constructible_type3(i32 *increment_ptr) noexcept
+            : non_bitwise_move_constructible_type2()
             , increment(increment_ptr)
         {
         }
 
-        constexpr NonBitwiseMoveConstructibleType3(const NonBitwiseMoveConstructibleType3 &other) noexcept
-            : NonBitwiseMoveConstructibleType2(other)
+        constexpr non_bitwise_move_constructible_type3(const non_bitwise_move_constructible_type3 &other) noexcept
+            : non_bitwise_move_constructible_type2(other)
             , increment(other.increment)
         {
         }
 
-        constexpr NonBitwiseMoveConstructibleType3(NonBitwiseMoveConstructibleType3 &&other) noexcept
-            : NonBitwiseMoveConstructibleType2(std::forward<NonBitwiseMoveConstructibleType2>(other))
+        constexpr non_bitwise_move_constructible_type3(non_bitwise_move_constructible_type3 &&other) noexcept
+            : non_bitwise_move_constructible_type2(std::forward<non_bitwise_move_constructible_type2>(other))
             , increment(other.increment)
         {
         }
@@ -184,38 +184,25 @@ namespace hud_test
         i32 *increment = nullptr;
     };
 
-    struct NonBitwiseMoveConstructibleType4 : public NonBitwiseMoveConstructibleType3
+    struct non_bitwise_move_constructible_type4 : public non_bitwise_move_constructible_type3
     {
         /**
-         * Default construct NonBitwiseMoveConstructibleType4
+         * Default construct non_bitwise_move_constructible_type4
          * Set the incrementation pointer to nullptr
          */
-        constexpr NonBitwiseMoveConstructibleType4() noexcept = default;
+        constexpr non_bitwise_move_constructible_type4() noexcept = default;
 
-        constexpr NonBitwiseMoveConstructibleType4(i32 *increment_ptr) noexcept
-            : NonBitwiseMoveConstructibleType3(increment_ptr)
+        constexpr non_bitwise_move_constructible_type4(i32 *increment_ptr) noexcept
+            : non_bitwise_move_constructible_type3(increment_ptr)
         {
         }
 
         /**
-         * Move construct a NonBitwiseMoveConstructibleType4
-         * @param other The NonBitwiseMoveConstructibleType3 to move
+         * Move construct a non_bitwise_move_constructible_type4
+         * @param other The non_bitwise_move_constructible_type3 to move
          */
-        constexpr NonBitwiseMoveConstructibleType4(const NonBitwiseMoveConstructibleType4 &other) noexcept
-            : NonBitwiseMoveConstructibleType3(other)
-        {
-            if (incrementation_ptr())
-            {
-                increment_value = ++(*incrementation_ptr());
-            }
-        }
-
-        /**
-         * Move construct a NonBitwiseMoveConstructibleType4
-         * @param other The NonBitwiseMoveConstructibleType3 to move
-         */
-        constexpr NonBitwiseMoveConstructibleType4(NonBitwiseMoveConstructibleType4 &&other) noexcept
-            : NonBitwiseMoveConstructibleType3(std::forward<NonBitwiseMoveConstructibleType3>(other))
+        constexpr non_bitwise_move_constructible_type4(const non_bitwise_move_constructible_type4 &other) noexcept
+            : non_bitwise_move_constructible_type3(other)
         {
             if (incrementation_ptr())
             {
@@ -224,11 +211,11 @@ namespace hud_test
         }
 
         /**
-         * Copy construct a NonBitwiseMoveConstructibleType4
-         * @param other The NonBitwiseMoveConstructibleType3 to move
+         * Move construct a non_bitwise_move_constructible_type4
+         * @param other The non_bitwise_move_constructible_type3 to move
          */
-        constexpr NonBitwiseMoveConstructibleType4(const NonBitwiseMoveConstructibleType3 &other) noexcept
-            : NonBitwiseMoveConstructibleType3(other)
+        constexpr non_bitwise_move_constructible_type4(non_bitwise_move_constructible_type4 &&other) noexcept
+            : non_bitwise_move_constructible_type3(std::forward<non_bitwise_move_constructible_type3>(other))
         {
             if (incrementation_ptr())
             {
@@ -237,11 +224,24 @@ namespace hud_test
         }
 
         /**
-         * Move construct a NonBitwiseMoveConstructibleType4
-         * @param other The NonBitwiseMoveConstructibleType3 to move
+         * Copy construct a non_bitwise_move_constructible_type4
+         * @param other The non_bitwise_move_constructible_type3 to move
          */
-        constexpr NonBitwiseMoveConstructibleType4(NonBitwiseMoveConstructibleType3 &&other) noexcept
-            : NonBitwiseMoveConstructibleType3(std::forward<NonBitwiseMoveConstructibleType3>(other))
+        constexpr non_bitwise_move_constructible_type4(const non_bitwise_move_constructible_type3 &other) noexcept
+            : non_bitwise_move_constructible_type3(other)
+        {
+            if (incrementation_ptr())
+            {
+                increment_value = ++(*incrementation_ptr());
+            }
+        }
+
+        /**
+         * Move construct a non_bitwise_move_constructible_type4
+         * @param other The non_bitwise_move_constructible_type3 to move
+         */
+        constexpr non_bitwise_move_constructible_type4(non_bitwise_move_constructible_type3 &&other) noexcept
+            : non_bitwise_move_constructible_type3(std::forward<non_bitwise_move_constructible_type3>(other))
         {
             if (incrementation_ptr())
             {

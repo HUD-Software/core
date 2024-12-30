@@ -64,11 +64,11 @@ set( src
 	hash/crc32.cpp
 	hash/hash_32.cpp
 	hash/hash_64.cpp
-	hashmap/hashmap_insert.cpp
+	hashmap/hashmap_add.cpp
 	hashmap/hashmap_constructors.cpp
 	hashmap/hashmap_misc.cpp
 	hashmap/hashmap_find.cpp
-	hashset/hashset_insert.cpp
+	hashset/hashset_add.cpp
 	hashset/hashset_constructors.cpp
 	hashset/hashset_misc.cpp
 	i128/i128_assign.cpp
