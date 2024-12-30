@@ -1,14 +1,15 @@
-// #include <gtest/gtest.h>
 
-// int main(int argc, char **argv)
-// {
-//     ::testing::InitGoogleTest(&argc, argv);
-//     return RUN_ALL_TESTS();
-// }
-
-#include <catch2/catch_session.hpp>
+#define CATCH_CONFIG_RUNNER
+#include <catch2/catch_all.hpp>
 
 int main(int argc, char *argv[])
 {
-    return Catch::Session().run(argc, argv);
+    Catch::Session session;
+
+    // session.configData().showSuccessfulTests = true;
+    session.configData().abortAfter = 1;
+
+    int result = session.run(argc, argv);
+
+    return result;
 }
