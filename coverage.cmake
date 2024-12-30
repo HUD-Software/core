@@ -155,20 +155,20 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Merge coverage info...
-		COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge ${lib_name}.profraw -o ${lib_name}.profdata
+		COMMAND llvm-profdata merge ${lib_name}.profraw -o ${lib_name}.profdata
 	)
 
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Show profraw...
-		COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata show --all-functions ${lib_name}.profdata >> profraw.info.txt
+		COMMAND llvm-profdata show --all-functions ${lib_name}.profdata >> profraw.info.txt
 	)
 
 	add_custom_command( 
 		TARGET ${project_name} POST_BUILD
 		COMMAND echo Show coverage info...
 		COMMAND rm -f show.txt
-		COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-cov show ./${project_name} -instr-profile=${lib_name}.profdata --show-expansions >> show.txt
+		COMMAND llvm-cov show ./${project_name} -instr-profile=${lib_name}.profdata --show-expansions >> show.txt
 	)
 
 
@@ -207,6 +207,62 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
 				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
 				-o coverage.linux.clang.lcov.info
+				..
+	)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	# # Disable compiler batching to fix a clang-cl bug when activate --coverage
+	# # See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
+	# set_property(TARGET ${project_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
+	# set_property(TARGET ${lib_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
+
+	target_compile_options(${project_name} PRIVATE --coverage)
+	target_link_options(${project_name} PRIVATE --coverage)
+	target_compile_options(${lib_name} PRIVATE --coverage)
+	
+	add_custom_command( 
+		TARGET ${project_name} POST_BUILD
+		COMMAND echo Download Grcov...
+		COMMAND if [ ! -e grcov ];then (curl -L https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-unknown-linux-gnu.tar.bz2 | tar jxf -) fi
+	)
+	
+	add_custom_command( 
+		TARGET ${project_name} POST_BUILD
+		COMMAND echo Start coverage...
+		COMMAND ./${project_name}
+	)
+
+	add_custom_command( 
+		TARGET ${project_name} POST_BUILD
+		COMMAND echo Generate HTML report...
+		COMMAND ./grcov -t html -b . -s ./../../
+				--llvm-path /usr/bin/
+				#--branch
+				--keep-only "src/*" 
+				--keep-only "interface/*"
+				--excl-start "^.*LCOV_EXCL_START.*" 
+				--excl-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+				--excl-br-start "^.*LCOV_EXCL_START.*" 
+				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+				-o linux.gcc
+				..
+	)
+	add_custom_command( 
+		TARGET ${project_name} POST_BUILD
+		COMMAND echo Generate LCOV report...
+		COMMAND ./grcov -t lcov -b . -s ./../../
+				--llvm-path /usr/bin/
+				#--branch
+				--keep-only "src/*"
+				--keep-only "interface/*"
+				--excl-start "^.*LCOV_EXCL_START.*" 
+				--excl-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+				--excl-br-start "^.*LCOV_EXCL_START.*" 
+				--excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+				--excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+				-o coverage.linux.gcc.lcov.info
 				..
 	)
 endif()
@@ -315,8 +371,8 @@ if(MSVC)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	# Disable compiler batching to fix a clang-cl bug when activate --coverage
 	# See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
-	set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
-	set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
+	set_property(TARGET ${project_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
+	set_property(TARGET ${lib_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
 
 	target_compile_options(${project_name} PRIVATE --coverage)
 	target_link_options(${project_name} PRIVATE --coverage)
@@ -378,8 +434,8 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	# # Disable compiler batching to fix a clang-cl bug when activate --coverage
 	# # See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
-	# set_property(TARGET test_core PROPERTY VS_NO_COMPILE_BATCHING ON)
-	# set_property(TARGET core PROPERTY VS_NO_COMPILE_BATCHING ON)
+	# set_property(TARGET ${project_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
+	# set_property(TARGET ${lib_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
 
 	target_compile_options(${project_name} PRIVATE --coverage)
 	target_link_options(${project_name} PRIVATE --coverage)

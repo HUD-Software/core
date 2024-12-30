@@ -336,8 +336,6 @@ if(MSVC)
 endif()
 
 get_target_property(core_type ${lib_name} TYPE)
-
-
 	# if(MSVC)
 	# 	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	# 		# MSVC ASAN is limited
@@ -589,5 +587,5 @@ endif()
 
 if(COVERAGE)
 	include(../coverage.cmake)
-	enable_gcov_coverage(${test_project_name} ${lib_name})
+	enable_coverage(${test_project_name} ${lib_name})
 endif()
