@@ -10,28 +10,6 @@ GTEST_TEST(hashmap, hashmap_value_type_is_correct)
     hud_assert_true((hud::is_same_v<const i32, hud::hashmap<i64, const i32>::value_type>));
 }
 
-// Create a metadata with 2 posible groups
-// alignas(16) static constexpr hud::details::hashmap::metadata::byte_type metadata_array[hud::details::hashmap::metadata::group_type::SLOT_PER_GROUP * 2] {
-//     // First group
-//     hud::details::hashmap::metadata::byte_type {(hud::details::hashmap::metadata::byte_type)0x6D}, // 0 => LSB of the mask
-//     hud::details::hashmap::metadata::byte_type {(hud::details::hashmap::metadata::byte_type)0x2A},
-//     hud::details::hashmap::metadata::byte_type {0},
-//     hud::details::hashmap::metadata::deleted_byte,
-//     hud::details::hashmap::metadata::byte_type {(hud::details::hashmap::metadata::byte_type)0x6D}, // 4
-//     hud::details::hashmap::metadata::empty_byte,
-//     hud::details::hashmap::metadata::byte_type {0},
-//     hud::details::hashmap::metadata::byte_type {(hud::details::hashmap::metadata::byte_type)0x7F}, // 7 => MSB of the mask
-//     // Second group
-//     hud::details::hashmap::metadata::deleted_byte, // 8 => LSB of the mask
-//     hud::details::hashmap::metadata::byte_type {0},
-//     hud::details::hashmap::metadata::byte_type {0},
-//     hud::details::hashmap::metadata::empty_byte,
-//     hud::details::hashmap::metadata::byte_type {0}, // 12
-//     hud::details::hashmap::metadata::byte_type {(hud::details::hashmap::metadata::byte_type)0x7B},
-//     hud::details::hashmap::metadata::empty_byte,
-//     hud::details::hashmap::metadata::sentinel_byte // 16 => MSB of the mask
-// };
-
 GTEST_TEST(hashmap, metadata)
 {
     // Testing metadata byte filtering
