@@ -3,7 +3,6 @@
 
 GTEST_TEST(array, add_to_ref_by_copy_construct_non_bitwise_copy_constructible_type)
 {
-
     using type = hud_test::non_bitwise_copy_constructible_type;
     using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_bitwise_copy_constructible_v<type, type>);

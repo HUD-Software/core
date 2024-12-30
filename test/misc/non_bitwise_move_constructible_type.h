@@ -12,7 +12,6 @@ namespace hud_test
      */
     struct non_bitwise_move_constructible_type
     {
-
         constexpr non_bitwise_move_constructible_type() noexcept = default;
 
         /**
@@ -71,6 +70,16 @@ namespace hud_test
         constexpr void set_id(const i32 id) noexcept
         {
             unique_id = id;
+        }
+
+        friend constexpr bool operator==(const non_bitwise_move_constructible_type &a, const non_bitwise_move_constructible_type &b) noexcept
+        {
+            return a.id() == b.id();
+        }
+
+        friend constexpr bool operator!=(const non_bitwise_move_constructible_type &a, const non_bitwise_move_constructible_type &b) noexcept
+        {
+            return !(a == b);
         }
 
     private:
@@ -262,4 +271,24 @@ namespace hud_test
 
 } // namespace hud_test
 
+namespace hud
+{
+    template<>
+    struct hash_32<hud_test::non_bitwise_move_constructible_type>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_move_constructible_type &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_move_constructible_type>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_move_constructible_type &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+} // namespace hud
 #endif // HD_INC_MISC_NON_BITWISE_MOVE_CONSTRUCTIBLE_TYPE_H

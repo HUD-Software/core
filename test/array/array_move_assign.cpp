@@ -5,7 +5,6 @@
 // void assign(array &&other, const usize min_slack = 0)
 GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_allocator_no_min_slack)
 {
-
     using type = i32;
 
     static_assert(hud::is_bitwise_move_assignable_v<type>);

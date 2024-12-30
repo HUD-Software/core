@@ -17,6 +17,16 @@ namespace hud
             using key_type = typename hud::pair<key_t, value_t>::first_type;
             using value_type = typename hud::pair<key_t, value_t>::second_type;
 
+            explicit constexpr slot(const key_type &key) noexcept
+                : super(key, value_type {})
+            {
+            }
+
+            explicit constexpr slot(key_type &&key) noexcept
+                : super(std::move(key), value_type {})
+            {
+            }
+
             [[nodiscard]] constexpr const key_t &key() const noexcept
             {
                 return hud::get<0>(*this);
@@ -79,7 +89,6 @@ namespace hud
         typename allocator_t = hashmap_default_allocator>
     class hashmap
         : public details::hashset::hashset_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
-
     {
 
     private:

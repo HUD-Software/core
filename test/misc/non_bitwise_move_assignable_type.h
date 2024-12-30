@@ -370,6 +370,7 @@ namespace hud_test
     static_assert(hud::is_move_constructible_v<non_bitwise_move_assignable_type4, non_bitwise_move_assignable_type3>);
     static_assert(!hud::is_bitwise_move_assignable_v<non_bitwise_move_assignable_type4>);
     static_assert(!hud::is_bitwise_move_constructible_v<non_bitwise_move_assignable_type4>);
+
 } // namespace hud_test
 
 #endif // HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H

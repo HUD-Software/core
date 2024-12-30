@@ -4,7 +4,6 @@
 
 GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 {
-
     using type = hud_test::NonDefaultConstructibleType;
     using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_constructible_v<type>);

@@ -1,7 +1,7 @@
 #include <core/containers/array.h>
 #include "../misc/allocator_watcher.h"
 
-GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type)
+GTEST_TEST(array, add_by_copy_construct_non_bitwise_copy_constructible_type_same_type)
 {
 
     using type = hud_test::non_bitwise_copy_constructible_type;

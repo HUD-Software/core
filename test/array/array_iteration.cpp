@@ -2,7 +2,6 @@
 
 GTEST_TEST(array, iterators)
 {
-
     // Non const Array
     {
         hud::array<i32> arr({10, 20, 30, 40});
@@ -46,7 +45,6 @@ GTEST_TEST(array, iterators)
 
 GTEST_TEST(array, range_for_loop)
 {
-
     // Non const Array
     {
         hud::array<i32> arr({10, 20, 30, 40});

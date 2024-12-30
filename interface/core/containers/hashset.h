@@ -8,6 +8,7 @@
 #include "pair.h"
 #include "../hash.h"
 #include "../bits.h"
+#include "../traits/is_comparable_with_equal.h"
 
 namespace hud
 {
@@ -470,14 +471,16 @@ namespace hud
                 return tmp;
             }
 
-            friend constexpr bool operator==(const iterator &a, const iterator &b)
+            /** Checks if 2 iterator are equal. */
+            [[nodiscard]] constexpr bool operator==(const iterator &other) const noexcept
             {
-                return a.control_ptr_ == b.control_ptr_;
+                return control_ptr_ == other.control_ptr_;
             }
 
-            friend constexpr bool operator!=(const iterator &a, const iterator &b)
+            /** Checks if 2 iterator are not equals. */
+            [[nodiscard]] constexpr bool operator!=(const iterator &other) const noexcept
             {
-                return !(a == b);
+                return control_ptr_ != other.control_ptr_;
             }
 
         private:
@@ -499,8 +502,8 @@ namespace hud
             typename key_equal_t,
             typename allocator_t>
         class hashset_impl
-
         {
+
         protected:
             /** Type of the slot. */
             using slot_type = slot_t;
@@ -592,7 +595,7 @@ namespace hud
                 slot_type *slot_ptr = slot_ptr_ + res.first;
                 if (res.second)
                 {
-                    hud::memory::construct_at<args_t...>(slot_ptr, key, hud::forward<args_t>(args)...);
+                    hud::memory::construct_at<args_t...>(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
                 }
                 return slot_ptr->value();
             }
@@ -609,7 +612,26 @@ namespace hud
                 slot_type *slot_ptr = slot_ptr_ + res.first;
                 if (res.second)
                 {
-                    hud::memory::construct_at(slot_ptr, key, hud::move(value));
+                    hud::memory::construct_at(slot_ptr, hud::move(key), hud::move(value));
+                }
+                return {control_ptr_ + res.first, slot_ptr};
+            }
+
+            /**
+             * Insert a key in the hashset.
+             * @param key The key associated with the `value`
+             * @param args List of arguments pass to `value_type` constructor after the `key` itself
+             * @return Iterator to the `value`
+             */
+            template<typename... args_t>
+            requires(hud::is_constructible_v<value_type, args_t...>)
+            constexpr iterator add(key_type &&key, args_t &&...args) noexcept
+            {
+                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+                slot_type *slot_ptr = slot_ptr_ + res.first;
+                if (res.second)
+                {
+                    hud::memory::construct_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
                 }
                 return {control_ptr_ + res.first, slot_ptr};
             }
@@ -635,7 +657,7 @@ namespace hud
 
             /** Find a key and return an iterator to the value. */
             [[nodiscard]]
-            constexpr iterator find(key_type &&key) const noexcept
+            constexpr iterator find(key_type &&key) noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -721,7 +743,7 @@ namespace hud
             [[nodiscard]]
             constexpr const_iterator end() const noexcept
             {
-                return iterator(control_ptr_sentinel());
+                return const_iterator(control_ptr_sentinel());
             }
 
         private:
@@ -732,6 +754,9 @@ namespace hud
              */
             [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
             {
+                static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
+                static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
+
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");

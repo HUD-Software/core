@@ -8,6 +8,7 @@
 #include "templates/bit_cast.h"
 #include "cstring.h"
 #include "traits/decay.h"
+#include "templates/declval.h"
 
 namespace hud
 {
@@ -429,6 +430,39 @@ namespace hud
         u64 state_ {0}; // Default is 0, but can be a seed
     };
 
+    // Traits used to check if a type is hashable
+    template<typename type_t, typename = void>
+    struct is_hashable_64
+        : hud::false_type
+    {
+    };
+
+    template<typename type_t>
+    struct is_hashable_64<type_t, void_t<decltype(hud::hash_64<type_t> {}(hud::declval<type_t>()))>>
+        : hud::true_type
+    {
+    };
+
+    /** Equivalent of is_hashable<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_hashable_64_v = is_hashable_64<type_t>::value;
+
+    // Traits used to check if a type is hashable
+    template<typename type_t, typename = void>
+    struct is_hashable_32
+        : hud::false_type
+    {
+    };
+
+    template<typename type_t>
+    struct is_hashable_32<type_t, void_t<decltype(hud::hash_32<type_t> {}(hud::declval<type_t>()))>>
+        : hud::true_type
+    {
+    };
+
+    /** Equivalent of is_hashable<type_t>::value. */
+    template<typename type_t>
+    inline constexpr bool is_hashable_32_v = is_hashable_32<type_t>::value;
 } // namespace hud
 
 #endif // HD_INC_CORE_HASH_H
