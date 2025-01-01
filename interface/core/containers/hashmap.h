@@ -102,13 +102,17 @@ namespace hud
         /** Type of the key. */
         using typename super::key_type;
         /** Type of the value. */
+        using typename super::value_type;
+        /** Type of the key, value pair. */
+        using type = super::slot_type;
+
+        /** Type of the value. */
         using super::add;
         using super::reserve;
         using super::super;
         using typename super::allocator_type;
         using typename super::const_iterator;
         using typename super::iterator;
-        using typename super::value_type;
         explicit constexpr hashmap() noexcept = default;
 
         constexpr explicit hashmap(const allocator_type &allocator) noexcept

@@ -525,9 +525,9 @@ namespace hud
             using value_type = typename slot_type::value_type;
             /** Type of the hash function. */
             using hasher_type = hasher_t;
-            /** Type of the iterator/ */
+            /** Type of the iterator. */
             using iterator = hud::details::hashset::iterator<slot_type>;
-            /** Type of the iterator/ */
+            /** Type of the const iterator. */
             using const_iterator = hud::details::hashset::iterator<const slot_type>;
             /**  Type of the allocator. */
             using allocator_type = allocator_t;

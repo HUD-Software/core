@@ -57,7 +57,7 @@ GTEST_TEST(array, range_for_loop)
         hud_assert_eq(arr[3], 40);
 
         i32 result[4];
-        i32 index = 0;
+        usize index = 0;
         // constexpr Iterator begin() noexcept
         // constexpr Iterator end() noexcept
         for (auto &value : arr)
@@ -82,7 +82,7 @@ GTEST_TEST(array, range_for_loop)
         hud_assert_eq(arr[3], 40);
 
         i32 result[4];
-        i32 index = 0;
+        usize index = 0;
         // constexpr Iterator begin() noexcept
         // constexpr Iterator end() noexcept
         for (auto &value : arr)

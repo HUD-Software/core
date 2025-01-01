@@ -2,85 +2,98 @@
 
 GTEST_TEST(hashmap, iterators)
 {
-    // Non const Array
+    const auto test = []()
     {
-        hud::hashmap<i32, i64> map;
-        map.add({1, 11});
-        map.add({2, 22});
-        map.add({3, 33});
-        map.add({4, 44});
-        hud_assert_eq(map.count(), 4u);
-        hud_assert_ge(map.max_count(), 4u);
-        hud::hashmap<i32, i64>::iterator it_begin = map.begin();
-        hud_assert_true((hud::is_same_v<decltype(it_begin->key()), const i32 &>));
-        hud_assert_true((hud::is_same_v<decltype(it_begin->value()), i64 &>));
-    }
-
-    // Const Array
-    {
-        const hud::hashmap<i32, i64> map {
+        hud::hashmap<i32, i64> map {
             {1, 11},
             {2, 22},
             {3, 33},
             {4, 44}
         };
-        hud_assert_eq(map.count(), 4u);
-        hud_assert_ge(map.max_count(), 4u);
-        hud::hashmap<i32, i64>::const_iterator it_begin = map.begin();
-        hud_assert_true((hud::is_same_v<decltype(it_begin->key()), const i32 &>));
-        hud_assert_true((hud::is_same_v<decltype(it_begin->value()), const i64 &>));
+        const hud::hashmap<i32, i64> const_map {
+            {1, 11},
+            {2, 22},
+            {3, 33},
+            {4, 44}
+        };
+
+        hud::hashmap<i32, i64>::iterator it_begin = map.begin();
+        hud::hashmap<i32, i64>::const_iterator const_it_begin = const_map.begin();
+
+        return std::tuple {
+            hud::is_same_v<decltype(it_begin->key()), const i32 &>,
+            hud::is_same_v<decltype(it_begin->value()), i64 &>,
+            hud::is_same_v<decltype(const_it_begin->key()), const i32 &>,
+            hud::is_same_v<decltype(const_it_begin->value()), const i64 &>,
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+    }
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
     }
 }
 
 // GTEST_TEST(hashmap, range_for_loop)
 // {
-//     // Non const Array
+//     const auto test = []()
 //     {
-//         hud::array<i32> arr({10, 20, 30, 40});
-//         hud_assert_ne(arr.data(), nullptr);
-//         hud_assert_eq(arr.count(), 4u);
-//         hud_assert_eq(arr.max_count(), 4u);
-//         hud_assert_eq(arr[0], 10);
-//         hud_assert_eq(arr[1], 20);
-//         hud_assert_eq(arr[2], 30);
-//         hud_assert_eq(arr[3], 40);
+//         using map_type = hud::hashmap<i32, i64>;
+//         map_type map {
+//             {1, 11},
+//             {2, 22},
+//             {3, 33},
+//             {4, 44}
+//         };
+//         const map_type const_map {
+//             {1, 11},
+//             {2, 22},
+//             {3, 33},
+//             {4, 44}
+//         };
 
-// i32 result[4];
-// i32 index = 0;
-// // constexpr Iterator begin() noexcept
-// // constexpr Iterator end() noexcept
-// for (auto &value : arr)
+// map_type::type result[4];
+// usize index = 0;
+// for (const auto &value : map)
 // {
 //     result[index++] = value;
 // }
-// hud_assert_eq(result[0], arr[0]);
-// hud_assert_eq(result[1], arr[1]);
-// hud_assert_eq(result[2], arr[2]);
-// hud_assert_eq(result[3], arr[3]);
+// map_type::type const_result[4];
+// index = 0;
+// for (const auto &value : const_map)
+// {
+//     const_result[index++] = value;
 // }
 
-// // Const Array
-// {
-//     const hud::array<i32> arr({10, 20, 30, 40});
-//     hud_assert_ne(arr.data(), nullptr);
-//     hud_assert_eq(arr.count(), 4u);
-//     hud_assert_eq(arr.max_count(), 4u);
-//     hud_assert_eq(arr[0], 10);
-//     hud_assert_eq(arr[1], 20);
-//     hud_assert_eq(arr[2], 30);
-//     hud_assert_eq(arr[3], 40);
+// return std::tuple {
+//     result[0] == {1, 11},
+//     result[1] == {2, 22},
+//     result[2] == {3, 33},
+//     result[3] == {4, 44},
+//     const_result[0] == {1, 11},
+//     const_result[1] == {2, 22},
+//     const_result[2] == {3, 33},
+//     const_result[3] == {4, 44},
+// };
+// };
 
-// i32 result[4];
-// i32 index = 0;
-// // constexpr Iterator begin() noexcept
-// // constexpr Iterator end() noexcept
-// for (auto &value : arr)
+// // Non constant
 // {
-//     result[index++] = value;
 // }
-// hud_assert_eq(result[0], arr[0]);
-// hud_assert_eq(result[1], arr[1]);
-// hud_assert_eq(result[2], arr[2]);
-// hud_assert_eq(result[3], arr[3]);
+
+// // Constant
+// {
 // }
 // }
