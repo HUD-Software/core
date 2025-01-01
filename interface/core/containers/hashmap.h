@@ -8,14 +8,16 @@ namespace hud
     {
 
         template<typename key_t, typename value_t>
-        struct slot
+        class slot
             : hud::pair<key_t, value_t>
         {
+        public:
             using super = hud::pair<key_t, value_t>;
-            using super::super;
             using type = super;
             using key_type = typename hud::pair<key_t, value_t>::first_type;
             using value_type = typename hud::pair<key_t, value_t>::second_type;
+
+            using super::super;
 
             explicit constexpr slot(const key_type &key) noexcept
                 : super(key, value_type {})
@@ -100,7 +102,51 @@ namespace hud
         /** Type of the key. */
         using typename super::key_type;
         /** Type of the value. */
+        using super::add;
+        using super::reserve;
+        using super::super;
+        using typename super::allocator_type;
+        using typename super::const_iterator;
+        using typename super::iterator;
         using typename super::value_type;
+        explicit constexpr hashmap() noexcept = default;
+
+        constexpr explicit hashmap(const allocator_type &allocator) noexcept
+            : super(allocator)
+        {
+        }
+
+        constexpr hashmap(std::initializer_list<hud::pair<key_t, value_t>> list, const allocator_type &allocator = allocator_type()) noexcept
+            : super(allocator)
+        {
+            reserve(list.size());
+            for (auto &pair : list)
+            {
+                add(pair);
+            }
+        }
+
+        /**
+         * Insert a key in the hashset.
+         * @param key The key associated with the `value`
+         * @param args List of arguments pass to `value_type` constructor after the `key` itself
+         * @return Iterator to the `value`
+         */
+        constexpr iterator add(const hud::pair<key_t, value_t> &pair) noexcept
+        {
+            return add(pair.first, pair.second);
+        }
+
+        /**
+         * Insert a key in the hashset.
+         * @param key The key associated with the `value`
+         * @param args List of arguments pass to `value_type` constructor after the `key` itself
+         * @return Iterator to the `value`
+         */
+        constexpr iterator add(hud::pair<key_t, value_t> &&pair) noexcept
+        {
+            return add(hud::move(pair.first), hud::move(pair.second));
+        }
     };
 } // namespace hud
 

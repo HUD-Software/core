@@ -1403,11 +1403,11 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
 
 GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_same_type)
 {
-
     using type = i32;
 
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
 
+    // Test with default allocator and no extra
     {
         auto test_default_allocator = [](std::initializer_list<type> initializer)
         {

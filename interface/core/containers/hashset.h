@@ -15,28 +15,30 @@ namespace hud
     namespace details::hashset
     {
         template<typename value_t>
-        struct slot
+        class slot
         {
+        public:
             using type = value_t;
             using key_type = value_t;
             using value_type = value_t;
 
+            explicit constexpr slot(const key_type &key) noexcept
+                : key_(key)
+            {
+            }
+
+            explicit constexpr slot(key_type &&key) noexcept
+                : key_(std::move(key))
+            {
+            }
+
             [[nodiscard]] constexpr const key_type &key() const noexcept
             {
-                return value_;
+                return key_;
             }
 
-            [[nodiscard]] constexpr const value_type &value() const noexcept
-            {
-                return value_;
-            }
-
-            [[nodiscard]] constexpr value_type &value() noexcept
-            {
-                return value_;
-            }
-
-            value_t value_;
+        private:
+            type key_;
         };
 
         template<typename key_t>
@@ -423,16 +425,26 @@ namespace hud
             constexpr iterator(control_type *control_ptr)
                 : control_ptr_(control_ptr)
             {
-                hud::check(control_ptr != nullptr);
-                HD_ASSUME((control_ptr != nullptr));
+                hud::check(control_ptr_ != nullptr);
+                HD_ASSUME((control_ptr_ != nullptr));
             }
 
             constexpr iterator(control_type *control_ptr, slot_type *slot_ptr)
                 : control_ptr_(control_ptr)
                 , slot_ptr_(slot_ptr)
             {
-                hud::check(control_ptr != nullptr);
-                HD_ASSUME(control_ptr != nullptr);
+                hud::check(control_ptr_ != nullptr);
+                HD_ASSUME(control_ptr_ != nullptr);
+                hud::check(slot_ptr_ != nullptr);
+                HD_ASSUME(slot_ptr_ != nullptr);
+            }
+
+            constexpr iterator(hud::pair<control_type *, slot_type *> &&ctrl_slot_ptr)
+                : control_ptr_(ctrl_slot_ptr.first)
+                , slot_ptr_(ctrl_slot_ptr.second)
+            {
+                hud::check(control_ptr_ != nullptr);
+                HD_ASSUME(control_ptr_ != nullptr);
                 hud::check(slot_ptr_ != nullptr);
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
@@ -523,6 +535,14 @@ namespace hud
             using memory_allocation_type = typename allocator_type::template memory_allocation_type<slot_type>;
 
         public:
+            /**  Default constructor. */
+            explicit constexpr hashset_impl() noexcept = default;
+
+            constexpr explicit hashset_impl(const allocator_type &allocator) noexcept
+                : allocator_(allocator)
+            {
+            }
+
             constexpr ~hashset_impl() noexcept
             {
                 clear_shrink();
@@ -722,26 +742,24 @@ namespace hud
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]] constexpr iterator begin() noexcept
             {
-                return find_first_full();
+                return iterator {find_first_full()};
             }
 
             /** Retrieves an iterator to the end of the array. */
-            [[nodiscard]]
-            constexpr const_iterator begin() const noexcept
+            [[nodiscard]] constexpr const_iterator begin() const noexcept
+
             {
-                return find_first_full();
+                return const_iterator(find_first_full());
             }
 
             /** Retrieves an iterator to the end of the array. */
-            [[nodiscard]]
-            constexpr iterator end() noexcept
+            [[nodiscard]] constexpr iterator end() noexcept
             {
                 return iterator(control_ptr_sentinel());
             }
 
             /** Retrieves an iterator to the end of the array. */
-            [[nodiscard]]
-            constexpr const_iterator end() const noexcept
+            [[nodiscard]] constexpr const_iterator end() const noexcept
             {
                 return const_iterator(control_ptr_sentinel());
             }
@@ -910,7 +928,7 @@ namespace hud
             }
 
             [[nodiscard]]
-            constexpr iterator find_first_full() noexcept
+            constexpr hud::pair<control_type *, slot_type *> find_first_full() const noexcept
             {
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index = 0;
@@ -927,7 +945,7 @@ namespace hud
                     // Advance to next group (Maybe a control iterator that iterate over groups can be better alternative)
                     slot_index += group_type::SLOT_PER_GROUP;
                 }
-                return end();
+                return {control_ptr_sentinel(), nullptr};
             }
 
             /**

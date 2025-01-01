@@ -66,8 +66,9 @@ set( src
 	hash/hash_64.cpp
 	hashmap/hashmap_add.cpp
 	hashmap/hashmap_constructors.cpp
-	hashmap/hashmap_misc.cpp
 	hashmap/hashmap_find.cpp
+	hashmap/hashmap_iterator.cpp
+	hashmap/hashmap_misc.cpp
 	hashset/hashset_add.cpp
 	hashset/hashset_constructors.cpp
 	hashset/hashset_misc.cpp
