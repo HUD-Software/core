@@ -364,7 +364,7 @@ namespace hud
             }
 
             /** Skip all empty or deleted control. */
-            static constexpr control_type *skip_empty_or_deleted(control_type *control_ptr)
+            static constexpr control_type *skip_empty_or_deleted(control_type *control_ptr) noexcept
             {
                 // skip all empty slot after the current one
                 while (control::is_byte_empty_or_deleted(*control_ptr))
@@ -414,6 +414,7 @@ namespace hud
         template<typename slot_t>
         class iterator
         {
+        public:
             using slot_type = slot_t;
             using type = typename slot_type::type;
             using key_type = typename slot_type::key_type;
@@ -422,14 +423,14 @@ namespace hud
             using reference_type = hud::add_lvalue_reference_t<slot_type>;
 
         public:
-            constexpr iterator(control_type *control_ptr)
+            constexpr iterator(control_type *control_ptr) noexcept
                 : control_ptr_(control_ptr)
             {
                 hud::check(control_ptr_ != nullptr);
                 HD_ASSUME((control_ptr_ != nullptr));
             }
 
-            constexpr iterator(control_type *control_ptr, slot_type *slot_ptr)
+            constexpr iterator(control_type *control_ptr, slot_type *slot_ptr) noexcept
                 : control_ptr_(control_ptr)
                 , slot_ptr_(slot_ptr)
             {
@@ -439,7 +440,7 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
-            constexpr iterator(hud::pair<control_type *, slot_type *> &&ctrl_slot_ptr)
+            constexpr iterator(hud::pair<control_type *, slot_type *> &&ctrl_slot_ptr) noexcept
                 : control_ptr_(ctrl_slot_ptr.first)
                 , slot_ptr_(ctrl_slot_ptr.second)
             {
@@ -449,34 +450,32 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
-            constexpr reference_type operator*() const
+            constexpr reference_type operator*() const noexcept
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
                 return *slot_ptr_;
             }
 
-            constexpr pointer_type operator->() const
+            constexpr pointer_type operator->() const noexcept
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
                 return slot_ptr_;
             }
 
-            constexpr iterator &operator++()
+            constexpr iterator &operator++() noexcept
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
-                // Skip the current full
-                control_ptr_++;
                 // Skip all emptry or deleted
-                control_type *full_or_sentinel = control::skip_empty_or_deleted(control_ptr_);
+                control_type *full_or_sentinel = control::skip_empty_or_deleted(control_ptr_ + 1);
                 slot_ptr_ += full_or_sentinel - control_ptr_;
                 control_ptr_ = full_or_sentinel;
                 return *this;
             }
 
-            constexpr iterator operator++(int)
+            constexpr iterator operator++(int) noexcept
             {
                 auto tmp = *this;
                 ++*this;
@@ -493,6 +492,13 @@ namespace hud
             [[nodiscard]] constexpr bool operator!=(const iterator &other) const noexcept
             {
                 return control_ptr_ != other.control_ptr_;
+            }
+
+            template<usize index, typename iterator_t>
+            requires(hud::is_same_v<iterator, hud::decay_t<iterator_t>>)
+            friend constexpr decltype(auto) get(iterator_t &&it) noexcept
+            {
+                return get<index>(*it);
             }
 
         private:
@@ -515,7 +521,6 @@ namespace hud
             typename allocator_t>
         class hashset_impl
         {
-
         protected:
             /** Type of the slot. */
             using slot_type = slot_t;
@@ -677,7 +682,7 @@ namespace hud
 
             /** Find a key and return an iterator to the value. */
             [[nodiscard]]
-            constexpr iterator find(key_type &&key) noexcept
+            constexpr iterator find(key_type &&key) const noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -685,6 +690,7 @@ namespace hud
                 usize slot_index = h1 & max_slot_count_;
                 while (true)
                 {
+
                     group_type group {control_ptr_ + slot_index};
                     group_type::mask group_mask_that_match_h2 = group.match(H2(hash));
                     for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
@@ -700,7 +706,7 @@ namespace hud
                     // If we have free slot, we don't find it
                     if (group.mask_of_empty_slot().has_free_slot())
                     {
-                        return end();
+                        return iterator(control_ptr_sentinel());
                     }
 
                     // Advance to next group (Maybe a control iterator taht iterate over groups can be better alternative)
@@ -747,7 +753,6 @@ namespace hud
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]] constexpr const_iterator begin() const noexcept
-
             {
                 return const_iterator(find_first_full());
             }
@@ -1069,4 +1074,19 @@ namespace hud
     };
 } // namespace hud
 
+namespace std
+{
+    template<typename slot_t>
+    struct tuple_size<hud::details::hashset::iterator<slot_t>>
+        : tuple_size<typename hud::details::hashset::iterator<slot_t>::slot_type>
+    {
+    };
+
+    template<std::size_t index, typename slot_t>
+    struct tuple_element<index, hud::details::hashset::iterator<slot_t>>
+    {
+        using type = tuple_element<index, typename hud::details::hashset::iterator<slot_t>::slot_type>::type;
+    };
+
+} // namespace std
 #endif // HD_INC_CORE_HASHSET_H

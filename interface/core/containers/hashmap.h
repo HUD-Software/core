@@ -6,7 +6,6 @@ namespace hud
 {
     namespace details::hashmap
     {
-
         template<typename key_t, typename value_t>
         class slot
             : hud::pair<key_t, value_t>
@@ -52,6 +51,20 @@ namespace hud
             [[nodiscard]] constexpr value_t &&value() && noexcept
             {
                 return hud::move(hud::get<1>(*this));
+            }
+
+            template<usize index, typename slot_t>
+            requires(hud::is_same_v<slot, hud::decay_t<slot_t>>)
+            friend constexpr decltype(auto) get(slot_t &&slot) noexcept
+            {
+                if constexpr (index == 0)
+                {
+                    return hud::forward<slot_t>(slot).first;
+                }
+                else if constexpr (index == 1)
+                {
+                    return hud::forward<slot_t>(slot).second;
+                }
             }
         };
 
@@ -150,4 +163,19 @@ namespace hud
     };
 } // namespace hud
 
+namespace std
+{
+    template<typename key_t, typename value_t>
+    struct tuple_size<hud::details::hashmap::slot<key_t, value_t>>
+        : std::integral_constant<std::size_t, 2>
+    {
+    };
+
+    template<std::size_t index, typename key_t, typename value_t>
+    struct tuple_element<index, hud::details::hashmap::slot<key_t, value_t>>
+    {
+        using type = std::conditional_t<index == 0, key_t, value_t>;
+    };
+
+} // namespace std
 #endif // HD_INC_CORE_HASHMAP_H
