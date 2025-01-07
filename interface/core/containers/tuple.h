@@ -1024,4 +1024,19 @@ namespace hud
 
 } // namespace hud
 
+namespace std
+{
+    template<typename... types_t>
+    struct tuple_size<hud::tuple<types_t...>>
+        : hud::tuple_size<typename hud::tuple<types_t...>>
+    {
+    };
+
+    template<std::size_t index, typename... types_t>
+    struct tuple_element<index, hud::tuple<types_t...>>
+        : hud::tuple_element<index, hud::tuple<types_t...>>
+    {
+    };
+
+} // namespace std
 #endif // HD_INC_CORE_TUPLE_H

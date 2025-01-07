@@ -494,12 +494,12 @@ namespace hud
                 return control_ptr_ != other.control_ptr_;
             }
 
-            template<usize index, typename iterator_t>
-            requires(hud::is_same_v<iterator, hud::decay_t<iterator_t>>)
-            friend constexpr decltype(auto) get(iterator_t &&it) noexcept
-            {
-                return get<index>(*it);
-            }
+            // template<usize index, typename iterator_t>
+            // requires(hud::is_same_v<iterator, hud::decay_t<iterator_t>>)
+            // friend constexpr decltype(auto) get(iterator_t &&it) noexcept
+            // {
+            //     return get<index>(*it);
+            // }
 
         private:
             // The control to iterate over
@@ -513,6 +513,30 @@ namespace hud
             usize metadata_index_;
             usize slot_index_;
         };
+
+        template<usize idx_to_reach, typename slot_t>
+        [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, iterator<slot_t>> &get(iterator<slot_t> &it) noexcept
+        {
+            return get<idx_to_reach>(*it);
+        }
+
+        template<usize idx_to_reach, typename slot_t>
+        [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, iterator<slot_t>> &get(const iterator<slot_t> &it) noexcept
+        {
+            return get<idx_to_reach>(*it);
+        }
+
+        template<usize idx_to_reach, typename slot_t>
+        [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, iterator<slot_t>> &&get(iterator<slot_t> &&it) noexcept
+        {
+            return hud::forward<tuple_element_t<idx_to_reach, iterator<slot_t>>>(get<idx_to_reach>(*it));
+        }
+
+        template<usize idx_to_reach, typename slot_t>
+        [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, iterator<slot_t>> &&get(const iterator<slot_t> &&it) noexcept
+        {
+            return hud::forward<const tuple_element_t<idx_to_reach, iterator<slot_t>>>(get<idx_to_reach>(*it));
+        }
 
         template<
             typename slot_t,
@@ -1069,23 +1093,56 @@ namespace hud
     public:
         /** Type of the hash function. */
         using hasher_type = typename super::hasher_type;
+        /** Type of the key. */
+        using key_type = typename super::key_type;
         /** Type of the value. */
         using value_type = typename super::value_type;
+        using typename super::const_iterator;
+        using typename super::iterator;
     };
+
+    /** Specialize tuple_size for slot that permit structured binding. */
+    template<typename value_t>
+    struct tuple_size<hud::details::hashset::slot<value_t>>
+        : hud::integral_constant<usize, 1>
+    {
+    };
+
+    /** Specialize tuple_element for slot that permit structured binding. */
+    template<usize index, typename value_t>
+    struct tuple_element<index, hud::details::hashset::slot<value_t>>
+    {
+        using type = value_t;
+    };
+
+    /** Specialize tuple_size for iterator that permit structured binding. */
+    template<typename slot_t>
+    struct tuple_size<hud::details::hashset::iterator<slot_t>>
+        : hud::tuple_size<typename hud::details::hashset::iterator<slot_t>::slot_type>
+    {
+    };
+
+    /** Specialize tuple_element for iterator that permit structured binding. */
+    template<usize index, typename slot_t>
+    struct tuple_element<index, hud::details::hashset::iterator<slot_t>>
+        : hud::tuple_element<index, typename hud::details::hashset::iterator<slot_t>::slot_type>
+    {
+    };
+
 } // namespace hud
 
 namespace std
 {
     template<typename slot_t>
-    struct tuple_size<hud::details::hashset::iterator<slot_t>>
-        : tuple_size<typename hud::details::hashset::iterator<slot_t>::slot_type>
+    struct tuple_size
+        : hud::tuple_size<hud::details::hashset::iterator<slot_t>>
     {
     };
 
     template<std::size_t index, typename slot_t>
     struct tuple_element<index, hud::details::hashset::iterator<slot_t>>
+        : hud::tuple_element<index, hud::details::hashset::iterator<slot_t>>
     {
-        using type = tuple_element<index, typename hud::details::hashset::iterator<slot_t>::slot_type>::type;
     };
 
 } // namespace std

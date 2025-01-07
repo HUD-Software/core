@@ -165,21 +165,32 @@ namespace hud
             return add(hud::move(pair.first), hud::move(pair.second));
         }
     };
-} // namespace hud
 
-namespace std
-{
+    /** Specialize tuple_size for slot that permit structured binding. */
     template<typename key_t, typename value_t>
     struct tuple_size<hud::details::hashmap::slot<key_t, value_t>>
-        : std::integral_constant<std::size_t, 2>
+        : hud::integral_constant<usize, 2>
     {
     };
 
+    /** Specialize tuple_element for slot that permit structured binding. */
     template<std::size_t index, typename key_t, typename value_t>
     struct tuple_element<index, hud::details::hashmap::slot<key_t, value_t>>
     {
         using type = std::conditional_t<index == 0, key_t, value_t>;
     };
 
+} // namespace hud
+
+namespace std
+{
+
+    template<std::size_t index, typename key_t, typename value_t>
+    struct tuple_element<index, hud::details::hashmap::slot<key_t, value_t>>
+        : hud::tuple_element<index, hud::details::hashmap::slot<key_t, value_t>>
+    {
+    };
+
 } // namespace std
+
 #endif // HD_INC_CORE_HASHMAP_H
