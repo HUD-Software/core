@@ -14,32 +14,58 @@ namespace hud
 {
     namespace details::hashset
     {
-        template<typename value_t>
-        class slot
+        struct hashset_slot_func
         {
-        public:
-            using type = value_t;
-            using key_type = value_t;
-            using value_type = value_t;
+            template<typename slot_t>
+            using key_type = slot_t;
+            template<typename slot_t>
+            using value_type = slot_t;
 
-            explicit constexpr slot(const key_type &key) noexcept
-                : key_(key)
+            template<typename slot_t>
+            [[nodiscard]] static constexpr key_type<slot_t> &get_key(slot_t &key) noexcept
             {
+                return key;
             }
 
-            explicit constexpr slot(key_type &&key) noexcept
-                : key_(std::move(key))
+            template<typename slot_t>
+            [[nodiscard]] static constexpr key_type<slot_t> &&get_key(slot_t &&key) noexcept
             {
+                return hud::forward<key_type<slot_t> &&>(key);
             }
 
-            [[nodiscard]] constexpr const key_type &key() const noexcept
+            template<typename slot_t>
+            [[nodiscard]] static constexpr const key_type<slot_t> &&get_key(const slot_t &&key) noexcept
             {
-                return key_;
+                return hud::forward<const key_type<slot_t> &&>(key);
             }
-
-        private:
-            type key_;
         };
+
+        // template<typename value_t>
+        // class slot
+        // {
+        // public:
+        //     using type = value_t;
+        //     using key_type = value_t;
+        //     using value_type = value_t;
+
+        // explicit constexpr slot(const key_type &key) noexcept
+        //     : key_(key)
+        // {
+        // }
+
+        // explicit constexpr slot(key_type &&key) noexcept
+        //     : key_(std::move(key))
+        // {
+        // }
+
+        // [[nodiscard]] constexpr const key_type &key() const noexcept
+        // {
+        //     return key_;
+        // }
+
+        // private:
+        //     type key_;
+        // };
 
         template<typename key_t>
         struct default_hasher
@@ -411,15 +437,15 @@ namespace hud
         };
 
         /** The hashmap iterator_impl that iterate over elements. */
-        template<typename slot_t>
+        template<typename slot_t, typename slot_func>
         class iterator
         {
-            using slot_type = slot_t;
-            using type = typename slot_type::type;
-            using key_type = typename slot_type::key_type;
-            using value_type = typename slot_type::value_type;
-            using pointer_type = hud::add_pointer_t<slot_type>;
-            using reference_type = hud::add_lvalue_reference_t<slot_type>;
+        public:
+            using type = slot_t;
+            using key_type = slot_func::template key_type<slot_t>;
+            using value_type = slot_func::template value_type<slot_t>;
+            using pointer_type = hud::add_pointer_t<type>;
+            using reference_type = hud::add_lvalue_reference_t<type>;
 
         public:
             constexpr iterator(control_type *control_ptr)
@@ -429,7 +455,7 @@ namespace hud
                 HD_ASSUME((control_ptr_ != nullptr));
             }
 
-            constexpr iterator(control_type *control_ptr, slot_type *slot_ptr)
+            constexpr iterator(control_type *control_ptr, type *slot_ptr)
                 : control_ptr_(control_ptr)
                 , slot_ptr_(slot_ptr)
             {
@@ -439,7 +465,7 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
-            constexpr iterator(hud::pair<control_type *, slot_type *> &&ctrl_slot_ptr)
+            constexpr iterator(hud::pair<control_type *, type *> &&ctrl_slot_ptr)
                 : control_ptr_(ctrl_slot_ptr.first)
                 , slot_ptr_(ctrl_slot_ptr.second)
             {
@@ -499,7 +525,7 @@ namespace hud
             // The control to iterate over
             control_type *control_ptr_;
             // The current slot we are iterating. Keep uninitialized.
-            slot_type *slot_ptr_;
+            type *slot_ptr_;
         };
 
         struct find_result
@@ -510,6 +536,7 @@ namespace hud
 
         template<
             typename slot_t,
+            typename slot_func,
             typename hasher_t,
             typename key_equal_t,
             typename allocator_t>
@@ -520,15 +547,15 @@ namespace hud
             /** Type of the slot. */
             using slot_type = slot_t;
             /** Type of the key. */
-            using key_type = typename slot_type::key_type;
+            using key_type = slot_func::template key_type<slot_t>;
             /** Type of the value. */
-            using value_type = typename slot_type::value_type;
+            using value_type = slot_func::template value_type<slot_t>;
             /** Type of the hash function. */
             using hasher_type = hasher_t;
             /** Type of the iterator. */
-            using iterator = hud::details::hashset::iterator<slot_type>;
+            using iterator = hud::details::hashset::iterator<slot_t, slot_func>;
             /** Type of the const iterator. */
-            using const_iterator = hud::details::hashset::iterator<const slot_type>;
+            using const_iterator = hud::details::hashset::iterator<const slot_t, slot_func>;
             /**  Type of the allocator. */
             using allocator_type = allocator_t;
             /** The type of allocation done by the allocator. */
@@ -691,7 +718,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 = slot_index + group_index_that_match_h2 & max_slot_count_;
                         slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
-                        if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
+                        if (key_equal_t {}(slot_func::get_key(*slot_that_match_h2), key)) [[likely]]
                         {
                             return {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
                         }
@@ -788,7 +815,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 = slot_index + group_index_that_match_h2 & max_slot_count_;
                         slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
-                        if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
+                        if (key_equal_t {}(slot_func::get_key(*slot_that_match_h2), key)) [[likely]]
                         {
                             return {slot_index_that_match_h2, false};
                         }
@@ -867,7 +894,7 @@ namespace hud
                          ++it)
                     {
                         // Compute the hash
-                        u64 hash = hasher_type {}(it->key());
+                        u64 hash = hasher_type {}(slot_func::get_key(*it));
                         // Find H1 slot index
                         u64 h1 = H1(hash);
                         usize slot_index = find_first_empty_or_deleted(control_ptr_, old_max_slot_count, h1);
@@ -1056,10 +1083,10 @@ namespace hud
         typename key_equal_t = hashset_default_key_equal<value_t>,
         typename allocator_t = hashset_default_allocator>
     class hashset
-        : public details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<value_t, details::hashset::hashset_slot_func, hasher_t, key_equal_t, allocator_t>
     {
     private:
-        using super = details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<value_t, details::hashset::hashset_slot_func, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */

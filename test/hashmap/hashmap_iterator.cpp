@@ -21,10 +21,10 @@ GTEST_TEST(hashmap, iterators)
         hud::hashmap<i32, i64>::const_iterator const_it_begin = const_map.begin();
 
         return std::tuple {
-            hud::is_same_v<decltype(it_begin->key()), const i32 &>,
-            hud::is_same_v<decltype(it_begin->value()), i64 &>,
-            hud::is_same_v<decltype(const_it_begin->key()), const i32 &>,
-            hud::is_same_v<decltype(const_it_begin->value()), const i64 &>,
+            hud::is_same_v<decltype(it_begin->first), i32>,
+            hud::is_same_v<decltype(it_begin->second), i64>,
+            hud::is_same_v<decltype(const_it_begin->first), const i32>,
+            hud::is_same_v<decltype(const_it_begin->second), const i64>,
         };
     };
 

@@ -6,54 +6,85 @@ namespace hud
 {
     namespace details::hashmap
     {
-
-        template<typename key_t, typename value_t>
-        class slot
-            : hud::pair<key_t, value_t>
+        struct hashmap_slot_func
         {
-        public:
-            using super = hud::pair<key_t, value_t>;
-            using type = super;
-            using key_type = typename hud::pair<key_t, value_t>::first_type;
-            using value_type = typename hud::pair<key_t, value_t>::second_type;
+            template<typename pair_t>
+            using key_type = pair_t::first_type;
+            template<typename pair_t>
+            using value_type = pair_t::second_type;
 
-            using super::super;
-
-            explicit constexpr slot(const key_type &key) noexcept
-                : super(key, value_type {})
+            template<typename pair_t>
+            [[nodiscard]] static constexpr key_type<pair_t> &get_key(pair_t &pair) noexcept
             {
+                return pair.first;
             }
 
-            explicit constexpr slot(key_type &&key) noexcept
-                : super(std::move(key), value_type {})
+            template<typename pair_t>
+            [[nodiscard]] static constexpr const key_type<pair_t> &get_key(const pair_t &pair) noexcept
             {
+                return pair.first;
             }
 
-            [[nodiscard]] constexpr const key_t &key() const noexcept
+            template<typename pair_t>
+            [[nodiscard]] static constexpr key_type<pair_t> &&get_key(pair_t &&pair) noexcept
             {
-                return hud::get<0>(*this);
+                return hud::forward<key_type<pair_t> &&>(pair.first);
             }
 
-            [[nodiscard]] constexpr const value_t &value() const & noexcept
+            template<typename pair_t>
+            [[nodiscard]] static constexpr const key_type<pair_t> &&get_key(const pair_t &&pair) noexcept
             {
-                return hud::get<1>(*this);
-            }
-
-            [[nodiscard]] constexpr value_t &value() & noexcept
-            {
-                return hud::get<1>(*this);
-            }
-
-            [[nodiscard]] constexpr const value_t &&value() const && noexcept
-            {
-                return hud::move(hud::get<1>(*this));
-            }
-
-            [[nodiscard]] constexpr value_t &&value() && noexcept
-            {
-                return hud::move(hud::get<1>(*this));
+                return hud::forward<const key_type<pair_t> &&>(pair.first);
             }
         };
+
+        // template<typename key_t, typename value_t>
+        // class slot
+        //     : hud::pair<key_t, value_t>
+        // {
+        // public:
+        //     using super = hud::pair<key_t, value_t>;
+        //     using type = super;
+        //     using key_type = typename hud::pair<key_t, value_t>::first_type;
+        //     using value_type = typename hud::pair<key_t, value_t>::second_type;
+
+        // using super::super;
+
+        // explicit constexpr slot(const key_type &key) noexcept
+        //     : super(key, value_type {})
+        // {
+        // }
+
+        // explicit constexpr slot(key_type &&key) noexcept
+        //     : super(std::move(key), value_type {})
+        // {
+        // }
+
+        // [[nodiscard]] constexpr const key_t &key() const noexcept
+        // {
+        //     return hud::get<0>(*this);
+        // }
+
+        // [[nodiscard]] constexpr const value_t &value() const & noexcept
+        // {
+        //     return hud::get<1>(*this);
+        // }
+
+        // [[nodiscard]] constexpr value_t &value() & noexcept
+        // {
+        //     return hud::get<1>(*this);
+        // }
+
+        // [[nodiscard]] constexpr const value_t &&value() const && noexcept
+        // {
+        //     return hud::move(hud::get<1>(*this));
+        // }
+
+        // [[nodiscard]] constexpr value_t &&value() && noexcept
+        // {
+        //     return hud::move(hud::get<1>(*this));
+        // }
+        // };
 
         template<typename key_t>
         struct default_hasher
@@ -90,11 +121,11 @@ namespace hud
         typename key_equal_t = hashmap_default_key_equal<key_t>,
         typename allocator_t = hashmap_default_allocator>
     class hashmap
-        : public details::hashset::hashset_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<hud::pair<key_t, value_t>, details::hashmap::hashmap_slot_func, hasher_t, key_equal_t, allocator_t>
     {
 
     private:
-        using super = details::hashset::hashset_impl<details::hashmap::slot<key_t, value_t>, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<hud::pair<key_t, value_t>, details::hashmap::hashmap_slot_func, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
