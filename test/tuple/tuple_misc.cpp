@@ -49,7 +49,8 @@ GTEST_TEST(tuple, get)
             hud::get<2>(tuple) == L'w',
             hud::get<0>(hud::move(tuple)) == 12,
             hud::get<1>(hud::move(tuple)) == 15.0f,
-            hud::get<2>(hud::move(tuple)) == L'w'};
+            hud::get<2>(hud::move(tuple)) == L'w'
+        };
     };
 
     // Non constant
@@ -130,4 +131,408 @@ GTEST_TEST(tuple, tuple_cat)
 
     using EmptyCatType = decltype(hud::tuple_cat());
     hud_assert_eq(hud::tuple_size_v<EmptyCatType>, 0u);
+}
+
+GTEST_TEST(tuple, structure_binding_by_copy)
+{
+    using type = hud_test::non_bitwise_type;
+    static_assert(hud::is_constructible_v<type, type &&>);
+    static_assert(!hud::is_trivially_constructible_v<type, type &&>);
+
+    const auto test = [](type &&t1, type &&t2, type &&t3)
+    {
+        auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
+        auto [first_cpy, second_cpy, third_cpy] = tuple;
+        first_cpy = type {321, nullptr};
+        second_cpy = type {654, nullptr};
+        third_cpy = type {987, nullptr};
+        return std::tuple {
+            first_cpy.constructor_count(),
+            first_cpy.move_constructor_count(),
+            first_cpy.copy_constructor_count(),
+            first_cpy.move_assign_count(),
+            first_cpy.copy_assign_count(),
+            second_cpy.constructor_count(),
+            second_cpy.move_constructor_count(),
+            second_cpy.copy_constructor_count(),
+            second_cpy.move_assign_count(),
+            second_cpy.copy_assign_count(),
+            third_cpy.constructor_count(),
+            third_cpy.move_constructor_count(),
+            third_cpy.copy_constructor_count(),
+            third_cpy.move_assign_count(),
+            third_cpy.copy_assign_count(),
+            hud::get<0>(tuple).id() == 123,
+            hud::get<1>(tuple).id() == 456,
+            hud::get<2>(tuple).id() == 789
+        };
+    };
+    // Non constant
+    {
+        const auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 0);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 1);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 0);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 1);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 0);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 1);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+
+    // Non constant
+    {
+        constexpr auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 0);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 1);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 0);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 1);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 0);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 1);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+}
+
+GTEST_TEST(tuple, structure_binding_rvalue)
+{
+    using type = hud_test::non_bitwise_type;
+    static_assert(hud::is_constructible_v<type, type &&>);
+    static_assert(!hud::is_trivially_constructible_v<type, type &&>);
+
+    const auto test = [](type &&t1, type &&t2, type &&t3)
+    {
+        auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
+        auto &[first_ref, second_ref, third_ref] = tuple;
+        first_ref = type {321, nullptr};
+        second_ref = type {654, nullptr};
+        third_ref = type {987, nullptr};
+        return std::tuple {
+            first_ref.constructor_count(),
+            first_ref.move_constructor_count(),
+            first_ref.copy_constructor_count(),
+            first_ref.move_assign_count(),
+            first_ref.copy_assign_count(),
+            second_ref.constructor_count(),
+            second_ref.move_constructor_count(),
+            second_ref.copy_constructor_count(),
+            second_ref.move_assign_count(),
+            second_ref.copy_assign_count(),
+            third_ref.constructor_count(),
+            third_ref.move_constructor_count(),
+            third_ref.copy_constructor_count(),
+            third_ref.move_assign_count(),
+            third_ref.copy_assign_count(),
+            hud::get<0>(tuple).id() == 321,
+            hud::get<1>(tuple).id() == 654,
+            hud::get<2>(tuple).id() == 987
+        };
+    };
+    // Non constant
+    {
+        const auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 0);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 1);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 0);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 1);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 0);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 1);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+
+    // Non constant
+    {
+        constexpr auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 0);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 1);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 0);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 1);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 0);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 1);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+}
+
+GTEST_TEST(tuple, structure_binding_const_rvalue)
+{
+    using type = hud_test::non_bitwise_type;
+    static_assert(hud::is_constructible_v<type, type &&>);
+    static_assert(!hud::is_trivially_constructible_v<type, type &&>);
+
+    const auto test = [](type &&t1, type &&t2, type &&t3)
+    {
+        auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
+        const auto &[first_ref, second_ref, third_ref] = tuple;
+        return std::tuple {
+            first_ref.constructor_count(),
+            first_ref.move_constructor_count(),
+            first_ref.copy_constructor_count(),
+            first_ref.move_assign_count(),
+            first_ref.copy_assign_count(),
+            second_ref.constructor_count(),
+            second_ref.move_constructor_count(),
+            second_ref.copy_constructor_count(),
+            second_ref.move_assign_count(),
+            second_ref.copy_assign_count(),
+            third_ref.constructor_count(),
+            third_ref.move_constructor_count(),
+            third_ref.copy_constructor_count(),
+            third_ref.move_assign_count(),
+            third_ref.copy_assign_count(),
+            hud::get<0>(tuple).id() == 123,
+            hud::get<1>(tuple).id() == 456,
+            hud::get<2>(tuple).id() == 789
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 1);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 0);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 1);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 0);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 1);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 0);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+
+    // Non constant
+    {
+        constexpr auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 1);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 0);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 1);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 0);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 1);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 0);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+}
+
+GTEST_TEST(tuple, structure_binding_lvalue)
+{
+    using type = hud_test::non_bitwise_type;
+    static_assert(hud::is_constructible_v<type, type &&>);
+    static_assert(!hud::is_trivially_constructible_v<type, type &&>);
+
+    const auto test = [](type &&t1, type &&t2, type &&t3)
+    {
+        auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
+        auto &[first_ref, second_ref, third_ref] = tuple;
+        first_ref = type {321, nullptr};
+        second_ref = type {654, nullptr};
+        third_ref = type {987, nullptr};
+        return std::tuple {
+            first_ref.constructor_count(),
+            first_ref.move_constructor_count(),
+            first_ref.copy_constructor_count(),
+            first_ref.move_assign_count(),
+            first_ref.copy_assign_count(),
+            second_ref.constructor_count(),
+            second_ref.move_constructor_count(),
+            second_ref.copy_constructor_count(),
+            second_ref.move_assign_count(),
+            second_ref.copy_assign_count(),
+            third_ref.constructor_count(),
+            third_ref.move_constructor_count(),
+            third_ref.copy_constructor_count(),
+            third_ref.move_assign_count(),
+            third_ref.copy_assign_count(),
+            hud::get<0>(tuple).id() == 321,
+            hud::get<1>(tuple).id() == 654,
+            hud::get<2>(tuple).id() == 987
+        };
+    };
+    // Non constant
+    {
+        const auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 0);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 1);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 0);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 1);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 0);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 1);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+
+    // Non constant
+    {
+        constexpr auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 0);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 1);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 0);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 1);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 0);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 1);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+}
+
+GTEST_TEST(tuple, structure_binding_const_tuple_lvalue)
+{
+    using type = hud_test::non_bitwise_type;
+    static_assert(hud::is_constructible_v<type, type &&>);
+    static_assert(!hud::is_trivially_constructible_v<type, type &&>);
+
+    const auto test = [](type &&t1, type &&t2, type &&t3)
+    {
+        const auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
+        auto &[first_ref, second_ref, third_ref] = tuple;
+        // Not possible, tuple is const
+        // first_ref = type {321, nullptr};
+        // second_ref = type {654, nullptr};
+        // third_ref = type {987, nullptr};
+        return std::tuple {
+            first_ref.constructor_count(),
+            first_ref.move_constructor_count(),
+            first_ref.copy_constructor_count(),
+            first_ref.move_assign_count(),
+            first_ref.copy_assign_count(),
+            second_ref.constructor_count(),
+            second_ref.move_constructor_count(),
+            second_ref.copy_constructor_count(),
+            second_ref.move_assign_count(),
+            second_ref.copy_assign_count(),
+            third_ref.constructor_count(),
+            third_ref.move_constructor_count(),
+            third_ref.copy_constructor_count(),
+            third_ref.move_assign_count(),
+            third_ref.copy_assign_count(),
+            hud::get<0>(tuple).id() == 123,
+            hud::get<1>(tuple).id() == 456,
+            hud::get<2>(tuple).id() == 789
+        };
+    };
+    // Non constant
+    {
+        const auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 1);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 0);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 1);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 0);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 1);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 0);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+
+    // Non constant
+    {
+        constexpr auto result = test(type {123, nullptr}, type {456, nullptr}, type {789, nullptr});
+        hud_assert_eq(std::get<0>(result), 1);
+        hud_assert_eq(std::get<1>(result), 1);
+        hud_assert_eq(std::get<2>(result), 0);
+        hud_assert_eq(std::get<3>(result), 0);
+        hud_assert_eq(std::get<4>(result), 0);
+        hud_assert_eq(std::get<5>(result), 1);
+        hud_assert_eq(std::get<6>(result), 1);
+        hud_assert_eq(std::get<7>(result), 0);
+        hud_assert_eq(std::get<8>(result), 0);
+        hud_assert_eq(std::get<9>(result), 0);
+        hud_assert_eq(std::get<10>(result), 1);
+        hud_assert_eq(std::get<11>(result), 1);
+        hud_assert_eq(std::get<12>(result), 0);
+        hud_assert_eq(std::get<13>(result), 0);
+        hud_assert_eq(std::get<14>(result), 0);
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
 }

@@ -6,36 +6,47 @@ namespace hud
 {
     namespace details::hashmap
     {
+        template<typename element_t>
         struct hashmap_slot_func
         {
-            template<typename pair_t>
-            using key_type = pair_t::first_type;
-            template<typename pair_t>
-            using value_type = pair_t::second_type;
+            using element_type = element_t;
+            using const_element_type = const element_type;
+            using key_type = element_type::first_type;
+            using value_type = element_type::second_type;
 
-            template<typename pair_t>
-            [[nodiscard]] static constexpr key_type<pair_t> &get_key(pair_t &pair) noexcept
+            [[nodiscard]] static constexpr key_type &get_key(element_type &pair) noexcept
             {
                 return pair.first;
             }
 
-            template<typename pair_t>
-            [[nodiscard]] static constexpr const key_type<pair_t> &get_key(const pair_t &pair) noexcept
+            [[nodiscard]] static constexpr const key_type &get_key(const element_type &pair) noexcept
             {
                 return pair.first;
             }
 
-            template<typename pair_t>
-            [[nodiscard]] static constexpr key_type<pair_t> &&get_key(pair_t &&pair) noexcept
+            [[nodiscard]] static constexpr key_type &&get_key(element_type &&pair) noexcept
             {
-                return hud::forward<key_type<pair_t> &&>(pair.first);
+                return hud::forward<key_type &&>(pair.first);
             }
 
-            template<typename pair_t>
-            [[nodiscard]] static constexpr const key_type<pair_t> &&get_key(const pair_t &&pair) noexcept
+            [[nodiscard]] static constexpr const key_type &&get_key(const element_type &&pair) noexcept
             {
-                return hud::forward<const key_type<pair_t> &&>(pair.first);
+                return hud::forward<const key_type &&>(pair.first);
             }
+
+            // template<usize index, typename slot_t, typename key_t, typename value_t>
+            // requires(hud::is_same_v<element_type<key_t, value_t>, hud::decay_t<slot_t>>)
+            // friend constexpr decltype(auto) get(slot_t &&slot) noexcept
+            // {
+            //     if constexpr (index == 0)
+            //     {
+            //         return hud::forward<slot_t>(slot).first;
+            //     }
+            //     else if constexpr (index == 1)
+            //     {
+            //         return hud::forward<slot_t>(slot).second;
+            //     }
+            // }
         };
 
         // template<typename key_t, typename value_t>
@@ -121,11 +132,11 @@ namespace hud
         typename key_equal_t = hashmap_default_key_equal<key_t>,
         typename allocator_t = hashmap_default_allocator>
     class hashmap
-        : public details::hashset::hashset_impl<hud::pair<key_t, value_t>, details::hashmap::hashmap_slot_func, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashmap::hashmap_slot_func<hud::pair<key_t, value_t>>, hasher_t, key_equal_t, allocator_t>
     {
 
     private:
-        using super = details::hashset::hashset_impl<hud::pair<key_t, value_t>, details::hashmap::hashmap_slot_func, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<details::hashmap::hashmap_slot_func<hud::pair<key_t, value_t>>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
@@ -183,6 +194,32 @@ namespace hud
             return add(hud::move(pair.first), hud::move(pair.second));
         }
     };
+
+    // /** Specialize tuple_size for slot that permit structured binding. */
+    // template<typename key_t, typename value_t>
+    // struct tuple_size<hud::pair<key_t, value_t>>
+    //     : hud::integral_constant<usize, 2>
+    // {
+    // };
+
+    // /** Specialize tuple_element for slot that permit structured binding. */
+    // template<std::size_t index, typename key_t, typename value_t>
+    // struct tuple_element<index, hud::details::hashmap::slot<key_t, value_t>>
+    // {
+    //     using type = std::conditional_t<index == 0, key_t, value_t>;
+    // };
+
 } // namespace hud
+
+namespace std
+{
+
+    template<std::size_t index, typename key_t, typename value_t>
+    struct tuple_element<index, hud::pair<key_t, value_t>>
+        : hud::tuple_element<index, hud::pair<key_t, value_t>>
+    {
+    };
+
+} // namespace std
 
 #endif // HD_INC_CORE_HASHMAP_H

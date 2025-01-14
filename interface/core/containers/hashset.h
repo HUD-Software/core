@@ -14,30 +14,33 @@ namespace hud
 {
     namespace details::hashset
     {
+        template<typename element_t>
         struct hashset_slot_func
         {
-            template<typename slot_t>
-            using key_type = slot_t;
-            template<typename slot_t>
-            using value_type = slot_t;
+            using element_type = element_t;
+            using const_element_type = const element_type;
+            using key_type = element_type;
+            using value_type = element_type;
 
-            template<typename slot_t>
-            [[nodiscard]] static constexpr key_type<slot_t> &get_key(slot_t &key) noexcept
+            // [[nodiscard]] static constexpr key_type &get_key(element_type &pair) noexcept
+            // {
+            //     return pair;
+            // }
+
+            [[nodiscard]] static constexpr const key_type &get_key(const element_type &pair) noexcept
             {
-                return key;
+                return pair;
             }
 
-            template<typename slot_t>
-            [[nodiscard]] static constexpr key_type<slot_t> &&get_key(slot_t &&key) noexcept
+            [[nodiscard]] static constexpr key_type &&get_key(element_type &&pair) noexcept
             {
-                return hud::forward<key_type<slot_t> &&>(key);
+                return hud::forward<key_type &&>(pair);
             }
 
-            template<typename slot_t>
-            [[nodiscard]] static constexpr const key_type<slot_t> &&get_key(const slot_t &&key) noexcept
-            {
-                return hud::forward<const key_type<slot_t> &&>(key);
-            }
+            // [[nodiscard]] static constexpr const key_type &&get_key(const element_type &&pair) noexcept
+            // {
+            //     return hud::forward<const key_type &&>(pair);
+            // }
         };
 
         // template<typename value_t>
@@ -390,7 +393,7 @@ namespace hud
             }
 
             /** Skip all empty or deleted control. */
-            static constexpr control_type *skip_empty_or_deleted(control_type *control_ptr)
+            static constexpr control_type *skip_empty_or_deleted(control_type *control_ptr) noexcept
             {
                 // skip all empty slot after the current one
                 while (control::is_byte_empty_or_deleted(*control_ptr))
@@ -437,25 +440,25 @@ namespace hud
         };
 
         /** The hashmap iterator_impl that iterate over elements. */
-        template<typename slot_t, typename slot_func>
+        template<typename slot_func, bool is_const>
         class iterator
         {
         public:
-            using type = slot_t;
-            using key_type = slot_func::template key_type<slot_t>;
-            using value_type = slot_func::template value_type<slot_t>;
-            using pointer_type = hud::add_pointer_t<type>;
-            using reference_type = hud::add_lvalue_reference_t<type>;
+            using element_type = hud::conditional_t<is_const, const typename slot_func::element_type, typename slot_func::element_type>;
+            using key_type = hud::conditional_t<is_const, const typename slot_func::key_type, typename slot_func::key_type>;
+            using value_type = hud::conditional_t<is_const, const typename slot_func::value_type, typename slot_func::value_type>;
+            using pointer_type = hud::add_pointer_t<element_type>;
+            using reference_type = hud::add_lvalue_reference_t<element_type>;
 
         public:
-            constexpr iterator(control_type *control_ptr)
+            constexpr iterator(control_type *control_ptr) noexcept
                 : control_ptr_(control_ptr)
             {
                 hud::check(control_ptr_ != nullptr);
                 HD_ASSUME((control_ptr_ != nullptr));
             }
 
-            constexpr iterator(control_type *control_ptr, type *slot_ptr)
+            constexpr iterator(control_type *control_ptr, element_type *slot_ptr) noexcept
                 : control_ptr_(control_ptr)
                 , slot_ptr_(slot_ptr)
             {
@@ -465,9 +468,9 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
-            constexpr iterator(hud::pair<control_type *, type *> &&ctrl_slot_ptr)
-                : control_ptr_(ctrl_slot_ptr.first)
-                , slot_ptr_(ctrl_slot_ptr.second)
+            constexpr iterator(hud::pair<control_type *, element_type *> &&ctrl_slot_ptr) noexcept
+                : control_ptr_(hud::forward<hud::pair<control_type *, element_type *>>(ctrl_slot_ptr).first)
+                , slot_ptr_(hud::forward<hud::pair<control_type *, element_type *>>(ctrl_slot_ptr).second)
             {
                 hud::check(control_ptr_ != nullptr);
                 HD_ASSUME(control_ptr_ != nullptr);
@@ -475,34 +478,32 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
-            constexpr reference_type operator*() const
+            constexpr reference_type operator*() const noexcept
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
                 return *slot_ptr_;
             }
 
-            constexpr pointer_type operator->() const
+            constexpr pointer_type operator->() const noexcept
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
                 return slot_ptr_;
             }
 
-            constexpr iterator &operator++()
+            constexpr iterator &operator++() noexcept
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
-                // Skip the current full
-                control_ptr_++;
                 // Skip all emptry or deleted
-                control_type *full_or_sentinel = control::skip_empty_or_deleted(control_ptr_);
+                control_type *full_or_sentinel = control::skip_empty_or_deleted(control_ptr_ + 1);
                 slot_ptr_ += full_or_sentinel - control_ptr_;
                 control_ptr_ = full_or_sentinel;
                 return *this;
             }
 
-            constexpr iterator operator++(int)
+            constexpr iterator operator++(int) noexcept
             {
                 auto tmp = *this;
                 ++*this;
@@ -525,8 +526,32 @@ namespace hud
             // The control to iterate over
             control_type *control_ptr_;
             // The current slot we are iterating. Keep uninitialized.
-            type *slot_ptr_;
+            element_type *slot_ptr_;
         };
+
+        template<usize idx_to_reach, typename slot_func, bool is_const>
+        [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, iterator<slot_func, is_const>> &get(iterator<slot_func, is_const> &it) noexcept
+        {
+            return get<idx_to_reach>(*it);
+        }
+
+        template<usize idx_to_reach, typename slot_func, bool is_const>
+        [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, iterator<slot_func, is_const>> &get(const iterator<slot_func, is_const> &it) noexcept
+        {
+            return get<idx_to_reach>(*it);
+        }
+
+        template<usize idx_to_reach, typename slot_func, bool is_const>
+        [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, iterator<slot_func, is_const>> &&get(iterator<slot_func, is_const> &&it) noexcept
+        {
+            return hud::forward<tuple_element_t<idx_to_reach, iterator<slot_func, is_const>>>(get<idx_to_reach>(*it));
+        }
+
+        template<usize idx_to_reach, typename slot_func, bool is_const>
+        [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, iterator<slot_func, is_const>> &&get(const iterator<slot_func, is_const> &&it) noexcept
+        {
+            return hud::forward<const tuple_element_t<idx_to_reach, iterator<slot_func, is_const>>>(get<idx_to_reach>(*it));
+        }
 
         struct find_result
         {
@@ -535,27 +560,25 @@ namespace hud
         };
 
         template<
-            typename slot_t,
             typename slot_func,
             typename hasher_t,
             typename key_equal_t,
             typename allocator_t>
         class hashset_impl
         {
-
         protected:
             /** Type of the slot. */
-            using slot_type = slot_t;
+            using slot_type = slot_func::element_type;
             /** Type of the key. */
-            using key_type = slot_func::template key_type<slot_t>;
+            using key_type = slot_func::key_type;
             /** Type of the value. */
-            using value_type = slot_func::template value_type<slot_t>;
+            using value_type = slot_func::value_type;
             /** Type of the hash function. */
             using hasher_type = hasher_t;
             /** Type of the iterator. */
-            using iterator = hud::details::hashset::iterator<slot_t, slot_func>;
+            using iterator = hud::details::hashset::iterator<slot_func, false>;
             /** Type of the const iterator. */
-            using const_iterator = hud::details::hashset::iterator<const slot_t, slot_func>;
+            using const_iterator = hud::details::hashset::iterator<slot_func, true>;
             /**  Type of the allocator. */
             using allocator_type = allocator_t;
             /** The type of allocation done by the allocator. */
@@ -704,7 +727,7 @@ namespace hud
 
             /** Find a key and return an iterator to the value. */
             [[nodiscard]]
-            constexpr iterator find(key_type &&key) noexcept
+            constexpr iterator find(key_type &&key) const noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -712,6 +735,7 @@ namespace hud
                 usize slot_index = h1 & max_slot_count_;
                 while (true)
                 {
+
                     group_type group {control_ptr_ + slot_index};
                     group_type::mask group_mask_that_match_h2 = group.match(H2(hash));
                     for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
@@ -727,7 +751,7 @@ namespace hud
                     // If we have free slot, we don't find it
                     if (group.mask_of_empty_slot().has_free_slot())
                     {
-                        return end();
+                        return iterator(control_ptr_sentinel());
                     }
 
                     // Advance to next group (Maybe a control iterator taht iterate over groups can be better alternative)
@@ -774,7 +798,6 @@ namespace hud
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]] constexpr const_iterator begin() const noexcept
-
             {
                 return const_iterator(find_first_full());
             }
@@ -1083,17 +1106,65 @@ namespace hud
         typename key_equal_t = hashset_default_key_equal<value_t>,
         typename allocator_t = hashset_default_allocator>
     class hashset
-        : public details::hashset::hashset_impl<value_t, details::hashset::hashset_slot_func, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashset::hashset_slot_func<value_t>, hasher_t, key_equal_t, allocator_t>
     {
     private:
-        using super = details::hashset::hashset_impl<value_t, details::hashset::hashset_slot_func, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<details::hashset::hashset_slot_func<value_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
         using hasher_type = typename super::hasher_type;
+        /** Type of the key. */
+        using key_type = typename super::key_type;
         /** Type of the value. */
         using value_type = typename super::value_type;
+        using typename super::const_iterator;
+        using typename super::iterator;
     };
+
+    // /** Specialize tuple_size for slot that permit structured binding. */
+    // template<typename slot_func>
+    // struct tuple_size<hud::details::hashset::iterator<slot_func>::element_type>
+    //     : hud::integral_constant<usize, 1>
+    // {
+    // };
+
+    // /** Specialize tuple_element for slot that permit structured binding. */
+    // template<usize index, typename slot_func>
+    // struct tuple_element<index, hud::details::hashset::iterator<slot_func>::element_type>
+    // {
+    //     using type = hud::details::hashset::iterator<slot_func>::element_type;
+    // };
+
+    /** Specialize tuple_size for iterator that permit structured binding. */
+    template<typename slot_func, bool is_const>
+    struct tuple_size<hud::details::hashset::iterator<slot_func, is_const>>
+        : hud::tuple_size<typename hud::details::hashset::iterator<slot_func, is_const>::element_type>
+    {
+    };
+
+    /** Specialize tuple_element for iterator that permit structured binding. */
+    template<usize index, typename slot_func, bool is_const>
+    struct tuple_element<index, hud::details::hashset::iterator<slot_func, is_const>>
+        : hud::tuple_element<index, typename hud::details::hashset::iterator<slot_func, is_const>::element_type>
+    {
+    };
+
 } // namespace hud
 
+namespace std
+{
+    template<typename slot_func, bool is_const>
+    struct tuple_size<hud::details::hashset::iterator<slot_func, is_const>>
+        : hud::tuple_size<hud::details::hashset::iterator<slot_func, is_const>>
+    {
+    };
+
+    template<std::size_t index, typename slot_func, bool is_const>
+    struct tuple_element<index, hud::details::hashset::iterator<slot_func, is_const>>
+        : hud::tuple_element<index, hud::details::hashset::iterator<slot_func, is_const>>
+    {
+    };
+
+} // namespace std
 #endif // HD_INC_CORE_HASHSET_H
