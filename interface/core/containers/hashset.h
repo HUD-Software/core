@@ -568,11 +568,11 @@ namespace hud
         {
         protected:
             /** Type of the slot. */
-            using slot_type = slot_func::element_type;
+            using slot_type = typename slot_func::element_type;
             /** Type of the key. */
-            using key_type = slot_func::key_type;
+            using key_type = typename slot_func::key_type;
             /** Type of the value. */
-            using value_type = slot_func::value_type;
+            using value_type = typename slot_func::value_type;
             /** Type of the hash function. */
             using hasher_type = hasher_t;
             /** Type of the iterator. */
