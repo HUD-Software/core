@@ -626,7 +626,7 @@ namespace hud
                             group_type group {ctrl};
                             for (u32 full_index : group.mask_of_full_slot())
                             {
-                                hud::memory::destroy(slot_ptr_[full_index]);
+                                hud::memory::destroy(slot_ptr_ + full_index);
                                 --remaining_slots;
                             }
                             ctrl += group_type::SLOT_PER_GROUP;

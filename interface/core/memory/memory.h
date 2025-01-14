@@ -925,12 +925,12 @@ namespace hud
         */
         template<typename type_t>
         requires(is_destructible_v<type_t> && !hud::is_pointer_v<type_t>)
-        static constexpr void destroy(type_t &obj) noexcept
+        static constexpr void destroy(type_t *obj) noexcept
         {
             if constexpr (!hud::is_trivially_destructible_v<type_t>)
             {
                 static_assert(hud::is_nothrow_destructible_v<type_t>, "type_t destructor is throwable.hud::memory::destroy is not designed to allow throwable destructible type");
-                obj.~type_t();
+                obj->~type_t();
             }
         }
 
@@ -949,7 +949,7 @@ namespace hud
             {
                 while (count)
                 {
-                    hud::memory::destroy<type_t>(*address);
+                    hud::memory::destroy<type_t>(address);
                     address++;
                     count--;
                 }
@@ -1128,7 +1128,7 @@ namespace hud
         static constexpr void move_or_copy_construct_then_destroy(type_t *destination, u_type_t &&source) noexcept
         {
             hud::memory::construct_at<type_t, u_type_t>(destination, hud::forward<u_type_t>(source));
-            hud::memory::destroy<u_type_t>(source);
+            hud::memory::destroy<u_type_t>(&source);
         }
 
         /**

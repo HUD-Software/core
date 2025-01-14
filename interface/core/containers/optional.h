@@ -60,7 +60,7 @@ namespace hud
             {
                 if (this_as_base_t()->some)
                 {
-                    hud::memory::destroy(this_as_base_t()->some_value);
+                    hud::memory::destroy(&this_as_base_t()->some_value);
                     this_as_base_t()->some = false;
                 }
             }
@@ -224,7 +224,7 @@ namespace hud
             {
                 if (some)
                 {
-                    hud::memory::destroy(some_value);
+                    hud::memory::destroy(&some_value);
                 }
             }
 
