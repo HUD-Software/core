@@ -146,7 +146,7 @@ namespace hud
         /** Type of the value. */
         using typename super::value_type;
         /** Type of the key, value pair. */
-        using type = super::slot_type;
+        using type = typename super::slot_type;
 
         /** Type of the value. */
         using super::add;
