@@ -185,7 +185,7 @@ GTEST_TEST(pair, structure_binding_by_copy)
 
     const auto test = [](type &&t1, type &&t2)
     {
-        const auto pair = hud::make_pair(hud::move(t1), hud::move(t2));
+        auto pair = hud::make_pair(hud::move(t1), hud::move(t2));
         auto [first_cpy, second_cpy] = pair;
         first_cpy = type {321, nullptr};
         second_cpy = type {654, nullptr};

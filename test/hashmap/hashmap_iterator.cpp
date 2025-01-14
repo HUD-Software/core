@@ -23,8 +23,8 @@ GTEST_TEST(hashmap, iterators)
         return std::tuple {
             hud::is_same_v<decltype(it_begin->first), i32>,
             hud::is_same_v<decltype(it_begin->second), i64>,
-            hud::is_same_v<decltype(const_it_begin->first), const i32>,
-            hud::is_same_v<decltype(const_it_begin->second), const i64>,
+            hud::is_same_v<decltype((const_it_begin->first)), const i32 &>,
+            hud::is_same_v<decltype((const_it_begin->second)), const i64 &>,
         };
     };
 
@@ -92,7 +92,8 @@ GTEST_TEST(hashmap, structure_binding)
         map.add({4, 44});
         hud_assert_eq(map.count(), 4u);
         hud_assert_ge(map.max_count(), 4u);
-        auto [first, second] = map.find(1);
+        auto it = map.find(1);
+        auto [first, second] = it;
         hud_assert_eq(first, 1);
         second = 111;
         hud_assert_eq(second, 111);
