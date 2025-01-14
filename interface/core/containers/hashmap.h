@@ -11,8 +11,8 @@ namespace hud
         {
             using element_type = element_t;
             using const_element_type = const element_type;
-            using key_type = element_type::first_type;
-            using value_type = element_type::second_type;
+            using key_type = typename element_type::first_type;
+            using value_type = typename element_type::second_type;
 
             [[nodiscard]] static constexpr key_type &get_key(element_type &pair) noexcept
             {
