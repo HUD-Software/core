@@ -9,6 +9,8 @@ set( src
 )
 
 set( interface
+	../interface/core/algorithms/find.h
+	../interface/core/algorithms/sort.h
 	../interface/core/allocators/aligned_heap_allocator.h
 	../interface/core/allocators/memory_allocation.h
 	../interface/core/allocators/allocator_traits.h

@@ -1,0 +1,8 @@
+#ifndef HD_INC_CORE_ALGORITHMS_SORT_H
+#define HD_INC_CORE_ALGORITHMS_SORT_H
+
+namespace hud
+{
+}
+
+#endif // HD_INC_CORE_ALGORITHMS_SORT_H

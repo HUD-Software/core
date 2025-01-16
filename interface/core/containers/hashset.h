@@ -22,11 +22,6 @@ namespace hud
             using key_type = element_type;
             using value_type = element_type;
 
-            // [[nodiscard]] static constexpr key_type &get_key(element_type &pair) noexcept
-            // {
-            //     return pair;
-            // }
-
             [[nodiscard]] static constexpr const key_type &get_key(const element_type &pair) noexcept
             {
                 return pair;
@@ -36,39 +31,7 @@ namespace hud
             {
                 return hud::forward<key_type &&>(pair);
             }
-
-            // [[nodiscard]] static constexpr const key_type &&get_key(const element_type &&pair) noexcept
-            // {
-            //     return hud::forward<const key_type &&>(pair);
-            // }
         };
-
-        // template<typename value_t>
-        // class slot
-        // {
-        // public:
-        //     using type = value_t;
-        //     using key_type = value_t;
-        //     using value_type = value_t;
-
-        // explicit constexpr slot(const key_type &key) noexcept
-        //     : key_(key)
-        // {
-        // }
-
-        // explicit constexpr slot(key_type &&key) noexcept
-        //     : key_(std::move(key))
-        // {
-        // }
-
-        // [[nodiscard]] constexpr const key_type &key() const noexcept
-        // {
-        //     return key_;
-        // }
-
-        // private:
-        //     type key_;
-        // };
 
         template<typename key_t>
         struct default_hasher
@@ -331,10 +294,11 @@ namespace hud
             {
                 // ctrl | ~(ctrl >> 7) will have the lowest bit set to zero for kEmpty and
                 // kDeleted. We lower all other bits and count number of trailing zeros.
-                // constexpr uint64_t bits = 0x0101010101010101ULL;
+                constexpr uint64_t bits = 0x0101010101010101ULL;
                 // hud::bits::trailing_zero();
+                return static_cast<u32>(hud::bits::trailing_zero((value_ | ~(value_ >> 7)) & bits) >> 3);
                 // return static_cast<u32>(countr_zero((ctrl | ~(ctrl >> 7)) & bits) >> 3);
-                return 0;
+                // return 0;
             }
 
         private:
@@ -530,25 +494,25 @@ namespace hud
         };
 
         template<usize idx_to_reach, typename slot_func, bool is_const>
-        [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, iterator<slot_func, is_const>> &get(iterator<slot_func, is_const> &it) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr auto &get(iterator<slot_func, is_const> &it) noexcept
         {
             return get<idx_to_reach>(*it);
         }
 
         template<usize idx_to_reach, typename slot_func, bool is_const>
-        [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, iterator<slot_func, is_const>> &get(const iterator<slot_func, is_const> &it) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr const auto &get(const iterator<slot_func, is_const> &it) noexcept
         {
             return get<idx_to_reach>(*it);
         }
 
         template<usize idx_to_reach, typename slot_func, bool is_const>
-        [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, iterator<slot_func, is_const>> &&get(iterator<slot_func, is_const> &&it) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr auto &&get(iterator<slot_func, is_const> &&it) noexcept
         {
             return hud::forward<tuple_element_t<idx_to_reach, iterator<slot_func, is_const>>>(get<idx_to_reach>(*it));
         }
 
         template<usize idx_to_reach, typename slot_func, bool is_const>
-        [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, iterator<slot_func, is_const>> &&get(const iterator<slot_func, is_const> &&it) noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr const auto &&get(const iterator<slot_func, is_const> &&it) noexcept
         {
             return hud::forward<const tuple_element_t<idx_to_reach, iterator<slot_func, is_const>>>(get<idx_to_reach>(*it));
         }
