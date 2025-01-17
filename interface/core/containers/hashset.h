@@ -295,7 +295,6 @@ namespace hud
                 // ctrl | ~(ctrl >> 7) will have the lowest bit set to zero for kEmpty and
                 // kDeleted. We lower all other bits and count number of trailing zeros.
                 constexpr uint64_t bits = 0x0101010101010101ULL;
-                // hud::bits::trailing_zero();
                 return static_cast<u32>(hud::bits::trailing_zero((value_ | ~(value_ >> 7)) & bits) >> 3);
                 // return static_cast<u32>(countr_zero((ctrl | ~(ctrl >> 7)) & bits) >> 3);
                 // return 0;
@@ -432,16 +431,6 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
-            constexpr iterator(hud::pair<control_type *, element_type *> &&ctrl_slot_ptr) noexcept
-                : control_ptr_(hud::forward<hud::pair<control_type *, element_type *>>(ctrl_slot_ptr).first)
-                , slot_ptr_(hud::forward<hud::pair<control_type *, element_type *>>(ctrl_slot_ptr).second)
-            {
-                hud::check(control_ptr_ != nullptr);
-                HD_ASSUME(control_ptr_ != nullptr);
-                hud::check(slot_ptr_ != nullptr);
-                HD_ASSUME(slot_ptr_ != nullptr);
-            }
-
             constexpr reference_type operator*() const noexcept
             {
                 // Ensure we are in a full control
@@ -487,40 +476,35 @@ namespace hud
             }
 
         private:
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(iterator &it) noexcept
+            {
+                return get<idx_to_reach>(*(it.slot_ptr_));
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(const iterator &it) noexcept
+            {
+                return get<idx_to_reach>(*(it.slot_ptr_));
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(iterator &&it) noexcept
+            {
+                return get<idx_to_reach>(*(hud::forward<iterator>(it).slot_ptr_));
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(const iterator &&it) noexcept
+            {
+                return get<idx_to_reach>(*(hud::forward<const iterator>(it).slot_ptr_));
+            }
+
+        private:
             // The control to iterate over
             control_type *control_ptr_;
             // The current slot we are iterating. Keep uninitialized.
             element_type *slot_ptr_;
-        };
-
-        template<usize idx_to_reach, typename slot_func, bool is_const>
-        [[nodiscard]] HD_FORCEINLINE constexpr auto &get(iterator<slot_func, is_const> &it) noexcept
-        {
-            return get<idx_to_reach>(*it);
-        }
-
-        template<usize idx_to_reach, typename slot_func, bool is_const>
-        [[nodiscard]] HD_FORCEINLINE constexpr const auto &get(const iterator<slot_func, is_const> &it) noexcept
-        {
-            return get<idx_to_reach>(*it);
-        }
-
-        template<usize idx_to_reach, typename slot_func, bool is_const>
-        [[nodiscard]] HD_FORCEINLINE constexpr auto &&get(iterator<slot_func, is_const> &&it) noexcept
-        {
-            return hud::forward<tuple_element_t<idx_to_reach, iterator<slot_func, is_const>>>(get<idx_to_reach>(*it));
-        }
-
-        template<usize idx_to_reach, typename slot_func, bool is_const>
-        [[nodiscard]] HD_FORCEINLINE constexpr const auto &&get(const iterator<slot_func, is_const> &&it) noexcept
-        {
-            return hud::forward<const tuple_element_t<idx_to_reach, iterator<slot_func, is_const>>>(get<idx_to_reach>(*it));
-        }
-
-        struct find_result
-        {
-            usize metadata_index_;
-            usize slot_index_;
         };
 
         template<
@@ -757,13 +741,15 @@ namespace hud
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]] constexpr iterator begin() noexcept
             {
-                return iterator {find_first_full()};
+                auto [control_ptr, slot_ptr] = find_first_full();
+                return iterator {control_ptr, slot_ptr};
             }
 
             /** Retrieves an iterator to the end of the array. */
             [[nodiscard]] constexpr const_iterator begin() const noexcept
             {
-                return const_iterator(find_first_full());
+                auto [control_ptr, slot_ptr] = find_first_full();
+                return const_iterator {control_ptr, slot_ptr};
             }
 
             /** Retrieves an iterator to the end of the array. */
