@@ -9,6 +9,8 @@
 #include "../hash.h"
 #include "../bits.h"
 #include "../traits/is_comparable_with_equal.h"
+#include "tuple_size.h"
+#include "tuple_element.h"
 
 namespace hud
 {
@@ -18,7 +20,6 @@ namespace hud
         struct hashset_slot_func
         {
             using element_type = element_t;
-            using const_element_type = const element_type;
             using key_type = element_type;
             using value_type = element_type;
 
@@ -479,25 +480,37 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(iterator &it) noexcept
             {
-                return get<idx_to_reach>(*(it.slot_ptr_));
+                if constexpr (hud::is_same_v<element_type, hud::pair<key_type, value_type>>)
+                    return get<idx_to_reach>(*(it.slot_ptr_));
+                else
+                    return *(it.slot_ptr_);
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const iterator &it) noexcept
             {
-                return get<idx_to_reach>(*(it.slot_ptr_));
+                if constexpr (hud::is_same_v<element_type, hud::pair<key_type, value_type>>)
+                    return get<idx_to_reach>(*(it.slot_ptr_));
+                else
+                    return *(it.slot_ptr_);
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(iterator &&it) noexcept
             {
-                return get<idx_to_reach>(*(hud::forward<iterator>(it).slot_ptr_));
+                if constexpr (hud::is_same_v<element_type, hud::pair<key_type, value_type>>)
+                    return get<idx_to_reach>(*(hud::forward<iterator>(it).slot_ptr_));
+                else
+                    return *(hud::forward<iterator>(it).slot_ptr_);
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const iterator &&it) noexcept
             {
-                return get<idx_to_reach>(*(hud::forward<const iterator>(it).slot_ptr_));
+                if constexpr (hud::is_same_v<element_type, hud::pair<key_type, value_type>>)
+                    return get<idx_to_reach>(*(hud::forward<const iterator>(it).slot_ptr_));
+                else
+                    return *(hud::forward<const iterator>(it).slot_ptr_);
             }
 
         private:
@@ -1063,40 +1076,95 @@ namespace hud
 
     public:
         /** Type of the hash function. */
-        using hasher_type = typename super::hasher_type;
+        using typename super::hasher_type;
         /** Type of the key. */
-        using key_type = typename super::key_type;
+        using typename super::key_type;
         /** Type of the value. */
-        using value_type = typename super::value_type;
+        using typename super::value_type;
+        /** Type of the key, value pair. */
+        using type = typename super::slot_type;
+
+        /** Type of the value. */
+        using super::add;
+        using super::reserve;
+        using super::super;
+        using typename super::allocator_type;
         using typename super::const_iterator;
         using typename super::iterator;
+        explicit constexpr hashset() noexcept = default;
+
+        constexpr explicit hashset(const allocator_type &allocator) noexcept
+            : super(allocator)
+        {
+        }
+
+        constexpr hashset(std::initializer_list<value_t> list, const allocator_type &allocator = allocator_type()) noexcept
+            : super(allocator)
+        {
+            reserve(list.size());
+            for (auto &value : list)
+            {
+                add(value);
+            }
+        }
     };
 
-    // /** Specialize tuple_size for slot that permit structured binding. */
-    // template<typename slot_func>
-    // struct tuple_size<hud::details::hashset::iterator<slot_func>::element_type>
-    //     : hud::integral_constant<usize, 1>
-    // {
-    // };
+    namespace details::hashset
+    {
+        /**
+         * Selected when tuple_size<hashset_iterator_element_type_t>::value is ill-formed
+         * @tparam hashset_iterator_element_type_t The tuple-like type
+         */
+        template<typename hashset_iterator_element_type_t, typename = void>
+        struct tuple_size
+            : hud::integral_constant<usize, 1>
+        {
+        };
 
-    // /** Specialize tuple_element for slot that permit structured binding. */
-    // template<usize index, typename slot_func>
-    // struct tuple_element<index, hud::details::hashset::iterator<slot_func>::element_type>
-    // {
-    //     using type = hud::details::hashset::iterator<slot_func>::element_type;
-    // };
+        /**
+         * Selected when tuple_size<hashset_iterator_element_type_t>::value is well-formed
+         * @tparam hashset_iterator_element_type_t The tuple-like type
+         */
+        template<typename hashset_iterator_element_type_t>
+        struct tuple_size<hashset_iterator_element_type_t, void_t<decltype(hud::tuple_size<hashset_iterator_element_type_t>::value)>>
+            : hud::tuple_size<hashset_iterator_element_type_t>
+        {
+        };
 
-    /** Specialize tuple_size for iterator that permit structured binding. */
+        /**
+         * Selected when tuple_size<hashset_iterator_element_type_t>::value is ill-formed
+         * @tparam hashset_iterator_element_type_t The tuple-like type
+         */
+        template<usize index, typename hashset_iterator_element_type_t>
+        struct tuple_element
+        {
+            using type = hashset_iterator_element_type_t;
+        };
+
+        /**
+         * Selected when tuple_size<hashset_iterator_element_type_t>::value is well-formed
+         * @tparam hashset_iterator_element_type_t The tuple-like type
+         */
+        template<usize index, typename f, typename s>
+        struct tuple_element<index, hud::pair<f, s>>
+            : hud::tuple_element<index, hud::pair<f, s>>
+        {
+            // using type = hud::pair<f, s>;
+        };
+
+    } // namespace details::hashset
+
     template<typename slot_func, bool is_const>
     struct tuple_size<hud::details::hashset::iterator<slot_func, is_const>>
-        : hud::tuple_size<typename hud::details::hashset::iterator<slot_func, is_const>::element_type>
+        : details::hashset::tuple_size<typename hud::details::hashset::iterator<slot_func, is_const>::element_type>
     {
     };
 
     /** Specialize tuple_element for iterator that permit structured binding. */
     template<usize index, typename slot_func, bool is_const>
     struct tuple_element<index, hud::details::hashset::iterator<slot_func, is_const>>
-        : hud::tuple_element<index, typename hud::details::hashset::iterator<slot_func, is_const>::element_type>
+        : details::hashset::tuple_element<index, typename hud::details::hashset::iterator<slot_func, is_const>::element_type>
+
     {
     };
 

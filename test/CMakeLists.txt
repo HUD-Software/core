@@ -71,6 +71,7 @@ set( src
 	hashmap/hashmap_misc.cpp
 	hashset/hashset_add.cpp
 	hashset/hashset_constructors.cpp
+	hashset/hashset_iterator.cpp
 	hashset/hashset_misc.cpp
 	i128/i128_assign.cpp
 	i128/i128_cast.cpp

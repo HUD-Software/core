@@ -22,8 +22,8 @@ GTEST_TEST(hashmap, iterators)
         hud::hashmap<i32, i64>::const_iterator const_it_begin = const_map.begin();
 
         return std::tuple {
-            hud::is_same_v<decltype(it_begin->first), i32>,
-            hud::is_same_v<decltype(it_begin->second), i64>,
+            hud::is_same_v<decltype((it_begin->first)), i32 &>,
+            hud::is_same_v<decltype((it_begin->second)), i64 &>,
             hud::is_same_v<decltype((const_it_begin->first)), const i32 &>,
             hud::is_same_v<decltype((const_it_begin->second)), const i64 &>,
         };
@@ -117,10 +117,10 @@ GTEST_TEST(hashmap, structure_binding)
         hud_assert_eq(first, 4);
         second = 444;
         hud_assert_eq(second, 444);
-        auto it_1 = map.find(1);
+        auto it_1 = map.find(4);
         auto &[first_1, second_1] = *it_1;
-        hud_assert_eq(first_1, 1);
-        hud_assert_eq(second_1, 11);
+        hud_assert_eq(first_1, 4);
+        hud_assert_eq(second_1, 444);
     }
 
     // Loop

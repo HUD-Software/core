@@ -303,4 +303,25 @@ namespace hud_test
     static_assert(!hud::is_bitwise_copy_constructible_v<non_bitwise_copy_assignable_type_4>);
 } // namespace hud_test
 
+namespace hud
+{
+    template<>
+    struct hash_32<hud_test::non_bitwise_copy_assignable_type>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_copy_assignable_type &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_copy_assignable_type>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_copy_assignable_type &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+} // namespace hud
+
 #endif // HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H

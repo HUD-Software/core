@@ -438,7 +438,7 @@ namespace hud
     };
 
     template<typename type_t>
-    struct is_hashable_64<type_t, void_t<decltype(hud::hash_64<type_t> {}(hud::declval<type_t>()))>>
+    struct is_hashable_64<type_t, void_t<decltype(hud::hash_64<hud::remove_cv_t<type_t>> {}(hud::declval<type_t>()))>>
         : hud::true_type
     {
     };
@@ -455,7 +455,7 @@ namespace hud
     };
 
     template<typename type_t>
-    struct is_hashable_32<type_t, void_t<decltype(hud::hash_32<type_t> {}(hud::declval<type_t>()))>>
+    struct is_hashable_32<type_t, void_t<decltype(hud::hash_32<hud::remove_cv_t<type_t>> {}(hud::declval<type_t>()))>>
         : hud::true_type
     {
     };

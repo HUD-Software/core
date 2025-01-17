@@ -10,7 +10,6 @@ namespace hud
         struct hashmap_slot_func
         {
             using element_type = element_t;
-            using const_element_type = const element_type;
             using key_type = typename element_type::first_type;
             using value_type = typename element_type::second_type;
 
@@ -26,12 +25,12 @@ namespace hud
 
             [[nodiscard]] static constexpr key_type &&get_key(element_type &&pair) noexcept
             {
-                return hud::forward<key_type &&>(pair.first);
+                return hud::forward<element_type>(pair).first;
             }
 
             [[nodiscard]] static constexpr const key_type &&get_key(const element_type &&pair) noexcept
             {
-                return hud::forward<const key_type &&>(pair.first);
+                return hud::forward<const element_type>(pair).first;
             }
 
             // template<usize index, typename slot_t, typename key_t, typename value_t>
@@ -48,54 +47,6 @@ namespace hud
             //     }
             // }
         };
-
-        // template<typename key_t, typename value_t>
-        // class slot
-        //     : hud::pair<key_t, value_t>
-        // {
-        // public:
-        //     using super = hud::pair<key_t, value_t>;
-        //     using type = super;
-        //     using key_type = typename hud::pair<key_t, value_t>::first_type;
-        //     using value_type = typename hud::pair<key_t, value_t>::second_type;
-
-        // using super::super;
-
-        // explicit constexpr slot(const key_type &key) noexcept
-        //     : super(key, value_type {})
-        // {
-        // }
-
-        // explicit constexpr slot(key_type &&key) noexcept
-        //     : super(std::move(key), value_type {})
-        // {
-        // }
-
-        // [[nodiscard]] constexpr const key_t &key() const noexcept
-        // {
-        //     return hud::get<0>(*this);
-        // }
-
-        // [[nodiscard]] constexpr const value_t &value() const & noexcept
-        // {
-        //     return hud::get<1>(*this);
-        // }
-
-        // [[nodiscard]] constexpr value_t &value() & noexcept
-        // {
-        //     return hud::get<1>(*this);
-        // }
-
-        // [[nodiscard]] constexpr const value_t &&value() const && noexcept
-        // {
-        //     return hud::move(hud::get<1>(*this));
-        // }
-
-        // [[nodiscard]] constexpr value_t &&value() && noexcept
-        // {
-        //     return hud::move(hud::get<1>(*this));
-        // }
-        // };
 
         template<typename key_t>
         struct default_hasher
@@ -194,21 +145,6 @@ namespace hud
             return add(hud::move(pair.first), hud::move(pair.second));
         }
     };
-
-    // /** Specialize tuple_size for slot that permit structured binding. */
-    // template<typename key_t, typename value_t>
-    // struct tuple_size<hud::pair<key_t, value_t>>
-    //     : hud::integral_constant<usize, 2>
-    // {
-    // };
-
-    // /** Specialize tuple_element for slot that permit structured binding. */
-    // template<std::size_t index, typename key_t, typename value_t>
-    // struct tuple_element<index, hud::details::hashmap::slot<key_t, value_t>>
-    // {
-    //     using type = std::conditional_t<index == 0, key_t, value_t>;
-    // };
-
 } // namespace hud
 
 namespace std
