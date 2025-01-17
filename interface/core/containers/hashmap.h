@@ -6,12 +6,12 @@ namespace hud
 {
     namespace details::hashmap
     {
-        template<typename element_t>
+        template<typename key_t, typename value_t>
         struct hashmap_slot_func
         {
-            using element_type = element_t;
-            using key_type = typename element_type::first_type;
-            using value_type = typename element_type::second_type;
+            using element_type = hud::pair<key_t, value_t>;
+            using key_type = key_t;
+            using value_type = value_t;
 
             [[nodiscard]] static constexpr key_type &get_key(element_type &pair) noexcept
             {
@@ -83,11 +83,11 @@ namespace hud
         typename key_equal_t = hashmap_default_key_equal<key_t>,
         typename allocator_t = hashmap_default_allocator>
     class hashmap
-        : public details::hashset::hashset_impl<details::hashmap::hashmap_slot_func<hud::pair<key_t, value_t>>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashmap::hashmap_slot_func<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
     {
 
     private:
-        using super = details::hashset::hashset_impl<details::hashmap::hashmap_slot_func<hud::pair<key_t, value_t>>, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<details::hashmap::hashmap_slot_func<key_t, value_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */

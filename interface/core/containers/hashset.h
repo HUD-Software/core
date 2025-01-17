@@ -1149,7 +1149,6 @@ namespace hud
         struct tuple_element<index, hud::pair<f, s>>
             : hud::tuple_element<index, hud::pair<f, s>>
         {
-            // using type = hud::pair<f, s>;
         };
 
     } // namespace details::hashset
