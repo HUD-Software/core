@@ -37,6 +37,34 @@ namespace hud
                 return hud::forward<slot_t>(s).element_;
             }
 
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(slot &s) noexcept
+            {
+                static_assert(idx_to_reach != 0, "Index out of bound");
+                return s.element_;
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(const slot &s) noexcept
+            {
+                static_assert(idx_to_reach != 0, "Index out of bound");
+                return s.element_;
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(slot &&s) noexcept
+            {
+                static_assert(idx_to_reach != 0, "Index out of bound");
+                return hud::forward<slot>(s).element_;
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(const slot &&s) noexcept
+            {
+                static_assert(idx_to_reach != 0, "Index out of bound");
+                return hud::forward<const slot>(s).element_;
+            }
+
             element_type element_;
         };
 
@@ -493,41 +521,25 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(iterator &s) noexcept
             {
-                if constexpr (hud::is_same_v<hud::remove_cv_t<element_type>, hud::pair<iterator::key_type, iterator::value_type>>)
-                    return hud::get<idx_to_reach>(s.slot_ptr_->get_element());
-                else
-                    return s.slot_ptr_->get_element();
-                // return get(*(s.slot_ptr_));
+                return get<idx_to_reach>(*(s.slot_ptr_));
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const iterator &s) noexcept
             {
-                if constexpr (hud::is_same_v<hud::remove_cv_t<element_type>, hud::pair<iterator::key_type, iterator::value_type>>)
-                    return hud::get<idx_to_reach>(s.slot_ptr_->get_element());
-                else
-                    return s.slot_ptr_->get_element();
-                // return get(*(s.slot_ptr_));
+                return get<idx_to_reach>(*(s.slot_ptr_));
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(iterator &&s) noexcept
             {
-                if constexpr (hud::is_same_v<hud::remove_cv_t<element_type>, hud::pair<iterator::key_type, iterator::value_type>>)
-                    return hud::get<idx_to_reach>(hud::forward<iterator>(s).slot_ptr_->element_);
-                else
-                    return hud::forward<iterator>(s).slot_ptr_->get_element();
-                // return get(*(hud::forward<iterator>(s).slot_ptr_));
+                return get<idx_to_reach>(*(hud::forward<iterator>(s).slot_ptr_));
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const iterator &&s) noexcept
             {
-                if constexpr (hud::is_same_v<hud::remove_cv_t<element_type>, hud::pair<iterator::key_type, iterator::value_type>>)
-                    return hud::get<idx_to_reach>(hud::forward<const iterator>(s).slot_ptr_->element_);
-                else
-                    return hud::forward<const iterator>(s).slot_ptr_->get_element();
-                // return get(*(hud::forward<const iterator>(s).slot_ptr_));
+                return get<idx_to_reach>(*(hud::forward<const iterator>(s).slot_ptr_));
             }
 
         private:

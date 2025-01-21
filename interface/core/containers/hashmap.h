@@ -26,6 +26,30 @@ namespace hud
                 return hud::get<0>(hud::forward<slot_t>(s).element_);
             }
 
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(slot &s) noexcept
+            {
+                return hud::get<idx_to_reach>(s.element_);
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(const slot &s) noexcept
+            {
+                return hud::get<idx_to_reach>(s.element_);
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(slot &&s) noexcept
+            {
+                return hud::get<idx_to_reach>(hud::forward<slot>(s).element_);
+            }
+
+            template<usize idx_to_reach>
+            [[nodiscard]] friend constexpr decltype(auto) get(const slot &&s) noexcept
+            {
+                return hud::get<idx_to_reach>(hud::forward<const slot>(s).element_);
+            }
+
             element_type element_;
         };
 
