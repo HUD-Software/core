@@ -141,14 +141,14 @@ GTEST_TEST(hashmap, structure_binding)
                 {4, 44}
             };
 
-            map_type::type result[4];
+            map_type::element_type result[4];
             usize index = 0;
             for (const auto &[first, second] : map)
             {
                 result[index++] = {first, second};
             }
 
-            map_type::type const_result[4];
+            map_type::element_type const_result[4];
             index = 0;
             for (const auto &[first, second] : const_map)
             {
@@ -230,14 +230,14 @@ GTEST_TEST(hashmap, range_for_loop)
             {4, 44}
         };
 
-        map_type::type result[4];
+        map_type::element_type result[4];
         usize index = 0;
         for (const auto &value : map)
         {
             result[index++] = value;
         }
 
-        map_type::type const_result[4];
+        map_type::element_type const_result[4];
         index = 0;
         for (const auto &value : const_map)
         {
