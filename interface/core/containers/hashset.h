@@ -31,67 +31,14 @@ namespace hud
             {
             }
 
-            [[nodiscard]] static constexpr key_type &get_key(slot &s) noexcept
+            template<typename slot_t>
+            [[nodiscard]] static constexpr decltype(auto) get_key(slot_t &&s) noexcept
             {
-                return s.element_;
+                return hud::forward<slot_t>(s).element_;
             }
 
-            [[nodiscard]] static constexpr const key_type &get_key(const slot &s) noexcept
-            {
-                return s.element_;
-            }
-
-            [[nodiscard]] static constexpr key_type &&get_key(slot &&s) noexcept
-            {
-                return hud::forward<slot>(s).element_;
-            }
-
-            [[nodiscard]] static constexpr const key_type &&get_key(const slot &&s) noexcept
-            {
-                return hud::forward<const slot>(s).element_;
-            }
-
-            [[nodiscard]] constexpr element_type &get_element() & noexcept
-            {
-                return element_;
-            }
-
-            [[nodiscard]] constexpr element_type &&get_element() && noexcept
-            {
-                return hud::forward<element_type>(element_);
-            }
-
-            [[nodiscard]] constexpr const element_type &get_element() const & noexcept
-            {
-                return element_;
-            }
-
-            [[nodiscard]] constexpr const element_type &&get_element() const && noexcept
-            {
-                return hud::forward<element_type>(element_);
-            }
-
-        private:
             element_type element_;
         };
-
-        // template<typename element_t>
-        // struct hashset_slot_func
-        // {
-        //     using element_type = element_t;
-        //     using key_type = element_type;
-        //     using value_type = element_type;
-
-        // [[nodiscard]] static constexpr const key_type &get_key(const element_type &pair) noexcept
-        // {
-        //     return pair;
-        // }
-
-        // [[nodiscard]] static constexpr key_type &&get_key(element_type &&pair) noexcept
-        // {
-        //     return hud::forward<key_type &&>(pair);
-        // }
-        // };
 
         template<typename key_t>
         struct default_hasher
@@ -496,14 +443,14 @@ namespace hud
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
-                return slot_ptr_->get_element();
+                return slot_ptr_->element_;
             }
 
             constexpr pointer_type operator->() const noexcept
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
-                return &(slot_ptr_->get_element());
+                return &slot_ptr_->element_;
             }
 
             constexpr iterator &operator++() noexcept
@@ -536,6 +483,12 @@ namespace hud
                 return control_ptr_ != other.control_ptr_;
             }
 
+            template<typename iterator_t>
+            [[nodiscard]] static constexpr decltype(auto) get_key(iterator_t &&s) noexcept
+            {
+                return slot_t::get_key(*(hud::forward<iterator_t>(s).slot_ptr_));
+            }
+
         private:
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(iterator &s) noexcept
@@ -561,7 +514,7 @@ namespace hud
             [[nodiscard]] friend constexpr decltype(auto) get(iterator &&s) noexcept
             {
                 if constexpr (hud::is_same_v<hud::remove_cv_t<element_type>, hud::pair<iterator::key_type, iterator::value_type>>)
-                    return hud::get<idx_to_reach>(hud::forward<iterator>(s).slot_ptr_->get_element());
+                    return hud::get<idx_to_reach>(hud::forward<iterator>(s).slot_ptr_->element_);
                 else
                     return hud::forward<iterator>(s).slot_ptr_->get_element();
                 // return get(*(hud::forward<iterator>(s).slot_ptr_));
@@ -571,7 +524,7 @@ namespace hud
             [[nodiscard]] friend constexpr decltype(auto) get(const iterator &&s) noexcept
             {
                 if constexpr (hud::is_same_v<hud::remove_cv_t<element_type>, hud::pair<iterator::key_type, iterator::value_type>>)
-                    return hud::get<idx_to_reach>(hud::forward<const iterator>(s).slot_ptr_->get_element());
+                    return hud::get<idx_to_reach>(hud::forward<const iterator>(s).slot_ptr_->element_);
                 else
                     return hud::forward<const iterator>(s).slot_ptr_->get_element();
                 // return get(*(hud::forward<const iterator>(s).slot_ptr_));
@@ -772,7 +725,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 = slot_index + group_index_that_match_h2 & max_slot_count_;
                         slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
-                        if (key_equal_t {}(slot_t::get_key(slot_that_match_h2->get_element()), key)) [[likely]]
+                        if (key_equal_t {}(slot_t::get_key(*slot_that_match_h2), key)) [[likely]]
                         {
                             return {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
                         }
@@ -870,7 +823,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 = slot_index + group_index_that_match_h2 & max_slot_count_;
                         slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
-                        if (key_equal_t {}(slot_t::get_key(slot_that_match_h2->get_element()), key)) [[likely]]
+                        if (key_equal_t {}(slot_t::get_key(*slot_that_match_h2), key)) [[likely]]
                         {
                             return {slot_index_that_match_h2, false};
                         }
@@ -949,7 +902,7 @@ namespace hud
                          ++it)
                     {
                         // Compute the hash
-                        u64 hash = hasher_type {}(slot_t::get_key(*it));
+                        u64 hash = hasher_type {}(const_iterator::get_key(it));
                         // Find H1 slot index
                         u64 h1 = H1(hash);
                         usize slot_index = find_first_empty_or_deleted(control_ptr_, old_max_slot_count, h1);
@@ -1124,24 +1077,24 @@ namespace hud
 
     } // namespace details::hashset
 
-    template<typename value_t>
-    using hashset_default_hasher = details::hashset::default_hasher<value_t>;
+    template<typename element_t>
+    using hashset_default_hasher = details::hashset::default_hasher<element_t>;
 
-    template<typename value_t>
-    using hashset_default_key_equal = details::hashset::default_equal<value_t>;
+    template<typename element_t>
+    using hashset_default_key_equal = details::hashset::default_equal<element_t>;
 
     using hashset_default_allocator = details::hashset::default_allocator;
 
     template<
-        typename value_t,
-        typename hasher_t = hashset_default_hasher<value_t>,
-        typename key_equal_t = hashset_default_key_equal<value_t>,
+        typename element_t,
+        typename hasher_t = hashset_default_hasher<element_t>,
+        typename key_equal_t = hashset_default_key_equal<element_t>,
         typename allocator_t = hashset_default_allocator>
     class hashset
-        : public details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashset::slot<element_t>, hasher_t, key_equal_t, allocator_t>
     {
     private:
-        using super = details::hashset::hashset_impl<details::hashset::slot<value_t>, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<details::hashset::slot<element_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
@@ -1150,8 +1103,8 @@ namespace hud
         using typename super::key_type;
         /** Type of the value. */
         using typename super::value_type;
-        /** Type of the key, value pair. */
-        using type = typename super::slot_type;
+        /** Type of the element */
+        using element_type = typename super::element_type;
 
         /** Type of the value. */
         using super::add;
@@ -1167,7 +1120,7 @@ namespace hud
         {
         }
 
-        constexpr hashset(std::initializer_list<value_t> list, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr hashset(std::initializer_list<element_t> list, const allocator_type &allocator = allocator_type()) noexcept
             : super(allocator)
         {
             reserve(list.size());

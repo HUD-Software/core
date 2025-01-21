@@ -20,91 +20,14 @@ namespace hud
             {
             }
 
-            [[nodiscard]] static constexpr key_type &get_key(element_type &element) noexcept
+            template<typename slot_t>
+            [[nodiscard]] static constexpr decltype(auto) get_key(slot_t &&s) noexcept
             {
-                return hud::get<0>(element);
+                return hud::get<0>(hud::forward<slot_t>(s).element_);
             }
 
-            [[nodiscard]] static constexpr const key_type &get_key(const element_type &element) noexcept
-            {
-                return hud::get<0>(element);
-            }
-
-            [[nodiscard]] static constexpr key_type &&get_key(element_type &&element) noexcept
-            {
-                return hud::get<0>(hud::forward<element_type>(element));
-            }
-
-            [[nodiscard]] static constexpr const key_type &&get_key(const element_type &&element) noexcept
-            {
-                return hud::get<0>(hud::forward<element_type>(element));
-            }
-
-            [[nodiscard]] constexpr element_type &get_element() & noexcept
-            {
-                return element_;
-            }
-
-            [[nodiscard]] constexpr element_type &&get_element() && noexcept
-            {
-                return hud::forward<element_type>(element_);
-            }
-
-            [[nodiscard]] constexpr const element_type &get_element() const & noexcept
-            {
-                return element_;
-            }
-
-            [[nodiscard]] constexpr const element_type &&get_element() const && noexcept
-            {
-                return hud::forward<element_type>(element_);
-            }
-
-        private:
             element_type element_;
         };
-
-        // template<typename key_t, typename value_t>
-        // struct hashmap_slot_func
-        // {
-        //     using element_type = hud::pair<key_t, value_t>;
-        //     using key_type = key_t;
-        //     using value_type = value_t;
-
-        // [[nodiscard]] static constexpr key_type &get_key(element_type &pair) noexcept
-        // {
-        //     return pair.first;
-        // }
-
-        // [[nodiscard]] static constexpr const key_type &get_key(const element_type &pair) noexcept
-        // {
-        //     return pair.first;
-        // }
-
-        // [[nodiscard]] static constexpr key_type &&get_key(element_type &&pair) noexcept
-        // {
-        //     return hud::forward<element_type>(pair).first;
-        // }
-
-        // [[nodiscard]] static constexpr const key_type &&get_key(const element_type &&pair) noexcept
-        // {
-        //     return hud::forward<const element_type>(pair).first;
-        // }
-
-        // // template<usize index, typename slot_t, typename key_t, typename value_t>
-        // // requires(hud::is_same_v<element_type<key_t, value_t>, hud::decay_t<slot_t>>)
-        // // friend constexpr decltype(auto) get(slot_t &&slot) noexcept
-        // // {
-        // //     if constexpr (index == 0)
-        // //     {
-        // //         return hud::forward<slot_t>(slot).first;
-        // //     }
-        // //     else if constexpr (index == 1)
-        // //     {
-        // //         return hud::forward<slot_t>(slot).second;
-        // //     }
-        // // }
-        // };
 
         template<typename key_t>
         struct default_hasher
@@ -154,7 +77,7 @@ namespace hud
         using typename super::key_type;
         /** Type of the value. */
         using typename super::value_type;
-        /** Type of the key, value pair. */
+        /** Type of the element */
         using element_type = typename super::element_type;
 
         /** Type of the value. */
