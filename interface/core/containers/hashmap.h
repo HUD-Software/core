@@ -11,13 +11,39 @@ namespace hud
         {
             using key_type = key_t;
             using value_type = value_t;
-            using element_type = hud::pair<key_type, value_type>;
 
             template<typename... params_t>
-            requires(hud::is_constructible_v<element_type, params_t...>)
+            requires(hud::is_constructible_v<key_type, params_t...>)
+            constexpr explicit slot(params_t &&...params) noexcept
+                : element_(hud::forward<params_t>(params)..., value_type {})
+            {
+            }
+
+            template<typename... params_t>
+            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, params_t...>)
             constexpr explicit slot(params_t &&...params) noexcept
                 : element_(hud::forward<params_t>(params)...)
             {
+            }
+
+            [[nodiscard]] constexpr const key_type &key() noexcept
+            {
+                return hud::get<0>(element_);
+            }
+
+            [[nodiscard]] constexpr const key_type &key() const noexcept
+            {
+                return hud::get<0>(element_);
+            }
+
+            [[nodiscard]] constexpr value_type &value() noexcept
+            {
+                return hud::get<1>(element_);
+            }
+
+            [[nodiscard]] constexpr const value_type &value() const noexcept
+            {
+                return hud::get<1>(element_);
             }
 
             template<typename slot_t>
@@ -50,7 +76,8 @@ namespace hud
                 return hud::get<idx_to_reach>(hud::forward<const slot>(s).element_);
             }
 
-            element_type element_;
+        private:
+            hud::pair<key_type, value_type> element_;
         };
 
         template<typename key_t>
@@ -97,12 +124,12 @@ namespace hud
     public:
         /** Type of the hash function. */
         using typename super::hasher_type;
+        /** Type of the slot. */
+        using slot_type = typename super::slot_type;
         /** Type of the key. */
-        using typename super::key_type;
+        using key_type = slot_type::key_type;
         /** Type of the value. */
-        using typename super::value_type;
-        /** Type of the element */
-        using element_type = typename super::element_type;
+        using value_type = slot_type::value_type;
 
         /** Type of the value. */
         using super::add;

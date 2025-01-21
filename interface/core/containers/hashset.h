@@ -21,14 +21,17 @@ namespace hud
         struct slot
         {
             using key_type = value_t;
-            using value_type = value_t;
-            using element_type = value_t;
 
             template<typename... params_t>
-            requires(hud::is_constructible_v<element_type, params_t...>)
+            requires(hud::is_constructible_v<key_type, params_t...>)
             constexpr explicit slot(params_t &&...params) noexcept
                 : element_(hud::forward<params_t>(params)...)
             {
+            }
+
+            [[nodiscard]] constexpr const key_type &get_key() const noexcept
+            {
+                return element_;
             }
 
             template<typename slot_t>
@@ -65,7 +68,7 @@ namespace hud
                 return hud::forward<const slot>(s).element_;
             }
 
-            element_type element_;
+            value_t element_;
         };
 
         template<typename key_t>
@@ -443,11 +446,11 @@ namespace hud
         {
         public:
             using slot_type = hud::conditional_t<is_const, const slot_t, slot_t>;
-            using element_type = hud::conditional_t<is_const, const typename slot_type::element_type, typename slot_type::element_type>;
+            // using element_type = hud::conditional_t<is_const, const typename slot_type::element_type, typename slot_type::element_type>;
             using key_type = hud::conditional_t<is_const, const typename slot_t::key_type, typename slot_t::key_type>;
             using value_type = hud::conditional_t<is_const, const typename slot_t::value_type, typename slot_t::value_type>;
-            using pointer_type = hud::add_pointer_t<element_type>;
-            using reference_type = hud::add_lvalue_reference_t<element_type>;
+            using pointer_type = hud::add_pointer_t<slot_type>;
+            using reference_type = hud::add_lvalue_reference_t<slot_type>;
 
         public:
             constexpr iterator(control_type *control_ptr) noexcept
@@ -471,14 +474,14 @@ namespace hud
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
-                return slot_ptr_->element_;
+                return *slot_ptr_;
             }
 
             constexpr pointer_type operator->() const noexcept
             {
                 // Ensure we are in a full control
                 hud::check(control::is_byte_full(*control_ptr_));
-                return &slot_ptr_->element_;
+                return slot_ptr_;
             }
 
             constexpr iterator &operator++() noexcept
@@ -559,12 +562,6 @@ namespace hud
         protected:
             /** Type of the slot. */
             using slot_type = slot_t;
-            /** Element of the slot. */
-            using element_type = slot_type::element_type;
-            /** Type of the key. */
-            using key_type = slot_type::key_type;
-            /** Type of the value. */
-            using value_type = slot_type::value_type;
             /** Type of the hash function. */
             using hasher_type = hasher_t;
             /** Type of the iterator. */
@@ -576,8 +573,8 @@ namespace hud
             /** The type of allocation done by the allocator. */
             using memory_allocation_type = typename allocator_type::template memory_allocation_type<slot_type>;
 
-            static_assert(alignof(slot_type) == alignof(element_type), "slot and element_type must have same alignement");
-            static_assert(hud::is_same_size_v<slot_type, element_type>, "slot and element_type must have same size");
+            // static_assert(alignof(slot_type) == alignof(element_type), "slot and element_type must have same alignement");
+            // static_assert(hud::is_same_size_v<slot_type, element_type>, "slot and element_type must have same size");
 
         public:
             /**  Default constructor. */
@@ -652,8 +649,8 @@ namespace hud
              * @return Reference to the `value`
              */
             template<typename... args_t>
-            requires(hud::is_constructible_v<value_type, args_t...>)
-            constexpr value_type &add_to_ref(key_type &&key, args_t &&...args) noexcept
+            // requires(hud::is_constructible_v<slot_type, args_t...>)
+            constexpr slot_type &add_to_ref(slot_type::key_type &&key, args_t &&...args) noexcept
 
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
@@ -662,24 +659,7 @@ namespace hud
                 {
                     hud::memory::construct_at<args_t...>(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
                 }
-                return slot_ptr->value();
-            }
-
-            /**
-             * Insert a key in the hashset.
-             * @param key The key associated with the `value`
-             * @param args List of arguments pass to `value_type` constructor after the `key` itself
-             * @return Iterator to the `value`
-             */
-            constexpr iterator add(key_type &&key, value_type &&value) noexcept
-            {
-                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-                slot_type *slot_ptr = slot_ptr_ + res.first;
-                if (res.second)
-                {
-                    hud::memory::construct_at(slot_ptr, hud::move(key), hud::move(value));
-                }
-                return {control_ptr_ + res.first, slot_ptr};
+                return &slot_ptr;
             }
 
             /**
@@ -689,8 +669,9 @@ namespace hud
              * @return Iterator to the `value`
              */
             template<typename... args_t>
-            requires(hud::is_constructible_v<value_type, args_t...>)
-            constexpr iterator add(key_type &&key, args_t &&...args) noexcept
+
+            // requires(hud::is_constructible_v<slot_type, args_t...>)
+            constexpr iterator add(slot_type::key_type &&key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
                 slot_type *slot_ptr = slot_ptr_ + res.first;
@@ -708,8 +689,8 @@ namespace hud
              * @return Iterator to the `value`
              */
             template<typename... args_t>
-            requires(hud::is_constructible_v<value_type, args_t...>)
-            constexpr iterator add(const key_type &key, args_t &&...args) noexcept
+            requires(hud::is_constructible_v<slot_type, args_t...>)
+            constexpr iterator add(const slot_type::key_type &key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
                 slot_type *slot_ptr = slot_ptr_ + res.first;
@@ -722,7 +703,7 @@ namespace hud
 
             /** Find a key and return an iterator to the value. */
             [[nodiscard]]
-            constexpr iterator find(key_type &&key) const noexcept
+            constexpr iterator find(slot_type::key_type &&key) const noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -817,10 +798,10 @@ namespace hud
              * If the key is found, return the iterator
              * If not found insert the key but do not construct the value.
              */
-            [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
+            [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const slot_type::key_type &key) noexcept
             {
-                static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
-                static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
+                static_assert(hud::is_hashable_64_v<typename slot_type::key_type>, "key_type is not hashable");
+                static_assert(hud::is_comparable_with_equal_v<typename slot_type::key_type, typename slot_type::key_type>, "key_type is not comparable with equal");
 
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -909,12 +890,12 @@ namespace hud
                 {
                     // Move elements to new buffer if any
                     // Relocate slots to newly allocated buffer
-                    for (auto it = const_iterator {old_control_ptr, old_slot_ptr};
-                         it != const_iterator(old_control_ptr + old_max_slot_count);
+                    for (auto it = iterator {old_control_ptr, old_slot_ptr};
+                         it != iterator(old_control_ptr + old_max_slot_count);
                          ++it)
                     {
                         // Compute the hash
-                        u64 hash = hasher_type {}(const_iterator::get_key(it));
+                        u64 hash = hasher_type {}(iterator::get_key(it));
                         // Find H1 slot index
                         u64 h1 = H1(hash);
                         usize slot_index = find_first_empty_or_deleted(control_ptr_, old_max_slot_count, h1);
@@ -1111,12 +1092,10 @@ namespace hud
     public:
         /** Type of the hash function. */
         using typename super::hasher_type;
+        /** Type of the slot. */
+        using slot_type = typename super::slot_type;
         /** Type of the key. */
-        using typename super::key_type;
-        /** Type of the value. */
-        using typename super::value_type;
-        /** Type of the element */
-        using element_type = typename super::element_type;
+        using key_type = slot_type::key_type;
 
         /** Type of the value. */
         using super::add;

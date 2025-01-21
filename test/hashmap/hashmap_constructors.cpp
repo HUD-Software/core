@@ -30,17 +30,17 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
-            bool key_1_is_correct = key_1_inserted ? it_1->first == 1 && it_1->second == 11 : false;
+            bool key_1_is_correct = key_1_inserted ? it_1->key() == 1 && it_1->value() == 11 : false;
 
             // Validate we have {2,22}
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
-            bool key_2_is_correct = key_2_inserted ? it_2->first == 2 && it_2->second == 22 : false;
+            bool key_2_is_correct = key_2_inserted ? it_2->key() == 2 && it_2->value() == 22 : false;
 
             // Validate we have {3,33}
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
-            bool key_3_is_correct = key_3_inserted ? it_3->first == 3 && it_3->second == 33 : false;
+            bool key_3_is_correct = key_3_inserted ? it_3->key() == 3 && it_3->value() == 33 : false;
 
             return std::tuple {
                 map.count() == 3,
