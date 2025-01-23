@@ -27,7 +27,7 @@ jobs:
   #         Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
   #         .\target\codecov.exe -f target\test\Debug\coverage.msvc.cobertura -t ${{secrets.CODECOV_TOKEN}}
   #     - name: Upload artifacts
-  #       uses: actions/upload-artifact@v3.1.1
+  #       uses: actions/upload-artifact@v4
   #       with:
   #         name: coverage
   #         path: |
@@ -52,7 +52,7 @@ jobs:
           Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
           .\target\codecov.exe -f target\test\coverage.windows.clang.lcov.info -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: |
@@ -80,7 +80,7 @@ jobs:
           chmod +x codecov
           ./codecov -f target/test/coverage.linux.clang.lcov.info -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: |
@@ -108,7 +108,7 @@ jobs:
           chmod +x codecov
           ./codecov -f target/test/coverage.linux.gcc.lcov.info -t ${{secrets.CODECOV_TOKEN}}
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: |

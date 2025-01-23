@@ -34,7 +34,7 @@ jobs:
           cp -R target/src/*.a release -i
           cp -R interface/core release/core -i
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: Ubuntu_gcc_12_x86_64
           path: release/**

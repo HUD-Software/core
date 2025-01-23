@@ -33,7 +33,7 @@ jobs:
           xcopy target\src\Release release\ /s /y
           xcopy interface\core release\core\ /s /y
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v4
         with:
           name: windows_msvc_2022_x64
           path: release\**
