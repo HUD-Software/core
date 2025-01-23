@@ -562,6 +562,8 @@ namespace hud
         protected:
             /** Type of the slot. */
             using slot_type = slot_t;
+            /** Type of the key. */
+            using key_type = typename slot_type::key_type;
             /** Type of the hash function. */
             using hasher_type = hasher_t;
             /** Type of the iterator. */
@@ -648,19 +650,19 @@ namespace hud
              * @param args List of arguments pass to `value_type` constructor after the `key` itself
              * @return Reference to the `value`
              */
-            template<typename... args_t>
-            // requires(hud::is_constructible_v<slot_type, args_t...>)
-            constexpr slot_type &add_to_ref(slot_type::key_type &&key, args_t &&...args) noexcept
+            // template<typename... args_t>
+            // // requires(hud::is_constructible_v<slot_type, args_t...>)
+            // constexpr slot_type &add_to_ref(slot_type::key_type &&key, args_t &&...args) noexcept
 
-            {
-                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-                slot_type *slot_ptr = slot_ptr_ + res.first;
-                if (res.second)
-                {
-                    hud::memory::construct_at<args_t...>(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
-                }
-                return &slot_ptr;
-            }
+            // {
+            //     hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+            //     slot_type *slot_ptr = slot_ptr_ + res.first;
+            //     if (res.second)
+            //     {
+            //         hud::memory::construct_at<args_t...>(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
+            //     }
+            //     return &slot_ptr;
+            // }
 
             /**
              * Insert a key in the hashset.
@@ -671,7 +673,7 @@ namespace hud
             template<typename... args_t>
 
             // requires(hud::is_constructible_v<slot_type, args_t...>)
-            constexpr iterator add(slot_type::key_type &&key, args_t &&...args) noexcept
+            constexpr iterator add(key_type &&key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
                 slot_type *slot_ptr = slot_ptr_ + res.first;
@@ -690,7 +692,7 @@ namespace hud
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<slot_type, args_t...>)
-            constexpr iterator add(const slot_type::key_type &key, args_t &&...args) noexcept
+            constexpr iterator add(const key_type &key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
                 slot_type *slot_ptr = slot_ptr_ + res.first;
@@ -703,7 +705,7 @@ namespace hud
 
             /** Find a key and return an iterator to the value. */
             [[nodiscard]]
-            constexpr iterator find(slot_type::key_type &&key) const noexcept
+            constexpr iterator find(key_type &&key) const noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -798,10 +800,10 @@ namespace hud
              * If the key is found, return the iterator
              * If not found insert the key but do not construct the value.
              */
-            [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const slot_type::key_type &key) noexcept
+            [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
             {
-                static_assert(hud::is_hashable_64_v<typename slot_type::key_type>, "key_type is not hashable");
-                static_assert(hud::is_comparable_with_equal_v<typename slot_type::key_type, typename slot_type::key_type>, "key_type is not comparable with equal");
+                static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
+                static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
 
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -1096,7 +1098,6 @@ namespace hud
         using slot_type = typename super::slot_type;
         /** Type of the key. */
         using key_type = slot_type::key_type;
-
         /** Type of the value. */
         using super::add;
         using super::reserve;
