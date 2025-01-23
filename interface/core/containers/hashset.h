@@ -22,10 +22,15 @@ namespace hud
         {
             using key_type = value_t;
 
-            template<typename... params_t>
-            requires(hud::is_constructible_v<key_type, params_t...>)
-            constexpr explicit slot(params_t &&...params) noexcept
-                : element_(hud::forward<params_t>(params)...)
+            constexpr explicit slot(const key_type &key) noexcept
+                : element_(key)
+            {
+            }
+
+            template<typename u_key_t>
+            requires(hud::is_constructible_v<key_type, u_key_t>)
+            constexpr explicit slot(u_key_t &&key) noexcept
+                : element_(hud::forward<u_key_t>(key))
             {
             }
 
@@ -648,31 +653,10 @@ namespace hud
              * Insert a key in the hashset.
              * @param key The key associated with the `value`
              * @param args List of arguments pass to `value_type` constructor after the `key` itself
-             * @return Reference to the `value`
-             */
-            // template<typename... args_t>
-            // // requires(hud::is_constructible_v<slot_type, args_t...>)
-            // constexpr slot_type &add_to_ref(slot_type::key_type &&key, args_t &&...args) noexcept
-
-            // {
-            //     hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-            //     slot_type *slot_ptr = slot_ptr_ + res.first;
-            //     if (res.second)
-            //     {
-            //         hud::memory::construct_at<args_t...>(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
-            //     }
-            //     return &slot_ptr;
-            // }
-
-            /**
-             * Insert a key in the hashset.
-             * @param key The key associated with the `value`
-             * @param args List of arguments pass to `value_type` constructor after the `key` itself
              * @return Iterator to the `value`
              */
             template<typename... args_t>
-
-            // requires(hud::is_constructible_v<slot_type, args_t...>)
+            requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
             constexpr iterator add(key_type &&key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);
@@ -691,7 +675,7 @@ namespace hud
              * @return Iterator to the `value`
              */
             template<typename... args_t>
-            requires(hud::is_constructible_v<slot_type, args_t...>)
+            requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
             constexpr iterator add(const key_type &key, args_t &&...args) noexcept
             {
                 hud::pair<usize, bool> res = find_or_insert_no_construct(key);

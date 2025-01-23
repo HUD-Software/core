@@ -12,17 +12,15 @@ namespace hud
             using key_type = key_t;
             using value_type = value_t;
 
-            template<typename... params_t>
-            requires(hud::is_constructible_v<key_type, params_t...>)
-            constexpr explicit slot(params_t &&...params) noexcept
-                : element_(hud::forward<params_t>(params)..., value_type {})
+            constexpr explicit slot(const key_type &key, const value_type &value) noexcept
+                : element_(key, value)
             {
             }
 
-            template<typename... params_t>
-            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, params_t...>)
-            constexpr explicit slot(params_t &&...params) noexcept
-                : element_(hud::forward<params_t>(params)...)
+            template<typename u_key_t, typename u_value_t>
+            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
+            constexpr explicit slot(u_key_t &&key, u_value_t &&value) noexcept
+                : element_(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value))
             {
             }
 
