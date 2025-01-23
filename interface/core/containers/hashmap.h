@@ -63,13 +63,13 @@ namespace hud
             }
 
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(slot &&s) noexcept
+            [[nodiscard]] friend constexpr auto get(slot &&s) noexcept
             {
                 return hud::get<idx_to_reach>(hud::forward<slot>(s).element_);
             }
 
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const slot &&s) noexcept
+            [[nodiscard]] friend constexpr auto get(const slot &&s) noexcept
             {
                 return hud::get<idx_to_reach>(hud::forward<const slot>(s).element_);
             }
@@ -191,4 +191,18 @@ namespace hud
 
 } // namespace hud
 
+namespace std
+{
+    template<typename key_t, typename value_t>
+    struct tuple_size<hud::details::hashmap::slot<key_t, value_t>>
+        : hud::tuple_size<hud::details::hashmap::slot<key_t, value_t>>
+    {
+    };
+
+    template<std::size_t idx_to_reach, typename key_t, typename value_t>
+    struct tuple_element<idx_to_reach, hud::details::hashmap::slot<key_t, value_t>>
+        : hud::tuple_element<idx_to_reach, hud::details::hashmap::slot<key_t, value_t>>
+    {
+    };
+} // namespace std
 #endif // HD_INC_CORE_HASHMAP_H

@@ -475,11 +475,6 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
-            // constexpr iterator(const iterator<slot_type, false> &it) noexcept
-            //     : iterator(it.control_ptr_, it.slot_ptr_)
-            // {
-            // }
-
             /**
              * Create a constant iterator from a non constant iterator.
              */
@@ -553,13 +548,13 @@ namespace hud
             }
 
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(iterator &&s) noexcept
+            [[nodiscard]] friend constexpr auto get(iterator &&s) noexcept
             {
                 return get<idx_to_reach>(*(hud::forward<iterator>(s).slot_ptr_));
             }
 
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const iterator &&s) noexcept
+            [[nodiscard]] friend constexpr auto get(const iterator &&s) noexcept
             {
                 return get<idx_to_reach>(*(hud::forward<const iterator>(s).slot_ptr_));
             }
@@ -1172,6 +1167,18 @@ namespace hud
 
 namespace std
 {
+    template<typename key_t>
+    struct tuple_size<hud::details::hashset::slot<key_t>>
+        : hud::tuple_size<hud::details::hashset::slot<key_t>>
+    {
+    };
+
+    template<std::size_t idx_to_reach, typename key_t>
+    struct tuple_element<idx_to_reach, hud::details::hashset::slot<key_t>>
+        : hud::tuple_element<idx_to_reach, hud::details::hashset::slot<key_t>>
+    {
+    };
+
     template<typename slot_t, bool is_const>
     struct tuple_size<hud::details::hashset::iterator<slot_t, is_const>>
         : hud::tuple_size<hud::details::hashset::iterator<slot_t, is_const>>
