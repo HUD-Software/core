@@ -1141,7 +1141,7 @@ namespace hud
     struct tuple_element<idx_to_reach, details::hashset::slot<value_t>>
     {
         static_assert(idx_to_reach < 1, "hashset slot index out of bounds");
-        using type = const details::hashset::slot<value_t>::key_type;
+        using type = typename const details::hashset::slot<value_t>::key_type;
     };
 
     template<usize idx_to_reach, typename value_t>
