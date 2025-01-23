@@ -49,59 +49,64 @@ GTEST_TEST(hashmap, iterators)
 
 GTEST_TEST(hashmap, structure_binding)
 {
-    // // Non const Array
-    // {
-    //     hud::hashmap<i32, i64> map;
-    //     map.add({1, 11});
-    //     map.add({2, 22});
-    //     map.add({3, 33});
-    //     map.add({4, 44});
-    //     hud_assert_eq(map.count(), 4u);
-    //     hud_assert_ge(map.max_count(), 4u);
-    //     auto [first, second] = map.find(1);
-    //     hud_assert_eq(first, 1);
-    //     hud_assert_eq(second, 11);
-    //     const auto [first_c, second_c] = map.find(1);
-    //     hud_assert_eq(first_c, 1);
-    //     hud_assert_eq(second_c, 11);
-    // }
 
-    // // Const Array
-    // {
-    //     const hud::hashmap<i32, i64> map {
-    //         {1, 11},
-    //         {2, 22},
-    //         {3, 33},
-    //         {4, 44}
-    //     };
-    //     hud_assert_eq(map.count(), 4u);
-    //     hud_assert_ge(map.max_count(), 4u);
-    //     auto [first, second] = map.find(1);
-    //     hud_assert_eq(first, 1);
-    //     hud_assert_eq(second, 11);
-    //     const auto [first_c, second_c] = map.find(1);
-    //     hud_assert_eq(first_c, 1);
-    //     hud_assert_eq(second_c, 11);
-    // }
+    hud::details::hashmap::slot<i32, u32> slot(1, 2);
+    auto [f, s] = slot;
+    s = 11;
+    hud_assert_eq(slot.value(), 2);
+    // Non const Array
+    {
+        hud::hashmap<i32, i64> map;
+        map.add({1, 11});
+        map.add({2, 22});
+        map.add({3, 33});
+        map.add({4, 44});
+        hud_assert_eq(map.count(), 4u);
+        hud_assert_ge(map.max_count(), 4u);
+        auto [first, second] = map.find(1);
+        hud_assert_eq(first, 1);
+        hud_assert_eq(second, 11);
+        const auto [first_c, second_c] = map.find(1);
+        hud_assert_eq(first_c, 1);
+        hud_assert_eq(second_c, 11);
+    }
 
-    // // auto is a reference
-    // {
-    //     hud::hashmap<i32, i64> map;
-    //     map.add({1, 11});
-    //     map.add({2, 22});
-    //     map.add({3, 33});
-    //     map.add({4, 44});
-    //     hud_assert_eq(map.count(), 4u);
-    //     hud_assert_ge(map.max_count(), 4u);
-    //     auto it = map.find(1);
-    //     auto [first, second] = it;
-    //     hud_assert_eq(first, 1);
-    //     second = 111;
-    //     hud_assert_eq(second, 111);
-    //     auto [first_1, second_1] = map.find(1);
-    //     hud_assert_eq(first_1, 1);
-    //     hud_assert_eq(second_1, 111);
-    // }
+    // Const Array
+    {
+        const hud::hashmap<i32, i64> map {
+            {1, 11},
+            {2, 22},
+            {3, 33},
+            {4, 44}
+        };
+        hud_assert_eq(map.count(), 4u);
+        hud_assert_ge(map.max_count(), 4u);
+        auto [first, second] = map.find(1);
+        hud_assert_eq(first, 1);
+        hud_assert_eq(second, 11);
+        const auto [first_c, second_c] = map.find(1);
+        hud_assert_eq(first_c, 1);
+        hud_assert_eq(second_c, 11);
+    }
+
+    // auto is a reference
+    {
+        hud::hashmap<i32, i64> map;
+        map.add({1, 11});
+        map.add({2, 22});
+        map.add({3, 33});
+        map.add({4, 44});
+        hud_assert_eq(map.count(), 4u);
+        hud_assert_ge(map.max_count(), 4u);
+        auto it = map.find(1);
+        auto [first, second] = it;
+        hud_assert_eq(first, 1);
+        second = 111;
+        hud_assert_eq(second, 111);
+        auto [first_1, second_1] = map.find(1);
+        hud_assert_eq(first_1, 1);
+        hud_assert_eq(second_1, 111);
+    }
 
     // // Ref do modify hash value
     // {

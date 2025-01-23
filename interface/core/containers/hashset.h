@@ -17,10 +17,10 @@ namespace hud
 {
     namespace details::hashset
     {
-        template<typename value_t>
+        template<typename key_t>
         struct slot
         {
-            using key_type = value_t;
+            using key_type = key_t;
 
             constexpr explicit slot(const key_type &key) noexcept
                 : element_(key)
@@ -73,7 +73,7 @@ namespace hud
                 return hud::forward<const slot>(s).element_;
             }
 
-            value_t element_;
+            key_type element_;
         };
 
         template<typename key_t>
@@ -475,6 +475,20 @@ namespace hud
                 HD_ASSUME(slot_ptr_ != nullptr);
             }
 
+            // constexpr iterator(const iterator<slot_type, false> &it) noexcept
+            //     : iterator(it.control_ptr_, it.slot_ptr_)
+            // {
+            // }
+
+            /**
+             * Create a constant iterator from a non constant iterator.
+             */
+            template<typename u_slot_t>
+            constexpr iterator(iterator<u_slot_t, false> &&it) noexcept
+                : iterator(hud::forward<iterator<u_slot_t, false>>(it).control_ptr_, hud::forward<iterator<u_slot_t, false>>(it).slot_ptr_)
+            {
+            }
+
             constexpr reference_type operator*() const noexcept
             {
                 // Ensure we are in a full control
@@ -551,6 +565,9 @@ namespace hud
             }
 
         private:
+            template<typename u_slot_t, bool u_is_const>
+            friend class iterator;
+
             // The control to iterate over
             control_type *control_ptr_;
             // The current slot we are iterating. Keep uninitialized.
@@ -689,7 +706,7 @@ namespace hud
 
             /** Find a key and return an iterator to the value. */
             [[nodiscard]]
-            constexpr iterator find(key_type &&key) const noexcept
+            constexpr iterator find(const key_type &key) noexcept
             {
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
@@ -720,6 +737,12 @@ namespace hud
                     slot_index += group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
+            }
+
+            [[nodiscard]]
+            constexpr const_iterator find(const key_type &key) const noexcept
+            {
+                return const_cast<hashset_impl *>(this)->find(key);
             }
 
             /** Retrieves the allocator. */
@@ -1107,61 +1130,41 @@ namespace hud
         }
     };
 
-    namespace details::hashset
+    template<typename value_t>
+    struct tuple_size<details::hashset::slot<value_t>>
+        : hud::integral_constant<usize, 1>
     {
-        /**
-         * Selected when tuple_size<hashset_iterator_element_type_t>::value is ill-formed
-         * @tparam hashset_iterator_element_type_t The tuple-like type
-         */
-        template<typename hashset_iterator_element_type_t, typename = void>
-        struct tuple_size
-            : hud::integral_constant<usize, 1>
-        {
-        };
+    };
 
-        /**
-         * Selected when tuple_size<hashset_iterator_element_type_t>::value is well-formed
-         * @tparam hashset_iterator_element_type_t The tuple-like type
-         */
-        template<typename hashset_iterator_element_type_t>
-        struct tuple_size<hashset_iterator_element_type_t, void_t<decltype(hud::tuple_size<hashset_iterator_element_type_t>::value)>>
-            : hud::tuple_size<hashset_iterator_element_type_t>
-        {
-        };
+    template<typename value_t>
+    struct tuple_size<const details::hashset::slot<value_t>>
+        : hud::integral_constant<usize, 1>
+    {
+    };
 
-        /**
-         * Selected when tuple_size<hashset_iterator_element_type_t>::value is ill-formed
-         * @tparam hashset_iterator_element_type_t The tuple-like type
-         */
-        template<usize index, typename hashset_iterator_element_type_t>
-        struct tuple_element
-        {
-            using type = hashset_iterator_element_type_t;
-        };
+    template<usize idx_to_reach, typename value_t>
+    struct tuple_element<idx_to_reach, details::hashset::slot<value_t>>
+    {
+        static_assert(idx_to_reach < 1, "hashset slot index out of bounds");
+        using type = const details::hashset::slot<value_t>::key_type;
+    };
 
-        /**
-         * Selected when tuple_size<hashset_iterator_element_type_t>::value is well-formed
-         * @tparam hashset_iterator_element_type_t The tuple-like type
-         */
-        template<usize index, typename f, typename s>
-        struct tuple_element<index, hud::pair<f, s>>
-            : hud::tuple_element<index, hud::pair<f, s>>
-        {
-        };
-
-    } // namespace details::hashset
+    template<usize idx_to_reach, typename value_t>
+    struct tuple_element<idx_to_reach, const details::hashset::slot<value_t>>
+        : tuple_element<idx_to_reach, details::hashset::slot<value_t>>
+    {
+    };
 
     template<typename slot_t, bool is_const>
     struct tuple_size<hud::details::hashset::iterator<slot_t, is_const>>
-        : details::hashset::tuple_size<typename hud::details::hashset::iterator<slot_t, is_const>::element_type>
+        : tuple_size<typename hud::details::hashset::iterator<slot_t, is_const>::slot_type>
     {
     };
 
     /** Specialize tuple_element for iterator that permit structured binding. */
-    template<usize index, typename slot_t, bool is_const>
-    struct tuple_element<index, hud::details::hashset::iterator<slot_t, is_const>>
-        : details::hashset::tuple_element<index, typename hud::details::hashset::iterator<slot_t, is_const>::element_type>
-
+    template<usize idx_to_reach, typename slot_t, bool is_const>
+    struct tuple_element<idx_to_reach, hud::details::hashset::iterator<slot_t, is_const>>
+        : tuple_element<idx_to_reach, typename hud::details::hashset::iterator<slot_t, is_const>::slot_type>
     {
     };
 
@@ -1175,9 +1178,9 @@ namespace std
     {
     };
 
-    template<std::size_t index, typename slot_t, bool is_const>
-    struct tuple_element<index, hud::details::hashset::iterator<slot_t, is_const>>
-        : hud::tuple_element<index, hud::details::hashset::iterator<slot_t, is_const>>
+    template<std::size_t idx_to_reach, typename slot_t, bool is_const>
+    struct tuple_element<idx_to_reach, hud::details::hashset::iterator<slot_t, is_const>>
+        : hud::tuple_element<idx_to_reach, hud::details::hashset::iterator<slot_t, is_const>>
     {
     };
 

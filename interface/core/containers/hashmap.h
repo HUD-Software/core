@@ -175,17 +175,20 @@ namespace hud
             return add(hud::move(pair.first), hud::move(pair.second));
         }
     };
-} // namespace hud
 
-namespace std
-{
-
-    template<std::size_t index, typename key_t, typename value_t>
-    struct tuple_element<index, hud::pair<key_t, value_t>>
-        : hud::tuple_element<index, hud::pair<key_t, value_t>>
+    template<typename key_t, typename value_t>
+    struct tuple_size<details::hashmap::slot<key_t, value_t>>
+        : hud::integral_constant<usize, 2>
     {
     };
 
-} // namespace std
+    template<usize idx_to_reach, typename key_t, typename value_t>
+    struct tuple_element<idx_to_reach, details::hashmap::slot<key_t, value_t>>
+    {
+        static_assert(idx_to_reach < 2, "hashmap slot index out of bounds");
+        using type = hud::conditional_t<idx_to_reach == 0, const typename details::hashmap::slot<key_t, value_t>::key_type, typename details::hashmap::slot<key_t, value_t>::value_type>;
+    };
+
+} // namespace hud
 
 #endif // HD_INC_CORE_HASHMAP_H
