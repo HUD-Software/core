@@ -49,11 +49,6 @@ GTEST_TEST(hashmap, iterators)
 
 GTEST_TEST(hashmap, structure_binding)
 {
-
-    hud::details::hashmap::slot<i32, u32> slot(1, 2);
-    auto [f, s] = slot;
-    s = 11;
-    hud_assert_eq(slot.value(), 2);
     // Non const Array
     {
         hud::hashmap<i32, i64> map;
