@@ -129,7 +129,7 @@ namespace hud
         /** Type of the key. */
         using key_type = typename super::key_type;
         /** Type of the value. */
-        using value_type = slot_type::value_type;
+        using value_type = typename slot_type::value_type;
 
         /** Type of the value. */
         using super::add;

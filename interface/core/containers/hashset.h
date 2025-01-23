@@ -1097,7 +1097,7 @@ namespace hud
         /** Type of the slot. */
         using slot_type = typename super::slot_type;
         /** Type of the key. */
-        using key_type = slot_type::key_type;
+        using key_type = typename slot_type::key_type;
         /** Type of the value. */
         using super::add;
         using super::reserve;
