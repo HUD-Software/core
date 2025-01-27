@@ -86,7 +86,7 @@ GTEST_TEST(hashmap, structure_binding)
 
     // auto is a copy
     {
-        hud::hashmap<i32, i64> map;
+        hud::hashmap<hud_test::non_bitwise_type, i64> map;
         map.add({1, 11});
         map.add({2, 22});
         map.add({3, 33});
@@ -95,6 +95,12 @@ GTEST_TEST(hashmap, structure_binding)
         hud_assert_ge(map.max_count(), 4u);
         auto [first, second] = *map.find(4);
         hud_assert_eq(first, 4);
+        // Check key is a copy
+        hud_assert_eq(first.constructor_count(), 1u);
+        hud_assert_eq(first.copy_assign_count(), 0u);
+        hud_assert_eq(first.copy_constructor_count(), 1u);
+        hud_assert_eq(first.move_assign_count(), 0u);
+        hud_assert_eq(first.move_constructor_count(), 1u);
         second = 444;
         hud_assert_eq(first, 4);
         hud_assert_eq(second, 444);
@@ -105,7 +111,7 @@ GTEST_TEST(hashmap, structure_binding)
 
     // auto& is a reference
     {
-        hud::hashmap<i32, i64> map;
+        hud::hashmap<hud_test::non_bitwise_type, i64> map;
         map.add({1, 11});
         map.add({2, 22});
         map.add({3, 33});
@@ -114,6 +120,12 @@ GTEST_TEST(hashmap, structure_binding)
         hud_assert_ge(map.max_count(), 4u);
         auto &[first, second] = *map.find(4);
         hud_assert_eq(first, 4);
+        // Check key is a reference
+        hud_assert_eq(first.constructor_count(), 1u);
+        hud_assert_eq(first.copy_assign_count(), 0u);
+        hud_assert_eq(first.copy_constructor_count(), 0u);
+        hud_assert_eq(first.move_assign_count(), 0u);
+        hud_assert_eq(first.move_constructor_count(), 1u);
         second = 444;
         hud_assert_eq(second, 444);
         auto &[first_1, second_1] = *map.find(4);
@@ -123,20 +135,26 @@ GTEST_TEST(hashmap, structure_binding)
 
     // auto&& is a reference
     {
-        hud::hashmap<i32, i64> map;
+        hud::hashmap<hud_test::non_bitwise_type, i64> map;
         map.add({1, 11});
         map.add({2, 22});
         map.add({3, 33});
         map.add({4, 44});
         hud_assert_eq(map.count(), 4u);
         hud_assert_ge(map.max_count(), 4u);
-        auto &&[first, second] = *map.find(1);
-        hud_assert_eq(first, 1);
-        second = 111;
-        hud_assert_eq(second, 111);
-        auto &&[first_1, second_1] = *map.find(1);
-        hud_assert_eq(first_1, 1);
-        hud_assert_eq(second_1, 111);
+        auto &&[first, second] = *map.find(4);
+        hud_assert_eq(first, 4);
+        // Check key is a reference
+        hud_assert_eq(first.constructor_count(), 1u);
+        hud_assert_eq(first.copy_assign_count(), 0u);
+        hud_assert_eq(first.copy_constructor_count(), 0u);
+        hud_assert_eq(first.move_assign_count(), 0u);
+        hud_assert_eq(first.move_constructor_count(), 1u);
+        second = 444;
+        hud_assert_eq(second, 444);
+        auto &&[first_1, second_1] = *map.find(4);
+        hud_assert_eq(first_1, 4);
+        hud_assert_eq(second_1, 444);
     }
 
     // Loop

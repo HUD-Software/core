@@ -69,17 +69,18 @@ GTEST_TEST(hashset, structure_binding)
         hud_assert_eq(set.count(), 4u);
         hud_assert_ge(set.max_count(), 4u);
         auto [key] = *set.find(4);
+        hud_assert_eq(key, 4);
         // Check key is a copy
         hud_assert_eq(key.constructor_count(), 1u);
         hud_assert_eq(key.copy_assign_count(), 0u);
         hud_assert_eq(key.copy_constructor_count(), 1u);
-        hud_assert_eq(key.move_assign_count(), 1u);
+        hud_assert_eq(key.move_assign_count(), 0u);
         hud_assert_eq(key.move_constructor_count(), 1u);
     }
 
     // auto& is a reference
     {
-        hud::hashset<i32> set;
+        hud::hashset<hud_test::non_bitwise_type> set;
         set.add(1);
         set.add(2);
         set.add(3);
@@ -87,355 +88,247 @@ GTEST_TEST(hashset, structure_binding)
         hud_assert_eq(set.count(), 4u);
         hud_assert_ge(set.max_count(), 4u);
         auto &[key] = *set.find(4);
-        hud_assert_true(hud::is_reference_v<decltype(key)>);
         hud_assert_eq(key, 4);
+        // Check key is a reference (Not copie when binded)
+        hud_assert_eq(key.constructor_count(), 1u);
+        hud_assert_eq(key.copy_assign_count(), 0u);
+        hud_assert_eq(key.copy_constructor_count(), 0u);
+        hud_assert_eq(key.move_assign_count(), 0u);
+        hud_assert_eq(key.move_constructor_count(), 1u);
     }
 
-    // auto&& is a reference
+    // // auto&& is a reference
     {
-        hud::hashset<i32> set;
+        hud::hashset<hud_test::non_bitwise_type> set;
         set.add(1);
         set.add(2);
         set.add(3);
         set.add(4);
         hud_assert_eq(set.count(), 4u);
         hud_assert_ge(set.max_count(), 4u);
-        auto &&[key] = *set.find(1);
-        hud_assert_eq(key, 1);
-        auto &&[key_1] = *set.find(1);
-        hud_assert_eq(key_1, 111);
+        auto &&[key] = *set.find(4);
+        hud_assert_eq(key, 4);
+        // Check key is a reference (Not copie when binded)
+        hud_assert_eq(key.constructor_count(), 1u);
+        hud_assert_eq(key.copy_assign_count(), 0u);
+        hud_assert_eq(key.copy_constructor_count(), 0u);
+        hud_assert_eq(key.move_assign_count(), 0u);
+        hud_assert_eq(key.move_constructor_count(), 1u);
     }
 
-    // // Loop
-    // {
-    //     const auto test = []()
-    //     {
-    //         using map_type = hud::hashmap<i32, i64>;
-    //         map_type set {
-    //             {1, 11},
-    //             {2, 22},
-    //             {3, 33},
-    //             {4, 44}
-    //         };
-    //         const map_type const_map {
-    //             {1, 11},
-    //             {2, 22},
-    //             {3, 33},
-    //             {4, 44}
-    //         };
+    // Loop
+    {
+        const auto test = []()
+        {
+            using set_type = hud::hashset<hud_test::non_bitwise_type>;
+            set_type set {1, 2, 3, 4};
+            const set_type const_set {1, 2, 3, 4};
 
-    // hud::pair<map_type::key_type, map_type::value_type> result[4];
-    // usize index = 0;
-    // for (const auto &[first, second] : set)
-    // {
-    //     result[index++] = {first, second};
-    // }
+            set_type::key_type result[4];
+            usize index = 0;
+            for (const auto &[key] : set)
+            {
+                result[index++] = key;
+            }
 
-    // hud::pair<map_type::key_type, map_type::value_type> const_result[4];
-    // index = 0;
-    // for (const auto &[first, second] : const_map)
-    // {
-    //     const_result[index++] = {first, second};
-    // }
-    // i32 pair_1_11_index = hud::find_index_if(result, 4, [](const auto &pair)
-    //                                          { return pair.first == 1 && pair.second == 11; });
-    // i32 pair_2_22_index = hud::find_index_if(result, 4, [](const auto &pair)
-    //                                          { return pair.first == 2 && pair.second == 22; });
-    // i32 pair_3_33_index = hud::find_index_if(result, 4, [](const auto &pair)
-    //                                          { return pair.first == 3 && pair.second == 33; });
-    // i32 pair_4_44_index = hud::find_index_if(result, 4, [](const auto &pair)
-    //                                          { return pair.first == 4 && pair.second == 44; });
+            set_type::key_type const_result[4];
+            index = 0;
+            for (const auto &[key] : const_set)
+            {
+                const_result[index++] = key;
+            }
+            i32 elem_1_index = hud::find_index_if(result, 4, [](const auto &element)
+                                                  { return element == 1; });
+            i32 elem_2_index = hud::find_index_if(result, 4, [](const auto &element)
+                                                  { return element == 2; });
+            i32 elem_3_index = hud::find_index_if(result, 4, [](const auto &element)
+                                                  { return element == 3; });
+            i32 elem_4_index = hud::find_index_if(result, 4, [](const auto &element)
+                                                  { return element == 4; });
 
-    // i32 const_pair_1_11_index = hud::find_index_if(const_result, 4, [](const auto &pair)
-    //                                                { return pair.first == 1 && pair.second == 11; });
-    // i32 const_pair_2_22_index = hud::find_index_if(const_result, 4, [](const auto &pair)
-    //                                                { return pair.first == 2 && pair.second == 22; });
-    // i32 const_pair_3_33_index = hud::find_index_if(const_result, 4, [](const auto &pair)
-    //                                                { return pair.first == 3 && pair.second == 33; });
-    // i32 const_pair_4_44_index = hud::find_index_if(const_result, 4, [](const auto &pair)
-    //                                                { return pair.first == 4 && pair.second == 44; });
+            i32 const_elem_1_index = hud::find_index_if(const_result, 4, [](const auto &element)
+                                                        { return element == 1; });
+            i32 const_elem_2_index = hud::find_index_if(const_result, 4, [](const auto &element)
+                                                        { return element == 2; });
+            i32 const_elem_3_index = hud::find_index_if(const_result, 4, [](const auto &element)
+                                                        { return element == 3; });
+            i32 const_elem_4_index = hud::find_index_if(const_result, 4, [](const auto &element)
+                                                        { return element == 4; });
 
-    // return std::tuple {
-    //     pair_1_11_index != -1,
-    //     pair_2_22_index != -1,
-    //     pair_3_33_index != -1,
-    //     pair_4_44_index != -1,
-    //     const_pair_1_11_index != -1,
-    //     const_pair_2_22_index != -1,
-    //     const_pair_3_33_index != -1,
-    //     const_pair_4_44_index != -1,
-    // };
-    // };
+            return std::tuple {
+                elem_1_index != -1,                             // 0
+                elem_2_index != -1,                             // 1
+                elem_3_index != -1,                             // 2
+                elem_4_index != -1,                             // 3
+                const_elem_1_index != -1,                       // 4
+                const_elem_2_index != -1,                       // 5
+                const_elem_3_index != -1,                       // 6
+                const_elem_4_index != -1,                       // 7
+                result[0].constructor_count() == 1u,            // 8
+                result[0].copy_assign_count() == 1u,            // 9
+                result[0].copy_constructor_count() == 0u,       // 10
+                result[0].move_assign_count() == 0u,            // 11
+                result[0].move_constructor_count() == 1u,       // 12
+                const_result[0].constructor_count() == 1u,      // 13
+                const_result[0].copy_assign_count() == 1u,      // 14
+                const_result[0].copy_constructor_count() == 0u, // 15
+                const_result[0].move_assign_count() == 0u,      // 16
+                const_result[0].move_constructor_count() == 1u, // 17
+            };
+        };
 
-    // // Non constant
-    // {
-    //     const auto result = test();
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_true(std::get<2>(result));
-    //     hud_assert_true(std::get<3>(result));
-    //     hud_assert_true(std::get<4>(result));
-    //     hud_assert_true(std::get<5>(result));
-    //     hud_assert_true(std::get<6>(result));
-    //     hud_assert_true(std::get<7>(result));
-    // }
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+        }
 
-    // // Constant
-    // {
-    //     constexpr auto result = test();
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_true(std::get<2>(result));
-    //     hud_assert_true(std::get<3>(result));
-    //     hud_assert_true(std::get<4>(result));
-    //     hud_assert_true(std::get<5>(result));
-    //     hud_assert_true(std::get<6>(result));
-    //     hud_assert_true(std::get<7>(result));
-    // }
-    // }
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+        }
+    }
 }
 
-// GTEST_TEST(hashset, structure_binding)
-// {
-//     // Non const Array
-//     {
-//         hud::hashset<i32> set;
-//         set.add(1);
-//         set.add(2);
-//         set.add(3);
-//         set.add(4);
-//         hud_assert_eq(set.count(), 4u);
-//         hud_assert_ge(set.max_count(), 4u);
-//         auto [value] = set.find(1);
-//         hud_assert_eq(value, 1);
-//         const auto [const_value] = set.find(1);
-//         hud_assert_eq(const_value, 1);
-//     }
+GTEST_TEST(hashset, range_for_loop)
+{
+    const auto test = []()
+    {
+        using set_type = hud::hashset<hud_test::non_bitwise_type>;
+        set_type set {1, 2, 3, 4};
+        const set_type const_set {1, 2, 3, 4};
 
-// // Const Array
-// {
-//     const hud::hashset<i32> set {
-//         1,
-//         2,
-//         3,
-//         4
-//     };
-//     hud_assert_eq(set.count(), 4u);
-//     hud_assert_ge(set.max_count(), 4u);
-//     auto [value] = set.find(1);
-//     hud_assert_eq(value, 1);
-//     const auto [const_value] = set.find(1);
-//     hud_assert_eq(const_value, 1);
-// }
+        set_type::key_type result[4];
+        usize index = 0;
+        for (const auto &value : set)
+        {
+            result[index++] = value.key();
+        }
 
-// // auto is a reference
-// {
-//     hud::hashset<i32> set;
-//     set.add(1);
-//     set.add(2);
-//     set.add(3);
-//     set.add(4);
-//     hud_assert_eq(set.count(), 4u);
-//     hud_assert_ge(set.max_count(), 4u);
-//     auto it = set.find(4);
-//     auto [value] = it;
-//     hud_assert_eq(value, 4);
-//     value = 444;
-//     auto [value_1] = set.find(4);
-//     hud_assert_eq(value_1, 444);
-// }
+        set_type::key_type const_result[4];
+        index = 0;
+        for (const auto &value : const_set)
+        {
+            const_result[index++] = value.key();
+        }
+        i32 elem_1_index = hud::find_index_if(result, 4, [](const auto &element)
+                                              { return element == 1; });
+        i32 elem_2_index = hud::find_index_if(result, 4, [](const auto &element)
+                                              { return element == 2; });
+        i32 elem_3_index = hud::find_index_if(result, 4, [](const auto &element)
+                                              { return element == 3; });
+        i32 elem_4_index = hud::find_index_if(result, 4, [](const auto &element)
+                                              { return element == 4; });
 
-// // Ref do modify value
-// {
-//     hud::hashset<hud_test::non_bitwise_copy_assignable_type> set;
-//     set.add(1);
-//     set.add(2);
-//     set.add(3);
-//     set.add(4);
-//     hud_assert_eq(set.count(), 4u);
-//     hud_assert_ge(set.max_count(), 4u);
-//     auto it = set.find(4);
-//     auto &[value] = it;
-//     hud_assert_eq(value, 4);
-//     value = 444;
-//     auto it_1 = set.find(4);
-//     auto &[value_1] = it_1;
-//     hud_assert_eq(value_1, 444);
-// }
+        i32 const_elem_1_index = hud::find_index_if(const_result, 4, [](const auto &element)
+                                                    { return element == 1; });
+        i32 const_elem_2_index = hud::find_index_if(const_result, 4, [](const auto &element)
+                                                    { return element == 2; });
+        i32 const_elem_3_index = hud::find_index_if(const_result, 4, [](const auto &element)
+                                                    { return element == 3; });
+        i32 const_elem_4_index = hud::find_index_if(const_result, 4, [](const auto &element)
+                                                    { return element == 4; });
 
-// // Loop
-// {
-//     const auto test = []()
-//     {
-//         using set_type = hud::hashset<i32>;
-//         set_type set {
-//             1,
-//             2,
-//             3,
-//             4
-//         };
-//         const set_type const_set {
-//             1,
-//             2,
-//             3,
-//             4
-//         };
+        return std::tuple {
+            elem_1_index != -1,                             // 0
+            elem_2_index != -1,                             // 1
+            elem_3_index != -1,                             // 2
+            elem_4_index != -1,                             // 3
+            const_elem_1_index != -1,                       // 4
+            const_elem_2_index != -1,                       // 5
+            const_elem_3_index != -1,                       // 6
+            const_elem_4_index != -1,                       // 7
+            result[0].constructor_count() == 1u,            // 8
+            result[0].copy_assign_count() == 1u,            // 9
+            result[0].copy_constructor_count() == 0u,       // 10
+            result[0].move_assign_count() == 0u,            // 11
+            result[0].move_constructor_count() == 1u,       // 12
+            const_result[0].constructor_count() == 1u,      // 13
+            const_result[0].copy_assign_count() == 1u,      // 14
+            const_result[0].copy_constructor_count() == 0u, // 15
+            const_result[0].move_assign_count() == 0u,      // 16
+            const_result[0].move_constructor_count() == 1u, // 17
+        };
+    };
 
-// set_type::type result[4];
-// usize index = 0;
-// for (const auto &value : set)
-// {
-//     result[index++] = value;
-// }
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
 
-// set_type::type const_result[4];
-// index = 0;
-// for (const auto &value : const_set)
-// {
-//     const_result[index++] = value;
-// }
-// i32 value_1_11_index = hud::find_index_if(result, 4, [](const auto &value)
-//                                           { return value == 1; });
-// i32 value_2_22_index = hud::find_index_if(result, 4, [](const auto &value)
-//                                           { return value == 2; });
-// i32 value_3_33_index = hud::find_index_if(result, 4, [](const auto &value)
-//                                           { return value == 3; });
-// i32 value_4_44_index = hud::find_index_if(result, 4, [](const auto &value)
-//                                           { return value == 4; });
-
-// i32 const_value_1_11_index = hud::find_index_if(const_result, 4, [](const auto &value)
-//                                                 { return value == 1; });
-// i32 const_value_2_22_index = hud::find_index_if(const_result, 4, [](const auto &value)
-//                                                 { return value == 2; });
-// i32 const_value_3_33_index = hud::find_index_if(const_result, 4, [](const auto &value)
-//                                                 { return value == 3; });
-// i32 const_value_4_44_index = hud::find_index_if(const_result, 4, [](const auto &value)
-//                                                 { return value == 4; });
-
-// return std::tuple {
-//     value_1_11_index != -1,
-//     value_2_22_index != -1,
-//     value_3_33_index != -1,
-//     value_4_44_index != -1,
-//     const_value_1_11_index != -1,
-//     const_value_2_22_index != -1,
-//     const_value_3_33_index != -1,
-//     const_value_4_44_index != -1,
-// };
-// };
-
-// // Non constant
-// {
-//     const auto result = test();
-//     hud_assert_true(std::get<0>(result));
-//     hud_assert_true(std::get<1>(result));
-//     hud_assert_true(std::get<2>(result));
-//     hud_assert_true(std::get<3>(result));
-//     hud_assert_true(std::get<4>(result));
-//     hud_assert_true(std::get<5>(result));
-//     hud_assert_true(std::get<6>(result));
-//     hud_assert_true(std::get<7>(result));
-// }
-
-// // Constant
-// {
-//     constexpr auto result = test();
-//     hud_assert_true(std::get<0>(result));
-//     hud_assert_true(std::get<1>(result));
-//     hud_assert_true(std::get<2>(result));
-//     hud_assert_true(std::get<3>(result));
-//     hud_assert_true(std::get<4>(result));
-//     hud_assert_true(std::get<5>(result));
-//     hud_assert_true(std::get<6>(result));
-//     hud_assert_true(std::get<7>(result));
-// }
-// }
-// }
-
-// // GTEST_TEST(hashset, range_for_loop)
-// // {
-// //     const auto test = []()
-// //     {
-// //         using set_type = hud::hashset<i32, i64>;
-// //         set_type set {
-// //             {1, 11},
-// //             {2, 22},
-// //             {3, 33},
-// //             {4, 44}
-// //         };
-// //         const set_type const_map {
-// //             {1, 11},
-// //             {2, 22},
-// //             {3, 33},
-// //             {4, 44}
-// //         };
-
-// // set_type::type result[4];
-// // usize index = 0;
-// // for (const auto &value : set)
-// // {
-// //     result[index++] = value;
-// // }
-
-// // set_type::type const_result[4];
-// // index = 0;
-// // for (const auto &value : const_map)
-// // {
-// //     const_result[index++] = value;
-// // }
-// // i32 value_1_11_index = hud::find_index_if(result, 4, [](const auto &value)
-// //                                          { return value.first == 1 && value.second == 11; });
-// // i32 value_2_22_index = hud::find_index_if(result, 4, [](const auto &value)
-// //                                          { return value.first == 2 && value.second == 22; });
-// // i32 value_3_33_index = hud::find_index_if(result, 4, [](const auto &value)
-// //                                          { return value.first == 3 && value.second == 33; });
-// // i32 value_4_44_index = hud::find_index_if(result, 4, [](const auto &value)
-// //                                          { return value.first == 4 && value.second == 44; });
-
-// // i32 const_value_1_11_index = hud::find_index_if(const_result, 4, [](const auto &value)
-// //                                                { return value.first == 1 && value.second == 11; });
-// // i32 const_value_2_22_index = hud::find_index_if(const_result, 4, [](const auto &value)
-// //                                                { return value.first == 2 && value.second == 22; });
-// // i32 const_value_3_33_index = hud::find_index_if(const_result, 4, [](const auto &value)
-// //                                                { return value.first == 3 && value.second == 33; });
-// // i32 const_value_4_44_index = hud::find_index_if(const_result, 4, [](const auto &value)
-// //                                                { return value.first == 4 && value.second == 44; });
-
-// // return std::tuple {
-// //     value_1_11_index != -1,
-// //     value_2_22_index != -1,
-// //     value_3_33_index != -1,
-// //     value_4_44_index != -1,
-// //     const_value_1_11_index != -1,
-// //     const_value_2_22_index != -1,
-// //     const_value_3_33_index != -1,
-// //     const_value_4_44_index != -1,
-// // };
-// // };
-
-// // // Non constant
-// // {
-// //     const auto result = test();
-// //     hud_assert_true(std::get<0>(result));
-// //     hud_assert_true(std::get<1>(result));
-// //     hud_assert_true(std::get<2>(result));
-// //     hud_assert_true(std::get<3>(result));
-// //     hud_assert_true(std::get<4>(result));
-// //     hud_assert_true(std::get<5>(result));
-// //     hud_assert_true(std::get<6>(result));
-// //     hud_assert_true(std::get<7>(result));
-// // }
-
-// // // Constant
-// // {
-// //     constexpr auto result = test();
-// //     hud_assert_true(std::get<0>(result));
-// //     hud_assert_true(std::get<1>(result));
-// //     hud_assert_true(std::get<2>(result));
-// //     hud_assert_true(std::get<3>(result));
-// //     hud_assert_true(std::get<4>(result));
-// //     hud_assert_true(std::get<5>(result));
-// //     hud_assert_true(std::get<6>(result));
-// //     hud_assert_true(std::get<7>(result));
-// // }
-// // }
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
+        hud_assert_true(std::get<15>(result));
+        hud_assert_true(std::get<16>(result));
+        hud_assert_true(std::get<17>(result));
+    }
+}

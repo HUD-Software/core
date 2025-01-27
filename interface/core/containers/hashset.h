@@ -46,14 +46,14 @@ namespace hud
             }
 
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(slot &s) noexcept
+            [[nodiscard]] friend constexpr key_type &get(slot &s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const slot &s) noexcept
+            [[nodiscard]] friend constexpr const key_type &get(const slot &s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
@@ -1099,13 +1099,15 @@ namespace hud
         {
         }
 
-        constexpr hashset(std::initializer_list<element_t> list, const allocator_type &allocator = allocator_type()) noexcept
+        template<typename u_element_t>
+        requires(hud::is_constructible_v<slot_type, u_element_t>)
+        constexpr hashset(std::initializer_list<u_element_t> list, const allocator_type &allocator = allocator_type()) noexcept
             : super(allocator)
         {
             reserve(list.size());
             for (auto &value : list)
             {
-                add(value);
+                add(hud::move(value));
             }
         }
     };
