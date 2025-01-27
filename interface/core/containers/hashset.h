@@ -633,18 +633,18 @@ namespace hud
              * @param args List of arguments pass to `value_type` constructor after the `key` itself
              * @return Iterator to the `value`
              */
-            template<typename... args_t>
-            requires(hud::is_constructible_v<slot_type, args_t...>)
-            constexpr iterator add(args_t &&...args) noexcept
-            {
-                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-                slot_type *slot_ptr = slot_ptr_ + res.first;
-                if (res.second)
-                {
-                    hud::memory::construct_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
-                }
-                return {control_ptr_ + res.first, slot_ptr};
-            }
+            // template<typename... args_t>
+            // requires(hud::is_constructible_v<slot_type, args_t...>)
+            // constexpr iterator add(args_t &&...args) noexcept
+            // {
+            //     hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+            //     slot_type *slot_ptr = slot_ptr_ + res.first;
+            //     if (res.second)
+            //     {
+            //         hud::memory::construct_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
+            //     }
+            //     return {control_ptr_ + res.first, slot_ptr};
+            // }
 
             /**
              * Insert a key in the hashset.
