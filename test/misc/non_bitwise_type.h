@@ -67,7 +67,7 @@ namespace hud_test
          * @param id The id of the non_bitwise_type
          * @param ptr_to_bool Pointer to the boolean
          */
-        constexpr non_bitwise_type(i32 id, i32 *ptr_to_destructor_counter) noexcept
+        constexpr non_bitwise_type(i32 id, i32 *ptr_to_destructor_counter = nullptr) noexcept
             : param_construct_count(1)
             , unique_id(id)
             , is_destructor_counter(ptr_to_destructor_counter)
@@ -231,5 +231,27 @@ namespace hud_test
     using non_bitwise_type2 = non_bitwise_type2_gcc<>;
 
 } // namespace hud_test
+
+namespace hud
+{
+    template<>
+    struct hash_32<hud_test::non_bitwise_type>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_type &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_type>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_type &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+
+} // namespace hud
 
 #endif // HD_INC_MISC_NON_DEFAULT_CONSTRUCTIBLE_TYPE_H

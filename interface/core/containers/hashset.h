@@ -34,13 +34,13 @@ namespace hud
             {
             }
 
-            [[nodiscard]] constexpr const key_type &get_key() const noexcept
+            [[nodiscard]] constexpr const key_type &key() const noexcept
             {
                 return element_;
             }
 
             template<typename slot_t>
-            [[nodiscard]] static constexpr decltype(auto) get_key(slot_t &&s) noexcept
+            [[nodiscard]] static constexpr decltype(auto) key(slot_t &&s) noexcept
             {
                 return hud::forward<slot_t>(s).element_;
             }
@@ -48,29 +48,29 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(slot &s) noexcept
             {
-                static_assert(idx_to_reach != 0, "Index out of bound");
+                static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const slot &s) noexcept
             {
-                static_assert(idx_to_reach != 0, "Index out of bound");
+                static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(slot &&s) noexcept
             {
-                static_assert(idx_to_reach != 0, "Index out of bound");
-                return hud::forward<slot>(s).element_;
+                static_assert(idx_to_reach == 0, "Index out of bound");
+                return hud::forward<key_type>(hud::forward<slot>(s).element_);
             }
 
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const slot &&s) noexcept
             {
-                static_assert(idx_to_reach != 0, "Index out of bound");
-                return hud::forward<const slot>(s).element_;
+                static_assert(idx_to_reach == 0, "Index out of bound");
+                return hud::forward<const key_type>(hud::forward<const slot>(s).element_);
             }
 
             key_type element_;
@@ -451,9 +451,6 @@ namespace hud
         {
         public:
             using slot_type = hud::conditional_t<is_const, const slot_t, slot_t>;
-            // using element_type = hud::conditional_t<is_const, const typename slot_type::element_type, typename slot_type::element_type>;
-            using key_type = hud::conditional_t<is_const, const typename slot_t::key_type, typename slot_t::key_type>;
-            using value_type = hud::conditional_t<is_const, const typename slot_t::value_type, typename slot_t::value_type>;
             using pointer_type = hud::add_pointer_t<slot_type>;
             using reference_type = hud::add_lvalue_reference_t<slot_type>;
 
@@ -526,37 +523,6 @@ namespace hud
             [[nodiscard]] constexpr bool operator!=(const iterator &other) const noexcept
             {
                 return control_ptr_ != other.control_ptr_;
-            }
-
-            template<typename iterator_t>
-            [[nodiscard]] static constexpr decltype(auto) get_key(iterator_t &&s) noexcept
-            {
-                return slot_t::get_key(*(hud::forward<iterator_t>(s).slot_ptr_));
-            }
-
-        private:
-            template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(iterator &s) noexcept
-            {
-                return get<idx_to_reach>(*(s.slot_ptr_));
-            }
-
-            template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const iterator &s) noexcept
-            {
-                return get<idx_to_reach>(*(s.slot_ptr_));
-            }
-
-            template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr auto get(iterator &&s) noexcept
-            {
-                return get<idx_to_reach>(*(hud::forward<iterator>(s).slot_ptr_));
-            }
-
-            template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr auto get(const iterator &&s) noexcept
-            {
-                return get<idx_to_reach>(*(hud::forward<const iterator>(s).slot_ptr_));
             }
 
         private:
@@ -668,6 +634,25 @@ namespace hud
              * @return Iterator to the `value`
              */
             template<typename... args_t>
+            requires(hud::is_constructible_v<slot_type, args_t...>)
+            constexpr iterator add(args_t &&...args) noexcept
+            {
+                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+                slot_type *slot_ptr = slot_ptr_ + res.first;
+                if (res.second)
+                {
+                    hud::memory::construct_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
+                }
+                return {control_ptr_ + res.first, slot_ptr};
+            }
+
+            /**
+             * Insert a key in the hashset.
+             * @param key The key associated with the `value`
+             * @param args List of arguments pass to `value_type` constructor after the `key` itself
+             * @return Iterator to the `value`
+             */
+            template<typename... args_t>
             requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
             constexpr iterator add(key_type &&key, args_t &&...args) noexcept
             {
@@ -716,7 +701,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 = slot_index + group_index_that_match_h2 & max_slot_count_;
                         slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
-                        if (key_equal_t {}(slot_t::get_key(*slot_that_match_h2), key)) [[likely]]
+                        if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
                         {
                             return {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
                         }
@@ -820,7 +805,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 = slot_index + group_index_that_match_h2 & max_slot_count_;
                         slot_type *slot_that_match_h2 = slot_ptr_ + slot_index_that_match_h2;
-                        if (key_equal_t {}(slot_t::get_key(*slot_that_match_h2), key)) [[likely]]
+                        if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
                         {
                             return {slot_index_that_match_h2, false};
                         }
@@ -899,12 +884,12 @@ namespace hud
                          ++it)
                     {
                         // Compute the hash
-                        u64 hash = hasher_type {}(iterator::get_key(it));
+                        u64 hash = hasher_type {}(it->key());
                         // Find H1 slot index
                         u64 h1 = H1(hash);
                         usize slot_index = find_first_empty_or_deleted(control_ptr_, old_max_slot_count, h1);
                         // Save h2 in control h1 index
-                        control::set_h2(control_ptr_, slot_index, H2(hash), old_max_slot_count);
+                        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Move old slot to new slot
                         hud::memory::move_or_copy_construct_then_destroy(slot_ptr_ + slot_index, hud::move(*it));
                     }
@@ -1125,42 +1110,17 @@ namespace hud
         }
     };
 
-    template<typename value_t>
-    struct tuple_size<details::hashset::slot<value_t>>
+    template<typename key_t>
+    struct tuple_size<details::hashset::slot<key_t>>
         : hud::integral_constant<usize, 1>
     {
     };
 
-    template<typename value_t>
-    struct tuple_size<const details::hashset::slot<value_t>>
-        : hud::integral_constant<usize, 1>
-    {
-    };
-
-    template<usize idx_to_reach, typename value_t>
-    struct tuple_element<idx_to_reach, details::hashset::slot<value_t>>
+    template<usize idx_to_reach, typename key_t>
+    struct tuple_element<idx_to_reach, details::hashset::slot<key_t>>
     {
         static_assert(idx_to_reach < 1, "hashset slot index out of bounds");
-        using type = typename const details::hashset::slot<value_t>::key_type;
-    };
-
-    template<usize idx_to_reach, typename value_t>
-    struct tuple_element<idx_to_reach, const details::hashset::slot<value_t>>
-        : tuple_element<idx_to_reach, details::hashset::slot<value_t>>
-    {
-    };
-
-    template<typename slot_t, bool is_const>
-    struct tuple_size<hud::details::hashset::iterator<slot_t, is_const>>
-        : tuple_size<typename hud::details::hashset::iterator<slot_t, is_const>::slot_type>
-    {
-    };
-
-    /** Specialize tuple_element for iterator that permit structured binding. */
-    template<usize idx_to_reach, typename slot_t, bool is_const>
-    struct tuple_element<idx_to_reach, hud::details::hashset::iterator<slot_t, is_const>>
-        : tuple_element<idx_to_reach, typename hud::details::hashset::iterator<slot_t, is_const>::slot_type>
-    {
+        using type = const typename details::hashset::slot<key_t>::key_type;
     };
 
 } // namespace hud
@@ -1176,18 +1136,6 @@ namespace std
     template<std::size_t idx_to_reach, typename key_t>
     struct tuple_element<idx_to_reach, hud::details::hashset::slot<key_t>>
         : hud::tuple_element<idx_to_reach, hud::details::hashset::slot<key_t>>
-    {
-    };
-
-    template<typename slot_t, bool is_const>
-    struct tuple_size<hud::details::hashset::iterator<slot_t, is_const>>
-        : hud::tuple_size<hud::details::hashset::iterator<slot_t, is_const>>
-    {
-    };
-
-    template<std::size_t idx_to_reach, typename slot_t, bool is_const>
-    struct tuple_element<idx_to_reach, hud::details::hashset::iterator<slot_t, is_const>>
-        : hud::tuple_element<idx_to_reach, hud::details::hashset::iterator<slot_t, is_const>>
     {
     };
 

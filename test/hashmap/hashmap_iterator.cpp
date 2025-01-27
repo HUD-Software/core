@@ -58,10 +58,10 @@ GTEST_TEST(hashmap, structure_binding)
         map.add({4, 44});
         hud_assert_eq(map.count(), 4u);
         hud_assert_ge(map.max_count(), 4u);
-        auto [first, second] = map.find(1);
+        auto [first, second] = *map.find(1);
         hud_assert_eq(first, 1);
         hud_assert_eq(second, 11);
-        const auto [first_c, second_c] = map.find(1);
+        const auto [first_c, second_c] = *map.find(1);
         hud_assert_eq(first_c, 1);
         hud_assert_eq(second_c, 11);
     }
@@ -76,10 +76,10 @@ GTEST_TEST(hashmap, structure_binding)
         };
         hud_assert_eq(map.count(), 4u);
         hud_assert_ge(map.max_count(), 4u);
-        auto [first, second] = map.find(1);
+        auto [first, second] = *map.find(1);
         hud_assert_eq(first, 1);
         hud_assert_eq(second, 11);
-        const auto [first_c, second_c] = map.find(1);
+        const auto [first_c, second_c] = *map.find(1);
         hud_assert_eq(first_c, 1);
         hud_assert_eq(second_c, 11);
     }
@@ -93,14 +93,14 @@ GTEST_TEST(hashmap, structure_binding)
         map.add({4, 44});
         hud_assert_eq(map.count(), 4u);
         hud_assert_ge(map.max_count(), 4u);
-        auto it = map.find(1);
-        auto [first, second] = it;
-        hud_assert_eq(first, 1);
-        second = 111;
-        hud_assert_eq(second, 111);
-        auto [first_1, second_1] = map.find(1);
-        hud_assert_eq(first_1, 1);
-        hud_assert_eq(second_1, 11);
+        auto [first, second] = *map.find(4);
+        hud_assert_eq(first, 4);
+        second = 444;
+        hud_assert_eq(first, 4);
+        hud_assert_eq(second, 444);
+        auto [first_1, second_1] = *map.find(4);
+        hud_assert_eq(first_1, 4);
+        hud_assert_eq(second_1, 44);
     }
 
     // auto& is a reference
@@ -112,14 +112,13 @@ GTEST_TEST(hashmap, structure_binding)
         map.add({4, 44});
         hud_assert_eq(map.count(), 4u);
         hud_assert_ge(map.max_count(), 4u);
-        auto it = map.find(1);
-        auto &[first, second] = it;
-        hud_assert_eq(first, 1);
-        second = 111;
-        hud_assert_eq(second, 111);
-        auto [first_1, second_1] = map.find(1);
-        hud_assert_eq(first_1, 1);
-        hud_assert_eq(second_1, 111);
+        auto &[first, second] = *map.find(4);
+        hud_assert_eq(first, 4);
+        second = 444;
+        hud_assert_eq(second, 444);
+        auto &[first_1, second_1] = *map.find(4);
+        hud_assert_eq(first_1, 4);
+        hud_assert_eq(second_1, 444);
     }
 
     // auto&& is a reference
@@ -131,12 +130,11 @@ GTEST_TEST(hashmap, structure_binding)
         map.add({4, 44});
         hud_assert_eq(map.count(), 4u);
         hud_assert_ge(map.max_count(), 4u);
-        auto it = map.find(1);
-        auto &[first, second] = it;
+        auto &&[first, second] = *map.find(1);
         hud_assert_eq(first, 1);
         second = 111;
         hud_assert_eq(second, 111);
-        auto [first_1, second_1] = map.find(1);
+        auto &&[first_1, second_1] = *map.find(1);
         hud_assert_eq(first_1, 1);
         hud_assert_eq(second_1, 111);
     }

@@ -63,13 +63,13 @@ namespace hud
             }
 
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr auto get(slot &&s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(slot &&s) noexcept
             {
                 return hud::get<idx_to_reach>(hud::forward<slot>(s).element_);
             }
 
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr auto get(const slot &&s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(const slot &&s) noexcept
             {
                 return hud::get<idx_to_reach>(hud::forward<const slot>(s).element_);
             }
