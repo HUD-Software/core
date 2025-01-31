@@ -53,7 +53,7 @@ if(MSVC)
 			TARGET ${project_name} POST_BUILD
 			COMMAND echo Collect ${project_name}.exe
 			COMMAND ${MSVC_CODECOVERAGE_CONSOLE_EXE} collect ${VS_CONFIG}/${project_name}.exe 
-					--output ${VS_CONFIG}/coverage.msvc.cobertura 
+					--output ${VS_CONFIG}/coverage.windows.msvc.cobertura 
 					--output-format cobertura 
 					--settings ../../coverage.runsettings
 		)

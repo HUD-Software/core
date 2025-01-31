@@ -713,7 +713,7 @@ namespace hud
                         return iterator(control_ptr_sentinel());
                     }
 
-                    // Advance to next group (Maybe a control iterator taht iterate over groups can be better alternative)
+                    // Advance to next group (Maybe a control iterator that iterate over groups can be better alternative)
                     slot_index += group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
