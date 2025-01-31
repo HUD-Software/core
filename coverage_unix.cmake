@@ -80,7 +80,6 @@ function(enable_unix_coverage project_name lib_name)
                     ..
         )
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-        
         message("Enable GCC coverage")
         target_compile_options(${project_name} PRIVATE --coverage)
         target_link_options(${project_name} PRIVATE --coverage)

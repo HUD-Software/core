@@ -1,0 +1,39 @@
+name: Windows MinGW 64 build & test
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-tests:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install MinGW dependencies
+        run: |
+            C:/msys64/usr/bin/pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain --noconfirm
+            $env:Path += ";C:\msys64\ucrt64\bin"
+      - name: Generate
+        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER:FILEPATH="x86_64-w64-mingw32-gcc.exe" -DCMAKE_CXX_COMPILER:FILEPATH="x86_64-w64-mingw32-g++.exe" -Btarget -G "MinGW Makefiles"
+      - name: Build
+        run: cmake --build target -- -j 16
+      - name: Test
+        run: ctest --test-dir target -j16 -C Release -T test --output-on-failure
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Windows CityHash Test Report
+          path: target/test/test_*_report.xml
+          reporter: java-junit
+      - name: Release
+        run: |
+          xcopy target\test\Release release\ /s /y
+          xcopy target\src\Release release\ /s /y
+          xcopy src\core release\core\ /s /y
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows_mingw_x86_64
+          path: release\**

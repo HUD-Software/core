@@ -33,7 +33,7 @@ string(
 )
 
 function(enable_coverage project_name lib_name)
-	if(MSVC)
+	if(MSVC OR MINGW)
 		include(${CMAKE_SOURCE_DIR}/coverage_windows.cmake)
 		enable_windows_coverage(${project_name} ${lib_name})
 	elseif(UNIX)

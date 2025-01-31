@@ -3,6 +3,8 @@ if(NOT WIN32)
     message(FATAL_ERROR "Windows coverage.cmake should not be used if not Windows OS")
 endif()
 
+message("Enable GCC coverage")
+
 function(enable_windows_coverage project_name lib_name)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         message("Enable MSCV coverage with Clang-cl")
@@ -17,7 +19,7 @@ function(enable_windows_coverage project_name lib_name)
         add_custom_command( 
             TARGET ${project_name} POST_BUILD
             COMMAND echo Download Grcov...
-            COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/download/v0.8.13/grcov-x86_64-pc-windows-msvc.zip -OutFile ./grcov-x86_64-pc-windows-msvc.zip
+            COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-pc-windows-msvc.zip -OutFile ./grcov-x86_64-pc-windows-msvc.zip
             COMMAND Powershell.exe Expand-Archive -Path ./grcov-x86_64-pc-windows-msvc.zip -DestinationPath . -F
         )
 
@@ -60,7 +62,7 @@ function(enable_windows_coverage project_name lib_name)
                     --excl-br-start "^.*LCOV_EXCL_START.*" 
                     --excl-br-stop "^.*LCOV_EXCL_STOP.*" 
                     --excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-                    -o windows
+                    -o windows.clang
                     ..
         )
 
@@ -107,7 +109,58 @@ function(enable_windows_coverage project_name lib_name)
         )
     elseif(MINGW)
         if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-            message(STATUS "Compilateur MinGW (GCC) détecté")
+            message("Enable GCC coverage")
+            target_compile_options(${project_name} PRIVATE --coverage)
+            target_link_options(${project_name} PRIVATE --coverage)
+            target_compile_options(${lib_name} PRIVATE --coverage)
+            
+            add_custom_command( 
+                TARGET ${project_name} POST_BUILD
+                COMMAND echo Download Grcov...
+                COMMAND Powershell.exe Invoke-WebRequest -Uri https://github.com/mozilla/grcov/releases/latest/download/grcov-x86_64-pc-windows-msvc.zip -OutFile ./grcov-x86_64-pc-windows-msvc.zip
+                COMMAND Powershell.exe Expand-Archive -Path ./grcov-x86_64-pc-windows-msvc.zip -DestinationPath . -F
+            )
+            
+            add_custom_command( 
+                TARGET ${project_name} POST_BUILD
+                COMMAND echo Start coverage...
+                COMMAND ./${project_name}
+            )
+
+            add_custom_command( 
+                TARGET ${project_name} POST_BUILD
+                COMMAND echo Generate HTML report...
+                COMMAND ./grcov -t html -b . -s ./../../
+                        --llvm-path /usr/bin/
+                        #--branch
+                        --keep-only "src/*" 
+                        --keep-only "interface/*"
+                        --excl-start "^.*LCOV_EXCL_START.*" 
+                        --excl-stop "^.*LCOV_EXCL_STOP.*" 
+                        --excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+                        --excl-br-start "^.*LCOV_EXCL_START.*" 
+                        --excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+                        --excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+                        -o windows.mingw
+                        ..
+            )
+            add_custom_command( 
+                TARGET ${project_name} POST_BUILD
+                COMMAND echo Generate LCOV report...
+                COMMAND ./grcov -t lcov -b . -s ./../../
+                        --llvm-path /usr/bin/
+                        #--branch
+                        --keep-only "src/*"
+                        --keep-only "interface/*"
+                        --excl-start "^.*LCOV_EXCL_START.*" 
+                        --excl-stop "^.*LCOV_EXCL_STOP.*" 
+                        --excl-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_LINE.*)\"" 
+                        --excl-br-start "^.*LCOV_EXCL_START.*" 
+                        --excl-br-stop "^.*LCOV_EXCL_STOP.*" 
+                        --excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
+                        -o coverage.windows.mingw.lcov.info
+                        ..
+            )
         else()
             message(FATAL_ERROR "Unsupported compiler for MinGW")
         endif()
