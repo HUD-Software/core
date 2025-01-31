@@ -117,7 +117,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
                 key_1_is_correct &= it_1->key() == 1;
 
                 // Validate value is correctly added
-                key_1_is_correct &= it_1->value() == 1;
+                key_1_is_correct &= it_1->value() == 11;
             }
             // bool key_1_is_correct = key_1_inserted ? it_1->key() == 1 && it_1->value() == 11 : false;
 
