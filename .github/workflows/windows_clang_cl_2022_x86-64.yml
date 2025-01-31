@@ -19,7 +19,7 @@ jobs:
       - name: Build
         run: cmake.exe --build target --config Release
       - name: Test
-        run: ctest --test-dir target -j10 -C Release -T test --output-on-failure --verbose
+        run: ctest --test-dir target -C Release -T test --output-on-failure -VV
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()
@@ -30,7 +30,8 @@ jobs:
       - name: Release
         run: |
           xcopy target\test\Release release\ /s /y
-          xcopy target\src\Release release\ /s /y
+          xcopy target\test\test_core_report.xml release\ /s /y
+          xcopy target\src\Release release\ /s /y 
           xcopy interface\core release\core\ /s /y
       - name: Upload artifacts
         uses: actions/upload-artifact@v4

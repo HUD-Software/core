@@ -19,17 +19,9 @@ jobs:
       - name: Generate
         run: emcmake.bat cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
       - name: Build
-        run: cmake --build target -- -j 8
+        run: cmake --build target -- -j 16
       - name: Test
-        run: ctest --test-dir target -j10 -C Release -T test --output-on-failure
-      # No test report for the moment
-      # - name: Test Report
-      #   uses: dorny/test-reporter@v1
-      #   if: success() || failure()
-      #   with:
-      #     name: Windows Core Test Report
-      #     path: target/test/test_*_report.xml
-      #     reporter: java-junit
+        run: ctest --test-dir target -C Release -T test --output-on-failure -VV
       - name: Release
         run: |
           xcopy target\test\test_core.js release\ /s /y

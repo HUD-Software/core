@@ -333,8 +333,14 @@ set_target_properties(${test_project_name}
         CXX_EXTENSIONS NO
 )
 if(MSVC)
-	#target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /Os /EHsc /GR- /utf-8)
-	target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 )
+	target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 /arch:AVX2)
+	target_compile_definitions(${test_project_name} PRIVATE __SSE4_2__)
+elseif(EMSCRIPTEN)
+	set_target_properties(${test_project_name} PROPERTIES SUFFIX ".html")
+	target_link_options(${test_project_name} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:-sASSERTIONS>)
+	target_compile_options( ${test_project_name} PRIVATE -msse4.2 -msimd128 -std=c++20 )
+else()
+	target_compile_options( ${test_project_name} PRIVATE -msse4.2 -std=c++20)
 endif()
 
 get_target_property(core_type ${lib_name} TYPE)
@@ -579,8 +585,11 @@ FetchContent_MakeAvailable(cityhash)
 target_link_libraries( ${test_project_name} PRIVATE cityhash )
 
 # Add the executable test
-add_test(NAME ${lib_name} COMMAND ${test_project_name} --gtest_output=xml:test_core_report.xml --extra-verbose --gtest_break_on_failure)
-
+if(EMSCRIPTEN)
+	add_test(NAME ${lib_name} COMMAND node ${test_project_name}.js --gtest_output=xml:${test_project_name}_report.xml --extra-verbose --gtest_break_on_failure)
+else()
+	add_test(NAME ${lib_name} COMMAND ${test_project_name} --gtest_output=xml:${test_project_name}_report.xml --extra-verbose --gtest_break_on_failure)
+endif()
 
 if(SANITIZER)
 	include(../sanitizer.cmake)

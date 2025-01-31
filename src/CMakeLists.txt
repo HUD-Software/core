@@ -227,11 +227,14 @@ set_target_properties(${lib_name}
         CXX_STANDARD_REQUIRED YES
         CXX_EXTENSIONS NO
 )
+
 if(MSVC)
-	target_compile_options(  ${lib_name} PRIVATE /Zc:__cplusplus /std:c++20 /permissive- /EHsc /utf-8 )
-	#target_compile_options( ${lib_name} PRIVATE /Zc:__cplusplus /std:c++20 /EHsc /GR-)
-# elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-# 	target_compile_options( ${lib_name} PRIVATE -fno-cxx-exceptions -fno-rtti)
+	target_compile_options( ${lib_name} PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 /arch:AVX2)
+	target_compile_definitions(${lib_name} PRIVATE __SSE4_2__)
+elseif(EMSCRIPTEN)
+	target_compile_options( ${lib_name} PRIVATE -msse4.2 -msimd128 -std=c++20)
+else()
+ 	target_compile_options( ${lib_name} PRIVATE -msse4.2 -std=c++20)
 endif()
 
 
