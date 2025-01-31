@@ -96,10 +96,10 @@ if(MSVC)
 			COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-cov show ./${VS_CONFIG}/${project_name}.exe -instr-profile=${project_name}.profdata --show-expansions >> show.txt
 		)
 
+		file(REMOVE coverage.windows.clang.lcov.info)
 		add_custom_command( 
 			TARGET ${project_name} POST_BUILD
 			COMMAND echo Generate HTML report...
-			COMMAND del /s /q coverage.windows.clang.lcov.info # It appears that coverage.windows.clang.lcov.info impact this generation...
 			COMMAND ./grcov.exe --llvm -t html -b ./${VS_CONFIG}/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
@@ -118,7 +118,6 @@ if(MSVC)
 		add_custom_command( 
 			TARGET ${project_name} POST_BUILD
 			COMMAND echo Generate LCOV report...
-			COMMAND del /s /q coverage.windows.clang.lcov.info
 			COMMAND ./grcov.exe --llvm -t lcov -b ./${VS_CONFIG}/ -s ./../../
 					--llvm-path ${CMAKE_CXX_COMPILER_PATH}
 					--branch
