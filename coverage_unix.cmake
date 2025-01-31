@@ -1,4 +1,4 @@
-if(not UNIX)
+if(NOT UNIX)
     message(FATAL_ERROR "Windows coverage.cmake should not be used if not Windows OS")
 endif()
 
