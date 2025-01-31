@@ -54,7 +54,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage-windows-clangcl
           path: |
             target\test\coverage.windows.clang.lcov.info
             target\test\windows\
@@ -82,7 +82,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage-linux-clang
           path: |
             target/test/coverage.linux.clang.lcov.info
             target/test/linux.clang/
@@ -110,7 +110,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: coverage
+          name: coverage-linux-gcc
           path: |
             target/test/coverage.linux.gcc.lcov.info
             target/test/linux.gcc/
