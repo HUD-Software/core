@@ -10,18 +10,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Update Node.js
-        run: |
-          nvm install latest
-          nvm use latest
       - name: Install Emscripten SDK
         uses: mymindstorm/setup-emsdk@v14
       - name: Generate
-        run: emcmake cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
+        run: emcmake cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -Btarget
       - name: Build
         run: cmake --build target -- -j 16
       - name: Test
-        run: ctest --test-dir target -C Release -T test --output-on-failure -VV
+        run: ctest --test-dir target -C Debug -T test --output-on-failure -VV
       - name: Release
         run: |
           xcopy target\test\test_core.js release\ /s /y
