@@ -44,6 +44,7 @@ namespace hud::linux
                 // LCOV_EXCL_STOP
 #elif defined(HD_OS_BROWSER)
             EM_ASM({
+            const crypto = require('crypto');
             var bytes = new Uint8Array(16);
             crypto.getRandomValues(bytes);
             // Copier les octets dans la mémoire partagée de WebAssembly
