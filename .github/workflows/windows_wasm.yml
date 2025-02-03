@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Node Version
+        run: node -v
       - name: Install MinGW dependencies
         run: |
             C:/msys64/usr/bin/pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain --noconfirm
