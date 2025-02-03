@@ -506,11 +506,12 @@ namespace hud
          * @param value The value to be set in the buffer.
          * @return Pointer to the buffer `destination`.
          */
-        static HD_FORCEINLINE void *set_safe(volatile void *destination, const usize size, const u8 value) noexcept
+        static HD_FORCEINLINE void *set_safe(void *destination, const usize size, const u8 value) noexcept
         {
             // The behavior is undefined if destination is a null pointer.
             check(destination != nullptr);
-            return memset((void *)destination, value, size);
+            void *(*volatile memset_volatile)(void *, int, size_t) = memset;
+            return memset_volatile(destination, value, size);
             // Prevent compiler from removing the memset
             // Add a volatile pointer to the memory and reaffect it to destination
             // This prevent memset to be remove if the user don't use return value
