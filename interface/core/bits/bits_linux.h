@@ -2,7 +2,7 @@
 #define HD_INC_CORE_BITS_BITS_LINUX_H
 #include "bits_common.h"
 
-#if !defined(HD_OS_LINUX) && !defined(HD_OS_BROWSER)
+#if !defined(HD_OS_LINUX) && !defined(HD_OS_EMSCRIPTEN)
     #error This file must be included only when targetting Linux OS
 #endif
 

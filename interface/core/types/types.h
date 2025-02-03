@@ -4,7 +4,7 @@
 
 #if defined(HD_OS_WINDOWS)
     #include "types_windows.h"
-#elif defined(HD_OS_LINUX) || defined(HD_OS_BROWSER)
+#elif defined(HD_OS_LINUX) || defined(HD_OS_EMSCRIPTEN)
     #include "types_linux.h"
 #else
     #error Targeted OS not supported
@@ -14,7 +14,7 @@ namespace hud
 {
 #if defined(HD_OS_WINDOWS)
     using types = hud::windows::types;
-#elif defined(HD_OS_LINUX) || defined(HD_OS_BROWSER)
+#elif defined(HD_OS_LINUX) || defined(HD_OS_EMSCRIPTEN)
     using types = hud::linux::types;
 #endif
 

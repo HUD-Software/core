@@ -3,11 +3,11 @@
 #include "uuid_common.h"
 #include <sys/random.h>
 
-#if defined(HD_OS_BROWSER)
+#if defined(HD_COMPILER_EMSCRIPTEN)
     #include <emscripten.h>
 #endif
 
-#if !defined(HD_OS_LINUX) && !defined(HD_OS_BROWSER)
+#if !defined(HD_OS_LINUX) && !defined(HD_OS_EMSCRIPTEN)
     #error This file must be included only when targetting Linux OS
 #endif
 
@@ -42,11 +42,9 @@ namespace hud::linux
                 return false;
             }
                 // LCOV_EXCL_STOP
-#elif defined(HD_OS_BROWSER)
+#elif defined(HD_OS_EMSCRIPTEN)
             EM_ASM({
-            if (typeof window.crypto === 'undefined') {
-                const crypto = require('crypto');
-            }
+            const crypto = require('crypto');
             var bytes = new Uint8Array(16);
             crypto.getRandomValues(bytes);
             for (var i = 0; i < 16; i++) {

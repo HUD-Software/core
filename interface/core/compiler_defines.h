@@ -52,7 +52,7 @@ __aarch64__
 #elif defined(__linux__)
     #define HD_OS_LINUX
 #elif defined(__EMSCRIPTEN__)
-    #define HD_OS_BROWSER
+    #define HD_OS_EMSCRIPTEN
 #else
     #error Unknown target OS defines
 #endif
@@ -149,7 +149,7 @@ __aarch64__
     #else
         #error Unknown endianness defines
     #endif
-#elif defined(HD_OS_BROWSER)
+#elif defined(HD_COMPILER_EMSCRIPTEN)
     #define HD_LITTLE_ENDIAN
 #else
     #error Unknown target OS for endianness defines
@@ -162,7 +162,7 @@ __aarch64__
 #if !defined(HD_COMPILER_MSVC) && !defined(HD_COMPILER_CLANG_CL) && !defined(HD_COMPILER_CLANG) && !defined(HD_COMPILER_GCC) && !defined(HD_COMPILER_EMSCRIPTEN)
     #error Compiler not supported
 #endif
-#if !defined(HD_OS_WINDOWS) && !defined(HD_OS_LINUX) && !defined(HD_OS_BROWSER)
+#if !defined(HD_OS_WINDOWS) && !defined(HD_OS_LINUX) && !defined(HD_OS_EMSCRIPTEN)
     #error Operating System targeted not supported
 #endif
 #if !defined(HD_DEBUG) && !defined(HD_DEBUGOPTIMIZED) && !defined(HD_RELEASE)

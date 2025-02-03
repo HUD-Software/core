@@ -90,8 +90,8 @@ GTEST_TEST(compilation, get_os)
     hud_assert_eq(hud::compilation::get_os(), hud::os_e::windows);
 #elif defined(HD_OS_LINUX)
     hud_assert_eq(hud::compilation::get_os(), hud::os_e::linux);
-#elif defined(HD_OS_BROWSER)
-    hud_assert_eq(hud::compilation::get_os(), hud::os_e::browser);
+#elif defined(HD_OS_EMSCRIPTEN)
+    hud_assert_eq(hud::compilation::get_os(), hud::os_e::emscripten);
 #else
     FAIL(); // "Not implemented"
 #endif

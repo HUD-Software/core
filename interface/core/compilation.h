@@ -21,7 +21,7 @@ namespace hud
     {
         windows,
         linux,
-        browser,
+        emscripten,
         unknown,
     };
 
@@ -158,8 +158,8 @@ namespace hud
             return os_e::windows;
 #elif defined(HD_OS_LINUX)
             return os_e::linux;
-#elif defined(HD_OS_BROWSER)
-            return os_e::browser;
+#elif defined(HD_OS_EMSCRIPTEN)
+            return os_e::emscripten;
 #else
             return os_e::unknown;
 #endif
