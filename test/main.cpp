@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
-#include <emscripten.h>
-
+#if defined(HD_COMPILER_EMSCRIPTEN)
+    #include <emscripten.h>
+#endif
 int main(int argc, char **argv)
 {
 
