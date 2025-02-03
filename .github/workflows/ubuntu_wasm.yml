@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      - name: Install Emscripten SDK
+        uses: mymindstorm/setup-emsdk@v14
       - name: Generate
         run: emcmake cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
       - name: Build
