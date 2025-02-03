@@ -20,11 +20,12 @@ jobs:
         run: ctest --test-dir target -C Debug -T test --output-on-failure -VV
       - name: Release
         run: |
-          xcopy target\test\test_core.js release\ /s /y
-          xcopy target\test\test_core.wasm release\ /s /y
-          xcopy target\test\test_core_report.xml release\ /s /y
-          xcopy target\src\libcore.a release\ /s /y
-          xcopy interface\core release\core\ /s /y
+          mkdir -p release
+          cp -R target\test\test_core.js release -i
+          cp -R target\test\test_core.wasm release -i
+          cp -R target/test/test_core_report.xml release -i
+          cp -R target/src/libcore.a release -i
+          cp -R interface/core release/core -i
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
