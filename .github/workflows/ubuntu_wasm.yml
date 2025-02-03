@@ -10,8 +10,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Node Version
-        run: node -v
+      - name: Update Node.js
+        run: |
+          nvm install latest
+          nvm use latest
       - name: Install Emscripten SDK
         uses: mymindstorm/setup-emsdk@v14
       - name: Generate
