@@ -21,8 +21,8 @@ jobs:
       - name: Release
         run: |
           mkdir -p release
-          cp -R target\test\test_core.js release -i
-          cp -R target\test\test_core.wasm release -i
+          cp -R target/test/test_core.js release -i
+          cp -R target/test/test_core.wasm release -i
           cp -R target/test/test_core_report.xml release -i
           cp -R target/src/libcore.a release -i
           cp -R interface/core release/core -i
@@ -30,4 +30,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ubuntu_webassembly
-          path: release\**
+          path: release/**
