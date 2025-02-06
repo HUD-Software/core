@@ -241,5 +241,23 @@ namespace hud
             return hud::hash_64<i32> {}(custom.id());
         }
     };
+
+    template<>
+    struct hash_32<hud_test::non_bitwise_copy_constructible_type2>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_copy_constructible_type2 &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_copy_constructible_type2>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_copy_constructible_type2 &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
 } // namespace hud
 #endif // HD_INC_MISC_NON_BITWISE_COPY_CONSTRUCTIBLE_TYPE_H

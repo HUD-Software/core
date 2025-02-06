@@ -542,6 +542,7 @@ namespace hud
             typename allocator_t>
         class hashset_impl
         {
+
         protected:
             /** Type of the slot. */
             using slot_type = slot_t;
@@ -558,8 +559,8 @@ namespace hud
             /** The type of allocation done by the allocator. */
             using memory_allocation_type = typename allocator_type::template memory_allocation_type<slot_type>;
 
-            // static_assert(alignof(slot_type) == alignof(element_type), "slot and element_type must have same alignement");
-            // static_assert(hud::is_same_size_v<slot_type, element_type>, "slot and element_type must have same size");
+            static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
+            static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
 
         public:
             /**  Default constructor. */
@@ -626,25 +627,6 @@ namespace hud
                     free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
                 }
             }
-
-            /**
-             * Insert a key in the hashset.
-             * @param key The key associated with the `value`
-             * @param args List of arguments pass to `value_type` constructor after the `key` itself
-             * @return Iterator to the `value`
-             */
-            // template<typename... args_t>
-            // requires(hud::is_constructible_v<slot_type, args_t...>)
-            // constexpr iterator add(args_t &&...args) noexcept
-            // {
-            //     hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-            //     slot_type *slot_ptr = slot_ptr_ + res.first;
-            //     if (res.second)
-            //     {
-            //         hud::memory::construct_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
-            //     }
-            //     return {control_ptr_ + res.first, slot_ptr};
-            // }
 
             /**
              * Insert a key in the hashset.
@@ -789,9 +771,6 @@ namespace hud
              */
             [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
             {
-                static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
-                static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
-
                 u64 hash = hasher_type {}(key);
                 u64 h1 = H1(hash);
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
@@ -883,6 +862,7 @@ namespace hud
                          it != iterator(old_control_ptr + old_max_slot_count);
                          ++it)
                     {
+
                         // Compute the hash
                         u64 hash = hasher_type {}(it->key());
                         // Find H1 slot index
