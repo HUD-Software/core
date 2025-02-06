@@ -6,7 +6,7 @@ namespace hud
 {
 
     /** List of compiler supported compiler. */
-    enum class compiler_e
+    enum class compiler
     {
         msvc,
         clang,
@@ -17,7 +17,7 @@ namespace hud
     };
 
     /** List of supported OS target. */
-    enum class os_e
+    enum class host
     {
         windows,
         linux,
@@ -26,7 +26,7 @@ namespace hud
     };
 
     /** List of supported architecture. */
-    enum class cpu_instruction_set_e
+    enum class cpu_instruction_set
     {
         x86,
         x64,
@@ -38,7 +38,7 @@ namespace hud
     };
 
     /** List of all supported endianness. */
-    enum class endianness_e
+    enum class endianness
     {
         little,
         big,
@@ -46,7 +46,7 @@ namespace hud
     };
 
     /** List of all compilation modes. */
-    enum class compilation_mode_e
+    enum class compilation_mode
     {
         debug,
         debug_optimized,
@@ -58,44 +58,44 @@ namespace hud
     {
 
         /** Retrieves the current compiler used when compiling the current file. */
-        static constexpr compiler_e get_compiler() noexcept
+        static constexpr compiler get_compiler() noexcept
         {
 #if defined(HD_COMPILER_CLANG)
-            return compiler_e::clang;
+            return compiler::clang;
 #elif defined(HD_COMPILER_CLANG_CL)
-            return compiler_e::clang_cl;
+            return compiler::clang_cl;
 #elif defined(HD_COMPILER_MSVC)
-            return compiler_e::msvc;
+            return compiler::msvc;
 #elif defined(HD_COMPILER_GCC)
-            return compiler_e::gcc;
+            return compiler::gcc;
 #elif defined(HD_COMPILER_EMSCRIPTEN)
-            return compiler_e::emscripten;
+            return compiler::emscripten;
 #else
-            return compiler_e::unknown;
+            return compiler::unknown;
 #endif
         }
 
         /** Retrieves the name of the compiler used when compiling the current file, nullptr if compiler is not supported. */
         static constexpr const char *get_compiler_name() noexcept
         {
-            static_assert(get_compiler() != compiler_e::unknown, "Not implemented");
-            if constexpr (get_compiler() == compiler_e::msvc)
+            static_assert(get_compiler() != compiler::unknown, "Not implemented");
+            if constexpr (get_compiler() == compiler::msvc)
             {
                 return "Microsoft Visual Studio";
             }
-            else if constexpr (get_compiler() == compiler_e::clang_cl)
+            else if constexpr (get_compiler() == compiler::clang_cl)
             {
                 return "Clang-cl";
             }
-            else if constexpr (get_compiler() == compiler_e::clang)
+            else if constexpr (get_compiler() == compiler::clang)
             {
                 return "Clang";
             }
-            else if constexpr (get_compiler() == compiler_e::gcc)
+            else if constexpr (get_compiler() == compiler::gcc)
             {
                 return "GNU gcc/G++";
             }
-            else if constexpr (get_compiler() == compiler_e::emscripten)
+            else if constexpr (get_compiler() == compiler::emscripten)
             {
                 return "Emscripten";
             }
@@ -106,7 +106,7 @@ namespace hud
         }
 
         /** Check if for the current compiler. */
-        static constexpr bool is_compiler(compiler_e compiler) noexcept
+        static constexpr bool is_compiler(compiler compiler) noexcept
         {
             return get_compiler() == compiler;
         }
@@ -114,7 +114,7 @@ namespace hud
         /** Retrieves if the compiler used when compiling the current file target 64 bits processors. */
         static constexpr bool is_targeting_64bits() noexcept
         {
-            static_assert(get_compiler() != compiler_e::unknown, "Compiler is unkown");
+            static_assert(get_compiler() != compiler::unknown, "Compiler is unkown");
 #if defined(HD_TARGET_64_BITS)
             return true;
 #elif defined(HD_TARGET_32_BITS)
@@ -125,50 +125,50 @@ namespace hud
         }
 
         /** Retrieves the processor target architecture used when compiling the current file. */
-        static constexpr cpu_instruction_set_e get_cpu_instruction_set() noexcept
+        static constexpr cpu_instruction_set get_cpu_instruction_set() noexcept
         {
-            static_assert(get_compiler() != compiler_e::unknown, "Compiler is unkown");
+            static_assert(get_compiler() != compiler::unknown, "Compiler is unkown");
 #if defined(HD_TARGET_X64)
-            return cpu_instruction_set_e::x64;
+            return cpu_instruction_set::x64;
 #elif defined(HD_TARGET_X86)
-            return cpu_instruction_set_e::x86;
+            return cpu_instruction_set::x86;
 #elif defined(HD_TARGET_ARM32)
-            return cpu_instruction_set_e::arm32;
+            return cpu_instruction_set::arm32;
 #elif defined(HD_TARGET_ARM64)
-            return cpu_instruction_set_e::arm64;
+            return cpu_instruction_set::arm64;
 #elif defined(HD_TARGET_WASM32)
-            return cpu_instruction_set_e::wasm32;
+            return cpu_instruction_set::wasm32;
 #elif defined(HD_TARGET_WASM64)
-            return cpu_instruction_set_e::wasm64;
+            return cpu_instruction_set::wasm64;
 #else
-            return cpu_instruction_set_e::unknown;
+            return cpu_instruction_set::unknown;
 #endif
         }
 
         /** Check if the CPU instruction set is currently the processor target architecture used. */
-        static constexpr bool is_cpu_instruction_set(cpu_instruction_set_e set) noexcept
+        static constexpr bool is_cpu_instruction_set(cpu_instruction_set set) noexcept
         {
             return get_cpu_instruction_set() == set;
         }
 
-        /** Retrieves the compiler OS target used when compiling the current file. */
-        static constexpr os_e get_os() noexcept
+        /** Retrieves the compiler host target used when compiling the current file. */
+        static constexpr host get_host() noexcept
         {
-#if defined(HD_OS_WINDOWS)
-            return os_e::windows;
-#elif defined(HD_OS_LINUX)
-            return os_e::linux;
-#elif defined(HD_OS_EMSCRIPTEN)
-            return os_e::emscripten;
+#if defined(HD_HOST_WINDOWS)
+            return host::windows;
+#elif defined(HD_HOST_LINUX)
+            return host::linux;
+#elif defined(HD_HOST_EMSCRIPTEN)
+            return host::emscripten;
 #else
-            return os_e::unknown;
+            return host::unknown;
 #endif
         }
 
-        /** Check the target OS. */
-        static constexpr bool is_os(const os_e os) noexcept
+        /** Check the target host. */
+        static constexpr bool is_host(const host os) noexcept
         {
-            return get_os() == os;
+            return get_host() == os;
         }
 
         /** Retrieves if the assertion are enabled. */
@@ -182,39 +182,39 @@ namespace hud
         }
 
         /** Retrieves the endianness of scalar types. */
-        static constexpr endianness_e get_endianness() noexcept
+        static constexpr endianness get_endianness() noexcept
         {
 #if defined(HD_LITTLE_ENDIAN)
-            return endianness_e::little;
+            return endianness::little;
 #elif defined(HD_BIG_ENDIAN)
-            return endianness_e::big;
+            return endianness::big;
 #else
-            return endianness_e::unknown;
+            return endianness::unknown;
 #endif
         }
 
         /** Check the endianness of scalar types. */
-        static constexpr bool is_endianness(endianness_e endianness) noexcept
+        static constexpr bool is_endianness(endianness endianness) noexcept
         {
             return get_endianness() == endianness;
         }
 
         /** Retrieves the compilation mode. */
-        static constexpr compilation_mode_e get_compilation_mode() noexcept
+        static constexpr compilation_mode get_compilation_mode() noexcept
         {
 #if defined(HD_DEBUG)
-            return compilation_mode_e::debug;
+            return compilation_mode::debug;
 #elif defined(HD_DEBUGOPTIMIZED)
-            return compilation_mode_e::debug_optimized;
+            return compilation_mode::debug_optimized;
 #elif defined(HD_RELEASE)
-            return compilation_mode_e::release;
+            return compilation_mode::release;
 #else
-            return compilation_mode_e::unknown;
+            return compilation_mode::unknown;
 #endif
         }
 
         /** Check the compilation mode. */
-        static constexpr bool is_compilation_mode(const hud::compilation_mode_e compilation_mode) noexcept
+        static constexpr bool is_compilation_mode(const hud::compilation_mode compilation_mode) noexcept
         {
             return get_compilation_mode() == compilation_mode;
         }

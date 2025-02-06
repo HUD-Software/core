@@ -32,9 +32,9 @@ GTEST_TEST(traits, is_signed)
     hud_assert_false((hud::is_signed_v<char16>));
     hud_assert_false((hud::is_signed_v<char32>));
     hud_assert_true((hud::is_signed_v<ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_signed_v<wchar>));
-#else // HD_OS_LINUX
+#else // HD_HOST_LINUX
     hud_assert_true((hud::is_signed_v<wchar>));
 #endif
     hud_assert_false((hud::is_signed_v<hud_test::a>));
@@ -59,9 +59,9 @@ GTEST_TEST(traits, is_signed)
     hud_assert_false((hud::is_signed_v<const char16>));
     hud_assert_false((hud::is_signed_v<const char32>));
     hud_assert_true((hud::is_signed_v<const ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_signed_v<const wchar>));
-#else // HD_OS_LINUX
+#else // HD_HOST_LINUX
     hud_assert_true((hud::is_signed_v<const wchar>));
 #endif
     hud_assert_false((hud::is_signed_v<const hud_test::a>));
@@ -86,9 +86,9 @@ GTEST_TEST(traits, is_signed)
     hud_assert_false((hud::is_signed_v<volatile char16>));
     hud_assert_false((hud::is_signed_v<volatile char32>));
     hud_assert_true((hud::is_signed_v<volatile ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_signed_v<volatile wchar>));
-#else // HD_OS_LINUX
+#else // HD_HOST_LINUX
     hud_assert_true((hud::is_signed_v<volatile wchar>));
 #endif
     hud_assert_false((hud::is_signed_v<volatile hud_test::a>));
@@ -113,9 +113,9 @@ GTEST_TEST(traits, is_signed)
     hud_assert_false((hud::is_signed_v<const volatile char16>));
     hud_assert_false((hud::is_signed_v<const volatile char32>));
     hud_assert_true((hud::is_signed_v<const volatile ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_signed_v<const volatile wchar>));
-#else // HD_OS_LINUX
+#else // HD_HOST_LINUX
     hud_assert_true((hud::is_signed_v<const volatile wchar>));
 #endif
     hud_assert_false((hud::is_signed_v<const volatile hud_test::a>));

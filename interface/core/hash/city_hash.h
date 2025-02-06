@@ -128,7 +128,7 @@ namespace hud::hash_algorithm
          */
         [[nodiscard]] static constexpr u32 fetch_32(const ansichar *buffer) noexcept
         {
-            if constexpr (compilation::is_endianness(endianness_e::big))
+            if constexpr (compilation::is_endianness(endianness::big))
             {
                 return hud::bits::reverse_bytes(hud::memory::unaligned_load32(buffer)); // LCOV_EXCL_LINE
             }
@@ -145,7 +145,7 @@ namespace hud::hash_algorithm
          */
         [[nodiscard]] static constexpr u64 fetch_64(const ansichar *buffer) noexcept
         {
-            if constexpr (compilation::is_endianness(endianness_e::big))
+            if constexpr (compilation::is_endianness(endianness::big))
             {
                 return hud::bits::reverse_bytes(hud::memory::unaligned_load64(buffer)); // LCOV_EXCL_LINE
             }

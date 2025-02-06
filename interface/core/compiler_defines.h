@@ -48,11 +48,11 @@ __aarch64__
 
 /** Detect target OS */
 #if defined(_WIN32)
-    #define HD_OS_WINDOWS
+    #define HD_HOST_WINDOWS
 #elif defined(__linux__)
-    #define HD_OS_LINUX
+    #define HD_HOST_LINUX
 #elif defined(__EMSCRIPTEN__)
-    #define HD_OS_EMSCRIPTEN
+    #define HD_HOST_EMSCRIPTEN
 #else
     #error Unknown target OS defines
 #endif
@@ -139,9 +139,9 @@ __aarch64__
 #endif
 
 /** Detect endianness */
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     #define HD_LITTLE_ENDIAN
-#elif defined(HD_OS_LINUX)
+#elif defined(HD_HOST_LINUX)
     #if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
         #define HD_LITTLE_ENDIAN
     #elif (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
@@ -162,8 +162,8 @@ __aarch64__
 #if !defined(HD_COMPILER_MSVC) && !defined(HD_COMPILER_CLANG_CL) && !defined(HD_COMPILER_CLANG) && !defined(HD_COMPILER_GCC) && !defined(HD_COMPILER_EMSCRIPTEN)
     #error Compiler not supported
 #endif
-#if !defined(HD_OS_WINDOWS) && !defined(HD_OS_LINUX) && !defined(HD_OS_EMSCRIPTEN)
-    #error Operating System targeted not supported
+#if !defined(HD_HOST_WINDOWS) && !defined(HD_HOST_LINUX) && !defined(HD_HOST_EMSCRIPTEN)
+    #error Host targeted not supported
 #endif
 #if !defined(HD_DEBUG) && !defined(HD_DEBUGOPTIMIZED) && !defined(HD_RELEASE)
     #error compilation mode is not set

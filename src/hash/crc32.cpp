@@ -47,7 +47,7 @@ namespace hud::hash_algorithm
         const u32 *current_u32 = reinterpret_cast<const u32 *>(current_u8);
         while (count >= 8)
         {
-            if constexpr (compilation::is_endianness(endianness_e::big))
+            if constexpr (compilation::is_endianness(endianness::big))
             {
                 u32 one = *current_u32++ ^ hud::bits::reverse_bits(crc);
                 u32 two = *current_u32++;

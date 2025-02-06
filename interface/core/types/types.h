@@ -2,9 +2,9 @@
 #define HD_INC_CORE_TYPES_TYPES_H
 #include "../compilation.h"
 
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     #include "types_windows.h"
-#elif defined(HD_OS_LINUX) || defined(HD_OS_EMSCRIPTEN)
+#elif defined(HD_HOST_LINUX) || defined(HD_HOST_EMSCRIPTEN)
     #include "types_linux.h"
 #else
     #error Targeted OS not supported
@@ -12,9 +12,9 @@
 
 namespace hud
 {
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     using types = hud::windows::types;
-#elif defined(HD_OS_LINUX) || defined(HD_OS_EMSCRIPTEN)
+#elif defined(HD_HOST_LINUX) || defined(HD_HOST_EMSCRIPTEN)
     using types = hud::linux::types;
 #endif
 
@@ -186,7 +186,7 @@ static_assert(sizeof(hud::u16) == 2, "sizeof(hud::u16) != 2 bytes");
 static_assert(sizeof(hud::u32) == 4, "sizeof(hud::u32) != 4 bytes");
 static_assert(sizeof(hud::u64) == 8, "sizeof(hud::u64) != 8 bytes");
 static_assert(sizeof(hud::ansichar) == 1, "sizeof(hud::ansichar) != 1 byte");
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
 static_assert(sizeof(hud::wchar) == 2, "sizeof(hud::wchar) != 2 bytes");
 #else
 static_assert(sizeof(hud::wchar) == 4, "sizeof(hud::wchar) != 4 bytes");
@@ -220,7 +220,7 @@ static_assert(!is_signed(hud::u16) && is_unsigned(hud::u16), "hud::u16 is signed
 static_assert(!is_signed(hud::u32) && is_unsigned(hud::u32), "hud::u32 is signed");
 static_assert(!is_signed(hud::u64) && is_unsigned(hud::u64), "hud::u64 is signed");
 static_assert(is_signed(hud::ansichar) && !is_unsigned(hud::ansichar), "hud::ansichar is not signed");
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
 static_assert(!is_signed(hud::wchar) && is_unsigned(hud::wchar), "hud::wchar is unsigned");
 #else
 static_assert(is_signed(hud::wchar) && !is_unsigned(hud::wchar), "hud::wchar is signed");
@@ -255,7 +255,7 @@ static_assert(hud::i64_min == (-9223372036854775807 - 1), "i64_min != (-92233720
 static_assert(hud::ansichar_max == 127, "ansichar_max != 127");
 static_assert(hud::ansichar_min == (-127 - 1), "ansichar_min != (-127 - 1)");
 
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
 static_assert(hud::wchar_max == 0xFFFF, "wchar_max != 0xFFFF");
 static_assert(hud::wchar_min == 0, "wchar_max != 0");
 #else

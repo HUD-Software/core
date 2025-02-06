@@ -3,7 +3,7 @@
 #include "uuid_common.h"
 #include <combaseapi.h>
 
-#if !defined(HD_OS_WINDOWS)
+#if !defined(HD_HOST_WINDOWS)
     #error This file must be included only when targetting Windows OS
 #endif
 

@@ -15,7 +15,7 @@ GTEST_TEST(types, size)
     hud_assert_eq(sizeof(u64), 8u);
     hud_assert_eq(sizeof(ansichar), 1u);
 
-    if constexpr (hud::compilation::is_os(hud::os_e::windows))
+    if constexpr (hud::compilation::is_host(hud::host::windows))
     {
         hud_assert_eq(sizeof(wchar), 2u);
     }
@@ -57,9 +57,9 @@ GTEST_TEST(types, signed_unsigned)
     hud_assert_true(hud::is_unsigned_v<u32>);
     hud_assert_true(hud::is_unsigned_v<u64>);
     hud_assert_true(hud::is_signed_v<ansichar>);
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_true(hud::is_unsigned_v<wchar>);
-#else // HD_OS_LINUX
+#else // HD_HOST_LINUX
     hud_assert_true(hud::is_signed_v<wchar>);
 #endif
     hud_assert_true(hud::is_unsigned_v<char16>);

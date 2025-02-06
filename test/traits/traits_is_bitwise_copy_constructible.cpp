@@ -91,7 +91,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     hud_assert_false((hud::is_bitwise_copy_constructible_v<i16, u32>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<i16, u64>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<i16, ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<i16, wchar>));
 #else
     hud_assert_false((hud::is_bitwise_copy_constructible_v<i16, wchar>));
@@ -113,7 +113,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     hud_assert_false((hud::is_bitwise_copy_constructible_v<u16, u32>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<u16, u64>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<u16, ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<u16, wchar>));
 #else
     hud_assert_false((hud::is_bitwise_copy_constructible_v<u16, wchar>));
@@ -135,7 +135,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<i32, u32>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<i32, u64>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<i32, ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_bitwise_copy_constructible_v<i32, wchar>));
 #else
     hud_assert_true((hud::is_bitwise_copy_constructible_v<i32, wchar>));
@@ -162,7 +162,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<u32, u32>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<u32, u64>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<u32, ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_bitwise_copy_constructible_v<u32, wchar>));
 #else
     hud_assert_true((hud::is_bitwise_copy_constructible_v<u32, wchar>));
@@ -245,7 +245,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
 
     // wchar
     hud_assert_false((hud::is_bitwise_copy_constructible_v<wchar, i8>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<wchar, i16>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<wchar, i32>));
 #else
@@ -254,7 +254,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
 #endif
     hud_assert_false((hud::is_bitwise_copy_constructible_v<wchar, i64>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<wchar, u8>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<wchar, u16>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<wchar, u32>));
 #else
@@ -264,7 +264,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     hud_assert_false((hud::is_bitwise_copy_constructible_v<wchar, u64>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<wchar, ansichar>));
     hud_assert_true((hud::is_bitwise_copy_constructible_v<wchar, wchar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<wchar, char16>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<wchar, char32>));
 #else
@@ -300,7 +300,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     hud_assert_false((hud::is_bitwise_copy_constructible_v<char16, u32>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<char16, u64>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<char16, ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<char16, wchar>));
 #else
     hud_assert_false((hud::is_bitwise_copy_constructible_v<char16, wchar>));
@@ -322,7 +322,7 @@ GTEST_TEST(traits, is_bitwise_copy_constructible)
     hud_assert_true((hud::is_bitwise_copy_constructible_v<char32, u32>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<char32, u64>));
     hud_assert_false((hud::is_bitwise_copy_constructible_v<char32, ansichar>));
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_bitwise_copy_constructible_v<char32, wchar>));
 #else
     hud_assert_true((hud::is_bitwise_copy_constructible_v<char32, wchar>));

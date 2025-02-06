@@ -1,6 +1,6 @@
 #include <core/traits/is_destructible.h>
 
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     #pragma warning(disable : 4624) // 'derived class' : destructor was implicitly defined as deleted because a base class destructor is inaccessible or deleted
 #endif
 

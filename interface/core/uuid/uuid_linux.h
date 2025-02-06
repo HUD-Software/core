@@ -7,7 +7,7 @@
     #include <emscripten.h>
 #endif
 
-#if !defined(HD_OS_LINUX) && !defined(HD_OS_EMSCRIPTEN)
+#if !defined(HD_HOST_LINUX) && !defined(HD_HOST_EMSCRIPTEN)
     #error This file must be included only when targetting Linux OS
 #endif
 
@@ -33,7 +33,7 @@ namespace hud::linux
 
             // 1. Generate 16 random bytes (=128 bits)
             alignas(16) u8 bytes[16];
-#if defined(HD_OS_LINUX)
+#if defined(HD_HOST_LINUX)
             i32 bytes_count_copied = getrandom(bytes, sizeof(bytes), GRND_RANDOM);
 
             // LCOV_EXCL_START ( Supposed never failed, else alternative is to read in /dev/{u}random )
@@ -42,7 +42,7 @@ namespace hud::linux
                 return false;
             }
                 // LCOV_EXCL_STOP
-#elif defined(HD_OS_EMSCRIPTEN)
+#elif defined(HD_HOST_EMSCRIPTEN)
             EM_ASM({
             const crypto = require('crypto');
             var bytes = new Uint8Array(16);

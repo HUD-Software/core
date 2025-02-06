@@ -1,9 +1,9 @@
 #ifndef HD_INC_CORE_STRING_CSTRING_CSTRING_H
 #define HD_INC_CORE_STRING_CSTRING_CSTRING_H
 
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
     #include "cstring_windows.h"
-#elif defined(HD_OS_LINUX) || defined(HD_OS_EMSCRIPTEN)
+#elif defined(HD_HOST_LINUX) || defined(HD_HOST_EMSCRIPTEN)
     #include "cstring_linux.h"
 #else
     #error Targeted OS not supported
@@ -14,9 +14,9 @@ namespace hud
 
     /** Provides raw C string operations. */
     struct cstring :
-#if defined(HD_OS_WINDOWS)
+#if defined(HD_HOST_WINDOWS)
         hud::windows::cstring
-#elif defined(HD_OS_LINUX) || defined(HD_OS_EMSCRIPTEN)
+#elif defined(HD_HOST_LINUX) || defined(HD_HOST_EMSCRIPTEN)
         hud::linux::cstring
 #endif
     {
