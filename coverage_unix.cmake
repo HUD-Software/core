@@ -28,18 +28,18 @@ function(enable_unix_coverage project_name lib_name)
             COMMAND llvm-profdata merge ${lib_name}.profraw -o ${lib_name}.profdata
         )
 
-        add_custom_command( 
-            TARGET ${project_name} POST_BUILD
-            COMMAND echo Show profraw...
-            COMMAND llvm-profdata show --all-functions ${lib_name}.profdata >> profraw.info.txt
-        )
+        # add_custom_command( 
+        #     TARGET ${project_name} POST_BUILD
+        #     COMMAND echo Show profraw...
+        #     COMMAND llvm-profdata show --all-functions ${lib_name}.profdata >> profraw.info.txt
+        # )
 
-        add_custom_command( 
-            TARGET ${project_name} POST_BUILD
-            COMMAND echo Show coverage info...
-            COMMAND rm -f show.txt
-            COMMAND llvm-cov show ./${project_name} -instr-profile=${lib_name}.profdata --show-expansions >> show.txt
-        )
+        # add_custom_command( 
+        #     TARGET ${project_name} POST_BUILD
+        #     COMMAND echo Show coverage info...
+        #     COMMAND rm -f show.txt
+        #     COMMAND llvm-cov show ./${project_name} -instr-profile=${lib_name}.profdata --show-expansions >> show.txt
+        # )
 
 
         add_custom_command( 
