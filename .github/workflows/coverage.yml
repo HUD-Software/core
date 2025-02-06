@@ -52,7 +52,7 @@ jobs:
           name: coverage-windows-clang
           path: |
             target\test\coverage.windows.clang.lcov.info
-            target\test\windows-clang\
+            target\test\windows.clang\
 
   coverage_windows_mingw:
     runs-on: windows-latest
@@ -74,7 +74,7 @@ jobs:
           name: coverage-windows-mingw
           path: |
             target\test\coverage.windows.mingw.lcov.info
-            target\test\windows-mingw\
+            target\test\windows.mingw\
 
   coverage_linux_clang_14:
     runs-on: ubuntu-22.04
