@@ -11,7 +11,6 @@ function(enable_windows_coverage project_name lib_name)
 
         target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
         target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-        target_link_options(${project_name} PRIVATE --coverage)
         # Add clang lib path to libraries paths
         get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
         target_link_directories(${project_name} PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\${CMAKE_CXX_COMPILER_VERSION}\\lib\\windows\\")
