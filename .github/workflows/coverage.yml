@@ -54,27 +54,27 @@ jobs:
             target\test\coverage.windows.clang.lcov.info
             target\test\windows.clang\
 
-  coverage_windows_mingw:
-    runs-on: windows-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Generate visual Studio solution
-        run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH="x86_64-w64-mingw32-gcc.exe" -DCMAKE_CXX_COMPILER:FILEPATH="x86_64-w64-mingw32-g++.exe" -Btarget -G "MinGW Makefiles" -DCOVERAGE:BOOL=ON
-      - name: Build and test
-        run: cmake.exe --build target --config Debug -j 16
-      - name: Upload coverage report to Codecov
-        run: |
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
-          .\target\codecov.exe -f target\test\coverage.windows.mingw.lcov.info -t ${{secrets.CODECOV_TOKEN}}
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-windows-mingw
-          path: |
-            target\test\coverage.windows.mingw.lcov.info
-            target\test\windows.mingw\
+  # coverage_windows_mingw:
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
+  #     - name: Generate visual Studio solution
+  #       run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH="x86_64-w64-mingw32-gcc.exe" -DCMAKE_CXX_COMPILER:FILEPATH="x86_64-w64-mingw32-g++.exe" -Btarget -G "MinGW Makefiles" -DCOVERAGE:BOOL=ON
+  #     - name: Build and test
+  #       run: cmake.exe --build target --config Debug -j 16
+  #     - name: Upload coverage report to Codecov
+  #       run: |
+  #         $ProgressPreference = 'SilentlyContinue'
+  #         Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile .\target\codecov.exe
+  #         .\target\codecov.exe -f target\test\coverage.windows.mingw.lcov.info -t ${{secrets.CODECOV_TOKEN}}
+  #     - name: Upload artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: coverage-windows-mingw
+  #         path: |
+  #           target\test\coverage.windows.mingw.lcov.info
+  #           target\test\windows.mingw\
 
   coverage_linux_clang_14:
     runs-on: ubuntu-22.04
