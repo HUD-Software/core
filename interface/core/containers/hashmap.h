@@ -176,7 +176,7 @@ namespace hud
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(hud::pair<u_key_t, u_value_t> &&pair) noexcept
         {
-            return add(hud::get<0>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)),hud::get<1>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)));
+            return add(hud::get<0>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)), hud::get<1>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)));
         }
     };
 
