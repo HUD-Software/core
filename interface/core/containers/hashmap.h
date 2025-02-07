@@ -161,7 +161,8 @@ namespace hud
          * @param args List of arguments pass to `value_type` constructor after the `key` itself
          * @return Iterator to the `value`
          */
-        constexpr iterator add(const hud::pair<key_t, value_t> &pair) noexcept
+        template<typename u_key_t = key_t, typename u_value_t = value_t>
+        constexpr iterator add(const hud::pair<u_key_t, u_value_t> &pair) noexcept
         {
             return add(pair.first, pair.second);
         }
@@ -172,9 +173,10 @@ namespace hud
          * @param args List of arguments pass to `value_type` constructor after the `key` itself
          * @return Iterator to the `value`
          */
-        constexpr iterator add(hud::pair<key_t, value_t> &&pair) noexcept
+        template<typename u_key_t = key_t, typename u_value_t = value_t>
+        constexpr iterator add(hud::pair<u_key_t, u_value_t> &&pair) noexcept
         {
-            return add(hud::move(pair.first), hud::move(pair.second));
+            return add(hud::get<0>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)),hud::get<1>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)));
         }
     };
 

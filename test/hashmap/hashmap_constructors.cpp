@@ -313,7 +313,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
                 // Validate value is correctly added
                 key_1_is_correct &= it_1->value() == 11;
-                key_1_is_correct &= it_1->value().copy_constructor_count() == 2;
+                key_1_is_correct &= it_1->value().copy_constructor_count() == 1;
             }
 
             // Validate we have {2,22}
@@ -328,7 +328,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
                 // Validate value is correctly added
                 key_2_is_correct &= it_2->value() == 22;
-                key_2_is_correct &= it_2->value().copy_constructor_count() == 2;
+                key_2_is_correct &= it_2->value().copy_constructor_count() == 1;
             }
 
             // Validate we have {3,33}
@@ -343,18 +343,18 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
                 // Validate value is correctly added
                 key_3_is_correct &= it_3->value() == 33;
-                key_3_is_correct &= it_3->value().copy_constructor_count() == 2;
+                key_3_is_correct &= it_3->value().copy_constructor_count() == 1;
             }
 
             return std::tuple {
-                map.count() == 3,
-                map.max_count() >= map.count(),
-                key_1_inserted,
-                key_1_is_correct,
-                key_2_inserted,
-                key_2_is_correct,
-                key_3_inserted,
-                key_3_is_correct,
+                map.count() == 3,               // 0
+                map.max_count() >= map.count(), // 1
+                key_1_inserted,                 // 2
+                key_1_is_correct,               // 3
+                key_2_inserted,                 // 4
+                key_2_is_correct,               // 5
+                key_3_inserted,                 // 6
+                key_3_is_correct,               // 7
             };
         };
 
