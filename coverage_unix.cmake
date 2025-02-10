@@ -4,11 +4,16 @@ endif()
 
 function(enable_unix_coverage project_name lib_name)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-        message("Enable Clang coverage")
-        target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-        target_link_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-        target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-        target_link_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+        message("Enable Clang coverage")       
+        
+        # target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+        # target_link_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+        # target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+        # target_link_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+
+        target_compile_options(${project_name} PRIVATE --coverage )
+        target_link_options(${project_name} PRIVATE --coverage)
+        target_compile_options(${lib_name} PRIVATE --coverage)
         
         add_custom_command( 
             TARGET ${project_name} POST_BUILD
@@ -19,14 +24,20 @@ function(enable_unix_coverage project_name lib_name)
         add_custom_command( 
             TARGET ${project_name} POST_BUILD
             COMMAND echo Start coverage...
-            COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}.profraw" ./${project_name}
+            COMMAND ./${project_name}
         )
 
-        add_custom_command( 
-            TARGET ${project_name} POST_BUILD
-            COMMAND echo Merge coverage info...
-            COMMAND llvm-profdata merge ${lib_name}.profraw -o ${lib_name}.profdata
-        )
+        # add_custom_command( 
+        #     TARGET ${project_name} POST_BUILD
+        #     COMMAND echo Start coverage...
+        #     COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${lib_name}-%p.profraw" ./${project_name}
+        # )
+
+        # add_custom_command( 
+        #     TARGET ${project_name} POST_BUILD
+        #     COMMAND echo Merge coverage info...
+        #     COMMAND llvm-profdata merge ${lib_name}-*.profraw -o ${lib_name}.profdata
+        # )
 
         # add_custom_command( 
         #     TARGET ${project_name} POST_BUILD
