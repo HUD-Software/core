@@ -9,11 +9,20 @@ function(enable_windows_coverage project_name lib_name)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         message("Enable MSCV coverage with Clang-cl")
 
-        target_compile_options(${project_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-        target_compile_options(${lib_name} PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+        # Disable compiler batching to fix a clang-cl bug when activate --coverage
+        # See: https://developercommunity.visualstudio.com/t/Clang-cl---coverage-option-create-gcno-w/10253777
+        set_property(TARGET ${project_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
+        set_property(TARGET ${lib_name} PROPERTY VS_NO_COMPILE_BATCHING ON)
+
+        target_compile_options(${project_name} PRIVATE --coverage)
+        target_compile_options(${lib_name} PRIVATE --coverage)
+
         # Add clang lib path to libraries paths
         get_filename_component(CMAKE_CXX_COMPILER_PATH ${CMAKE_CXX_COMPILER} DIRECTORY)
         target_link_directories(${project_name} PRIVATE "${CMAKE_CXX_COMPILER_PATH}\\..\\lib\\clang\\${CMAKE_CXX_COMPILER_VERSION}\\lib\\windows\\")
+ 		# Need to link manually LLVM Bug 40877
+ 		# See: https://bugs.llvm.org/show_bug.cgi?id=40877
+ 		target_link_libraries(${project_name} PRIVATE "clang_rt.profile-x86_64.lib")
 
         add_custom_command( 
             TARGET ${project_name} POST_BUILD
@@ -25,14 +34,21 @@ function(enable_windows_coverage project_name lib_name)
         add_custom_command( 
             TARGET ${project_name} POST_BUILD
             COMMAND echo Start coverage...
-            COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${project_name}.profraw" ./${VS_CONFIG}/${project_name}.exe
+            COMMAND ./${VS_CONFIG}/${project_name}.exe
         )
 
-        add_custom_command( 
-            TARGET ${project_name} POST_BUILD
-            COMMAND echo Merge coverage info...
-            COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse ${project_name}.profraw -o ${project_name}.profdata
-        )
+       
+        # add_custom_command( 
+        #     TARGET ${project_name} POST_BUILD
+        #     COMMAND echo Start coverage...
+        #     COMMAND ${CMAKE_COMMAND} -E env LLVM_PROFILE_FILE="${project_name}.profraw" ./${VS_CONFIG}/${project_name}.exe
+        # )
+
+        # add_custom_command( 
+        #     TARGET ${project_name} POST_BUILD
+        #     COMMAND echo Merge coverage info...
+        #     COMMAND ${CMAKE_CXX_COMPILER_PATH}/llvm-profdata merge -sparse ${project_name}.profraw -o ${project_name}.profdata
+        # )
 
         # add_custom_command( 
         #     TARGET ${project_name} POST_BUILD
