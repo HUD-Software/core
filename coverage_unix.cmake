@@ -57,7 +57,7 @@ function(enable_unix_coverage project_name lib_name)
                     --excl-br-start "^.*LCOV_EXCL_START.*" 
                     --excl-br-stop "^.*LCOV_EXCL_STOP.*" 
                     --excl-br-line "\"(\\s*^.*GTEST_TEST\\.*)|(^.*LCOV_EXCL_BR_LINE.*)\"" 
-                    -o ubuntu
+                    -o linux.clang
                     ..
         )
 
