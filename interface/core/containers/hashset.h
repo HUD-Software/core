@@ -78,9 +78,20 @@ namespace hud
 
         template<typename key_t>
         struct default_hasher
-            : hud::hasher_64
         {
-            using key_type = key_t;
+            /** Hash the value and combine the value with the current hasher value. */
+            template<typename... type_t>
+            [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
+            {
+                return hud::hash_64<hud::decay_t<type_t>...> {}(hud::forward<type_t>(values)...);
+            }
+
+            /** Hash the value and combine the value with the current hasher value. */
+            template<typename... type_t>
+            [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
+            {
+                return (*this)(hud::forward<type_t>(values)...);
+            }
         };
 
         template<typename key_t>
@@ -867,7 +878,7 @@ namespace hud
                         u64 hash = hasher_type {}(it->key());
                         // Find H1 slot index
                         u64 h1 = H1(hash);
-                        usize slot_index = find_first_empty_or_deleted(control_ptr_, old_max_slot_count, h1);
+                        usize slot_index = find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1);
                         // Save h2 in control h1 index
                         control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Move old slot to new slot

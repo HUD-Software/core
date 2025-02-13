@@ -80,9 +80,20 @@ namespace hud
 
         template<typename key_t>
         struct default_hasher
-            : hud::hasher_64
         {
-            using key_type = key_t;
+            /** Hash the value and combine the value with the current hasher value. */
+            template<typename... type_t>
+            [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
+            {
+                return hud::hash_64<hud::decay_t<type_t>...> {}(hud::forward<type_t>(values)...);
+            }
+
+            /** Hash the value and combine the value with the current hasher value. */
+            template<typename... type_t>
+            [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
+            {
+                return (*this)(hud::forward<type_t>(values)...);
+            }
         };
 
         template<typename key_t>
