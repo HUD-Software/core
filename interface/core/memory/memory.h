@@ -388,7 +388,7 @@ namespace hud
             check(source != nullptr);
 
             // The behavior is undefined if the objects overlap
-            if (size > 0) [[likely]]
+            if (!hud::compilation::is_compilation_mode(hud::compilation_mode::release) && size > 0) [[likely]]
             {
                 check(destination != source);
                 const volatile uptr dest_addr = reinterpret_cast<uptr>(destination);

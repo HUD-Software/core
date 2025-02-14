@@ -29,7 +29,8 @@ set( src
 	array/array_remove_at.cpp
 	array/array_reserve.cpp
 	array/array_resize.cpp
-	array/array_search.cpp
+	array/array_find.cpp
+	array/array_contains.cpp
 	array/array_shrink_to_fit.cpp
 	array/array_swap.cpp
 	atomic/atomic_add.cpp
@@ -66,7 +67,10 @@ set( src
 	hash/hash_64.cpp
 	hashmap/hashmap_add.cpp
 	hashmap/hashmap_constructors.cpp
+	hashmap/hashmap_copy_constructors.cpp
 	hashmap/hashmap_find.cpp
+	hashmap/hashmap_clear.cpp
+	hashmap/hashmap_contains.cpp
 	hashmap/hashmap_iterator.cpp
 	hashmap/hashmap_misc.cpp
 	hashset/hashset_add.cpp

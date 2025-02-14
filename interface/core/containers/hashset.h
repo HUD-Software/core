@@ -582,6 +582,13 @@ namespace hud
             {
             }
 
+            constexpr explicit hashset_impl(const hashset_impl &other) noexcept
+                : allocator_(other.allocator())
+            {
+                // Grow the capacity
+                grow_capacity(&other, other.max_slot_count_);
+            }
+
             constexpr ~hashset_impl() noexcept
             {
                 clear_shrink();
@@ -592,7 +599,7 @@ namespace hud
             {
                 if (count > max_slot_count_)
                 {
-                    grow_capacity(hud::math::next_power_of_two(count + 1) - 1);
+                    grow_capacity(this, hud::math::next_power_of_two(count + 1) - 1);
                 }
             }
 
@@ -718,6 +725,18 @@ namespace hud
                 return const_cast<hashset_impl *>(this)->find(key);
             }
 
+            [[nodiscard]]
+            constexpr bool contains(const key_type &key) noexcept
+            {
+                return find(key) != end();
+            }
+
+            [[nodiscard]]
+            constexpr bool contains(const key_type &key) const noexcept
+            {
+                return find(key) != end();
+            }
+
             /** Retrieves the allocator. */
             [[nodiscard]] HD_FORCEINLINE constexpr const allocator_type &allocator() const noexcept
             {
@@ -821,7 +840,7 @@ namespace hud
                 // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
                 if (free_slot_before_grow() == 0)
                 {
-                    grow_capacity(next_capacity());
+                    grow_capacity(this, next_capacity());
                 }
 
                 // Find the first empty of deleted slot that can be used for this h1 hash
@@ -834,7 +853,7 @@ namespace hud
                 return slot_index;
             }
 
-            constexpr void grow_capacity(usize new_max_slot_count) noexcept
+            constexpr void grow_capacity(hashset_impl *hashset_to_grow, usize new_max_slot_count) noexcept
             {
                 hud::check(new_max_slot_count > max_slot_count_ && "Grow need a bigger value");
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
@@ -850,6 +869,7 @@ namespace hud
                 control_type *old_control_ptr = control_ptr_;
                 slot_type *old_slot_ptr = slot_ptr_;
                 usize old_max_slot_count = max_slot_count_;
+
                 max_slot_count_ = new_max_slot_count;
 
                 // Allocate the buffer that will contain controls and aligned slots
@@ -971,7 +991,8 @@ namespace hud
                 // |         16          |      16−16/8            |            14            |
                 // |         32          |      32−32/8            |            28            |
                 // |         64          |      64−64/8            |            56            |
-                return group_type::SLOT_PER_GROUP == 8 && capacity == 7 ? 6 : capacity - capacity / 8;
+                return group_type::SLOT_PER_GROUP == 8 && capacity == 7 ? 6 :
+                                                                          capacity - capacity / 8;
             }
 
             [[nodiscard]]
@@ -981,15 +1002,20 @@ namespace hud
                 return control_ptr_ + max_slot_count_;
             }
 
-            constexpr usize allocate_control_and_slot(usize max_count) noexcept
+            constexpr usize control_size_for_max_count(usize max_count) const noexcept
             {
                 // We cloned size of a group - 1 because we never reach the last cloned bytes
                 constexpr const usize num_cloned_bytes = control::COUNT_CLONED_BYTE;
                 // Control size is the number of slot + sentinel + number of cloned bytes
-                const usize control_size = max_count + 1 + num_cloned_bytes;
+                return max_count + 1 + num_cloned_bytes;
+            }
+
+            constexpr usize allocate_control_and_slot(usize max_count) noexcept
+            {
+                const usize ctrl_size = control_size_for_max_count(max_count);
                 const usize slot_size = max_count * sizeof(slot_type);
 
-                const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
+                const uptr aligned_control_size = hud::memory::align_address(ctrl_size, sizeof(slot_type));
                 const usize aligned_allocation_size = aligned_control_size + slot_size;
 
                 if (hud::is_constant_evaluated())
@@ -1003,7 +1029,7 @@ namespace hud
                     slot_ptr_ = hud::bit_cast<slot_type *>(control_ptr_ + aligned_control_size);
                     hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
                 }
-                return control_size;
+                return ctrl_size;
             }
 
             constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize max_slot_count) noexcept
@@ -1029,6 +1055,9 @@ namespace hud
             }
 
         private:
+            /** The allocator. */
+            allocator_type allocator_;
+
             /** The control of the hashmap. */
             control_type *control_ptr_ {const_cast<control_type *>(&INIT_GROUP[16])};
 
@@ -1043,9 +1072,6 @@ namespace hud
 
             /** Number of slot we should put into the table before a resizing rehash. */
             usize free_slot_before_grow_ {0};
-
-            /** The allocator. */
-            allocator_type allocator_;
         };
 
     } // namespace details::hashset
