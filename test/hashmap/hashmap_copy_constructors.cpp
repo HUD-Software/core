@@ -58,16 +58,23 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
             }
 
             return std::tuple {
-                copy.count() == copied.count(),                                              // 0
-                copy.max_count() == copied.max_count(),                                      // 1
-                all_keys_and_values_copied,                                                  // 2
-                copy.allocator().allocation_count() == hud::is_constant_evaluated() ? 2 : 1, // 3
-                copy.allocator().free_count() == 0                                           // 4
+                copy.count() == copied.count(),                                                // 0
+                copy.max_count() == copied.max_count(),                                        // 1
+                all_keys_and_values_copied,                                                    // 2
+                copy.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 3
+                copy.allocator().free_count() == 0                                             // 4
             };
         };
 
         // Non constant
         {
+            const auto result_empty = test_default_allocator({});
+            hud_assert_true(std::get<0>(result_empty));
+            hud_assert_true(std::get<1>(result_empty));
+            hud_assert_true(std::get<2>(result_empty));
+            hud_assert_true(std::get<3>(result_empty));
+            hud_assert_true(std::get<4>(result_empty));
+
             const auto result = test_default_allocator(TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -78,6 +85,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
         // Constant
         {
+
+            // constexpr auto result_empty = test_default_allocator({});
+            // hud_assert_true(std::get<0>(result_empty));
+            // hud_assert_true(std::get<1>(result_empty));
+            // hud_assert_true(std::get<2>(result_empty));
+            // hud_assert_true(std::get<3>(result_empty));
+            // hud_assert_true(std::get<4>(result_empty));
+
             constexpr auto result = test_default_allocator(TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));

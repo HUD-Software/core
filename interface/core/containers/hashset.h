@@ -579,7 +579,14 @@ namespace hud
             explicit constexpr hashset_impl() noexcept = default;
 
             constexpr explicit hashset_impl(const allocator_type &allocator) noexcept
+            requires(hud::allocator_traits<allocator_type>::copy_when_container_copy::value)
                 : allocator_(allocator)
+            {
+            }
+
+            constexpr explicit hashset_impl(const allocator_type &allocator) noexcept
+            requires(!hud::allocator_traits<allocator_type>::copy_when_container_copy::value)
+                : hashset_impl()
             {
             }
 
@@ -602,8 +609,6 @@ namespace hud
                 // else do like grow_capacity
                 if (hud::is_constant_evaluated() || hud::is_trivially_copy_constructible_v<slot_type>)
                 {
-                    // slot_ptr_ = nullptr;
-
                     // Set control to empty ending with sentinel
                     hud::memory::set(control_ptr_, control_size, empty_byte);
                     control_ptr_[max_slot_count_] = sentinel_byte;
@@ -682,9 +687,9 @@ namespace hud
             {
                 if (!hud::is_trivially_destructible_v<slot_type>)
                 {
-                    if (max_slot_count_ > 0)
+                    size_t remaining_slots = count();
+                    if (remaining_slots > 0)
                     {
-                        size_t remaining_slots = count();
                         control_type *ctrl = control_ptr_;
                         slot_type *slot = slot_ptr_;
                         while (remaining_slots != 0)
@@ -700,6 +705,7 @@ namespace hud
                         }
                     }
                 }
+                count_ = 0;
             }
 
             /**
@@ -709,11 +715,8 @@ namespace hud
              */
             constexpr void clear_shrink() noexcept
             {
-                if (max_slot_count_ > 0)
-                {
-                    clear();
-                    free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
-                }
+                clear();
+                free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
             }
 
             /**
@@ -1072,18 +1075,18 @@ namespace hud
                 return control_ptr_ + max_slot_count_;
             }
 
-            constexpr usize control_size_for_max_count(usize max_count) const noexcept
+            constexpr usize control_size_for_max_count(usize max_slot_count) const noexcept
             {
                 // We cloned size of a group - 1 because we never reach the last cloned bytes
                 constexpr const usize num_cloned_bytes = control::COUNT_CLONED_BYTE;
                 // Control size is the number of slot + sentinel + number of cloned bytes
-                return max_count + 1 + num_cloned_bytes;
+                return max_slot_count + 1 + num_cloned_bytes;
             }
 
-            constexpr usize allocate_control_and_slot(usize max_count) noexcept
+            constexpr usize allocate_control_and_slot(usize max_slot_count) noexcept
             {
-                const usize ctrl_size = control_size_for_max_count(max_count);
-                const usize slot_size = max_count * sizeof(slot_type);
+                const usize ctrl_size = control_size_for_max_count(max_slot_count);
+                const usize slot_size = max_slot_count * sizeof(slot_type);
 
                 const uptr aligned_control_size = hud::memory::align_address(ctrl_size, sizeof(slot_type));
                 const usize aligned_allocation_size = aligned_control_size + slot_size;
@@ -1104,23 +1107,24 @@ namespace hud
 
             constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize max_slot_count) noexcept
             {
-                // In a constant-evaluated context, bit_cast cannot be used with pointers
-                // and allocation is done in two separate allocation
-                if (hud::is_constant_evaluated())
+                if (max_slot_count > 0)
                 {
-                    // We cloned size of a group - 1 because we never reach the last cloned bytes
-                    constexpr const usize num_cloned_bytes = control::COUNT_CLONED_BYTE;
-                    // Control size is the number of slot + sentinel + number of cloned bytes
-                    const usize control_size = max_slot_count + 1 + num_cloned_bytes;
-                    const usize slot_size = max_slot_count * sizeof(slot_type);
-                    const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
-                    // const usize aligned_allocation_size = aligned_control_size + slot_size;
-                    allocator_.template free<control_type>({control_ptr, aligned_control_size});
-                    allocator_.template free<slot_type>({slot_ptr, slot_size});
-                }
-                else
-                {
-                    allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr), current_allocation_size()});
+                    // In a constant-evaluated context, bit_cast cannot be used with pointers
+                    // and allocation is done in two separate allocation
+                    if (hud::is_constant_evaluated())
+                    {
+                        // Control size is the number of slot + sentinel + number of cloned bytes
+                        const usize control_size = control_size_for_max_count(max_slot_count);
+                        const usize slot_size = max_slot_count * sizeof(slot_type);
+                        const uptr aligned_control_size = hud::memory::align_address(control_size, sizeof(slot_type));
+
+                        allocator_.template free<control_type>({control_ptr, aligned_control_size});
+                        allocator_.template free<slot_type>({slot_ptr, slot_size});
+                    }
+                    else
+                    {
+                        allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr), current_allocation_size()});
+                    }
                 }
             }
 
@@ -1132,7 +1136,7 @@ namespace hud
             control_type *control_ptr_ {const_cast<control_type *>(&INIT_GROUP[16])};
 
             /** Pointer to the slot segment. */
-            slot_type *slot_ptr_;
+            slot_type *slot_ptr_ {nullptr};
 
             /** Max count of slot in the map. Always a power of two mask value. */
             usize max_slot_count_ {0};
