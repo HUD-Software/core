@@ -97,15 +97,9 @@ namespace hud
         };
 
         template<typename key_t>
-        struct default_equal
-            : hud::equal<key_t>
-        {
-        };
+        using default_equal = hud::equal<key_t>;
 
-        struct default_allocator
-            : hud::heap_allocator
-        {
-        };
+        using default_allocator = hud::heap_allocator;
 
     } // namespace details::hashmap
 
