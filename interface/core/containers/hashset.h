@@ -596,7 +596,7 @@ namespace hud
                     // In a non constant evaluated context
                     // If type is trivially copy constructible, just memcpy control and slot
                     // else do like grow_capacity
-                    if (hud::is_constant_evaluated() || hud::is_trivially_copy_constructible_v<slot_type>)
+                    if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
                     {
                         // Set control to empty ending with sentinel
                         hud::memory::set(control_ptr_, control_size, empty_byte);
@@ -616,41 +616,12 @@ namespace hud
                             hud::memory::construct_at(slot_ptr_ + slot_index, slot);
                         }
                     }
+                    else
+                    {
+                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size_for_max_count(max_slot_count_));
+                        hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, max_slot_count_);
+                    }
                 }
-                // Set control to empty ending with sentinel only if type is not trivially copyable
-                // Int he case of trivially copyable type we just memcpy control and slots
-                // if (!hud::is_trivially_copy_constructible_v<slot_type>)
-                // {
-                //     hud::memory::set(control_ptr_, control_size, empty_byte);
-                //     control_ptr_[max_slot_count_] = sentinel_byte;
-                // }
-
-                // If we have elements, insert them to the new buffer
-                // if (other.count() > 0)
-                // {
-                // if (hud::is_trivially_copy_constructible_v<slot_type>)
-                // {
-                // hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, other.max_slot_count_);
-                // hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_slot_count_);
-                // }
-                // else
-                // {
-                //    // Move elements to new buffer if any
-                //    // Relocate slots to newly allocated buffer
-                //    for (auto &slot : other)
-                //    {
-                //        // Compute the hash
-                //        u64 hash = hasher_type {}(slot.key());
-                //        // Find H1 slot index
-                //        u64 h1 = H1(hash);
-                //        usize slot_index = find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1);
-                //        // Save h2 in control h1 index
-                //        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                //        // Copy slot
-                //        hud::memory::construct_at(slot_ptr_ + slot_index, slot);
-                //    }
-                // }
-                // }
             }
 
             constexpr ~hashset_impl() noexcept
