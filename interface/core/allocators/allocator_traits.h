@@ -24,7 +24,7 @@ namespace hud
          * If `hud::true_type`, the allocator is copy-assigned when the container is copy-assigned.
          */
 
-        using copy_when_container_copy = hud::true_type;
+        using copy_when_container_copy_assigned = hud::true_type;
 
         /**
          * Indicates whether `allocator_t` should never be move-assigned when the container is move-assigned.
@@ -32,7 +32,7 @@ namespace hud
          * If `hud::true_type`, the allocator is move-assigned when the container is move-assigned.
          */
 
-        using move_when_container_move = hud::true_type;
+        using move_when_container_move_assigned = hud::true_type;
 
         /**
          * Indicates whether `allocator_t` should be swapped with `hud::swap` when the container is swapped.

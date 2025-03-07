@@ -1227,8 +1227,8 @@ namespace hud
         template<typename u_type_t>
         constexpr void move_assign(array<u_type_t, allocator_t> &&other, const usize min_slack = 0) noexcept
         {
-            // Move the allocator. This will do nothing if hud::allocator_traits<allocator_t>::move_when_container_move is hud::false_type
-            if constexpr (hud::allocator_traits<allocator_t>::move_when_container_move::value)
+            // Move the allocator. This will do nothing if hud::allocator_traits<allocator_t>::move_when_container_move_assigned is hud::false_type
+            if constexpr (hud::allocator_traits<allocator_t>::move_when_container_move_assigned::value)
             {
                 allocator_() = std::move(other.allocator_());
             }
