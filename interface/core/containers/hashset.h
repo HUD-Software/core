@@ -629,8 +629,8 @@ namespace hud
                 }
             }
 
-            constexpr explicit hashset_impl(const hashset_impl &other, usize extra_max_count) noexcept
-                : allocator_ {other.allocator()}
+            constexpr explicit hashset_impl(const hashset_impl &other, usize extra_max_count, const allocator_type &allocator) noexcept
+                : allocator_ {allocator}
                 , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
             {
@@ -638,19 +638,8 @@ namespace hud
                     return;
 
                 free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
-                // Allocate the buffer that will contain controls and aligned slots
-                // In a constant-evaluated context, bit_cast cannot be used with pointers
-                // To satisfy the compiler, allocate controls and slots in two separate allocations
                 usize control_size {allocate_control_and_slot(max_slot_count_)};
 
-                hud::memory::set(control_ptr_, control_size, empty_byte);
-                control_ptr_[max_slot_count_] = sentinel_byte;
-
-                // If constant evaluated context
-                // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
-                // In a non constant evaluated context
-                // If type is trivially copy constructible, just memcpy control and slot
-                // else do like grow_capacity
                 if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
                 {
                     // Set control to empty ending with sentinel
@@ -676,6 +665,11 @@ namespace hud
                     hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                     hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                 }
+            }
+
+            constexpr explicit hashset_impl(const hashset_impl &other, usize extra_max_count) noexcept
+                : hashset_impl {other, extra_max_count, other.allocator()}
+            {
             }
 
             constexpr ~hashset_impl() noexcept
