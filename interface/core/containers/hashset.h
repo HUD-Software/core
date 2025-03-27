@@ -547,7 +547,6 @@ namespace hud
             typename key_equal_t,
             typename allocator_t>
         class hashset_impl
-
         {
 
         protected:
@@ -569,6 +568,9 @@ namespace hud
             static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
             static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
 
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            friend class hashset_impl; // Friend with other hashset_impl of other types
+
         public:
             /**  Default constructor. */
             explicit constexpr hashset_impl() noexcept = default;
@@ -583,7 +585,14 @@ namespace hud
             {
             }
 
-            constexpr explicit hashset_impl(const hashset_impl &other, const allocator_type &allocator) noexcept
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(const hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
+                : hashset_impl(other, other.allocator())
+            {
+            }
+
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(const hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, const allocator_type &allocator) noexcept
                 : allocator_ {allocator}
                 , max_slot_count_ {other.max_count()}
                 , count_ {other.count()}

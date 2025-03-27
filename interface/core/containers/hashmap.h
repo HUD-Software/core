@@ -143,11 +143,6 @@ namespace hud
         using typename super::iterator;
         explicit constexpr hashmap() noexcept = default;
 
-        constexpr explicit hashmap(const allocator_type &allocator) noexcept
-            : super(allocator)
-        {
-        }
-
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         requires(hud::is_copy_constructible_v<key_t, u_key_t> && hud::is_copy_constructible_v<value_t, u_value_t>)
         constexpr hashmap(std::initializer_list<hud::pair<u_key_t, u_value_t>> list, const allocator_type &allocator = allocator_type()) noexcept
