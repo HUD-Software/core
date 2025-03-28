@@ -44,7 +44,10 @@ namespace hud
 
 #endif
 
-    /** Equivalent of hud::is_convertible<from_t,to_t>::value. */
+    /**
+     * Checks whether from_t is implicitly convertible to to_t.
+     * Equivalent of hud::is_convertible<from_t,to_t>::value.
+     * */
     template<typename from_t, typename to_t>
     inline constexpr bool is_convertible_v = hud::is_convertible<from_t, to_t>::value;
 

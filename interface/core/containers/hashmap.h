@@ -12,7 +12,9 @@ namespace hud
             using key_type = key_t;
             using value_type = value_t;
 
-            constexpr explicit slot(const key_type &key, const value_type &value) noexcept
+            template<typename u_key_t, typename u_value_t>
+            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
+            constexpr explicit slot(const u_key_t &key, const u_value_t &value) noexcept
                 : element_(key, value)
             {
             }
@@ -22,6 +24,21 @@ namespace hud
             constexpr explicit slot(u_key_t &&key, u_value_t &&value) noexcept
                 : element_(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value))
             {
+            }
+
+            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<key_type, value_type>>))
+                slot(const slot &other) noexcept
+            requires(hud::is_nothrow_copy_constructible_v<hud::pair<key_type, value_type>>)
+            = default;
+
+            template<typename u_key_t = key_t, typename u_value_t = value_t>
+            requires(hud::is_copy_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
+            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>))
+                slot(const slot<u_key_t, u_value_t> &other) noexcept
+                : element_(other.element_)
+            {
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. slot is not designed to allow throwable copy constructible components");
             }
 
             [[nodiscard]] constexpr const key_type &key() noexcept
@@ -73,6 +90,10 @@ namespace hud
             {
                 return hud::get<idx_to_reach>(hud::forward<const slot>(s).element_);
             }
+
+        private:
+            template<typename u_key_t, typename u_value_t>
+            friend struct slot;
 
         private:
             hud::pair<key_type, value_type> element_;
