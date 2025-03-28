@@ -638,7 +638,14 @@ namespace hud
                 }
             }
 
-            constexpr explicit hashset_impl(const hashset_impl &other, usize extra_max_count, const allocator_type &allocator) noexcept
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(const hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count) noexcept
+                : hashset_impl {other, extra_max_count, other.allocator()}
+            {
+            }
+
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(const hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : allocator_ {allocator}
                 , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
@@ -674,11 +681,6 @@ namespace hud
                     hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                     hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                 }
-            }
-
-            constexpr explicit hashset_impl(const hashset_impl &other, usize extra_max_count) noexcept
-                : hashset_impl {other, extra_max_count, other.allocator()}
-            {
             }
 
             constexpr ~hashset_impl() noexcept
