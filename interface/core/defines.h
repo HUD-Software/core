@@ -2,6 +2,7 @@
 #define HD_INC_CORE_DEFINES_H
 #include "compiler_defines.h"
 #include "builtin.h"
+#include "traits/is_constant_evaluated.h"
 
 #if defined(HD_COMPILER_GCC)
     // Use __forceinline only in non debug mode
@@ -14,12 +15,15 @@
     #define HD_RESTRICT __restrict__ // Indicates that a symbol is not aliased in the current scope.
     #define __STDC_WANT_LIB_EXT1__ 1 // Enable bounds-checked functions ( ISO C Safe Array Functions : memcpy_s, strcpy_s, snwprintf_s, etc... )
 
-    #if defined(HD_HAS_BUILTIN_UNREACHABLE)
-        #define HD_ASSUME(cond)              \
-            do                               \
-            {                                \
-                if (!(cond))                 \
-                    __builtin_unreachable(); \
+    #if HD_HAS_BUILTIN_UNREACHABLE
+        #define HD_ASSUME(cond)                    \
+            do                                     \
+            {                                      \
+                if (!hud::is_constant_evaluated()) \
+                {                                  \
+                    if (!(cond))                   \
+                        __builtin_unreachable();   \
+                }                                  \
             } while (false)
     #else
         #define HD_ASSUME(cond)                     \
@@ -50,13 +54,10 @@
     #define HD_RESTRICT __restrict__ // Indicates that a symbol is not aliased in the current scope.
     #define __STDC_WANT_LIB_EXT1__ 1 // Enable bounds-checked functions ( ISO C Safe Array Functions : memcpy_s, strcpy_s, snwprintf_s, etc... )
 
-    #if !defined(HD_RELEASE)
-
-    #endif
-    #if defined(HD_HAS_BUILTIN_ASSUME)
+    #if HD_HAS_BUILTIN_ASSUME
         #define HD_ASSUME(cond) __builtin_assume(cond)
     #else
-        #if defined(HD_HAS_BUILTIN_UNREACHABLE)
+        #if HD_HAS_BUILTIN_UNREACHABLE
             #define HD_ASSUME(cond)              \
                 do                               \
                 {                                \
