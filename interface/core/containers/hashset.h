@@ -474,8 +474,6 @@ namespace hud
             {
                 hud::check(control_ptr_ != nullptr);
                 HD_ASSUME(control_ptr_ != nullptr);
-                hud::check(slot_ptr_ != nullptr);
-                HD_ASSUME(slot_ptr_ != nullptr);
             }
 
             /**
