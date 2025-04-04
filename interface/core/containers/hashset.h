@@ -606,7 +606,7 @@ namespace hud
                 // To satisfy the compiler, allocate controls and slots in two separate allocations
                 usize control_size {allocate_control_and_slot(max_slot_count_)};
 
-                // If constant evaluated context
+                // If constant evaluated context or when slot_type is not bitwise copy constructible
                 // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
                 // In a non constant evaluated context
                 // If type is trivially copy constructible, just memcpy control and slot
@@ -654,9 +654,17 @@ namespace hud
                     return;
 
                 free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                // Allocate the buffer that will contain controls and aligned slots
+                // In a constant-evaluated context, bit_cast cannot be used with pointers
+                // To satisfy the compiler, allocate controls and slots in two separate allocations
                 usize control_size {allocate_control_and_slot(max_slot_count_)};
 
-                if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
+                // If constant evaluated context or when slot_type is not bitwise copy constructible or when we allocate more memory than the copied set
+                // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
+                // In a non constant evaluated context
+                // If type is trivially copy constructible, just memcpy control and slot
+                // else do like grow_capacity
+                if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
                 {
                     // Set control to empty ending with sentinel
                     hud::memory::set(control_ptr_, control_size, empty_byte);
@@ -1162,7 +1170,7 @@ namespace hud
             /** The allocator. */
             allocator_type allocator_;
 
-            /** The control of the hashmap. */
+            /** The control of the hashmap. Initialized to sentinel. */
             control_type *control_ptr_ {const_cast<control_type *>(&INIT_GROUP[16])};
 
             /** Pointer to the slot segment. */
