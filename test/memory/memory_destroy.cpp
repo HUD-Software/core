@@ -12,7 +12,7 @@ GTEST_TEST(memory, destroy_trivial_type)
     auto test = []() -> ResultType
     {
         type to_destroy = 15;
-        hud::memory::destroy(&to_destroy);
+        hud::memory::destroy_object(&to_destroy);
         return to_destroy;
     };
 
@@ -46,7 +46,7 @@ GTEST_TEST(memory, destroy_trivially_destructible_type)
     {
         type to_destroy;
         to_destroy.i = 15;
-        hud::memory::destroy(&to_destroy);
+        hud::memory::destroy_object(&to_destroy);
         return to_destroy.i;
     };
 
@@ -77,7 +77,7 @@ GTEST_TEST(memory, destroy_non_trivially_destructible_type)
         type *to_destroy = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard(to_destroy, 1);
         hud::memory::construct_at(to_destroy, &is_destructor_called);
-        hud::memory::destroy(to_destroy);
+        hud::memory::destroy_object(to_destroy);
         return is_destructor_called;
     };
 
@@ -105,7 +105,7 @@ GTEST_TEST(memory, destroy_array_trivial_type)
     auto test = []() -> ResultType
     {
         type to_destroy[2] = {15, 30};
-        hud::memory::destroy_array(to_destroy, 2);
+        hud::memory::destroy_object_array(to_destroy, 2);
         return {to_destroy[0], to_destroy[1]};
     };
 
@@ -141,7 +141,7 @@ GTEST_TEST(memory, destroy_array_trivially_destructible_type)
         type to_destroy[2];
         to_destroy[0].i = 15;
         to_destroy[1].i = 30;
-        hud::memory::destroy_array(to_destroy, 2);
+        hud::memory::destroy_object_array(to_destroy, 2);
         return {to_destroy[0].i, to_destroy[1].i};
     };
 
@@ -176,7 +176,7 @@ GTEST_TEST(memory, destroy_array_non_trivially_destructible_type)
         hud::memory::construct_array_at(to_destroy, to_destroy + 2);
         to_destroy[0].set_ptr(value);
         to_destroy[1].set_ptr(value + 1);
-        hud::memory::destroy_array(to_destroy, 2);
+        hud::memory::destroy_object_array(to_destroy, 2);
         return {value[0], value[1]};
     };
 

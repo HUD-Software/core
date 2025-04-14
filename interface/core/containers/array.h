@@ -334,7 +334,7 @@ namespace hud
          */
         constexpr ~array() noexcept
         {
-            hud::memory::destroy_array(data(), count());
+            hud::memory::destroy_object_array(data(), count());
             allocator_().free(allocation_());
         }
 
@@ -692,7 +692,7 @@ namespace hud
             {
                 type_t *first_item_to_remove = data_at(index);
                 check(count_to_remove <= count()); // Remove more elements than possible
-                hud::memory::destroy_array(first_item_to_remove, count_to_remove);
+                hud::memory::destroy_object_array(first_item_to_remove, count_to_remove);
                 const usize remains = count() - count_to_remove;
                 const usize count_to_relocate_after = remains - index;
 
@@ -707,7 +707,7 @@ namespace hud
                     hud::memory::move_or_copy_construct_array(first_item_to_remove, first_items_to_relocate, count_to_remove);
                     // Relocate all elements left to keep element continuity
                     hud::memory::move_or_copy_assign_array(first_items_to_relocate, first_items_to_move, end_ptr);
-                    hud::memory::destroy_array(end_ptr, index);
+                    hud::memory::destroy_object_array(end_ptr, index);
                 }
                 end_ptr = allocation_().data_at(remains);
             }
@@ -725,7 +725,7 @@ namespace hud
                 check(index < count());
                 type_t *first_item_to_remove = data_at(index);
                 check(count_to_remove <= count()); // Remove more elements than possible
-                hud::memory::destroy_array(first_item_to_remove, count_to_remove);
+                hud::memory::destroy_object_array(first_item_to_remove, count_to_remove);
                 const usize remains = count() - count_to_remove;
 
                 if (remains > 0)
@@ -792,7 +792,7 @@ namespace hud
         {
             if (count() > 0)
             {
-                hud::memory::destroy_array(data(), count());
+                hud::memory::destroy_object_array(data(), count());
                 end_ptr = data();
             }
         }
@@ -805,7 +805,7 @@ namespace hud
         {
             if (count() > 0)
             {
-                hud::memory::destroy_array(data(), count());
+                hud::memory::destroy_object_array(data(), count());
                 free_to_null();
             }
         }
@@ -1158,7 +1158,7 @@ namespace hud
             if (max_count_requested > max_count())
             {
                 // Destroy existing
-                hud::memory::destroy_array(data(), count());
+                hud::memory::destroy_object_array(data(), count());
                 // Allocate a new allocation and copy construct source into it
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(max_count_requested);
                 hud::memory::copy_construct_array(new_allocation.data(), source, source_count);
@@ -1212,7 +1212,7 @@ namespace hud
             else
             {
                 hud::memory::copy_assign_array(data(), source, source_count);
-                hud::memory::destroy_array(data() + source_count, static_cast<usize>(-extra_to_construct));
+                hud::memory::destroy_object_array(data() + source_count, static_cast<usize>(-extra_to_construct));
             }
         }
 
@@ -1238,7 +1238,7 @@ namespace hud
             if (!hud::is_constant_evaluated() && hud::is_bitwise_move_assignable_v<type_t, u_type_t> && other.slack() >= min_slack)
             {
                 // Take ownership of the allocation and release ownership of the moved array
-                hud::memory::destroy_array(data(), count());
+                hud::memory::destroy_object_array(data(), count());
                 allocator_().free(allocation_());
                 allocation_() = other.allocation_().template reinterpret_cast_to<type_t>();
                 end_ptr = reinterpret_cast<type_t *>(other.end_ptr);
@@ -1255,7 +1255,7 @@ namespace hud
                 if (max_count_requested > max_count())
                 {
                     // Delete existing elements
-                    hud::memory::destroy_array(data(), count());
+                    hud::memory::destroy_object_array(data(), count());
                     memory_allocation_type new_allocation = allocator_().template allocate<type_t>(max_count_requested);
                     hud::memory::move_or_copy_construct_array(new_allocation.data(), other.data(), other.count());
                     free_allocation_and_replace_it(hud::move(new_allocation), other.count());
@@ -1279,7 +1279,7 @@ namespace hud
                         {
                             hud::memory::move_or_copy_assign_array(data(), other.data(), other.end_ptr);
                         }
-                        hud::memory::destroy_array(data() + other.count(), count() - other.count());
+                        hud::memory::destroy_object_array(data() + other.count(), count() - other.count());
                     }
                     end_ptr = allocation_().data_at(other.count());
                 }
@@ -1309,7 +1309,7 @@ namespace hud
             if (other.count() + min_slack > max_count())
             {
                 // Delete existing elements
-                hud::memory::destroy_array(data(), count());
+                hud::memory::destroy_object_array(data(), count());
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(other.count() + min_slack);
                 hud::memory::move_or_copy_construct_array(new_allocation.data(), other.data(), other.count());
                 free_allocation_and_replace_it(hud::move(new_allocation), other.count());
@@ -1334,7 +1334,7 @@ namespace hud
                     {
                         hud::memory::move_or_copy_assign_array(data(), other.data(), other.end_ptr);
                     }
-                    hud::memory::destroy_array(data() + other.count(), count() - other.count());
+                    hud::memory::destroy_object_array(data() + other.count(), count() - other.count());
                 }
 
                 end_ptr = allocation_().data_at(other.count());

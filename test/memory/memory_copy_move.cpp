@@ -66,7 +66,7 @@ GTEST_TEST(memory, move_pointer_to_buffer)
     auto test = [](u32 index_dest, u32 index_src) -> std::tuple<u8, u8, u8, u8>
     {
         u8 buf[4] = {2, 4, 8, 16};
-        hud::memory::move(buf + index_dest, buf + index_src, std::min(4 - index_src, 4 - index_dest) * sizeof(u8));
+        hud::memory::move_memory(buf + index_dest, buf + index_src, std::min(4 - index_src, 4 - index_dest) * sizeof(u8));
         return {buf[0], buf[1], buf[2], buf[3]};
     };
 

@@ -645,7 +645,7 @@ namespace hud
          * @return Pointer to the `buffer`.
          */
         template<typename type_t, usize buffer_size>
-        static constexpr type_t *set_memory_safe(type_t (&buffer)[buffer_size], const u8 value) noexcept
+        static HD_FORCEINLINE constexpr type_t *set_memory_safe(type_t (&buffer)[buffer_size], const u8 value) noexcept
         {
             return set_memory_safe(buffer, buffer_size * sizeof(type_t), value);
         }
@@ -662,17 +662,6 @@ namespace hud
         }
 
         /**
-         * Sets the first `size` bytes of the block of memory pointed by `destination` to zero.
-         * @param destination Pointer to the buffer. Must not be null.
-         * @param size Number of bytes to set to zero
-         * @return Pointer to the buffer `destination`.
-         */
-        static constexpr u8 *set_memory_zero(u8 *destination, const usize size) noexcept
-        {
-            return set_memory(destination, size, 0);
-        }
-
-        /**
          * Sets the first `size` integral `type_t` of the block of memory pointed by `destination` to zero.
          * @tparam type_t An integral type of destination
          * @param destination Pointer to the buffer. Must not be null.
@@ -681,7 +670,7 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_integral_v<type_t>)
-        static constexpr type_t *set_memory_zero(type_t *destination, const usize size) noexcept
+        static HD_FORCEINLINE constexpr type_t *set_memory_zero(type_t *destination, const usize size) noexcept
         {
             return set_memory(destination, size, 0);
         }
@@ -695,7 +684,7 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_pointer_v<type_t>)
-        static constexpr type_t *set_memory_zero(type_t *destination, const usize size) noexcept
+        static HD_FORCEINLINE constexpr type_t *set_memory_zero(type_t *destination, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
@@ -721,7 +710,7 @@ namespace hud
          * @return Pointer to the `buffer`.
          */
         template<typename type_t, usize buffer_size>
-        static constexpr type_t *set_memory_zero(type_t (&buffer)[buffer_size]) noexcept
+        static HD_FORCEINLINE constexpr type_t *set_memory_zero(type_t (&buffer)[buffer_size]) noexcept
         {
             return static_cast<type_t *>(set_memory_zero(buffer, buffer_size * sizeof(type_t)));
         }
@@ -747,7 +736,7 @@ namespace hud
          * @param size Number of bytes to set to zero
          * @return Pointer to the buffer `destination`.
          */
-        static constexpr u8 *set_memory_zero_safe(u8 *destination, const usize size) noexcept
+        static HD_FORCEINLINE constexpr u8 *set_memory_zero_safe(u8 *destination, const usize size) noexcept
         {
             return set_memory_safe(destination, size, 0);
         }
@@ -763,7 +752,7 @@ namespace hud
          */
         template<typename type_t>
         requires(!hud::is_integral_v<type_t> && !hud::is_pointer_v<type_t>)
-        static constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
+        static HD_FORCEINLINE type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
         {
             return set_memory_safe(destination, size, 0);
         }
@@ -779,7 +768,7 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_integral_v<type_t>)
-        static constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
+        static HD_FORCEINLINE constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
@@ -808,7 +797,7 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_pointer_v<type_t>)
-        static constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
+        static HD_FORCEINLINE constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
@@ -836,7 +825,7 @@ namespace hud
          * @return Pointer to the `buffer`.
          */
         template<typename type_t, usize buffer_size>
-        static constexpr type_t *set_memory_zero_safe(type_t (&buffer)[buffer_size]) noexcept
+        static HD_FORCEINLINE constexpr type_t *set_memory_zero_safe(type_t (&buffer)[buffer_size]) noexcept
         {
             return static_cast<type_t *>(set_memory_zero_safe(buffer, buffer_size * sizeof(type_t)));
         }
@@ -848,7 +837,7 @@ namespace hud
          * @param size Number of bytes to copy
          * @return destination pointer
          */
-        static HD_FORCEINLINE void *move(void *destination, const void *source, const usize size) noexcept
+        static HD_FORCEINLINE void *move_memory(void *destination, const void *source, const usize size) noexcept
         {
             // The behavior is undefined if either destination or source is an invalid or null pointer.
             check(destination != nullptr);
@@ -856,7 +845,7 @@ namespace hud
             return memmove(destination, source, size);
         }
 
-        static constexpr void *move(u8 *destination, const u8 *source, const usize size) noexcept
+        static constexpr void *move_memory(u8 *destination, const u8 *source, const usize size) noexcept
         {
 
             if (hud::is_constant_evaluated())
@@ -888,7 +877,7 @@ namespace hud
             // LCOV_EXCL_STOP
             else
             {
-                return move(static_cast<void *>(destination), static_cast<const void *>(source), size);
+                return move_memory(static_cast<void *>(destination), static_cast<const void *>(source), size);
             }
         }
 
@@ -1149,11 +1138,11 @@ namespace hud
         */
         template<typename type_t>
         requires(is_destructible_v<type_t> && !hud::is_pointer_v<type_t>)
-        static constexpr void destroy(type_t *obj) noexcept
+        static constexpr void destroy_object(type_t *obj) noexcept
         {
             if constexpr (!hud::is_trivially_destructible_v<type_t>)
             {
-                static_assert(hud::is_nothrow_destructible_v<type_t>, "type_t destructor is throwable.hud::memory::destroy is not designed to allow throwable destructible type");
+                static_assert(hud::is_nothrow_destructible_v<type_t>, "type_t destructor is throwable.hud::memory::destroy_object is not designed to allow throwable destructible type");
                 obj->~type_t();
             }
         }
@@ -1167,13 +1156,13 @@ namespace hud
          */
         template<typename type_t>
         requires(is_destructible_v<type_t>)
-        static constexpr void destroy_array([[maybe_unused]] type_t *address, [[maybe_unused]] usize count) noexcept
+        static constexpr void destroy_object_array([[maybe_unused]] type_t *address, [[maybe_unused]] usize count) noexcept
         {
             if constexpr (!hud::is_trivially_destructible_v<type_t>)
             {
                 while (count)
                 {
-                    hud::memory::destroy<type_t>(address);
+                    hud::memory::destroy_object<type_t>(address);
                     address++;
                     count--;
                 }
@@ -1235,7 +1224,7 @@ namespace hud
 
             if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t> && count > 0u)
             {
-                hud::memory::move(destination, source, count * sizeof(type_t));
+                hud::memory::move_memory(destination, source, count * sizeof(type_t));
             }
             else
             {
@@ -1325,7 +1314,7 @@ namespace hud
 
             if (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && hud::is_same_size_v<type_t, u_type_t> && !hud::is_constant_evaluated())
             {
-                hud::memory::move(destination, source, (end_source - source) * sizeof(type_t));
+                hud::memory::move_memory(destination, source, (end_source - source) * sizeof(type_t));
             }
             else
             {
@@ -1352,7 +1341,7 @@ namespace hud
         static constexpr void move_or_copy_construct_then_destroy(type_t *destination, u_type_t &&source) noexcept
         {
             hud::memory::construct_at<type_t, u_type_t>(destination, hud::forward<u_type_t>(source));
-            hud::memory::destroy<u_type_t>(&source);
+            hud::memory::destroy_object<u_type_t>(&source);
         }
 
         /**
@@ -1381,7 +1370,7 @@ namespace hud
             {
                 hud::memory::move_or_copy_construct_array<type_t, u_type_t>(destination, source, count);
             }
-            hud::memory::destroy_array<u_type_t>(source, count);
+            hud::memory::destroy_object_array<u_type_t>(source, count);
         }
 
         /**
@@ -1402,8 +1391,8 @@ namespace hud
         {
             if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             {
-                hud::memory::move(destination, source, count * sizeof(u_type_t));
-                hud::memory::destroy_array<u_type_t>(source, count);
+                hud::memory::move_memory(destination, source, count * sizeof(u_type_t));
+                hud::memory::destroy_object_array<u_type_t>(source, count);
             }
             else
             {

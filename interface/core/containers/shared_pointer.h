@@ -326,7 +326,7 @@ namespace hud
             /** Destroy the object by calling the destructor. */
             constexpr void destroy_object() noexcept final
             {
-                hud::memory::destroy(pointer());
+                hud::memory::destroy_object(pointer());
             }
 
         private:
@@ -367,7 +367,7 @@ namespace hud
             /** Destroy the object by calling the destructor. */
             constexpr void destroy_object() noexcept final
             {
-                hud::memory::destroy_array(pointer(), allocation.count());
+                hud::memory::destroy_object_array(pointer(), allocation.count());
                 hud::memory::free_align(pointer());
             }
 
