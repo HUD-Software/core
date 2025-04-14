@@ -176,13 +176,13 @@ namespace hud
                 }
 
                 [[nodiscard]]
-                friend constexpr bool operator==(const mask &a, const mask &b)
+                friend constexpr bool operator==(const mask &a, const mask &b) noexcept
                 {
                     return a.mask_value_ == b.mask_value_;
                 }
 
                 [[nodiscard]]
-                friend constexpr bool operator!=(const mask &a, const mask &b)
+                friend constexpr bool operator!=(const mask &a, const mask &b) noexcept
                 {
                     return !(a == b);
                 }
@@ -612,7 +612,7 @@ namespace hud
                 if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
                 {
                     // Set control to empty ending with sentinel
-                    hud::memory::set(control_ptr_, control_size, empty_byte);
+                    hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                     control_ptr_[max_slot_count_] = sentinel_byte;
 
                     // Copy slots to newly allocated buffer
@@ -665,7 +665,7 @@ namespace hud
                 if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
                 {
                     // Set control to empty ending with sentinel
-                    hud::memory::set(control_ptr_, control_size, empty_byte);
+                    hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                     control_ptr_[max_slot_count_] = sentinel_byte;
 
                     // Copy slots to newly allocated buffer
@@ -978,7 +978,7 @@ namespace hud
                 free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
 
                 // Set control to empty ending with sentinel
-                hud::memory::set(control_ptr_, control_size, empty_byte);
+                hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                 control_ptr_[max_slot_count_] = sentinel_byte;
 
                 // If we have elements, insert them to the new buffer

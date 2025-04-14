@@ -1,13 +1,13 @@
 #include <core/memory.h>
 
-GTEST_TEST(memory, copy_pointer_to_buffer)
+GTEST_TEST(memory, copy_memory_pointer_to_buffer)
 {
 
     auto test = []() -> std::tuple<u8, u8, u8, bool>
     {
         u8 buf[3] = {0, 0, 0};
         u8 buf_2[3] = {2, 4, 8};
-        u8 *dest = hud::memory::copy(buf, buf_2, 2 * sizeof(u8));
+        u8 *dest = hud::memory::copy_memory(buf, buf_2, 2 * sizeof(u8));
         return {buf[0], buf[1], buf[2], dest == buf};
     };
 
@@ -30,14 +30,14 @@ GTEST_TEST(memory, copy_pointer_to_buffer)
     }
 }
 
-GTEST_TEST(memory, copy_c_arary)
+GTEST_TEST(memory, copy_memory_c_arary)
 {
 
     auto test = []() -> std::tuple<u8, u8, u8, bool>
     {
         u8 buf[3] = {0, 0, 0};
         u8 buf_2[3] = {2, 4, 8};
-        u8 *dest = hud::memory::copy(buf, buf_2);
+        u8 *dest = hud::memory::copy_memory(buf, buf_2);
         return {buf[0], buf[1], buf[2], dest == buf};
     };
 

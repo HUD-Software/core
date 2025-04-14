@@ -330,7 +330,7 @@ GTEST_TEST(memory_allocation, range_for_loop)
 
     const hud::memory_allocation<i32> &slice_const = slice;
     index = 0;
-    hud::memory::set_zero(result);
+    hud::memory::set_memory_zero_safe(result);
 
     // constexpr ConstIterator begin() const noexcept
     // constexpr ConstIterator end() const noexcept

@@ -190,7 +190,7 @@ namespace hud
             void *buffer = allocate(size);
             if (buffer != nullptr) [[likely]]
             {
-                set_zero(buffer, size);
+                set_memory_zero(buffer, size);
             }
             return buffer;
         }
@@ -243,7 +243,7 @@ namespace hud
             void *buffer = allocate_align(size, alignment);
             if (buffer != nullptr) [[likely]]
             {
-                set_zero(buffer, size);
+                set_memory_zero(buffer, size);
             }
             return buffer;
         }
@@ -359,7 +359,7 @@ namespace hud
                 // Realloc alignment mean realloc and copy the data
                 void *aligned_pointer = allocate_align(size, alignment);
                 // Copy the current data to the new buffer
-                copy(aligned_pointer, pointer, size_to_copy);
+                copy_memory(aligned_pointer, pointer, size_to_copy);
                 free_align(pointer);
                 return aligned_pointer;
             }
@@ -381,7 +381,7 @@ namespace hud
          * @param size Number of bytes to copy
          * @return destination pointer
          */
-        static void *copy(void *destination, const void *source, const usize size) noexcept
+        static void *copy_memory(void *destination, const void *source, const usize size) noexcept
         {
             // The behavior is undefined if either destination or source is an invalid or null pointer.
             check(destination != nullptr);
@@ -397,29 +397,35 @@ namespace hud
                 check(!(src_addr >= dest_addr && src_addr < dest_addr + size));
             }
 
-            return memcpy(destination, source, size);
+            return ::memcpy(destination, source, size);
         }
 
+        /**
+         * Copy block of memory. Do not support overlapped buffer. Use move to support overlapped buffer.
+         * @tparam type_t An integral
+         * @param destination Pointer to the destination array where the content is to be copied
+         * @param source Pointer to the source of data to be copied
+         * @param size Number of bytes to copy
+         * @return destination pointer
+         */
         template<typename type_t>
-        requires(sizeof(type_t) == 1)
-        static constexpr type_t *copy(type_t *destination, const type_t *source, const usize size) noexcept
+        requires(hud::is_integral_v<type_t>)
+        static constexpr type_t *copy_memory(type_t *destination, const type_t *source, const usize size) noexcept
         {
+            static_assert(hud::is_bitwise_copy_constructible_v<type_t> && hud::is_bitwise_copy_assignable_v<type_t>, "copy_memory should be called only on type that is bitwise copy constructible and assignable");
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
             {
-                type_t *dest = destination;
-                for (usize position = 0; position < size; position++)
+                for (usize position = 0; position < size; ++position)
                 {
-                    std::construct_at(destination, *source);
-                    destination++;
-                    source++;
+                    destination[position] = source[position];
                 }
-                return dest;
+                return destination;
             }
             // LCOV_EXCL_STOP
             else
             {
-                return static_cast<type_t *>(copy(static_cast<void *>(destination), static_cast<const void *>(source), size));
+                return static_cast<type_t *>(copy_memory(static_cast<void *>(destination), static_cast<const void *>(source), size));
             }
         }
 
@@ -431,45 +437,75 @@ namespace hud
          * @return destination pointer
          */
         template<typename type_t, usize buffer_size>
-        static constexpr type_t *copy(type_t (&destination)[buffer_size], const type_t (&source)[buffer_size]) noexcept
+        static constexpr type_t *copy_memory(type_t (&destination)[buffer_size], const type_t (&source)[buffer_size]) noexcept
         {
-            return copy(destination, source, buffer_size * sizeof(type_t));
+            return copy_memory(destination, source, buffer_size * sizeof(type_t));
         }
 
         /**
          * Sets the first size bytes of the block of memory pointed by destination to the specified value.
-         * @param destination Pointer to the buffer
-         * @param size Number of bytes to set to the value
-         * @param value The value to be set
-         * @return Pointer to the buffer @p destination
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of bytes to set to the specified `value`.
+         * @param value The value to be set in the buffer `destination`.
+         * @return Pointer to the buffer `destination`.
          */
-        static HD_FORCEINLINE void *set(void *destination, const usize size, const u8 value) noexcept
+        static HD_FORCEINLINE void *set_memory(void *destination, const usize size, const u8 value) noexcept
         {
             // The behavior is undefined if destination is a null pointer.
             check(destination != nullptr);
             return memset(destination, value, size);
         }
 
-        static constexpr void set(u8 *destination, const usize size, const u8 value) noexcept
+        /**
+         * Sets the first size bytes of the block of memory pointed by destination to the specified value.
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of u8 to set to the specified `value`.
+         * @param value The value to be set in the buffer `destination`.
+         * @return Pointer to the buffer `destination`.
+         */
+        static constexpr u8 *set_memory(u8 *destination, const usize size, const u8 value) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size; position++)
+                for (usize position = 0; position < size; ++position)
                 {
-                    std::construct_at(destination + position, value);
+                    destination[position] = value;
                 }
+                return destination;
             }
             // LCOV_EXCL_STOP
             else
             {
-                set(static_cast<void *>(destination), size, value);
+                return static_cast<u8 *>(set_memory(static_cast<void *>(destination), size, value));
             }
         }
 
+        /**
+         * Sets the first `size` `type_t` that is not a integral type of the block of memory pointed to by `destination` to the specified `value`.
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of type_t to set to the specified `value`.
+         * @param value The value to be set in the buffer `destination`.
+         * @return Pointer to the buffer `destination`.
+         */
         template<typename type_t>
-        static constexpr void set(type_t *destination, const usize size, const u8 value) noexcept
-        requires(is_integral_v<type_t>)
+        requires(!hud::is_integral_v<type_t>)
+        static type_t *set_memory(type_t *destination, const usize size, const u8 value) noexcept
+        {
+            return static_cast<type_t *>(set_memory(static_cast<void *>(destination), size, value));
+        }
+
+        /**
+         * Sets the first `size` integral `type_t` of the block of memory pointed by `destination` to the specified `value`.
+         * @tparam type_t An integral type of destination
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of type_t to set to the specified `value`.
+         * @param value The value to be set in the buffer `destination`.
+         * @return Pointer to the buffer `destination`.
+         */
+        template<typename type_t>
+        requires(hud::is_integral_v<type_t>)
+        static constexpr type_t *set_memory(type_t *destination, const usize size, const u8 value) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
@@ -478,23 +514,28 @@ namespace hud
                 {
                     std::construct_at(destination + position, value);
                 }
+                return destination;
             }
             // LCOV_EXCL_STOP
             else
             {
-                set(static_cast<void *>(destination), size, value);
+                return static_cast<type_t *>(set_memory(static_cast<void *>(destination), size, value));
             }
         }
 
         /**
          * Sets the block of memory referenced by buffer to the specified value.
-         * @param buffer The buffer memory to set to value
-         * @param value The value to be set
+         * @tparam type_t An integral type of `buffer`
+         * @tparam buffer_size Size of the `buffer`. Must not be null.
+         * @param buffer The buffer memory to set to `value`
+         * @param value The value to be set in the `buffer`.
+         * @return Pointer to the `buffer`.
          */
         template<typename type_t, usize buffer_size>
-        static constexpr void set(type_t (&buffer)[buffer_size], const u8 value) noexcept
+        requires(hud::is_integral_v<type_t>)
+        static constexpr void *set_memory(type_t (&buffer)[buffer_size], const u8 value) noexcept
         {
-            set(buffer, buffer_size * sizeof(type_t), value);
+            return set_memory(buffer, buffer_size * sizeof(type_t), value);
         }
 
         /**
@@ -503,10 +544,10 @@ namespace hud
          * `destination` is volatile to prevent memset to be remove by the compiler optimisation
          * @param destination Pointer to the memory buffer. Must not be null.
          * @param size Number of bytes to set to the specified `value`.
-         * @param value The value to be set in the buffer.
+         * @param value The value to be set in the buffer `destination`.
          * @return Pointer to the buffer `destination`.
          */
-        static HD_FORCEINLINE void *set_safe(void *destination, const usize size, const u8 value) noexcept
+        static HD_FORCEINLINE void *set_memory_safe(void *destination, const usize size, const u8 value) noexcept
         {
             // The behavior is undefined if destination is a null pointer.
             check(destination != nullptr);
@@ -520,26 +561,62 @@ namespace hud
             // return destination;
         }
 
-        static constexpr void set_safe(u8 *destination, const usize size, const u8 value) noexcept
+        /**
+         * Sets the first `size` bytes of the block of memory pointed to by `destination` to the specified `value`.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of u8 to set to the specified `value`.
+         * @param value The value to be set in the buffer `destination`.
+         * @return Pointer to the buffer `destination`.
+         */
+        static constexpr u8 *set_memory_safe(u8 *destination, const usize size, const u8 value) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size; position++)
                 {
-                    std::construct_at(destination + position, value);
+                    destination[position] = value;
                 }
+                return destination;
             }
             // LCOV_EXCL_STOP
             else
             {
-                set_safe(static_cast<void *>(destination), size, value);
+                return static_cast<u8 *>(set_memory_safe(static_cast<void *>(destination), size, value));
             }
         }
 
+        /**
+         * Sets the first `size` `type_t` that is not a integral type of the block of memory pointed to by `destination` to the specified `value`.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of type_t to set to the specified `value`.
+         * @param value The value to be set in the buffer `destination`.
+         * @return Pointer to the buffer `destination`.
+         */
         template<typename type_t>
-        static constexpr void set_safe(type_t *destination, const usize size, const u8 value) noexcept
-        requires(is_integral_v<type_t>)
+        requires(!hud::is_integral_v<type_t>)
+        static type_t *set_memory_safe(type_t *destination, const usize size, const u8 value) noexcept
+        {
+            return static_cast<type_t *>(set_memory_safe(static_cast<void *>(destination), size, value));
+        }
+
+        /**
+         * Sets the first `size` integral `type_t` of the block of memory pointed to by `destination` to the specified `value`.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @tparam type_t An integral type of destination
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of type_t to set to the specified `value`.
+         * @param value The value to be set in the buffer `destination`.
+         * @return Pointer to the buffer `destination`.
+         */
+        template<typename type_t>
+        requires(hud::is_integral_v<type_t>)
+        static constexpr type_t *set_memory_safe(type_t *destination, const usize size, const u8 value) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
@@ -548,50 +625,77 @@ namespace hud
                 {
                     std::construct_at(destination + position, value);
                 }
+                return destination;
             }
             // LCOV_EXCL_STOP
             else
             {
-                set_safe(static_cast<void *>(destination), size, value);
+                return static_cast<type_t *>(set_memory_safe(static_cast<void *>(destination), size, value));
             }
         }
 
         /**
-         * Sets the block of memory referenced by buffer to the specified value.
-         * @param buffer The buffer memory to set to value
-         * @param value The value to be set
+         * Sets the block of memory referenced by `buffer` to the specified `value`.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @tparam type_t An integral type of `buffer`
+         * @tparam buffer_size Size of the `buffer`
+         * @param buffer The buffer memory to set to `value`. Must not be null.
+         * @param value The value to be set in the `buffer`.
+         * @return Pointer to the `buffer`.
          */
         template<typename type_t, usize buffer_size>
-        static constexpr void set_safe(type_t (&buffer)[buffer_size], const u8 value) noexcept
+        static constexpr type_t *set_memory_safe(type_t (&buffer)[buffer_size], const u8 value) noexcept
         {
-            set_safe(buffer, buffer_size * sizeof(type_t), value);
+            return set_memory_safe(buffer, buffer_size * sizeof(type_t), value);
         }
 
         /**
-         * Sets the first size bytes of the block of memory pointed by destination to zero.
-         * @param destination Pointer to the buffer
+         * Sets the first `size` bytes of the block of memory pointed by `destination` to zero.
+         * @param destination Pointer to the buffer. Must not be null.
          * @param size Number of bytes to set to zero
+         * @return Pointer to the buffer `destination`.
          */
-        static HD_FORCEINLINE void set_zero(void *destination, const usize size) noexcept
+        static HD_FORCEINLINE void *set_memory_zero(void *destination, const usize size) noexcept
         {
-            set(destination, size, 0);
+            return set_memory(destination, size, 0);
         }
 
-        static constexpr void set_zero(u8 *destination, const usize size) noexcept
+        /**
+         * Sets the first `size` bytes of the block of memory pointed by `destination` to zero.
+         * @param destination Pointer to the buffer. Must not be null.
+         * @param size Number of bytes to set to zero
+         * @return Pointer to the buffer `destination`.
+         */
+        static constexpr u8 *set_memory_zero(u8 *destination, const usize size) noexcept
         {
-            set(destination, size, 0);
+            return set_memory(destination, size, 0);
         }
 
+        /**
+         * Sets the first `size` integral `type_t` of the block of memory pointed by `destination` to zero.
+         * @tparam type_t An integral type of destination
+         * @param destination Pointer to the buffer. Must not be null.
+         * @param size Number of bytes to set to zero
+         * @return Pointer to the buffer `destination`.
+         */
         template<typename type_t>
-        requires(is_integral_v<type_t>)
-        static constexpr void set_zero(type_t *destination, const usize size) noexcept
+        requires(hud::is_integral_v<type_t>)
+        static constexpr type_t *set_memory_zero(type_t *destination, const usize size) noexcept
         {
-            set(destination, size, 0);
+            return set_memory(destination, size, 0);
         }
 
+        /**
+         * Sets the first `size` pointer to `type_t` of the block of memory pointed to by `destination` to zero.
+         * @tparam type_t An pointer type of destination
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of type_t to set to zero.
+         * @return Pointer to the buffer `destination`.
+         */
         template<typename type_t>
         requires(hud::is_pointer_v<type_t>)
-        static constexpr void set_zero(type_t *destination, const usize size) noexcept
+        static constexpr type_t *set_memory_zero(type_t *destination, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
@@ -600,22 +704,141 @@ namespace hud
                 {
                     std::construct_at(destination + position, nullptr);
                 }
+                return destination;
             }
             // LCOV_EXCL_STOP
             else
             {
-                set(static_cast<void *>(destination), size, 0);
+                return static_cast<type_t *>(set_memory_zero(static_cast<void *>(destination), size));
             }
         }
 
         /**
-         * Set a block of memory referenced by buffer to zero.
-         * @param buffer The buffer memory to set to zero
+         * Sets the block of memory referenced by `buffer` to the specified `value`.
+         * @tparam type_t An integral type of `buffer`
+         * @tparam buffer_size Size of the `buffer`
+         * @param buffer The buffer memory to set to `value`. Must not be null.
+         * @return Pointer to the `buffer`.
          */
         template<typename type_t, usize buffer_size>
-        static constexpr void set_zero(type_t (&buffer)[buffer_size]) noexcept
+        static constexpr type_t *set_memory_zero(type_t (&buffer)[buffer_size]) noexcept
         {
-            set_zero(buffer, buffer_size * sizeof(type_t));
+            return static_cast<type_t *>(set_memory_zero(buffer, buffer_size * sizeof(type_t)));
+        }
+
+        /**
+         * Sets the first `size` bytes of the block of memory pointed by `destination` to zero.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @param destination Pointer to the buffer. Must not be null.
+         * @param size Number of bytes to set to zero
+         * @return Pointer to the buffer `destination`.
+         */
+        static HD_FORCEINLINE void *set_memory_zero_safe(void *destination, const usize size) noexcept
+        {
+            return set_memory_safe(destination, size, 0);
+        }
+
+        /**
+         * Sets the first `size` bytes of the block of memory pointed by `destination` to zero.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @param destination Pointer to the buffer. Must not be null.
+         * @param size Number of bytes to set to zero
+         * @return Pointer to the buffer `destination`.
+         */
+        static constexpr u8 *set_memory_zero_safe(u8 *destination, const usize size) noexcept
+        {
+            return set_memory_safe(destination, size, 0);
+        }
+
+        /**
+         * Sets the first `size` bytes of the block of memory pointed to by `destination` where `type_t` is not an integral or pointer type to zero.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @tparam type_t An integral type of destination
+         * @param destination Pointer to the buffer. Must not be null.
+         * @param size Number of bytes to set to zero
+         * @return Pointer to the buffer `destination`.
+         */
+        template<typename type_t>
+        requires(!hud::is_integral_v<type_t> && !hud::is_pointer_v<type_t>)
+        static constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
+        {
+            return set_memory_safe(destination, size, 0);
+        }
+
+        /**
+         * Sets the first `size` integral `type_t` of the block of memory pointed to by `destination` to zero.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @tparam type_t An pointer type of destination
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of type_t to set to zero.
+         * @return Pointer to the buffer `destination`.
+         */
+        template<typename type_t>
+        requires(hud::is_integral_v<type_t>)
+        static constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
+        {
+            if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
+            {
+                for (usize position = 0; position < size / sizeof(type_t); position++)
+                {
+                    std::construct_at(destination + position, 0);
+                }
+                return destination;
+            }
+            // LCOV_EXCL_STOP
+            else
+            {
+                return static_cast<type_t *>(set_memory_safe(static_cast<void *>(destination), size, 0));
+            }
+        }
+
+        /**
+         * Sets the first `size` pointer to `type_t` of the block of memory pointed to by `destination` to zero.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @tparam type_t An pointer type of destination
+         * @param destination Pointer to the memory buffer. Must not be null.
+         * @param size Number of type_t to set to zero.
+         * @return Pointer to the buffer `destination`.
+         */
+        template<typename type_t>
+        requires(hud::is_pointer_v<type_t>)
+        static constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
+        {
+            if (hud::is_constant_evaluated())
+            // LCOV_EXCL_START
+            {
+                for (usize position = 0; position < size / sizeof(type_t); position++)
+                {
+                    std::construct_at(destination + position, nullptr);
+                }
+                return destination;
+            }
+            // LCOV_EXCL_STOP
+            else
+            {
+                return static_cast<type_t *>(set_memory_zero_safe(static_cast<void *>(destination), size));
+            }
+        }
+
+        /**
+         * Sets the block of memory referenced by `buffer` to the specified `value`.
+         * This safe version ensures that the operation is not removed by the compiler due to optimization.
+         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
+         * @tparam type_t An integral type of `buffer`
+         * @tparam buffer_size Size of the `buffer`
+         * @param buffer The buffer memory to set to `value`. Must not be null.
+         * @return Pointer to the `buffer`.
+         */
+        template<typename type_t, usize buffer_size>
+        static constexpr type_t *set_memory_zero_safe(type_t (&buffer)[buffer_size]) noexcept
+        {
+            return static_cast<type_t *>(set_memory_zero_safe(buffer, buffer_size * sizeof(type_t)));
         }
 
         /**
@@ -792,18 +1015,18 @@ namespace hud
         }
 
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
-        [[nodiscard]] static constexpr u32 unaligned_load32(const ansichar *buffer)
+        [[nodiscard]] static constexpr u32 unaligned_load32(const ansichar *buffer) noexcept
         {
             ansichar result[sizeof(u32)];
-            copy(result, buffer, sizeof(u32));
+            copy_memory(result, buffer, sizeof(u32));
             return hud::bit_cast<u32>(result);
         }
 
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
-        [[nodiscard]] static constexpr u64 unaligned_load64(const ansichar *buffer)
+        [[nodiscard]] static constexpr u64 unaligned_load64(const ansichar *buffer) noexcept
         {
             ansichar result[sizeof(u64)];
-            copy(result, buffer, sizeof(u64));
+            copy_memory(result, buffer, sizeof(u64));
             return hud::bit_cast<u64>(result);
         }
 
@@ -811,7 +1034,7 @@ namespace hud
         [[nodiscard]] static constexpr u64 unaligned_load64(const u8 *buffer) noexcept
         {
             u8 result[sizeof(u64)];
-            copy(result, buffer, sizeof(u64));
+            copy_memory(result, buffer, sizeof(u64));
             return hud::bit_cast<u64>(result);
         }
 
@@ -819,7 +1042,7 @@ namespace hud
         [[nodiscard]] static constexpr u64 unaligned_load64(const i8 *buffer) noexcept
         {
             i8 result[sizeof(u64)];
-            copy(result, buffer, sizeof(u64));
+            copy_memory(result, buffer, sizeof(u64));
             return hud::bit_cast<u64>(result);
         }
 
@@ -911,7 +1134,7 @@ namespace hud
             static_assert(hud::is_nothrow_default_constructible_v<type_t>, "type_t default constructor is throwable.hud::memory::default_construct is not designed to allow throwable default constructible type");
             if (!hud::is_constant_evaluated() && hud::is_trivially_default_constructible_v<type_t>)
             {
-                hud::memory::set_zero(begin, (end - begin) * sizeof(type_t));
+                hud::memory::set_memory_zero(begin, (end - begin) * sizeof(type_t));
             }
             else
             {
@@ -973,7 +1196,7 @@ namespace hud
             static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) copy constructor is throwable.hud::memory::copy_construct_array is not designed to allow throwable copy constructible type");
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && count > 0u)
             {
-                hud::memory::copy(destination, source, count * sizeof(type_t));
+                hud::memory::copy_memory(destination, source, count * sizeof(type_t));
             }
             else
             {
@@ -1040,7 +1263,7 @@ namespace hud
         {
             if (hud::is_bitwise_copy_assignable_v<type_t, u_type_t> && !hud::is_constant_evaluated())
             {
-                hud::memory::copy(destination, source, count * sizeof(type_t));
+                hud::memory::copy_memory(destination, source, count * sizeof(type_t));
             }
             else
             {
@@ -1152,7 +1375,7 @@ namespace hud
             // This performs better that using move semantic that we do a memory move instead
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t>)
             {
-                hud::memory::copy(destination, source, count * sizeof(type_t));
+                hud::memory::copy_memory(destination, source, count * sizeof(type_t));
             }
             else
             {

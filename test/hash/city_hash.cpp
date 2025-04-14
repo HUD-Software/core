@@ -23,7 +23,7 @@ GTEST_TEST(cityhash, hash32)
     hud_assert_eq(CityHash32(nullptr, 0), hash_nullptr);
 
     ansichar key[256];
-    hud::memory::set_zero(key);
+    hud::memory::set_memory_zero_safe(key);
 
     for (u8 i = 0; i < hud::u8_max; i++)
     {
@@ -62,7 +62,7 @@ GTEST_TEST(cityhash, hash64)
     hud_assert_eq(hud::hash_algorithm::city_hash::hash_64(nullptr, 0), 0X9AE16A3B2F90404Full);
 
     ansichar key[256];
-    hud::memory::set_zero(key);
+    hud::memory::set_memory_zero_safe(key);
 
     for (usize i = 0; i < 256; i++)
     {
@@ -101,7 +101,7 @@ GTEST_TEST(cityhash, hash128)
 
     ansichar key[256];
 
-    hud::memory::set_zero(key);
+    hud::memory::set_memory_zero_safe(key);
 
     for (usize i = 0; i < 256; i++)
     {

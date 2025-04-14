@@ -5717,9 +5717,9 @@ GTEST_TEST(array, copy_assign_array_same_allocator_call_destructor_of_elements)
             if (count_in_assigned > 0)
             {
                 dtor_assigned_counter = hud::memory::allocate_array<i32>(count_in_assigned);
-                hud::memory::set_zero(dtor_assigned_counter, count_in_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_assigned_counter, count_in_assigned * sizeof(i32));
                 dtor_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_in_assigned);
-                hud::memory::set_zero(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
+                hud::memory::set_memory_zero_safe(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
                 for (usize index = 0; index < count_in_assigned; index++)
                 {
                     dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
@@ -5734,9 +5734,9 @@ GTEST_TEST(array, copy_assign_array_same_allocator_call_destructor_of_elements)
             if (count_to_assigned > 0)
             {
                 dtor_to_assigned_counter = hud::memory::allocate_array<i32>(count_to_assigned);
-                hud::memory::set_zero(dtor_to_assigned_counter, count_to_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_counter, count_to_assigned * sizeof(i32));
                 dtor_to_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_to_assigned);
-                hud::memory::set_zero(dtor_to_assigned_ptr_counter, count_to_assigned * sizeof(i32 *));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_ptr_counter, count_to_assigned * sizeof(i32 *));
                 for (usize index = 0; index < count_to_assigned; index++)
                 {
                     dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;
@@ -5924,9 +5924,9 @@ GTEST_TEST(array, copy_assign_array_same_allocator_call_destructor_of_elements)
             if (count_in_assigned > 0)
             {
                 dtor_assigned_counter = hud::memory::allocate_array<i32>(count_in_assigned);
-                hud::memory::set_zero(dtor_assigned_counter, count_in_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_assigned_counter, count_in_assigned * sizeof(i32));
                 dtor_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_in_assigned);
-                hud::memory::set_zero(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
+                hud::memory::set_memory_zero_safe(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
                 for (usize index = 0; index < count_in_assigned; index++)
                 {
                     dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
@@ -5941,9 +5941,9 @@ GTEST_TEST(array, copy_assign_array_same_allocator_call_destructor_of_elements)
             if (count_to_assign > 0)
             {
                 dtor_to_assigned_counter = hud::memory::allocate_array<i32>(count_to_assign);
-                hud::memory::set_zero(dtor_to_assigned_counter, count_to_assign * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_counter, count_to_assign * sizeof(i32));
                 dtor_to_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_to_assign);
-                hud::memory::set_zero(dtor_to_assigned_ptr_counter, count_to_assign * sizeof(i32 *));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_ptr_counter, count_to_assign * sizeof(i32 *));
                 for (usize index = 0; index < count_to_assign; index++)
                 {
                     dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;
@@ -6397,9 +6397,9 @@ GTEST_TEST(array, copy_assign_array_different_allocator_call_destructor_of_eleme
             if (count_in_assigned > 0)
             {
                 dtor_assigned_counter = hud::memory::allocate_array<i32>(count_in_assigned);
-                hud::memory::set_zero(dtor_assigned_counter, count_in_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_assigned_counter, count_in_assigned * sizeof(i32));
                 dtor_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_in_assigned);
-                hud::memory::set_zero(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
+                hud::memory::set_memory_zero_safe(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
                 for (usize index = 0; index < count_in_assigned; index++)
                 {
                     dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
@@ -6414,9 +6414,9 @@ GTEST_TEST(array, copy_assign_array_different_allocator_call_destructor_of_eleme
             if (count_to_assigned > 0)
             {
                 dtor_to_assigned_counter = hud::memory::allocate_array<i32>(count_to_assigned);
-                hud::memory::set_zero(dtor_to_assigned_counter, count_to_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_counter, count_to_assigned * sizeof(i32));
                 dtor_to_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_to_assigned);
-                hud::memory::set_zero(dtor_to_assigned_ptr_counter, count_to_assigned * sizeof(i32 *));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_ptr_counter, count_to_assigned * sizeof(i32 *));
                 for (usize index = 0; index < count_to_assigned; index++)
                 {
                     dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;
@@ -6604,9 +6604,9 @@ GTEST_TEST(array, copy_assign_array_different_allocator_call_destructor_of_eleme
             if (count_in_assigned > 0)
             {
                 dtor_assigned_counter = hud::memory::allocate_array<i32>(count_in_assigned);
-                hud::memory::set_zero(dtor_assigned_counter, count_in_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_assigned_counter, count_in_assigned * sizeof(i32));
                 dtor_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_in_assigned);
-                hud::memory::set_zero(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
+                hud::memory::set_memory_zero_safe(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
                 for (usize index = 0; index < count_in_assigned; index++)
                 {
                     dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
@@ -6621,9 +6621,9 @@ GTEST_TEST(array, copy_assign_array_different_allocator_call_destructor_of_eleme
             if (count_to_assign > 0)
             {
                 dtor_to_assigned_counter = hud::memory::allocate_array<i32>(count_to_assign);
-                hud::memory::set_zero(dtor_to_assigned_counter, count_to_assign * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_counter, count_to_assign * sizeof(i32));
                 dtor_to_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_to_assign);
-                hud::memory::set_zero(dtor_to_assigned_ptr_counter, count_to_assign * sizeof(i32 *));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_ptr_counter, count_to_assign * sizeof(i32 *));
                 for (usize index = 0; index < count_to_assign; index++)
                 {
                     dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;

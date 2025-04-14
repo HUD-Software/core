@@ -291,7 +291,7 @@ namespace hud
             // This optimization works only if allocator do not share the same memory allocation, this case is not used in the engine
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             {
-                hud::memory::copy(data(), other.data(), byte_count());
+                hud::memory::copy_memory(data(), other.data(), byte_count());
             }
             else
             {
@@ -319,7 +319,7 @@ namespace hud
             // This optimization works only if allocator do not share the same memory buffer, this case is not used in the engine
             if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             {
-                hud::memory::copy(data(), other.data(), byte_count());
+                hud::memory::copy_memory(data(), other.data(), byte_count());
             }
             else
             {

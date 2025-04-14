@@ -59,7 +59,7 @@ namespace hud::common
         /** Reset the uuid with all components to zero. Making it invalid*/
         void reset() noexcept
         {
-            hud::memory::set_zero(this, sizeof(uuid));
+            hud::memory::set_memory_zero(this, sizeof(uuid));
         }
 
         /**
@@ -69,7 +69,7 @@ namespace hud::common
          */
         uuid &operator=(const uuid &other) noexcept
         {
-            hud::memory::copy(this, &other, sizeof(uuid));
+            hud::memory::copy_memory(this, &other, sizeof(uuid));
             return *this;
         }
 

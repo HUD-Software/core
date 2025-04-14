@@ -13,7 +13,7 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         i32 destructor_called[5];
         array_type array;
         array.reserve(5);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
         array.emplace_back(0, &destructor_called[0]);
         array.emplace_back(1, &destructor_called[1]);
         array.emplace_back(2, &destructor_called[2]);
@@ -85,7 +85,7 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_false(destructor_called[2]);
         hud_assert_false(destructor_called[3]);
         hud_assert_false(destructor_called[4]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
 
         // Should remove at the middle without shrinking
         array.remove_at(1);
@@ -114,7 +114,7 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_true(destructor_called[2]);
         hud_assert_false(destructor_called[3]);
         hud_assert_true(destructor_called[4]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
 
         // Should remove at the end without shrinking
         array.remove_at(array.count() - 1);
@@ -147,7 +147,7 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         array_type array;
         array.reserve(8);
 
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
         array.emplace_back(0, &destructor_called[0]);
         array.emplace_back(1, &destructor_called[1]);
         array.emplace_back(2, &destructor_called[2]);
@@ -250,7 +250,7 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_false(destructor_called[5]);
         hud_assert_false(destructor_called[6]);
         hud_assert_false(destructor_called[7]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
 
         // Should remove at the middle without shrinking
         array.remove_at(1, 2);
@@ -287,7 +287,7 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_false(destructor_called[5]);
         hud_assert_true(destructor_called[6]);
         hud_assert_false(destructor_called[7]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
 
         // Should remove at the end without shrinking
         array.remove_at(array.count() - 2, 2);
@@ -314,7 +314,7 @@ GTEST_TEST(array, remove_at_non_trivial_type)
         hud_assert_false(destructor_called[5]);
         hud_assert_true(destructor_called[6]);
         hud_assert_true(destructor_called[7]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
     }
 }
 
@@ -462,7 +462,7 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
         i32 destructor_called[5];
         array_type array;
         array.reserve(5);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
         array.emplace_back(0, &destructor_called[0]);
         array.emplace_back(1, &destructor_called[1]);
         array.emplace_back(2, &destructor_called[2]);
@@ -533,7 +533,7 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
         hud_assert_true(destructor_called[2]);
         hud_assert_true(destructor_called[3]);
         hud_assert_true(destructor_called[4]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
 
         // Should remove at the middle then shrink
         array.remove_at_shrink(1);
@@ -563,7 +563,7 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
         hud_assert_true(destructor_called[2]);
         hud_assert_true(destructor_called[3]);
         hud_assert_true(destructor_called[4]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
 
         // Should remove at the end then shrink
         array.remove_at_shrink(array.count() - 1);
@@ -587,7 +587,7 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
         hud_assert_false(destructor_called[2]);
         hud_assert_true(destructor_called[3]);
         hud_assert_true(destructor_called[4]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
     }
 
     // remove_at(const index index, const usize count_to_remove)
@@ -596,7 +596,7 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
         i32 destructor_called[8];
         array_type array;
         array.reserve(8);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
         array.emplace_back(0, &destructor_called[0]);
         array.emplace_back(1, &destructor_called[1]);
         array.emplace_back(2, &destructor_called[2]);
@@ -697,7 +697,7 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
         hud_assert_true(destructor_called[5]);
         hud_assert_true(destructor_called[6]);
         hud_assert_true(destructor_called[7]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
 
         // Should remove at the middle then shrink
         array.remove_at_shrink(1, 2);
@@ -734,7 +734,7 @@ GTEST_TEST(array, remove_at_shrink_non_trivial_type)
         hud_assert_true(destructor_called[5]);
         hud_assert_true(destructor_called[6]);
         hud_assert_true(destructor_called[7]);
-        hud::memory::set_zero(destructor_called);
+        hud::memory::set_memory_zero_safe(destructor_called);
 
         // Should remove at the end then shrink
         array.remove_at_shrink(array.count() - 2, 2);

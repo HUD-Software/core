@@ -987,7 +987,7 @@ GTEST_TEST(cstring, length_safe_with_max_length_greater_than_RSIZE_MAX_STR)
 GTEST_TEST(cstring, length_safe_without_null_terminated_character)
 {
     ansichar MAX_STR_WITHOUT_NULL_TERMINATED[hud::cstring::RSIZE_MAX_STR + 1u];
-    hud::memory::set(MAX_STR_WITHOUT_NULL_TERMINATED, 'a');
+    hud::memory::set_memory_safe(MAX_STR_WITHOUT_NULL_TERMINATED, 'a');
     hud_assert_eq(hud::cstring::length_safe(MAX_STR_WITHOUT_NULL_TERMINATED, 3), 3);
     hud_assert_eq(hud::cstring::length_safe(MAX_STR_WITHOUT_NULL_TERMINATED, hud::cstring::RSIZE_MAX_STR), hud::cstring::RSIZE_MAX_STR);
     hud_assert_eq(hud::cstring::length_safe(MAX_STR_WITHOUT_NULL_TERMINATED, hud::cstring::RSIZE_MAX_STR + 1u), hud::cstring::RSIZE_MAX_STR);

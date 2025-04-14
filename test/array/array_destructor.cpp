@@ -10,7 +10,7 @@ GTEST_TEST(array, destructor_call_elements_destructors)
         auto test_destructor = []()
         {
             i32 dtor_order[2];
-            hud::memory::set_zero(dtor_order);
+            hud::memory::set_memory_zero_safe(dtor_order);
             i32 *dtor_order_ptr[2] = {&dtor_order[0], &dtor_order[1]};
 
             bool all_destructor_are_not_called = true;
@@ -68,7 +68,7 @@ GTEST_TEST(array, destructor_call_elements_destructors)
         auto test_destructor = []()
         {
             i32 dtor_order[2];
-            hud::memory::set_zero(dtor_order);
+            hud::memory::set_memory_zero_safe(dtor_order);
             i32 *dtor_order_ptr[2] = {&dtor_order[0], &dtor_order[1]};
 
             bool all_destructor_are_not_called = true;
