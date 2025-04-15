@@ -16,7 +16,7 @@ GTEST_TEST(memory, move_or_copy_assign_trivial_type)
     {
         type dest;
         type src = 15;
-        hud::memory::move_or_copy_assign(&dest, hud::move(src));
+        hud::memory::move_or_copy_assign_object(&dest, hud::move(src));
         return {dest, src};
     };
 
@@ -54,7 +54,7 @@ GTEST_TEST(memory, move_or_copy_assign_bitwise_assignable_type)
         type dest, src;
         dest.i = 0;
         src.i = 15;
-        hud::memory::move_or_copy_assign(&dest, hud::move(src));
+        hud::memory::move_or_copy_assign_object(&dest, hud::move(src));
         return {dest.i, src.i};
     };
 
@@ -88,12 +88,12 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_different_typ
         i32 assign_counter = 0;
         source_type *src = hud::memory::allocate_array<source_type>(1);
         hud_test::LeakArrayGuard guard_src(src, 1);
-        hud::memory::construct_at(src, &assign_counter);
+        hud::memory::construct_object_at(src, &assign_counter);
         destination_type *dest = hud::memory::allocate_array<destination_type>(1);
         hud_test::LeakArrayGuard guard_dest(dest, 1);
-        hud::memory::construct_at(dest);
+        hud::memory::construct_object_at(dest);
 
-        hud::memory::move_or_copy_assign(dest, hud::move(*src));
+        hud::memory::move_or_copy_assign_object(dest, hud::move(*src));
         return {dest->copy_constructor_count(), dest->copy_assign_count(), dest->copy_order()};
     };
 
@@ -129,12 +129,12 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_move_assignable_different_typ
         i32 assign_counter = 0;
         source_type *src = hud::memory::allocate_array<source_type>(1);
         hud_test::LeakArrayGuard guard_src(src, 1);
-        hud::memory::construct_at(src, &assign_counter);
+        hud::memory::construct_object_at(src, &assign_counter);
         destination_type *dest = hud::memory::allocate_array<destination_type>(1);
         hud_test::LeakArrayGuard guard_dest(dest, 1);
-        hud::memory::construct_at(dest);
+        hud::memory::construct_object_at(dest);
 
-        hud::memory::move_or_copy_assign(dest, hud::move(*src));
+        hud::memory::move_or_copy_assign_object(dest, hud::move(*src));
         return {dest->copy_constructor_count(), dest->move_constructor_count(), dest->move_assign_count(), dest->copy_assign_count(), dest->move_order()};
     };
 
@@ -173,12 +173,12 @@ GTEST_TEST(memory, move_or_copy_assign_non_bitwise_copy_assignable_same_type)
         i32 assign_counter = 0;
         type *src = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard_src(src, 1);
-        hud::memory::construct_at(src, &assign_counter);
+        hud::memory::construct_object_at(src, &assign_counter);
         type *dest = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard_dest(dest, 1);
-        hud::memory::construct_at(dest);
+        hud::memory::construct_object_at(dest);
 
-        hud::memory::move_or_copy_assign(dest, hud::move(*src));
+        hud::memory::move_or_copy_assign_object(dest, hud::move(*src));
         return {dest->copy_constructor_count(), dest->copy_assign_count(), dest->copy_order()};
     };
 
@@ -211,7 +211,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_trivial_type)
     {
         type dest[2];
         type src[2] = {15, 32};
-        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        hud::memory::move_or_copy_assign_object_array(dest, src, src + 2);
         return {dest[0], dest[1], src[0], src[1]};
     };
 
@@ -255,7 +255,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_bitwise_assignable_type)
         dest[1].i = 0;
         src[0].i = 15;
         src[1].i = 32;
-        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        hud::memory::move_or_copy_assign_object_array(dest, src, src + 2);
         return {dest[0].i, dest[1].i};
     };
 
@@ -295,7 +295,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_assignable_differe
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        hud::memory::move_or_copy_assign_object_array(dest, src, src + 2);
         return {dest[0].copy_constructor_count(), dest[0].copy_assign_count(), dest[0].copy_order(), dest[1].copy_constructor_count(), dest[1].copy_assign_count(), dest[1].copy_order()};
     };
 
@@ -343,7 +343,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_assignable_differe
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        hud::memory::move_or_copy_assign_object_array(dest, src, src + 2);
 
         return {dest[0].copy_constructor_count(), dest[0].move_constructor_count(), dest[0].copy_assign_count(), dest[0].move_assign_count(), dest[0].move_order(), dest[1].copy_constructor_count(), dest[1].move_constructor_count(), dest[1].copy_assign_count(), dest[1].move_assign_count(), dest[1].move_order()};
     };
@@ -398,7 +398,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_copy_constructible_same
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        hud::memory::move_or_copy_assign_object_array(dest, src, src + 2);
         return {dest[0].copy_constructor_count(), dest[0].copy_assign_count(), dest[0].copy_order(), dest[1].copy_constructor_count(), dest[1].copy_assign_count(), dest[1].copy_order()};
     };
 
@@ -444,7 +444,7 @@ GTEST_TEST(memory, move_or_copy_assign_array_non_bitwise_move_constructible_same
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::move_or_copy_assign_array(dest, src, src + 2);
+        hud::memory::move_or_copy_assign_object_array(dest, src, src + 2);
 
         return {dest[0].copy_constructor_count(), dest[0].move_constructor_count(), dest[0].copy_assign_count(), dest[0].move_assign_count(), dest[0].move_order(), dest[1].copy_constructor_count(), dest[1].move_constructor_count(), dest[1].copy_assign_count(), dest[1].move_assign_count(), dest[1].move_order()};
     };

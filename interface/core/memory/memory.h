@@ -845,7 +845,14 @@ namespace hud
             return memmove(destination, source, size);
         }
 
-        static constexpr void *move_memory(u8 *destination, const u8 *source, const usize size) noexcept
+        /**
+         * Move block of memory. Support overlapped buffer. Prefers copy if buffer do not overlapped.
+         * @param destination Pointer to the destination array where the content is to be copied
+         * @param source Pointer to the source of data to be copied
+         * @param size Number of bytes to copy
+         * @return destination pointer
+         */
+        static constexpr HD_FORCEINLINE void *move_memory(u8 *destination, const u8 *source, const usize size) noexcept
         {
 
             if (hud::is_constant_evaluated())
@@ -882,7 +889,7 @@ namespace hud
         }
 
         /**
-         * Compares the first size butes of the block of memory pointed by buffer1 to the first size bytes pointed by buffer2
+         * Compares the first size bytes of the block of memory pointed by buffer1 to the first size bytes pointed by buffer2
          * The comparison is done lexicographically
          * @param buffer1 The first buffer
          * @param buffer2 The second buffer
@@ -891,7 +898,7 @@ namespace hud
          *         - 0 if bytes in buffer1 and buffer2 are equal
          *         - Positive value if the first differing byte in buffer1 is greater than the corresponding byte in buffer2
          */
-        [[nodiscard]] static HD_FORCEINLINE i32 compare(const void *buffer1, const void *buffer2, const usize size) noexcept
+        [[nodiscard]] static HD_FORCEINLINE i32 compare_memory(const void *buffer1, const void *buffer2, const usize size) noexcept
         {
             // The behavior is undefined if either buffer1 or buffer2 is a null pointer.
             check(buffer1 != nullptr);
@@ -899,7 +906,17 @@ namespace hud
             return memcmp(buffer1, buffer2, size);
         }
 
-        [[nodiscard]] static constexpr i32 compare(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
+        /**
+         * Compares the first size bytes of the block of memory pointed by buffer1 to the first size bytes pointed by buffer2
+         * The comparison is done lexicographically
+         * @param buffer1 The first buffer
+         * @param buffer2 The second buffer
+         * @param size Number of bytes to compare
+         * @return - Negative value if the first differing byte in buffer1 is less than the corresponding byte in buffer2
+         *         - 0 if bytes in buffer1 and buffer2 are equal
+         *         - Positive value if the first differing byte in buffer1 is greater than the corresponding byte in buffer2
+         */
+        [[nodiscard]] static HD_FORCEINLINE constexpr i32 compare_memory(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
             if (hud::is_constant_evaluated())
             // LCOV_EXCL_START
@@ -921,14 +938,23 @@ namespace hud
             // LCOV_EXCL_STOP
             else
             {
-                return compare(static_cast<const void *>(buffer1), static_cast<const void *>(buffer2), size);
+                return compare_memory(static_cast<const void *>(buffer1), static_cast<const void *>(buffer2), size);
             }
         }
 
+        /**
+         * Compares bytes of buffer1 to the bytes of buffer2
+         * The comparison is done lexicographically
+         * @param buffer1 The first buffer
+         * @param buffer2 The second buffer
+         * @return - Negative value if the first differing byte in buffer1 is less than the corresponding byte in buffer2
+         *         - 0 if bytes in buffer1 and buffer2 are equal
+         *         - Positive value if the first differing byte in buffer1 is greater than the corresponding byte in buffer2
+         */
         template<typename type_t, usize buffer_size>
-        [[nodiscard]] static constexpr i32 compare(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
+        [[nodiscard]] static HD_FORCEINLINE constexpr i32 compare_memory(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
         {
-            return compare(buffer1, buffer2, buffer_size);
+            return compare_memory(buffer1, buffer2, buffer_size);
         }
 
         /**
@@ -939,20 +965,35 @@ namespace hud
          * @param size Number of bytes to compare
          * @return true if both buffers are equal, false otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE bool compare_equal(const void *buffer1, const void *buffer2, const usize size) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_memory_compare_equal(const void *buffer1, const void *buffer2, const usize size) noexcept
         {
-            return compare(buffer1, buffer2, size) == 0;
+            return compare_memory(buffer1, buffer2, size) == 0;
         }
 
-        [[nodiscard]] static constexpr bool compare_equal(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
+        /**
+         * Compares the first size bytes of the block of memory pointed by buffer1 to the first size bytes pointed by buffer2
+         * The comparison is done lexicographically
+         * @param buffer1 The first buffer
+         * @param buffer2 The second buffer
+         * @param size Number of bytes to compare
+         * @return true if both buffers are equal, false otherwise
+         */
+        [[nodiscard]] static HD_FORCEINLINE constexpr bool is_memory_compare_equal(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
-            return compare(buffer1, buffer2, size) == 0;
+            return compare_memory(buffer1, buffer2, size) == 0;
         }
 
+        /**
+         * Compares bytes of buffer1 to the bytes of buffer2
+         * The comparison is done lexicographically
+         * @param buffer1 The first buffer
+         * @param buffer2 The second buffer
+         * @return true if both buffers are equal, false otherwise
+         */
         template<typename type_t, usize buffer_size>
-        [[nodiscard]] static constexpr bool compare_equal(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
+        [[nodiscard]] static HD_FORCEINLINE constexpr bool is_memory_compare_equal(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
         {
-            return compare_equal(buffer1, buffer2, buffer_size * sizeof(type_t));
+            return is_memory_compare_equal(buffer1, buffer2, buffer_size * sizeof(type_t));
         }
 
         /**
@@ -963,20 +1004,35 @@ namespace hud
          * @param size Number of bytes to compare
          * @return true if buffer1 is less that buffer2, false otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE bool compare_less(const void *buffer1, const void *buffer2, const usize size) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_memory_compare_less(const void *buffer1, const void *buffer2, const usize size) noexcept
         {
-            return compare(buffer1, buffer2, size) < 0;
+            return compare_memory(buffer1, buffer2, size) < 0;
         }
 
-        [[nodiscard]] static constexpr bool compare_less(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
+        /**
+         * Compares the first size bytes of the block of memory pointed by buffer1 to the first size bytes pointed by buffer2
+         * The comparison is done lexicographically
+         * @param buffer1 The first buffer
+         * @param buffer2 The second buffer
+         * @param size Number of bytes to compare
+         * @return true if buffer1 is less that buffer2, false otherwise
+         */
+        [[nodiscard]] static HD_FORCEINLINE constexpr bool is_memory_compare_less(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
-            return compare(buffer1, buffer2, size) < 0;
+            return compare_memory(buffer1, buffer2, size) < 0;
         }
 
+        /**
+         * Compares bytes of buffer1 to the bytes of buffer2
+         * The comparison is done lexicographically
+         * @param buffer1 The first buffer
+         * @param buffer2 The second buffer
+         * @return true if buffer1 is less that buffer2, false otherwise
+         */
         template<typename type_t, usize buffer_size>
-        [[nodiscard]] static constexpr bool compare_less(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
+        [[nodiscard]] static HD_FORCEINLINE constexpr bool is_memory_compare_less(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
         {
-            return compare_less(buffer1, buffer2, buffer_size);
+            return is_memory_compare_less(buffer1, buffer2, buffer_size);
         }
 
         /**
@@ -987,20 +1043,35 @@ namespace hud
          * @param size Number of bytes to compare
          * @return true if buffer1 is greater that buffer2, false otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE bool compare_greater(const void *buffer1, const void *buffer2, const usize size) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_memory_compare_greater(const void *buffer1, const void *buffer2, const usize size) noexcept
         {
-            return compare(buffer1, buffer2, size) > 0;
+            return compare_memory(buffer1, buffer2, size) > 0;
         }
 
-        [[nodiscard]] static constexpr bool compare_greater(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
+        /**
+         * Compares the first size bytes of the block of memory pointed by buffer1 to the first size bytes pointed by buffer2
+         * The comparison is done lexicographically
+         * @param buffer1 The first buffer
+         * @param buffer2 The second buffer
+         * @param size Number of bytes to compare
+         * @return true if buffer1 is greater that buffer2, false otherwise
+         */
+        [[nodiscard]] static HD_FORCEINLINE constexpr bool is_memory_compare_greater(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
-            return compare(buffer1, buffer2, size) > 0;
+            return compare_memory(buffer1, buffer2, size) > 0;
         }
 
+        /**
+         * Compares bytes of buffer1 to the bytes of buffer2
+         * The comparison is done lexicographically
+         * @param buffer1 The first buffer
+         * @param buffer2 The second buffer
+         * @return true if buffer1 is greater that buffer2, false otherwise
+         */
         template<typename type_t, usize buffer_size>
-        [[nodiscard]] static constexpr bool compare_greater(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
+        [[nodiscard]] static HD_FORCEINLINE constexpr bool is_memory_compare_greater(const type_t (&buffer1)[buffer_size], const type_t (&buffer2)[buffer_size]) noexcept
         {
-            return compare_greater(buffer1, buffer2, buffer_size);
+            return is_memory_compare_greater(buffer1, buffer2, buffer_size);
         }
 
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
@@ -1043,9 +1114,9 @@ namespace hud
          */
         template<typename type_t, typename... args_t>
         requires(hud::is_constructible_v<type_t, args_t...>)
-        static constexpr type_t *construct_at(type_t *const address, args_t &&...args) noexcept
+        static constexpr type_t *construct_object_at(type_t *const address, args_t &&...args) noexcept
         {
-            static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
+            static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct_object_at is not designed to allow throwable constructible type");
             return std::construct_at(address, hud::forward<args_t>(args)...);
         }
 
@@ -1058,9 +1129,9 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-        static constexpr type_t *construct_at(type_t *const address, const u_type_t &other) noexcept
+        static constexpr type_t *construct_object_at(type_t *const address, const u_type_t &other) noexcept
         {
-            static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
+            static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) constructor is throwable.hud::memory::construct_object_at is not designed to allow throwable constructible type");
             return std::construct_at(address, other);
         }
 
@@ -1073,9 +1144,9 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires(hud::is_move_constructible_v<type_t, u_type_t>)
-        static constexpr type_t *construct_at(type_t *const address, u_type_t &&other) noexcept
+        static constexpr type_t *construct_object_at(type_t *const address, u_type_t &&other) noexcept
         {
-            static_assert(hud::is_nothrow_move_constructible_v<type_t, u_type_t>, "type_t(u_type_t&&) constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
+            static_assert(hud::is_nothrow_move_constructible_v<type_t, u_type_t>, "type_t(u_type_t&&) constructor is throwable.hud::memory::construct_object_at is not designed to allow throwable constructible type");
             return std::construct_at(address, hud::forward<u_type_t>(other));
         }
 
@@ -1093,7 +1164,7 @@ namespace hud
             static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct_array_at is not designed to allow throwable constructible type");
             while (begin < end)
             {
-                hud::memory::construct_at<type_t, args_t...>(begin++, hud::forward<args_t>(args)...);
+                hud::memory::construct_object_at<type_t, args_t...>(begin++, hud::forward<args_t>(args)...);
             }
         }
 
@@ -1107,7 +1178,7 @@ namespace hud
         static constexpr void default_construct(type_t *address) noexcept
         {
             static_assert(hud::is_nothrow_default_constructible_v<type_t>, "type_t default constructor is throwable.hud::memory::default_construct is not designed to allow throwable default constructible type");
-            hud::memory::construct_at<type_t>(address);
+            hud::memory::construct_object_at<type_t>(address);
         }
 
         /**
@@ -1191,7 +1262,7 @@ namespace hud
             {
                 while (count)
                 {
-                    hud::memory::construct_at<type_t, u_type_t>(destination, *source);
+                    hud::memory::construct_object_at<type_t, u_type_t>(destination, *source);
                     destination++;
                     source++;
                     count--;
@@ -1215,11 +1286,11 @@ namespace hud
         {
             if constexpr (hud::is_move_constructible_v<type_t, u_type_t>)
             {
-                static_assert(hud::is_nothrow_move_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
+                static_assert(hud::is_nothrow_move_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) constructor is throwable.hud::memory::construct_object_at is not designed to allow throwable constructible type");
             }
             if constexpr (hud::is_copy_constructible_v<type_t, u_type_t>)
             {
-                static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(u_type_t&&) constructor is throwable.hud::memory::construct_at is not designed to allow throwable constructible type");
+                static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(u_type_t&&) constructor is throwable.hud::memory::construct_object_at is not designed to allow throwable constructible type");
             }
 
             if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t> && count > 0u)
@@ -1230,7 +1301,7 @@ namespace hud
             {
                 while (count)
                 {
-                    hud::memory::construct_at<type_t, u_type_t>(destination, hud::move(*source));
+                    hud::memory::construct_object_at<type_t, u_type_t>(destination, hud::move(*source));
                     destination++;
                     source++;
                     count--;
@@ -1248,7 +1319,7 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires(hud::is_copy_assignable_v<type_t, u_type_t>)
-        static constexpr void copy_assign_array(type_t *destination, const u_type_t *source, usize count) noexcept
+        static constexpr void copy_assign_object_array(type_t *destination, const u_type_t *source, usize count) noexcept
         {
             if (hud::is_bitwise_copy_assignable_v<type_t, u_type_t> && !hud::is_constant_evaluated())
             {
@@ -1277,15 +1348,15 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
-        static constexpr void move_or_copy_assign(type_t *destination, u_type_t &&source) noexcept
+        static constexpr void move_or_copy_assign_object(type_t *destination, u_type_t &&source) noexcept
         {
             if constexpr (hud::is_move_assignable_v<type_t, u_type_t>)
             {
-                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable. hud::memory::move_or_copy_assign is not designed to allow throwable move assignable type");
+                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable. hud::memory::move_or_copy_assign_object is not designed to allow throwable move assignable type");
             }
             if constexpr (hud::is_copy_assignable_v<type_t, u_type_t>)
             {
-                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign is not designed to allow throwable copy assignable type");
+                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign_object is not designed to allow throwable copy assignable type");
             }
             *destination = hud::forward<u_type_t>(source);
         }
@@ -1301,15 +1372,15 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
-        static constexpr void move_or_copy_assign_array(type_t *destination, u_type_t *source, u_type_t const *const HD_RESTRICT end_source) noexcept
+        static constexpr void move_or_copy_assign_object_array(type_t *destination, u_type_t *source, u_type_t const *const HD_RESTRICT end_source) noexcept
         {
             if constexpr (hud::is_move_assignable_v<type_t, u_type_t>)
             {
-                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable. hud::memory::move_or_copy_assign_array is not designed to allow throwable move assignable type");
+                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable. hud::memory::move_or_copy_assign_object_array is not designed to allow throwable move assignable type");
             }
             if constexpr (hud::is_copy_assignable_v<type_t, u_type_t>)
             {
-                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign_array is not designed to allow throwable copy assignable type");
+                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign_object_array is not designed to allow throwable copy assignable type");
             }
 
             if (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && hud::is_same_size_v<type_t, u_type_t> && !hud::is_constant_evaluated())
@@ -1338,9 +1409,9 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>)
-        static constexpr void move_or_copy_construct_then_destroy(type_t *destination, u_type_t &&source) noexcept
+        static constexpr void move_or_copy_construct_object_then_destroy(type_t *destination, u_type_t &&source) noexcept
         {
-            hud::memory::construct_at<type_t, u_type_t>(destination, hud::forward<u_type_t>(source));
+            hud::memory::construct_object_at<type_t, u_type_t>(destination, hud::forward<u_type_t>(source));
             hud::memory::destroy_object<u_type_t>(&source);
         }
 
@@ -1358,7 +1429,7 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>)
-        static constexpr void fast_move_or_copy_construct_array_then_destroy(type_t *destination, u_type_t *source, usize count) noexcept
+        static constexpr void fast_move_or_copy_construct_object_array_then_destroy(type_t *destination, u_type_t *source, usize count) noexcept
         {
             // If the source is bitwise copyable and bitwise movable to destination then we make a copy instead of a move semantic
             // This performs better that using move semantic that we do a memory move instead
@@ -1387,7 +1458,7 @@ namespace hud
          */
         template<typename type_t, typename u_type_t>
         requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>)
-        static constexpr void move_or_copy_construct_array_then_destroy_backward(type_t *destination, u_type_t *source, const usize count) noexcept
+        static constexpr void move_or_copy_construct_object_array_then_destroy_backward(type_t *destination, u_type_t *source, const usize count) noexcept
         {
             if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             {
@@ -1402,7 +1473,7 @@ namespace hud
                 {
                     last_destination--;
                     last_source--;
-                    hud::memory::move_or_copy_construct_then_destroy<type_t, u_type_t>(last_destination, hud::move(*last_source));
+                    hud::memory::move_or_copy_construct_object_then_destroy<type_t, u_type_t>(last_destination, hud::move(*last_source));
                 }
             }
         }
@@ -1416,7 +1487,7 @@ namespace hud
          * @return true if both elements are the equal, false otherwise
          */
         template<typename lhs_t, typename rhs_t>
-        static HD_FORCEINLINE bool equal(const lhs_t *left, const rhs_t *right) noexcept
+        static HD_FORCEINLINE bool is_object_equal(const lhs_t *left, const rhs_t *right) noexcept
         {
             static_assert(hud::is_comparable_with_equal_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
             return *left == *right;
@@ -1432,11 +1503,11 @@ namespace hud
          * @return true if all elements are the equal, false otherwise
          */
         template<typename lhs_t, typename rhs_t>
-        static HD_FORCEINLINE bool equal_array(const lhs_t *left, const rhs_t *right, usize count) noexcept
+        static HD_FORCEINLINE bool is_object_array_equal(const lhs_t *left, const rhs_t *right, usize count) noexcept
         {
             if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>)
             {
-                return hud::memory::compare_equal(left, right, count * sizeof(lhs_t));
+                return hud::memory::is_memory_compare_equal(left, right, count * sizeof(lhs_t));
             }
             else
             {
@@ -1444,7 +1515,7 @@ namespace hud
 
                 while (count)
                 {
-                    if (!hud::memory::equal<lhs_t, rhs_t>(left, right))
+                    if (!hud::memory::is_object_equal<lhs_t, rhs_t>(left, right))
                     {
                         return false;
                     }
@@ -1465,7 +1536,7 @@ namespace hud
          * @return true if elements are not the equal, false otherwise
          */
         template<typename lhs_t, typename rhs_t>
-        static HD_FORCEINLINE bool not_equal(const lhs_t *left, const rhs_t *right) noexcept
+        static HD_FORCEINLINE bool is_object_not_equal(const lhs_t *left, const rhs_t *right) noexcept
         {
             static_assert(hud::is_comparable_with_not_equal_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
             return *left != *right;
@@ -1481,11 +1552,11 @@ namespace hud
          * @return true if at least one element is not equal, false otherwise
          */
         template<typename lhs_t, typename rhs_t>
-        static HD_FORCEINLINE bool not_equal_array(const lhs_t *left, const rhs_t *right, usize count) noexcept
+        static HD_FORCEINLINE bool is_object_array_not_equal(const lhs_t *left, const rhs_t *right, usize count) noexcept
         {
             if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>)
             {
-                return !hud::memory::compare_equal(left, right, count * sizeof(lhs_t));
+                return !hud::memory::is_memory_compare_equal(left, right, count * sizeof(lhs_t));
             }
             else
             {
@@ -1493,7 +1564,7 @@ namespace hud
 
                 while (count)
                 {
-                    if (hud::memory::not_equal<lhs_t, rhs_t>(left, right))
+                    if (hud::memory::is_object_not_equal<lhs_t, rhs_t>(left, right))
                     {
                         return true;
                     }

@@ -107,7 +107,7 @@ namespace hud
             template<typename... u_type_t>
             constexpr void construct_in_place(u_type_t &&...args) noexcept
             {
-                hud::memory::construct_at(&this_as_base_t()->some_value, hud::forward<u_type_t>(args)...);
+                hud::memory::construct_object_at(&this_as_base_t()->some_value, hud::forward<u_type_t>(args)...);
                 this_as_base_t()->some = true;
             }
 
@@ -303,7 +303,7 @@ namespace hud
             {
                 if (other.some)
                 {
-                    hud::memory::construct_at(&(this->some_value), hud::forward<type_t>(other.some_value));
+                    hud::memory::construct_object_at(&(this->some_value), hud::forward<type_t>(other.some_value));
                     this->some = true;
                 }
             }

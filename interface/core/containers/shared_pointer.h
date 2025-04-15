@@ -314,7 +314,7 @@ namespace hud
             explicit constexpr reference_controller_no_deleter(args_t &&...args) noexcept
             {
                 static_assert(is_nothrow_constructible_v<type_t, args_t...>, "shared_pointer do not accept throwable constructible type");
-                hud::memory::construct_at(pointer(), hud::forward<args_t>(args)...);
+                hud::memory::construct_object_at(pointer(), hud::forward<args_t>(args)...);
             }
 
             /** Retrieves a pointer to the type_t object. */

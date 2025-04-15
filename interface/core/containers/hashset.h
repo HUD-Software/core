@@ -626,7 +626,7 @@ namespace hud
                         // Save h2 in control h1 index
                         control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Copy slot
-                        hud::memory::construct_at(slot_ptr_ + slot_index, slot);
+                        hud::memory::construct_object_at(slot_ptr_ + slot_index, slot);
                     }
                 }
                 else
@@ -679,7 +679,7 @@ namespace hud
                         // Save h2 in control h1 index
                         control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Copy slot
-                        hud::memory::construct_at(slot_ptr_ + slot_index, slot);
+                        hud::memory::construct_object_at(slot_ptr_ + slot_index, slot);
                     }
                 }
                 else
@@ -758,7 +758,7 @@ namespace hud
                 slot_type *slot_ptr {slot_ptr_ + res.first};
                 if (res.second)
                 {
-                    hud::memory::construct_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
+                    hud::memory::construct_object_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
                 }
                 return {control_ptr_ + res.first, slot_ptr};
             }
@@ -777,7 +777,7 @@ namespace hud
                 slot_type *slot_ptr {slot_ptr_ + res.first};
                 if (res.second)
                 {
-                    hud::memory::construct_at(slot_ptr, key, hud::forward<args_t>(args)...);
+                    hud::memory::construct_object_at(slot_ptr, key, hud::forward<args_t>(args)...);
                 }
                 return {control_ptr_ + res.first, slot_ptr};
             }
@@ -999,7 +999,7 @@ namespace hud
                         // Save h2 in control h1 index
                         control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Move old slot to new slot
-                        hud::memory::move_or_copy_construct_then_destroy(slot_ptr_ + slot_index, hud::move(*it));
+                        hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*it));
                     }
 
                     free_control_and_slot(old_control_ptr, old_slot_ptr, old_max_slot_count);

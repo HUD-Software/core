@@ -616,12 +616,12 @@ GTEST_TEST(shared_pointer_array_safe, make_shared)
     const auto test = []()
     {
         const auto shared_ptr = hud::make_shared<i32[], hud::thread_safety_e::safe>(2);
-        hud::memory::construct_at(&shared_ptr[0], 1);
-        hud::memory::construct_at(&shared_ptr[1], 2);
+        hud::memory::construct_object_at(&shared_ptr[0], 1);
+        hud::memory::construct_object_at(&shared_ptr[1], 2);
         i32 dtor_count[2] = {0, 0};
         const auto shared_ptr_2 = hud::make_shared<hud_test::non_bitwise_type[], hud::thread_safety_e::safe>(2);
-        hud::memory::construct_at(&shared_ptr_2[0], 1, &dtor_count[0]);
-        hud::memory::construct_at(&shared_ptr_2[1], 2, &dtor_count[1]);
+        hud::memory::construct_object_at(&shared_ptr_2[0], 1, &dtor_count[0]);
+        hud::memory::construct_object_at(&shared_ptr_2[1], 2, &dtor_count[1]);
 
         return std::tuple {
             hud::is_same_v<decltype(shared_ptr.pointer()), i32 *>,

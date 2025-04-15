@@ -41,7 +41,7 @@ GTEST_TEST(hash, crc32_lookup_table_is_correct)
         }
     }
     // Compare with the crc32 lookup table
-    hud_assert_true(hud::memory::compare_equal(hud::hash_algorithm::crc32::CRC32_LOOKUP, generated_crc32_lookup));
+    hud_assert_true(hud::memory::is_memory_compare_equal(hud::hash_algorithm::crc32::CRC32_LOOKUP, generated_crc32_lookup));
 }
 
 GTEST_TEST(hash, crc32_hash_aligned_buffer)
@@ -102,7 +102,7 @@ GTEST_TEST(hash, crc32_lookup_x2ntable_is_correct)
         x2n_table[n] = p = multmodp(p, p);
     }
     // Compare with the crc32 x2n_table
-    hud_assert_true(hud::memory::compare_equal(hud::hash_algorithm::crc32::X2N_TABLE, x2n_table));
+    hud_assert_true(hud::memory::is_memory_compare_equal(hud::hash_algorithm::crc32::X2N_TABLE, x2n_table));
 }
 
 GTEST_TEST(hash, 123456789)

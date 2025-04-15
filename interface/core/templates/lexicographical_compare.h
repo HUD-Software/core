@@ -82,7 +82,7 @@ namespace hud
         const usize size_1 = static_cast<usize>(last_1 - first_1);
         const usize size_2 = static_cast<usize>(last_2 - first_2);
         const bool size_1_less_than_size_2 = size_1 < size_2;
-        const i32 diff = hud::memory::compare(first_1, first_2, size_1_less_than_size_2 ? size_1 : size_2);
+        const i32 diff = hud::memory::compare_memory(first_1, first_2, size_1_less_than_size_2 ? size_1 : size_2);
         return diff < 0 || (diff == 0 && size_1_less_than_size_2);
     }
 
@@ -105,7 +105,7 @@ namespace hud
     requires(sizeof(it1_t) == 1 && sizeof(it2_t) == 1)
     [[nodiscard]] HD_FORCEINLINE constexpr bool lexicographical_compare(it1_t *buffer_1, it2_t *buffer_2, usize size) noexcept
     {
-        return hud::memory::compare_less(buffer_1, buffer_2, size);
+        return hud::memory::is_memory_compare_less(buffer_1, buffer_2, size);
     }
 
     /**
@@ -127,7 +127,7 @@ namespace hud
     requires(sizeof(array1_t) == 1 && sizeof(array2_t) == 1)
     [[nodiscard]] HD_FORCEINLINE constexpr bool lexicographical_compare(const array1_t (&arr_1)[size], const array2_t (&arr_2)[size]) noexcept
     {
-        return hud::memory::compare_less(arr_1, arr_2, size);
+        return hud::memory::is_memory_compare_less(arr_1, arr_2, size);
     }
 
 } // namespace hud

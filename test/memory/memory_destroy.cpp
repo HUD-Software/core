@@ -76,7 +76,7 @@ GTEST_TEST(memory, destroy_non_trivially_destructible_type)
         i32 is_destructor_called = 0;
         type *to_destroy = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard(to_destroy, 1);
-        hud::memory::construct_at(to_destroy, &is_destructor_called);
+        hud::memory::construct_object_at(to_destroy, &is_destructor_called);
         hud::memory::destroy_object(to_destroy);
         return is_destructor_called;
     };

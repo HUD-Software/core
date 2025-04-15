@@ -53,7 +53,7 @@ namespace hud::common
         [[nodiscard]] bool is_valid() const noexcept
         {
             constexpr const uuid invalid;
-            return !hud::memory::compare_equal(this, &invalid, sizeof(uuid));
+            return !hud::memory::is_memory_compare_equal(this, &invalid, sizeof(uuid));
         }
 
         /** Reset the uuid with all components to zero. Making it invalid*/
@@ -91,7 +91,7 @@ namespace hud::common
      */
     [[nodiscard]] bool operator==(const uuid &left, const uuid &right) noexcept
     {
-        return hud::memory::compare_equal(&left, &right, sizeof(uuid));
+        return hud::memory::is_memory_compare_equal(&left, &right, sizeof(uuid));
     }
 
     /**

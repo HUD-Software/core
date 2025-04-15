@@ -14,7 +14,7 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_trivial_type)
     {
         type dest[2];
         type src[2] = {15, 32};
-        hud::memory::fast_move_or_copy_construct_array_then_destroy(dest, src, 2);
+        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(dest, src, 2);
         return {dest[0], dest[1], src[0], src[1]};
     };
 
@@ -59,7 +59,7 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_bitwise_constr
         dest[1].i = 0;
         src[0].i = 15;
         src[1].i = 32;
-        hud::memory::fast_move_or_copy_construct_array_then_destroy(dest, src, 2);
+        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(dest, src, 2);
         return {dest[0].i, dest[1].i, src[0].i, src[1].i};
     };
 
@@ -122,7 +122,7 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_co
         destination_type *dest = hud::memory::allocate_array<destination_type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
 
-        hud::memory::fast_move_or_copy_construct_array_then_destroy(dest, src, 2);
+        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(dest, src, 2);
         return {dest[0].copy_constructor_count(), dest[0].ctor_order(), dest[1].copy_constructor_count(), dest[1].ctor_order()};
     };
 
@@ -193,7 +193,7 @@ GTEST_TEST(memory, fast_move_or_copy_construct_then_destroy_non_bitwise_move_con
         destination_type *dest = hud::memory::allocate_array<destination_type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
 
-        hud::memory::fast_move_or_copy_construct_array_then_destroy(dest, src, 2);
+        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(dest, src, 2);
         return {dest[0].move_constructor_count(), dest[0].copy_constructor_count(), dest[0].ctor_order(), dest[1].move_constructor_count(), dest[1].copy_constructor_count(), dest[1].ctor_order()};
     };
 
@@ -253,7 +253,7 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_co
         type *dest = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
 
-        hud::memory::fast_move_or_copy_construct_array_then_destroy(dest, src, 2);
+        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(dest, src, 2);
         return {dest[0].copy_constructor_count(), dest[0].ctor_order(), dest[1].copy_constructor_count(), dest[1].ctor_order()};
     };
 
@@ -323,7 +323,7 @@ GTEST_TEST(memory, fast_move_or_copy_construct_array_then_destroy_non_bitwise_mo
         type *dest = hud::memory::allocate_array<type>(2);
         hud_test::LeakArrayGuard guard_dest(dest, 2);
 
-        hud::memory::fast_move_or_copy_construct_array_then_destroy(dest, src, 2);
+        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(dest, src, 2);
         return {dest[0].move_constructor_count(), dest[0].copy_constructor_count(), dest[0].ctor_order(), dest[1].move_constructor_count(), dest[1].copy_constructor_count(), dest[1].ctor_order()};
     };
 

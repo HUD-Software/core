@@ -6,14 +6,14 @@ GTEST_TEST(memory, construct_at_trival_type)
     auto test_no_param = []() -> u32
     {
         u32 to_construct;
-        hud::memory::construct_at(&to_construct);
+        hud::memory::construct_object_at(&to_construct);
         return to_construct;
     };
 
     auto test_param = []() -> u32
     {
         u32 to_construct;
-        hud::memory::construct_at(&to_construct, 15);
+        hud::memory::construct_object_at(&to_construct, 15);
         return to_construct;
     };
     // Non constant
@@ -55,7 +55,7 @@ GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
     {
         type *to_construct = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard(to_construct, 1);
-        hud::memory::construct_at(to_construct);
+        hud::memory::construct_object_at(to_construct);
         return to_construct->value;
     };
 
@@ -63,7 +63,7 @@ GTEST_TEST(memory, construct_at_non_trivially_constructible_type)
     {
         type *to_construct = hud::memory::allocate_array<type>(1);
         hud_test::LeakArrayGuard guard(to_construct, 1);
-        hud::memory::construct_at(to_construct, 15);
+        hud::memory::construct_object_at(to_construct, 15);
         return to_construct->value;
     };
     // Non constant

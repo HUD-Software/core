@@ -510,18 +510,18 @@ namespace hud
             {
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(new_count);
                 // Construct the element in-place
-                hud::memory::construct_at(new_allocation.data_at(old_count), hud::forward<args_t>(args)...);
+                hud::memory::construct_object_at(new_allocation.data_at(old_count), hud::forward<args_t>(args)...);
                 // Relocate the element that are before the newly added element if any
                 if (old_count != 0u)
                 {
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), old_count);
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), old_count);
                 }
                 // Free the allocation and replace it with the newly created
                 free_allocation_and_replace_it(hud::move(new_allocation), new_count);
             }
             else
             {
-                hud::memory::construct_at(allocation_().data_at(old_count), hud::forward<args_t>(args)...);
+                hud::memory::construct_object_at(allocation_().data_at(old_count), hud::forward<args_t>(args)...);
                 end_ptr = allocation_().data_at(new_count);
             }
 
@@ -562,14 +562,14 @@ namespace hud
             {
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(new_count);
                 // Construct the element in-place
-                hud::memory::construct_at(new_allocation.data_at(idx), hud::forward<args_t>(args)...);
+                hud::memory::construct_object_at(new_allocation.data_at(idx), hud::forward<args_t>(args)...);
                 // Relocate elements if any
                 if (old_count > 0u)
                 {
                     // Relocate others before the emplaced element
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), idx);
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), idx);
                     // Relocate others after the emplaced element
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data_at(idx + 1), allocation_().data_at(idx), old_count - idx);
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data_at(idx + 1), allocation_().data_at(idx), old_count - idx);
                 }
                 // Free the allocation and replace it with the newly created
                 free_allocation_and_replace_it(hud::move(new_allocation), new_count);
@@ -578,9 +578,9 @@ namespace hud
             {
                 // Relocate others after the emplaced element
                 type_t *emplace_ptr = allocation_().data_at(idx);
-                hud::memory::move_or_copy_construct_array_then_destroy_backward(emplace_ptr + 1, emplace_ptr, static_cast<usize>(end_ptr - emplace_ptr));
+                hud::memory::move_or_copy_construct_object_array_then_destroy_backward(emplace_ptr + 1, emplace_ptr, static_cast<usize>(end_ptr - emplace_ptr));
                 // Construct the element in-place
-                hud::memory::construct_at(emplace_ptr, hud::forward<args_t>(args)...);
+                hud::memory::construct_object_at(emplace_ptr, hud::forward<args_t>(args)...);
                 end_ptr++;
             }
         }
@@ -675,7 +675,7 @@ namespace hud
             else if (end_ptr < allocation_().data_end())
             {
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(count());
-                hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), count());
+                hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), count());
                 free_allocation_and_replace_it(hud::move(new_allocation), count());
             }
         }
@@ -706,7 +706,7 @@ namespace hud
                     // Copy or move construct elements to free space
                     hud::memory::move_or_copy_construct_array(first_item_to_remove, first_items_to_relocate, count_to_remove);
                     // Relocate all elements left to keep element continuity
-                    hud::memory::move_or_copy_assign_array(first_items_to_relocate, first_items_to_move, end_ptr);
+                    hud::memory::move_or_copy_assign_object_array(first_items_to_relocate, first_items_to_move, end_ptr);
                     hud::memory::destroy_object_array(end_ptr, index);
                 }
                 end_ptr = allocation_().data_at(remains);
@@ -732,9 +732,9 @@ namespace hud
                 {
                     memory_allocation_type new_allocation = allocator_().template allocate<type_t>(remains);
                     // Move or copy elements before the removed element then destroy moved or copied elements from the old allocation
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), index);
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), index);
                     // Move or copy elements after the removed element then destroy moved or copied elements from the old allocation
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data_at(index), allocation_().data_at(index + count_to_remove), remains - index);
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data_at(index), allocation_().data_at(index + count_to_remove), remains - index);
                     free_allocation_and_replace_it(hud::move(new_allocation), remains);
                 }
                 else
@@ -778,7 +778,7 @@ namespace hud
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(element_number);
                 if (count() > 0u)
                 {
-                    hud::memory::fast_move_or_copy_construct_array_then_destroy(new_allocation.data(), data(), count());
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), count());
                 }
                 free_allocation_and_replace_it(hud::move(new_allocation), count());
             }
@@ -1180,7 +1180,7 @@ namespace hud
                 }
                 else if (source_count > 0u)
                 {
-                    hud::memory::copy_assign_array(data(), source, source_count);
+                    hud::memory::copy_assign_object_array(data(), source, source_count);
                 }
                 end_ptr = allocation_().data_at(source_count);
             }
@@ -1204,14 +1204,14 @@ namespace hud
             // Then we copy construct all remaining elements at the end of the assigned elements
             if (extra_to_construct > 0)
             {
-                hud::memory::copy_assign_array(data(), source, count());
+                hud::memory::copy_assign_object_array(data(), source, count());
                 hud::memory::copy_construct_array(data_at(count()), source + count(), static_cast<usize>(extra_to_construct));
             }
             // If we assign less or equal count of elements than the current element count
             // we copy assign all new elements of the source in the allocation, then we destroy the remaining elements
             else
             {
-                hud::memory::copy_assign_array(data(), source, source_count);
+                hud::memory::copy_assign_object_array(data(), source, source_count);
                 hud::memory::destroy_object_array(data() + source_count, static_cast<usize>(-extra_to_construct));
             }
         }
@@ -1268,7 +1268,7 @@ namespace hud
                     if (other.count() > count())
                     {
                         const auto to_assign_end = other.data() + count();
-                        hud::memory::move_or_copy_assign_array(data(), other.data(), to_assign_end);
+                        hud::memory::move_or_copy_assign_object_array(data(), other.data(), to_assign_end);
                         hud::memory::move_or_copy_construct_array(data() + count(), to_assign_end, other.count() - count());
                     }
                     // If we assign less or equal count of elements than the current element count
@@ -1277,7 +1277,7 @@ namespace hud
                     {
                         if (other.data())
                         {
-                            hud::memory::move_or_copy_assign_array(data(), other.data(), other.end_ptr);
+                            hud::memory::move_or_copy_assign_object_array(data(), other.data(), other.end_ptr);
                         }
                         hud::memory::destroy_object_array(data() + other.count(), count() - other.count());
                     }
@@ -1322,7 +1322,7 @@ namespace hud
                 if (other.count() > count())
                 {
                     const auto to_assign_end = other.data() + count();
-                    hud::memory::move_or_copy_assign_array(data(), other.data(), to_assign_end);
+                    hud::memory::move_or_copy_assign_object_array(data(), other.data(), to_assign_end);
                     hud::memory::move_or_copy_construct_array(data() + count(), to_assign_end, other.count() - count());
                 }
                 // If we assign less or equal count of elements than the current element count
@@ -1332,7 +1332,7 @@ namespace hud
                 {
                     if (other.data())
                     {
-                        hud::memory::move_or_copy_assign_array(data(), other.data(), other.end_ptr);
+                        hud::memory::move_or_copy_assign_object_array(data(), other.data(), other.end_ptr);
                     }
                     hud::memory::destroy_object_array(data() + other.count(), count() - other.count());
                 }
@@ -1453,7 +1453,7 @@ namespace hud
         // If left and right are not nullptr, compare them
         if (left.data() != nullptr && right.data() != nullptr)
         {
-            return hud::memory::equal_array(left.data(), right.data(), left.count());
+            return hud::memory::is_object_array_equal(left.data(), right.data(), left.count());
         }
 
         // At this point, we know that left is nullptr or right is nullptr but not both
@@ -1488,7 +1488,7 @@ namespace hud
         // If left and right are not nullptr, compare them
         if (left.data() != nullptr && right.data() != nullptr)
         {
-            return hud::memory::not_equal_array(left.data(), right.data(), left.count());
+            return hud::memory::is_object_array_not_equal(left.data(), right.data(), left.count());
         }
 
         // At this point, we know that left is nullptr or right is nullptr but not both

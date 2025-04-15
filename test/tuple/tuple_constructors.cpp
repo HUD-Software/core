@@ -213,7 +213,7 @@ GTEST_TEST(tuple, default_constructor_uninit)
 
         tuple_type2 *tuple2 = hud::memory::allocate_array<tuple_type2>(1);
         hud::memory::set_memory_safe(tuple2, sizeof(tuple_type2), 0xFF);
-        hud::memory::construct_at(hud::memory::set_memory_safe(tuple2, sizeof(tuple_type2), 0xFF));
+        hud::memory::construct_object_at(hud::memory::set_memory_safe(tuple2, sizeof(tuple_type2), 0xFF));
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(*tuple2)), i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(*tuple2)), i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<2>(*tuple2)), i32 &>));
@@ -224,7 +224,7 @@ GTEST_TEST(tuple, default_constructor_uninit)
         hud::memory::free(tuple2);
 
         tuple_type3 *tuple3 = hud::memory::allocate_array<tuple_type3>(1);
-        hud::memory::construct_at(hud::memory::set_memory_safe(tuple3, sizeof(tuple_type3), 0xFF));
+        hud::memory::construct_object_at(hud::memory::set_memory_safe(tuple3, sizeof(tuple_type3), 0xFF));
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(*tuple3)), i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(*tuple3)), f32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<2>(*tuple3)), wchar &>));
@@ -242,7 +242,7 @@ GTEST_TEST(tuple, default_constructor_uninit)
         hud::memory::free(tuple3);
 
         tuple_type4 *tuple4 = hud::memory::allocate_array<tuple_type4>(1);
-        hud::memory::construct_at(hud::memory::set_memory_safe(tuple4, sizeof(tuple_type4), 0xFF));
+        hud::memory::construct_object_at(hud::memory::set_memory_safe(tuple4, sizeof(tuple_type4), 0xFF));
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(*tuple4)), hud_test::explicit_default_constructible &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(*tuple4)), hud_test::implicit_default_constructible &>));
         hud_assert_eq((hud::get<0>(*tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
@@ -259,7 +259,7 @@ GTEST_TEST(tuple, default_constructor_uninit)
         hud::memory::free(tuple4);
 
         tuple_type5 *tuple5 = hud::memory::allocate_array<tuple_type5>(1);
-        hud::memory::construct_at(hud::memory::set_memory_safe(tuple5, sizeof(tuple_type5), 0xFF));
+        hud::memory::construct_object_at(hud::memory::set_memory_safe(tuple5, sizeof(tuple_type5), 0xFF));
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(*tuple5)), hud_test::explicit_default_constructible &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(*tuple5)), i32 &>));
         hud_assert_eq((hud::get<0>(*tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);

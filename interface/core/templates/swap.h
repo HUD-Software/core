@@ -36,14 +36,14 @@ namespace hud
         if constexpr (is_bitwise_move_constructible_v<type_t> && is_bitwise_copy_constructible_v<type_t>)
         {
             hud::memory::template copy_construct_array(tmp, a, N);
-            hud::memory::template copy_assign_array(a, b, N);
-            hud::memory::template copy_assign_array(b, tmp, N);
+            hud::memory::template copy_assign_object_array(a, b, N);
+            hud::memory::template copy_assign_object_array(b, tmp, N);
         }
         else
         {
             hud::memory::template move_or_copy_construct_array(tmp, a, N);
-            hud::memory::template move_or_copy_assign_array(a, b, b + N);
-            hud::memory::template move_or_copy_assign_array(b, tmp, tmp + N);
+            hud::memory::template move_or_copy_assign_object_array(a, b, b + N);
+            hud::memory::template move_or_copy_assign_object_array(b, tmp, tmp + N);
         }
     }
 

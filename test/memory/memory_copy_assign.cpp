@@ -13,7 +13,7 @@ GTEST_TEST(memory, copy_assign_array_trivial_type)
     {
         type dest[2];
         type src[2] = {15, 32};
-        hud::memory::copy_assign_array(dest, src, 2);
+        hud::memory::copy_assign_object_array(dest, src, 2);
         return {dest[0], dest[1], src[0], src[1]};
     };
 
@@ -57,7 +57,7 @@ GTEST_TEST(memory, copy_assign_array_bitwise_assignable_type)
         dest[1].i = 0;
         src[0].i = 15;
         src[1].i = 32;
-        hud::memory::copy_assign_array(dest, src, 2);
+        hud::memory::copy_assign_object_array(dest, src, 2);
         return {dest[0].i, dest[1].i, src[0].i, src[1].i};
     };
 
@@ -102,7 +102,7 @@ GTEST_TEST(memory, copy_assign_array_non_bitwise_copy_assignable_different_type)
         hud_test::LeakArrayGuard dest_guard(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::copy_assign_array(dest, src, 2);
+        hud::memory::copy_assign_object_array(dest, src, 2);
         return {dest[0].copy_constructor_count(), dest[0].copy_assign_count(), dest[0].copy_order(), dest[1].copy_constructor_count(), dest[1].copy_assign_count(), dest[1].copy_order()};
     };
 
@@ -148,7 +148,7 @@ GTEST_TEST(memory, copy_assign_array_non_bitwise_copy_assignable_same_type)
         hud_test::LeakArrayGuard guard_dest(dest, 2);
         hud::memory::construct_array_at(dest, dest + 2);
 
-        hud::memory::copy_assign_array(dest, src, 2);
+        hud::memory::copy_assign_object_array(dest, src, 2);
 
         return {dest[0].copy_constructor_count(), dest[0].copy_assign_count(), dest[0].copy_order(), dest[1].copy_constructor_count(), dest[1].copy_assign_count(), dest[1].copy_order()};
     };
