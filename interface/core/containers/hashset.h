@@ -689,6 +689,116 @@ namespace hud
                 }
             }
 
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
+                : hashset_impl(hud::move(other), other.allocator())
+            {
+            }
+
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, const allocator_type &allocator) noexcept
+                : allocator_ {allocator}
+                , max_slot_count_ {other.max_count()}
+                , count_ {other.count()}
+            {
+                if (max_slot_count_ == 0)
+                    return;
+
+                free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                // Allocate the buffer that will contain controls and aligned slots
+                // In a constant-evaluated context, bit_cast cannot be used with pointers
+                // To satisfy the compiler, allocate controls and slots in two separate allocations
+                usize control_size {allocate_control_and_slot(max_slot_count_)};
+
+                // If constant evaluated context or when slot_type is not bitwise move constructible
+                // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
+                // In a non constant evaluated context
+                // If type is trivially move constructible, just memcpy control and slot
+                // else do like grow_capacity
+                if (hud::is_constant_evaluated() || !hud::is_bitwise_move_constructible_v<slot_type>)
+                {
+                    // Set control to empty ending with sentinel
+                    hud::memory::set_memory(control_ptr_, control_size, empty_byte);
+                    control_ptr_[max_slot_count_] = sentinel_byte;
+
+                    // Move slots to newly allocated buffer
+                    for (auto &slot : other)
+                    {
+                        // Compute the hash
+                        u64 hash {hasher_type {}(slot.key())};
+                        // Find H1 slot index
+                        u64 h1 {H1(hash)};
+                        usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                        // Save h2 in control h1 index
+                        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                        // Copy slot
+                        hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(slot));
+                    }
+                }
+                else
+                {
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
+                }
+
+                other.clear_shrink();
+            }
+
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count) noexcept
+                : hashset_impl {hud::move(other), extra_max_count, other.allocator()}
+            {
+            }
+
+            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count, const allocator_type &allocator) noexcept
+                : allocator_ {allocator}
+                , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
+                , count_ {other.count()}
+            {
+                if (max_slot_count_ == 0)
+                    return;
+
+                free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                // Allocate the buffer that will contain controls and aligned slots
+                // In a constant-evaluated context, bit_cast cannot be used with pointers
+                // To satisfy the compiler, allocate controls and slots in two separate allocations
+                usize control_size {allocate_control_and_slot(max_slot_count_)};
+
+                // If constant evaluated context or when slot_type is not bitwise move constructible or when we allocate more memory than the copied set
+                // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
+                // In a non constant evaluated context
+                // If type is trivially move constructible, just memcpy control and slot
+                // else do like grow_capacity
+                if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_move_constructible_v<slot_type>)
+                {
+                    // Set control to empty ending with sentinel
+                    hud::memory::set_memory(control_ptr_, control_size, empty_byte);
+                    control_ptr_[max_slot_count_] = sentinel_byte;
+
+                    // Move slots to newly allocated buffer
+                    for (auto &slot : other)
+                    {
+                        // Compute the hash
+                        u64 hash {hasher_type {}(slot.key())};
+                        // Find H1 slot index
+                        u64 h1 {H1(hash)};
+                        usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                        // Save h2 in control h1 index
+                        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                        // Move slot
+                        hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(slot));
+                    }
+                }
+                else
+                {
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
+                }
+
+                other.clear_shrink();
+            }
+
             constexpr ~hashset_impl() noexcept
             {
                 clear_shrink();
@@ -1012,7 +1122,6 @@ namespace hud
 
             [[nodiscard]] constexpr usize
             free_slot_before_grow() const noexcept
-
             {
                 return free_slot_before_grow_;
             }
@@ -1141,7 +1250,7 @@ namespace hud
                 return ctrl_size;
             }
 
-            constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize max_slot_count) noexcept
+            constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize &max_slot_count) noexcept
             {
                 if (max_slot_count > 0)
                 {
@@ -1161,6 +1270,7 @@ namespace hud
                     {
                         allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr), current_allocation_size()});
                     }
+                    max_slot_count = 0;
                 }
             }
 
