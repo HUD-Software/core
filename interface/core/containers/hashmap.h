@@ -26,16 +26,27 @@ namespace hud
             {
             }
 
-            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<key_type, value_type>>))
-                slot(const slot &other) noexcept
+            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<key_type, value_type>>)) slot(const slot &other) noexcept
             requires(hud::is_nothrow_copy_constructible_v<hud::pair<key_type, value_type>>)
             = default;
 
             template<typename u_key_t = key_t, typename u_value_t = value_t>
             requires(hud::is_copy_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>))
-                slot(const slot<u_key_t, u_value_t> &other) noexcept
+            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>)) slot(const slot<u_key_t, u_value_t> &other) noexcept
                 : element_(other.element_)
+            {
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. slot is not designed to allow throwable copy constructible components");
+            }
+
+            constexpr explicit(!(hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>)) slot(slot &&other) noexcept
+            requires(hud::is_nothrow_move_constructible_v<hud::pair<key_type, value_type>>)
+            = default;
+
+            template<typename u_key_t = key_t, typename u_value_t = value_t>
+            requires(hud::is_move_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
+            constexpr explicit(!(hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>)) slot(slot<u_key_t, u_value_t> &&other) noexcept
+                : element_(hud::move(other.element_))
             {
                 static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot is not designed to allow throwable copy constructible components");
                 static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. slot is not designed to allow throwable copy constructible components");

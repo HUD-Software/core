@@ -220,6 +220,11 @@ namespace hud_test
         {
         }
 
+        constexpr non_bitwise_type2_gcc(non_bitwise_type &&other) noexcept
+            : non_bitwise_type(hud::move(other))
+        {
+        }
+
         constexpr non_bitwise_type2_gcc(i32 id, i32 *ptr_to_destructor_counter) noexcept
             : non_bitwise_type(id, ptr_to_destructor_counter)
         {
@@ -252,6 +257,23 @@ namespace hud
         }
     };
 
+    template<>
+    struct hash_32<hud_test::non_bitwise_type2>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_type2 &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_type2>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_type2 &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
 } // namespace hud
 
 #endif // HD_INC_MISC_NON_DEFAULT_CONSTRUCTIBLE_TYPE_H
