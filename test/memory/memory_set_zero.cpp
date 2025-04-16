@@ -109,8 +109,16 @@ GTEST_TEST(memory, set_memory_zero_safe_c_array)
 
 GTEST_TEST(memory, set_memory_zero_safe_object_to_buffer)
 {
-    hud_test::non_bitwise_type buf[3] = {2, 4, 8};
-    const u8 zero_buffer[sizeof(hud_test::non_bitwise_type) * 3] = {0};
-    hud::memory::set_memory_zero_safe(buf, 3 * sizeof(hud_test::non_bitwise_type));
-    hud_assert_true(hud::memory::is_memory_compare_equal(buf, zero_buffer, sizeof(hud_test::non_bitwise_type) * 3));
+    struct bitwise
+    {
+        u32 a;
+        u8 b;
+        f32 c;
+    };
+
+    bitwise buf[3];
+
+    const u8 zero_buffer[sizeof(bitwise) * 3] = {0};
+    hud::memory::set_memory_zero_safe(buf);
+    hud_assert_true(hud::memory::is_memory_compare_equal(buf, zero_buffer, sizeof(bitwise) * 3));
 }

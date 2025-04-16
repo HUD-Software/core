@@ -441,7 +441,7 @@ else()
 	add_test(NAME ${lib_name} COMMAND ${test_project_name} --gtest_output=xml:${test_project_name}_report.xml --extra-verbose --gtest_break_on_failure)
 endif()
 
-if(SANITIZER)
+if( CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" OR SANITIZER)
 	include(../sanitizer.cmake)
 	enable_sanitizer(${test_project_name} ${lib_name})
 endif()

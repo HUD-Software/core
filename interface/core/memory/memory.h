@@ -538,6 +538,7 @@ namespace hud
             return set_memory(buffer, buffer_size * sizeof(type_t), value);
         }
 
+    private:
         /**
          * Sets the first `size` bytes of the block of memory pointed to by `destination` to the specified `value`.
          * This safe version ensures that the operation is not removed by the compiler due to optimization.
@@ -561,6 +562,7 @@ namespace hud
             // return destination;
         }
 
+    public:
         /**
          * Sets the first `size` bytes of the block of memory pointed to by `destination` to the specified `value`.
          * This safe version ensures that the operation is not removed by the compiler due to optimization.
@@ -723,19 +725,6 @@ namespace hud
          * @param size Number of bytes to set to zero
          * @return Pointer to the buffer `destination`.
          */
-        static HD_FORCEINLINE void *set_memory_zero_safe(void *destination, const usize size) noexcept
-        {
-            return set_memory_safe(destination, size, 0);
-        }
-
-        /**
-         * Sets the first `size` bytes of the block of memory pointed by `destination` to zero.
-         * This safe version ensures that the operation is not removed by the compiler due to optimization.
-         * `destination` is volatile to prevent memset to be remove by the compiler optimisation
-         * @param destination Pointer to the buffer. Must not be null.
-         * @param size Number of bytes to set to zero
-         * @return Pointer to the buffer `destination`.
-         */
         static HD_FORCEINLINE constexpr u8 *set_memory_zero_safe(u8 *destination, const usize size) noexcept
         {
             return set_memory_safe(destination, size, 0);
@@ -751,7 +740,7 @@ namespace hud
          * @return Pointer to the buffer `destination`.
          */
         template<typename type_t>
-        requires(!hud::is_integral_v<type_t> && !hud::is_pointer_v<type_t>)
+        requires(!hud::is_integral_v<type_t> && !hud::is_pointer_v<type_t> && hud::is_trivially_copyable_v<type_t>)
         static HD_FORCEINLINE type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
         {
             return set_memory_safe(destination, size, 0);
@@ -782,7 +771,7 @@ namespace hud
             // LCOV_EXCL_STOP
             else
             {
-                return static_cast<type_t *>(set_memory_safe(static_cast<void *>(destination), size, 0));
+                return static_cast<type_t *>(set_memory_safe(destination, size, 0));
             }
         }
 
@@ -811,7 +800,7 @@ namespace hud
             // LCOV_EXCL_STOP
             else
             {
-                return static_cast<type_t *>(set_memory_zero_safe(static_cast<void *>(destination), size));
+                return static_cast<type_t *>(set_memory_safe(destination, size, 0));
             }
         }
 
@@ -825,9 +814,10 @@ namespace hud
          * @return Pointer to the `buffer`.
          */
         template<typename type_t, usize buffer_size>
+        requires(hud::is_trivially_copyable_v<type_t>)
         static HD_FORCEINLINE constexpr type_t *set_memory_zero_safe(type_t (&buffer)[buffer_size]) noexcept
         {
-            return static_cast<type_t *>(set_memory_zero_safe(buffer, buffer_size * sizeof(type_t)));
+            return static_cast<type_t *>(set_memory_safe(buffer, buffer_size * sizeof(type_t), 0));
         }
 
         /**
