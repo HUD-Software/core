@@ -67,6 +67,7 @@ set( src
 	hash/hash_64.cpp
 	hashmap/hashmap_add.cpp
 	hashmap/hashmap_constructors.cpp
+	hashmap/hashmap_copy_assign_operator.cpp
 	hashmap/hashmap_copy_constructors.cpp
 	hashmap/hashmap_find.cpp
 	hashmap/hashmap_clear.cpp

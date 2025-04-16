@@ -26,7 +26,7 @@ function(enable_sanitizer project_name lib_name)
 				COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll $<TARGET_FILE_DIR:${project_name}>
 			)
 		elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-			message(FATAL_ERROR "ASAN with Clang-cl is not supported")
+			message(WARNING  "ASAN with Clang-cl is not supported")
 			# https://github.com/aminya/project_options/issues/138
 			# https://stackoverflow.com/questions/66531482/application-crashes-when-using-address-sanitizer-with-msvc
 			# https://devblogs.microsoft.com/cppblog/asan-for-windows-x64-and-debug-build-support/
