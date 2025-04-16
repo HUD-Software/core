@@ -72,12 +72,6 @@ namespace hud
                 return hud::get<1>(element_);
             }
 
-            // template<typename slot_t>
-            // [[nodiscard]] static constexpr decltype(auto) get_key(slot_t &&s) noexcept
-            // {
-            //     return hud::get<0>(hud::forward<slot_t>(s).element_);
-            // }
-
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(slot &s) noexcept
             {

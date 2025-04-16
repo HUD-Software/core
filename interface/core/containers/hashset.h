@@ -804,6 +804,22 @@ namespace hud
                 clear_shrink();
             }
 
+            /**
+             * Copy assign another hashset_impl.
+             * The copy assignement only grow allocation and never shrink allocation.
+             * No new allocation is done if the hashset_impl contains enough memory to copy all elements, in other words we don't copy the capacity of the copied hashset_impl.
+             * @param other The other array to copy
+             * @return *this
+             */
+            constexpr hashset_impl &operator=(const hashset_impl &other) noexcept
+            requires(hud::is_copy_assignable_v<slot_type>)
+            {
+                // 1. Destroy all slots
+                // 2. Clear controls
+                // 3. Copy slots and controls ( Test if we can just copy the control and slots and not rehash and construct in place for each slots )
+                return *this;
+            }
+
             /** Reserve memory for at least `count` element and regenerates the hash table. */
             constexpr void reserve(usize count) noexcept
             {
