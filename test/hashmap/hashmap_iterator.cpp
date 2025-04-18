@@ -1,6 +1,20 @@
 #include <core/containers/hashmap.h>
 #include <core/algorithms/find.h>
 
+GTEST_TEST(hashmap, dtes)
+{
+    hud::hashmap<hud_test::non_bitwise_type, hud_test::non_bitwise_type> map {
+        {1, 11},
+        {2, 22},
+        {3, 33},
+        {4, 44}
+    };
+
+    auto it = map.begin();
+    // Should not be possible
+    auto s = hud::move(*it);
+}
+
 GTEST_TEST(hashmap, iterators)
 {
     const auto test = []()
