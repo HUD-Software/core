@@ -104,8 +104,8 @@ namespace hud
         {
 
             using storage = slot_storage<key_t, value_t>;
-            using key_type = storage::key_type;
-            using value_type = storage::value_type;
+            using key_type = typename storage::key_type;
+            using value_type = typename storage::value_type;
 
             template<typename u_key_t, typename u_value_t>
             requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
