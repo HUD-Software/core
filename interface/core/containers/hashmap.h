@@ -189,34 +189,32 @@ namespace hud
             : slot_storage<key_t, value_t>
         {
             using storage = slot_storage<key_t, value_t>;
-            using key_type = typename storage::key_type;
-            using value_type = typename storage::value_type;
 
             template<typename... type_t>
-            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, type_t...>)
+            requires(hud::is_constructible_v<hud::pair<key_t, value_t>, type_t...>)
             constexpr explicit slot(type_t &&...values) noexcept
                 : storage(hud::forward<type_t>(values)...)
             {
             }
 
-            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<key_type, value_type>>) slot(const slot &other) noexcept
-            requires(hud::is_nothrow_copy_constructible_v<hud::pair<key_type, value_type>>)
+            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_t, value_t> &, hud::pair<key_t, value_t>>) slot(const slot &other) noexcept
+            requires(hud::is_nothrow_copy_constructible_v<hud::pair<key_t, value_t>>)
             = default;
 
             template<typename u_key_t = key_t, typename u_value_t = value_t>
-            requires(hud::is_copy_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>) slot(const slot<u_key_t, u_value_t> &other) noexcept
+            requires(hud::is_copy_constructible_v<hud::pair<key_t, value_t>, hud::pair<u_key_t, u_value_t>>)
+            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_t, value_t> &, hud::pair<u_key_t, u_value_t>>) slot(const slot<u_key_t, u_value_t> &other) noexcept
                 : storage(other)
             {
             }
 
-            constexpr explicit(!(hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>)) slot(slot &&other) noexcept
-            requires(hud::is_nothrow_move_constructible_v<hud::pair<key_type, value_type>>)
+            constexpr explicit(!(hud::is_convertible_v<hud::pair<key_t, value_t>, hud::pair<key_t, value_t>>)) slot(slot &&other) noexcept
+            requires(hud::is_nothrow_move_constructible_v<hud::pair<key_t, value_t>>)
             = default;
 
             template<typename u_key_t = key_t, typename u_value_t = value_t>
-            requires(hud::is_move_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>) slot(slot<u_key_t, u_value_t> &&other) noexcept
+            requires(hud::is_move_constructible_v<hud::pair<key_t, value_t>, hud::pair<u_key_t, u_value_t>>)
+            constexpr explicit(!hud::is_convertible_v<hud::pair<key_t, value_t>, hud::pair<u_key_t, u_value_t>>) slot(slot<u_key_t, u_value_t> &&other) noexcept
                 : storage(hud::move(other))
             {
             }
