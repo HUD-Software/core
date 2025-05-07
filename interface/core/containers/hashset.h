@@ -18,63 +18,255 @@ namespace hud
 {
     namespace details::hashset
     {
+        // template<typename key_t>
+        // struct slot
+        // {
+        //     using key_type = key_t;
+
+        // constexpr explicit slot(const key_type &key) noexcept
+        //     : element_ {key}
+        // {
+        // }
+
+        // template<typename u_key_t>
+        // requires(hud::is_constructible_v<key_type, u_key_t>)
+        // constexpr explicit slot(u_key_t &&key) noexcept
+        //     : element_ {hud::forward<u_key_t>(key)}
+        // {
+        // }
+
+        // [[nodiscard]] constexpr const key_type &key() const noexcept
+        // {
+        //     return element_;
+        // }
+
+        // template<typename slot_t>
+        // [[nodiscard]] static constexpr decltype(auto) key(slot_t &&s) noexcept
+        // {
+        //     return hud::forward<slot_t>(s).element_;
+        // }
+
+        // template<usize idx_to_reach>
+        // [[nodiscard]] friend constexpr key_type &get(slot &s) noexcept
+        // {
+        //     static_assert(idx_to_reach == 0, "Index out of bound");
+        //     return s.element_;
+        // }
+
+        // template<usize idx_to_reach>
+        // [[nodiscard]] friend constexpr const key_type &get(const slot &s) noexcept
+        // {
+        //     static_assert(idx_to_reach == 0, "Index out of bound");
+        //     return s.element_;
+        // }
+
+        // template<usize idx_to_reach>
+        // [[nodiscard]] friend constexpr decltype(auto) get(slot &&s) noexcept
+        // {
+        //     static_assert(idx_to_reach == 0, "Index out of bound");
+        //     return hud::forward<key_type>(hud::forward<slot>(s).element_);
+        // }
+
+        // template<usize idx_to_reach>
+        // [[nodiscard]] friend constexpr decltype(auto) get(const slot &&s) noexcept
+        // {
+        //     static_assert(idx_to_reach == 0, "Index out of bound");
+        //     return hud::forward<const key_type>(hud::forward<const slot>(s).element_);
+        // }
+
+        // key_type element_;
+        // };
+
+        /**
+         * Key storage for the set map, offering controlled access with specific constraints:
+         * - Keys are immutable to ensure consistent and reliable hash calculations.
+         * - The storage is copyable but not movable to maintain the integrity and consistency of the keys.
+         *
+         * @tparam key_t The type of the key
+         */
         template<typename key_t>
-        struct slot
+        class slot_storage
         {
+        public:
+            /** Type of the key. */
             using key_type = key_t;
 
-            constexpr explicit slot(const key_type &key) noexcept
-                : element_ {key}
+        public:
+            /** Retrieves non mutable reference to the key. */
+            [[nodiscard]] constexpr const key_type &key() noexcept
             {
+                return hud::get<0>(element_);
             }
 
-            template<typename u_key_t>
-            requires(hud::is_constructible_v<key_type, u_key_t>)
-            constexpr explicit slot(u_key_t &&key) noexcept
-                : element_ {hud::forward<u_key_t>(key)}
-            {
-            }
-
+            /** Retrieves non mutable reference to the key. */
             [[nodiscard]] constexpr const key_type &key() const noexcept
             {
-                return element_;
+                return hud::get<0>(element_);
             }
 
-            template<typename slot_t>
-            [[nodiscard]] static constexpr decltype(auto) key(slot_t &&s) noexcept
-            {
-                return hud::forward<slot_t>(s).element_;
-            }
-
+            /**
+             * Retrieves a reference to the element at the specified index from a non-const slot_storage object.
+             * @tparam idx_to_reach The index of the element to retrieve.
+             * @param s The slot_storage object.
+             * @return A reference to the element at the specified index.
+             */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr key_type &get(slot &s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(slot_storage &s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
+            /**
+             * Retrieves a const reference to the element at the specified index from a const slot_storage object.
+             * @tparam idx_to_reach The index of the element to retrieve.
+             * @param s The const slot_storage object.
+             * @return A const reference to the element at the specified index.
+             */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr const key_type &get(const slot &s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(const slot_storage &s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
+            /**
+             * Retrieves a reference to the element at the specified index from a slot_storage object.
+             * @tparam idx_to_reach The index of the element to retrieve.
+             * @param s The slot_storage object.
+             * @return A reference to the element at the specified index.
+             */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(slot &&s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(slot_storage &&s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
-                return hud::forward<key_type>(hud::forward<slot>(s).element_);
+                return hud::forward<key_type>(hud::forward<slot_storage>(s).element_);
             }
 
+            /**
+             * Retrieves a const reference to the element at the specified index from a const slot_storage object.
+             * @tparam idx_to_reach The index of the element to retrieve.
+             * @param s The const slot_storage object.
+             * @return A const reference to the element at the specified index.
+             */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const slot &&s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(const slot_storage &&s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
-                return hud::forward<const key_type>(hud::forward<const slot>(s).element_);
+                return hud::forward<const key_type>(hud::forward<const slot_storage>(s).element_);
             }
 
+            /**
+             * Copy constructor.
+             * Does not accept throwable copy constructible components.
+             * @param other Another pair object.
+             */
+            constexpr explicit(!(hud::is_convertible_v<const key_type &, key_type>)) slot_storage(const slot_storage &other) noexcept = default;
+
+        protected:
+            /**
+             * Constructor that initializes the slot_storage with a key.
+             * @tparam u_key_t Type of the key.
+             * @param key The key to initialize with.
+             */
+            template<typename u_key_t>
+            requires(hud::is_constructible_v<key_type, u_key_t>)
+            constexpr explicit slot_storage(const u_key_t &key) noexcept
+                : element_(key)
+            {
+            }
+
+            /**
+             * Constructor that initializes the slot_storage with a key.
+             * @tparam u_key_t Type of the key.
+             * @param key The key to initialize with.
+             */
+            template<typename u_key_t>
+            requires(hud::is_constructible_v<key_type, u_key_t>)
+            constexpr explicit slot_storage(u_key_t &&key) noexcept
+                : element_(hud::forward<u_key_t>(key))
+            {
+            }
+
+            /**
+             * Move constructor.
+             * Does not accept throwable copy constructible components.
+             * @param other Another slot_storage object to move from.
+             */
+            constexpr slot_storage(slot_storage &&other) noexcept = default;
+
+            /**
+             * Copy constructor for different key type.
+             * @tparam u_key_t Type of the key in the other slot_storage.
+             * @param other The other slot_storage object to copy from.
+             */
+
+            template<typename u_key_t = key_t>
+            requires(hud::is_copy_constructible_v<key_type, u_key_t>)
+            constexpr explicit(!(hud::is_convertible_v<const key_type &, u_key_t>)) slot_storage(const slot_storage<u_key_t> &other) noexcept
+                : element_(other.element_)
+            {
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
+            }
+
+            /**
+             * Move constructor for different key and value types.
+             * @tparam u_key_t Type of the key in the other slot_storage.
+             * @param other The other slot_storage object to move from.
+             */
+            template<typename u_key_t = key_t>
+            requires(hud::is_move_constructible_v<key_type, u_key_t>)
+            constexpr explicit(!hud::is_convertible_v<key_type, u_key_t>) slot_storage(u_key_t &&other) noexcept
+                : element_(hud::move(other.element_))
+            {
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
+            }
+
+        private:
+            /** slot_storage with other key or value can access private members of slot_storage. */
+            template<typename u_key_t, typename u_value_t>
+            friend class slot_storage;
+
+        protected:
+            /** The key. */
             key_type element_;
+        };
+
+        template<typename key_t>
+        struct slot
+            : slot_storage<key_t>
+        {
+            using storage = slot_storage<key_t>;
+            using key_type = storage::key_type;
+
+            template<typename... type_t>
+            requires(hud::is_constructible_v<key_type, type_t...>)
+            constexpr explicit slot(type_t &&...values) noexcept
+                : storage(hud::forward<type_t>(values)...)
+            {
+            }
+
+            constexpr explicit(!hud::is_convertible_v<const key_type &, key_type>) slot(const slot &other) noexcept
+            requires(hud::is_nothrow_copy_constructible_v<key_type>)
+            = default;
+
+            template<typename u_key_t = key_t>
+            requires(hud::is_copy_constructible_v<key_type, u_key_t>)
+            constexpr explicit(!hud::is_convertible_v<const key_type &, u_key_t>) slot(const slot<u_key_t> &other) noexcept
+                : storage(other)
+            {
+            }
+
+            constexpr explicit(!(hud::is_convertible_v<key_type, key_type>)) slot(slot &&other) noexcept
+            requires(hud::is_nothrow_move_constructible_v<key_type>)
+            = default;
+
+            template<typename u_key_t = key_t>
+            requires(hud::is_move_constructible_v<key_type, u_key_t>)
+            constexpr explicit(!(hud::is_convertible_v<key_type, u_key_t>)) slot(slot<u_key_t> &&other) noexcept
+                : storage(hud::move(other))
+            {
+            }
         };
 
         template<typename key_t>
@@ -633,19 +825,6 @@ namespace hud
                         slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
                         control_full_or_sentinel = full_or_sentinel;
                     }
-
-                    // for (auto &slot : other)
-                    // {
-                    //     // Compute the hash
-                    //     u64 hash {hasher_type {}(slot.key())};
-                    //     // Find H1 slot index
-                    //     u64 h1 {H1(hash)};
-                    //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                    //     // Save h2 in control h1 index
-                    //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                    //     // Copy slot
-                    //     hud::memory::construct_object_at(slot_ptr_ + slot_index, slot);
-                    // }
                 }
                 else
                 {
@@ -705,19 +884,6 @@ namespace hud
                         slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
                         control_full_or_sentinel = full_or_sentinel;
                     }
-                    // Copy slots to newly allocated buffer
-                    // for (auto &slot : other)
-                    // {
-                    //     // Compute the hash
-                    //     u64 hash {hasher_type {}(slot.key())};
-                    //     // Find H1 slot index
-                    //     u64 h1 {H1(hash)};
-                    //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                    //     // Save h2 in control h1 index
-                    //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                    //     // Copy slot
-                    //     hud::memory::construct_object_at(slot_ptr_ + slot_index, slot);
-                    // }
                 }
                 else
                 {
@@ -777,19 +943,6 @@ namespace hud
                         slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
                         control_full_or_sentinel = full_or_sentinel;
                     }
-
-                    // for (auto &slot : other)
-                    // {
-                    //     // Compute the hash
-                    //     u64 hash {hasher_type {}(slot.key())};
-                    //     // Find H1 slot index
-                    //     u64 h1 {H1(hash)};
-                    //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                    //     // Save h2 in control h1 index
-                    //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                    //     // Copy slot
-                    //     hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(slot));
-                    // }
                 }
                 else
                 {
@@ -853,18 +1006,6 @@ namespace hud
                         slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
                         control_full_or_sentinel = full_or_sentinel;
                     }
-                    // for (auto &slot : other)
-                    // {
-                    //     // Compute the hash
-                    //     u64 hash {hasher_type {}(slot.key())};
-                    //     // Find H1 slot index
-                    //     u64 h1 {H1(hash)};
-                    //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                    //     // Save h2 in control h1 index
-                    //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                    //     // Move slot
-                    //     hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(slot));
-                    // }
                 }
                 else
                 {
@@ -1208,30 +1349,6 @@ namespace hud
                         slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
                         control_full_or_sentinel = full_or_sentinel;
                     }
-
-                    // ++
-                    // control_type *full_or_sentinel {control::skip_empty_or_deleted(control_ptr_ + 1)};
-                    // slot_ptr_ += full_or_sentinel - control_ptr_;
-                    // control_ptr_ = full_or_sentinel;
-
-                    // !=
-                    // control_ptr_ != other.control_ptr_
-                    // for (auto it = iterator {old_control_ptr, old_slot_ptr};
-                    //      it != iterator(old_control_ptr + old_max_slot_count);
-                    //      ++it)
-                    // {
-
-                    // // Compute the hash
-                    // u64 hash {hasher_type {}(it->key())};
-                    // // Find H1 slot index
-                    // u64 h1 {H1(hash)};
-                    // usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                    // // Save h2 in control h1 index
-                    // control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                    // // Move old slot to new slot
-                    // hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*it));
-                    // }
-
                     free_control_and_slot(old_control_ptr, old_slot_ptr, old_max_slot_count);
                 }
             }

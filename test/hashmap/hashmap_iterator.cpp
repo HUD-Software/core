@@ -1,7 +1,7 @@
 #include <core/containers/hashmap.h>
 #include <core/algorithms/find.h>
 
-GTEST_TEST(hashmap, dtes)
+GTEST_TEST(hashmap, slot_storage_is_not_movable_but_copyable)
 {
     hud::hashmap<hud_test::non_bitwise_type, hud_test::non_bitwise_type> map {
         {1, 11},
@@ -12,7 +12,13 @@ GTEST_TEST(hashmap, dtes)
 
     auto it = map.begin();
     // Should not be possible
-    auto s = hud::move(*it);
+    // auto slot_moved = hud::move(*it);
+    auto slot_copied = *it;
+    hud_assert_ne(&slot_copied.key(), &it->key());
+    auto &slot_referenced = *it;
+    hud_assert_eq(slot_referenced.key(), it->key());
+    const auto &slot_creferenced = *it;
+    hud_assert_eq(slot_creferenced.key(), it->key());
 }
 
 GTEST_TEST(hashmap, iterators)

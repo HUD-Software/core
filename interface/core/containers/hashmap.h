@@ -6,62 +6,115 @@ namespace hud
 {
     namespace details::hashmap
     {
+        /**
+         * Key-value storage for the hash map, offering controlled access with specific constraints:
+         * - Keys are immutable to ensure consistent and reliable hash calculations.
+         * - Values are mutable, allowing for updates and modifications.
+         * - The storage is copyable but not movable to maintain the integrity and consistency of the keys.
+         *
+         * @tparam key_t   The type of the key
+         * @tparam value_t The type of the value
+         */
         template<typename key_t, typename value_t>
         class slot_storage
         {
         public:
+            /** Type of the key. */
             using key_type = key_t;
+            /** Type of the value. */
             using value_type = value_t;
 
+        protected:
+            using pair_type = hud::pair<key_type, value_type>;
+
+        public:
+            /** Retrieves non mutable reference to the key. */
             [[nodiscard]] constexpr const key_type &key() noexcept
             {
                 return hud::get<0>(element_);
             }
 
+            /** Retrieves non mutable reference to the key. */
             [[nodiscard]] constexpr const key_type &key() const noexcept
             {
                 return hud::get<0>(element_);
             }
 
+            /** Retrieves mutable reference to the key. */
             [[nodiscard]] constexpr value_type &value() noexcept
             {
                 return hud::get<1>(element_);
             }
 
+            /** Retrieves non mutable reference to the value. */
             [[nodiscard]] constexpr const value_type &value() const noexcept
             {
                 return hud::get<1>(element_);
             }
 
+            /**
+             * Retrieves a reference to the element at the specified index from a non-const slot_storage object.
+             * @tparam idx_to_reach The index of the element to retrieve.
+             * @param s The slot_storage object.
+             * @return A reference to the element at the specified index.
+             */
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(slot_storage &s) noexcept
             {
                 return hud::get<idx_to_reach>(s.element_);
             }
 
+            /**
+             * Retrieves a const reference to the element at the specified index from a const slot_storage object.
+             * @tparam idx_to_reach The index of the element to retrieve.
+             * @param s The const slot_storage object.
+             * @return A const reference to the element at the specified index.
+             */
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const slot_storage &s) noexcept
             {
                 return hud::get<idx_to_reach>(s.element_);
             }
 
+            /**
+             * Retrieves a reference to the element at the specified index from a slot_storage object.
+             * @tparam idx_to_reach The index of the element to retrieve.
+             * @param s The slot_storage object.
+             * @return A reference to the element at the specified index.
+             */
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(slot_storage &&s) noexcept
             {
                 return hud::get<idx_to_reach>(hud::forward<slot_storage>(s).element_);
             }
 
+            /**
+             * Retrieves a const reference to the element at the specified index from a const slot_storage object.
+             * @tparam idx_to_reach The index of the element to retrieve.
+             * @param s The const slot_storage object.
+             * @return A const reference to the element at the specified index.
+             */
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const slot_storage &&s) noexcept
             {
                 return hud::get<idx_to_reach>(hud::forward<const slot_storage>(s).element_);
             }
 
-        private:
-            template<typename u_key_t, typename u_value_t>
-            friend class slot_storage;
+            /**
+             * Copy constructor.
+             * Does not accept throwable copy constructible components.
+             * @param other Another pair object.
+             */
+            constexpr explicit(!(hud::is_convertible_v<const pair_type &, pair_type>)) slot_storage(const slot_storage &other) noexcept = default;
 
         protected:
+            /**
+             * Constructor that initializes the slot_storage with a key and a value.
+             * @tparam u_key_t Type of the key.
+             * @tparam u_value_t Type of the value.
+             * @param key The key to initialize with.
+             * @param value The value to initialize with.
+             */
             template<typename u_key_t, typename u_value_t>
             requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
             constexpr explicit slot_storage(const u_key_t &key, const u_value_t &value) noexcept
@@ -69,6 +122,13 @@ namespace hud
             {
             }
 
+            /**
+             * Constructor that initializes the slot_storage with a key and a value.
+             * @tparam u_key_t Type of the key.
+             * @tparam u_value_t Type of the value.
+             * @param key The key to initialize with.
+             * @param value The value to initialize with.
+             */
             template<typename u_key_t, typename u_value_t>
             requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
             constexpr explicit slot_storage(u_key_t &&key, u_value_t &&value) noexcept
@@ -76,58 +136,76 @@ namespace hud
             {
             }
 
+            /**
+             * Move constructor.
+             * Does not accept throwable copy constructible components.
+             * @param other Another slot_storage object to move from.
+             */
+            constexpr slot_storage(slot_storage &&other) noexcept = default;
+
+            /**
+             * Copy constructor for different key and value types.
+             * @tparam u_key_t Type of the key in the other slot_storage.
+             * @tparam u_value_t Type of the value in the other slot_storage.
+             * @param other The other slot_storage object to copy from.
+             */
+
             template<typename u_key_t = key_t, typename u_value_t = value_t>
             requires(hud::is_copy_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>)) slot_storage(const slot_storage<u_key_t, u_value_t> &other) noexcept
+            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>) slot_storage(const slot_storage<u_key_t, u_value_t> &other) noexcept
                 : element_(other.element_)
             {
                 static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
                 static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
             }
 
+            /**
+             * Move constructor for different key and value types.
+             * @tparam u_key_t Type of the key in the other slot_storage.
+             * @tparam u_value_t Type of the value in the other slot_storage.
+             * @param other The other slot_storage object to move from.
+             */
             template<typename u_key_t = key_t, typename u_value_t = value_t>
             requires(hud::is_move_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!(hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>)) slot_storage(slot_storage<u_key_t, u_value_t> &&other) noexcept
+            constexpr explicit(!hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>) slot_storage(slot_storage<u_key_t, u_value_t> &&other) noexcept
                 : element_(hud::move(other.element_))
             {
                 static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
                 static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
             }
 
+        private:
+            /** slot_storage with other key or value can access private members of slot_storage. */
+            template<typename u_key_t, typename u_value_t>
+            friend class slot_storage;
+
         protected:
-            hud::pair<key_type, value_type> element_;
+            /** The pair containing the key and value. */
+            pair_type element_;
         };
 
         template<typename key_t, typename value_t>
         struct slot
             : slot_storage<key_t, value_t>
         {
-
             using storage = slot_storage<key_t, value_t>;
             using key_type = storage::key_type;
             using value_type = storage::value_type;
 
-            template<typename u_key_t, typename u_value_t>
-            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
-            constexpr explicit slot(const u_key_t &key, const u_value_t &value) noexcept
-                : storage(key, value)
+            template<typename... type_t>
+            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, type_t...>)
+            constexpr explicit slot(type_t &&...values) noexcept
+                : storage(hud::forward<type_t>(values)...)
             {
             }
 
-            template<typename u_key_t, typename u_value_t>
-            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
-            constexpr explicit slot(u_key_t &&key, u_value_t &&value) noexcept
-                : storage(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value))
-            {
-            }
-
-            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<key_type, value_type>>)) slot(const slot &other) noexcept
+            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<key_type, value_type>>) slot(const slot &other) noexcept
             requires(hud::is_nothrow_copy_constructible_v<hud::pair<key_type, value_type>>)
             = default;
 
             template<typename u_key_t = key_t, typename u_value_t = value_t>
             requires(hud::is_copy_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!(hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>)) slot(const slot<u_key_t, u_value_t> &other) noexcept
+            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>) slot(const slot<u_key_t, u_value_t> &other) noexcept
                 : storage(other)
             {
             }
@@ -138,14 +216,13 @@ namespace hud
 
             template<typename u_key_t = key_t, typename u_value_t = value_t>
             requires(hud::is_move_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!(hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>)) slot(slot<u_key_t, u_value_t> &&other) noexcept
+            constexpr explicit(!hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>) slot(slot<u_key_t, u_value_t> &&other) noexcept
                 : storage(hud::move(other))
             {
             }
         };
 
         template<typename key_t> struct default_hasher
-
         {
             /** Hash the value and combine the value with the current hasher value. */
             template<typename... type_t>
