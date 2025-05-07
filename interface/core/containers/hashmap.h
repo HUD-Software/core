@@ -222,11 +222,11 @@ namespace hud
         typename key_equal_t = hashmap_default_key_equal<key_t>,
         typename allocator_t = hashmap_default_allocator>
     class hashmap
-        : public details::hashset::hashset_impl<details::hashset::slot<details::hashmap::slot_storage<key_t, value_t>>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashmap::slot_storage<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
     {
 
     private:
-        using super = details::hashset::hashset_impl<details::hashset::slot<details::hashmap::slot_storage<key_t, value_t>>, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<details::hashmap::slot_storage<key_t, value_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */

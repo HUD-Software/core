@@ -811,24 +811,25 @@ namespace hud
         };
 
         template<
-            typename slot_t,
+            typename storage_t,
             typename hasher_t,
             typename key_equal_t,
             typename allocator_t>
         class hashset_impl
         {
-
         protected:
             /** Type of the slot. */
-            using slot_type = slot_t;
+            using slot_type = slot<storage_t>;
+            /** Type of the slot. */
+            using storage_type = typename slot_type::storage_type;
             /** Type of the key. */
             using key_type = typename slot_type::key_type;
             /** Type of the hash function. */
             using hasher_type = hasher_t;
             /** Type of the iterator. */
-            using iterator = hud::details::hashset::iterator<slot_t, false>;
+            using iterator = hud::details::hashset::iterator<slot_type, false>;
             /** Type of the const iterator. */
-            using const_iterator = hud::details::hashset::iterator<slot_t, true>;
+            using const_iterator = hud::details::hashset::iterator<slot_type, true>;
             /**  Type of the allocator. */
             using allocator_type = allocator_t;
             /** The type of allocation done by the allocator. */
@@ -837,7 +838,7 @@ namespace hud
             static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
             static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             friend class hashset_impl; // Friend with other hashset_impl of other types
 
         public:
@@ -854,14 +855,14 @@ namespace hud
             {
             }
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            constexpr explicit hashset_impl(const hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
                 : hashset_impl(other, other.allocator())
             {
             }
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            constexpr explicit hashset_impl(const hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, const allocator_type &allocator) noexcept
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, const allocator_type &allocator) noexcept
                 : allocator_ {allocator}
                 , max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
@@ -913,14 +914,14 @@ namespace hud
                 }
             }
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            constexpr explicit hashset_impl(const hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count) noexcept
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count) noexcept
                 : hashset_impl {other, extra_max_count, other.allocator()}
             {
             }
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            constexpr explicit hashset_impl(const hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count, const allocator_type &allocator) noexcept
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : allocator_ {allocator}
                 , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
@@ -972,14 +973,14 @@ namespace hud
                 }
             }
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            constexpr explicit hashset_impl(hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
                 : hashset_impl(hud::move(other), other.allocator())
             {
             }
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            constexpr explicit hashset_impl(hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, const allocator_type &allocator) noexcept
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, const allocator_type &allocator) noexcept
                 : allocator_ {allocator}
                 , max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
@@ -1006,7 +1007,7 @@ namespace hud
 
                     // Move slots to newly allocated buffer
                     control_type *control_full_or_sentinel = other.control_ptr_;
-                    u_slot_t *slot_full_or_sentinel = other.slot_ptr_;
+                    auto slot_full_or_sentinel = other.slot_ptr_;
                     while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
                     {
                         // Compute the hash
@@ -1035,14 +1036,14 @@ namespace hud
                 // other.clear_shrink();
             }
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            constexpr explicit hashset_impl(hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count) noexcept
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count) noexcept
                 : hashset_impl {hud::move(other), extra_max_count, other.allocator()}
             {
             }
 
-            template<typename u_slot_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            constexpr explicit hashset_impl(hashset_impl<u_slot_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count, const allocator_type &allocator) noexcept
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : allocator_ {allocator}
                 , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
@@ -1069,7 +1070,7 @@ namespace hud
 
                     // Move slots to newly allocated buffer
                     control_type *control_full_or_sentinel = other.control_ptr_;
-                    u_slot_t *slot_full_or_sentinel = other.slot_ptr_;
+                    auto slot_full_or_sentinel = other.slot_ptr_;
                     while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
                     {
                         // Compute the hash
@@ -1095,7 +1096,6 @@ namespace hud
 
                 other.free_control_and_slot(other.control_ptr_, other.slot_ptr_, other.max_slot_count_);
                 other.count_ = 0;
-                // other.clear_shrink();
             }
 
             constexpr ~hashset_impl() noexcept
@@ -1627,10 +1627,10 @@ namespace hud
         typename key_equal_t = hashset_default_key_equal<element_t>,
         typename allocator_t = hashset_default_allocator>
     class hashset
-        : public details::hashset::hashset_impl<details::hashset::slot<element_t>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashset::slot_storage<element_t>, hasher_t, key_equal_t, allocator_t>
     {
     private:
-        using super = details::hashset::hashset_impl<details::hashset::slot<element_t>, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<details::hashset::slot_storage<element_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
