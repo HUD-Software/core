@@ -16,7 +16,7 @@ namespace hud
          * @tparam value_t The type of the value
          */
         template<typename key_t, typename value_t>
-        class slot_storage
+        class hashmap_storage
         {
         public:
             /** Type of the key. */
@@ -53,51 +53,51 @@ namespace hud
             }
 
             /**
-             * Retrieves a reference to the element at the specified index from a non-const slot_storage object.
+             * Retrieves a reference to the element at the specified index from a non-const hashmap_storage object.
              * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The slot_storage object.
+             * @param s The hashmap_storage object.
              * @return A reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(slot_storage &s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(hashmap_storage &s) noexcept
             {
                 return hud::get<idx_to_reach>(s.element_);
             }
 
             /**
-             * Retrieves a const reference to the element at the specified index from a const slot_storage object.
+             * Retrieves a const reference to the element at the specified index from a const hashmap_storage object.
              * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The const slot_storage object.
+             * @param s The const hashmap_storage object.
              * @return A const reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const slot_storage &s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(const hashmap_storage &s) noexcept
             {
                 return hud::get<idx_to_reach>(s.element_);
             }
 
             /**
-             * Retrieves a reference to the element at the specified index from a slot_storage object.
+             * Retrieves a reference to the element at the specified index from a hashmap_storage object.
              * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The slot_storage object.
+             * @param s The hashmap_storage object.
              * @return A reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(slot_storage &&s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(hashmap_storage &&s) noexcept
             {
-                return hud::get<idx_to_reach>(hud::forward<slot_storage>(s).element_);
+                return hud::get<idx_to_reach>(hud::forward<hashmap_storage>(s).element_);
             }
 
             /**
-             * Retrieves a const reference to the element at the specified index from a const slot_storage object.
+             * Retrieves a const reference to the element at the specified index from a const hashmap_storage object.
              * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The const slot_storage object.
+             * @param s The const hashmap_storage object.
              * @return A const reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const slot_storage &&s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(const hashmap_storage &&s) noexcept
             {
-                return hud::get<idx_to_reach>(hud::forward<const slot_storage>(s).element_);
+                return hud::get<idx_to_reach>(hud::forward<const hashmap_storage>(s).element_);
             }
 
             /**
@@ -105,25 +105,25 @@ namespace hud
              * Does not accept throwable copy constructible components.
              * @param other Another pair object.
              */
-            constexpr explicit(!(hud::is_convertible_v<const pair_type &, pair_type>)) slot_storage(const slot_storage &other) noexcept = default;
+            constexpr explicit(!(hud::is_convertible_v<const pair_type &, pair_type>)) hashmap_storage(const hashmap_storage &other) noexcept = default;
 
             /**
              * Copy constructor for different key and value types.
-             * @tparam u_key_t Type of the key in the other slot_storage.
-             * @tparam u_value_t Type of the value in the other slot_storage.
-             * @param other The other slot_storage object to copy from.
+             * @tparam u_key_t Type of the key in the other hashmap_storage.
+             * @tparam u_value_t Type of the value in the other hashmap_storage.
+             * @param other The other hashmap_storage object to copy from.
              */
             template<typename u_key_t = key_t, typename u_value_t = value_t>
             requires(hud::is_copy_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>) slot_storage(const slot_storage<u_key_t, u_value_t> &other) noexcept
+            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>) hashmap_storage(const hashmap_storage<u_key_t, u_value_t> &other) noexcept
                 : element_(other.element_)
             {
-                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
             }
 
             /**
-             * Constructor that initializes the slot_storage with a key and a value.
+             * Constructor that initializes the hashmap_storage with a key and a value.
              * @tparam u_key_t Type of the key.
              * @tparam u_value_t Type of the value.
              * @param key The key to initialize with.
@@ -131,13 +131,13 @@ namespace hud
              */
             template<typename u_key_t, typename u_value_t>
             requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
-            constexpr explicit slot_storage(const u_key_t &key, const u_value_t &value) noexcept
+            constexpr explicit hashmap_storage(const u_key_t &key, const u_value_t &value) noexcept
                 : element_(key, value)
             {
             }
 
             /**
-             * Constructor that initializes the slot_storage with a key and a value.
+             * Constructor that initializes the hashmap_storage with a key and a value.
              * @tparam u_key_t Type of the key.
              * @tparam u_value_t Type of the value.
              * @param key The key to initialize with.
@@ -145,7 +145,7 @@ namespace hud
              */
             template<typename u_key_t, typename u_value_t>
             requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
-            constexpr explicit slot_storage(u_key_t &&key, u_value_t &&value) noexcept
+            constexpr explicit hashmap_storage(u_key_t &&key, u_value_t &&value) noexcept
                 : element_(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value))
             {
             }
@@ -154,45 +154,63 @@ namespace hud
             /**
              * Move constructor.
              * Does not accept throwable copy constructible components.
-             * @param other Another slot_storage object to move from.
+             * @param other Another hashmap_storage object to move from.
              */
-            constexpr slot_storage(slot_storage &&other) noexcept = default;
+            constexpr hashmap_storage(hashmap_storage &&other) noexcept = default;
 
             /**
              * Move constructor for different key and value types.
-             * @tparam u_key_t Type of the key in the other slot_storage.
-             * @tparam u_value_t Type of the value in the other slot_storage.
-             * @param other The other slot_storage object to move from.
+             * @tparam u_key_t Type of the key in the other hashmap_storage.
+             * @tparam u_value_t Type of the value in the other hashmap_storage.
+             * @param other The other hashmap_storage object to move from.
              */
             template<typename u_key_t = key_t, typename u_value_t = value_t>
             requires(hud::is_move_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>) slot_storage(slot_storage<u_key_t, u_value_t> &&other) noexcept
+            constexpr explicit(!hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>) hashmap_storage(hashmap_storage<u_key_t, u_value_t> &&other) noexcept
                 : element_(hud::move(other.element_))
             {
-                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
             }
 
         private:
-            /** slot_storage with other key or value can access private members of slot_storage. */
+            /** hashmap_storage with other key or value can access private members of hashmap_storage. */
             template<typename u_key_t, typename u_value_t>
-            friend class slot_storage;
+            friend class hashmap_storage;
 
         protected:
             /** The pair containing the key and value. */
             pair_type element_;
         };
 
+        /**
+         * A default hasher struct for hashing keys.
+         * This struct provides a mechanism to hash values and combine them with the current hasher value.
+         *
+         * @tparam key_t The type of the key to be hashed.
+         */
         template<typename key_t> struct default_hasher
         {
-            /** Hash the value and combine the value with the current hasher value. */
+            /**
+             * Operator to hash the value and combine it with the current hasher value.
+             * This function uses variadic templates to accept multiple arguments.
+             * @tparam type_t Types of the arguments to hash.
+             * @param values Arguments to hash.
+             * @return A 64-bit hash value.
+             */
             template<typename... type_t>
             [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
             {
                 return hud::hash_64<hud::decay_t<type_t>...> {}(hud::forward<type_t>(values)...);
             }
 
-            /** Hash the value and combine the value with the current hasher value. */
+            /**
+             * Function to hash the value and combine it with the current hasher value.
+             * This function uses variadic templates to accept multiple arguments.
+             * @tparam type_t Types of the arguments to hash.
+             * @param values Arguments to hash.
+             * @return A 64-bit hash value.
+             */
             template<typename... type_t>
             [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
             {
@@ -200,21 +218,29 @@ namespace hud
             }
         };
 
-        template<typename key_t>
-        using default_equal = hud::equal<key_t>;
-
-        using default_allocator = hud::heap_allocator;
-
     } // namespace details::hashmap
 
+    /** The default hasher for hash maps. */
     template<typename key_t>
     using hashmap_default_hasher = details::hashmap::default_hasher<key_t>;
 
+    /** The default equality comparator for hash map keys. */
     template<typename key_t>
-    using hashmap_default_key_equal = details::hashmap::default_equal<key_t>;
+    using hashmap_default_key_equal = hud::equal<key_t>;
 
-    using hashmap_default_allocator = details::hashmap::default_allocator;
+    /** The default allocator type for hash maps. */
+    using hashmap_default_allocator = hud::heap_allocator;
 
+    /**
+     * A hash map class that provides key-value storage with customizable hashing, equality comparison, and memory allocation.
+     * This class is an implementation inspired by bseil flat_hash_set, leveraging efficient hash set operations.
+     *
+     * @tparam key_t The type of the keys in the hash map.
+     * @tparam value_t The type of the values in the hash map.
+     * @tparam hasher_t The type of the hash function to use (default is `hashmap_default_hasher`).
+     * @tparam key_equal_t The type of the equality comparator to use (default is `hashmap_default_key_equal`).
+     * @tparam allocator_t The type of the allocator to use (default is `hashmap_default_allocator`).
+     */
     template<
         typename key_t,
         typename value_t,
@@ -222,31 +248,41 @@ namespace hud
         typename key_equal_t = hashmap_default_key_equal<key_t>,
         typename allocator_t = hashmap_default_allocator>
     class hashmap
-        : public details::hashset::hashset_impl<details::hashmap::slot_storage<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashmap::hashmap_storage<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
     {
 
     private:
-        using super = details::hashset::hashset_impl<details::hashmap::slot_storage<key_t, value_t>, hasher_t, key_equal_t, allocator_t>;
+        /** Alias for the base class to simplify access to its members. */
+        using super = details::hashset::hashset_impl<details::hashmap::hashmap_storage<key_t, value_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
         using typename super::hasher_type;
-        /** Type of the slot. */
-        using slot_type = typename super::slot_type;
+        /** Type of the storage used to store key-value pairs. */
+        using storage_type = typename super::storage_type;
         /** Type of the key. */
-        using key_type = typename super::key_type;
+        using key_type = typename storage_type::key_type;
         /** Type of the value. */
-        using value_type = typename slot_type::value_type;
+        using value_type = typename storage_type::value_type;
 
-        /** Type of the value. */
+        /** Inherit constructors and methods from the base class. */
         using super::add;
         using super::reserve;
         using super::super;
         using typename super::allocator_type;
         using typename super::const_iterator;
         using typename super::iterator;
+
+        /** Default constructor. */
         explicit constexpr hashmap() noexcept = default;
 
+        /**
+         * Constructor that initializes the hash map with a list of key-value pairs.
+         * @tparam u_key_t The type of the keys in the initializer list.
+         * @tparam u_value_t The type of the values in the initializer list.
+         * @param list The initializer list of key-value pairs.
+         * @param allocator The allocator to use for memory management.
+         */
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         requires(hud::is_copy_constructible_v<key_t, u_key_t> && hud::is_copy_constructible_v<value_t, u_value_t>)
         constexpr hashmap(std::initializer_list<hud::pair<u_key_t, u_value_t>> list, const allocator_type &allocator = allocator_type()) noexcept
@@ -258,6 +294,15 @@ namespace hud
                 add(pair);
             }
         }
+
+        /**
+         * Constructor that initializes the hash map with a list of key-value pairs and additional capacity.
+         * @tparam u_key_t The type of the keys in the initializer list.
+         * @tparam u_value_t The type of the values in the initializer list.
+         * @param list The initializer list of key-value pairs.
+         * @param extra_element_count Additional capacity to reserve.
+         * @param allocator The allocator to use for memory management.
+         */
 
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         requires(hud::is_copy_constructible_v<key_t, u_key_t> && hud::is_copy_constructible_v<value_t, u_value_t>)
@@ -272,10 +317,11 @@ namespace hud
         }
 
         /**
-         * Insert a key in the hashset.
-         * @param key The key associated with the `value`
-         * @param args List of arguments pass to `value_type` constructor after the `key` itself
-         * @return Iterator to the `value`
+         * Insert a key-value pair into the hash map.
+         * @tparam u_key_t The type of the key to insert.
+         * @tparam u_value_t The type of the value to insert.
+         * @param pair The key-value pair to insert.
+         * @return An iterator to the inserted value.
          */
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(const hud::pair<u_key_t, u_value_t> &pair) noexcept
@@ -284,10 +330,11 @@ namespace hud
         }
 
         /**
-         * Insert a key in the hashset.
-         * @param key The key associated with the `value`
-         * @param args List of arguments pass to `value_type` constructor after the `key` itself
-         * @return Iterator to the `value`
+         * Insert a key-value pair into the hash map (rvalue reference version).
+         * @tparam u_key_t The type of the key to insert.
+         * @tparam u_value_t The type of the value to insert.
+         * @param pair The key-value pair to insert.
+         * @return An iterator to the inserted value.
          */
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(hud::pair<u_key_t, u_value_t> &&pair) noexcept
@@ -296,32 +343,65 @@ namespace hud
         }
     };
 
+    /**
+     * Specialization of `hud::tuple_size` for `details::hashmap::hashmap_storage`.
+     * Defines the size of the tuple as 2, representing a key-value pair.
+     *
+     * @tparam key_t The type of the key.
+     * @tparam value_t The type of the value.
+     */
+
     template<typename key_t, typename value_t>
-    struct tuple_size<details::hashmap::slot_storage<key_t, value_t>>
+    struct tuple_size<details::hashmap::hashmap_storage<key_t, value_t>>
         : hud::integral_constant<usize, 2>
     {
     };
 
+    /**
+     * Specialization of `hud::tuple_element` for `details::hashmap::hashmap_storage`.
+     * Provides access to the types of the elements in the tuple (key or value).
+     *
+     * @tparam idx_to_reach The index of the element to access (0 for key, 1 for value).
+     * @tparam key_t The type of the key.
+     * @tparam value_t The type of the value.
+     */
     template<usize idx_to_reach, typename key_t, typename value_t>
-    struct tuple_element<idx_to_reach, details::hashmap::slot_storage<key_t, value_t>>
+    struct tuple_element<idx_to_reach, details::hashmap::hashmap_storage<key_t, value_t>>
     {
-        static_assert(idx_to_reach < 2, "hashmap slot_storage index out of bounds");
-        using type = hud::conditional_t<idx_to_reach == 0, const typename details::hashmap::slot_storage<key_t, value_t>::key_type, typename details::hashmap::slot_storage<key_t, value_t>::value_type>;
+        static_assert(idx_to_reach < 2, "hashmap hashmap_storage index out of bounds");
+        using type = hud::conditional_t<idx_to_reach == 0, const typename details::hashmap::hashmap_storage<key_t, value_t>::key_type, typename details::hashmap::hashmap_storage<key_t, value_t>::value_type>;
     };
 
 } // namespace hud
 
 namespace std
 {
+    /**
+     * Specialization of `std::tuple_size` for `hud::details::hashmap::hashmap_storage`.
+     * This specialization defines the size of the tuple as 2, representing a key-value pair.
+     * It inherits from `hud::tuple_size` to leverage its implementation.
+     *
+     * @tparam key_t The type of the key.
+     * @tparam value_t The type of the value.
+     */
     template<typename key_t, typename value_t>
-    struct tuple_size<hud::details::hashmap::slot_storage<key_t, value_t>>
-        : hud::tuple_size<hud::details::hashmap::slot_storage<key_t, value_t>>
+    struct tuple_size<hud::details::hashmap::hashmap_storage<key_t, value_t>>
+        : hud::tuple_size<hud::details::hashmap::hashmap_storage<key_t, value_t>>
     {
     };
 
+    /**
+     * Specialization of `std::tuple_element` for `hud::details::hashmap::hashmap_storage`.
+     * This specialization provides access to the types of the elements in the tuple (key or value).
+     * It inherits from `hud::tuple_element` to leverage its implementation.
+     *
+     * @tparam idx_to_reach The index of the element to access (0 for key, 1 for value).
+     * @tparam key_t The type of the key.
+     * @tparam value_t The type of the value.
+     */
     template<std::size_t idx_to_reach, typename key_t, typename value_t>
-    struct tuple_element<idx_to_reach, hud::details::hashmap::slot_storage<key_t, value_t>>
-        : hud::tuple_element<idx_to_reach, hud::details::hashmap::slot_storage<key_t, value_t>>
+    struct tuple_element<idx_to_reach, hud::details::hashmap::hashmap_storage<key_t, value_t>>
+        : hud::tuple_element<idx_to_reach, hud::details::hashmap::hashmap_storage<key_t, value_t>>
     {
     };
 } // namespace std

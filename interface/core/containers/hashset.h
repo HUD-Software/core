@@ -18,65 +18,6 @@ namespace hud
 {
     namespace details::hashset
     {
-        // template<typename key_t>
-        // struct slot
-        // {
-        //     using key_type = key_t;
-
-        // constexpr explicit slot(const key_type &key) noexcept
-        //     : element_ {key}
-        // {
-        // }
-
-        // template<typename u_key_t>
-        // requires(hud::is_constructible_v<key_type, u_key_t>)
-        // constexpr explicit slot(u_key_t &&key) noexcept
-        //     : element_ {hud::forward<u_key_t>(key)}
-        // {
-        // }
-
-        // [[nodiscard]] constexpr const key_type &key() const noexcept
-        // {
-        //     return element_;
-        // }
-
-        // template<typename slot_t>
-        // [[nodiscard]] static constexpr decltype(auto) key(slot_t &&s) noexcept
-        // {
-        //     return hud::forward<slot_t>(s).element_;
-        // }
-
-        // template<usize idx_to_reach>
-        // [[nodiscard]] friend constexpr key_type &get(slot &s) noexcept
-        // {
-        //     static_assert(idx_to_reach == 0, "Index out of bound");
-        //     return s.element_;
-        // }
-
-        // template<usize idx_to_reach>
-        // [[nodiscard]] friend constexpr const key_type &get(const slot &s) noexcept
-        // {
-        //     static_assert(idx_to_reach == 0, "Index out of bound");
-        //     return s.element_;
-        // }
-
-        // template<usize idx_to_reach>
-        // [[nodiscard]] friend constexpr decltype(auto) get(slot &&s) noexcept
-        // {
-        //     static_assert(idx_to_reach == 0, "Index out of bound");
-        //     return hud::forward<key_type>(hud::forward<slot>(s).element_);
-        // }
-
-        // template<usize idx_to_reach>
-        // [[nodiscard]] friend constexpr decltype(auto) get(const slot &&s) noexcept
-        // {
-        //     static_assert(idx_to_reach == 0, "Index out of bound");
-        //     return hud::forward<const key_type>(hud::forward<const slot>(s).element_);
-        // }
-
-        // key_type element_;
-        // };
-
         /**
          * A slot struct that inherits from a given storage type.
          * This struct provides controlled construction and copying mechanisms.
@@ -165,7 +106,7 @@ namespace hud
          * @tparam key_t The type of the key
          */
         template<typename key_t>
-        class slot_storage
+        class hashset_storage
         {
         public:
             /** Type of the key. */
@@ -185,55 +126,55 @@ namespace hud
             }
 
             /**
-             * Retrieves a reference to the element at the specified index from a non-const slot_storage object.
+             * Retrieves a reference to the element at the specified index from a non-const hashset_storage object.
              * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The slot_storage object.
+             * @param s The hashset_storage object.
              * @return A reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(slot_storage &s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(hashset_storage &s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
             /**
-             * Retrieves a const reference to the element at the specified index from a const slot_storage object.
+             * Retrieves a const reference to the element at the specified index from a const hashset_storage object.
              * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The const slot_storage object.
+             * @param s The const hashset_storage object.
              * @return A const reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const slot_storage &s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(const hashset_storage &s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
             /**
-             * Retrieves a reference to the element at the specified index from a slot_storage object.
+             * Retrieves a reference to the element at the specified index from a hashset_storage object.
              * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The slot_storage object.
+             * @param s The hashset_storage object.
              * @return A reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(slot_storage &&s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(hashset_storage &&s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
-                return hud::forward<key_type>(hud::forward<slot_storage>(s).element_);
+                return hud::forward<key_type>(hud::forward<hashset_storage>(s).element_);
             }
 
             /**
-             * Retrieves a const reference to the element at the specified index from a const slot_storage object.
+             * Retrieves a const reference to the element at the specified index from a const hashset_storage object.
              * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The const slot_storage object.
+             * @param s The const hashset_storage object.
              * @return A const reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const slot_storage &&s) noexcept
+            [[nodiscard]] friend constexpr decltype(auto) get(const hashset_storage &&s) noexcept
             {
                 static_assert(idx_to_reach == 0, "Index out of bound");
-                return hud::forward<const key_type>(hud::forward<const slot_storage>(s).element_);
+                return hud::forward<const key_type>(hud::forward<const hashset_storage>(s).element_);
             }
 
             /**
@@ -241,71 +182,71 @@ namespace hud
              * Does not accept throwable copy constructible components.
              * @param other Another pair object.
              */
-            constexpr explicit(!(hud::is_convertible_v<const key_type &, key_type>)) slot_storage(const slot_storage &other) noexcept = default;
+            constexpr explicit(!(hud::is_convertible_v<const key_type &, key_type>)) hashset_storage(const hashset_storage &other) noexcept = default;
 
             /**
-             * Constructor that initializes the slot_storage with a key.
+             * Constructor that initializes the hashset_storage with a key.
              * @tparam u_key_t Type of the key.
              * @param key The key to initialize with.
              */
             template<typename u_key_t>
             requires(hud::is_constructible_v<key_type, u_key_t>)
-            constexpr explicit slot_storage(const u_key_t &key) noexcept
+            constexpr explicit hashset_storage(const u_key_t &key) noexcept
                 : element_(key)
             {
             }
 
             /**
-             * Constructor that initializes the slot_storage with a key.
+             * Constructor that initializes the hashset_storage with a key.
              * @tparam u_key_t Type of the key.
              * @param key The key to initialize with.
              */
             template<typename u_key_t>
             requires(hud::is_constructible_v<key_type, u_key_t>)
-            constexpr explicit slot_storage(u_key_t &&key) noexcept
+            constexpr explicit hashset_storage(u_key_t &&key) noexcept
                 : element_(hud::forward<u_key_t>(key))
             {
             }
 
             /**
              * Copy constructor for different key type.
-             * @tparam u_key_t Type of the key in the other slot_storage.
-             * @param other The other slot_storage object to copy from.
+             * @tparam u_key_t Type of the key in the other hashset_storage.
+             * @param other The other hashset_storage object to copy from.
              */
 
             template<typename u_key_t = key_t>
             requires(hud::is_copy_constructible_v<key_type, u_key_t>)
-            constexpr explicit(!(hud::is_convertible_v<const key_type &, u_key_t>)) slot_storage(const slot_storage<u_key_t> &other) noexcept
+            constexpr explicit(!(hud::is_convertible_v<const key_type &, u_key_t>)) hashset_storage(const hashset_storage<u_key_t> &other) noexcept
                 : element_(other.element_)
             {
-                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashset_storage is not designed to allow throwable copy constructible components");
             }
 
         protected:
             /**
              * Move constructor.
              * Does not accept throwable copy constructible components.
-             * @param other Another slot_storage object to move from.
+             * @param other Another hashset_storage object to move from.
              */
-            constexpr slot_storage(slot_storage &&other) noexcept = default;
+            constexpr hashset_storage(hashset_storage &&other) noexcept = default;
 
             /**
              * Move constructor for different key and value types.
-             * @tparam u_key_t Type of the key in the other slot_storage.
-             * @param other The other slot_storage object to move from.
+             * @tparam u_key_t Type of the key in the other hashset_storage.
+             * @param other The other hashset_storage object to move from.
              */
             template<typename u_key_t = key_t>
             requires(hud::is_move_constructible_v<key_type, u_key_t>)
-            constexpr explicit(!hud::is_convertible_v<key_type, u_key_t>) slot_storage(u_key_t &&other) noexcept
+            constexpr explicit(!hud::is_convertible_v<key_type, u_key_t>) hashset_storage(u_key_t &&other) noexcept
                 : element_(hud::move(other.element_))
             {
-                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashset_storage is not designed to allow throwable copy constructible components");
             }
 
         private:
-            /** slot_storage with other key or value can access private members of slot_storage. */
+            /** hashset_storage with other key or value can access private members of hashset_storage. */
             template<typename u_key_ts>
-            friend class slot_storage;
+            friend class hashset_storage;
 
         protected:
             /** The key. */
@@ -1590,10 +1531,10 @@ namespace hud
         typename key_equal_t = hashset_default_key_equal<element_t>,
         typename allocator_t = hashset_default_allocator>
     class hashset
-        : public details::hashset::hashset_impl<details::hashset::slot_storage<element_t>, hasher_t, key_equal_t, allocator_t>
+        : public details::hashset::hashset_impl<details::hashset::hashset_storage<element_t>, hasher_t, key_equal_t, allocator_t>
     {
     private:
-        using super = details::hashset::hashset_impl<details::hashset::slot_storage<element_t>, hasher_t, key_equal_t, allocator_t>;
+        using super = details::hashset::hashset_impl<details::hashset::hashset_storage<element_t>, hasher_t, key_equal_t, allocator_t>;
 
     public:
         /** Type of the hash function. */
