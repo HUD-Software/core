@@ -78,6 +78,86 @@ namespace hud
         // };
 
         /**
+         * A slot struct that inherits from a given storage type.
+         * This struct provides controlled construction and copying mechanisms.
+         *
+         * @tparam storage_t The type of storage this slot will manage.
+         */
+        template<typename storage_t>
+        struct slot
+            : storage_t
+        {
+            /** The type of storage. */
+            using storage_type = storage_t;
+
+            /**
+             * Constructs the slot by perfectly forwarding arguments to the base storage type constructor.
+             * Enabled only if storage_type is constructible with the given arguments.
+             *
+             * @tparam type_t Variadic types forwarded to storage_type.
+             * @param values Arguments to forward to storage_type's constructor.
+             */
+            template<typename... type_t>
+            requires(hud::is_constructible_v<storage_type, type_t...>)
+            constexpr explicit slot(type_t &&...values) noexcept
+                : storage_type(hud::forward<type_t>(values)...)
+            {
+            }
+
+            /**
+             * Copy constructor from the same slot type.
+             * Explicit if the copy constructor of storage_type is not implicitly convertible.
+             * Enabled only if storage_type is nothrow copy constructible.
+             *
+             * @param other The slot to copy from.
+             */
+            constexpr explicit(!hud::is_convertible_v<const storage_type &, storage_type>) slot(const slot &other) noexcept
+            requires(hud::is_nothrow_copy_constructible_v<storage_type>)
+            = default;
+
+            /**
+             * Copy constructor from a slot of a different but compatible storage type.
+             * Explicit if conversion from u_storage_t to storage_type is not implicit.
+             * Enabled only if storage_type is copy constructible from u_storage_t.
+             *
+             * @tparam u_storage_t The source storage type to copy from.
+             * @param other The slot with a compatible storage to copy from.
+             */
+            template<typename u_storage_t = storage_type>
+            requires(hud::is_copy_constructible_v<storage_type, u_storage_t>)
+            constexpr explicit(!hud::is_convertible_v<const storage_type &, u_storage_t>) slot(const slot<u_storage_t> &other) noexcept
+                : storage_type(other)
+            {
+            }
+
+            /**
+             * Move constructor from the same slot type.
+             * Explicit if the move constructor of storage_type is not implicitly convertible.
+             * Enabled only if storage_type is nothrow move constructible.
+             *
+             * @param other The slot to move from.
+             */
+            constexpr explicit(!(hud::is_convertible_v<storage_type, storage_type>)) slot(slot &&other) noexcept
+            requires(hud::is_nothrow_move_constructible_v<storage_type>)
+            = default;
+
+            /**
+             * Move constructor from a slot of a different but compatible storage type.
+             * Explicit if conversion from u_storage_t to storage_type is not implicit.
+             * Enabled only if storage_type is move constructible from u_storage_t.
+             *
+             * @tparam u_storage_t The source storage type to move from.
+             * @param other The slot with a compatible storage to move from.
+             */
+            template<typename u_storage_t = storage_type>
+            requires(hud::is_move_constructible_v<storage_type, u_storage_t>)
+            constexpr explicit(!hud::is_convertible_v<storage_type, u_storage_t>) slot(slot<u_storage_t> &&other) noexcept
+                : storage_type(hud::move(other))
+            {
+            }
+        };
+
+        /**
          * Key storage for the set map, offering controlled access with specific constraints:
          * - Keys are immutable to ensure consistent and reliable hash calculations.
          * - The storage is copyable but not movable to maintain the integrity and consistency of the keys.
@@ -163,7 +243,6 @@ namespace hud
              */
             constexpr explicit(!(hud::is_convertible_v<const key_type &, key_type>)) slot_storage(const slot_storage &other) noexcept = default;
 
-        protected:
             /**
              * Constructor that initializes the slot_storage with a key.
              * @tparam u_key_t Type of the key.
@@ -189,13 +268,6 @@ namespace hud
             }
 
             /**
-             * Move constructor.
-             * Does not accept throwable copy constructible components.
-             * @param other Another slot_storage object to move from.
-             */
-            constexpr slot_storage(slot_storage &&other) noexcept = default;
-
-            /**
              * Copy constructor for different key type.
              * @tparam u_key_t Type of the key in the other slot_storage.
              * @param other The other slot_storage object to copy from.
@@ -208,6 +280,14 @@ namespace hud
             {
                 static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. slot_storage is not designed to allow throwable copy constructible components");
             }
+
+        protected:
+            /**
+             * Move constructor.
+             * Does not accept throwable copy constructible components.
+             * @param other Another slot_storage object to move from.
+             */
+            constexpr slot_storage(slot_storage &&other) noexcept = default;
 
             /**
              * Move constructor for different key and value types.
@@ -232,42 +312,42 @@ namespace hud
             key_type element_;
         };
 
-        template<typename key_t>
-        struct slot
-            : slot_storage<key_t>
-        {
-            using storage = slot_storage<key_t>;
-            using key_type = storage::key_type;
+        // template<typename key_t>
+        // struct slot
+        //     : slot_storage<key_t>
+        // {
+        //     using storage = slot_storage<key_t>;
+        //     using key_type = storage::key_type;
 
-            template<typename... type_t>
-            requires(hud::is_constructible_v<key_type, type_t...>)
-            constexpr explicit slot(type_t &&...values) noexcept
-                : storage(hud::forward<type_t>(values)...)
-            {
-            }
+        // template<typename... type_t>
+        // requires(hud::is_constructible_v<key_type, type_t...>)
+        // constexpr explicit slot(type_t &&...values) noexcept
+        //     : storage(hud::forward<type_t>(values)...)
+        // {
+        // }
 
-            constexpr explicit(!hud::is_convertible_v<const key_type &, key_type>) slot(const slot &other) noexcept
-            requires(hud::is_nothrow_copy_constructible_v<key_type>)
-            = default;
+        // constexpr explicit(!hud::is_convertible_v<const key_type &, key_type>) slot(const slot &other) noexcept
+        // requires(hud::is_nothrow_copy_constructible_v<key_type>)
+        // = default;
 
-            template<typename u_key_t = key_t>
-            requires(hud::is_copy_constructible_v<key_type, u_key_t>)
-            constexpr explicit(!hud::is_convertible_v<const key_type &, u_key_t>) slot(const slot<u_key_t> &other) noexcept
-                : storage(other)
-            {
-            }
+        // template<typename u_key_t = key_t>
+        // requires(hud::is_copy_constructible_v<key_type, u_key_t>)
+        // constexpr explicit(!hud::is_convertible_v<const key_type &, u_key_t>) slot(const slot<u_key_t> &other) noexcept
+        //     : storage(other)
+        // {
+        // }
 
-            constexpr explicit(!(hud::is_convertible_v<key_type, key_type>)) slot(slot &&other) noexcept
-            requires(hud::is_nothrow_move_constructible_v<key_type>)
-            = default;
+        // constexpr explicit(!(hud::is_convertible_v<key_type, key_type>)) slot(slot &&other) noexcept
+        // requires(hud::is_nothrow_move_constructible_v<key_type>)
+        // = default;
 
-            template<typename u_key_t = key_t>
-            requires(hud::is_move_constructible_v<key_type, u_key_t>)
-            constexpr explicit(!(hud::is_convertible_v<key_type, u_key_t>)) slot(slot<u_key_t> &&other) noexcept
-                : storage(hud::move(other))
-            {
-            }
-        };
+        // template<typename u_key_t = key_t>
+        // requires(hud::is_move_constructible_v<key_type, u_key_t>)
+        // constexpr explicit(!(hud::is_convertible_v<key_type, u_key_t>)) slot(slot<u_key_t> &&other) noexcept
+        //     : storage(hud::move(other))
+        // {
+        // }
+        // };
 
         template<typename key_t>
         struct default_hasher
