@@ -304,50 +304,13 @@ namespace hud
 
         private:
             /** slot_storage with other key or value can access private members of slot_storage. */
-            template<typename u_key_t, typename u_value_t>
+            template<typename u_key_ts>
             friend class slot_storage;
 
         protected:
             /** The key. */
             key_type element_;
         };
-
-        // template<typename key_t>
-        // struct slot
-        //     : slot_storage<key_t>
-        // {
-        //     using storage = slot_storage<key_t>;
-        //     using key_type = storage::key_type;
-
-        // template<typename... type_t>
-        // requires(hud::is_constructible_v<key_type, type_t...>)
-        // constexpr explicit slot(type_t &&...values) noexcept
-        //     : storage(hud::forward<type_t>(values)...)
-        // {
-        // }
-
-        // constexpr explicit(!hud::is_convertible_v<const key_type &, key_type>) slot(const slot &other) noexcept
-        // requires(hud::is_nothrow_copy_constructible_v<key_type>)
-        // = default;
-
-        // template<typename u_key_t = key_t>
-        // requires(hud::is_copy_constructible_v<key_type, u_key_t>)
-        // constexpr explicit(!hud::is_convertible_v<const key_type &, u_key_t>) slot(const slot<u_key_t> &other) noexcept
-        //     : storage(other)
-        // {
-        // }
-
-        // constexpr explicit(!(hud::is_convertible_v<key_type, key_type>)) slot(slot &&other) noexcept
-        // requires(hud::is_nothrow_move_constructible_v<key_type>)
-        // = default;
-
-        // template<typename u_key_t = key_t>
-        // requires(hud::is_move_constructible_v<key_type, u_key_t>)
-        // constexpr explicit(!(hud::is_convertible_v<key_type, u_key_t>)) slot(slot<u_key_t> &&other) noexcept
-        //     : storage(hud::move(other))
-        // {
-        // }
-        // };
 
         template<typename key_t>
         struct default_hasher
