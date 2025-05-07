@@ -649,7 +649,7 @@ namespace hud
         {
         public:
             using slot_type = hud::conditional_t<is_const, const slot_t, slot_t>;
-            using storage_type = hud::conditional_t<is_const, const typename slot_type::storage, typename slot_type::storage>;
+            using storage_type = hud::conditional_t<is_const, const typename slot_type::storage_type, typename slot_type::storage_type>;
             using pointer_type = hud::add_pointer_t<storage_type>;
             using reference_type = hud::add_lvalue_reference_t<storage_type>;
 
