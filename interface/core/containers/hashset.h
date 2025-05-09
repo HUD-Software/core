@@ -1039,9 +1039,123 @@ namespace hud
              * @return *this
              */
             constexpr hashset_impl &operator=(const hashset_impl &other) noexcept
-            requires(hud::is_copy_assignable_v<slot_type>)
+            requires(hud::is_copy_constructible_v<slot_type>)
             {
+                // If `this` allocation is not big enough, clear all, then deallocate, allocate new memory and add all element
+                // If `this` allocation is big enough, clear all, copy controls, add all elements
+                if (max_slot_count_ < other.max_slot_count_ || max_slot_count_ == 0)
+                {
+                    destroy_all_slots();
+                    free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
 
+                    // Copy controls
+                    if constexpr (hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
+                    {
+                        allocator_ = other.allocator_;
+                    }
+                    max_slot_count_ = other.max_slot_count_;
+                    count_ = other.count_;
+                    free_slot_before_grow_ = other.free_slot_before_grow_;
+
+                    if (other.max_slot_count_ == 0)
+                        return *this;
+
+                    // Allocate the buffer that will contain controls and aligned slots
+                    // In a constant-evaluated context, bit_cast cannot be used with pointers
+                    // To satisfy the compiler, allocate controls and slots in two separate allocations
+                    usize control_size {allocate_control_and_slot(other.max_slot_count_)};
+
+                    // If constant evaluated context or when slot_type is not bitwise copy constructible
+                    // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
+                    // In a non constant evaluated context
+                    // If type is trivially copy constructible, just memcpy control and slot
+                    // else do like grow_capacity
+                    if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
+                    {
+                        // Set control to empty ending with sentinel
+                        hud::memory::set_memory(control_ptr_, control_size, empty_byte);
+                        control_ptr_[max_slot_count_] = sentinel_byte;
+
+                        // Copy slots to newly allocated buffer
+                        control_type *control_full_or_sentinel = other.control_ptr_;
+                        auto slot_full_or_sentinel = other.slot_ptr_;
+                        while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
+                        {
+                            // Compute the hash
+                            u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
+                            // Find H1 slot index
+                            u64 h1 {H1(hash)};
+                            usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                            // Save h2 in control h1 index
+                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                            // Copy slot
+                            hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_full_or_sentinel);
+
+                            control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
+                            slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
+                            control_full_or_sentinel = full_or_sentinel;
+                        }
+                    }
+                    else
+                    {
+                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
+                        hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                    }
+                }
+                else
+                {
+                    destroy_all_slots();
+                    hud::memory::set_memory(control_ptr_, control_size_for_max_count(max_slot_count_), empty_byte);
+                    control_ptr_[max_slot_count_] = sentinel_byte;
+
+                    // Copy controls
+                    if constexpr (hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
+                    {
+                        allocator_ = other.allocator_;
+                    }
+                    count_ = other.count_;
+                    free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+
+                    usize control_size {control_size_for_max_count(max_slot_count_)};
+
+                    // If constant evaluated context or when slot_type is not bitwise copy constructible
+                    // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
+                    // In a non constant evaluated context
+                    // If type is trivially copy constructible, just memcpy control and slot
+                    // else do like grow_capacity
+                    if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
+                    {
+
+                        // Set control to empty ending with sentinel
+                        hud::memory::set_memory(control_ptr_, control_size, empty_byte);
+                        control_ptr_[max_slot_count_] = sentinel_byte;
+
+                        // Copy slots to newly allocated buffer
+                        control_type *control_full_or_sentinel = other.control_ptr_;
+                        auto slot_full_or_sentinel = other.slot_ptr_;
+                        while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
+                        {
+                            // Compute the hash
+                            u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
+                            // Find H1 slot index
+                            u64 h1 {H1(hash)};
+                            usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                            // Save h2 in control h1 index
+                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                            // Copy slot
+                            hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_full_or_sentinel);
+
+                            control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
+                            slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
+                            control_full_or_sentinel = full_or_sentinel;
+                        }
+                    }
+                    else
+                    {
+                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
+                        hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                    }
+                }
                 return *this;
             }
 

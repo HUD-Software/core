@@ -410,6 +410,10 @@ namespace hud
         {
             if (this != &other) [[likely]]
             {
+                if constexpr (hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
+                {
+                    allocator_() = other.allocator_();
+                }
                 copy_assign(other.data(), other.count(), min_slack);
             }
         }
@@ -1151,6 +1155,7 @@ namespace hud
         template<typename u_type_t>
         constexpr void copy_assign(const u_type_t *source, const usize source_count, const usize min_slack = 0) noexcept
         {
+
             // Grow the allocation if we don't have enough room
             // If we need to reallocate, we destroy all elements before reallocating the allocation
             // Then we copy construct all elements of source in the allocation
@@ -1384,6 +1389,12 @@ namespace hud
 
         /** Retrieves the allocator. */
         [[nodiscard]] HD_FORCEINLINE constexpr allocator_type &allocator_() noexcept
+        {
+            return compressed_allocator_.first();
+        }
+
+        /** Retrieves the allocator. */
+        [[nodiscard]] HD_FORCEINLINE constexpr const allocator_type &allocator_() const noexcept
         {
             return compressed_allocator_.first();
         }

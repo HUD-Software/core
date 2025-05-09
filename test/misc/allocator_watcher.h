@@ -124,5 +124,25 @@ namespace hud_test
 
 } // namespace hud_test
 
-// namespace hud
+namespace hud
+{
+    template<u32 alignment>
+    struct allocator_traits<hud_test::allocator_watcher<alignment>>
+    {
+        using is_always_equal = hud::true_type;
+        using copy_when_container_copy_assigned = hud::false_type;
+        using move_when_container_move_assigned = hud::false_type;
+        using swap_when_container_swap = hud::false_type;
+    };
+
+    template<u32 alignment>
+    struct allocator_traits<hud_test::allocator_watcher_2<alignment>>
+    {
+        using is_always_equal = hud::true_type;
+        using copy_when_container_copy_assigned = hud::false_type;
+        using move_when_container_move_assigned = hud::false_type;
+        using swap_when_container_swap = hud::false_type;
+    };
+} // namespace hud
+
 #endif // HD_INC_TEST_ALLOCATORS_WATCHER_H

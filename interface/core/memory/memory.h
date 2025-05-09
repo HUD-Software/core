@@ -1329,29 +1329,6 @@ namespace hud
         }
 
         /**
-         * Move or copy assign an element of type u_type_t to an element of type type_t
-         * The move assignement is called if u_type_t is move assignable to type_t, else the copy assignement is called if u_type_t is copy assignable to type_t
-         * @tparam type_t Type of the moved or copied element
-         * @tparam u_type_t Type to move or copy
-         * @param destination Address of the element that receive the move or copy assign
-         * @param source Address of the element that is moved or copied
-         */
-        template<typename type_t, typename u_type_t>
-        requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
-        static constexpr void move_or_copy_assign_object(type_t *destination, u_type_t &&source) noexcept
-        {
-            if constexpr (hud::is_move_assignable_v<type_t, u_type_t>)
-            {
-                static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable. hud::memory::move_or_copy_assign_object is not designed to allow throwable move assignable type");
-            }
-            if constexpr (hud::is_copy_assignable_v<type_t, u_type_t>)
-            {
-                static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign_object is not designed to allow throwable copy assignable type");
-            }
-            *destination = hud::forward<u_type_t>(source);
-        }
-
-        /**
          * Move assign of first count contiguously stored elements of type u_type_t to first count contiguously stored elements of type type_t
          * Support overlapped destination and source
          * @tparam type_t Type of the moved element

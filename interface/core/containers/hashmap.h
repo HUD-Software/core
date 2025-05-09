@@ -115,7 +115,7 @@ namespace hud
              * @tparam u_value_t Type of the value in the other hashmap_storage.
              * @param other The other hashmap_storage object to copy from.
              */
-            template<typename u_key_t = key_t, typename u_value_t = value_t>
+            template<typename u_key_t, typename u_value_t>
             requires(hud::is_copy_constructible_v<pair_type, hud::pair<u_key_t, u_value_t>>)
             constexpr explicit(!hud::is_convertible_v<const pair_type &, hud::pair<u_key_t, u_value_t>>) hashmap_storage(const hashmap_storage<u_key_t, u_value_t> &other) noexcept
                 : element_(other.element_)
@@ -195,7 +195,7 @@ namespace hud
              * @tparam u_value_t Type of the value in the other hashmap_storage.
              * @param other The other hashmap_storage object to move from.
              */
-            template<typename u_key_t = key_t, typename u_value_t = value_t>
+            template<typename u_key_t, typename u_value_t>
             requires(hud::is_move_constructible_v<pair_type, hud::pair<u_key_t, u_value_t>>)
             constexpr explicit(!hud::is_convertible_v<pair_type, pair_type>) hashmap_storage(hashmap_storage<u_key_t, u_value_t> &&other) noexcept
                 : element_(hud::move(other.element_))
