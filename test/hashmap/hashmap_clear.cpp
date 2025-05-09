@@ -95,43 +95,91 @@ GTEST_TEST(hashmap, clear_trivially_destructible_non_empty_map)
 GTEST_TEST(hashmap, clear_non_trivially_destructible_empty_map)
 {
 
-    const auto test = []()
+    // No memory allocated
     {
-        hud::hashmap<hud_test::non_bitwise_type, hud_test::non_bitwise_type, hud::hashmap_default_hasher<hud_test::non_bitwise_type>, hud::hashmap_default_key_equal<hud_test::non_bitwise_type>, hud_test::allocator_watcher<1>> map;
-        map.clear();
-
-        i32 count {0};
-        for (const auto &_ : map)
+        const auto test = []()
         {
-            count++;
-        }
-        return std::tuple {
-            map.count() == 0,                        // 0
-            map.max_count() == 0,                    // 1
-            map.allocator().allocation_count() == 0, // 2
-            map.allocator().free_count() == 0,       // 3
-            count == 0                               // 4
-        };
-    };
+            hud::hashmap<hud_test::non_bitwise_type, hud_test::non_bitwise_type, hud::hashmap_default_hasher<hud_test::non_bitwise_type>, hud::hashmap_default_key_equal<hud_test::non_bitwise_type>, hud_test::allocator_watcher<1>> map;
+            map.clear();
 
-    // Non constant
-    {
-        const auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
+            i32 count {0};
+            for (const auto &_ : map)
+            {
+                count++;
+            }
+            return std::tuple {
+                map.count() == 0,                        // 0
+                map.max_count() == 0,                    // 1
+                map.allocator().allocation_count() == 0, // 2
+                map.allocator().free_count() == 0,       // 3
+                count == 0                               // 4
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
     }
 
-    // Constant
+    // Memory reserved
     {
-        constexpr auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
+
+        const auto test = []()
+        {
+            hud::hashmap<hud_test::non_bitwise_type, hud_test::non_bitwise_type, hud::hashmap_default_hasher<hud_test::non_bitwise_type>, hud::hashmap_default_key_equal<hud_test::non_bitwise_type>, hud_test::allocator_watcher<1>> map;
+            constexpr usize COUNT = 256;
+            map.reserve(COUNT);
+            map.clear();
+
+            i32 count {0};
+            for (const auto &_ : map)
+            {
+                count++;
+            }
+            return std::tuple {
+                map.count() == 0,                                                             // 0
+                map.max_count() > COUNT,                                                      // 1
+                map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
+                map.allocator().free_count() == 0,                                            // 3
+                count == 0                                                                    // 4
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
     }
 }
 
