@@ -105,7 +105,9 @@ namespace hud
              * Does not accept throwable copy constructible components.
              * @param other Another pair object.
              */
-            constexpr explicit(!(hud::is_convertible_v<const pair_type &, pair_type>)) hashmap_storage(const hashmap_storage &other) noexcept = default;
+            constexpr explicit(!(hud::is_convertible_v<const pair_type &, pair_type>)) hashmap_storage(const hashmap_storage &other) noexcept
+            requires(hud::is_nothrow_copy_constructible_v<pair_type>)
+            = default;
 
             /**
              * Copy constructor for different key and value types.
@@ -114,8 +116,8 @@ namespace hud
              * @param other The other hashmap_storage object to copy from.
              */
             template<typename u_key_t = key_t, typename u_value_t = value_t>
-            requires(hud::is_copy_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!hud::is_convertible_v<const hud::pair<key_type, value_type> &, hud::pair<u_key_t, u_value_t>>) hashmap_storage(const hashmap_storage<u_key_t, u_value_t> &other) noexcept
+            requires(hud::is_copy_constructible_v<pair_type, hud::pair<u_key_t, u_value_t>>)
+            constexpr explicit(!hud::is_convertible_v<const pair_type &, hud::pair<u_key_t, u_value_t>>) hashmap_storage(const hashmap_storage<u_key_t, u_value_t> &other) noexcept
                 : element_(other.element_)
             {
                 static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
@@ -130,10 +132,11 @@ namespace hud
              * @param value The value to initialize with.
              */
             template<typename u_key_t, typename u_value_t>
-            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
+            requires(hud::is_constructible_v<pair_type, const u_key_t &, const u_value_t &>)
             constexpr explicit hashmap_storage(const u_key_t &key, const u_value_t &value) noexcept
                 : element_(key, value)
             {
+                static_assert(hud::is_nothrow_constructible_v<pair_type, const u_key_t &, const u_value_t &>);
             }
 
             /**
@@ -144,11 +147,28 @@ namespace hud
              * @param value The value to initialize with.
              */
             template<typename u_key_t, typename u_value_t>
-            requires(hud::is_constructible_v<hud::pair<key_type, value_type>, u_key_t, u_value_t>)
+            requires(hud::is_constructible_v<pair_type, u_key_t, u_value_t>)
             constexpr explicit hashmap_storage(u_key_t &&key, u_value_t &&value) noexcept
                 : element_(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value))
             {
+                static_assert(hud::is_nothrow_constructible_v<pair_type, u_key_t, u_value_t>);
             }
+
+            /**
+             * Copy assign.
+             * Does not accept throwable copy constructible components.
+             * @param other Another pair object.
+             */
+            constexpr hashmap_storage &operator=(const hashmap_storage &other) noexcept
+            requires(hud::is_nothrow_copy_assignable_v<pair_type>)
+            = default;
+
+            // template<typename u_key_t = key_t, typename u_value_t = value_t>
+            // constexpr hashmap_storage &operator=(const hashmap_storage<u_key_t, u_value_t> &other) noexcept
+            // {
+            //     element_ = other.element_;
+            //     return *this;
+            // }
 
         protected:
             /**
@@ -156,7 +176,18 @@ namespace hud
              * Does not accept throwable copy constructible components.
              * @param other Another hashmap_storage object to move from.
              */
-            constexpr hashmap_storage(hashmap_storage &&other) noexcept = default;
+            constexpr hashmap_storage(hashmap_storage &&other) noexcept
+            requires(hud::is_nothrow_move_constructible_v<pair_type>)
+            = default;
+
+            /**
+             * Move assign.
+             * Does not accept throwable move constructible components.
+             * @param other Another pair object.
+             */
+            constexpr hashmap_storage &operator=(hashmap_storage &&other) noexcept
+            requires(hud::is_nothrow_move_assignable_v<pair_type>)
+            = default;
 
             /**
              * Move constructor for different key and value types.
@@ -165,12 +196,12 @@ namespace hud
              * @param other The other hashmap_storage object to move from.
              */
             template<typename u_key_t = key_t, typename u_value_t = value_t>
-            requires(hud::is_move_constructible_v<hud::pair<key_type, value_type>, hud::pair<u_key_t, u_value_t>>)
-            constexpr explicit(!hud::is_convertible_v<hud::pair<key_type, value_type>, hud::pair<key_type, value_type>>) hashmap_storage(hashmap_storage<u_key_t, u_value_t> &&other) noexcept
+            requires(hud::is_move_constructible_v<pair_type, hud::pair<u_key_t, u_value_t>>)
+            constexpr explicit(!hud::is_convertible_v<pair_type, pair_type>) hashmap_storage(hashmap_storage<u_key_t, u_value_t> &&other) noexcept
                 : element_(hud::move(other.element_))
             {
-                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
-                static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_move_constructible_v<key_t, u_key_t>, "key_t(u_key_t&&) move constructor is throwable. hashmap_storage is not designed to allow throwable move constructible components");
+                static_assert(hud::is_nothrow_move_constructible_v<value_t, u_value_t>, "value_t(u_value_t&&) move constructor is throwable. hashmap_storage is not designed to allow throwable move constructible components");
             }
 
         private:
@@ -288,6 +319,8 @@ namespace hud
         constexpr hashmap(std::initializer_list<hud::pair<u_key_t, u_value_t>> list, const allocator_type &allocator = allocator_type()) noexcept
             : super(allocator)
         {
+            static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
             reserve(list.size());
             for (const auto &pair : list)
             {
@@ -309,6 +342,8 @@ namespace hud
         constexpr hashmap(std::initializer_list<hud::pair<u_key_t, u_value_t>> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
             : super(allocator)
         {
+            static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
+            static_assert(hud::is_nothrow_copy_constructible_v<value_t, u_value_t>, "value_t(const u_value_t&) copy constructor is throwable. hashmap_storage is not designed to allow throwable copy constructible components");
             reserve(list.size() + extra_element_count);
             for (const auto &pair : list)
             {

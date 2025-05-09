@@ -97,6 +97,24 @@ namespace hud
                 : storage_type(hud::move(other))
             {
             }
+
+            /**
+             * Copy assign.
+             * Does not accept throwable copy constructible components.
+             * @param other Another pair object.
+             */
+            constexpr slot &operator=(const slot &other) noexcept
+            requires(hud::is_nothrow_copy_assignable_v<storage_type>)
+            = default;
+
+            /**
+             * Move assign.
+             * Does not accept throwable move constructible components.
+             * @param other Another pair object.
+             */
+            constexpr slot &operator=(slot &&other) noexcept
+            requires(hud::is_nothrow_move_assignable_v<storage_type>)
+            = default;
         };
 
         /**
@@ -779,11 +797,11 @@ namespace hud
                 : allocator_ {allocator}
                 , max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
+                , free_slot_before_grow_(other.free_slot_before_grow_)
             {
                 if (max_slot_count_ == 0)
                     return;
 
-                free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
                 // Allocate the buffer that will contain controls and aligned slots
                 // In a constant-evaluated context, bit_cast cannot be used with pointers
                 // To satisfy the compiler, allocate controls and slots in two separate allocations
@@ -838,11 +856,11 @@ namespace hud
                 : allocator_ {allocator}
                 , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
+                , free_slot_before_grow_(other.free_slot_before_grow_)
             {
                 if (max_slot_count_ == 0)
                     return;
 
-                free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
                 // Allocate the buffer that will contain controls and aligned slots
                 // In a constant-evaluated context, bit_cast cannot be used with pointers
                 // To satisfy the compiler, allocate controls and slots in two separate allocations
@@ -897,11 +915,11 @@ namespace hud
                 : allocator_ {allocator}
                 , max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
+                , free_slot_before_grow_(other.free_slot_before_grow_)
             {
                 if (max_slot_count_ == 0)
                     return;
 
-                free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
                 // Allocate the buffer that will contain controls and aligned slots
                 // In a constant-evaluated context, bit_cast cannot be used with pointers
                 // To satisfy the compiler, allocate controls and slots in two separate allocations
@@ -944,11 +962,7 @@ namespace hud
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
                 }
 
-                other.free_control_and_slot(other.control_ptr_, other.slot_ptr_, other.max_slot_count_);
-                other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
-                other.max_slot_count_ = 0;
-                other.count_ = 0;
-                other.free_slot_before_grow_ = 0;
+                other.reset_control_and_slot();
             }
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
@@ -962,11 +976,11 @@ namespace hud
                 : allocator_ {allocator}
                 , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
+                , free_slot_before_grow_(other.free_slot_before_grow_)
             {
                 if (max_slot_count_ == 0)
                     return;
 
-                free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
                 // Allocate the buffer that will contain controls and aligned slots
                 // In a constant-evaluated context, bit_cast cannot be used with pointers
                 // To satisfy the compiler, allocate controls and slots in two separate allocations
@@ -1009,11 +1023,7 @@ namespace hud
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
                 }
 
-                other.free_control_and_slot(other.control_ptr_, other.slot_ptr_, other.max_slot_count_);
-                other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
-                other.max_slot_count_ = 0;
-                other.count_ = 0;
-                other.free_slot_before_grow_ = 0;
+                other.reset_control_and_slot();
             }
 
             constexpr ~hashset_impl() noexcept
@@ -1031,10 +1041,7 @@ namespace hud
             constexpr hashset_impl &operator=(const hashset_impl &other) noexcept
             requires(hud::is_copy_assignable_v<slot_type>)
             {
-                // 1. Destroy all slots
-                clear();
-                // 2. Clear controls
-                // 3. Copy slots and controls ( Test if we can just copy the control and slots and not rehash and construct in place for each slots )
+
                 return *this;
             }
 
@@ -1054,25 +1061,9 @@ namespace hud
              */
             constexpr void clear() noexcept
             {
-                size_t remaining_slots {count()};
-                if (remaining_slots > 0)
+                if (count() > 0)
                 {
-                    if (!hud::is_trivially_destructible_v<slot_type>)
-                    {
-                        control_type *ctrl_ptr {control_ptr_};
-                        slot_type *slot_ptr {slot_ptr_};
-                        while (remaining_slots != 0)
-                        {
-                            group_type group {ctrl_ptr};
-                            for (u32 full_index : group.mask_of_full_slot())
-                            {
-                                hud::memory::destroy_object(slot_ptr + full_index);
-                                --remaining_slots;
-                            }
-                            ctrl_ptr += group_type::SLOT_PER_GROUP;
-                            slot_ptr += group_type::SLOT_PER_GROUP;
-                        }
-                    }
+                    destroy_all_slots();
                     hud::memory::set_memory(control_ptr_, control_size_for_max_count(max_slot_count_), empty_byte);
                     control_ptr_[max_slot_count_] = sentinel_byte;
                     count_ = 0;
@@ -1086,28 +1077,8 @@ namespace hud
              */
             constexpr void clear_shrink() noexcept
             {
-                if (!hud::is_trivially_destructible_v<slot_type>)
-                {
-                    control_type *ctrl_ptr {control_ptr_};
-                    slot_type *slot_ptr {slot_ptr_};
-                    size_t remaining_slots {count()};
-                    while (remaining_slots != 0)
-                    {
-                        group_type group {ctrl_ptr};
-                        for (u32 full_index : group.mask_of_full_slot())
-                        {
-                            hud::memory::destroy_object(slot_ptr + full_index);
-                            --remaining_slots;
-                        }
-                        ctrl_ptr += group_type::SLOT_PER_GROUP;
-                        slot_ptr += group_type::SLOT_PER_GROUP;
-                    }
-                }
-                free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
-                control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
-                max_slot_count_ = 0;
-                count_ = 0;
-                free_slot_before_grow_ = 0;
+                destroy_all_slots();
+                reset_control_and_slot();
             }
 
             /**
@@ -1503,7 +1474,7 @@ namespace hud
                 return ctrl_size;
             }
 
-            constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize &max_slot_count) noexcept
+            constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize max_slot_count) noexcept
             {
                 if (max_slot_count > 0)
                 {
@@ -1522,6 +1493,36 @@ namespace hud
                     else
                     {
                         allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr), current_allocation_size()});
+                    }
+                }
+            }
+
+            constexpr void reset_control_and_slot() noexcept
+            {
+                free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
+                control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
+                max_slot_count_ = 0;
+                count_ = 0;
+                free_slot_before_grow_ = 0;
+            }
+
+            constexpr void destroy_all_slots() noexcept
+            {
+                if (!hud::is_trivially_destructible_v<slot_type>)
+                {
+                    control_type *ctrl_ptr {control_ptr_};
+                    slot_type *slot_ptr {slot_ptr_};
+                    size_t remaining_slots {count()};
+                    while (remaining_slots != 0)
+                    {
+                        group_type group {ctrl_ptr};
+                        for (u32 full_index : group.mask_of_full_slot())
+                        {
+                            hud::memory::destroy_object(slot_ptr + full_index);
+                            --remaining_slots;
+                        }
+                        ctrl_ptr += group_type::SLOT_PER_GROUP;
+                        slot_ptr += group_type::SLOT_PER_GROUP;
                     }
                 }
             }

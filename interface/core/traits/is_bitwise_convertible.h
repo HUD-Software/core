@@ -10,7 +10,6 @@
 
 namespace hud
 {
-
     /**
      * Checks whether type_t is bitwise convertible ot u_type_t
      * type_t is bitwise convertible to u_type_t if one of the following is true:
@@ -26,9 +25,8 @@ namespace hud
                   hud::disjunction<is_pointer<u_type_t>, is_member_pointer<u_type_t>>>,
               hud::conjunction< // or if same size and both are integral or enums it's bitwise convertible
                   hud::is_same_size<type_t, u_type_t>,
-                  hud::disjunction<
-                      hud::conjunction<is_integral<type_t>, is_integral<u_type_t>>, // Assuming two's-complement
-                      hud::conjunction<is_enum<type_t>, is_enum<u_type_t>>>>>
+                  hud::disjunction<hud::conjunction<is_integral<type_t>, is_integral<u_type_t>>, // Assuming two's-complement
+                                   hud::conjunction<is_enum<type_t>, is_enum<u_type_t>>>>>
     {
     };
 
