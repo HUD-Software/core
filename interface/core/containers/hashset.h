@@ -946,7 +946,6 @@ namespace hud
 
                 other.free_control_and_slot(other.control_ptr_, other.slot_ptr_, other.max_slot_count_);
                 other.count_ = 0;
-                // other.clear_shrink();
             }
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
@@ -1080,9 +1079,28 @@ namespace hud
              * and then releases the allocated memory.
              */
             constexpr void clear_shrink() noexcept
-
             {
-                clear();
+                size_t remaining_slots {count()};
+                if (remaining_slots > 0)
+                {
+                    if (!hud::is_trivially_destructible_v<slot_type>)
+                    {
+                        control_type *ctrl_ptr {control_ptr_};
+                        slot_type *slot_ptr {slot_ptr_};
+                        while (remaining_slots != 0)
+                        {
+                            group_type group {ctrl_ptr};
+                            for (u32 full_index : group.mask_of_full_slot())
+                            {
+                                hud::memory::destroy_object(slot_ptr + full_index);
+                                --remaining_slots;
+                            }
+                            ctrl_ptr += group_type::SLOT_PER_GROUP;
+                            slot_ptr += group_type::SLOT_PER_GROUP;
+                        }
+                    }
+                    count_ = 0;
+                }
                 free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
             }
 
