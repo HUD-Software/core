@@ -18,6 +18,7 @@ namespace hud
 {
     namespace details::hashset
     {
+
         /**
          * A slot struct that inherits from a given storage type.
          * This struct provides controlled construction and copying mechanisms.
@@ -433,8 +434,8 @@ namespace hud
             {
                 // Mix of  From http://graphics.stanford.edu/~seander/bithacks.html#ZeroInWord
                 // And http://graphics.stanford.edu/~seander/bithacks.html#ValueInWord
-                constexpr uint64_t lsbs {0x0101010101010101ULL};
-                auto x = value_ ^ (lsbs * h2_hash);
+                constexpr u64 lsbs {0x0101010101010101ULL};
+                u64 x = value_ ^ (lsbs * h2_hash);
                 return mask {(x - lsbs) & ~x & 0x8080808080808080ULL};
             }
 
@@ -572,12 +573,20 @@ namespace hud
         {
             static constexpr usize COUNT_CLONED_BYTE {group_type::SLOT_PER_GROUP - 1};
 
-            /** Save the H2 */
+            /** Save the H2. */
             static constexpr void set_h2(control_type *control_ptr, usize slot_index, control_type h2, usize max_slot_count) noexcept
             {
                 // Save the h2 in the slot and also in the cloned byte
                 control_ptr[slot_index] = h2;
                 control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = h2;
+            }
+
+            /** Set the control to deleted. */
+            static constexpr void set_deleted(control_type *control_ptr, usize slot_index, usize max_slot_count) noexcept
+            {
+                // Save the h2 in the slot and also in the cloned byte
+                control_ptr[slot_index] = deleted_byte;
+                control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = deleted_byte;
             }
 
             /** Skip all empty or deleted control. */
@@ -1018,6 +1027,7 @@ namespace hud
             requires(hud::is_copy_assignable_v<slot_type>)
             {
                 // 1. Destroy all slots
+                clear();
                 // 2. Clear controls
                 // 3. Copy slots and controls ( Test if we can just copy the control and slots and not rehash and construct in place for each slots )
                 return *this;
@@ -1039,10 +1049,10 @@ namespace hud
              */
             constexpr void clear() noexcept
             {
-                if (!hud::is_trivially_destructible_v<slot_type>)
+                size_t remaining_slots {count()};
+                if (remaining_slots > 0)
                 {
-                    size_t remaining_slots {count()};
-                    if (remaining_slots > 0)
+                    if (!hud::is_trivially_destructible_v<slot_type>)
                     {
                         control_type *ctrl {control_ptr_};
                         slot_type *slot {slot_ptr_};
@@ -1058,8 +1068,10 @@ namespace hud
                             slot += group_type::SLOT_PER_GROUP;
                         }
                     }
+                    hud::memory::set_memory(control_ptr_, control_size_for_max_count(max_slot_count_), empty_byte);
+                    control_ptr_[max_slot_count_] = sentinel_byte;
+                    count_ = 0;
                 }
-                count_ = 0;
             }
 
             /**
@@ -1068,6 +1080,7 @@ namespace hud
              * and then releases the allocated memory.
              */
             constexpr void clear_shrink() noexcept
+
             {
                 clear();
                 free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
@@ -1337,10 +1350,6 @@ namespace hud
                 }
             }
 
-            constexpr void copy_construct(const hashset_impl &other)
-            {
-            }
-
             [[nodiscard]] constexpr usize
             free_slot_before_grow() const noexcept
             {
@@ -1444,9 +1453,8 @@ namespace hud
             constexpr usize control_size_for_max_count(usize max_slot_count) const noexcept
             {
                 // We cloned size of a group - 1 because we never reach the last cloned bytes
-                constexpr const usize num_cloned_bytes {control::COUNT_CLONED_BYTE};
                 // Control size is the number of slot + sentinel + number of cloned bytes
-                return max_slot_count + 1 + num_cloned_bytes;
+                return max_slot_count + 1 + control::COUNT_CLONED_BYTE;
             }
 
             constexpr usize allocate_control_and_slot(usize max_slot_count) noexcept
