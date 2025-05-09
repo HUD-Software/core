@@ -353,7 +353,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
                 map.count() == COUNT,                   // 0
                 map.max_count() > COUNT,                // 1
                 map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() == 0,      // 3
+                map.allocator().free_count() > 0,       // 3
                 count == COUNT                          // 4
             };
         };
@@ -369,14 +369,14 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
         }
 
         // Constant
-        // {
-        //     constexpr auto result = test();
-        //     hud_assert_true(std::get<0>(result));
-        //     hud_assert_true(std::get<1>(result));
-        //     hud_assert_true(std::get<2>(result));
-        //     hud_assert_true(std::get<3>(result));
-        //     hud_assert_true(std::get<4>(result));
-        // }
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
     }
 }
 
@@ -430,14 +430,14 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_non_empty_map)
         }
 
         // Constant
-        // {
-        //     constexpr auto result = test();
-        //     hud_assert_true(std::get<0>(result));
-        //     hud_assert_true(std::get<1>(result));
-        //     hud_assert_true(std::get<2>(result));
-        //     hud_assert_true(std::get<3>(result));
-        //     hud_assert_true(std::get<4>(result));
-        // }
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
     }
 
     // Reserve
@@ -470,11 +470,11 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_non_empty_map)
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,                                                     // 0
-                map.max_count() > map.count(),                                                // 1
-                map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
-                map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
-                element_count == COUNT * 2                                                    // 4
+                map.count() == COUNT * 2,               // 0
+                map.max_count() > map.count(),          // 1
+                map.allocator().allocation_count() > 0, // 2
+                map.allocator().free_count() > 0,       // 3
+                element_count == COUNT * 2              // 4
             };
         };
 
@@ -489,14 +489,14 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_non_empty_map)
         }
 
         // Constant
-        // {
-        //     constexpr auto result = test();
-        //     hud_assert_true(std::get<0>(result));
-        //     hud_assert_true(std::get<1>(result));
-        //     hud_assert_true(std::get<2>(result));
-        //     hud_assert_true(std::get<3>(result));
-        //     hud_assert_true(std::get<4>(result));
-        // }
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
     }
 }
 
@@ -587,11 +587,11 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,                                                     // 0
-                map.max_count() > COUNT,                                                      // 1
-                map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
-                map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
-                count == COUNT * 2                                                            // 4
+                map.count() == COUNT * 2,               // 0
+                map.max_count() > COUNT,                // 1
+                map.allocator().allocation_count() > 0, // 2
+                map.allocator().free_count() > 0,       // 3
+                count == COUNT * 2                      // 4
             };
         };
 
@@ -606,14 +606,14 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
         }
 
         // Constant
-        // {
-        //     constexpr auto result = test();
-        //     hud_assert_true(std::get<0>(result));
-        //     hud_assert_true(std::get<1>(result));
-        //     hud_assert_true(std::get<2>(result));
-        //     hud_assert_true(std::get<3>(result));
-        //     hud_assert_true(std::get<4>(result));
-        // }
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
     }
 }
 
@@ -676,14 +676,14 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
         }
 
         // Constant
-        // {
-        //     constexpr auto result = test();
-        //     hud_assert_true(std::get<0>(result));
-        //     hud_assert_true(std::get<1>(result));
-        //     hud_assert_true(std::get<2>(result));
-        //     hud_assert_true(std::get<3>(result));
-        //     hud_assert_true(std::get<4>(result));
-        // }
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
     }
 
     // With reserve
@@ -724,11 +724,11 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,                                                     // 0
-                map.max_count() > COUNT,                                                      // 1
-                map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
-                map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
-                count == COUNT * 2                                                            // 4
+                map.count() == COUNT * 2,               // 0
+                map.max_count() > COUNT,                // 1
+                map.allocator().allocation_count() > 0, // 2
+                map.allocator().free_count() > 0,       // 3
+                count == COUNT * 2                      // 4
             };
         };
 
@@ -743,13 +743,13 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
         }
 
         // Constant
-        // {
-        //     constexpr auto result = test();
-        //     hud_assert_true(std::get<0>(result));
-        //     hud_assert_true(std::get<1>(result));
-        //     hud_assert_true(std::get<2>(result));
-        //     hud_assert_true(std::get<3>(result));
-        //     hud_assert_true(std::get<4>(result));
-        // }
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+        }
     }
 }

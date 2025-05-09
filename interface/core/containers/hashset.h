@@ -948,6 +948,7 @@ namespace hud
                 other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
                 other.max_slot_count_ = 0;
                 other.count_ = 0;
+                other.free_slot_before_grow_ = 0;
             }
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
@@ -1012,6 +1013,7 @@ namespace hud
                 other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
                 other.max_slot_count_ = 0;
                 other.count_ = 0;
+                other.free_slot_before_grow_ = 0;
             }
 
             constexpr ~hashset_impl() noexcept
@@ -1105,6 +1107,7 @@ namespace hud
                 control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
                 max_slot_count_ = 0;
                 count_ = 0;
+                free_slot_before_grow_ = 0;
             }
 
             /**
