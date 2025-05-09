@@ -945,6 +945,8 @@ namespace hud
                 }
 
                 other.free_control_and_slot(other.control_ptr_, other.slot_ptr_, other.max_slot_count_);
+                other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
+                other.max_slot_count_ = 0;
                 other.count_ = 0;
             }
 
@@ -1007,6 +1009,8 @@ namespace hud
                 }
 
                 other.free_control_and_slot(other.control_ptr_, other.slot_ptr_, other.max_slot_count_);
+                other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
+                other.max_slot_count_ = 0;
                 other.count_ = 0;
             }
 
@@ -1080,28 +1084,27 @@ namespace hud
              */
             constexpr void clear_shrink() noexcept
             {
-                size_t remaining_slots {count()};
-                if (remaining_slots > 0)
+                if (!hud::is_trivially_destructible_v<slot_type>)
                 {
-                    if (!hud::is_trivially_destructible_v<slot_type>)
+                    control_type *ctrl_ptr {control_ptr_};
+                    slot_type *slot_ptr {slot_ptr_};
+                    size_t remaining_slots {count()};
+                    while (remaining_slots != 0)
                     {
-                        control_type *ctrl_ptr {control_ptr_};
-                        slot_type *slot_ptr {slot_ptr_};
-                        while (remaining_slots != 0)
+                        group_type group {ctrl_ptr};
+                        for (u32 full_index : group.mask_of_full_slot())
                         {
-                            group_type group {ctrl_ptr};
-                            for (u32 full_index : group.mask_of_full_slot())
-                            {
-                                hud::memory::destroy_object(slot_ptr + full_index);
-                                --remaining_slots;
-                            }
-                            ctrl_ptr += group_type::SLOT_PER_GROUP;
-                            slot_ptr += group_type::SLOT_PER_GROUP;
+                            hud::memory::destroy_object(slot_ptr + full_index);
+                            --remaining_slots;
                         }
+                        ctrl_ptr += group_type::SLOT_PER_GROUP;
+                        slot_ptr += group_type::SLOT_PER_GROUP;
                     }
-                    count_ = 0;
                 }
                 free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
+                control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
+                max_slot_count_ = 0;
+                count_ = 0;
             }
 
             /**
@@ -1517,7 +1520,6 @@ namespace hud
                     {
                         allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr), current_allocation_size()});
                     }
-                    max_slot_count = 0;
                 }
             }
 

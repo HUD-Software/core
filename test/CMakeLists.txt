@@ -71,6 +71,7 @@ set( src
 	hashmap/hashmap_copy_constructors.cpp
 	hashmap/hashmap_find.cpp
 	hashmap/hashmap_clear.cpp
+	hashmap/hashmap_clear_shrink.cpp
 	hashmap/hashmap_contains.cpp
 	hashmap/hashmap_iterator.cpp
 	hashmap/hashmap_misc.cpp
@@ -442,7 +443,7 @@ else()
 	add_test(NAME ${lib_name} COMMAND ${test_project_name} --gtest_output=xml:${test_project_name}_report.xml --extra-verbose --gtest_break_on_failure)
 endif()
 
-if( CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo" OR SANITIZER)
+if(SANITIZER)
 	include(../sanitizer.cmake)
 	enable_sanitizer(${test_project_name} ${lib_name})
 endif()

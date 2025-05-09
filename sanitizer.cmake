@@ -5,6 +5,7 @@ function(enable_sanitizer project_name lib_name)
 			if(	NOT EXISTS "${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dbg_dynamic-x86_64.dll" OR NOT EXISTS "${CMAKE_CXX_COMPILER_PATH}/clang_rt.asan_dynamic-x86_64.dll")
 				message(FATAL_ERROR "MSVC Address Sanitizer is not installed. Please install the C++ AddressSanitizer with Visual Studio Installer")
 			endif()
+			message("Enable MSCV sanitizer")
 
 			# MSVC ASAN is limited
 			# https://devblogs.microsoft.com/cppblog/addresssanitizer-asan-for-windows-with-msvc/#compiling-with-asan-from-the-console
@@ -33,6 +34,7 @@ function(enable_sanitizer project_name lib_name)
 			# https://learn.microsoft.com/en-us/cpp/sanitizers/asan-runtime?view=msvc-170
 		endif()
 	elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		message("Enable sanitizer")
 		# https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
 		set(SANTIZE_COMPILE_ARGS 
 			-fsanitize=address 
