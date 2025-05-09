@@ -821,7 +821,7 @@ namespace hud
                     // Copy slots to newly allocated buffer
                     control_type *control_full_or_sentinel = other.control_ptr_;
                     auto slot_full_or_sentinel = other.slot_ptr_;
-                    while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
+                    while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
                         // Compute the hash
                         u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
@@ -841,7 +841,8 @@ namespace hud
                 else
                 {
                     hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
-                    hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                    if (other.count() > 0)
+                        hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                 }
             }
 
@@ -858,6 +859,7 @@ namespace hud
                 , count_ {other.count()}
                 , free_slot_before_grow_(other.free_slot_before_grow_)
             {
+                // Nothing to allocate, stop here
                 if (max_slot_count_ == 0)
                     return;
 
@@ -877,10 +879,14 @@ namespace hud
                     hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                     control_ptr_[max_slot_count_] = sentinel_byte;
 
+                    // Nothing to copy, stop here
+                    if (other.count() == 0)
+                        return;
+
                     // Copy slots to newly allocated buffer
                     control_type *control_full_or_sentinel = other.control_ptr_;
                     auto slot_full_or_sentinel = other.slot_ptr_;
-                    while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
+                    while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
                         // Compute the hash
                         u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
@@ -900,7 +906,8 @@ namespace hud
                 else
                 {
                     hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
-                    hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                    if (other.count() > 0)
+                        hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                 }
             }
 
@@ -917,6 +924,7 @@ namespace hud
                 , count_ {other.count()}
                 , free_slot_before_grow_(other.free_slot_before_grow_)
             {
+                // Nothing to allocate, stop here
                 if (max_slot_count_ == 0)
                     return;
 
@@ -936,10 +944,14 @@ namespace hud
                     hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                     control_ptr_[max_slot_count_] = sentinel_byte;
 
+                    // Nothing to copy, stop here
+                    if (other.count() == 0)
+                        return;
+
                     // Move slots to newly allocated buffer
                     control_type *control_full_or_sentinel = other.control_ptr_;
                     auto slot_full_or_sentinel = other.slot_ptr_;
-                    while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
+                    while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
                         // Compute the hash
                         u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
@@ -959,7 +971,8 @@ namespace hud
                 else
                 {
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
-                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
+                    if (other.count() > 0)
+                        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
                 }
 
                 other.reset_control_and_slot();
@@ -978,6 +991,7 @@ namespace hud
                 , count_ {other.count()}
                 , free_slot_before_grow_(other.free_slot_before_grow_)
             {
+                // Nothing to allocate, stop here
                 if (max_slot_count_ == 0)
                     return;
 
@@ -997,10 +1011,14 @@ namespace hud
                     hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                     control_ptr_[max_slot_count_] = sentinel_byte;
 
+                    // Nothing to copy, stop here
+                    if (other.count() == 0)
+                        return;
+
                     // Move slots to newly allocated buffer
                     control_type *control_full_or_sentinel = other.control_ptr_;
                     auto slot_full_or_sentinel = other.slot_ptr_;
-                    while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
+                    while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
                         // Compute the hash
                         u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
@@ -1020,7 +1038,8 @@ namespace hud
                 else
                 {
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
-                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
+                    if (other.count() > 0)
+                        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
                 }
 
                 other.reset_control_and_slot();
@@ -1057,6 +1076,7 @@ namespace hud
                     count_ = other.count_;
                     free_slot_before_grow_ = other.free_slot_before_grow_;
 
+                    // Nothing to allocate, stop here
                     if (other.max_slot_count_ == 0)
                         return *this;
 
@@ -1076,10 +1096,14 @@ namespace hud
                         hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                         control_ptr_[max_slot_count_] = sentinel_byte;
 
+                        // Nothing to copy, stop here
+                        if (other.count() == 0)
+                            return *this;
+
                         // Copy slots to newly allocated buffer
                         control_type *control_full_or_sentinel = other.control_ptr_;
-                        auto slot_full_or_sentinel = other.slot_ptr_;
-                        while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
+                        slot_type *slot_full_or_sentinel = other.slot_ptr_;
+                        while (control_full_or_sentinel != other.control_ptr_sentinel())
                         {
                             // Compute the hash
                             u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
@@ -1099,7 +1123,8 @@ namespace hud
                     else
                     {
                         hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
-                        hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                        if (other.count() > 0)
+                            hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                     }
                 }
                 else
@@ -1130,10 +1155,14 @@ namespace hud
                         hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                         control_ptr_[max_slot_count_] = sentinel_byte;
 
+                        // Nothing to copy, stop here
+                        if (other.count() == 0)
+                            return *this;
+
                         // Copy slots to newly allocated buffer
                         control_type *control_full_or_sentinel = other.control_ptr_;
-                        auto slot_full_or_sentinel = other.slot_ptr_;
-                        while (control_full_or_sentinel != other.control_ptr_ + other.max_slot_count_)
+                        slot_type *slot_full_or_sentinel = other.slot_ptr_;
+                        while (control_full_or_sentinel != other.control_ptr_sentinel())
                         {
                             // Compute the hash
                             u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
@@ -1153,7 +1182,8 @@ namespace hud
                     else
                     {
                         hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
-                        hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                        if (other.count() > 0)
+                            hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                     }
                 }
                 return *this;

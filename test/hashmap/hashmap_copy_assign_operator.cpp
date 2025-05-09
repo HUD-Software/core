@@ -190,12 +190,12 @@ GTEST_TEST(hashmap, copy_assign_operator_bitwise_copy_constructible_same_type_sa
 
         // Constant
         {
-            // constexpr auto result_empty_no_extra = test_default_allocator({}, 0u);
-            // hud_assert_true(std::get<0>(result_empty_no_extra));
-            // hud_assert_true(std::get<1>(result_empty_no_extra));
-            // hud_assert_true(std::get<2>(result_empty_no_extra));
-            // hud_assert_true(std::get<3>(result_empty_no_extra));
-            // hud_assert_true(std::get<4>(result_empty_no_extra));
+            constexpr auto result_empty_no_extra = test_default_allocator({}, 0u);
+            hud_assert_true(std::get<0>(result_empty_no_extra));
+            hud_assert_true(std::get<1>(result_empty_no_extra));
+            hud_assert_true(std::get<2>(result_empty_no_extra));
+            hud_assert_true(std::get<3>(result_empty_no_extra));
+            hud_assert_true(std::get<4>(result_empty_no_extra));
 
             // constexpr auto result_empty_extra = test_default_allocator({}, 10u);
             // hud_assert_true(std::get<0>(result_empty_extra));
@@ -204,19 +204,19 @@ GTEST_TEST(hashmap, copy_assign_operator_bitwise_copy_constructible_same_type_sa
             // hud_assert_true(std::get<3>(result_empty_extra));
             // hud_assert_true(std::get<4>(result_empty_extra));
 
-            // constexpr auto result_no_extra = test_default_allocator(TEST_VALUES, 0u);
-            // hud_assert_true(std::get<0>(result_no_extra));
-            // hud_assert_true(std::get<1>(result_no_extra));
-            // hud_assert_true(std::get<2>(result_no_extra));
-            // hud_assert_true(std::get<3>(result_no_extra));
-            // hud_assert_true(std::get<4>(result_no_extra));
+            constexpr auto result_no_extra = test_default_allocator(TEST_VALUES, 0u);
+            hud_assert_true(std::get<0>(result_no_extra));
+            hud_assert_true(std::get<1>(result_no_extra));
+            hud_assert_true(std::get<2>(result_no_extra));
+            hud_assert_true(std::get<3>(result_no_extra));
+            hud_assert_true(std::get<4>(result_no_extra));
 
-            // constexpr auto result_extra = test_default_allocator(TEST_VALUES, 10u);
-            // hud_assert_true(std::get<0>(result_extra));
-            // hud_assert_true(std::get<1>(result_extra));
-            // hud_assert_true(std::get<2>(result_extra));
-            // hud_assert_true(std::get<3>(result_extra));
-            // hud_assert_true(std::get<4>(result_extra));
+            constexpr auto result_extra = test_default_allocator(TEST_VALUES, 10u);
+            hud_assert_true(std::get<0>(result_extra));
+            hud_assert_true(std::get<1>(result_extra));
+            hud_assert_true(std::get<2>(result_extra));
+            hud_assert_true(std::get<3>(result_extra));
+            hud_assert_true(std::get<4>(result_extra));
         }
     }
 }

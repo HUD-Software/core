@@ -14,7 +14,6 @@ GTEST_TEST(hashmap, default_constructor_should_allocate_no_memory)
 
 GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructible_same_type)
 {
-
     using key_type = i32;
     using value_type = i64;
 
