@@ -169,7 +169,7 @@ __aarch64__
     #error compilation mode is not set
 #endif
 #if defined(HD_COMPILER_MSVC) && !(__cplusplus >= 202002L)
-    #error compilation should be done with latest C++ version
+    #error compilation should be done with C++ 20
 #endif
 
 #if defined(HD_TARGET_32_BITS)

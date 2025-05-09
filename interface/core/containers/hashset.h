@@ -1054,18 +1054,18 @@ namespace hud
                 {
                     if (!hud::is_trivially_destructible_v<slot_type>)
                     {
-                        control_type *ctrl {control_ptr_};
-                        slot_type *slot {slot_ptr_};
+                        control_type *ctrl_ptr {control_ptr_};
+                        slot_type *slot_ptr {slot_ptr_};
                         while (remaining_slots != 0)
                         {
-                            group_type group {ctrl};
+                            group_type group {ctrl_ptr};
                             for (u32 full_index : group.mask_of_full_slot())
                             {
-                                hud::memory::destroy_object(slot_ptr_ + full_index);
+                                hud::memory::destroy_object(slot_ptr + full_index);
                                 --remaining_slots;
                             }
-                            ctrl += group_type::SLOT_PER_GROUP;
-                            slot += group_type::SLOT_PER_GROUP;
+                            ctrl_ptr += group_type::SLOT_PER_GROUP;
+                            slot_ptr += group_type::SLOT_PER_GROUP;
                         }
                     }
                     hud::memory::set_memory(control_ptr_, control_size_for_max_count(max_slot_count_), empty_byte);
