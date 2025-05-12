@@ -840,9 +840,10 @@ namespace hud
                 }
                 else
                 {
+
+                    hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                     if (other.count() > 0)
                     {
-                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                         hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                     }
                 }
@@ -907,9 +908,10 @@ namespace hud
                 }
                 else
                 {
+
+                    hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                     if (other.count() > 0)
                     {
-                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                         hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                     }
                 }
@@ -949,34 +951,35 @@ namespace hud
                     control_ptr_[max_slot_count_] = sentinel_byte;
 
                     // Nothing to copy, stop here
-                    if (other.count() == 0)
-                        return;
-
-                    // Move slots to newly allocated buffer
-                    control_type *control_full_or_sentinel = other.control_ptr_;
-                    auto slot_full_or_sentinel = other.slot_ptr_;
-                    while (control_full_or_sentinel != other.control_ptr_sentinel())
+                    if (other.count() != 0)
                     {
-                        // Compute the hash
-                        u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
-                        // Find H1 slot index
-                        u64 h1 {H1(hash)};
-                        usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                        // Save h2 in control h1 index
-                        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                        // Move old slot to new slot
-                        hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_full_or_sentinel));
+                        // Move slots to newly allocated buffer
+                        control_type *control_full_or_sentinel = other.control_ptr_;
+                        auto slot_full_or_sentinel = other.slot_ptr_;
+                        while (control_full_or_sentinel != other.control_ptr_sentinel())
+                        {
+                            // Compute the hash
+                            u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
+                            // Find H1 slot index
+                            u64 h1 {H1(hash)};
+                            usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                            // Save h2 in control h1 index
+                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                            // Move old slot to new slot
+                            hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_full_or_sentinel));
 
-                        control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
-                        slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
-                        control_full_or_sentinel = full_or_sentinel;
+                            control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
+                            slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
+                            control_full_or_sentinel = full_or_sentinel;
+                        }
                     }
                 }
                 else
                 {
+
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
                     if (other.count() > 0)
                     {
-                        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
                         hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
                     }
                 }
@@ -1018,34 +1021,34 @@ namespace hud
                     control_ptr_[max_slot_count_] = sentinel_byte;
 
                     // Nothing to copy, stop here
-                    if (other.count() == 0)
-                        return;
-
-                    // Move slots to newly allocated buffer
-                    control_type *control_full_or_sentinel = other.control_ptr_;
-                    auto slot_full_or_sentinel = other.slot_ptr_;
-                    while (control_full_or_sentinel != other.control_ptr_sentinel())
+                    if (other.count() != 0)
                     {
-                        // Compute the hash
-                        u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
-                        // Find H1 slot index
-                        u64 h1 {H1(hash)};
-                        usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                        // Save h2 in control h1 index
-                        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                        // Move old slot to new slot
-                        hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_full_or_sentinel));
+                        // Move slots to newly allocated buffer
+                        control_type *control_full_or_sentinel = other.control_ptr_;
+                        auto slot_full_or_sentinel = other.slot_ptr_;
+                        while (control_full_or_sentinel != other.control_ptr_sentinel())
+                        {
+                            // Compute the hash
+                            u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
+                            // Find H1 slot index
+                            u64 h1 {H1(hash)};
+                            usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                            // Save h2 in control h1 index
+                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                            // Move old slot to new slot
+                            hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_full_or_sentinel));
 
-                        control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
-                        slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
-                        control_full_or_sentinel = full_or_sentinel;
+                            control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
+                            slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
+                            control_full_or_sentinel = full_or_sentinel;
+                        }
                     }
                 }
                 else
                 {
+                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
                     if (other.count() > 0)
                     {
-                        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
                         hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
                     }
                 }
@@ -1132,7 +1135,9 @@ namespace hud
                     {
                         hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                         if (other.count() > 0)
+                        {
                             hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                        }
                     }
                 }
                 else
@@ -1191,7 +1196,9 @@ namespace hud
                     {
                         hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                         if (other.count() > 0)
+                        {
                             hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                        }
                     }
                 }
                 return *this;
