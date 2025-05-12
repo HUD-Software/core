@@ -496,7 +496,7 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type_different_
             MovedType moved(initializer, copied_extra);
 
             // Copy the array
-            hud::array<type, AllocatorType2> move(std::move(moved), AllocatorType2 {});
+            hud::array<type, AllocatorType2> move(std::move(moved), AllocatorType2());
 
             // Ensure we moved all datas in order
             bool all_values_moved = true;
@@ -680,7 +680,7 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type_different_
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, AllocatorType2> move(std::move(moved), extra, AllocatorType2 {});
+                        hud::array<type, AllocatorType2> move(std::move(moved), extra, AllocatorType2());
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -1273,7 +1273,7 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type_diffe
             MovedType moved(initializer, copied_extra);
 
             // Copy the array
-            hud::array<Type2, AllocatorType2> move(std::move(moved), AllocatorType2 {});
+            hud::array<Type2, AllocatorType2> move(std::move(moved), AllocatorType2());
 
             // Ensure we moved all datas in order
             bool all_values_moved = true;
@@ -1460,7 +1460,7 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type_diffe
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<Type2, AllocatorType2> move(std::move(moved), extra, AllocatorType2 {});
+                        hud::array<Type2, AllocatorType2> move(std::move(moved), extra, AllocatorType2());
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -2436,7 +2436,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type_differ
             MovedType moved(initializer, copied_extra);
 
             // Copy the array
-            hud::array<type, AllocatorType2> move(std::move(moved), AllocatorType2 {});
+            hud::array<type, AllocatorType2> move(std::move(moved), AllocatorType2());
 
             // Ensure we moved all datas in order
             bool all_values_moved = true;
@@ -2623,7 +2623,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type_differ
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, AllocatorType2> move(std::move(moved), extra, AllocatorType2 {});
+                        hud::array<type, AllocatorType2> move(std::move(moved), extra, AllocatorType2());
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -3623,7 +3623,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type_differ
             MovedType moved(initializer, copied_extra);
 
             // Copy the array
-            hud::array<type, AllocatorType2> move(std::move(moved), AllocatorType2 {});
+            hud::array<type, AllocatorType2> move(std::move(moved), AllocatorType2());
 
             // Ensure we moved all datas in order
             bool all_values_moved = true;
@@ -3820,7 +3820,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type_differ
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, AllocatorType2> move(std::move(moved), extra, AllocatorType2 {});
+                        hud::array<type, AllocatorType2> move(std::move(moved), extra, AllocatorType2());
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -4438,7 +4438,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type_d
             MovedType moved(initializer, copied_extra);
 
             // Copy the array
-            hud::array<Type2, AllocatorType2> move(std::move(moved), AllocatorType2 {});
+            hud::array<Type2, AllocatorType2> move(std::move(moved), AllocatorType2());
 
             // Ensure we moved all datas in order
             bool all_values_moved = true;
@@ -4635,7 +4635,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type_d
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<Type2, AllocatorType2> move(std::move(moved), extra, AllocatorType2 {});
+                        hud::array<Type2, AllocatorType2> move(std::move(moved), extra, AllocatorType2());
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -5275,7 +5275,7 @@ GTEST_TEST(array, move_construct_non_bitwise_same_type_different_allocator)
             MovedType moved(initializer, copied_extra);
 
             // Copy the array
-            hud::array<type, AllocatorType2> move(std::move(moved), AllocatorType2 {});
+            hud::array<type, AllocatorType2> move(std::move(moved), AllocatorType2());
 
             // Ensure we moved all datas in order
             bool all_values_moved = true;
@@ -5482,7 +5482,7 @@ GTEST_TEST(array, move_construct_non_bitwise_same_type_different_allocator)
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, AllocatorType2> move(std::move(moved), extra, AllocatorType2 {});
+                        hud::array<type, AllocatorType2> move(std::move(moved), extra, AllocatorType2());
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;
@@ -6130,7 +6130,7 @@ GTEST_TEST(array, move_construct_non_bitwise_different_type_different_allocator)
             MovedType moved(initializer, copied_extra);
 
             // Copy the array
-            hud::array<Type2, AllocatorType2> move(std::move(moved), AllocatorType2 {});
+            hud::array<Type2, AllocatorType2> move(std::move(moved), AllocatorType2());
 
             // Ensure we moved all datas in order
             bool all_values_moved = true;
@@ -6337,7 +6337,7 @@ GTEST_TEST(array, move_construct_non_bitwise_different_type_different_allocator)
                         MovedType moved(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<Type2, AllocatorType2> move(std::move(moved), extra, AllocatorType2 {});
+                        hud::array<Type2, AllocatorType2> move(std::move(moved), extra, AllocatorType2());
 
                         // Ensure we moved all datas in order
                         bool all_values_moved = true;

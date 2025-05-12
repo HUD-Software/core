@@ -16,19 +16,19 @@ namespace hud_test
 
     public:
         /** Default constructor. */
-        constexpr allocator_watcher() noexcept = default;
+        constexpr explicit allocator_watcher() noexcept = default;
 
         /** Construct allocator with a unique id. */
-        constexpr allocator_watcher(u32 id) noexcept
+        constexpr explicit allocator_watcher(u32 id) noexcept
             : unique_id(id)
         {
         }
 
         /** Copy constructor. */
-        constexpr allocator_watcher(const allocator_watcher &other) noexcept = default;
+        constexpr explicit allocator_watcher(const allocator_watcher &other) noexcept = default;
 
         /** Move construct the array allocator. */
-        constexpr allocator_watcher(allocator_watcher &&) noexcept
+        constexpr explicit allocator_watcher(allocator_watcher &&) noexcept
             : count_of_move_construct(1)
         {
             // Ignore the move of informations,

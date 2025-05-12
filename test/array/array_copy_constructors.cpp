@@ -382,7 +382,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the array
-            hud::array<type, AllocatorType2> copy(copied, AllocatorType2 {});
+            hud::array<type, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
@@ -529,7 +529,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_
                         const CopiedType copied(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2 {});
+                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -994,7 +994,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_diffe
             const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
 
             // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2 {});
+            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
@@ -1141,7 +1141,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_diffe
                         const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2 {});
+                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -1606,7 +1606,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_differ
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the array
-            hud::array<type, AllocatorType2> copy(copied, AllocatorType2 {});
+            hud::array<type, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
@@ -1753,7 +1753,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_differ
                         const CopiedType copied(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2 {});
+                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2218,7 +2218,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_d
             const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
 
             // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2 {});
+            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
@@ -2365,7 +2365,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_d
                         const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2 {});
+                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2830,7 +2830,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_different_a
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the array
-            hud::array<type, AllocatorType2> copy(copied, AllocatorType2 {});
+            hud::array<type, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
@@ -2977,7 +2977,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_different_a
                         const CopiedType copied(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2 {});
+                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -3442,7 +3442,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_differ
             const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
 
             // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2 {});
+            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
@@ -3589,7 +3589,7 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_differ
                         const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
 
                         // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2 {});
+                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;

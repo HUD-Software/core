@@ -840,9 +840,11 @@ namespace hud
                 }
                 else
                 {
-                    hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                     if (other.count() > 0)
+                    {
+                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                         hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                    }
                 }
             }
 
@@ -905,9 +907,11 @@ namespace hud
                 }
                 else
                 {
-                    hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                     if (other.count() > 0)
+                    {
+                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
                         hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
+                    }
                 }
             }
 
@@ -970,9 +974,11 @@ namespace hud
                 }
                 else
                 {
-                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
                     if (other.count() > 0)
+                    {
+                        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
                         hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
+                    }
                 }
 
                 other.reset_control_and_slot();
@@ -1037,9 +1043,11 @@ namespace hud
                 }
                 else
                 {
-                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
                     if (other.count() > 0)
+                    {
+                        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
                         hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
+                    }
                 }
 
                 other.reset_control_and_slot();
