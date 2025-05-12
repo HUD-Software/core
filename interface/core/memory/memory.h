@@ -333,7 +333,15 @@ namespace hud
          */
         [[nodiscard]] static HD_FORCEINLINE void *reallocate(void *pointer, const usize size) noexcept
         {
-            return ::realloc(pointer, size);
+            if (size == 0)
+            {
+                free(pointer);
+                return nullptr;
+            }
+            else
+            {
+                return ::realloc(pointer, size);
+            }
         }
 
         /**
