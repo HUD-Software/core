@@ -1155,7 +1155,6 @@ namespace hud
         template<typename u_type_t>
         constexpr void copy_assign(const u_type_t *source, const usize source_count, const usize min_slack = 0) noexcept
         {
-
             // Grow the allocation if we don't have enough room
             // If we need to reallocate, we destroy all elements before reallocating the allocation
             // Then we copy construct all elements of source in the allocation

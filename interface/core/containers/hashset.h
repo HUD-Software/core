@@ -860,7 +860,7 @@ namespace hud
                 : allocator_ {allocator}
                 , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
-                , free_slot_before_grow_(other.free_slot_before_grow_)
+                , free_slot_before_grow_(max_slot_before_grow(max_slot_count_) - count_)
             {
                 // Nothing to allocate, stop here
                 if (max_slot_count_ == 0)
@@ -998,7 +998,7 @@ namespace hud
                 : allocator_ {allocator}
                 , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
-                , free_slot_before_grow_(other.free_slot_before_grow_)
+                , free_slot_before_grow_(max_slot_before_grow(max_slot_count_) - count_)
             {
                 // Nothing to allocate, stop here
                 if (max_slot_count_ == 0)
@@ -1071,47 +1071,34 @@ namespace hud
             constexpr hashset_impl &operator=(const hashset_impl &other) noexcept
             requires(hud::is_copy_constructible_v<slot_type>)
             {
-                // If `this` allocation is not big enough, clear all, then deallocate, allocate new memory and add all element
-                // If `this` allocation is big enough, clear all, copy controls, add all elements
-                if (max_slot_count_ < other.max_slot_count_ || max_slot_count_ == 0)
-                {
-                    destroy_all_slots();
-                    free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
+                // Destroy all slots
+                destroy_all_slots();
 
-                    // Copy controls
+                // We don't keep the max count of the copied array
+                // The requested memory is the number of element in the copied array, not the max slot count.
+                const usize max_count_requested = other.count_;
+
+                // If we have enough allocated memory
+                if (max_count_requested <= max_slot_count_)
+                {
+                    // Reset the control to empty if we have allocated memory ( Do nothing if we have nothing because control_ptr_ points to static INIT_GROUP)
+                    if (max_slot_count_ > 0)
+                    {
+                        hud::memory::set_memory(control_ptr_, control_size_for_max_count(max_slot_count_), empty_byte);
+                        control_ptr_[max_slot_count_] = sentinel_byte;
+                    }
+                    // Copy the allocator if copy_when_container_copy_assigned is true
                     if constexpr (hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                     {
                         allocator_ = other.allocator_;
                     }
-                    max_slot_count_ = other.max_slot_count_;
+                    // Copy the number of element
                     count_ = other.count_;
-                    free_slot_before_grow_ = other.free_slot_before_grow_;
+                    // Compute the free slot count before growing
+                    free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
 
-                    // Nothing to allocate, stop here
-                    if (other.max_slot_count_ == 0)
-                        return *this;
-
-                    // Allocate the buffer that will contain controls and aligned slots
-                    // In a constant-evaluated context, bit_cast cannot be used with pointers
-                    // To satisfy the compiler, allocate controls and slots in two separate allocations
-                    usize control_size {allocate_control_and_slot(other.max_slot_count_)};
-
-                    // If constant evaluated context or when slot_type is not bitwise copy constructible
-                    // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
-                    // In a non constant evaluated context
-                    // If type is trivially copy constructible, just memcpy control and slot
-                    // else do like grow_capacity
-                    if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
+                    if (count_ > 0)
                     {
-                        // Set control to empty ending with sentinel
-                        hud::memory::set_memory(control_ptr_, control_size, empty_byte);
-                        control_ptr_[max_slot_count_] = sentinel_byte;
-
-                        // Nothing to copy, stop here
-                        if (other.count() == 0)
-                            return *this;
-
-                        // Copy slots to newly allocated buffer
                         control_type *control_full_or_sentinel = other.control_ptr_;
                         slot_type *slot_full_or_sentinel = other.slot_ptr_;
                         while (control_full_or_sentinel != other.control_ptr_sentinel())
@@ -1129,50 +1116,35 @@ namespace hud
                             control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
                             slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
                             control_full_or_sentinel = full_or_sentinel;
-                        }
-                    }
-                    else
-                    {
-                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
-                        if (other.count() > 0)
-                        {
-                            hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                         }
                     }
                 }
-                else
+                else // If we don't have enough memory
                 {
-                    destroy_all_slots();
-                    hud::memory::set_memory(control_ptr_, control_size_for_max_count(max_slot_count_), empty_byte);
-                    control_ptr_[max_slot_count_] = sentinel_byte;
+                    // Free the control and slot allocation
+                    free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
 
-                    // Copy controls
+                    // Copy the allocator if copy_when_container_copy_assigned is true
                     if constexpr (hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                     {
                         allocator_ = other.allocator_;
                     }
+                    // Copy the number of element
                     count_ = other.count_;
+                    // Copy the max number of element
+                    max_slot_count_ = compute_max_count(count_);
+                    // Compute the free slot count before growing
                     free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                    // Allocate the control and slot
+                    usize control_size {allocate_control_and_slot(max_slot_count_)};
 
-                    usize control_size {control_size_for_max_count(max_slot_count_)};
+                    // Set control to empty ending with sentinel
+                    hud::memory::set_memory(control_ptr_, control_size, empty_byte);
+                    control_ptr_[max_slot_count_] = sentinel_byte;
 
-                    // If constant evaluated context or when slot_type is not bitwise copy constructible
-                    // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
-                    // In a non constant evaluated context
-                    // If type is trivially copy constructible, just memcpy control and slot
-                    // else do like grow_capacity
-                    if (hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type>)
+                    // If we have elements to copy, copy them
+                    if (count_ > 0)
                     {
-
-                        // Set control to empty ending with sentinel
-                        hud::memory::set_memory(control_ptr_, control_size, empty_byte);
-                        control_ptr_[max_slot_count_] = sentinel_byte;
-
-                        // Nothing to copy, stop here
-                        if (other.count() == 0)
-                            return *this;
-
-                        // Copy slots to newly allocated buffer
                         control_type *control_full_or_sentinel = other.control_ptr_;
                         slot_type *slot_full_or_sentinel = other.slot_ptr_;
                         while (control_full_or_sentinel != other.control_ptr_sentinel())
@@ -1190,14 +1162,6 @@ namespace hud
                             control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
                             slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
                             control_full_or_sentinel = full_or_sentinel;
-                        }
-                    }
-                    else
-                    {
-                        hud::memory::copy_construct_array(control_ptr_, other.control_ptr_, control_size);
-                        if (other.count() > 0)
-                        {
-                            hud::memory::copy_construct_array(slot_ptr_, other.slot_ptr_, other.max_count());
                         }
                     }
                 }
@@ -1205,7 +1169,9 @@ namespace hud
             }
 
             /** Reserve memory for at least `count` element and regenerates the hash table. */
-            constexpr void reserve(usize count) noexcept
+            constexpr void
+            reserve(usize count) noexcept
+
             {
                 if (count > max_slot_count_)
                 {
