@@ -1096,28 +1096,6 @@ namespace hud
                     count_ = other.count_;
                     // Compute the free slot count before growing
                     free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
-
-                    if (count_ > 0)
-                    {
-                        control_type *control_full_or_sentinel = other.control_ptr_;
-                        slot_type *slot_full_or_sentinel = other.slot_ptr_;
-                        while (control_full_or_sentinel != other.control_ptr_sentinel())
-                        {
-                            // Compute the hash
-                            u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
-                            // Find H1 slot index
-                            u64 h1 {H1(hash)};
-                            usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                            // Save h2 in control h1 index
-                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                            // Copy slot
-                            hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_full_or_sentinel);
-
-                            control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
-                            slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
-                            control_full_or_sentinel = full_or_sentinel;
-                        }
-                    }
                 }
                 else // If we don't have enough memory
                 {
@@ -1141,30 +1119,31 @@ namespace hud
                     // Set control to empty ending with sentinel
                     hud::memory::set_memory(control_ptr_, control_size, empty_byte);
                     control_ptr_[max_slot_count_] = sentinel_byte;
+                }
 
-                    // If we have elements to copy, copy them
-                    if (count_ > 0)
+                // If we have elements to copy, copy them
+                if (count_ > 0)
+                {
+                    control_type *control_full_or_sentinel = other.control_ptr_;
+                    slot_type *slot_full_or_sentinel = other.slot_ptr_;
+                    while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
-                        control_type *control_full_or_sentinel = other.control_ptr_;
-                        slot_type *slot_full_or_sentinel = other.slot_ptr_;
-                        while (control_full_or_sentinel != other.control_ptr_sentinel())
-                        {
-                            // Compute the hash
-                            u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
-                            // Find H1 slot index
-                            u64 h1 {H1(hash)};
-                            usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                            // Save h2 in control h1 index
-                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                            // Copy slot
-                            hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_full_or_sentinel);
+                        // Compute the hash
+                        u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
+                        // Find H1 slot index
+                        u64 h1 {H1(hash)};
+                        usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                        // Save h2 in control h1 index
+                        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                        // Copy slot
+                        hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_full_or_sentinel);
 
-                            control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
-                            slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
-                            control_full_or_sentinel = full_or_sentinel;
-                        }
+                        control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
+                        slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
+                        control_full_or_sentinel = full_or_sentinel;
                     }
                 }
+
                 return *this;
             }
 
