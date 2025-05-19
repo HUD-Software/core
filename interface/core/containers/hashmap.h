@@ -303,6 +303,7 @@ namespace hud
         using typename super::allocator_type;
         using typename super::const_iterator;
         using typename super::iterator;
+        using super::operator=;
 
         /** Default constructor. */
         explicit constexpr hashmap() noexcept = default;

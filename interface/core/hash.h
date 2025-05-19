@@ -12,6 +12,12 @@
 
 namespace hud
 {
+    /** Combine two 32 bits value. */
+    [[nodiscard]] static constexpr u32 combine_32(u32 a, u32 b) noexcept
+    {
+        return hud::hash_algorithm::city_hash::combine_32(a, b);
+    }
+
     template<typename... type_t>
     struct hash_32;
 
@@ -101,6 +107,26 @@ namespace hud
         }
     };
 
+    /** Retrieves the 32 bits hash of a i128 value. */
+    template<>
+    struct hash_32<i128>
+    {
+        [[nodiscard]] constexpr u32 operator()(const i128 value) const
+        {
+            return hud::combine_32(hud::hash_32<u64> {}(value.low()), hud::hash_32<i64> {}(value.high()));
+        }
+    };
+
+    /** Retrieves the 32 bits hash of a u128 value. */
+    template<>
+    struct hash_32<u128>
+    {
+        [[nodiscard]] constexpr u32 operator()(const u128 value) const
+        {
+            return hud::combine_32(hud::hash_32<u64> {}(value.low()), hud::hash_32<u64> {}(value.high()));
+        }
+    };
+
     /** Retrieves the 32 bits hash of a f32 value. */
     template<>
     struct hash_32<f32>
@@ -177,10 +203,10 @@ namespace hud
         }
     };
 
-    /** Combine two 32 bits value. */
-    [[nodiscard]] static constexpr u32 combine_32(u32 a, u32 b) noexcept
+    /** Combine two 64 bits value. */
+    [[nodiscard]] static constexpr u64 combine_64(u64 a, u64 b) noexcept
     {
-        return hud::hash_algorithm::city_hash::combine_32(a, b);
+        return hud::hash_algorithm::city_hash::combine_64(a, b);
     }
 
     template<typename... type_t>
@@ -266,6 +292,26 @@ namespace hud
         }
     };
 
+    /** Retrieves the 64 bits hash of a i128 value. */
+    template<>
+    struct hash_64<i128>
+    {
+        [[nodiscard]] constexpr u64 operator()(const i128 value) const
+        {
+            return hud::combine_64(hud::hash_64<u64> {}(value.low()), hud::hash_64<i64> {}(value.high()));
+        }
+    };
+
+    /** Retrieves the 64 bits hash of a u128 value. */
+    template<>
+    struct hash_64<u128>
+    {
+        [[nodiscard]] constexpr u64 operator()(const u128 value) const
+        {
+            return hud::combine_64(hud::hash_64<u64> {}(value.low()), hud::hash_64<u64> {}(value.high()));
+        }
+    };
+
     /** Retrieves the 64 bits hash of a f32 value. */
     template<>
     struct hash_64<f32>
@@ -341,12 +387,6 @@ namespace hud
             }
         }
     };
-
-    /** Combine two 64 bits value. */
-    [[nodiscard]] static constexpr u64 combine_64(u64 a, u64 b) noexcept
-    {
-        return hud::hash_algorithm::city_hash::combine_64(a, b);
-    }
 
     /**
      * A 32 bit hasher class used for hashing an arbitrary stream of bytes
