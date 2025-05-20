@@ -220,7 +220,7 @@ namespace hud
          *
          * @tparam key_t The type of the key to be hashed.
          */
-        template<typename key_t> struct default_hasher
+        struct default_hasher
         {
             /**
              * Operator to hash the value and combine it with the current hasher value.
@@ -252,8 +252,7 @@ namespace hud
     } // namespace details::hashmap
 
     /** The default hasher for hash maps. */
-    template<typename key_t>
-    using hashmap_default_hasher = details::hashmap::default_hasher<key_t>;
+    using hashmap_default_hasher = details::hashmap::default_hasher;
 
     /** The default equality comparator for hash map keys. */
     template<typename key_t>
@@ -275,7 +274,7 @@ namespace hud
     template<
         typename key_t,
         typename value_t,
-        typename hasher_t = hashmap_default_hasher<key_t>,
+        typename hasher_t = hashmap_default_hasher,
         typename key_equal_t = hashmap_default_key_equal<key_t>,
         typename allocator_t = hashmap_default_allocator>
     class hashmap

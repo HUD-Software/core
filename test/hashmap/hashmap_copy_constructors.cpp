@@ -22,8 +22,8 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
     static_assert(hud::is_bitwise_copy_constructible_v<value_type>);
 
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
     static_assert(hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -539,8 +539,8 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
     using AllocatorType = hud_test::allocator_watcher<1>;
     using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
     static_assert(hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -1059,8 +1059,8 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
     static_assert(hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
 
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
     static_assert(hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -1579,8 +1579,8 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
     using AllocatorType = hud_test::allocator_watcher<1>;
     using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
     static_assert(hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -2094,8 +2094,8 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type>);
 
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
     static_assert(!hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -2614,8 +2614,8 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
     using AllocatorType = hud_test::allocator_watcher<1>;
     using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
     static_assert(!hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -3137,8 +3137,8 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
 
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
     static_assert(!hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -3661,8 +3661,8 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
     using AllocatorType = hud_test::allocator_watcher<1>;
     using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
     static_assert(!hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -4180,8 +4180,8 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type>);
 
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
     static_assert(!hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -4699,8 +4699,8 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
     using AllocatorType = hud_test::allocator_watcher<1>;
     using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+    using NewType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
     static_assert(!hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -5222,8 +5222,8 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
 
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
     static_assert(!hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra
@@ -5631,8 +5631,8 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
     using AllocatorType = hud_test::allocator_watcher<1>;
     using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+    using NewType = hud::hashmap<other_key_type, other_value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using CopiedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
     static_assert(!hud::is_bitwise_copy_constructible_v<CopiedType::storage_type>);
 
     // No extra

@@ -63,6 +63,12 @@ GTEST_TEST(hash_64, hash_of_integral_are_usable_in_constexpr)
 
     constexpr u64 hash_vu64 = hud::hash_64<u64> {}(hud::u64_max);
     hud_assert_eq(hash_vu64, 0xFFFFFFFFFFFFFFFFu);
+
+    constexpr u64 hash_vi128 = hud::hash_64<i128> {}(hud::i128_max);
+    hud_assert_eq(hash_vi128, 0x510838700A97C2E1);
+
+    constexpr u64 hash_vu128 = hud::hash_64<u128> {}(hud::u128_max);
+    hud_assert_eq(hash_vu128, 0xE286FB3AE0B4292F);
 }
 
 GTEST_TEST(hash_64, hash_can_hash_floating_point)

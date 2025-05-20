@@ -3,7 +3,7 @@
 
 GTEST_TEST(hashmap, default_constructor_should_allocate_no_memory)
 {
-    hud::hashmap<i32, i64, hud::hashmap_default_hasher<i32>, hud::hashmap_default_key_equal<i32>, hud_test::allocator_watcher<1>> map;
+    hud::hashmap<i32, i64, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<i32>, hud_test::allocator_watcher<1>> map;
     hud_assert_eq(map.count(), 0u);
     hud_assert_eq(map.max_count(), 0u);
     hud_assert_eq(map.allocator().allocation_count(), 0u);
@@ -24,7 +24,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -94,7 +94,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -176,7 +176,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -246,7 +246,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -326,7 +326,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -426,7 +426,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -537,7 +537,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -637,7 +637,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -747,7 +747,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -853,7 +853,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -970,7 +970,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
@@ -1076,7 +1076,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
     {
         auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
         {
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
+            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);

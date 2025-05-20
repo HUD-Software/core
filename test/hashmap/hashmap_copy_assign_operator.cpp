@@ -34,8 +34,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_assignable_same_type_sam
         const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign)
         {
             using AllocatorType = hud_test::allocator_watcher<1>;
-            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned);
             ToAssignType to_assign(elements_to_assign);
 
@@ -210,8 +210,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_assignable_same_type_sam
         const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign)
         {
             using AllocatorType = hud_test::allocator_watcher<1>;
-            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned, extra_assigned);
             ToAssignType to_assign(elements_to_assign, extra_to_assign);
 
@@ -694,8 +694,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_assignable_same_type_dif
         {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
             AssignedType assigned(elements_in_assigned);
             ToAssignType to_assign(elements_to_assign);
 
@@ -868,8 +868,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_assignable_same_type_dif
         {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
             AssignedType assigned(elements_in_assigned, extra_assigned);
             ToAssignType to_assign(elements_to_assign, extra_to_assign);
 
@@ -1352,8 +1352,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_assignable_different_typ
         {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-            using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hashmap_default_hasher<key_type_2>, hud::hashmap_default_key_equal<key_type_2>, AllocatorType2>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type_2>, AllocatorType2>;
             AssignedType assigned(elements_in_assigned);
             ToAssignType to_assign(elements_to_assign);
 
@@ -1525,8 +1525,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_assignable_different_typ
         {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
-            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher<key_type>, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
-            using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hashmap_default_hasher<key_type_2>, hud::hashmap_default_key_equal<key_type_2>, AllocatorType2>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type_2>, AllocatorType2>;
             AssignedType assigned(elements_in_assigned, extra_assigned);
             ToAssignType to_assign(elements_to_assign, extra_to_assign);
 
