@@ -1340,17 +1340,17 @@ namespace hud
                 // If we have elements to copy, copy them
                 if (count_ > 0)
                 {
-                    // auto compute_hash = [](const auto *slot) noexcept
-                    // {
-                    //     if constexpr (hud::is_same_v<key_type, typename u_storage_t::key_type>)
-                    //     {
-                    //         return hasher_type {}(slot->key());
-                    //     }
-                    //     else
-                    //     {
-                    //         return hasher_type {}(slot->key());
-                    //     }
-                    // };
+                    auto compute_hash = [](const auto *slot) noexcept
+                    {
+                        if constexpr (hud::is_same_v<key_type, typename u_storage_t::key_type>)
+                        {
+                            return hasher_type {}(slot->key());
+                        }
+                        else
+                        {
+                            return hasher_type {}(static_cast<key_type>(slot->key()));
+                        }
+                    };
 
                     // if constexpr (hud::is_same_v<key_type, typename u_storage_t::key_type>)
                     // {
@@ -1359,7 +1359,7 @@ namespace hud
                     while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
 
-                        u64 hash {hasher_type {}(static_cast<const key_type &>(slot_full_or_sentinel->key()))};
+                        u64 hash {compute_hash(slot_full_or_sentinel)};
                         // Find H1 slot index
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
