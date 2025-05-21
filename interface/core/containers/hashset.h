@@ -36,13 +36,13 @@ namespace hud
              * Constructs the slot by perfectly forwarding arguments to the base storage type constructor.
              * Enabled only if storage_type is constructible with the given arguments.
              *
-             * @tparam type_t Variadic types forwarded to storage_type.
+             * @tparam types_t Variadic types forwarded to storage_type.
              * @param values Arguments to forward to storage_type's constructor.
              */
-            template<typename... type_t>
-            requires(hud::is_constructible_v<storage_type, type_t...>)
-            constexpr explicit slot(type_t &&...values) noexcept
-                : storage_type(hud::forward<type_t>(values)...)
+            template<typename... types_t>
+            requires(hud::is_constructible_v<storage_type, types_t...>)
+            constexpr explicit slot(types_t &&...values) noexcept
+                : storage_type(hud::forward<types_t>(values)...)
             {
             }
 
