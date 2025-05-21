@@ -136,6 +136,15 @@ namespace hud_test
         {
         }
 
+        /**
+         * Construct with a given id
+         * @param id The id of the non_bitwise_copy_constructible_type3
+         */
+        constexpr non_bitwise_copy_constructible_type3(i32 id) noexcept
+            : non_bitwise_copy_constructible_type2(id)
+        {
+        }
+
         constexpr non_bitwise_copy_constructible_type3(i32 *increment_ptr) noexcept
             : non_bitwise_copy_constructible_type2()
             , increment(increment_ptr)
@@ -173,6 +182,15 @@ namespace hud_test
          * Set the incrementation pointer to nullptr
          */
         constexpr non_bitwise_copy_constructible_type4() noexcept = default;
+
+        /**
+         * Construct with a given id
+         * @param id The id of the non_bitwise_copy_constructible_type4
+         */
+        constexpr non_bitwise_copy_constructible_type4(i32 id) noexcept
+            : non_bitwise_copy_constructible_type3(id)
+        {
+        }
 
         constexpr non_bitwise_copy_constructible_type4(i32 *increment_ptr) noexcept
             : non_bitwise_copy_constructible_type3(increment_ptr)
@@ -255,6 +273,42 @@ namespace hud
     struct hash_64<hud_test::non_bitwise_copy_constructible_type2>
     {
         [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_copy_constructible_type2 &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_32<hud_test::non_bitwise_copy_constructible_type3>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_copy_constructible_type3 &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_copy_constructible_type3>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_copy_constructible_type3 &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_32<hud_test::non_bitwise_copy_constructible_type4>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_copy_constructible_type4 &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_copy_constructible_type4>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_copy_constructible_type4 &custom) const
         {
             return hud::hash_64<i32> {}(custom.id());
         }
