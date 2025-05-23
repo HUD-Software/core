@@ -5379,61 +5379,29 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
         const auto test = [](const usize count_in_assigned, const usize count_to_assigned)
         {
             i32 *dtor_assigned_key_counter = nullptr;
-            i32 **dtor_assigned_key_ptr_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
-            i32 **dtor_assigned_value_ptr_counter = nullptr;
 
             if (count_in_assigned > 0)
             {
                 dtor_assigned_key_counter = hud::memory::allocate_array<i32>(count_in_assigned);
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
-                dtor_assigned_key_ptr_counter = hud::memory::allocate_array<i32 *>(count_in_assigned);
-                hud::memory::set_memory_zero_safe(dtor_assigned_key_ptr_counter, count_in_assigned * sizeof(i32 *));
-                for (usize index = 0; index < count_in_assigned; index++)
-                {
-                    dtor_assigned_key_ptr_counter[index] = dtor_assigned_key_counter + index;
-                }
                 dtor_assigned_value_counter = hud::memory::allocate_array<i32>(count_in_assigned);
                 hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
-                dtor_assigned_value_ptr_counter = hud::memory::allocate_array<i32 *>(count_in_assigned);
-                hud::memory::set_memory_zero_safe(dtor_assigned_value_ptr_counter, count_in_assigned * sizeof(i32 *));
-                for (usize index = 0; index < count_in_assigned; index++)
-                {
-                    dtor_assigned_value_ptr_counter[index] = dtor_assigned_value_counter + index;
-                }
             }
             hud_test::LeakArrayGuard guard_assigned_key_counter(dtor_assigned_key_counter, count_in_assigned);
-            hud_test::LeakArrayGuard guard_assigned_key_ptr_counter(dtor_assigned_key_ptr_counter, count_in_assigned);
             hud_test::LeakArrayGuard guard_assigned_value_counter(dtor_assigned_value_counter, count_in_assigned);
-            hud_test::LeakArrayGuard guard_assigned_value_ptr_counter(dtor_assigned_value_ptr_counter, count_in_assigned);
 
             i32 *dtor_to_assigned_key_counter = nullptr;
-            i32 **dtor_to_assigned_key_ptr_counter = nullptr;
             i32 *dtor_to_assigned_value_counter = nullptr;
-            i32 **dtor_to_assigned_value_ptr_counter = nullptr;
             if (count_to_assigned > 0)
             {
                 dtor_to_assigned_key_counter = hud::memory::allocate_array<i32>(count_to_assigned);
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
-                dtor_to_assigned_key_ptr_counter = hud::memory::allocate_array<i32 *>(count_to_assigned);
-                hud::memory::set_memory_zero_safe(dtor_to_assigned_key_ptr_counter, count_to_assigned * sizeof(i32 *));
-                for (usize index = 0; index < count_to_assigned; index++)
-                {
-                    dtor_to_assigned_key_ptr_counter[index] = dtor_to_assigned_key_counter + index;
-                }
                 dtor_to_assigned_value_counter = hud::memory::allocate_array<i32>(count_to_assigned);
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
-                dtor_to_assigned_value_ptr_counter = hud::memory::allocate_array<i32 *>(count_to_assigned);
-                hud::memory::set_memory_zero_safe(dtor_to_assigned_value_ptr_counter, count_to_assigned * sizeof(i32 *));
-                for (usize index = 0; index < count_to_assigned; index++)
-                {
-                    dtor_to_assigned_value_ptr_counter[index] = dtor_to_assigned_value_counter + index;
-                }
             }
             hud_test::LeakArrayGuard guard_to_assigned_key_counter(dtor_to_assigned_key_counter, count_to_assigned);
-            hud_test::LeakArrayGuard guard_to_assigned_key_ptr_counter(dtor_to_assigned_key_ptr_counter, count_to_assigned);
             hud_test::LeakArrayGuard guard_to_assigned_value_counter(dtor_to_assigned_value_counter, count_to_assigned);
-            hud_test::LeakArrayGuard guard_to_assigned_value_ptr_counter(dtor_to_assigned_value_ptr_counter, count_to_assigned);
 
             using AllocatorType = hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
@@ -5493,7 +5461,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
             u32 expected_allocation_count = 0;
             bool in_assign_allocate = count_in_assigned > 0;
             bool assigned_should_grow = count_in_assigned < count_to_assigned;
-            if (count_in_assigned)
+            if (in_assign_allocate)
             {
                 expected_allocation_count++;
             }
@@ -5676,471 +5644,1691 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
     }
 
     // Test with extra
-    // {
-    //     const auto test = [](const usize count_in_assigned, const usize extra_in_assigned, const usize count_to_assign, const usize extra_to_assign)
-    //     {
-    //         i32 *dtor_assigned_counter = nullptr;
-    //         i32 **dtor_assigned_ptr_counter = nullptr;
+    {
+        const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned)
+        {
+            i32 *dtor_assigned_key_counter = nullptr;
+            i32 *dtor_assigned_value_counter = nullptr;
 
-    // if (count_in_assigned > 0)
-    // {
-    //     dtor_assigned_counter = hud::memory::allocate_array<i32>(count_in_assigned);
-    //     hud::memory::set_memory_zero_safe(dtor_assigned_counter, count_in_assigned * sizeof(i32));
-    //     dtor_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_in_assigned);
-    //     hud::memory::set_memory_zero_safe(dtor_assigned_ptr_counter, count_in_assigned * sizeof(i32 *));
-    //     for (usize index = 0; index < count_in_assigned; index++)
-    //     {
-    //         dtor_assigned_ptr_counter[index] = dtor_assigned_counter + index;
-    //     }
-    // }
-    // hud_test::LeakArrayGuard guard_assigned_counter(dtor_assigned_counter, count_in_assigned);
-    // hud_test::LeakArrayGuard guard_assigned_ptr_counter(dtor_assigned_ptr_counter, count_in_assigned);
+            if (count_in_assigned > 0)
+            {
+                dtor_assigned_key_counter = hud::memory::allocate_array<i32>(count_in_assigned);
+                hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+                dtor_assigned_value_counter = hud::memory::allocate_array<i32>(count_in_assigned);
+                hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            }
+            hud_test::LeakArrayGuard guard_assigned_key_counter(dtor_assigned_key_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_value_counter(dtor_assigned_value_counter, count_in_assigned);
 
-    // i32 *dtor_to_assigned_counter = nullptr;
-    // i32 **dtor_to_assigned_ptr_counter = nullptr;
+            i32 *dtor_to_assigned_key_counter = nullptr;
+            i32 *dtor_to_assigned_value_counter = nullptr;
+            if (count_to_assigned > 0)
+            {
+                dtor_to_assigned_key_counter = hud::memory::allocate_array<i32>(count_to_assigned);
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+                dtor_to_assigned_value_counter = hud::memory::allocate_array<i32>(count_to_assigned);
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            }
+            hud_test::LeakArrayGuard guard_to_assigned_key_counter(dtor_to_assigned_key_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_value_counter(dtor_to_assigned_value_counter, count_to_assigned);
 
-    // if (count_to_assign > 0)
-    // {
-    //     dtor_to_assigned_counter = hud::memory::allocate_array<i32>(count_to_assign);
-    //     hud::memory::set_memory_zero_safe(dtor_to_assigned_counter, count_to_assign * sizeof(i32));
-    //     dtor_to_assigned_ptr_counter = hud::memory::allocate_array<i32 *>(count_to_assign);
-    //     hud::memory::set_memory_zero_safe(dtor_to_assigned_ptr_counter, count_to_assign * sizeof(i32 *));
-    //     for (usize index = 0; index < count_to_assign; index++)
-    //     {
-    //         dtor_to_assigned_ptr_counter[index] = dtor_to_assigned_counter + index;
-    //     }
-    // }
-    // hud_test::LeakArrayGuard guard_to_assigned_counter(dtor_to_assigned_counter, count_to_assign);
-    // hud_test::LeakArrayGuard guard_to_assigned_ptr_counter(dtor_to_assigned_ptr_counter, count_to_assign);
+            using AllocatorType = hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            AssignedType assigned;
+            assigned.reserve(count_in_assigned + extra_in_assigned);
+            for (i32 i = 0; i < count_in_assigned; i++)
+            {
+                assigned.add({i, dtor_assigned_key_counter + i}, {i, dtor_assigned_value_counter + i});
+            }
 
-    // hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(dtor_assigned_ptr_counter, count_in_assigned, extra_in_assigned);
-    // hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assigned(dtor_to_assigned_ptr_counter, count_to_assign, extra_to_assign);
+            ToAssignType to_assign;
+            to_assign.reserve(count_to_assigned + extra_to_assigned);
+            for (i32 i = 0; i < count_to_assigned; i++)
+            {
+                to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
+            }
+            // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
+            hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
 
-    // assigned = to_assigned;
+            assigned = to_assign;
 
-    // // LCOV_EXCL_START
-    // bool all_destructors_are_called = true;
-    // if (count_to_assign > count_in_assigned + extra_in_assigned)
-    // {
-    //     // If reallocation is done, all in assigned should be destroyed
-    //     for (usize index = 0; index < count_in_assigned; index++)
-    //     {
-    //         if (dtor_assigned_counter[index] != 1u)
-    //         {
-    //             all_destructors_are_called = false;
-    //             break;
-    //         }
-    //     }
-    // }
-    // else if (count_to_assign < count_in_assigned)
-    // {
-    //     // Only element that are after count_to_assigned should be destroyed
-    //     for (usize index = 0; index < count_in_assigned; index++)
-    //     {
-    //         // We should not destroy element already present( They are assigned )
-    //         if (index < count_to_assign)
-    //         {
-    //             if (dtor_assigned_counter[index] != 0u)
-    //             {
-    //                 all_destructors_are_called = false;
-    //                 break;
-    //             }
-    //         }
-    //         else
-    //         { // We should destroy element that are after count_to_assigned
-    //             if (dtor_assigned_counter[index] != 1u)
-    //             {
-    //                 all_destructors_are_called = false;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
-    // else
-    // { // count_to_assigned == count_in_assigned
-    //     // If we assigned same count of elements, none should be destroyed
-    //     for (usize index = 0; index < count_in_assigned; index++)
-    //     {
-    //         if (dtor_assigned_counter[index] != 0u)
-    //         {
-    //             all_destructors_are_called = false;
-    //             break;
-    //         }
-    //     }
-    // }
+            // Ensure we destroy all elements that is in assigned
+            bool all_destructors_are_called = true;
+            for (usize index = 0; index < count_in_assigned; index++)
+            {
+                if (dtor_assigned_key_counter[index] != 1u)
+                {
+                    all_destructors_are_called = false;
+                    break;
+                }
+                if (dtor_assigned_value_counter[index] != 1u)
+                {
+                    all_destructors_are_called = false;
+                    break;
+                }
+            }
 
-    // // Ensure non of newly assigned are destroyed
-    // bool assigned_are_not_destroyed = true;
-    // for (usize index = 0; index < count_to_assign; index++)
-    // {
-    //     if (dtor_to_assigned_counter[index] != 0u)
-    //     {
-    //         assigned_are_not_destroyed = false;
-    //         break;
-    //     }
-    // }
-    // // LCOV_EXCL_STOP
+            // Ensure we don't destroy elements in to_assign
+            bool to_assign_destructors_are_not_called = true;
+            for (usize index = 0; index < count_to_assigned; index++)
+            {
+                if (dtor_to_assigned_key_counter[index] != 0u)
+                {
+                    to_assign_destructors_are_not_called = false;
+                    break;
+                }
+                if (dtor_to_assigned_value_counter[index] != 0u)
+                {
+                    to_assign_destructors_are_not_called = false;
+                    break;
+                }
+            }
+            u32 expected_allocation_count = 0;
+            bool in_assign_allocate = count_in_assigned > 0 || extra_in_assigned > 0;
+            bool assigned_should_grow = count_in_assigned + extra_in_assigned < count_to_assigned;
+            if (in_assign_allocate)
+            {
+                expected_allocation_count++;
+            }
+            if (assigned_should_grow)
+            {
+                expected_allocation_count++;
+            }
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_allocation_count *= 2;
+            }
 
-    // return std::tuple {
-    //     all_destructors_are_called,
-    //     assigned_are_not_destroyed,
-    //     assigned.allocator().allocation_count(),
-    //     assigned.allocator().free_count()
-    // };
-    // };
+            u32 expected_free_count = 0;
+            if (in_assign_allocate && assigned_should_grow)
+            {
+                expected_free_count++;
+            }
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_free_count *= 2;
+            }
 
-    // // Non constant
-    // {
-    //     {
-    //         const auto result = test(0, 0u, 0, 0u);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_eq(std::get<2>(result), 0u);
-    //         hud_assert_eq(std::get<3>(result), 0u);
-    //     }
-    //     {
-    //         const auto result = test(0, 1u, 0, 0u);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_eq(std::get<2>(result), 1u);
-    //         hud_assert_eq(std::get<3>(result), 0u);
-    //     }
-    //     {
-    //         const auto result = test(0, 0u, 0, 1u);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_eq(std::get<2>(result), 0u);
-    //         hud_assert_eq(std::get<3>(result), 0u);
-    //     }
-    //     {
-    //         const auto result = test(0, 1u, 0, 1u);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_eq(std::get<2>(result), 1u);
-    //         hud_assert_eq(std::get<3>(result), 0u);
-    //     }
+            return std::tuple {
+                all_destructors_are_called,                                           // 0
+                to_assign_destructors_are_not_called,                                 // 1
+                assigned.allocator().allocation_count() == expected_allocation_count, // 2
+                assigned.allocator().free_count() == expected_free_count              // 3
+            };
+        };
 
-    // {
-    //     const auto result = test(2, 0u, 0, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(2, 1u, 0, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(2, 0u, 0, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(2, 1u, 0, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
+        // Non constant
+        {
+            {
+                const auto result = test(0, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     const auto result = test(0, 0u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(0, 1u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 2u);
-    //     hud_assert_eq(std::get<3>(result), 1u);
-    // }
-    // {
-    //     const auto result = test(0, 0u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(0, 1u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 2u);
-    //     hud_assert_eq(std::get<3>(result), 1u);
-    // }
+            {
+                const auto result = test(1, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     const auto result = test(2, 0u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(2, 1u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(2, 0u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(2, 1u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
+            {
+                const auto result = test(0, 0, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 0, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     const auto result = test(3, 0u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(3, 1u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(3, 0u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(3, 1u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
+            {
+                const auto result = test(1, 0, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 0, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 10, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 10, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     const auto result = test(2, 0u, 3, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 2u);
-    //     hud_assert_eq(std::get<3>(result), 1u);
-    // }
-    // {
-    //     const auto result = test(2, 1u, 3, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     const auto result = test(2, 0u, 3, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 2u);
-    //     hud_assert_eq(std::get<3>(result), 1u);
-    // }
-    // {
-    //     const auto result = test(2, 1u, 3, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // }
+            {
+                const auto result = test(0, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // // Constant
-    // {
-    //     {
-    //         constexpr auto result = test(0, 0u, 0, 0u);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_eq(std::get<2>(result), 0u);
-    //         hud_assert_eq(std::get<3>(result), 0u);
-    //     }
-    //     {
-    //         constexpr auto result = test(0, 1u, 0, 0u);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_eq(std::get<2>(result), 1u);
-    //         hud_assert_eq(std::get<3>(result), 0u);
-    //     }
-    //     {
-    //         constexpr auto result = test(0, 0u, 0, 1u);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_eq(std::get<2>(result), 0u);
-    //         hud_assert_eq(std::get<3>(result), 0u);
-    //     }
-    //     {
-    //         constexpr auto result = test(0, 1u, 0, 1u);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_eq(std::get<2>(result), 1u);
-    //         hud_assert_eq(std::get<3>(result), 0u);
-    //     }
+            {
+                const auto result = test(0, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     constexpr auto result = test(2, 0u, 0, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 1u, 0, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 0u, 0, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 1u, 0, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
+            {
+                const auto result = test(16, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     constexpr auto result = test(0, 0u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(0, 1u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 2u);
-    //     hud_assert_eq(std::get<3>(result), 1u);
-    // }
-    // {
-    //     constexpr auto result = test(0, 0u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(0, 1u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 2u);
-    //     hud_assert_eq(std::get<3>(result), 1u);
-    // }
+            {
+                const auto result = test(0, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     constexpr auto result = test(2, 0u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 1u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 0u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 1u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
+            {
+                const auto result = test(16, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     constexpr auto result = test(3, 0u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(3, 1u, 2, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(3, 0u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(3, 1u, 2, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
+            {
+                const auto result = test(16, 0, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 0, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
 
-    // {
-    //     constexpr auto result = test(2, 0u, 3, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 2u);
-    //     hud_assert_eq(std::get<3>(result), 1u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 1u, 3, 0u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 0u, 3, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 2u);
-    //     hud_assert_eq(std::get<3>(result), 1u);
-    // }
-    // {
-    //     constexpr auto result = test(2, 1u, 3, 1u);
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_eq(std::get<2>(result), 1u);
-    //     hud_assert_eq(std::get<3>(result), 0u);
-    // }
-    // }
-    // }
+            {
+                const auto result = test(10, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(10, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(10, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(10, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+        }
+
+        // Constant
+        {
+            {
+                constexpr auto result = test(0, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(1, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(0, 0, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 0, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(1, 0, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 0, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 10, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 10, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(0, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(0, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(16, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(0, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(16, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(16, 0, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 0, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(10, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(10, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(10, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(10, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+        }
+    }
+}
+
+GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_elements)
+{
+    using key_type = hud_test::SetBoolToTrueWhenDestroyed;
+    using value_type = hud_test::SetBoolToTrueWhenDestroyed;
+
+    // Test without extra
+    {
+        const auto test = [](const usize count_in_assigned, const usize count_to_assigned)
+        {
+            i32 *dtor_assigned_key_counter = nullptr;
+            i32 *dtor_assigned_value_counter = nullptr;
+
+            if (count_in_assigned > 0)
+            {
+                dtor_assigned_key_counter = hud::memory::allocate_array<i32>(count_in_assigned);
+                hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+                dtor_assigned_value_counter = hud::memory::allocate_array<i32>(count_in_assigned);
+                hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            }
+            hud_test::LeakArrayGuard guard_assigned_key_counter(dtor_assigned_key_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_value_counter(dtor_assigned_value_counter, count_in_assigned);
+
+            i32 *dtor_to_assigned_key_counter = nullptr;
+            i32 *dtor_to_assigned_value_counter = nullptr;
+            if (count_to_assigned > 0)
+            {
+                dtor_to_assigned_key_counter = hud::memory::allocate_array<i32>(count_to_assigned);
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+                dtor_to_assigned_value_counter = hud::memory::allocate_array<i32>(count_to_assigned);
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            }
+            hud_test::LeakArrayGuard guard_to_assigned_key_counter(dtor_to_assigned_key_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_value_counter(dtor_to_assigned_value_counter, count_to_assigned);
+
+            using AllocatorType = hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>;
+            using AllocatorType2 = hud_test::allocator_watcher_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+            AssignedType assigned;
+            assigned.reserve(count_in_assigned);
+            for (i32 i = 0; i < count_in_assigned; i++)
+            {
+                assigned.add({i, dtor_assigned_key_counter + i}, {i, dtor_assigned_value_counter + i});
+            }
+
+            ToAssignType to_assign;
+            to_assign.reserve(count_to_assigned);
+            for (i32 i = 0; i < count_to_assigned; i++)
+            {
+                to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
+            }
+            // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
+            hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+
+            assigned = to_assign;
+
+            // Ensure we destroy all elements that is in assigned
+            bool all_destructors_are_called = true;
+            for (usize index = 0; index < count_in_assigned; index++)
+            {
+                if (dtor_assigned_key_counter[index] != 1u)
+                {
+                    all_destructors_are_called = false;
+                    break;
+                }
+                if (dtor_assigned_value_counter[index] != 1u)
+                {
+                    all_destructors_are_called = false;
+                    break;
+                }
+            }
+
+            // Ensure we don't destroy elements in to_assign
+            bool to_assign_destructors_are_not_called = true;
+            for (usize index = 0; index < count_to_assigned; index++)
+            {
+                if (dtor_to_assigned_key_counter[index] != 0u)
+                {
+                    to_assign_destructors_are_not_called = false;
+                    break;
+                }
+                if (dtor_to_assigned_value_counter[index] != 0u)
+                {
+                    to_assign_destructors_are_not_called = false;
+                    break;
+                }
+            }
+
+            u32 expected_allocation_count = 0;
+            bool to_assign_allocate = count_to_assigned > 0;
+            bool assigned_should_grow = count_in_assigned < count_to_assigned;
+            if (to_assign_allocate)
+            {
+                expected_allocation_count++;
+            }
+            if (assigned_should_grow)
+            {
+                expected_allocation_count++;
+            }
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_allocation_count *= 2;
+            }
+
+            u32 expected_free_count = 0;
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_free_count *= 2;
+            }
+
+            return std::tuple {
+                all_destructors_are_called,                                           // 0
+                to_assign_destructors_are_not_called,                                 // 1
+                assigned.allocator().allocation_count() == expected_allocation_count, // 2
+                assigned.allocator().free_count() == expected_free_count              // 3
+            };
+        };
+
+        // Non constant
+        {
+            {
+                const auto result = test(0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 16);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 16);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 16);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(10, 16);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+        }
+
+        // Constant
+        {
+            {
+                constexpr auto result = test(0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 16);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 16);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 16);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(10, 16);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+        }
+    }
+
+    // Test with extra
+    {
+        const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned)
+        {
+            i32 *dtor_assigned_key_counter = nullptr;
+            i32 *dtor_assigned_value_counter = nullptr;
+
+            if (count_in_assigned > 0)
+            {
+                dtor_assigned_key_counter = hud::memory::allocate_array<i32>(count_in_assigned);
+                hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+                dtor_assigned_value_counter = hud::memory::allocate_array<i32>(count_in_assigned);
+                hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            }
+            hud_test::LeakArrayGuard guard_assigned_key_counter(dtor_assigned_key_counter, count_in_assigned);
+            hud_test::LeakArrayGuard guard_assigned_value_counter(dtor_assigned_value_counter, count_in_assigned);
+
+            i32 *dtor_to_assigned_key_counter = nullptr;
+            i32 *dtor_to_assigned_value_counter = nullptr;
+            if (count_to_assigned > 0)
+            {
+                dtor_to_assigned_key_counter = hud::memory::allocate_array<i32>(count_to_assigned);
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+                dtor_to_assigned_value_counter = hud::memory::allocate_array<i32>(count_to_assigned);
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            }
+            hud_test::LeakArrayGuard guard_to_assigned_key_counter(dtor_to_assigned_key_counter, count_to_assigned);
+            hud_test::LeakArrayGuard guard_to_assigned_value_counter(dtor_to_assigned_value_counter, count_to_assigned);
+
+            using AllocatorType = hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>;
+            using AllocatorType2 = hud_test::allocator_watcher_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            using ToAssignType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType2>;
+            AssignedType assigned;
+            assigned.reserve(count_in_assigned + extra_in_assigned);
+            for (i32 i = 0; i < count_in_assigned; i++)
+            {
+                assigned.add({i, dtor_assigned_key_counter + i}, {i, dtor_assigned_value_counter + i});
+            }
+
+            ToAssignType to_assign;
+            to_assign.reserve(count_to_assigned + extra_to_assigned);
+            for (i32 i = 0; i < count_to_assigned; i++)
+            {
+                to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
+            }
+            // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
+            hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+            hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+
+            assigned = to_assign;
+
+            // Ensure we destroy all elements that is in assigned
+            bool all_destructors_are_called = true;
+            for (usize index = 0; index < count_in_assigned; index++)
+            {
+                if (dtor_assigned_key_counter[index] != 1u)
+                {
+                    all_destructors_are_called = false;
+                    break;
+                }
+                if (dtor_assigned_value_counter[index] != 1u)
+                {
+                    all_destructors_are_called = false;
+                    break;
+                }
+            }
+
+            // Ensure we don't destroy elements in to_assign
+            bool to_assign_destructors_are_not_called = true;
+            for (usize index = 0; index < count_to_assigned; index++)
+            {
+                if (dtor_to_assigned_key_counter[index] != 0u)
+                {
+                    to_assign_destructors_are_not_called = false;
+                    break;
+                }
+                if (dtor_to_assigned_value_counter[index] != 0u)
+                {
+                    to_assign_destructors_are_not_called = false;
+                    break;
+                }
+            }
+
+            // Allocation count
+            u32 expected_allocation_count = 0;
+            bool to_assign_allocate = count_to_assigned > 0 || extra_to_assigned > 0;
+            bool assigned_should_grow = (count_in_assigned + extra_in_assigned) < count_to_assigned;
+            if (to_assign_allocate)
+            {
+                expected_allocation_count++;
+            }
+            if (assigned_should_grow)
+            {
+                expected_allocation_count++;
+            }
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_allocation_count *= 2;
+            }
+            u32 expected_free_count = 0;
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_free_count *= 2;
+            }
+
+            return std::tuple {
+                all_destructors_are_called,                                           // 0
+                to_assign_destructors_are_not_called,                                 // 1
+                assigned.allocator().allocation_count() == expected_allocation_count, // 2
+                assigned.allocator().free_count() == expected_free_count              // 3
+            };
+        };
+
+        // Non constant
+        {
+            {
+                const auto result = test(0, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(1, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(0, 0, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 0, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(1, 0, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 0, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 10, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(1, 10, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(0, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(0, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(16, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(0, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(0, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(16, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(16, 0, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 0, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(16, 10, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                const auto result = test(10, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(10, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(10, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = test(10, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+        }
+
+        // Constant
+        {
+            {
+                constexpr auto result = test(0, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(1, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(0, 0, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 0, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(1, 0, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 0, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 10, 1, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(1, 10, 1, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(0, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(0, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(16, 0, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 0, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 0, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 0, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(0, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(0, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(16, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(16, 0, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 0, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(16, 10, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+
+            {
+                constexpr auto result = test(10, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(10, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(10, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                constexpr auto result = test(10, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+        }
+    }
 }
