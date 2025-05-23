@@ -14,7 +14,7 @@ namespace hud
 
     /** Equivalent of is_enum<type_t>::value. */
     template<typename type_t>
-    constexpr bool is_enum_v = is_enum<type_t>::value;
+    inline constexpr bool is_enum_v = is_enum<type_t>::value;
 
 } // namespace hud
 

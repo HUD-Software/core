@@ -20,7 +20,7 @@ namespace hud
 
     /** Equivalent of is_lvalue_reference<type_t>::value. */
     template<typename type_t>
-    constexpr bool is_lvalue_reference_v = is_lvalue_reference<type_t>::value;
+    inline constexpr bool is_lvalue_reference_v = is_lvalue_reference<type_t>::value;
 
 } // namespace hud
 

@@ -16,7 +16,7 @@ namespace hud
 
     /** Equivalent of is_nullptr<type_t>::value. */
     template<typename type_t>
-    constexpr bool is_nullptr_v = is_nullptr<type_t>::value;
+    inline constexpr bool is_nullptr_v = is_nullptr<type_t>::value;
 
 } // namespace hud
 

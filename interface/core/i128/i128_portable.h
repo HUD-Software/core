@@ -1223,11 +1223,11 @@ namespace hud
 
     } // namespace details::i128
 
-    // static constexpr details::i128::i128_impl i128_max = details::i128::i128_impl {i64_max, u64_max};
-    // static constexpr details::i128::i128_impl i128_min = details::i128::i128_impl {i64_min, 0u};
+    // static inline constexpr details::i128::i128_impl i128_max = details::i128::i128_impl {i64_max, u64_max};
+    // static inline constexpr details::i128::i128_impl i128_min = details::i128::i128_impl {i64_min, 0u};
 
-    // static constexpr details::i128::u128_impl u128_max = details::i128::u128_impl {u64_max, u64_max};
-    // static constexpr details::i128::u128_impl u128_min = details::i128::u128_impl {u64_min, 0u};
+    // static inline constexpr details::i128::u128_impl u128_max = details::i128::u128_impl {u64_max, u64_max};
+    // static inline constexpr details::i128::u128_impl u128_min = details::i128::u128_impl {u64_min, 0u};
 
     // template<> struct limits<details::i128::i128_impl>
     // {

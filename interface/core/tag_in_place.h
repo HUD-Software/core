@@ -11,7 +11,7 @@ namespace hud
     };
 
     /** Constant used to indicate to construct an object in-place. */
-    constexpr tag_in_place in_place {};
+    inline constexpr tag_in_place in_place {};
 } // namespace hud
 
 #endif // HD_INC_CORE_INPLACE_H

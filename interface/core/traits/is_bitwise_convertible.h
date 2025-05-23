@@ -32,7 +32,7 @@ namespace hud
 
     /** Equivalent of is_bitwise_convertible<type_t, u_type_t>::value. */
     template<typename type_t, typename u_type_t>
-    constexpr bool is_bitwise_convertible_v = is_bitwise_convertible<type_t, u_type_t>::value;
+    inline constexpr bool is_bitwise_convertible_v = is_bitwise_convertible<type_t, u_type_t>::value;
 
 } // namespace hud
 

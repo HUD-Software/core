@@ -29,7 +29,7 @@ namespace hud_test
     };
 
     template<typename... type_t>
-    constexpr bool has_common_type_v = has_common_type<type_t...>::value;
+    inline constexpr bool has_common_type_v = has_common_type<type_t...>::value;
 } // namespace hud_test
 
 GTEST_TEST(traits, common_type)

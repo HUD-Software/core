@@ -20,7 +20,7 @@ namespace hud
 
     /** Equivalent of is_const<type_t>::value. */
     template<typename type_t>
-    constexpr bool is_const_v = is_const<type_t>::value;
+    inline constexpr bool is_const_v = is_const<type_t>::value;
 
 } // namespace hud
 

@@ -20,7 +20,7 @@ namespace hud
 
     /** Equivalent of is_bounded_array<type_t>::value. */
     template<typename type_t>
-    constexpr bool is_bounded_array_v = is_bounded_array<type_t>::value;
+    inline constexpr bool is_bounded_array_v = is_bounded_array<type_t>::value;
 
 } // namespace hud
 

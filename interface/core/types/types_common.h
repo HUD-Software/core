@@ -54,89 +54,89 @@ namespace hud::common
         };
 
         // Min-Max unsigned common type
-        static constexpr bool bool_max = true;
-        static constexpr bool bool_min = false;
-        static constexpr bool bool_min_positive = false;
-        static constexpr u8 u8_max = 0xFF;
-        static constexpr u8 u8_min = 0x00;
-        static constexpr u8 u8_min_positive = 0x00;
-        static constexpr u16 u16_max = 0xFFFF;
-        static constexpr u16 u16_min = 0x0000;
-        static constexpr u16 u16_min_positive = 0x0000;
-        static constexpr u32 u32_max = 0xFFFFFFFF;
-        static constexpr u32 u32_min = 0x00000000;
-        static constexpr u32 u32_min_positive = 0x00000000;
-        static constexpr u64 u64_max = 0xFFFFFFFFFFFFFFFF;
-        static constexpr u64 u64_min = 0x0000000000000000;
-        static constexpr u64 u64_min_positive = 0x0000000000000000;
+        static inline constexpr bool bool_max = true;
+        static inline constexpr bool bool_min = false;
+        static inline constexpr bool bool_min_positive = false;
+        static inline constexpr u8 u8_max = 0xFF;
+        static inline constexpr u8 u8_min = 0x00;
+        static inline constexpr u8 u8_min_positive = 0x00;
+        static inline constexpr u16 u16_max = 0xFFFF;
+        static inline constexpr u16 u16_min = 0x0000;
+        static inline constexpr u16 u16_min_positive = 0x0000;
+        static inline constexpr u32 u32_max = 0xFFFFFFFF;
+        static inline constexpr u32 u32_min = 0x00000000;
+        static inline constexpr u32 u32_min_positive = 0x00000000;
+        static inline constexpr u64 u64_max = 0xFFFFFFFFFFFFFFFF;
+        static inline constexpr u64 u64_min = 0x0000000000000000;
+        static inline constexpr u64 u64_min_positive = 0x0000000000000000;
 
-        static constexpr i8 i8_max = 127;
-        static constexpr i8 i8_min = (i8 {-127} - 1);
-        static constexpr i8 i8_min_positive = 0;
-        static constexpr i16 i16_max = 32767;
-        static constexpr i16 i16_min = (i16 {-32767} - 1);
-        static constexpr i16 i16_min_positive = 0;
-        static constexpr i32 i32_max = 2147483647;
-        static constexpr i32 i32_min = (i32 {-2147483647} - 1);
-        static constexpr i32 i32_min_positive = 0;
-        static constexpr i64 i64_max = 9223372036854775807;
-        static constexpr i64 i64_min = (i64 {-9223372036854775807} - 1);
-        static constexpr i64 i64_min_positive = 0;
+        static inline constexpr i8 i8_max = 127;
+        static inline constexpr i8 i8_min = (i8 {-127} - 1);
+        static inline constexpr i8 i8_min_positive = 0;
+        static inline constexpr i16 i16_max = 32767;
+        static inline constexpr i16 i16_min = (i16 {-32767} - 1);
+        static inline constexpr i16 i16_min_positive = 0;
+        static inline constexpr i32 i32_max = 2147483647;
+        static inline constexpr i32 i32_min = (i32 {-2147483647} - 1);
+        static inline constexpr i32 i32_min_positive = 0;
+        static inline constexpr i64 i64_max = 9223372036854775807;
+        static inline constexpr i64 i64_min = (i64 {-9223372036854775807} - 1);
+        static inline constexpr i64 i64_min_positive = 0;
 
-        static constexpr ansichar ansichar_max = i8_max;
-        static constexpr ansichar ansichar_min = i8_min;
-        static constexpr ansichar ansichar_min_positive = i8_min_positive;
-        static constexpr char16 char16_max = u16_max;
-        static constexpr char16 char16_min = u16_min;
-        static constexpr char16 char16_min_positive = u16_min_positive;
-        static constexpr char32 char32_max = u32_max;
-        static constexpr char32 char32_min = u32_min;
-        static constexpr char32 char32_min_positive = u32_min_positive;
+        static inline constexpr ansichar ansichar_max = i8_max;
+        static inline constexpr ansichar ansichar_min = i8_min;
+        static inline constexpr ansichar ansichar_min_positive = i8_min_positive;
+        static inline constexpr char16 char16_max = u16_max;
+        static inline constexpr char16 char16_min = u16_min;
+        static inline constexpr char16 char16_min_positive = u16_min_positive;
+        static inline constexpr char32 char32_max = u32_max;
+        static inline constexpr char32 char32_min = u32_min;
+        static inline constexpr char32 char32_min_positive = u32_min_positive;
 
         // Largest finite f32 value.
-        static constexpr f32 f32_max = 3.402823466e+38F;
+        static inline constexpr f32 f32_max = 3.402823466e+38F;
         // Smallest finite f32 value.
-        static constexpr f32 f32_min = -f32_max;
+        static inline constexpr f32 f32_min = -f32_max;
         // Smallest positive normal f32 value.
-        static constexpr f32 f32_min_positive = 1.175494351e-38F;
+        static inline constexpr f32 f32_min_positive = 1.175494351e-38F;
         // Number of significant digits in base 2.
-        static constexpr u32 f32_mantissa_digit = 24;
+        static inline constexpr u32 f32_mantissa_digit = 24;
 
         // Largest finite f64 value.
-        static constexpr f64 f64_max = 1.7976931348623158e+308;
+        static inline constexpr f64 f64_max = 1.7976931348623158e+308;
         // Smallest finite f64 value.
-        static constexpr f64 f64_min = -f64_max;
+        static inline constexpr f64 f64_min = -f64_max;
         // Smallest positive normal f64 value.
-        static constexpr f64 f64_min_positive = 2.2250738585072014e-308;
+        static inline constexpr f64 f64_min_positive = 2.2250738585072014e-308;
         // Number of significant digits in base 2.
-        static constexpr u32 f64_mantissa_digit = 53;
+        static inline constexpr u32 f64_mantissa_digit = 53;
 
 #if defined(HD_TARGET_32_BITS)
-        static constexpr uptr uptr_max = u32_max;
-        static constexpr uptr uptr_min = u32_min;
-        static constexpr uptr uptr_min_positive = u32_min_positive;
-        static constexpr iptr iptr_max = i32_max;
-        static constexpr iptr iptr_min = i32_min;
-        static constexpr iptr iptr_min_positive = i32_min_positive;
-        static constexpr usize usize_max = u32_max;
-        static constexpr usize usize_min = u32_min;
-        static constexpr usize usize_min_positive = u32_min_positive;
-        static constexpr isize isize_max = i32_max;
-        static constexpr isize isize_min = i32_min;
-        static constexpr isize isize_min_positive = i32_min_positive;
+        static inline constexpr uptr uptr_max = u32_max;
+        static inline constexpr uptr uptr_min = u32_min;
+        static inline constexpr uptr uptr_min_positive = u32_min_positive;
+        static inline constexpr iptr iptr_max = i32_max;
+        static inline constexpr iptr iptr_min = i32_min;
+        static inline constexpr iptr iptr_min_positive = i32_min_positive;
+        static inline constexpr usize usize_max = u32_max;
+        static inline constexpr usize usize_min = u32_min;
+        static inline constexpr usize usize_min_positive = u32_min_positive;
+        static inline constexpr isize isize_max = i32_max;
+        static inline constexpr isize isize_min = i32_min;
+        static inline constexpr isize isize_min_positive = i32_min_positive;
 #else
-        static constexpr uptr uptr_max = u64_max;
-        static constexpr uptr uptr_min = u64_min;
-        static constexpr uptr uptr_min_positive = u64_min_positive;
-        static constexpr iptr iptr_max = i64_max;
-        static constexpr iptr iptr_min = i64_min;
-        static constexpr iptr iptr_min_positive = i64_min_positive;
-        static constexpr usize usize_max = u64_max;
-        static constexpr usize usize_min = u64_min;
-        static constexpr usize usize_min_positive = u64_min_positive;
-        static constexpr isize isize_max = i64_max;
-        static constexpr isize isize_min = i64_min;
-        static constexpr isize isize_min_positive = i64_min_positive;
+        static inline constexpr uptr uptr_max = u64_max;
+        static inline constexpr uptr uptr_min = u64_min;
+        static inline constexpr uptr uptr_min_positive = u64_min_positive;
+        static inline constexpr iptr iptr_max = i64_max;
+        static inline constexpr iptr iptr_min = i64_min;
+        static inline constexpr iptr iptr_min_positive = i64_min_positive;
+        static inline constexpr usize usize_max = u64_max;
+        static inline constexpr usize usize_min = u64_min;
+        static inline constexpr usize usize_min_positive = u64_min_positive;
+        static inline constexpr isize isize_max = i64_max;
+        static inline constexpr isize isize_min = i64_min;
+        static inline constexpr isize isize_min_positive = i64_min_positive;
 #endif
     };
 

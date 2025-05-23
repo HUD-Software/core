@@ -25,7 +25,7 @@ namespace hud
 
     /** Equivalent of has_unique_object_representations<type_t>::value. */
     template<typename type_t>
-    constexpr bool has_unique_object_representations_v = has_unique_object_representations<type_t>::value;
+    inline constexpr bool has_unique_object_representations_v = has_unique_object_representations<type_t>::value;
 
 } // namespace hud
 

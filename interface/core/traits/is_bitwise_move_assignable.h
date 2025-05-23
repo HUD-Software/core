@@ -22,7 +22,7 @@ namespace hud
 
     /** Equivalent of is_bitwise_move_assignable<type_t, u_type_t>::value. */
     template<typename type_t, typename u_type_t = type_t>
-    constexpr bool is_bitwise_move_assignable_v = is_bitwise_move_assignable<type_t, u_type_t>::value;
+    inline constexpr bool is_bitwise_move_assignable_v = is_bitwise_move_assignable<type_t, u_type_t>::value;
 
 } // namespace hud
 

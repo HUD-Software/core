@@ -33,7 +33,7 @@ namespace hud
 
     /** Equivalent of hud::disjunction<type_t...>::value */
     template<typename... type_t>
-    constexpr bool disjunction_v = hud::disjunction<type_t...>::value;
+    inline constexpr bool disjunction_v = hud::disjunction<type_t...>::value;
 
     /** Equivalent of hud::disjunction<type_t...>::type */
     template<typename... type_t>

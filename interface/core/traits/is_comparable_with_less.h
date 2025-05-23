@@ -24,7 +24,7 @@ namespace hud
 
     /** Equivalent of is_comparable_with_less<lhs_t,rhs_t>::value. */
     template<typename lhs_t, typename rhs_t>
-    constexpr bool is_comparable_with_less_v = is_comparable_with_less<lhs_t, rhs_t>::value;
+    inline constexpr bool is_comparable_with_less_v = is_comparable_with_less<lhs_t, rhs_t>::value;
 
 } // namespace hud
 

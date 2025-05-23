@@ -19,7 +19,7 @@ namespace hud
 
     /** Equivalent of hud::is_default_constructible<type_t>::value. */
     template<typename type_t>
-    constexpr bool is_default_constructible_v = hud::is_default_constructible<type_t>::value;
+    inline constexpr bool is_default_constructible_v = hud::is_default_constructible<type_t>::value;
 
 } // namespace hud
 

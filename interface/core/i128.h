@@ -149,11 +149,11 @@ namespace hud
     {
     }
 
-    static constexpr i128 i128_max = i128 {i64_max, u64_max};
-    static constexpr i128 i128_min = i128 {i64_min, 0u};
+    static inline constexpr i128 i128_max = i128 {i64_max, u64_max};
+    static inline constexpr i128 i128_min = i128 {i64_min, 0u};
 
-    static constexpr u128 u128_max = u128 {u64_max, u64_max};
-    static constexpr u128 u128_min = u128 {u64_min, 0u};
+    static inline constexpr u128 u128_max = u128 {u64_max, u64_max};
+    static inline constexpr u128 u128_min = u128 {u64_min, 0u};
 
     template<> struct limits<i128>
     {

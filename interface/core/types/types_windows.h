@@ -11,9 +11,9 @@ namespace hud::windows
 
     struct types : public hud::common::types
     {
-        static constexpr wchar wchar_max = u16_max;
-        static constexpr wchar wchar_min = u16_min;
-        static constexpr wchar wchar_min_positive = u16_min_positive;
+        static inline constexpr wchar wchar_max = u16_max;
+        static inline constexpr wchar wchar_min = u16_min;
+        static inline constexpr wchar wchar_min_positive = u16_min_positive;
     };
 
 } // namespace hud::windows

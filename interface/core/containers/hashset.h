@@ -859,7 +859,7 @@ namespace hud
              * Copy assign another hashset_impl.
              * The copy assignement only grow allocation and never shrink allocation.
              * No new allocation is done if the hashset_impl contains enough memory to copy all elements, in other words we don't copy the capacity of the copied hashset_impl.
-             * @param other The other array to copy
+             * @param other The other hashset_impl to copy
              * @return *this
              */
             constexpr hashset_impl &operator=(const hashset_impl &other) noexcept
@@ -869,7 +869,6 @@ namespace hud
                 {
                     copy_assign(other);
                 }
-
                 return *this;
             }
 
@@ -878,6 +877,30 @@ namespace hud
             constexpr hashset_impl &operator=(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
             {
                 copy_assign(other);
+                return *this;
+            }
+
+            /**
+             * Move assign another hashset.
+             * Never assume that the move assignement will keep the capacity of the moved hashset_impl.
+             * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
+             * @param other The other hashset_impl to move
+             */
+            constexpr hashset_impl &operator=(hashset_impl &&other) noexcept
+            requires(hud::is_move_constructible_v<slot_type>)
+            {
+                if (this != &other)
+                {
+                    move_assign(other);
+                }
+                return *this;
+            }
+
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            requires(hud::is_move_constructible_v<slot_type>)
+            constexpr hashset_impl &operator=(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
+            {
+                move_assign(other);
                 return *this;
             }
 
@@ -1081,7 +1104,7 @@ namespace hud
                 // In a non constant evaluated context
                 // If type is trivially move constructible, just memcpy control and slot
                 // else do like grow_capacity
-                if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_move_constructible_v<slot_type>)
+                if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
                 {
                     // Set control to empty ending with sentinel
                     hud::memory::set_memory(control_ptr_, control_size, empty_byte);
@@ -1130,9 +1153,9 @@ namespace hud
                 // If constant evaluated context or when slot_type is not bitwise move constructible or when we allocate more memory than the copied set
                 // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
                 // In a non constant evaluated context
-                // If type is trivially move constructible, just memcpy control and slot
+                // If type is trivially move constructible, just take ownership of control and slot
                 // else do like grow_capacity
-                if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_move_constructible_v<slot_type>)
+                if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_move_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
                 {
                     // Set control to empty ending with sentinel
                     hud::memory::set_memory(control_ptr_, control_size, empty_byte);
@@ -1156,17 +1179,18 @@ namespace hud
                         };
                         iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, other.count_, other.max_slot_count_, insert_slot_by_copy);
                     }
+                    other.reset_control_and_slot();
                 }
                 else
                 {
-                    hud::memory::fast_move_or_copy_construct_object_array_then_destroy(control_ptr_, other.control_ptr_, control_size);
-                    if (other.count() > 0)
-                    {
-                        hud::memory::fast_move_or_copy_construct_object_array_then_destroy(slot_ptr_, other.slot_ptr_, other.max_count());
-                    }
+                    control_ptr_ = other.control_ptr_;
+                    other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
+                    slot_ptr_ = reinterpret_cast<slot_type *>(other.slot_ptr_);
+                    other.slot_ptr_ = nullptr;
+                    other.max_slot_count_ = 0;
+                    other.count_ = 0;
+                    other.free_slot_before_grow_ = 0;
                 }
-
-                other.reset_control_and_slot();
             }
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
@@ -1225,7 +1249,6 @@ namespace hud
                 // If we have elements to copy, copy them
                 if (count_ > 0)
                 {
-
                     auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                     {
                         u64 hash {hud::is_same_v<key_type, typename u_storage_t::key_type> ? hasher_type {}(slot_ptr->key()) : hasher_type {}(key_type {slot_ptr->key()})};
@@ -1238,6 +1261,106 @@ namespace hud
                         hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
                     };
                     iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, count_, other.max_slot_count_, insert_slot_by_copy);
+                }
+            }
+
+            template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
+            constexpr void move_assign(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
+            {
+                // Destroy all slots but don't touch the allocated memory now
+                // If we can just move control and slot pointers we do it
+                // If we can't just move control and slot pointers, we deal with 2 scenarios
+                // First, we have enough memory and just add elements by moving them one by one
+                // Second, we don't have enough memory and we reallacte memory and add elements by moving them one by one
+                destroy_all_slots();
+
+                if (hud::is_constant_evaluated() || !hud::is_bitwise_move_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
+                {
+                    // We don't keep the max count of the copied array
+                    // The requested memory is the number of element in the copied array, not the max slot count.
+                    const usize max_count_requested = other.count_;
+                    // If we have enough allocated memory
+                    if (max_count_requested <= max_slot_count_)
+                    {
+                        // Reset the control to empty if we have allocated memory ( Do nothing if we have nothing because control_ptr_ points to static INIT_GROUP)
+                        if (max_slot_count_ > 0)
+                        {
+                            hud::memory::set_memory(control_ptr_, control_size_for_max_count(max_slot_count_), empty_byte);
+                            control_ptr_[max_slot_count_] = sentinel_byte;
+                        }
+                        // Copy the allocator if copy_when_container_copy_assigned is true
+                        if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
+                        {
+                            allocator_ = hud::move(other.allocator_);
+                        }
+                        // Copy the number of element
+                        count_ = other.count_;
+                        // Compute the free slot count before growing
+                        free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                    }
+                    else // If we don't have enough memory
+                    {
+                        // Free the control and slot allocation
+                        free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
+
+                        // Copy the allocator if copy_when_container_copy_assigned is true
+                        if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
+                        {
+                            allocator_ = hud::move(other.allocator_);
+                        }
+                        // Copy the number of element
+                        count_ = other.count_;
+                        // Copy the max number of element
+                        max_slot_count_ = compute_max_count(count_);
+                        // Compute the free slot count before growing
+                        free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                        // Allocate the control and slot
+                        usize control_size {allocate_control_and_slot(max_slot_count_)};
+
+                        // Set control to empty ending with sentinel
+                        hud::memory::set_memory(control_ptr_, control_size, empty_byte);
+                        control_ptr_[max_slot_count_] = sentinel_byte;
+                    }
+                    // If we have elements to move, move them
+                    if (count_ > 0)
+                    {
+                        auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
+                        {
+                            u64 hash {hud::is_same_v<key_type, typename u_storage_t::key_type> ? hasher_type {}(slot_ptr->key()) : hasher_type {}(key_type {slot_ptr->key()})};
+                            // Find H1 slot index
+                            u64 h1 {H1(hash)};
+                            usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                            // Save h2 in control h1 index
+                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                            // Copy slot
+                            hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
+                        };
+                        iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, count_, other.max_slot_count_, insert_slot_by_copy);
+                    }
+
+                    other.reset_control_and_slot();
+                }
+                // If we are not in constant expression and the slot_type are bitwise moveable, move it.
+                else
+                {
+                    // Free the allocated buffers and take ownership of other buffers
+                    free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
+
+                    // Move allocator and move members
+                    if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::move_when_container_move_assigned::value)
+                    {
+                        allocator_ = hud::move(other.allocator_);
+                    }
+                    control_ptr_ = other.control_ptr_;
+                    other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
+                    slot_ptr_ = reinterpret_cast<slot_type *>(other.slot_ptr_);
+                    other.slot_ptr_ = nullptr;
+                    count_ = other.count_;
+                    other.count_ = 0;
+                    max_slot_count_ = other.max_slot_count_;
+                    other.max_slot_count_ = 0;
+                    free_slot_before_grow_ = other.free_slot_before_grow_ = 0;
+                    other.free_slot_before_grow_ = 0;
                 }
             }
 

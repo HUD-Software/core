@@ -23,7 +23,7 @@ namespace hud
 
     /** Equivalent of hud::is_move_assignable<type_t, u_type_t>::value. */
     template<typename type_t, typename u_type_t = type_t>
-    constexpr bool is_move_assignable_v = hud::is_move_assignable<type_t, u_type_t>::value;
+    inline constexpr bool is_move_assignable_v = hud::is_move_assignable<type_t, u_type_t>::value;
 
 } // namespace hud
 

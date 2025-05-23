@@ -49,7 +49,7 @@ namespace hud
      * Equivalent of hud::is_convertible<from_t,to_t>::value.
      * */
     template<typename from_t, typename to_t>
-    constexpr bool is_convertible_v = hud::is_convertible<from_t, to_t>::value;
+    inline constexpr bool is_convertible_v = hud::is_convertible<from_t, to_t>::value;
 
 } // namespace hud
 

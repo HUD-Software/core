@@ -26,6 +26,7 @@
         "cmake.options.statusBarVisibility": "compact",
         "cmake.outputLogEncoding": "utf8",
         "debug.showVariableTypes": true,
+        "rust-analyzer.checkOnSave": false,
     },
     "extensions": {
         "recommendations": [

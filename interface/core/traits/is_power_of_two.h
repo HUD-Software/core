@@ -14,7 +14,7 @@ namespace hud
 
     /** Equivalent of is_power_of_two<value>::value. */
     template<usize value>
-    constexpr bool is_power_of_two_v = is_power_of_two<value>::value;
+    inline constexpr bool is_power_of_two_v = is_power_of_two<value>::value;
 
 } // namespace hud
 

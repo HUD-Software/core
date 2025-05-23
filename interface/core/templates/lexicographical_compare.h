@@ -22,7 +22,7 @@ namespace hud
      * @return true if the first range compares lexicographically less than than the second, false otherwise (including when all the elements of both ranges are equivalent).
      */
     template<typename it1_t, typename it2_t>
-    [[nodiscard]] constexpr bool lexicographical_compare(it1_t first_1, it1_t last_1, it2_t first_2, it2_t last_2) noexcept
+    [[nodiscard]] inline constexpr bool lexicographical_compare(it1_t first_1, it1_t last_1, it2_t first_2, it2_t last_2) noexcept
     {
         for (; (first_1 != last_1) && (first_2 != last_2); ++first_1, ++first_2)
         {
@@ -77,7 +77,7 @@ namespace hud
      */
     template<typename it1_t, typename it2_t>
     requires(sizeof(it1_t) == 1 && sizeof(it2_t) == 1)
-    [[nodiscard]] constexpr bool lexicographical_compare(it1_t *first_1, it1_t *last_1, it2_t *first_2, it2_t *last_2) noexcept
+    [[nodiscard]] inline constexpr bool lexicographical_compare(it1_t *first_1, it1_t *last_1, it2_t *first_2, it2_t *last_2) noexcept
     {
         const usize size_1 = static_cast<usize>(last_1 - first_1);
         const usize size_2 = static_cast<usize>(last_2 - first_2);

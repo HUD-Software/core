@@ -32,6 +32,11 @@ namespace hud_test
         {
         }
     };
+
+    struct d
+    {
+    };
+
 } // namespace hud_test
 
 GTEST_TEST(traits, is_bitwise_move_constructible)
@@ -463,4 +468,5 @@ GTEST_TEST(traits, is_bitwise_move_constructible)
     hud_assert_true((hud::is_bitwise_move_constructible_v<hud_test::a, hud_test::a>));
     hud_assert_false((hud::is_bitwise_move_constructible_v<hud_test::b, hud_test::b>));
     hud_assert_false((hud::is_bitwise_move_constructible_v<hud_test::c, hud_test::c>));
+    hud_assert_false((hud::is_bitwise_move_constructible_v<hud_test::a, hud_test::d>));
 }
