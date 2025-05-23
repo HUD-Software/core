@@ -1687,23 +1687,12 @@ namespace hud
                     // If the hashmap is empty, slot_ptr is nullptr, we don't want to decrement the pointer in the case
                     // In a non constant expression slot_ptr is located after control in the same memory layout,
                     // we can safely decrement as soon as we don't read the value
-                    if (hud::is_constant_evaluated())
+
+                    // Iterate over cloned control bytes
+                    for (u32 full_index : group.mask_of_full_slot())
                     {
-                        // Iterate over cloned control bytes
-                        for (u32 full_index : group.mask_of_full_slot())
-                        {
-                            callback(control_ptr + (full_index - 1), slot_ptr + (full_index - 1));
-                        }
-                    }
-                    else
-                    {
-                        --control_ptr;
-                        --slot_ptr;
-                        // Iterate over cloned control bytes
-                        for (u32 full_index : group.mask_of_full_slot())
-                        {
-                            callback(control_ptr + full_index, slot_ptr + full_index);
-                        }
+                        u32 real_index = (full_index - 1);
+                        callback(control_ptr + real_index, slot_ptr + real_index);
                     }
                 }
                 else
