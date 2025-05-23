@@ -831,7 +831,7 @@ namespace hud
                         // Copy slot
                         hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
                     };
-                    iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, insert_slot_by_copy);
+                    iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, other.count_, other.max_slot_count_, insert_slot_by_copy);
                 }
                 else
                 {
@@ -894,7 +894,7 @@ namespace hud
                         // Copy slot
                         hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
                     };
-                    iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, insert_slot_by_copy);
+                    iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, other.count_, other.max_slot_count_, insert_slot_by_copy);
                 }
                 else
                 {
@@ -956,25 +956,7 @@ namespace hud
                             // Copy slot
                             hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(*slot_ptr));
                         };
-                        iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, insert_slot_by_copy);
-
-                        // auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
-                        // while (control_full_or_sentinel != other.control_ptr_sentinel())
-                        // {
-                        //     // Compute the hash
-                        //     u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
-                        //     // Find H1 slot index
-                        //     u64 h1 {H1(hash)};
-                        //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                        //     // Save h2 in control h1 index
-                        //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                        //     // Move old slot to new slot
-                        //     hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_full_or_sentinel));
-
-                        // control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
-                        // slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
-                        // control_full_or_sentinel = full_or_sentinel;
-                        // }
+                        iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, other.count_, other.max_slot_count_, insert_slot_by_copy);
                     }
                 }
                 else
@@ -1039,24 +1021,7 @@ namespace hud
                             // Copy slot
                             hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(*slot_ptr));
                         };
-                        iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, insert_slot_by_copy);
-                        // auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
-                        // while (control_full_or_sentinel != other.control_ptr_sentinel())
-                        // {
-                        //     // Compute the hash
-                        //     u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
-                        //     // Find H1 slot index
-                        //     u64 h1 {H1(hash)};
-                        //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                        //     // Save h2 in control h1 index
-                        //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                        //     // Move old slot to new slot
-                        //     hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_full_or_sentinel));
-
-                        // control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
-                        // slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
-                        // control_full_or_sentinel = full_or_sentinel;
-                        // }
+                        iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, other.count_, other.max_slot_count_, insert_slot_by_copy);
                     }
                 }
                 else
@@ -1342,35 +1307,47 @@ namespace hud
                 // If we have elements to copy, copy them
                 if (count_ > 0)
                 {
-                    auto compute_hash = [](const auto *slot) noexcept
-                    {
-                        if constexpr (hud::is_same_v<key_type, typename u_storage_t::key_type>)
-                        {
-                            return hasher_type {}(slot->key());
-                        }
-                        else
-                        {
-                            return hasher_type {}(static_cast<key_type>(slot->key()));
-                        }
-                    };
 
-                    // Skip empty or deleted
-                    auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
-                    while (control_full_or_sentinel != other.control_ptr_sentinel())
+                    auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                     {
-                        u64 hash {compute_hash(slot_full_or_sentinel)};
+                        u64 hash {hasher_type {}(static_cast<const key_type &>(slot_ptr->key()))};
                         // Find H1 slot index
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
                         // Save h2 in control h1 index
                         control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Copy slot
-                        hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_full_or_sentinel);
+                        hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
+                    };
+                    iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, count_, other.max_slot_count_, insert_slot_by_copy);
+                    // auto compute_hash = [](const auto *slot) noexcept
+                    // {
+                    //     if constexpr (hud::is_same_v<key_type, typename u_storage_t::key_type>)
+                    //     {
+                    //         return hasher_type {}(slot->key());
+                    //     }
+                    //     else
+                    //     {
+                    //         return hasher_type {}(static_cast<key_type>(slot->key()));
+                    //     }
+                    // };
+                    // Skip empty or deleted
+                    // auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
+                    // while (control_full_or_sentinel != other.control_ptr_sentinel())
+                    // {
+                    //     u64 hash {compute_hash(slot_full_or_sentinel)};
+                    //     // Find H1 slot index
+                    //     u64 h1 {H1(hash)};
+                    //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                    //     // Save h2 in control h1 index
+                    //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                    //     // Copy slot
+                    //     hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_full_or_sentinel);
 
-                        control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
-                        slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
-                        control_full_or_sentinel = full_or_sentinel;
-                    }
+                    // control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
+                    // slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
+                    // control_full_or_sentinel = full_or_sentinel;
+                    // }
                 }
             }
 
@@ -1468,37 +1445,19 @@ namespace hud
                 {
                     // Move elements to new buffer if any
                     // Relocate slots to newly allocated buffer
-                    // auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
-                    // {
-                    //     // Compute the hash
-                    //     u64 hash {hasher_type {}(slot_ptr->key())};
-                    //     // Find H1 slot index
-                    //     u64 h1 {H1(hash)};
-                    //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                    //     // Save h2 in control h1 index
-                    //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                    //     // Move old slot to new slot
-                    //     hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_ptr));
-                    // };
-                    // iterate_over_full_slots(old_control_ptr, old_slot_ptr, insert_slot_by_copy);
-
-                    auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(old_control_ptr, old_slot_ptr);
-                    while (control_full_or_sentinel != old_control_ptr + old_max_slot_count)
+                    auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                     {
                         // Compute the hash
-                        u64 hash {hasher_type {}(slot_full_or_sentinel->key())};
+                        u64 hash {hasher_type {}(slot_ptr->key())};
                         // Find H1 slot index
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
                         // Save h2 in control h1 index
                         control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Move old slot to new slot
-                        hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_full_or_sentinel));
-
-                        control_type *full_or_sentinel {control::skip_empty_or_deleted(control_full_or_sentinel + 1)};
-                        slot_full_or_sentinel += full_or_sentinel - control_full_or_sentinel;
-                        control_full_or_sentinel = full_or_sentinel;
-                    }
+                        hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_ptr));
+                    };
+                    iterate_over_full_slots(old_control_ptr, old_slot_ptr, count_, old_max_slot_count, insert_slot_by_copy);
                     free_control_and_slot(old_control_ptr, old_slot_ptr, old_max_slot_count);
                 }
             }
@@ -1670,18 +1629,18 @@ namespace hud
                     {
                         hud::memory::destroy_object(slot_ptr);
                     };
-                    iterate_over_full_slots(control_ptr_, slot_ptr_, destroy_slot);
+                    iterate_over_full_slots(control_ptr_, slot_ptr_, count_, max_slot_count_, destroy_slot);
                 }
             }
 
-            constexpr void iterate_over_full_slots(control_type *control_ptr, auto *slot_ptr, auto callback) noexcept
+            constexpr void iterate_over_full_slots(control_type *control_ptr, auto *slot_ptr, usize slot_count, usize max_slot_count, auto callback) noexcept
             {
                 // When max slot count is less than the probing group
                 // We have cloned control in the group
                 // In this case, we start probing at the sentinel instead of 0
-                if (max_slot_count_ < group_type::SLOT_PER_GROUP - 1)
+                if (max_slot_count < group_type::SLOT_PER_GROUP - 1)
                 {
-                    group_type group {control_ptr_sentinel()};
+                    group_type group {control_ptr + max_slot_count};
 
                     // In the case of constant expression
                     // If the hashmap is empty, slot_ptr is nullptr, we don't want to decrement the pointer in the case
@@ -1697,14 +1656,13 @@ namespace hud
                 }
                 else
                 {
-                    size_t remaining_slots {count()};
-                    while (remaining_slots != 0)
+                    while (slot_count != 0)
                     {
                         group_type group {control_ptr};
                         for (u32 full_index : group.mask_of_full_slot())
                         {
                             callback(control_ptr + full_index, slot_ptr + full_index);
-                            --remaining_slots;
+                            --slot_count;
                         }
                         control_ptr += group_type::SLOT_PER_GROUP;
                         slot_ptr += group_type::SLOT_PER_GROUP;
