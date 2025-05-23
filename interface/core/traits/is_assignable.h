@@ -14,7 +14,7 @@ namespace hud
 
     /** Equivalent of is_assignable<to_t, from_t>::value. */
     template<typename to_t, typename from_t>
-    inline constexpr bool is_assignable_v = is_assignable<to_t, from_t>::value;
+    constexpr bool is_assignable_v = is_assignable<to_t, from_t>::value;
 
 } // namespace hud
 

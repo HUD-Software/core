@@ -17,7 +17,7 @@ namespace hud
 
     /** Equivalent of is_trivially_constructible<type_t, args_t...>::value. */
     template<typename type_t, typename... args_t>
-    inline constexpr bool is_trivially_constructible_v = is_trivially_constructible<type_t, args_t...>::value;
+    constexpr bool is_trivially_constructible_v = is_trivially_constructible<type_t, args_t...>::value;
 
 } // namespace hud
 

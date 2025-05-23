@@ -14,7 +14,7 @@ namespace hud
 
     /** Equivalent of is_union<type_t>::value */
     template<typename type_t>
-    inline constexpr bool is_union_v = is_union<type_t>::value;
+    constexpr bool is_union_v = is_union<type_t>::value;
 
 } // namespace hud
 

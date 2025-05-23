@@ -20,7 +20,7 @@ namespace hud
 
     /** Equivalent of is_unbounded_array<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_unbounded_array_v = is_unbounded_array<type_t>::value;
+    constexpr bool is_unbounded_array_v = is_unbounded_array<type_t>::value;
 
 } // namespace hud
 

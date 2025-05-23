@@ -192,7 +192,7 @@ namespace hud
         };
 
         template<typename pair_t, typename tuple_t>
-        inline constexpr bool is_pair_copy_constructible_to_tuple_v = is_pair_copy_constructible_to_tuple<pair_t, tuple_t>::value;
+        constexpr bool is_pair_copy_constructible_to_tuple_v = is_pair_copy_constructible_to_tuple<pair_t, tuple_t>::value;
 
         /**
          * Check if a tuple<T0,T1> is explicitly copy constructible from pair<first_type,second_type>.
@@ -211,7 +211,7 @@ namespace hud
         };
 
         template<typename pair_t, typename tuple_t>
-        inline constexpr bool is_pair_explicitly_copy_constructible_to_tuple_v = is_pair_explicitly_copy_constructible_to_tuple<pair_t, tuple_t>::value;
+        constexpr bool is_pair_explicitly_copy_constructible_to_tuple_v = is_pair_explicitly_copy_constructible_to_tuple<pair_t, tuple_t>::value;
 
         /**
          * @brief Check if a tuple<T0,T1> is move constructible from pair<first_type,second_type>.
@@ -233,7 +233,7 @@ namespace hud
         };
 
         template<typename pair_t, typename tuple_t>
-        inline constexpr bool is_pair_move_constructible_to_tuple_v = is_pair_move_constructible_to_tuple<pair_t, tuple_t>::value;
+        constexpr bool is_pair_move_constructible_to_tuple_v = is_pair_move_constructible_to_tuple<pair_t, tuple_t>::value;
 
         /**
          * Check if a tuple<T0,T1> is explicitly move constructible from pair<first_type,second_type>.
@@ -252,7 +252,7 @@ namespace hud
         };
 
         template<typename pair_t, typename tuple_t>
-        inline constexpr bool is_pair_explicitly_move_constructible_to_tuple_v = is_pair_explicitly_move_constructible_to_tuple<pair_t, tuple_t>::value;
+        constexpr bool is_pair_explicitly_move_constructible_to_tuple_v = is_pair_explicitly_move_constructible_to_tuple<pair_t, tuple_t>::value;
 
         /**
          * Recursively assign a tuple to another.

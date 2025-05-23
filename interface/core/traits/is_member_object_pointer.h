@@ -18,7 +18,7 @@ namespace hud
 
     /** Equivalent of is_member_object_pointer<type_t>::value */
     template<typename type_t>
-    inline constexpr bool is_member_object_pointer_v = is_member_object_pointer<type_t>::value;
+    constexpr bool is_member_object_pointer_v = is_member_object_pointer<type_t>::value;
 
 } // namespace hud
 

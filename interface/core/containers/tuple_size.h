@@ -72,7 +72,7 @@ namespace hud
 
     /** Equalivent of tuple_size<tuple_like>::value. */
     template<typename tuple_like>
-    inline constexpr usize tuple_size_v = tuple_size<tuple_like>::value;
+    constexpr usize tuple_size_v = tuple_size<tuple_like>::value;
 
 } // namespace hud
 

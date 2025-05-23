@@ -509,7 +509,7 @@ namespace hud
 
     /** Equivalent of is_hashable<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_hashable_64_v = is_hashable_64<type_t>::value;
+    constexpr bool is_hashable_64_v = is_hashable_64<type_t>::value;
 
     // Traits used to check if a type is hashable
     template<typename type_t, typename = void>
@@ -526,7 +526,7 @@ namespace hud
 
     /** Equivalent of is_hashable<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_hashable_32_v = is_hashable_32<type_t>::value;
+    constexpr bool is_hashable_32_v = is_hashable_32<type_t>::value;
 } // namespace hud
 
 #endif // HD_INC_CORE_HASH_H

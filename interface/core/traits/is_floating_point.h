@@ -16,7 +16,7 @@ namespace hud
 
     /**Equivalent of is_floating_point<type_t>::Valu. */
     template<typename type_t>
-    inline constexpr bool is_floating_point_v = is_floating_point<type_t>::value;
+    constexpr bool is_floating_point_v = is_floating_point<type_t>::value;
 
 } // namespace hud
 

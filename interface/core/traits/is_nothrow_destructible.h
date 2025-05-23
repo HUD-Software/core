@@ -36,7 +36,7 @@ namespace hud
 #endif
     /** Equivalent of is_nothrow_destructible<type_t>::value. */
     template<class type_t>
-    inline constexpr bool is_nothrow_destructible_v = is_nothrow_destructible<type_t>::value;
+    constexpr bool is_nothrow_destructible_v = is_nothrow_destructible<type_t>::value;
 
 } // namespace hud
 

@@ -22,7 +22,7 @@ namespace hud
 
     /** Equivalent of is_derived_from<derived_t,base_t>::value. */
     template<typename derived_t, typename base_t>
-    inline constexpr bool is_derived_from_v = is_derived_from<derived_t, base_t>::value;
+    constexpr bool is_derived_from_v = is_derived_from<derived_t, base_t>::value;
 
 } // namespace hud
 

@@ -21,7 +21,7 @@ namespace hud
 
     /** Equivalent of is_trivially_swappable<type_t, u_type_t>::value */
     template<typename type_t, typename u_type_t = type_t>
-    inline constexpr bool is_trivially_swappable_v = is_trivially_swappable<type_t, u_type_t>::value;
+    constexpr bool is_trivially_swappable_v = is_trivially_swappable<type_t, u_type_t>::value;
 
 } // namespace hud
 

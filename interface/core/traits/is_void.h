@@ -16,7 +16,7 @@ namespace hud
 
     /** Equivalent of is_void<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_void_v = is_void<type_t>::value;
+    constexpr bool is_void_v = is_void<type_t>::value;
 
 } // namespace hud
 

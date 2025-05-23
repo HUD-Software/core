@@ -210,13 +210,13 @@ namespace hud::gcc
     private:
 
     private:
-        static inline constexpr i32 to_gcc_order(memory_order_e order)
+        static constexpr i32 to_gcc_order(memory_order_e order)
         {
             // Avoid switch statement to make this a constexpr.
             return order == memory_order_e::relaxed ? __ATOMIC_RELAXED : (order == memory_order_e::acquire ? __ATOMIC_ACQUIRE : (order == memory_order_e::release ? __ATOMIC_RELEASE : (order == memory_order_e::seq_cst ? __ATOMIC_SEQ_CST : (order == memory_order_e::acq_rel ? __ATOMIC_ACQ_REL : __ATOMIC_CONSUME))));
         }
 
-        static inline constexpr i32 to_gcc_failure_order(memory_order_e order)
+        static constexpr i32 to_gcc_failure_order(memory_order_e order)
         {
             // Avoid switch statement to make this a constexpr.
             // This memory order cannot be __ATOMIC_RELEASE nor __ATOMIC_ACQ_REL. It also cannot be a stronger order than that specified by success_memorder.

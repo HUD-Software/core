@@ -15,7 +15,7 @@ namespace hud
 
     /** Equivalent of hud::is_same_size<type_t,u_type_t>::value. */
     template<typename type_t, typename u_type_t>
-    inline constexpr bool is_same_size_v = hud::is_same_size<type_t, u_type_t>::value;
+    constexpr bool is_same_size_v = hud::is_same_size<type_t, u_type_t>::value;
 
 } // namespace hud
 

@@ -28,7 +28,7 @@ namespace hud
 
     /** Equivalent of is_unsigned<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_unsigned_v = is_unsigned<type_t>::value;
+    constexpr bool is_unsigned_v = is_unsigned<type_t>::value;
 
 } // namespace hud
 

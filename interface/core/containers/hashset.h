@@ -1448,6 +1448,18 @@ namespace hud
                 {
                     // Move elements to new buffer if any
                     // Relocate slots to newly allocated buffer
+                    // iterate_over_full_slots(old_control_ptr, old_slot_ptr, [this](control_type *control_ptr, slot_type *slot_ptr)
+                    //                         {
+                    //       // Compute the hash
+                    //     u64 hash {hasher_type {}(slot_ptr->key())};
+                    //     // Find H1 slot index
+                    //     u64 h1 {H1(hash)};
+                    //     usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
+                    //     // Save h2 in control h1 index
+                    //     control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                    //     // Move old slot to new slot
+                    //     hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_ptr)); });
+
                     auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(old_control_ptr, old_slot_ptr);
                     while (control_full_or_sentinel != old_control_ptr + old_max_slot_count)
                     {
@@ -1677,6 +1689,54 @@ namespace hud
                             ctrl_ptr += group_type::SLOT_PER_GROUP;
                             slot_ptr += group_type::SLOT_PER_GROUP;
                         }
+                    }
+                }
+            }
+
+            constexpr void iterate_over_full_slots(control_type *control_ptr, auto *slot_ptr, auto callback) noexcept
+            {
+                // When max slot count is less than the probing group
+                // We have cloned control in the group
+                // In this case, we start probing at the sentinel instead of 0
+                if (max_slot_count_ < group_type::SLOT_PER_GROUP - 1)
+                {
+                    group_type group {control_ptr_sentinel()};
+
+                    // In the case of constant expression
+                    // If the hashmap is empty, slot_ptr is nullptr, we don't want to decrement the pointer in the case
+                    // In a non constant expression slot_ptr is located after control in the same memory layout,
+                    // we can safely decrement as soon as we don't read the value
+                    if (hud::is_constant_evaluated())
+                    {
+                        // Iterate over cloned control bytes
+                        for (u32 full_index : group.mask_of_full_slot())
+                        {
+                            callback(control_ptr + full_index, slot_ptr + full_index);
+                        }
+                    }
+                    else
+                    {
+                        --slot_ptr;
+                        // Iterate over cloned control bytes
+                        for (u32 full_index : group.mask_of_full_slot())
+                        {
+                            callback(control_ptr + full_index, slot_ptr + full_index);
+                        }
+                    }
+                }
+                else
+                {
+                    size_t remaining_slots {count()};
+                    while (remaining_slots != 0)
+                    {
+                        group_type group {control_ptr};
+                        for (u32 full_index : group.mask_of_full_slot())
+                        {
+                            callback(control_ptr + full_index, slot_ptr + full_index);
+                            --remaining_slots;
+                        }
+                        control_ptr += group_type::SLOT_PER_GROUP;
+                        slot_ptr += group_type::SLOT_PER_GROUP;
                     }
                 }
             }

@@ -14,7 +14,7 @@ namespace hud
 
     /** Equivalent of is_nothrow_default_constructible<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_nothrow_default_constructible_v = is_nothrow_default_constructible<type_t>::value;
+    constexpr bool is_nothrow_default_constructible_v = is_nothrow_default_constructible<type_t>::value;
 
 } // namespace hud
 

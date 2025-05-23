@@ -36,7 +36,7 @@ namespace hud
 
     /** Equivalent of extent<type_t, dimension_index>::value. */
     template<typename type_t, usize dimension_index = 0>
-    inline constexpr usize extent_v = hud::extent<type_t, dimension_index>::value;
+    constexpr usize extent_v = hud::extent<type_t, dimension_index>::value;
 
 } // namespace hud
 

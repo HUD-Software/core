@@ -431,7 +431,7 @@ namespace hud
     };
 
     /** Constant used to indicate optional type with uninitialized state. */
-    inline constexpr nullopt_t nullopt {nullopt_t::tag {}};
+    constexpr nullopt_t nullopt {nullopt_t::tag {}};
 
     /**
      * Manages an optional contained value, i.e. a value that may or may not be present.

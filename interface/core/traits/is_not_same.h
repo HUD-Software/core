@@ -19,7 +19,7 @@ namespace hud
 
     /** Equivalent of is_not_same<type_t, u_type_t>::value. */
     template<typename type_t, typename u_type_t>
-    inline constexpr bool is_not_same_v = is_not_same<type_t, u_type_t>::value;
+    constexpr bool is_not_same_v = is_not_same<type_t, u_type_t>::value;
 
 } // namespace hud
 

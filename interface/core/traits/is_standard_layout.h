@@ -32,7 +32,7 @@ namespace hud
 
     /** Equivalent of is_standard_layout<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_standard_layout_v = is_standard_layout<type_t>::value;
+    constexpr bool is_standard_layout_v = is_standard_layout<type_t>::value;
 
 } // namespace hud
 

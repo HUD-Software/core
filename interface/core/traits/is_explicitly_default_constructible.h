@@ -16,7 +16,7 @@ namespace hud
 
     /** Equivalent of hud::is_explicitly_default_constructible<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_explicitly_default_constructible_v = hud::is_explicitly_default_constructible<type_t>::value;
+    constexpr bool is_explicitly_default_constructible_v = hud::is_explicitly_default_constructible<type_t>::value;
 
 } // namespace hud
 

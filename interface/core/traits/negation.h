@@ -21,7 +21,7 @@ namespace hud
 
     /** Equivalent of hud::negation<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool negation_v = hud::negation<type_t>::value;
+    constexpr bool negation_v = hud::negation<type_t>::value;
 
 } // namespace hud
 

@@ -20,7 +20,7 @@ namespace hud
 
     /** Equivalent of is_pointer<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_pointer_v = is_pointer<type_t>::value;
+    constexpr bool is_pointer_v = is_pointer<type_t>::value;
 
 } // namespace hud
 

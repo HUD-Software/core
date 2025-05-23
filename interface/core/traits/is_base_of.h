@@ -17,7 +17,7 @@ namespace hud
 
     /** Equivalent of is_base_of<base_t, derived_t>::value. */
     template<typename base_t, typename derived_t>
-    inline constexpr bool is_base_of_v = is_base_of<base_t, derived_t>::value;
+    constexpr bool is_base_of_v = is_base_of<base_t, derived_t>::value;
 
 } // namespace hud
 

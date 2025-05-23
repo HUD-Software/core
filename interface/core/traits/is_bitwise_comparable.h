@@ -30,7 +30,7 @@ namespace hud
 
     /** Equivalent of is_bitwise_comparable<u_type_t, V=u_type_t>::value. */
     template<typename u_type_t, typename V = u_type_t>
-    inline constexpr bool is_bitwise_comparable_v = is_bitwise_comparable<u_type_t, V>::value;
+    constexpr bool is_bitwise_comparable_v = is_bitwise_comparable<u_type_t, V>::value;
 
 } // namespace hud
 

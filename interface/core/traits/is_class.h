@@ -14,7 +14,7 @@ namespace hud
 
     /** Equivalent of is_class<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_class_v = is_class<type_t>::value;
+    constexpr bool is_class_v = is_class<type_t>::value;
 
 } // namespace hud
 

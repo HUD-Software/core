@@ -15,7 +15,7 @@ namespace hud
 
     /** Equivalent of is_one_of_types<to_find_t, list_t...>::value. */
     template<typename to_find_t, typename... list_t>
-    inline constexpr bool is_one_of_types_v = is_one_of_types<to_find_t, list_t...>::value;
+    constexpr bool is_one_of_types_v = is_one_of_types<to_find_t, list_t...>::value;
 } // namespace hud
 
 #endif // HD_INC_CORE_TRAITS_IS_ONE_OF_TYPES_H

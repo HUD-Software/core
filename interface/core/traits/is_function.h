@@ -138,7 +138,7 @@ namespace hud
 
     /** Equivalent of is_function<type_t, args_t...>::value. */
     template<typename type_t, typename... args_t>
-    inline constexpr bool is_function_v = is_function<type_t, args_t...>::value;
+    constexpr bool is_function_v = is_function<type_t, args_t...>::value;
 
 } // namespace hud
 

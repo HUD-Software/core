@@ -23,7 +23,7 @@ namespace hud
 
     /** Equivalent of is_scalar<type_t>::value. */
     template<typename type_t>
-    inline constexpr bool is_scalar_v = is_scalar<type_t>::value;
+    constexpr bool is_scalar_v = is_scalar<type_t>::value;
 
 } // namespace hud
 

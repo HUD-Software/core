@@ -12,9 +12,9 @@ namespace hud::linux
     struct types
         : public hud::common::types
     {
-        static inline constexpr wchar wchar_max = i32_max;
-        static inline constexpr wchar wchar_min = i32_min;
-        static inline constexpr wchar wchar_min_positive = i32_min_positive;
+        static constexpr wchar wchar_max = i32_max;
+        static constexpr wchar wchar_min = i32_min;
+        static constexpr wchar wchar_min_positive = i32_min_positive;
     };
 
 } // namespace hud::linux
