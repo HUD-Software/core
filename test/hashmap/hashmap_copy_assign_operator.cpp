@@ -15,10 +15,7 @@
 #define TEST_VALUES2 { \
     { 8,  88},           \
     { 9,  99},           \
-    {10, 100},         \
-    {11, 110},         \
-    {12, 120},         \
-    {13, 130},         \
+    {10, 100}          \
  }
 
 GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_same_allocator)

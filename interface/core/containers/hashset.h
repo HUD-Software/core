@@ -819,8 +819,7 @@ namespace hud
                     control_ptr_[max_slot_count_] = sentinel_byte;
 
                     // Copy slots to newly allocated buffer
-                    control_type *control_full_or_sentinel = other.control_ptr_;
-                    auto slot_full_or_sentinel = other.slot_ptr_;
+                    auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
                     while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
                         // Compute the hash
@@ -887,8 +886,7 @@ namespace hud
                         return;
 
                     // Copy slots to newly allocated buffer
-                    control_type *control_full_or_sentinel = other.control_ptr_;
-                    auto slot_full_or_sentinel = other.slot_ptr_;
+                    auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
                     while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
                         // Compute the hash
@@ -954,8 +952,7 @@ namespace hud
                     if (other.count() != 0)
                     {
                         // Move slots to newly allocated buffer
-                        control_type *control_full_or_sentinel = other.control_ptr_;
-                        auto slot_full_or_sentinel = other.slot_ptr_;
+                        auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
                         while (control_full_or_sentinel != other.control_ptr_sentinel())
                         {
                             // Compute the hash
@@ -1024,8 +1021,7 @@ namespace hud
                     if (other.count() != 0)
                     {
                         // Move slots to newly allocated buffer
-                        control_type *control_full_or_sentinel = other.control_ptr_;
-                        auto slot_full_or_sentinel = other.slot_ptr_;
+                        auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
                         while (control_full_or_sentinel != other.control_ptr_sentinel())
                         {
                             // Compute the hash
@@ -1338,11 +1334,10 @@ namespace hud
                             return hasher_type {}(static_cast<key_type>(slot->key()));
                         }
                     };
-                    control_type *control_full_or_sentinel = other.control_ptr_;
-                    auto slot_full_or_sentinel = other.slot_ptr_;
+                    // Skip empty or deleted
+                    auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(other.control_ptr_, other.slot_ptr_);
                     while (control_full_or_sentinel != other.control_ptr_sentinel())
                     {
-
                         u64 hash {compute_hash(slot_full_or_sentinel)};
                         // Find H1 slot index
                         u64 h1 {H1(hash)};
@@ -1453,8 +1448,7 @@ namespace hud
                 {
                     // Move elements to new buffer if any
                     // Relocate slots to newly allocated buffer
-                    control_type *control_full_or_sentinel = old_control_ptr;
-                    slot_type *slot_full_or_sentinel = old_slot_ptr;
+                    auto [control_full_or_sentinel, slot_full_or_sentinel] = skip_empty_or_deleted(old_control_ptr, old_slot_ptr);
                     while (control_full_or_sentinel != old_control_ptr + old_max_slot_count)
                     {
                         // Compute the hash
@@ -1685,6 +1679,14 @@ namespace hud
                         }
                     }
                 }
+            }
+
+            template<typename slot_t>
+            [[nodiscard]] constexpr hud::pair<control_type *, slot_t *> skip_empty_or_deleted(control_type *control_ptr, slot_t *slot_ptr) const noexcept
+            {
+                control_type *control_full_or_sentinel {control::skip_empty_or_deleted(control_ptr)};
+                slot_t *slot_full_or_sentinel {slot_ptr + (control_full_or_sentinel - control_ptr)};
+                return {control_full_or_sentinel, slot_full_or_sentinel};
             }
 
         private:
