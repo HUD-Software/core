@@ -7329,3 +7329,563 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
         }
     }
 }
+
+GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
+{
+    using key_type = i32;
+    using value_type = u64;
+
+    static_assert(hud::is_bitwise_copy_assignable_v<key_type>);
+    static_assert(hud::is_bitwise_copy_assignable_v<value_type>);
+
+    // Test without extra
+    {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned)
+        {
+            using AllocatorType = hud_test::allocator_watcher<1>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            AssignedType assigned(elements_in_assigned);
+
+            assigned = assigned;
+
+            // Ensure we copy all elements
+            bool all_keys_and_values_copied = true;
+            for (usize index = 0; index < elements_in_assigned.size(); index++)
+            {
+                const auto &init_elem = (elements_in_assigned.begin() + index);
+                const auto it = assigned.find(init_elem->first);
+                if (it == assigned.end())
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key() != init_elem->first)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->value() != init_elem->second)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+            }
+            // Allocation count
+            u32 expected_allocation_count = 0;
+            bool assigned_allocate = elements_in_assigned.size() > 0;
+            if (assigned_allocate)
+            {
+                expected_allocation_count++;
+            }
+
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_allocation_count *= 2;
+            }
+
+            u32 expected_free_count = 0;
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_free_count *= 2;
+            }
+            return std::tuple {
+                all_keys_and_values_copied,                                           // 0
+                assigned.allocator().allocation_count() == expected_allocation_count, // 1
+                assigned.allocator().free_count() == expected_free_count              // 2
+            };
+        };
+
+        // Non constant
+        {
+            {
+                const auto result = test({});
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES2);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+        }
+
+        // Constant
+        {
+            {
+                constexpr auto result = test({});
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES2);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+        }
+    }
+
+    // Test with extra
+    {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned)
+        {
+            using AllocatorType = hud_test::allocator_watcher<1>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            AssignedType assigned(elements_in_assigned, extra_assigned);
+
+            assigned = assigned;
+
+            // Ensure we copy all elements
+            bool all_keys_and_values_copied = true;
+            for (usize index = 0; index < elements_in_assigned.size(); index++)
+            {
+                const auto &init_elem = (elements_in_assigned.begin() + index);
+                const auto it = assigned.find(init_elem->first);
+                if (it == assigned.end())
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key() != init_elem->first)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->value() != init_elem->second)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+            }
+            // Allocation count
+            u32 expected_allocation_count = 0;
+            bool assigned_allocate = elements_in_assigned.size() > 0 || extra_assigned > 0;
+            if (assigned_allocate)
+            {
+                expected_allocation_count++;
+            }
+
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_allocation_count *= 2;
+            }
+
+            u32 expected_free_count = 0;
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_free_count *= 2;
+            }
+            return std::tuple {
+                all_keys_and_values_copied,                                           // 0
+                assigned.allocator().allocation_count() == expected_allocation_count, // 1
+                assigned.allocator().free_count() == expected_free_count              // 2
+            };
+        };
+
+        // Non constant
+        {
+            {
+                const auto result = test({}, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test({}, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+
+            {
+                const auto result = test(TEST_VALUES2, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES2, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+        }
+
+        // Constant
+        {
+            {
+                constexpr auto result = test({}, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test({}, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+
+            {
+                constexpr auto result = test(TEST_VALUES2, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES2, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+        }
+    }
+}
+
+GTEST_TEST(array, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
+{
+    using key_type = hud_test::non_bitwise_type;
+    using value_type = hud_test::non_bitwise_type;
+
+    static_assert(!hud::is_bitwise_copy_assignable_v<key_type>);
+    static_assert(!hud::is_bitwise_copy_assignable_v<value_type>);
+
+    // Test without extra
+    {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned)
+        {
+            using AllocatorType = hud_test::allocator_watcher<1>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            AssignedType assigned(elements_in_assigned);
+
+            assigned = assigned;
+
+            // Ensure we copy all elements
+            bool all_keys_and_values_copied = true;
+            for (usize index = 0; index < elements_in_assigned.size(); index++)
+            {
+                const auto &init_elem = (elements_in_assigned.begin() + index);
+                const auto it = assigned.find(init_elem->first);
+                if (it == assigned.end())
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key() != init_elem->first)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().constructor_count() != 1)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().copy_constructor_count() != 1)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().copy_assign_count() != 0)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().move_constructor_count() != 0)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().move_assign_count() != 0)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->value() != init_elem->second)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+            }
+            // Allocation count
+            u32 expected_allocation_count = 0;
+            bool assigned_allocate = elements_in_assigned.size() > 0;
+            if (assigned_allocate)
+            {
+                expected_allocation_count++;
+            }
+
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_allocation_count *= 2;
+            }
+
+            u32 expected_free_count = 0;
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_free_count *= 2;
+            }
+            return std::tuple {
+                all_keys_and_values_copied,                                           // 0
+                assigned.allocator().allocation_count() == expected_allocation_count, // 1
+                assigned.allocator().free_count() == expected_free_count              // 2
+            };
+        };
+
+        // Non constant
+        {
+            {
+                const auto result = test({});
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES2);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+        }
+
+        // Constant
+        {
+            {
+                constexpr auto result = test({});
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES2);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+        }
+    }
+
+    // Test with extra
+    {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned)
+        {
+            using AllocatorType = hud_test::allocator_watcher<1>;
+            using AssignedType = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+            AssignedType assigned(elements_in_assigned, extra_assigned);
+
+            assigned = assigned;
+
+            // Ensure we copy all elements
+            bool all_keys_and_values_copied = true;
+            for (usize index = 0; index < elements_in_assigned.size(); index++)
+            {
+                const auto &init_elem = (elements_in_assigned.begin() + index);
+                const auto it = assigned.find(init_elem->first);
+                if (it == assigned.end())
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key() != init_elem->first)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().constructor_count() != 1)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().copy_constructor_count() != 1)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().copy_assign_count() != 0)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().move_constructor_count() != 0)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->key().move_assign_count() != 0)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+                if (it->value() != init_elem->second)
+                {
+                    all_keys_and_values_copied = false;
+                    break;
+                }
+            }
+            // Allocation count
+            u32 expected_allocation_count = 0;
+            bool assigned_allocate = elements_in_assigned.size() > 0 || extra_assigned > 0;
+            if (assigned_allocate)
+            {
+                expected_allocation_count++;
+            }
+
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_allocation_count *= 2;
+            }
+
+            u32 expected_free_count = 0;
+            // If we are in constant evaluated the allocation is done in 2 separated memory
+            if (hud::is_constant_evaluated())
+            {
+                expected_free_count *= 2;
+            }
+            return std::tuple {
+                all_keys_and_values_copied,                                           // 0
+                assigned.allocator().allocation_count() == expected_allocation_count, // 1
+                assigned.allocator().free_count() == expected_free_count              // 2
+            };
+        };
+
+        // Non constant
+        {
+            {
+                const auto result = test({}, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test({}, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+
+            {
+                const auto result = test(TEST_VALUES2, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = test(TEST_VALUES2, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+        }
+
+        // Constant
+        {
+            {
+                constexpr auto result = test({}, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test({}, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+
+            {
+                constexpr auto result = test(TEST_VALUES2, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                constexpr auto result = test(TEST_VALUES2, 15);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+        }
+    }
+}

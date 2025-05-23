@@ -7067,7 +7067,6 @@ GTEST_TEST(array, copy_assign_array_different_allocator_call_destructor_of_eleme
 // array &operator=(const array &other) noexcept
 GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self)
 {
-
     using type = i32;
 
     static_assert(hud::is_bitwise_copy_assignable_v<type>);
