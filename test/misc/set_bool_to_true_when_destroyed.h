@@ -1,5 +1,6 @@
 #ifndef HD_INC_MISC_SETBOOLTOTRUEWHENDESTROYED_H
 #define HD_INC_MISC_SETBOOLTOTRUEWHENDESTROYED_H
+#include <core/minimal.h>
 #include <core/traits/is_bitwise_copy_constructible.h>
 #include <core/traits/is_bitwise_move_constructible.h>
 #include <core/traits/is_bitwise_copy_assignable.h>
@@ -27,6 +28,17 @@ namespace hud_test
          */
         constexpr SetBoolToTrueWhenDestroyed(i32 *ptr_to_i32) noexcept
             : is_destructor_called(ptr_to_i32)
+        {
+        }
+
+        /**
+         * Construct a SetBoolToTrueWhenDestroyed that keep a pointer on the given boolean.
+         * The given bool is set to false if not nullptr.
+         * @param ptr_to_bool Pointer to the boolean
+         */
+        constexpr SetBoolToTrueWhenDestroyed(i32 id, i32 *ptr_to_i32) noexcept
+            : id_(id)
+            , is_destructor_called(ptr_to_i32)
         {
         }
 
@@ -79,6 +91,7 @@ namespace hud_test
         constexpr SetBoolToTrueWhenDestroyed &operator=(SetBoolToTrueWhenDestroyed &&other) noexcept
         {
             is_destructor_called = other.is_destructor_called;
+            other.is_destructor_called = nullptr;
             return *this;
         }
 
@@ -97,13 +110,31 @@ namespace hud_test
             return is_destructor_called;
         }
 
+        /** Retrieves pointer to the boolean set to true when the destructor is called. */
+        [[nodiscard]] constexpr i32 id() const noexcept
+        {
+            return id_;
+        }
+
         /** Set the pointer to the boolean that is set to true when the destructor is called */
         constexpr void set_ptr(i32 *ptr_to_i32) noexcept
         {
             is_destructor_called = ptr_to_i32;
         }
 
+        friend constexpr bool operator==(const SetBoolToTrueWhenDestroyed &a, const SetBoolToTrueWhenDestroyed &b) noexcept
+        {
+            return a.ptr() == b.ptr();
+        }
+
+        friend constexpr bool operator!=(const SetBoolToTrueWhenDestroyed &a, const SetBoolToTrueWhenDestroyed &b) noexcept
+        {
+            return !(a == b);
+        }
+
     private:
+        /** ID */
+        i32 id_ {0};
         /** Reference to the boolean to set to true when the destructor is called. */
         i32 *is_destructor_called = nullptr;
     };
@@ -114,4 +145,25 @@ namespace hud_test
     static_assert(!hud::is_bitwise_move_assignable_v<SetBoolToTrueWhenDestroyed>);
 } // namespace hud_test
 
+namespace hud
+{
+    template<>
+    struct hash_32<hud_test::SetBoolToTrueWhenDestroyed>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::SetBoolToTrueWhenDestroyed &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::SetBoolToTrueWhenDestroyed>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::SetBoolToTrueWhenDestroyed &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+
+} // namespace hud
 #endif // HD_INC_MISC_SETBOOLTOTRUEWHENDESTROYED_H

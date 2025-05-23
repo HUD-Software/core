@@ -374,7 +374,20 @@ namespace hud
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(hud::pair<u_key_t, u_value_t> &&pair) noexcept
         {
-            return add(hud::get<0>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)), hud::get<1>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)));
+            return super::add(hud::get<0>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)), hud::get<1>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)));
+        }
+
+        /**
+         * Insert a key in the hashset.
+         * @param key The key associated with the `value`
+         * @param args List of arguments pass to `value_type` constructor after the `key` itself
+         * @return Iterator to the `value`
+         */
+
+        constexpr iterator add(key_type &&key, value_type &&value) noexcept
+        requires(hud::is_constructible_v<storage_type, key_type, value_type>)
+        {
+            return super::add(hud::forward<key_type>(key), hud::forward<key_type>(value));
         }
     };
 

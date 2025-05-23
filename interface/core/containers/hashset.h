@@ -808,7 +808,7 @@ namespace hud
                 usize control_size {allocate_control_and_slot(max_slot_count_)};
 
                 // If constant evaluated context or when slot_type is not bitwise copy constructible
-                // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
+                // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like grow_capacity
                 // In a non constant evaluated context
                 // If type is trivially copy constructible, just memcpy control and slot
                 // else do like grow_capacity
@@ -1271,19 +1271,6 @@ namespace hud
             }
 
         private:
-            // template<typename key_type, typename u_key_type>
-            // constexpr u64 compute_hash(const auto *slot) noexcept
-            // {
-            //     if constexpr (hud::is_same_v<key_type, u_key_type>)
-            //     {
-            //         return hasher_type {}(slot->key());
-            //     }
-            //     else
-            //     {
-            //         return hasher_type {}(static_cast<key_type>(slot->key()));
-            //     }
-            // }
-
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr void copy_assign(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
             {
@@ -1351,9 +1338,6 @@ namespace hud
                             return hasher_type {}(static_cast<key_type>(slot->key()));
                         }
                     };
-
-                    // if constexpr (hud::is_same_v<key_type, typename u_storage_t::key_type>)
-                    // {
                     control_type *control_full_or_sentinel = other.control_ptr_;
                     auto slot_full_or_sentinel = other.slot_ptr_;
                     while (control_full_or_sentinel != other.control_ptr_sentinel())
@@ -1442,7 +1426,7 @@ namespace hud
                 // Slots are aligned based on alignof(slot_type)
                 // In the case of a constant-evaluated context, slot_ptr_ may be uninitialized when the map is created
                 // To satisfy the compiler, initialize it to nullptr in this case
-                if (hud::is_constant_evaluated() && control_ptr_ == &INIT_GROUP[16])
+                if (hud::is_constant_evaluated() ? (control_ptr_ == &INIT_GROUP[16]) : false)
                 {
                     slot_ptr_ = nullptr;
                 }
@@ -1538,7 +1522,6 @@ namespace hud
                         return slot_index_that_is_free_or_deleted;
                     }
 
-                    // Advance to next group (Maybe a control iterator taht iterate over groups can be better alternative)
                     slot_index += group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count;
                 }
@@ -1559,7 +1542,6 @@ namespace hud
                         return {control_ptr_ + first_full_index, slot_ptr_ + first_full_index};
                     }
 
-                    // Advance to next group (Maybe a control iterator that iterate over groups can be better alternative)
                     slot_index += group_type::SLOT_PER_GROUP;
                 }
                 return {control_ptr_sentinel(), nullptr};
@@ -1658,17 +1640,49 @@ namespace hud
                 {
                     control_type *ctrl_ptr {control_ptr_};
                     slot_type *slot_ptr {slot_ptr_};
-                    size_t remaining_slots {count()};
-                    while (remaining_slots != 0)
+                    // When max slot count is less than the probing group
+                    // We have cloned control in the group
+                    // In this case, we start probing at the sentinel instead of 0
+                    if (max_slot_count_ < group_type::SLOT_PER_GROUP - 1)
                     {
-                        group_type group {ctrl_ptr};
-                        for (u32 full_index : group.mask_of_full_slot())
+                        group_type group {control_ptr_sentinel()};
+
+                        // In the case of constant expression
+                        // If the hashmap is empty, slot_ptr is nullptr, we don't want to decrement the pointer in the case
+                        // In a non constant expression slot_ptr is located after control in the same memory layout,
+                        // we can safely decrement as soon as we don't read the value
+                        if (hud::is_constant_evaluated())
                         {
-                            hud::memory::destroy_object(slot_ptr + full_index);
-                            --remaining_slots;
+                            // Iterate over cloned control bytes
+                            for (u32 full_index : group.mask_of_full_slot())
+                            {
+                                hud::memory::destroy_object(slot_ptr + (full_index - 1));
+                            }
                         }
-                        ctrl_ptr += group_type::SLOT_PER_GROUP;
-                        slot_ptr += group_type::SLOT_PER_GROUP;
+                        else
+                        {
+                            --slot_ptr;
+                            // Iterate over cloned control bytes
+                            for (u32 full_index : group.mask_of_full_slot())
+                            {
+                                hud::memory::destroy_object(slot_ptr + full_index);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        size_t remaining_slots {count()};
+                        while (remaining_slots != 0)
+                        {
+                            group_type group {ctrl_ptr};
+                            for (u32 full_index : group.mask_of_full_slot())
+                            {
+                                hud::memory::destroy_object(slot_ptr + full_index);
+                                --remaining_slots;
+                            }
+                            ctrl_ptr += group_type::SLOT_PER_GROUP;
+                            slot_ptr += group_type::SLOT_PER_GROUP;
+                        }
                     }
                 }
             }

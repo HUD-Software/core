@@ -149,7 +149,7 @@ namespace hud
 
     /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
     template<>
-    struct hash_32<const ansichar *, usize>
+    struct hash_32<ansichar *, usize>
     {
         [[nodiscard]] constexpr u32 operator()(const ansichar *value, usize length) const
         {
@@ -158,17 +158,17 @@ namespace hud
     };
 
     template<>
-    struct hash_32<const ansichar *>
+    struct hash_32<ansichar *>
     {
         [[nodiscard]] constexpr u32 operator()(const ansichar *value, usize length) const
         {
-            return hud::hash_32<const ansichar *, usize> {}(value, length);
+            return hud::hash_32<ansichar *, usize> {}(value, length);
         }
     };
 
     /** Retrieves the 32 bits hash of a wchar null-terminated string. */
     template<>
-    struct hash_32<const wchar *, usize>
+    struct hash_32<wchar *, usize>
     {
         [[nodiscard]] inline u32 operator()(const wchar *value, usize length) const
         {
@@ -177,17 +177,17 @@ namespace hud
     };
 
     template<>
-    struct hash_32<const wchar *>
+    struct hash_32<wchar *>
     {
         [[nodiscard]] inline u32 operator()(const wchar *value, usize length) const
         {
-            return hud::hash_32<const wchar *, usize> {}(value, length);
+            return hud::hash_32<wchar *, usize> {}(value, length);
         }
     };
 
     /** Retrieves the 32 bits hash of a pointer of a type type_t. */
     template<>
-    struct hash_32<const void *>
+    struct hash_32<void *>
     {
         [[nodiscard]] inline u32 operator()(const void *const pointer) const
         {
@@ -201,6 +201,18 @@ namespace hud
                 return hash_32<u64> {}(static_cast<u32>(ptr >> 4)); // 4 lowest bits in 64 bits are likely zero, ignore them
             }
         }
+    };
+
+    template<typename T, typename... types_t>
+    struct hash_32<const T, types_t...>
+        : hash_32<T, types_t...>
+    {
+    };
+
+    template<typename T, typename... types_t>
+    struct hash_32<const T *, types_t...>
+        : hash_32<T *, types_t...>
+    {
     };
 
     /** Combine two 64 bits value. */
@@ -334,7 +346,7 @@ namespace hud
 
     /** Retrieves the 64 bits hash of a ansichar null-terminated string. */
     template<>
-    struct hash_64<const ansichar *, usize>
+    struct hash_64<ansichar *, usize>
     {
         [[nodiscard]] constexpr u64 operator()(const ansichar *value, usize length) const
         {
@@ -343,36 +355,36 @@ namespace hud
     };
 
     template<>
-    struct hash_64<const ansichar *>
+    struct hash_64<ansichar *>
     {
         [[nodiscard]] constexpr u64 operator()(const ansichar *value, usize length) const
         {
-            return hud::hash_64<const ansichar *, usize> {}(value, length);
+            return hud::hash_64<ansichar *, usize> {}(value, length);
         }
     };
 
     /** Retrieves the 64 bits hash of a wchar null-terminated string. */
     template<>
-    struct hash_64<const wchar *, usize>
+    struct hash_64<wchar *, usize>
     {
         [[nodiscard]] inline u64 operator()(const wchar *value, usize length) const
         {
-            return hud::hash_64<const ansichar *, usize> {}(reinterpret_cast<const ansichar *>(value), length * sizeof(wchar));
+            return hud::hash_64<ansichar *, usize> {}(reinterpret_cast<const ansichar *>(value), length * sizeof(wchar));
         }
     };
 
     template<>
-    struct hash_64<const wchar *>
+    struct hash_64<wchar *>
     {
         [[nodiscard]] inline u64 operator()(const wchar *value, usize length) const
         {
-            return hud::hash_64<const wchar *, usize> {}(value, length);
+            return hud::hash_64<wchar *, usize> {}(value, length);
         }
     };
 
     /** Retrieves the 64 bits hash of a pointer of a type type_t. */
     template<>
-    struct hash_64<const void *>
+    struct hash_64<void *>
     {
         [[nodiscard]] inline u64 operator()(const void *const pointer) const
         {
@@ -386,6 +398,18 @@ namespace hud
                 return hud::hash_64<u64> {}(static_cast<u64>(ptr >> 4)); // 4 lowest bits in 64 bits are likely zero, ignore them
             }
         }
+    };
+
+    template<typename T, typename... types_t>
+    struct hash_64<const T, types_t...>
+        : hash_64<T, types_t...>
+    {
+    };
+
+    template<typename T, typename... types_t>
+    struct hash_64<const T *, types_t...>
+        : hash_64<T *, types_t...>
+    {
     };
 
     /**
