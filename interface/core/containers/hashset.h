@@ -873,7 +873,7 @@ namespace hud
             }
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            requires(hud::is_copy_constructible_v<slot_type>)
+            requires(hud::is_copy_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
             constexpr hashset_impl &operator=(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
             {
                 copy_assign(other);
@@ -891,16 +891,16 @@ namespace hud
             {
                 if (this != &other)
                 {
-                    move_assign(other);
+                    move_assign(hud::move(other));
                 }
                 return *this;
             }
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            requires(hud::is_move_constructible_v<slot_type>)
+            requires(hud::is_move_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
             constexpr hashset_impl &operator=(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
             {
-                move_assign(other);
+                move_assign(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other));
                 return *this;
             }
 
@@ -1475,8 +1475,7 @@ namespace hud
                 }
             }
 
-            [[nodiscard]] constexpr usize
-            free_slot_before_grow() const noexcept
+            [[nodiscard]] constexpr usize free_slot_before_grow() const noexcept
             {
                 return free_slot_before_grow_;
             }
