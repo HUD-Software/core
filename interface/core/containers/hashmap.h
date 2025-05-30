@@ -163,13 +163,6 @@ namespace hud
             requires(hud::is_nothrow_copy_assignable_v<pair_type>)
             = default;
 
-            // template<typename u_key_t = key_t, typename u_value_t = value_t>
-            // constexpr hashmap_storage &operator=(const hashmap_storage<u_key_t, u_value_t> &other) noexcept
-            // {
-            //     element_ = other.element_;
-            //     return *this;
-            // }
-
         protected:
             /**
              * Move constructor.
@@ -204,10 +197,12 @@ namespace hud
                 static_assert(hud::is_nothrow_move_constructible_v<value_t, u_value_t>, "value_t(u_value_t&&) move constructor is throwable. hashmap_storage is not designed to allow throwable move constructible components");
             }
 
-        private:
             /** hashmap_storage with other key or value can access private members of hashmap_storage. */
             template<typename u_key_t, typename u_value_t>
             friend class hashmap_storage;
+            /** Only the slot can move construct storage. */
+            template<typename u_storage>
+            friend struct slot;
 
         protected:
             /** The pair containing the key and value. */

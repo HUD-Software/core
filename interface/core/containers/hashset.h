@@ -92,7 +92,7 @@ namespace hud
              * @param other The slot with a compatible storage to move from.
              */
             template<typename u_storage_t = storage_type>
-            requires(hud::is_move_constructible_v<storage_type, u_storage_t>)
+            // requires(hud::is_move_constructible_v<storage_type, u_storage_t>)
             constexpr explicit(!hud::is_convertible_v<storage_type, u_storage_t>) slot(slot<u_storage_t> &&other) noexcept
                 : storage_type(hud::move(other))
             {
@@ -1333,7 +1333,7 @@ namespace hud
                             // Save h2 in control h1 index
                             control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
                             // Copy slot
-                            hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
+                            hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(*slot_ptr));
                         };
                         iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, count_, other.max_slot_count_, insert_slot_by_copy);
                     }
