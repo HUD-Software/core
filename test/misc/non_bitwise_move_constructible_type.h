@@ -154,7 +154,8 @@ namespace hud_test
      * The id is copied in order to know which non_bitwise_move_constructible_type is the original non_bitwise_move_constructible_type.
      * This type add a incremanation pointer information to the type used by non_bitwise_move_constructible_type4 when this type is constructed.
      */
-    struct non_bitwise_move_constructible_type3 : public non_bitwise_move_constructible_type2
+    struct non_bitwise_move_constructible_type3
+        : public non_bitwise_move_constructible_type2
     {
 
     public:
@@ -163,6 +164,15 @@ namespace hud_test
          * Set the incrementation pointer to nullptr
          */
         constexpr non_bitwise_move_constructible_type3() noexcept = default;
+
+        /**
+         * Construct with a given id
+         * @param id The id of the non_bitwise_move_constructible_type3
+         */
+        constexpr non_bitwise_move_constructible_type3(i32 id) noexcept
+            : non_bitwise_move_constructible_type2(id)
+        {
+        }
 
         constexpr non_bitwise_move_constructible_type3(i32 *increment_ptr) noexcept
             : non_bitwise_move_constructible_type2()
@@ -201,6 +211,15 @@ namespace hud_test
          */
         constexpr non_bitwise_move_constructible_type4() noexcept = default;
 
+        /**
+         * Construct with a given id
+         * @param id The id of the non_bitwise_move_constructible_type4
+         */
+        constexpr non_bitwise_move_constructible_type4(i32 id) noexcept
+            : non_bitwise_move_constructible_type3(id)
+        {
+        }
+
         constexpr non_bitwise_move_constructible_type4(i32 *increment_ptr) noexcept
             : non_bitwise_move_constructible_type3(increment_ptr)
         {
@@ -233,7 +252,7 @@ namespace hud_test
         }
 
         /**
-         * Copy construct a non_bitwise_move_constructible_type4
+         * Move construct a non_bitwise_move_constructible_type4
          * @param other The non_bitwise_move_constructible_type3 to move
          */
         constexpr non_bitwise_move_constructible_type4(const non_bitwise_move_constructible_type3 &other) noexcept
@@ -294,7 +313,7 @@ namespace hud
     template<>
     struct hash_32<hud_test::non_bitwise_move_constructible_type2>
     {
-        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_move_constructible_type &custom) const
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_move_constructible_type2 &custom) const
         {
             return hud::hash_32<i32> {}(custom.id());
         }
@@ -303,10 +322,47 @@ namespace hud
     template<>
     struct hash_64<hud_test::non_bitwise_move_constructible_type2>
     {
-        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_move_constructible_type &custom) const
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_move_constructible_type2 &custom) const
         {
             return hud::hash_64<i32> {}(custom.id());
         }
     };
+
+    template<>
+    struct hash_32<hud_test::non_bitwise_move_constructible_type3>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_move_constructible_type3 &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_move_constructible_type3>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_move_constructible_type3 &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_32<hud_test::non_bitwise_move_constructible_type4>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_move_constructible_type4 &custom) const
+        {
+            return hud::hash_32<i32> {}(custom.id());
+        }
+    };
+
+    template<>
+    struct hash_64<hud_test::non_bitwise_move_constructible_type4>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_move_constructible_type4 &custom) const
+        {
+            return hud::hash_64<i32> {}(custom.id());
+        }
+    };
+
 } // namespace hud
 #endif // HD_INC_MISC_NON_BITWISE_MOVE_CONSTRUCTIBLE_TYPE_H
