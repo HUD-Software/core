@@ -84,7 +84,7 @@ GTEST_TEST(hashmap, metadata)
     hud_assert_eq(indices[1], 4);
 }
 
-GTEST_TEST(array, count_return_count_of_element)
+GTEST_TEST(hashmap, count_return_count_of_element)
 {
     // using type = usize;
     // using HashMapType = hud::hashmap<type, type>;
