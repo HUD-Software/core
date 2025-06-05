@@ -83,3 +83,52 @@ GTEST_TEST(hashmap, metadata)
     hud_assert_eq(indices[0], 0);
     hud_assert_eq(indices[1], 4);
 }
+
+GTEST_TEST(array, count_return_count_of_element)
+{
+    // using type = usize;
+    // using HashMapType = hud::hashmap<type, type>;
+
+    // const auto test = []()
+    // {
+    //     HashMapType map;
+
+    // // Count return 0 if array is empty
+    // bool empty_ok = map.count() == 0;
+
+    // // Count return number of element if not empty
+    // constexpr usize COUNT = 256;
+    // for (usize value = 0; value < COUNT; value++)
+    // {
+    //     map.add(value, value);
+    // }
+    // bool return_correct_count = map.count() == COUNT;
+
+    // // Count return number of element after remove
+    // // Remove half
+    // for (usize value = 0; value < COUNT; value += 2)
+    // {
+    //     map.erase(value);
+    // }
+    // bool return_correct_count_after_erase_some = map.count() == COUNT;
+    // return std::tuple {empty_ok, return_correct_count, return_correct_count_after_erase_some};
+    // };
+
+    // // Non constant
+    // {
+    //     HashMapType map;
+    //     const auto result = test();
+    //     hud_assert_eq(std::get<0>(result));
+    //     hud_assert_eq(std::get<1>(result));
+    //     hud_assert_eq(std::get<2>(result));
+    // }
+
+    // // Constant
+    // {
+    //     HashMapType map;
+    //     constexpr auto result = test();
+    //     hud_assert_eq(std::get<0>(result));
+    //     hud_assert_eq(std::get<1>(result));
+    //     hud_assert_eq(std::get<2>(result));
+    // }
+}

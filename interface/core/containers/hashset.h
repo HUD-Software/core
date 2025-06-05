@@ -1013,6 +1013,10 @@ namespace hud
                 }
             }
 
+            constexpr void remove(const key_type &key) noexcept
+            {
+            }
+
             [[nodiscard]]
             constexpr const_iterator find(const key_type &key) const noexcept
             {
