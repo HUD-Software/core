@@ -397,12 +397,12 @@ namespace hud
             {
                 using mask::mask;
 
-                [[nodiscard]] constexpr bool has_free_slot() const noexcept
+                [[nodiscard]] constexpr bool has_empty_slot() const noexcept
                 {
                     return *this;
                 }
 
-                [[nodiscard]] constexpr u32 first_free_index() const noexcept
+                [[nodiscard]] constexpr u32 first_empty_index() const noexcept
                 {
                     return first_non_null_index();
                 }
@@ -413,12 +413,12 @@ namespace hud
             {
                 using mask::mask;
 
-                [[nodiscard]] constexpr bool has_free_or_deleted_slot() const noexcept
+                [[nodiscard]] constexpr bool has_empty_or_deleted_slot() const noexcept
                 {
                     return *this;
                 }
 
-                [[nodiscard]] constexpr u32 first_free_or_deleted_index() const noexcept
+                [[nodiscard]] constexpr u32 first_empty_or_deleted_index() const noexcept
                 {
                     return first_non_null_index();
                 }
@@ -1002,7 +1002,7 @@ namespace hud
                     }
 
                     // If we have free slot, we don't find it
-                    if (group.mask_of_empty_slot().has_free_slot())
+                    if (group.mask_of_empty_slot().has_empty_slot())
                     {
                         return iterator {control_ptr_sentinel()};
                     }
@@ -1011,10 +1011,6 @@ namespace hud
                     slot_index += group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
-            }
-
-            constexpr void remove(const key_type &key) noexcept
-            {
             }
 
             [[nodiscard]]
@@ -1033,6 +1029,14 @@ namespace hud
             constexpr bool contains(const key_type &key) const noexcept
             {
                 return find(key) != end();
+            }
+
+            constexpr void remove(const key_type &key) noexcept
+            {
+                iterator it = find(key);
+                if (it != end())
+                {
+                }
             }
 
             /** Retrieves the allocator. */
@@ -1396,7 +1400,7 @@ namespace hud
 
                     // Don't find the key
                     group_type::empty_mask empty_mask_of_group {group.mask_of_empty_slot()};
-                    if (empty_mask_of_group.has_free_slot()) [[likely]]
+                    if (empty_mask_of_group.has_empty_slot()) [[likely]]
                     {
                         return {insert_no_construct(h1, H2(hash)), true};
                     }
@@ -1518,9 +1522,9 @@ namespace hud
                 {
                     group_type group {control_ptr + slot_index};
                     group_type::empty_or_deleted_mask group_mask_that_match_h2 {group.mask_of_empty_or_deleted_slot()};
-                    if (group_mask_that_match_h2.has_free_or_deleted_slot())
+                    if (group_mask_that_match_h2.has_empty_or_deleted_slot())
                     {
-                        u32 free_index {group_mask_that_match_h2.first_free_or_deleted_index()};
+                        u32 free_index {group_mask_that_match_h2.first_empty_or_deleted_index()};
                         usize slot_index_that_is_free_or_deleted(slot_index + free_index & max_slot_count);
                         return slot_index_that_is_free_or_deleted;
                     }
