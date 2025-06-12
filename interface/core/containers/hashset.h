@@ -367,7 +367,7 @@ namespace hud
                 [[nodiscard]] constexpr u32 first_non_null_index() const noexcept
                 {
                     // Get number of trailing zero and divide it by 8 (>>3) to get the insert offset of the byte
-                    return hud::bits::trailing_zero(mask_value_) >> 3;
+                    return hud::bits::trailing_zeros(mask_value_) >> 3;
                 }
 
                 [[nodiscard]]
@@ -409,12 +409,12 @@ namespace hud
 
                 [[nodiscard]] constexpr u32 trailing_zeros() const noexcept
                 {
-                    return hud::bits::trailing_zero(mask_value_) >> 3;
+                    return hud::bits::trailing_zeros(mask_value_) >> 3;
                 }
 
                 [[nodiscard]] constexpr u32 leading_zeros() const noexcept
                 {
-                    return hud::bits::leading_zero(mask_value_) >> 3;
+                    return hud::bits::leading_zeros(mask_value_) >> 3;
                 }
             };
 
@@ -549,7 +549,7 @@ namespace hud
                 // ctrl | ~(ctrl >> 7) will have the lowest bit set to zero for kEmpty and
                 // kDeleted. We lower all other bits and count number of trailing zeros.
                 constexpr uint64_t bits {0x0101010101010101ULL};
-                return static_cast<u32>(hud::bits::trailing_zero((value_ | ~(value_ >> 7)) & bits) >> 3);
+                return static_cast<u32>(hud::bits::trailing_zeros((value_ | ~(value_ >> 7)) & bits) >> 3);
                 // return static_cast<u32>(countr_zero((ctrl | ~(ctrl >> 7)) & bits) >> 3);
                 // return 0;
             }

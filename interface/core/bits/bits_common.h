@@ -16,7 +16,7 @@ namespace hud::common
             return integral;
         }
 
-                /** Determines if a 64-bit word contains any zero byte using a SIMD-like technique
+        /** Determines if a 64-bit word contains any zero byte using a SIMD-like technique
          * Example:
          *    value = 0x1213140015001617
          *    result = 0x0000008000800000
@@ -54,30 +54,30 @@ namespace hud::common
         // }
 
         /** Returns the number of consecutive 0 bits in the value. */
-        [[nodiscard]] static constexpr u32 leading_zero(u8 value) noexcept
+        [[nodiscard]] static constexpr u32 leading_zeros(u8 value) noexcept
         {
-            return leading_zero(u16 {value}) - 8;
+            return leading_zeros(u16 {value}) - 8;
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
-        [[nodiscard]] static constexpr u32 leading_zero(u16 value) noexcept
+        [[nodiscard]] static constexpr u32 leading_zeros(u16 value) noexcept
         {
-            return leading_zero(u32 {value}) - 16;
+            return leading_zeros(u32 {value}) - 16;
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
-        [[nodiscard]] static constexpr u32 leading_zero(u32 value) noexcept
+        [[nodiscard]] static constexpr u32 leading_zeros(u32 value) noexcept
         {
             return value == 0 ? 32 : 31 - hud::math::floor_log2(u32(value));
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
-        [[nodiscard]] static constexpr u32 leading_zero(u64 value) noexcept
+        [[nodiscard]] static constexpr u32 leading_zeros(u64 value) noexcept
         {
             return value == 0 ? 64 : 63 - hud::math::floor_log2(value);
         }
 
-        [[nodiscard]] static constexpr u32 trailing_zero(u8 value) noexcept
+        [[nodiscard]] static constexpr u32 trailing_zeros(u8 value) noexcept
         {
             u8 c = 8; // c will be the number of zero bits on the right
             value &= -i8(value);
@@ -92,7 +92,7 @@ namespace hud::common
             return c;
         }
 
-        [[nodiscard]] static constexpr u32 trailing_zero(u16 value) noexcept
+        [[nodiscard]] static constexpr u32 trailing_zeros(u16 value) noexcept
         {
             u16 c = 16; // c will be the number of zero bits on the right
             value &= -i16(value);
@@ -109,7 +109,7 @@ namespace hud::common
             return c;
         }
 
-        [[nodiscard]] static constexpr u32 trailing_zero(u32 value) noexcept
+        [[nodiscard]] static constexpr u32 trailing_zeros(u32 value) noexcept
         {
             u32 c = 32; // c will be the number of zero bits on the right
             value &= -i32(value);
@@ -128,7 +128,7 @@ namespace hud::common
             return c;
         }
 
-        [[nodiscard]] static constexpr u64 trailing_zero(u64 value) noexcept
+        [[nodiscard]] static constexpr u64 trailing_zeros(u64 value) noexcept
         {
             u64 c = 64; // c will be the number of zero bits on the right
             value &= -i64(value);

@@ -139,23 +139,23 @@ namespace hud::windows
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
-        [[nodiscard]] static constexpr u32 leading_zero(u8 value) noexcept
+        [[nodiscard]] static constexpr u32 leading_zeros(u8 value) noexcept
         {
-            return leading_zero(u32 {value}) - 24;
+            return leading_zeros(u32 {value}) - 24;
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
-        [[nodiscard]] static constexpr u32 leading_zero(u16 value) noexcept
+        [[nodiscard]] static constexpr u32 leading_zeros(u16 value) noexcept
         {
 #if HD_HAS_BUILTIN_CLZS
             return value == 0 ? 16 : __builtin_clzs(value);
 #else
-            return leading_zero(u32 {value}) - 16;
+            return leading_zeros(u32 {value}) - 16;
 #endif
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
-        [[nodiscard]] static constexpr u32 leading_zero(u32 value) noexcept
+        [[nodiscard]] static constexpr u32 leading_zeros(u32 value) noexcept
         {
 #if HD_HAS_BUILTIN_CLZ
             return value == 0 ? 32 : __builtin_clz(value);
@@ -163,7 +163,7 @@ namespace hud::windows
             if (value == 0)
                 return 32;
             if (hud::is_constant_evaluated())
-                return hud::common::bits::leading_zero(value);
+                return hud::common::bits::leading_zeros(value);
             u32 result = 0;
             if (_BitScanReverse((unsigned long *)&result, value))
             {
@@ -174,7 +174,7 @@ namespace hud::windows
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
-        [[nodiscard]] static constexpr u32 leading_zero(u64 value) noexcept
+        [[nodiscard]] static constexpr u32 leading_zeros(u64 value) noexcept
         {
 #if HD_HAS_BUILTIN_CLZLL
             return value == 0 ? 64 : __builtin_clzll(value);
@@ -182,7 +182,7 @@ namespace hud::windows
             if (value == 0)
                 return 64;
             if (hud::is_constant_evaluated())
-                return hud::common::bits::leading_zero(value);
+                return hud::common::bits::leading_zeros(value);
     #if defined(HD_TARGET_X64)
             u32 result = 0;
             if (_BitScanReverse64((unsigned long *)&result, value))
@@ -205,17 +205,17 @@ namespace hud::windows
 #endif
         }
 
-        [[nodiscard]] static constexpr u32 trailing_zero(u8 value) noexcept
+        [[nodiscard]] static constexpr u32 trailing_zeros(u8 value) noexcept
         {
-            return value == 0 ? 8 : trailing_zero(u32 {value});
+            return value == 0 ? 8 : trailing_zeros(u32 {value});
         }
 
-        [[nodiscard]] static constexpr u32 trailing_zero(u16 value) noexcept
+        [[nodiscard]] static constexpr u32 trailing_zeros(u16 value) noexcept
         {
-            return value == 0 ? 16 : trailing_zero(u32 {value});
+            return value == 0 ? 16 : trailing_zeros(u32 {value});
         }
 
-        [[nodiscard]] static constexpr u32 trailing_zero(u32 value) noexcept
+        [[nodiscard]] static constexpr u32 trailing_zeros(u32 value) noexcept
         {
 #if HD_HAS_BUILTIN_CTZ
             return value == 0 ? 32 : __builtin_ctz(value);
@@ -223,14 +223,14 @@ namespace hud::windows
             if (value == 0)
                 return 32;
             if (hud::is_constant_evaluated())
-                return hud::common::bits::trailing_zero(value);
+                return hud::common::bits::trailing_zeros(value);
             u32 result = 0;
             _BitScanForward((unsigned long *)&result, value);
             return result;
 #endif
         }
 
-        [[nodiscard]] static constexpr u64 trailing_zero(u64 value) noexcept
+        [[nodiscard]] static constexpr u64 trailing_zeros(u64 value) noexcept
         {
 #if HD_HAS_BUILTIN_CTZLL
             return value == 0 ? 64 : __builtin_ctzll(value);
@@ -238,7 +238,7 @@ namespace hud::windows
             if (value == 0)
                 return 64;
             if (hud::is_constant_evaluated())
-                return hud::common::bits::trailing_zero(value);
+                return hud::common::bits::trailing_zeros(value);
     #if defined(HD_TARGET_X64)
             u64 result = 0;
             _BitScanForward64((unsigned long *)&result, value);
