@@ -388,7 +388,7 @@ namespace hud
                     return mask_value_;
                 }
 
-            private:
+            protected:
                 u64 mask_value_;
             };
 
@@ -405,6 +405,16 @@ namespace hud
                 [[nodiscard]] constexpr u32 first_empty_index() const noexcept
                 {
                     return first_non_null_index();
+                }
+
+                [[nodiscard]] constexpr u32 trailing_zeros() const noexcept
+                {
+                    return hud::bits::trailing_zero(mask_value_) >> 3;
+                }
+
+                [[nodiscard]] constexpr u32 leading_zeros() const noexcept
+                {
+                    return hud::bits::leading_zero(mask_value_) >> 3;
                 }
             };
 
@@ -1096,6 +1106,49 @@ namespace hud
             }
 
         private:
+            constexpr bool was_never_full(usize index) noexcept
+            {
+                // If map fits entirely into a probing group.
+                if (max_slot_count_ <= group_type::SLOT_PER_GROUP)
+                {
+                    return true;
+                }
+
+                const usize index_before = (index - group_type::SLOT_PER_GROUP) & max_slot_count_;
+                const group_type::empty_mask empty_after = group_type {control_ptr_ + index}.mask_of_empty_slot();
+                const group_type::empty_mask empty_before = group_type {control_ptr_ + index_before}.mask_of_empty_slot();
+
+                // We count how many consecutive non empties we have to the right and to the
+                // left of `it`. If the sum is >= kWidth then there is at least one probe
+                // window that might have seen a full group.
+                return empty_before && empty_after && static_cast<usize>(empty_after.trailing_zeros() + empty_after.leading_zeros()) < group_type::SLOT_PER_GROUP;
+                // static bool WasNeverFull(CommonFields& c, size_t index) {
+                // if (is_single_group(c.capacity())) {
+                // return true;
+                // }
+                // const size_t index_before = (index - Group::kWidth) & c.capacity();
+                // const auto empty_after = Group(c.control() + index).MaskEmpty();
+                // const auto empty_before = Group(c.control() + index_before).MaskEmpty();
+
+                // // We count how many consecutive non empties we have to the right and to the
+                // // left of `it`. If the sum is >= kWidth then there is at least one probe
+                // // window that might have seen a full group.
+                // return empty_before && empty_after &&
+                //        static_cast<size_t>(empty_after.TrailingZeros()) +
+                //                empty_before.LeadingZeros() <
+                //            Group::kWidth;
+                // }
+            }
+
+            constexpr void remove_iterator(iterator it) noexcept
+            {
+                // Destroy the slot then mark the contral as empty if 'it' in not in probing sequence,
+                // else mark the control as deleted to not break the probing sequence
+                hud::memory::destroy_object(it.slot_ptr_);
+
+                count_--;
+            }
+
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr void copy_construct(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count = 0) noexcept
             {
