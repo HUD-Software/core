@@ -17,11 +17,7 @@ namespace hud
     {
         [[nodiscard]] constexpr u32 operator()(const hud_test::collided_key &custom) const
         {
-            if (custom.id() % 2)
-            {
-                return hud::hash_32<i32> {}(0);
-            }
-            return hud::hash_32<i32> {}(custom.id());
+            return hud::hash_32<i32> {}(custom.id() / 3);
         }
     };
 
@@ -30,11 +26,7 @@ namespace hud
     {
         [[nodiscard]] constexpr u64 operator()(const hud_test::collided_key &custom) const
         {
-            if (custom.id() % 2)
-            {
-                return hud::hash_64<i32> {}(0);
-            }
-            return hud::hash_64<i32> {}(custom.id());
+            return hud::hash_64<i32> {}(custom.id() / 3);
         }
     };
 
