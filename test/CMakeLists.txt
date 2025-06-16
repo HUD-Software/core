@@ -77,6 +77,7 @@ set( src
 	hashmap/hashmap_misc.cpp
 	hashmap/hashmap_move_assign_operator.cpp
 	hashmap/hashmap_move_constructors.cpp
+	hashmap/hashmap_remove.cpp
 	hashset/hashset_add.cpp
 	hashset/hashset_constructors.cpp
 	hashset/hashset_iterator.cpp

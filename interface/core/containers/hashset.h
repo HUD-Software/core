@@ -601,20 +601,12 @@ namespace hud
         {
             static constexpr usize COUNT_CLONED_BYTE {group_type::SLOT_PER_GROUP - 1};
 
-            /** Save the H2. */
-            static constexpr void set_h2(control_type *control_ptr, usize slot_index, control_type h2, usize max_slot_count) noexcept
-            {
-                // Save the h2 in the slot and also in the cloned byte
-                control_ptr[slot_index] = h2;
-                control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = h2;
-            }
-
             /** Set the control to deleted. */
-            static constexpr void set_deleted(control_type *control_ptr, usize slot_index, usize max_slot_count) noexcept
+            static constexpr void set(control_type *control_ptr, usize slot_index, control_type value, usize max_slot_count) noexcept
             {
                 // Save the h2 in the slot and also in the cloned byte
-                control_ptr[slot_index] = deleted_byte;
-                control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = deleted_byte;
+                control_ptr[slot_index] = value;
+                control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = value;
             }
 
             /** Skip all empty or deleted control. */
@@ -744,6 +736,12 @@ namespace hud
         private:
             template<typename u_slot_t, bool u_is_const>
             friend class iterator;
+            template<
+                typename storage_t,
+                typename hasher_t,
+                typename key_equal_t,
+                typename allocator_t>
+            friend class hashset_impl;
 
             // The control to iterate over
             control_type *control_ptr_;
@@ -1046,6 +1044,7 @@ namespace hud
                 iterator it = find(key);
                 if (it != end())
                 {
+                    remove_iterator(it);
                 }
             }
 
@@ -1058,7 +1057,7 @@ namespace hud
             /** Return the slack in number of elements. */
             [[nodiscard]] HD_FORCEINLINE constexpr usize slack() const noexcept
             {
-                return free_slot_before_grow_;
+                return free_slot_before_grow();
             }
 
             /** Checks whether the array is empty of not. */
@@ -1106,7 +1105,7 @@ namespace hud
             }
 
         private:
-            constexpr bool was_never_full(usize index) noexcept
+            constexpr bool should_be_mark_as_empty_if_deleted(usize index) noexcept
             {
                 // If map fits entirely into a probing group.
                 if (max_slot_count_ <= group_type::SLOT_PER_GROUP)
@@ -1114,38 +1113,34 @@ namespace hud
                     return true;
                 }
 
-                const usize index_before = (index - group_type::SLOT_PER_GROUP) & max_slot_count_;
+                // Mask of empty slot of the group after index
                 const group_type::empty_mask empty_after = group_type {control_ptr_ + index}.mask_of_empty_slot();
+                // Mask of empty slot of the group before index
+                const usize index_before = (index - group_type::SLOT_PER_GROUP) & max_slot_count_;
                 const group_type::empty_mask empty_before = group_type {control_ptr_ + index_before}.mask_of_empty_slot();
-
-                // We count how many consecutive non empties we have to the right and to the
-                // left of `it`. If the sum is >= kWidth then there is at least one probe
-                // window that might have seen a full group.
-                return empty_before && empty_after && static_cast<usize>(empty_after.trailing_zeros() + empty_after.leading_zeros()) < group_type::SLOT_PER_GROUP;
-                // static bool WasNeverFull(CommonFields& c, size_t index) {
-                // if (is_single_group(c.capacity())) {
-                // return true;
-                // }
-                // const size_t index_before = (index - Group::kWidth) & c.capacity();
-                // const auto empty_after = Group(c.control() + index).MaskEmpty();
-                // const auto empty_before = Group(c.control() + index_before).MaskEmpty();
-
-                // // We count how many consecutive non empties we have to the right and to the
-                // // left of `it`. If the sum is >= kWidth then there is at least one probe
-                // // window that might have seen a full group.
-                // return empty_before && empty_after &&
-                //        static_cast<size_t>(empty_after.TrailingZeros()) +
-                //                empty_before.LeadingZeros() <
-                //            Group::kWidth;
-                // }
+                // If both groups are not fully empty (i.e., contain at least one empty slot each),
+                // and the number of consecutive empty slots before and after the index
+                // doesn’t span the whole group (i.e., < SLOT_PER_GROUP),
+                // then a probing sequence might have crossed this position → must keep as 'deleted'.
+                return empty_before && empty_after && static_cast<usize>(empty_after.trailing_zeros() + empty_before.leading_zeros()) < group_type::SLOT_PER_GROUP;
             }
 
             constexpr void remove_iterator(iterator it) noexcept
             {
                 // Destroy the slot then mark the contral as empty if 'it' in not in probing sequence,
                 // else mark the control as deleted to not break the probing sequence
+                const usize index = it.control_ptr_ - control_ptr_;
                 hud::memory::destroy_object(it.slot_ptr_);
-
+                if (should_be_mark_as_empty_if_deleted(index))
+                {
+                    control::set(control_ptr_, index, empty_byte, max_slot_count_);
+                    free_slot_before_grow_++;
+                }
+                else
+                {
+                    control::set(control_ptr_, index, deleted_byte, max_slot_count_);
+                    free_slot_before_grow_ |= ~((~usize {}) >> 1); // Set the sign bit that represent the presence of delete slots
+                }
                 count_--;
             }
 
@@ -1183,7 +1178,7 @@ namespace hud
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
                             // Save h2 in control h1 index
-                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                            control::set(control_ptr_, slot_index, H2(hash), max_slot_count_);
                             // Copy slot
                             hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
                         };
@@ -1234,7 +1229,7 @@ namespace hud
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
                             // Save h2 in control h1 index
-                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                            control::set(control_ptr_, slot_index, H2(hash), max_slot_count_);
                             // Copy slot
                             hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(*slot_ptr));
                         };
@@ -1317,7 +1312,7 @@ namespace hud
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
                         // Save h2 in control h1 index
-                        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                        control::set(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Copy slot
                         hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
                     };
@@ -1392,7 +1387,7 @@ namespace hud
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
                             // Save h2 in control h1 index
-                            control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                            control::set(control_ptr_, slot_index, H2(hash), max_slot_count_);
                             // Copy slot
                             hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(*slot_ptr));
                         };
@@ -1420,7 +1415,7 @@ namespace hud
                     other.count_ = 0;
                     max_slot_count_ = other.max_slot_count_;
                     other.max_slot_count_ = 0;
-                    free_slot_before_grow_ = other.free_slot_before_grow_ = 0;
+                    free_slot_before_grow_ = other.free_slot_before_grow_;
                     other.free_slot_before_grow_ = 0;
                 }
             }
@@ -1465,7 +1460,7 @@ namespace hud
             }
 
             /** Insert a slot index associated with the given h2 hash. */
-            [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u64 h2) noexcept
+            [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u8 h2) noexcept
             {
                 // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
                 if (free_slot_before_grow() == 0)
@@ -1476,7 +1471,7 @@ namespace hud
                 // Find the first empty of deleted slot that can be used for this h1 hash
                 usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
                 count_++;
-                control::set_h2(control_ptr_, slot_index, h2, max_slot_count_);
+                control::set(control_ptr_, slot_index, h2, max_slot_count_);
 
                 free_slot_before_grow_--;
 
@@ -1527,7 +1522,7 @@ namespace hud
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
                         // Save h2 in control h1 index
-                        control::set_h2(control_ptr_, slot_index, H2(hash), max_slot_count_);
+                        control::set(control_ptr_, slot_index, H2(hash), max_slot_count_);
                         // Move old slot to new slot
                         hud::memory::move_or_copy_construct_object_then_destroy(slot_ptr_ + slot_index, hud::move(*slot_ptr));
                     };
@@ -1538,7 +1533,8 @@ namespace hud
 
             [[nodiscard]] constexpr usize free_slot_before_grow() const noexcept
             {
-                return free_slot_before_grow_;
+                // Remove the sign bit that represent if the map contains deleted slots
+                return free_slot_before_grow_ & ((~size_t {}) >> 1);
             }
 
             /** Retrieves the next capacity after a grow. */
