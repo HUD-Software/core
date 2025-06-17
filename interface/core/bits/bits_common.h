@@ -68,13 +68,72 @@ namespace hud::common
         /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zeros(u32 value) noexcept
         {
-            return value == 0 ? 32 : 31 - hud::math::floor_log2(u32(value));
+            if (value == 0)
+                return 32;
+            u32 count = 0;
+            if ((value >> 16) == 0)
+            {
+                count += 16;
+                value <<= 16;
+            }
+            if ((value >> 24) == 0)
+            {
+                count += 8;
+                value <<= 8;
+            }
+            if ((value >> 28) == 0)
+            {
+                count += 4;
+                value <<= 4;
+            }
+            if ((value >> 30) == 0)
+            {
+                count += 2;
+                value <<= 2;
+            }
+            if ((value >> 31) == 0)
+            {
+                count += 1;
+            }
+            return count;
         }
 
         /** Returns the number of consecutive 0 bits in the value. */
         [[nodiscard]] static constexpr u32 leading_zeros(u64 value) noexcept
         {
-            return value == 0 ? 64 : 63 - hud::math::floor_log2(value);
+            if (value == 0)
+                return 64;
+            uint64_t count = 0;
+            if ((value >> 32) == 0)
+            {
+                count += 32;
+                value <<= 32;
+            }
+            if ((value >> 48) == 0)
+            {
+                count += 16;
+                value <<= 16;
+            }
+            if ((value >> 56) == 0)
+            {
+                count += 8;
+                value <<= 8;
+            }
+            if ((value >> 60) == 0)
+            {
+                count += 4;
+                value <<= 4;
+            }
+            if ((value >> 62) == 0)
+            {
+                count += 2;
+                value <<= 2;
+            }
+            if ((value >> 63) == 0)
+            {
+                count += 1;
+            }
+            return count;
         }
 
         [[nodiscard]] static constexpr u32 trailing_zeros(u8 value) noexcept

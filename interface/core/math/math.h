@@ -3,6 +3,7 @@
 #include "../templates/bit_cast.h"
 #include "../traits/is_constant_evaluated.h"
 #include <cmath> // FP_SUBNORMAL, etc...
+#include "../bits.h"
 
 namespace hud
 {
@@ -36,13 +37,13 @@ namespace hud
         /** Compute the next power of two. */
         [[nodiscard]] static constexpr u32 next_power_of_two(u32 integral) noexcept
         {
-            return hud::math::next_power_of_two_mask(integral) + 1;
+            return integral == 0 ? 1 : u32 {1} << (32 - hud::bits::leading_zeros(integral - 1));
         }
 
         /** Compute the next power of two. */
         [[nodiscard]] static constexpr u64 next_power_of_two(u64 integral) noexcept
         {
-            return hud::math::next_power_of_two_mask(integral) + 1;
+            return integral == 0 ? 1 : (u64 {1} << (64 - hud::bits::leading_zeros(integral - 1)));
         }
 
         /** Compute the natual logarithm of value. */

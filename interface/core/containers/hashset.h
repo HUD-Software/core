@@ -1558,7 +1558,7 @@ namespace hud
             [[nodiscard]] constexpr usize free_slot_before_grow() const noexcept
             {
                 // Remove the sign bit that represent if the map contains deleted slots
-                return free_slot_before_grow_ & ((~size_t {}) >> 1);
+                return free_slot_before_grow_ & ((~usize {}) >> 1);
             }
 
             /** Retrieves the next capacity after a grow. */
@@ -1571,7 +1571,7 @@ namespace hud
             /** Retrieves the max slot count for the given count. */
             [[nodiscard]] constexpr usize compute_max_count(usize count) const noexcept
             {
-                return hud::math::next_power_of_two(count + 1) - 1;
+                return count ? ~usize {} >> hud::bits::leading_zeros(count) : 0;
             }
 
             /** Compute the size of the allocation needed for the given slot count. */
