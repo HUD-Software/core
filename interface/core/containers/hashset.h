@@ -917,7 +917,7 @@ namespace hud
             {
                 if (count > max_slot_count_)
                 {
-                    grow_capacity(compute_max_count(count));
+                    resize(compute_max_count(count));
                 }
             }
 
@@ -1019,6 +1019,29 @@ namespace hud
                     slot_index += group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
+            }
+
+            constexpr void rehash(i32 count) const noexcept
+            {
+                // If we request 0
+                // and :
+                // - we have no allocation done, just return
+                // - we have allocation but no element, free allocation and reset internal state
+                if (count == 0)
+                {
+                    if (max_slot_count_ == 0)
+                        return;
+                    if (is_empty())
+                        reset_control_and_slot();
+                }
+
+                // We request 0 or more and we have allocation and elements
+                // bitor is a faster way of doing `max` here. We will round up to the next
+                // power-of-2-minus-1, so bitor is good enough.
+                usize max_count = compute_max_count(count | min_capacity_for_count(count));
+                if (count == 0 || max_count > max_slot_count_)
+                    resize(max_count);
+                return;
             }
 
             [[nodiscard]]
@@ -1463,9 +1486,10 @@ namespace hud
             [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u8 h2) noexcept
             {
                 // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
+                // TODO : check rehash_and_grow_if_necessary and implement the SQuash DELETED branch
                 if (free_slot_before_grow() == 0)
                 {
-                    grow_capacity(next_capacity());
+                    resize(next_capacity());
                 }
 
                 // Find the first empty of deleted slot that can be used for this h1 hash
@@ -1478,9 +1502,9 @@ namespace hud
                 return slot_index;
             }
 
-            constexpr void grow_capacity(usize new_max_slot_count) noexcept
+            constexpr void resize(usize new_max_slot_count) noexcept
             {
-                hud::check(new_max_slot_count > max_slot_count_ && "Grow need a bigger value");
+                // hud::check(new_max_slot_count > max_slot_count_ && "Grow need a bigger value");
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
 
                 // Create the buffer with control and slots
@@ -1620,6 +1644,18 @@ namespace hud
                 // |         64          |      64−64/8            |            56            |
                 return group_type::SLOT_PER_GROUP == 8 && capacity == 7 ? 6 :
                                                                           capacity - capacity / 8;
+            }
+
+            /** Compute the minimum capacity needed for the given `count` element that respect the load factor */
+            [[nodiscard]] constexpr usize min_capacity_for_count(usize count) noexcept
+            {
+                // `count*8/7`
+                if (group_type::SLOT_PER_GROUP == 8 && count == 7)
+                {
+                    // x+(x-1)/7 does not work when x==7.
+                    return 8;
+                }
+                return count + static_cast<usize>((static_cast<i64>(count) - 1) / 7);
             }
 
             [[nodiscard]]

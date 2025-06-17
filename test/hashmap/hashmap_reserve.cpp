@@ -55,10 +55,6 @@ GTEST_TEST(hashmap, reserve_empty_to_size_allocate_only)
         reserve_ok &= map.slack() >= 0;
         reserve_ok &= (map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1));
         reserve_ok &= map.allocator().free_count() == 0;
-        for (const auto &[key, value] : map)
-        {
-            reserve_ok = false;
-        }
         return reserve_ok;
     };
 

@@ -8,10 +8,12 @@ namespace hud_test
         using super = hud_test::non_bitwise_type;
         using super::super;
 
+#if defined(HD_COMPILER_GCC)
         virtual constexpr ~collided_key() noexcept
         {
             super::~super();
         }
+#endif
     };
 } // namespace hud_test
 
