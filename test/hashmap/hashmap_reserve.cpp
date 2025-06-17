@@ -41,8 +41,7 @@ GTEST_TEST(hashmap, reserve_empty_to_size_allocate_only)
 {
     using AllocatorType = hud_test::allocator_watcher<1>;
     using HashMapType = hud::hashmap<i32, i64, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<i32>, AllocatorType>;
-
-    auto test = []()
+    const auto test = []()
     {
         HashMapType map;
         bool reserve_ok = map.count() == 0;
@@ -51,12 +50,15 @@ GTEST_TEST(hashmap, reserve_empty_to_size_allocate_only)
         reserve_ok &= map.allocator().allocation_count() == 0;
         reserve_ok &= map.allocator().free_count() == 0;
         map.reserve(25);
-
         reserve_ok &= map.count() == 0;
         reserve_ok &= map.max_count() >= 25;
         reserve_ok &= map.slack() >= 0;
-        reserve_ok &= map.allocator().allocation_count() == 1;
+        reserve_ok &= (map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1));
         reserve_ok &= map.allocator().free_count() == 0;
+        for (const auto &[key, value] : map)
+        {
+            reserve_ok = false;
+        }
         return reserve_ok;
     };
 
@@ -92,16 +94,16 @@ GTEST_TEST(hashmap, reserve_non_empty_to_more_size_allocate_only)
         reserve_ok &= map.count() == 2;
         reserve_ok &= map.max_count() >= 2;
         reserve_ok &= map.slack() >= 0;
-        reserve_ok &= map.allocator().allocation_count() == 1;
+        reserve_ok &= (map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1));
         reserve_ok &= map.allocator().free_count() == 0;
 
         const usize count_to_grow = map.max_count() * 2;
         map.reserve(count_to_grow);
-        reserve_ok &= map.count() == count_to_grow;
+        reserve_ok &= map.count() == 2;
         reserve_ok &= map.max_count() >= count_to_grow;
         reserve_ok &= map.slack() >= 0;
-        reserve_ok &= map.allocator().allocation_count() == 2;
-        reserve_ok &= map.allocator().free_count() == 1;
+        reserve_ok &= (map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2));
+        reserve_ok &= (map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1));
 
         return reserve_ok;
     };
