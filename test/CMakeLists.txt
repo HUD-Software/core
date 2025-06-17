@@ -112,6 +112,7 @@ set( src
 	pair/pair_assignments.cpp
 	pair/pair_comparison.cpp
 	pair/pair_constructors.cpp
+	pair/pair_destructor.cpp
 	pair/pair_misc.cpp
 	pair/pair_swap.cpp
 	shared_pointer/multi_thread/shared_pointer_multi_thread_assignments.cpp

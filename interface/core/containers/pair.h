@@ -32,7 +32,6 @@
 
 namespace hud
 {
-
     /**
      * This class couples together a pair of components, which may be of different types (first_type and second_type). The individual components can be accessed through its public members first and second.
      * pair is a particular case of Tuple.
@@ -58,8 +57,7 @@ namespace hud
          * If one of the component is explicitly default constructible, the pair is explicitly default constructible.
          * pair do not accept throwable default constructible components.
          */
-        constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_implicitly_default_constructible_v<second_type>))
-            pair() noexcept
+        constexpr explicit(!(hud::is_implicitly_default_constructible_v<first_type> && hud::is_implicitly_default_constructible_v<second_type>)) pair() noexcept
             : first()
             , second()
         {
@@ -76,8 +74,7 @@ namespace hud
          * @param f An object of the same type as 'first' or some other type implicitly convertible to it.
          * @param s An object of the same type as 'second' or some other type implicitly convertible to it.
          */
-        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>))
-            pair(const first_type &f, const second_type &s) noexcept
+        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>)) pair(const first_type &f, const second_type &s) noexcept
         requires(hud::is_copy_constructible_v<first_type> && hud::is_copy_constructible_v<second_type>)
             : first(f)
             , second(s)
@@ -99,8 +96,7 @@ namespace hud
          */
         template<typename u_type_t = first_type, typename v_type_t = second_type>
         requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
-        constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>))
-            pair(u_type_t &&f, v_type_t &&s) noexcept
+        constexpr explicit(!(hud::is_convertible_v<u_type_t &&, first_type> && hud::is_convertible_v<v_type_t &&, second_type>)) pair(u_type_t &&f, v_type_t &&s) noexcept
             : first(hud::forward<u_type_t>(f))
             , second(hud::forward<v_type_t>(s))
         {
@@ -116,8 +112,7 @@ namespace hud
          * pair does not accept throwable copy constructible components.
          * @param other Another pair object.
          */
-        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>))
-            pair(const pair &other) noexcept
+        constexpr explicit(!(hud::is_convertible_v<const first_type &, first_type> && hud::is_convertible_v<const second_type &, second_type>)) pair(const pair &other) noexcept
         requires(hud::is_nothrow_copy_constructible_v<first_type> && hud::is_nothrow_copy_constructible_v<second_type>)
         = default;
 
@@ -132,8 +127,7 @@ namespace hud
          */
         template<typename u_type_t, typename v_type_t>
         requires(hud::is_copy_constructible_v<first_type, u_type_t> && hud::is_copy_constructible_v<second_type, v_type_t>)
-        constexpr explicit(!(hud::is_convertible_v<const u_type_t &, first_type> && hud::is_convertible_v<const v_type_t &, second_type>))
-            pair(const pair<u_type_t, v_type_t> &other) noexcept
+        constexpr explicit(!(hud::is_convertible_v<const u_type_t &, first_type> && hud::is_convertible_v<const v_type_t &, second_type>)) pair(const pair<u_type_t, v_type_t> &other) noexcept
             : first(other.first)
             , second(other.second)
         {
@@ -165,8 +159,7 @@ namespace hud
          */
         template<typename u_type_t, typename v_type_t>
         requires(hud::is_move_constructible_v<first_type, u_type_t> && hud::is_move_constructible_v<second_type, v_type_t>)
-        constexpr explicit(!(hud::is_convertible_v<u_type_t, first_type> && hud::is_convertible_v<v_type_t, second_type>))
-            pair(pair<u_type_t, v_type_t> &&other) noexcept
+        constexpr explicit(!(hud::is_convertible_v<u_type_t, first_type> && hud::is_convertible_v<v_type_t, second_type>)) pair(pair<u_type_t, v_type_t> &&other) noexcept
             : first(hud::forward<u_type_t>(other.first))
             , second(hud::forward<v_type_t>(other.second))
         {
@@ -190,6 +183,22 @@ namespace hud
             second = other.second;
             return *this;
         }
+
+        /**
+         * Destructor; Trivial if first_type and second_type are trivially destructible
+         * This call first_type and second_type destructors.
+         */
+        constexpr ~pair()
+        requires(std::is_trivially_destructible_v<first_type> && std::is_trivially_destructible_v<second_type>)
+        = default;
+
+        /**
+         * Destructor; Trivial if first_type and second_type are trivially destructible
+         * This call first_type and second_type destructors.
+         */
+        constexpr ~pair()
+        requires(!(std::is_trivially_destructible_v<first_type> && std::is_trivially_destructible_v<second_type>))
+        = default;
 
         /**
          * Assigns other as the new content for the pair object.
