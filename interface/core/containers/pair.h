@@ -185,22 +185,6 @@ namespace hud
         }
 
         /**
-         * Destructor; Trivial if first_type and second_type are trivially destructible
-         * This call first_type and second_type destructors.
-         */
-        constexpr ~pair()
-        requires(std::is_trivially_destructible_v<first_type> && std::is_trivially_destructible_v<second_type>)
-        = default;
-
-        /**
-         * Destructor; Trivial if first_type and second_type are trivially destructible
-         * This call first_type and second_type destructors.
-         */
-        constexpr ~pair()
-        requires(!(std::is_trivially_destructible_v<first_type> && std::is_trivially_destructible_v<second_type>))
-        = default;
-
-        /**
          * Assigns other as the new content for the pair object.
          * Perform copy assignments, with the elements of its argument preserving their values after the call.
          * pair do not accept throwable copy assignable components.
