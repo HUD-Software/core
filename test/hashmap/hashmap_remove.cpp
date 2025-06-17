@@ -7,6 +7,8 @@ namespace hud_test
     {
         using super = hud_test::non_bitwise_type;
         using super::super;
+
+        constexpr ~collided_key() noexcept = default;
     };
 } // namespace hud_test
 

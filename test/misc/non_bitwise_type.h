@@ -122,7 +122,7 @@ namespace hud_test
         }
 
         /** Destroy the non_bitwise_type instance and set the boolean pointer value to true. */
-        constexpr ~non_bitwise_type() noexcept
+        virtual constexpr ~non_bitwise_type() noexcept
         {
             if (is_destructor_counter != nullptr)
             {
