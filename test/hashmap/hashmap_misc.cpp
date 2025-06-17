@@ -116,7 +116,6 @@ GTEST_TEST(hashmap, count_return_count_of_element)
 
     // Non constant
     {
-        HashMapType map;
         const auto result = test();
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
@@ -125,7 +124,6 @@ GTEST_TEST(hashmap, count_return_count_of_element)
 
     // Constant
     {
-        HashMapType map;
         constexpr auto result = test();
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
