@@ -2,42 +2,35 @@
 
 namespace hud_test
 {
-    struct collided_key
-        : hud_test::non_bitwise_type
+    struct colliding_hasher
     {
-        using super = hud_test::non_bitwise_type;
-        using super::super;
-
-#if defined(HD_COMPILER_GCC)
-        virtual constexpr ~collided_key() noexcept
+        /**
+         * Operator to hash the value and combine it with the current hasher value.
+         * This function uses variadic templates to accept multiple arguments.
+         * @tparam type_t Types of the arguments to hash.
+         * @param values Arguments to hash.
+         * @return A 64-bit hash value.
+         */
+        [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_type &custom) noexcept
         {
-            super::~super();
+            return hud::hash_64<i64> {}(custom.id() / 3);
         }
-#endif
+
+        /**
+         * Function to hash the value and combine it with the current hasher value.
+         * This function uses variadic templates to accept multiple arguments.
+         * @tparam type_t Types of the arguments to hash.
+         * @param values Arguments to hash.
+         * @return A 64-bit hash value.
+         */
+        template<typename... type_t>
+        [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
+        {
+            return (*this)(hud::forward<type_t>(values)...);
+        }
     };
+
 } // namespace hud_test
-
-namespace hud
-{
-    template<>
-    struct hash_32<hud_test::collided_key>
-    {
-        [[nodiscard]] constexpr u32 operator()(const hud_test::collided_key &custom) const
-        {
-            return hud::hash_32<i32> {}(custom.id() / 3);
-        }
-    };
-
-    template<>
-    struct hash_64<hud_test::collided_key>
-    {
-        [[nodiscard]] constexpr u64 operator()(const hud_test::collided_key &custom) const
-        {
-            return hud::hash_64<i32> {}(custom.id() / 3);
-        }
-    };
-
-} // namespace hud
 
 GTEST_TEST(hashmap, remove_non_trivial_type)
 {
@@ -202,9 +195,9 @@ GTEST_TEST(hashmap, remove_non_trivial_type)
 
 GTEST_TEST(hashmap, remove_collided_key)
 {
-    using key_type = hud_test::collided_key;
+    using key_type = hud_test::non_bitwise_type;
     using value_type = hud_test::non_bitwise_type;
-    using hashmap_type = hud::hashmap<key_type, value_type>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud_test::colliding_hasher>;
 
     // This test add 128 value remove every y elements check the map,
     // then readd the removed elements and re check again the map by iterating over values
