@@ -1,5 +1,5 @@
 {
     "cmake.configureArgs": [
-        "-DSANITIZER:BOOL=ON" // ou undefined, thread, leak, etc.
+        //"-DSANITIZER:BOOL=ON" // ou undefined, thread, leak, etc.
     ]
 }
