@@ -1021,7 +1021,7 @@ namespace hud
                 }
             }
 
-            constexpr void rehash(i32 count) const noexcept
+            constexpr void rehash(i32 count) noexcept
             {
                 // If we request 0
                 // and :
@@ -1032,16 +1032,18 @@ namespace hud
                     if (max_slot_count_ == 0)
                         return;
                     if (is_empty())
+                    {
                         reset_control_and_slot();
+                        return;
+                    }
                 }
 
                 // We request 0 or more and we have allocation and elements
                 // bitor is a faster way of doing `max` here. We will round up to the next
                 // power-of-2-minus-1, so bitor is good enough.
-                usize max_count = compute_max_count(count | min_capacity_for_count(count));
+                usize max_count = compute_max_count(count | min_capacity_for_count(count_));
                 if (count == 0 || max_count > max_slot_count_)
                     resize(max_count);
-                return;
             }
 
             [[nodiscard]]
@@ -1086,7 +1088,7 @@ namespace hud
             /** Checks whether the array is empty of not. */
             [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
             {
-                return count_ != 0;
+                return count_ == 0;
             }
 
             /** Retreives number of elements in the array. */
@@ -1631,7 +1633,7 @@ namespace hud
              * Compute the maximum number of slots we should put into the table before a resizing rehash.
              * Subtract the returned value with the number of slots `count()` to obtains the number of slots we can currently use before a resizing rehash.
              */
-            [[nodiscard]] constexpr usize max_slot_before_grow(usize capacity) noexcept
+            [[nodiscard]] constexpr usize max_slot_before_grow(usize capacity) const noexcept
             {
                 // Current load factor is 7/8, this means we can resize when 7/8 slots are occupied
                 // A special case appear when group are 8 bytes width and `capacity` is 7 : 7−7/8=7, in this case, we return 6
@@ -1647,7 +1649,7 @@ namespace hud
             }
 
             /** Compute the minimum capacity needed for the given `count` element that respect the load factor */
-            [[nodiscard]] constexpr usize min_capacity_for_count(usize count) noexcept
+            [[nodiscard]] constexpr usize min_capacity_for_count(usize count) const noexcept
             {
                 // `count*8/7`
                 if (group_type::SLOT_PER_GROUP == 8 && count == 7)
