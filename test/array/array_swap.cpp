@@ -3,7 +3,6 @@
 
 GTEST_TEST(array, swap_empty_array_do_nothing)
 {
-
     using type = usize;
     using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
 

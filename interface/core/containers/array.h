@@ -989,7 +989,7 @@ namespace hud
          * Swap with another array.
          * @param other The array to swap with
          */
-        void swap(array &other) noexcept
+        constexpr void swap(array &other) noexcept
         requires(hud::is_swappable_v<type_t>)
         {
             static_assert(hud::is_nothrow_swappable_v<type_t>, "swap(array<type_t>&) is throwable. array is not designed to allow throwable swappable components");

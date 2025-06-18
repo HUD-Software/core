@@ -11,6 +11,7 @@ set( src
 	array/array_add_no_construct.cpp
 	array/array_add_to_ref.cpp
 	array/array_assignment.cpp
+	array/array_clear_shrink.cpp
 	array/array_clear.cpp
 	array/array_comparison.cpp
 	array/array_constructors.cpp
@@ -70,6 +71,8 @@ set( src
 	hashmap/hashmap_copy_assign_operator.cpp
 	hashmap/hashmap_copy_constructors.cpp
 	hashmap/hashmap_find.cpp
+	hashmap/hashmap_comparison.cpp
+	hashmap/hashmap_swap.cpp
 	hashmap/hashmap_clear.cpp
 	hashmap/hashmap_clear_shrink.cpp
 	hashmap/hashmap_contains.cpp
