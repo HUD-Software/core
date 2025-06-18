@@ -1046,6 +1046,11 @@ namespace hud
                     resize(max_count);
             }
 
+            constexpr void shrink_to_fit() noexcept
+            {
+                rehash(0);
+            }
+
             [[nodiscard]]
             constexpr const_iterator find(const key_type &key) const noexcept
             {
