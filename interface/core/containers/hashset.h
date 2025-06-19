@@ -13,6 +13,13 @@
 #include "../traits/is_trivially_copy_constructible.h"
 #include "tuple_size.h"
 #include "tuple_element.h"
+#include "compressed_pair.h"
+
+// TODO:
+// Move common to a common class that contains max_slot_count_, count_, control_ptr_, slot_ptr_ and free_slot_before_grow_
+// Use compressed_pair with allocator and the common object
+// Add hasher and equal object added in compressed_pair like  compressed_pair<allocator, compressed_pair<hasher, compressed_pair<equal, common>>>
+// Maybe create a compressed_tuple? ;)
 
 namespace hud
 {
@@ -819,7 +826,7 @@ namespace hud
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : allocator_ {allocator}
-                , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
+                , max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
                 , free_slot_before_grow_(max_slot_before_grow(max_slot_count_) - count_)
             {
@@ -851,7 +858,7 @@ namespace hud
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : allocator_ {allocator}
-                , max_slot_count_ {compute_max_count(other.max_count() + extra_max_count)}
+                , max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
                 , free_slot_before_grow_(max_slot_before_grow(max_slot_count_) - count_)
             {
@@ -912,12 +919,13 @@ namespace hud
                 return *this;
             }
 
-            /** Reserve memory for at least `count` element and regenerates the hash table. */
+            /** Reserve memory for at least `count` element and regenerates the hash table if needed. */
             constexpr void reserve(usize count) noexcept
             {
-                if (count > max_slot_count_)
+                const usize max_count = normalize_max_count(min_capacity_for_count(count));
+                if (max_count > max_slot_count_)
                 {
-                    resize(compute_max_count(count));
+                    resize(max_count);
                 }
             }
 
@@ -1041,7 +1049,7 @@ namespace hud
                 // We request 0 or more and we have allocation and elements
                 // bitor is a faster way of doing `max` here. We will round up to the next
                 // power-of-2-minus-1, so bitor is good enough.
-                usize max_count = compute_max_count(count | min_capacity_for_count(count_));
+                usize max_count = normalize_max_count(count | min_capacity_for_count(count_));
                 if (count == 0 || max_count > max_slot_count_)
                     resize(max_count);
             }
@@ -1067,6 +1075,23 @@ namespace hud
             constexpr bool contains(const key_type &key) const noexcept
             {
                 return find(key) != end();
+            }
+
+            constexpr void swap(hashset_impl &other) noexcept
+            requires(hud::is_swappable_v<slot_type>)
+            {
+                static_assert(hud::is_nothrow_swappable_v<allocator_type>, "swap(hashmap<type_t>&) is throwable. hashmap is not designed to allow throwable swappable components");
+
+                if constexpr (hud::allocator_traits<allocator_type>::swap_when_container_swap::value)
+                {
+                    hud::swap(allocator_(), other.allocator_());
+                }
+
+                hud::swap(other.count_, count_);
+                hud::swap(other.control_ptr_, control_ptr_);
+                hud::swap(other.slot_ptr_, slot_ptr_);
+                hud::swap(other.max_slot_count_, max_slot_count_);
+                hud::swap(other.free_slot_before_grow_, free_slot_before_grow_);
             }
 
             constexpr void remove(const key_type &key) noexcept
@@ -1321,7 +1346,7 @@ namespace hud
                     // Copy the number of element
                     count_ = other.count_;
                     // Copy the max number of element
-                    max_slot_count_ = compute_max_count(count_);
+                    max_slot_count_ = normalize_max_count(count_);
                     // Compute the free slot count before growing
                     free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
                     // Allocate the control and slot
@@ -1397,7 +1422,7 @@ namespace hud
                         // Copy the number of element
                         count_ = other.count_;
                         // Copy the max number of element
-                        max_slot_count_ = compute_max_count(count_);
+                        max_slot_count_ = normalize_max_count(count_);
                         // Compute the free slot count before growing
                         free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
                         // Allocate the control and slot
@@ -1493,7 +1518,7 @@ namespace hud
             [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u8 h2) noexcept
             {
                 // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
-                // TODO : check rehash_and_grow_if_necessary and implement the SQuash DELETED branch
+                // TODO : check rehash_and_grow_if_necessary and implement the Squash DELETED branch
                 if (free_slot_before_grow() == 0)
                 {
                     resize(next_capacity());
@@ -1512,7 +1537,7 @@ namespace hud
             constexpr void resize(usize new_max_slot_count) noexcept
             {
                 // hud::check(new_max_slot_count > max_slot_count_ && "Grow need a bigger value");
-                hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
+                hud::check(hud::bits::is_valid_power_of_two_mask(new_max_slot_count) && "Not a mask");
 
                 // Create the buffer with control and slots
                 // Slots are aligned based on alignof(slot_type)
@@ -1575,10 +1600,10 @@ namespace hud
                 return max_slot_count_ * 2 + 1;
             }
 
-            /** Retrieves the max slot count for the given count. */
-            [[nodiscard]] constexpr usize compute_max_count(usize count) const noexcept
+            /** Retrieves a correct max slot count that is applicable. */
+            [[nodiscard]] constexpr usize normalize_max_count(usize max_slot_count) const noexcept
             {
-                return count ? ~usize {} >> hud::bits::leading_zeros(count) : 0;
+                return max_slot_count ? ~usize {} >> hud::bits::leading_zeros(max_slot_count) : 0;
             }
 
             /** Compute the size of the allocation needed for the given slot count. */
@@ -1653,7 +1678,10 @@ namespace hud
                                                                           capacity - capacity / 8;
             }
 
-            /** Compute the minimum capacity needed for the given `count` element that respect the load factor */
+            /**
+             * Compute the minimum capacity needed for the given `count` element that respect the load factor.
+             * The capacity can be invalid, you should call
+             */
             [[nodiscard]] constexpr usize min_capacity_for_count(usize count) const noexcept
             {
                 // `count*8/7`
@@ -1786,7 +1814,7 @@ namespace hud
             }
 
         private:
-            /** The allocator. */
+            // /** The allocator. */
             allocator_type allocator_;
 
             /** The control of the hashmap. Initialized to sentinel. */
@@ -1872,6 +1900,12 @@ namespace hud
         static_assert(idx_to_reach < 1, "hashset slot index out of bounds");
         using type = const typename details::hashset::slot<key_t>::key_type;
     };
+
+    template<typename key_t, typename hasher_t, typename key_equal_t, typename allocator_t>
+    constexpr void swap(hashset<key_t, hasher_t, key_equal_t, allocator_t> &first, hashset<key_t, hasher_t, key_equal_t, allocator_t> &second) noexcept
+    {
+        first.swap(second);
+    }
 
 } // namespace hud
 

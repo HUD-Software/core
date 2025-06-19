@@ -990,7 +990,6 @@ namespace hud
          * @param other The array to swap with
          */
         constexpr void swap(array &other) noexcept
-        requires(hud::is_swappable_v<type_t>)
         {
             static_assert(hud::is_nothrow_swappable_v<type_t>, "swap(array<type_t>&) is throwable. array is not designed to allow throwable swappable components");
             hud::swap(end_ptr, other.end_ptr);
@@ -1430,7 +1429,6 @@ namespace hud
      * @param second The second array to swap
      */
     template<typename type_t, typename allocator_t>
-    requires(hud::is_swappable_v<type_t>)
     HD_FORCEINLINE void swap(array<type_t, allocator_t> &first, array<type_t, allocator_t> &second) noexcept
     {
         first.swap(second);

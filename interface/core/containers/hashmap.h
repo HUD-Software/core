@@ -415,6 +415,12 @@ namespace hud
         using type = hud::conditional_t<idx_to_reach == 0, const typename details::hashmap::hashmap_storage<key_t, value_t>::key_type, typename details::hashmap::hashmap_storage<key_t, value_t>::value_type>;
     };
 
+    template<typename key_t, typename value_t, typename hasher_t, typename key_equal_t, typename allocator_t>
+    constexpr void swap(hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> &first, hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> &second) noexcept
+    {
+        first.swap(second);
+    }
+
 } // namespace hud
 
 namespace std

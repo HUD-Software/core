@@ -110,7 +110,7 @@ GTEST_TEST(array, swap_non_trivial_type)
     hud_assert_eq(b.allocator().allocation_count(), 1u);
     hud_assert_eq(b.allocator().free_count(), 0u);
 
-    swap(a, b);
+    hud::swap(a, b);
 
     hud_assert_ne(a.data(), nullptr);
     hud_assert_eq(a.count(), 2u);
@@ -188,7 +188,7 @@ GTEST_TEST(array, swap_trivial_type)
     hud_assert_eq(b.allocator().allocation_count(), 1u);
     hud_assert_eq(b.allocator().free_count(), 0u);
 
-    swap(a, b);
+    hud::swap(a, b);
 
     hud_assert_ne(a.data(), nullptr);
     hud_assert_eq(a.count(), 2u);
