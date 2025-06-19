@@ -1004,7 +1004,6 @@ namespace hud
                 usize slot_index(h1 & max_slot_count_);
                 while (true)
                 {
-
                     group_type group {control_ptr_ + slot_index};
                     group_type::mask group_mask_that_match_h2 {group.match(H2(hash))};
                     for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
@@ -1134,7 +1133,8 @@ namespace hud
             }
 
             /** Retrieves an iterator to the end of the array. */
-            [[nodiscard]] constexpr iterator begin() noexcept
+            [[nodiscard]] constexpr iterator
+            begin() noexcept
             {
                 auto [control_ptr, slot_ptr] = find_first_full();
                 return iterator {control_ptr, slot_ptr};
@@ -1905,6 +1905,26 @@ namespace hud
     constexpr void swap(hashset<key_t, hasher_t, key_equal_t, allocator_t> &first, hashset<key_t, hasher_t, key_equal_t, allocator_t> &second) noexcept
     {
         first.swap(second);
+    }
+
+    template<typename key_t, typename hasher_t, typename key_equal_t, typename allocator_t>
+    [[nodiscard]] constexpr bool operator==(const hashset<key_t, hasher_t, key_equal_t, allocator_t> &left, const hashset<key_t, hasher_t, key_equal_t, allocator_t> &right) noexcept
+    {
+        // Map are not equal if the counts of elements differ
+        if (left.count() != right.count())
+        {
+            return false;
+        }
+
+        for (const auto &elem : left)
+        {
+            const auto &it = right.find(elem.key());
+            if (it == right.end() && !(it->value() == elem.value()))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 } // namespace hud

@@ -421,6 +421,36 @@ namespace hud
         first.swap(second);
     }
 
+    template<typename key_t, typename value_t, typename hasher_t, typename key_equal_t, typename allocator_t>
+    [[nodiscard]] constexpr bool operator==(const hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> &left, const hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> &right) noexcept
+    {
+        // Map are not equal if the counts of elements differ
+        if (left.count() != right.count())
+        {
+            return false;
+        }
+
+        // Speed of find is dependent of the max_slot_count_
+        // We want to find in the smallest max_slot_count and iterate on the bigger only once
+        const hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> *biggest_capacity = &left;
+        const hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> *smallest_capacity = &right;
+        if (smallest_capacity->max_count() > biggest_capacity->max_count())
+        {
+            hud::swap(biggest_capacity, smallest_capacity);
+        }
+
+        // Iterate over biggest capacity and find in the smallest each elements
+        for (const auto &elem : *biggest_capacity)
+        {
+            const auto &it = smallest_capacity->find(elem.key());
+            if (it == smallest_capacity->end() && !(it->value() == elem.value()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 } // namespace hud
 
 namespace std
