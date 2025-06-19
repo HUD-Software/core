@@ -70,6 +70,8 @@ set( src
 	hashmap/hashmap_constructors.cpp
 	hashmap/hashmap_copy_assign_operator.cpp
 	hashmap/hashmap_copy_constructors.cpp
+	hashmap/hashmap_destructeur.cpp
+	hashmap/hashmap_indexed_operator.cpp
 	hashmap/hashmap_find.cpp
 	hashmap/hashmap_comparison.cpp
 	hashmap/hashmap_swap.cpp

@@ -154,6 +154,11 @@ namespace hud
         {
             return hud::hash_32<i32> {}(custom.id());
         }
+
+        [[nodiscard]] constexpr u32 operator()(const i32 custom) const
+        {
+            return hud::hash_32<i32> {}(custom);
+        }
     };
 
     template<>
@@ -163,7 +168,27 @@ namespace hud
         {
             return hud::hash_64<i32> {}(custom.id());
         }
+
+        [[nodiscard]] constexpr u32 operator()(const i32 custom) const
+        {
+            return hud::hash_32<i32> {}(custom);
+        }
     };
+
+    // template<>
+    // struct hash_32<string>
+    // {
+    //     std::size_t operator()(const string &s) const
+    //     {
+    //         return ...;
+    //     }
+
+    // // hash_equal=true allows hashing string literals
+    // std::size_t operator()(const char *s) const
+    // {
+    //     return ...;
+    // }
+    // };
 
 } // namespace hud
 #endif // HD_INC_MISC_SETBOOLTOTRUEWHENDESTROYED_H
