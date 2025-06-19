@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 3.24)
-
-
 # Define a grouping for source files in IDE project generation
 # source_files variable is a list all files in Implementation and Interface directory
 set( src

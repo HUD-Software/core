@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.24)
-
 set(test_project_name test_core)
 
 set( src
@@ -421,7 +419,9 @@ set(gtest_build_tests OFF CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(google_test)
 target_link_libraries( ${test_project_name} PRIVATE gtest )
-#add_custom_command(TARGET ${test_project_name} POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:gtest> $<TARGET_FILE_DIR:${test_project_name}>)
+set_target_properties(gtest PROPERTIES CXX_STANDARD 20)
+include(GoogleTest)
+gtest_discover_tests(${test_project_name})
 
 # Add Intel slice-by-8 dependency
 message("Fetching HUD-Software/slice-by-8...")
