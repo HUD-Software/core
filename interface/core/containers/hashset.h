@@ -1112,12 +1112,14 @@ namespace hud
                 return const_cast<hashset_impl *>(this)->find(key);
             }
 
+            template<typename K = key_type>
             [[nodiscard]]
-            constexpr bool contains(const key_type &key) noexcept
+            constexpr bool contains(const key_arg_type<K> &key) noexcept
             {
                 return find(key) != end();
             }
 
+            template<typename K = key_type>
             [[nodiscard]]
             constexpr bool contains(const key_type &key) const noexcept
             {
