@@ -72,36 +72,36 @@ namespace hud
 
     /** Contenate IntegerSequences into one integer_sequence */
     template<typename... IntSequences>
-    struct car_index_sequence;
+    struct cat_index_sequence;
 
     template<typename type1_t, type1_t... seq_1, typename type2_t, type2_t... seq_2, typename... rest_t>
-    struct car_index_sequence<integer_sequence<type1_t, seq_1...>, integer_sequence<type2_t, seq_2...>, rest_t...>
+    struct cat_index_sequence<integer_sequence<type1_t, seq_1...>, integer_sequence<type2_t, seq_2...>, rest_t...>
     { // Concatenate 2 integer_sequence with the followings
-        using value_type = typename car_index_sequence<typename car_index_sequence<integer_sequence<type1_t, seq_1...>, integer_sequence<type2_t, seq_2...>>::value_type, rest_t...>::value_type;
+        using value_type = typename cat_index_sequence<typename cat_index_sequence<integer_sequence<type1_t, seq_1...>, integer_sequence<type2_t, seq_2...>>::value_type, rest_t...>::value_type;
     };
 
     template<typename type_t, type_t... ints>
-    struct car_index_sequence<integer_sequence<type_t, ints...>>
+    struct cat_index_sequence<integer_sequence<type_t, ints...>>
     { // Concatenate 1 integer_sequence
         using value_type = integer_sequence<type_t, ints...>;
     };
 
     template<typename type_t, type_t... seq_1, type_t... seq_2>
-    struct car_index_sequence<integer_sequence<type_t, seq_1...>, integer_sequence<type_t, seq_2...>>
+    struct cat_index_sequence<integer_sequence<type_t, seq_1...>, integer_sequence<type_t, seq_2...>>
     { // Concantenante 2 integer_sequence with same type
         using value_type = integer_sequence<type_t, seq_1..., seq_2...>;
     };
 
     template<typename type1_t, type1_t... seq_1, typename type2_t, type2_t... seq_2>
-    struct car_index_sequence<integer_sequence<type1_t, seq_1...>, integer_sequence<type2_t, seq_2...>>
+    struct cat_index_sequence<integer_sequence<type1_t, seq_1...>, integer_sequence<type2_t, seq_2...>>
     { // Concantenante 2 integer_sequence with different types
         using commont_type = common_type_t<type1_t, type2_t>;
         using value_type = integer_sequence<commont_type, seq_1..., seq_2...>;
     };
 
-    /** Helper alias template equivalent to car_index_sequence<Sequences...>::value_type. */
+    /** Helper alias template equivalent to cat_index_sequence<Sequences...>::value_type. */
     template<typename... Sequences>
-    using cat_integer_sequence_t = typename car_index_sequence<Sequences...>::value_type;
+    using cat_integer_sequence_t = typename cat_index_sequence<Sequences...>::value_type;
 
 } // namespace hud
 

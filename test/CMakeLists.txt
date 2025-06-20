@@ -247,6 +247,7 @@ set( src
 	traits/traits_is_signed.cpp
 	traits/traits_is_standard_layout.cpp
 	traits/traits_is_swappable.cpp
+	traits/traits_is_transparent.cpp
 	traits/traits_is_trivial.cpp
 	traits/traits_is_trivially_assignable.cpp
 	traits/traits_is_trivially_constructible.cpp

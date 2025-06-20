@@ -255,6 +255,11 @@ namespace hud
         {
             return hud::hash_64<i32> {}(custom.id());
         }
+
+        [[nodiscard]] constexpr u64 operator()(const i32 id) const
+        {
+            return hud::hash_64<i32> {}(id);
+        }
     };
 
     template<>

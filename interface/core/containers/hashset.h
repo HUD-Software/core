@@ -14,6 +14,8 @@
 #include "tuple_size.h"
 #include "tuple_element.h"
 #include "compressed_pair.h"
+#include "../traits/is_transparent.h"
+#include "../traits/conditional.h"
 
 // TODO:
 // Move common to a common class that contains max_slot_count_, count_, control_ptr_, slot_ptr_ and free_slot_before_grow_
@@ -279,17 +281,36 @@ namespace hud
             key_type element_;
         };
 
-        template<typename key_t>
+        /**
+         * A default hasher struct for hashing keys.
+         * This struct provides a mechanism to hash key and combine them with the current hasher value.
+         *
+         * @tparam key_t The type of the key to be hashed.
+         */
         struct default_hasher
         {
-            /** Hash the value and combine the value with the current hasher value. */
+            using is_transparent = void;
+
+            /**
+             * Operator to hash the value and combine it with the current hasher value.
+             * This function uses variadic templates to accept multiple arguments.
+             * @tparam type_t Types of the arguments to hash.
+             * @param values Arguments to hash.
+             * @return A 64-bit hash value.
+             */
             template<typename... type_t>
             [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
             {
                 return hud::hash_64<hud::decay_t<type_t>...> {}(hud::forward<type_t>(values)...);
             }
 
-            /** Hash the value and combine the value with the current hasher value. */
+            /**
+             * Function to hash the value and combine it with the current hasher value.
+             * This function uses variadic templates to accept multiple arguments.
+             * @tparam type_t Types of the arguments to hash.
+             * @param values Arguments to hash.
+             * @return A 64-bit hash value.
+             */
             template<typename... type_t>
             [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
             {
@@ -298,7 +319,11 @@ namespace hud
         };
 
         template<typename key_t>
-        using default_equal = hud::equal<key_t>;
+        struct default_equal
+            : hud::equal<key_t>
+        {
+            using is_transparent = void;
+        };
 
         using default_allocator = hud::heap_allocator;
 
@@ -756,6 +781,22 @@ namespace hud
             slot_type *slot_ptr_;
         };
 
+        template<bool is_transparent>
+        struct KeyArg
+        {
+            // Transparent. Forward `K`.
+            template<typename K, typename key_type>
+            using type = K;
+        };
+
+        template<>
+        struct KeyArg<false>
+        {
+            // Not transparent. Always use `key_type`.
+            template<typename K, typename key_type>
+            using type = key_type;
+        };
+
         template<
             typename storage_t,
             typename hasher_t,
@@ -772,6 +813,8 @@ namespace hud
             using key_type = typename slot_type::key_type;
             /** Type of the hash function. */
             using hasher_type = hasher_t;
+            /** Type of the equal function. */
+            using key_equal_type = key_equal_t;
             /** Type of the iterator. */
             using iterator = hud::details::hashset::iterator<slot_type, false>;
             /** Type of the const iterator. */
@@ -780,6 +823,9 @@ namespace hud
             using allocator_type = allocator_t;
             /** The type of allocation done by the allocator. */
             using memory_allocation_type = typename allocator_type::template memory_allocation_type<slot_type>;
+
+            template<typename K>
+            using key_arg_type = typename KeyArg<hud::is_transparent_v<hasher_type> && hud::is_transparent_v<key_equal_type>>::template type<K, key_type>;
 
             static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
             static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
@@ -995,10 +1041,11 @@ namespace hud
             }
 
             /** Find a key and return an iterator to the value. */
+            template<typename K = key_type>
             [[nodiscard]]
-            constexpr iterator find(const key_type &key) noexcept
+            constexpr iterator find(const key_arg_type<K> &key) noexcept
             {
-                u64 hash {hasher_type {}(key)};
+                u64 hash {hasher_(key)};
                 u64 h1(H1(hash));
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index(h1 & max_slot_count_);
@@ -1010,7 +1057,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 {slot_index + group_index_that_match_h2 & max_slot_count_};
                         slot_type *slot_that_match_h2 {slot_ptr_ + slot_index_that_match_h2};
-                        if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
+                        if (key_equal_(slot_that_match_h2->key(), key)) [[likely]]
                         {
                             return {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
                         }
@@ -1058,8 +1105,9 @@ namespace hud
                 rehash(0);
             }
 
+            template<typename K = key_type>
             [[nodiscard]]
-            constexpr const_iterator find(const key_type &key) const noexcept
+            constexpr const_iterator find(const key_arg_type<K> &key) const noexcept
             {
                 return const_cast<hashset_impl *>(this)->find(key);
             }
@@ -1228,7 +1276,7 @@ namespace hud
                         auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                         {
                             // Compute the hash
-                            u64 hash {hasher_type {}(slot_ptr->key())};
+                            u64 hash {hasher_(slot_ptr->key())};
                             // Find H1 slot index
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1279,7 +1327,7 @@ namespace hud
                         auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                         {
                             // Compute the hash
-                            u64 hash {hasher_type {}(slot_ptr->key())};
+                            u64 hash {hasher_(slot_ptr->key())};
                             // Find H1 slot index
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1362,7 +1410,7 @@ namespace hud
                 {
                     auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                     {
-                        u64 hash {hud::is_same_v<key_type, typename u_storage_t::key_type> ? hasher_type {}(slot_ptr->key()) : hasher_type {}(key_type {slot_ptr->key()})};
+                        u64 hash {hud::is_same_v<key_type, typename u_storage_t::key_type> ? hasher_(slot_ptr->key()) : hasher_(key_type {slot_ptr->key()})};
                         // Find H1 slot index
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1437,7 +1485,7 @@ namespace hud
                     {
                         auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                         {
-                            u64 hash {hud::is_same_v<key_type, typename u_storage_t::key_type> ? hasher_type {}(slot_ptr->key()) : hasher_type {}(key_type {slot_ptr->key()})};
+                            u64 hash {hud::is_same_v<key_type, typename u_storage_t::key_type> ? hasher_(slot_ptr->key()) : hasher_(key_type {slot_ptr->key()})};
                             // Find H1 slot index
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1482,7 +1530,7 @@ namespace hud
              */
             [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
             {
-                u64 hash {hasher_type {}(key)};
+                u64 hash {hasher_(key)};
                 u64 h1(H1(hash));
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index(h1 & max_slot_count_);
@@ -1495,7 +1543,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 {slot_index + group_index_that_match_h2 & max_slot_count_};
                         slot_type *slot_that_match_h2 {slot_ptr_ + slot_index_that_match_h2};
-                        if (key_equal_t {}(slot_that_match_h2->key(), key)) [[likely]]
+                        if (key_equal_(slot_that_match_h2->key(), key)) [[likely]]
                         {
                             return {slot_index_that_match_h2, false};
                         }
@@ -1573,7 +1621,7 @@ namespace hud
                     auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                     {
                         // Compute the hash
-                        u64 hash {hasher_type {}(slot_ptr->key())};
+                        u64 hash {hasher_(slot_ptr->key())};
                         // Find H1 slot index
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1814,8 +1862,14 @@ namespace hud
             }
 
         private:
-            // /** The allocator. */
+            /** The allocator. */
             allocator_type allocator_;
+
+            /** The hasher function. */
+            hasher_type hasher_;
+
+            /** The key equal function. */
+            key_equal_type key_equal_;
 
             /** The control of the hashmap. Initialized to sentinel. */
             control_type *control_ptr_ {const_cast<control_type *>(&INIT_GROUP[16])};
@@ -1835,8 +1889,7 @@ namespace hud
 
     } // namespace details::hashset
 
-    template<typename element_t>
-    using hashset_default_hasher = details::hashset::default_hasher<element_t>;
+    using hashset_default_hasher = details::hashset::default_hasher;
 
     template<typename element_t>
     using hashset_default_key_equal = details::hashset::default_equal<element_t>;
@@ -1845,7 +1898,7 @@ namespace hud
 
     template<
         typename element_t,
-        typename hasher_t = hashset_default_hasher<element_t>,
+        typename hasher_t = hashset_default_hasher,
         typename key_equal_t = hashset_default_key_equal<element_t>,
         typename allocator_t = hashset_default_allocator>
     class hashset

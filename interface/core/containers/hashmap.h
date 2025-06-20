@@ -209,49 +209,14 @@ namespace hud
             pair_type element_;
         };
 
-        /**
-         * A default hasher struct for hashing keys.
-         * This struct provides a mechanism to hash values and combine them with the current hasher value.
-         *
-         * @tparam key_t The type of the key to be hashed.
-         */
-        struct default_hasher
-        {
-            /**
-             * Operator to hash the value and combine it with the current hasher value.
-             * This function uses variadic templates to accept multiple arguments.
-             * @tparam type_t Types of the arguments to hash.
-             * @param values Arguments to hash.
-             * @return A 64-bit hash value.
-             */
-            template<typename... type_t>
-            [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
-            {
-                return hud::hash_64<hud::decay_t<type_t>...> {}(hud::forward<type_t>(values)...);
-            }
-
-            /**
-             * Function to hash the value and combine it with the current hasher value.
-             * This function uses variadic templates to accept multiple arguments.
-             * @tparam type_t Types of the arguments to hash.
-             * @param values Arguments to hash.
-             * @return A 64-bit hash value.
-             */
-            template<typename... type_t>
-            [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
-            {
-                return (*this)(hud::forward<type_t>(values)...);
-            }
-        };
-
     } // namespace details::hashmap
 
     /** The default hasher for hash maps. */
-    using hashmap_default_hasher = details::hashmap::default_hasher;
+    using hashmap_default_hasher = details::hashset::default_hasher;
 
     /** The default equality comparator for hash map keys. */
     template<typename key_t>
-    using hashmap_default_key_equal = hud::equal<key_t>;
+    using hashmap_default_key_equal = details::hashset::default_equal<key_t>;
 
     /** The default allocator type for hash maps. */
     using hashmap_default_allocator = hud::heap_allocator;
