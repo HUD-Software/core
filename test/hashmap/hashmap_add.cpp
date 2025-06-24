@@ -5,7 +5,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_same_ty
 {
     using key_type = hud_test::non_bitwise_copy_constructible_type;
     using value_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type>);
@@ -267,7 +267,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
     using value_type = hud_test::non_bitwise_copy_constructible_type2;
     using other_value_type = hud_test::non_bitwise_copy_constructible_type;
 
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
@@ -527,7 +527,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_same_type)
 {
     using key_type = usize;
     using value_type = usize;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type, key_type>);
     static_assert(hud::is_bitwise_copy_constructible_v<value_type, value_type>);
@@ -752,7 +752,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_different_t
     using other_key_type = isize;
     using value_type = usize;
     using other_value_type = isize;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
     static_assert(hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
@@ -974,7 +974,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_same_ty
 {
     using key_type = hud_test::non_bitwise_copy_constructible_type;
     using value_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type>);
@@ -1234,7 +1234,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
     using other_key_type = hud_test::non_bitwise_copy_constructible_type;
     using value_type = hud_test::non_bitwise_copy_constructible_type2;
     using other_value_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
@@ -1492,7 +1492,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_same_type)
 {
     using key_type = usize;
     using value_type = usize;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type>);
     static_assert(hud::is_bitwise_copy_constructible_v<value_type>);
@@ -1717,7 +1717,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_different_t
     using other_key_type = isize;
     using value_type = usize;
     using other_value_type = isize;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
     static_assert(hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
@@ -1940,7 +1940,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_same_ty
 {
     using key_type = hud_test::non_bitwise_move_constructible_type;
     using value_type = hud_test::non_bitwise_move_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_move_constructible_v<key_type>);
     static_assert(!hud::is_bitwise_move_constructible_v<value_type>);
@@ -2237,7 +2237,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
     using value_type = hud_test::non_bitwise_move_constructible_type2;
     using other_value_type = hud_test::non_bitwise_move_constructible_type;
 
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_move_constructible_v<key_type, other_key_type>);
     static_assert(!hud::is_bitwise_move_constructible_v<value_type, other_value_type>);
@@ -2531,7 +2531,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_sa
 {
     using key_type = hud_test::non_bitwise_copy_constructible_type;
     using value_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type>);
@@ -2783,7 +2783,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
     using other_key_type = hud_test::non_bitwise_copy_constructible_type;
     using value_type = hud_test::non_bitwise_copy_constructible_type2;
     using other_value_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
@@ -3033,7 +3033,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_same_t
 {
     using key_type = usize;
     using value_type = usize;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type>);
     static_assert(hud::is_bitwise_copy_constructible_v<value_type>);
@@ -3251,7 +3251,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_differ
     using other_key_type = isize;
     using value_type = usize;
     using other_value_type = isize;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
     static_assert(hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
@@ -3467,7 +3467,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_sa
 {
     using key_type = hud_test::non_bitwise_copy_constructible_type;
     using value_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type>);
@@ -3720,7 +3720,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
     using other_key_type = hud_test::non_bitwise_copy_constructible_type;
     using value_type = hud_test::non_bitwise_copy_constructible_type2;
     using other_value_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
     static_assert(!hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
@@ -3971,7 +3971,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_same_t
 {
     using key_type = usize;
     using value_type = usize;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type>);
     static_assert(hud::is_bitwise_copy_constructible_v<value_type>);
@@ -4190,7 +4190,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_differ
     using other_key_type = isize;
     using value_type = usize;
     using other_value_type = isize;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
     static_assert(hud::is_bitwise_copy_constructible_v<value_type, other_value_type>);
@@ -4407,7 +4407,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_sa
 {
     using key_type = hud_test::non_bitwise_move_constructible_type;
     using value_type = hud_test::non_bitwise_move_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_move_constructible_v<key_type>);
     static_assert(!hud::is_bitwise_move_constructible_v<value_type>);
@@ -4696,7 +4696,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
     using other_key_type = hud_test::non_bitwise_move_constructible_type;
     using value_type = hud_test::non_bitwise_move_constructible_type2;
     using other_value_type = hud_test::non_bitwise_move_constructible_type;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_move_constructible_v<key_type, other_key_type>);
     static_assert(!hud::is_bitwise_move_constructible_v<value_type, other_value_type>);

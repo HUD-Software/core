@@ -4,7 +4,7 @@
 GTEST_TEST(hashmap, reserve_empty_to_zero_do_nothing)
 {
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using HashMapType = hud::hashmap<i32, i64, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<i32>, AllocatorType>;
+    using HashMapType = hud::hashmap<i32, i64, hud::hash_64<i32>, hud::equal<i32>, AllocatorType>;
 
     const auto test = []()
     {
@@ -40,7 +40,7 @@ GTEST_TEST(hashmap, reserve_empty_to_zero_do_nothing)
 GTEST_TEST(hashmap, reserve_empty_to_size_allocate_only)
 {
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using HashMapType = hud::hashmap<i32, i64, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<i32>, AllocatorType>;
+    using HashMapType = hud::hashmap<i32, i64, hud::hash_64<i32>, hud::equal<i32>, AllocatorType>;
     const auto test = []()
     {
         HashMapType map;
@@ -74,7 +74,7 @@ GTEST_TEST(hashmap, reserve_empty_to_size_allocate_only)
 GTEST_TEST(hashmap, reserve_non_empty_to_more_size_allocate_only)
 {
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using HashMapType = hud::hashmap<i32, i64, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<i32>, AllocatorType>;
+    using HashMapType = hud::hashmap<i32, i64, hud::hash_64<i32>, hud::equal<i32>, AllocatorType>;
 
     const auto test = []()
     {
@@ -120,7 +120,7 @@ GTEST_TEST(hashmap, reserve_non_empty_to_more_size_allocate_only)
 GTEST_TEST(hashmap, reserve_less_than_max_count_but_more_than_count_do_nothing)
 {
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using HashMapType = hud::hashmap<i32, i64, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<i32>, AllocatorType>;
+    using HashMapType = hud::hashmap<i32, i64, hud::hash_64<i32>, hud::equal<i32>, AllocatorType>;
 
     const auto test = []()
     {
@@ -165,7 +165,7 @@ GTEST_TEST(hashmap, reserve_less_than_max_count_but_more_than_count_do_nothing)
 GTEST_TEST(hashmap, reserve_less_than_count_but_more_than_count_do_nothing)
 {
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using HashMapType = hud::hashmap<i32, i64, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<i32>, AllocatorType>;
+    using HashMapType = hud::hashmap<i32, i64, hud::hash_64<i32>, hud::equal<i32>, AllocatorType>;
 
     const auto test = []()
     {
