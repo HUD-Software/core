@@ -4,7 +4,7 @@
 #include "../memory.h"
 #include "../templates/forward.h"
 #include "../templates/move.h"
-#include "../tag_in_place.h"
+#include "../templates/tag_in_place.h"
 #include "../templates/swap.h"
 #include "../traits/is_constructible.h"
 #include "../traits/is_copy_constructible.h"
@@ -168,7 +168,7 @@ namespace hud
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<type_t, args_t...>)
-            constexpr explicit optional_destructible_base(tag_in_place, args_t &&...args) noexcept
+            constexpr explicit optional_destructible_base(tag_in_place_t, args_t &&...args) noexcept
                 : some_value(hud::forward<args_t>(args)...)
                 , some(true)
             {
@@ -213,7 +213,7 @@ namespace hud
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<type_t, args_t...>)
-            constexpr explicit optional_destructible_base(tag_in_place, args_t &&...args) noexcept
+            constexpr explicit optional_destructible_base(tag_in_place_t, args_t &&...args) noexcept
                 : some_value(hud::forward<args_t>(args)...)
                 , some(true)
             {
@@ -476,8 +476,8 @@ namespace hud
          */
         template<typename... args_t>
         requires(hud::is_constructible_v<type_t, args_t...>)
-        constexpr explicit optional(tag_in_place, args_t &&...args) noexcept
-            : super_type(tag_in_place {}, hud::forward<args_t>(args)...)
+        constexpr explicit optional(tag_in_place_t, args_t &&...args) noexcept
+            : super_type(tag_in_place, hud::forward<args_t>(args)...)
         {
         }
 
@@ -489,10 +489,10 @@ namespace hud
         template<typename u_type_t = type_t>
         requires(hud::conjunction_v<
                  hud::is_constructible<type_t, u_type_t &&>,
-                 is_not_same<remove_cv_ref_t<u_type_t>, tag_in_place>,
+                 is_not_same<remove_cv_ref_t<u_type_t>, tag_in_place_t>,
                  is_not_same<u_type_t, optional<type_t>>>)
         explicit(!hud::is_convertible_v<u_type_t &&, type_t>) constexpr optional(u_type_t &&value) noexcept
-            : super_type(tag_in_place {}, hud::move(value))
+            : super_type(tag_in_place, hud::move(value))
         {
         }
 

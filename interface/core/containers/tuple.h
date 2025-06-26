@@ -30,7 +30,7 @@
 #include "../traits/is_explicitly_move_constructible.h"
 #include "../traits/is_not_same.h"
 #include "../traits/is_swappable.h"
-#include "../tag_init.h"
+#include "../templates/tag_init.h"
 
 namespace hud
 {
@@ -62,7 +62,7 @@ namespace hud
         {
 
             /** Default constructor. Value-initialize content. */
-            HD_FORCEINLINE constexpr tuple_leaf(hud::tag_init) noexcept
+            HD_FORCEINLINE constexpr tuple_leaf(hud::tag_init_t) noexcept
                 : content()
             {
                 static_assert(hud::is_nothrow_default_constructible_v<type_t>, "type_t() default constructor is throwable. tuple is not designed to allow throwable default constructible components");
@@ -132,8 +132,8 @@ namespace hud
              * Default constructor that calls all tuple leafs default constructors.
              * Value-initializes all elements, if any.
              */
-            HD_FORCEINLINE constexpr tuple_impl(tag_init) noexcept
-                : tuple_leaf<indices, types_t>(taginit)...
+            HD_FORCEINLINE constexpr tuple_impl(tag_init_t) noexcept
+                : tuple_leaf<indices, types_t>(hud::tag_init)...
             {
             }
 
@@ -567,9 +567,9 @@ namespace hud
          * This involves individually value-initializes all elements, if any.
          * tuple do not accept throwable default constructible components
          */
-        explicit(hud::disjunction_v<hud::is_explicitly_default_constructible<types_t>...>) constexpr tuple(hud::tag_init) noexcept
+        explicit(hud::disjunction_v<hud::is_explicitly_default_constructible<types_t>...>) constexpr tuple(hud::tag_init_t) noexcept
         requires(hud::conjunction_v<hud::is_default_constructible<types_t>...>)
-            : super_type(taginit)
+            : super_type(hud::tag_init)
         {
         }
 

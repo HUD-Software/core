@@ -299,7 +299,7 @@ GTEST_TEST(tuple, default_constructor_init)
         // No init for empty tuple
         [[maybe_unused]] tuple_type tuple1;
 
-        tuple_type2 tuple2 {hud::taginit};
+        tuple_type2 tuple2 {hud::tag_init};
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple2)), i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple2)), i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<2>(tuple2)), i32 &>));
@@ -307,7 +307,7 @@ GTEST_TEST(tuple, default_constructor_init)
         hud_assert_eq((hud::get<1>(tuple2)), i32 {});
         hud_assert_eq((hud::get<2>(tuple2)), i32 {});
 
-        tuple_type3 tuple3 {hud::taginit};
+        tuple_type3 tuple3 {hud::tag_init};
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple3)), i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple3)), f32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<2>(tuple3)), wchar &>));
@@ -315,7 +315,7 @@ GTEST_TEST(tuple, default_constructor_init)
         hud_assert_eq((hud::get<1>(tuple3)), f32 {});
         hud_assert_eq((hud::get<2>(tuple3)), wchar {});
 
-        tuple_type4 tuple4 {hud::taginit};
+        tuple_type4 tuple4 {hud::tag_init};
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple4)), hud_test::explicit_default_constructible &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple4)), hud_test::implicit_default_constructible &>));
         hud_assert_eq((hud::get<0>(tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
@@ -329,7 +329,7 @@ GTEST_TEST(tuple, default_constructor_init)
         hud_assert_eq((hud::get<1>(tuple4).copy_constructor_count()), 0u);
         hud_assert_eq((hud::get<1>(tuple4).move_constructor_count()), 0u);
 
-        tuple_type5 tuple5 {hud::taginit};
+        tuple_type5 tuple5 {hud::tag_init};
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple5)), hud_test::explicit_default_constructible &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple5)), i32 &>));
         hud_assert_eq((hud::get<0>(tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
@@ -344,7 +344,7 @@ GTEST_TEST(tuple, default_constructor_init)
     {
         [[maybe_unused]] constexpr tuple_type tuple1;
 
-        constexpr tuple_type2 tuple2 {hud::taginit};
+        constexpr tuple_type2 tuple2 {hud::tag_init};
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple2)), const i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple2)), const i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<2>(tuple2)), const i32 &>));
@@ -353,7 +353,7 @@ GTEST_TEST(tuple, default_constructor_init)
         hud_assert_eq((hud::get<1>(tuple2)), i32 {});
         hud_assert_eq((hud::get<2>(tuple2)), i32 {});
 
-        constexpr tuple_type3 tuple3 {hud::taginit};
+        constexpr tuple_type3 tuple3 {hud::tag_init};
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple3)), const i32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple3)), const f32 &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<2>(tuple3)), const wchar &>));
@@ -362,7 +362,7 @@ GTEST_TEST(tuple, default_constructor_init)
         hud_assert_eq((hud::get<1>(tuple3)), f32 {});
         hud_assert_eq((hud::get<2>(tuple3)), wchar {});
 
-        constexpr tuple_type4 tuple4 {hud::taginit};
+        constexpr tuple_type4 tuple4 {hud::tag_init};
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple4)), const hud_test::explicit_default_constructible &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple4)), const hud_test::implicit_default_constructible &>));
         hud_assert_eq((hud::get<0>(tuple4).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
@@ -376,7 +376,7 @@ GTEST_TEST(tuple, default_constructor_init)
         hud_assert_eq((hud::get<1>(tuple4).copy_constructor_count()), 0u);
         hud_assert_eq((hud::get<1>(tuple4).move_constructor_count()), 0u);
 
-        constexpr tuple_type5 tuple5 {hud::taginit};
+        constexpr tuple_type5 tuple5 {hud::tag_init};
         hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple5)), const hud_test::explicit_default_constructible &>));
         hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple5)), const i32 &>));
         hud_assert_eq((hud::get<0>(tuple5).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);

@@ -1,6 +1,7 @@
 #ifndef HD_INC_MISC_NON_BITWISE_TYPE_H
 #define HD_INC_MISC_NON_BITWISE_TYPE_H
 #include <core/minimal.h>
+#include <core/templates/equal.h>
 
 namespace hud_test
 {
@@ -239,6 +240,21 @@ namespace hud_test
 
 namespace hud
 {
+    template<>
+    struct equal<hud_test::non_bitwise_type>
+    {
+        /** Member function returning whether the arguments compare equal (lhs==rhs). */
+        [[nodiscard]] constexpr bool operator()(const hud_test::non_bitwise_type &lhs, const hud_test::non_bitwise_type &rhs) const noexcept
+        {
+            return lhs == rhs;
+        }
+
+        [[nodiscard]] constexpr bool operator()(const hud_test::non_bitwise_type &lhs, const i32 &rhs) const noexcept
+        {
+            return lhs == rhs;
+        }
+    };
+
     template<>
     struct hash_32<hud_test::non_bitwise_type>
     {

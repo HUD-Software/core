@@ -37,7 +37,6 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
             // Ensure element's destructors are not called
             for (i32 i = 0; i < COUNT; i++)
             {
-                // Should be accepted with is_transparent
                 const auto it = map.find(i);
                 if (*it->key().destructor_counter() != 0)
                 {
@@ -59,8 +58,8 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
     // Non constant
     {
         const auto result = test();
-        // hud_assert_true(std::get<0>(result));
-        // hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
     }
 
     // Constant

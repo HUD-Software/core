@@ -50,7 +50,7 @@ GTEST_TEST(optional, cast_bool)
     const auto test = []()
     {
         hud::optional<type> option_empty;
-        hud::optional<type> option_non_empty {hud::in_place, 123, nullptr};
+        hud::optional<type> option_non_empty {hud::tag_in_place, 123, nullptr};
         return std::tuple {static_cast<bool>(option_empty), static_cast<bool>(option_non_empty)};
     };
 
@@ -77,7 +77,7 @@ GTEST_TEST(optional, has_value)
     const auto test = []()
     {
         hud::optional<type> option_empty;
-        hud::optional<type> option_non_empty {hud::in_place, 123, nullptr};
+        hud::optional<type> option_non_empty {hud::tag_in_place, 123, nullptr};
         return std::tuple {option_empty.has_value(), option_non_empty.has_value()};
     };
 
@@ -103,8 +103,8 @@ GTEST_TEST(optional, value)
 
     const auto test = []()
     {
-        hud::optional<type> option_non_empty {hud::in_place, 123, nullptr};
-        const hud::optional<type> const_option_non_empty {hud::in_place, 123, nullptr};
+        hud::optional<type> option_non_empty {hud::tag_in_place, 123, nullptr};
+        const hud::optional<type> const_option_non_empty {hud::tag_in_place, 123, nullptr};
 
         return std::tuple {
             // Value should return Lvalue reference
@@ -145,9 +145,9 @@ GTEST_TEST(optional, value_or)
     const auto test = []()
     {
         hud::optional<type> option_empty;
-        hud::optional<type> option_non_empty {hud::in_place, 123, nullptr};
+        hud::optional<type> option_non_empty {hud::tag_in_place, 123, nullptr};
         const hud::optional<type> const_option_empty;
-        const hud::optional<type> const_option_non_empty {hud::in_place, 123, nullptr};
+        const hud::optional<type> const_option_non_empty {hud::tag_in_place, 123, nullptr};
 
         return std::tuple {
             option_empty.value_or(type {456, nullptr}).id(),
@@ -195,8 +195,8 @@ GTEST_TEST(optional, operator_arrow)
 
     const auto test = []()
     {
-        hud::optional<type> option {hud::in_place, 123, nullptr};
-        const hud::optional<type> const_option {hud::in_place, 456, nullptr};
+        hud::optional<type> option {hud::tag_in_place, 123, nullptr};
+        const hud::optional<type> const_option {hud::tag_in_place, 456, nullptr};
         return std::tuple {
             option->id(),
             const_option->id()
@@ -225,8 +225,8 @@ GTEST_TEST(optional, operator_dereference)
 
     const auto test = []()
     {
-        hud::optional<type> option {hud::in_place, 123, nullptr};
-        const hud::optional<type> const_option {hud::in_place, 456, nullptr};
+        hud::optional<type> option {hud::tag_in_place, 123, nullptr};
+        const hud::optional<type> const_option {hud::tag_in_place, 456, nullptr};
         return std::tuple {
             (*option).id(),
             (*const_option).id()
@@ -291,7 +291,7 @@ GTEST_TEST(optional, reset_call_destructor_if_T_is_not_trivially_destructible)
     const auto test = []()
     {
         i32 destructor_count;
-        hud::optional<type> option {hud::in_place, 123, &destructor_count};
+        hud::optional<type> option {hud::tag_in_place, 123, &destructor_count};
         const bool has_value_before = option.has_value();
         const i32 destructor_count_before = destructor_count;
 

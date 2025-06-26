@@ -104,7 +104,7 @@ GTEST_TEST(optional, swap_empty_with_non_empty_non_trivial_type)
     const auto test = []()
     {
         hud::optional<type> option;
-        hud::optional<type> option2 {hud::in_place, 123, nullptr};
+        hud::optional<type> option2 {hud::tag_in_place, 123, nullptr};
         option.swap(option2);
         return std::tuple {
             option.has_value(),
@@ -171,8 +171,8 @@ GTEST_TEST(optional, swap_non_empty_with_non_empty_non_trivial_type)
 
     const auto test = []()
     {
-        hud::optional<type> option {hud::in_place, 456, nullptr};
-        hud::optional<type> option2 {hud::in_place, 123, nullptr};
+        hud::optional<type> option {hud::tag_in_place, 456, nullptr};
+        hud::optional<type> option2 {hud::tag_in_place, 123, nullptr};
         option.swap(option2);
         return std::tuple {
             option.has_value(),
@@ -305,7 +305,7 @@ GTEST_TEST(optional, hud_swap_empty_with_non_empty_non_trivial_type)
     const auto test = []()
     {
         hud::optional<type> option;
-        hud::optional<type> option2 {hud::in_place, 123, nullptr};
+        hud::optional<type> option2 {hud::tag_in_place, 123, nullptr};
         hud::swap(option, option2);
         return std::tuple {
             option.has_value(),
@@ -372,8 +372,8 @@ GTEST_TEST(optional, hud_swap_non_empty_with_non_empty_non_trivial_type)
 
     const auto test = []()
     {
-        hud::optional<type> option {hud::in_place, 456, nullptr};
-        hud::optional<type> option2 {hud::in_place, 123, nullptr};
+        hud::optional<type> option {hud::tag_in_place, 456, nullptr};
+        hud::optional<type> option2 {hud::tag_in_place, 123, nullptr};
         hud::swap(option, option2);
         return std::tuple {
             option.has_value(),
