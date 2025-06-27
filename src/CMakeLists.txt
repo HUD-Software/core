@@ -60,6 +60,9 @@ set( interface
 	../interface/core/templates/move.h
 	../interface/core/templates/select_deleter_pointer_type.h
 	../interface/core/templates/swap.h
+	../interface/core/templates/tag_in_place.h
+	../interface/core/templates/tag_init.h
+	../interface/core/templates/tag_in_place.h
 	../interface/core/traits/add_const.h
 	../interface/core/traits/add_cv.h
 	../interface/core/traits/add_lvalue_reference.h
@@ -203,8 +206,6 @@ set( interface
 	../interface/core/minimal.h
 	../interface/core/slice.h
 	../interface/core/string.h
-	../interface/core/tag_init.h
-	../interface/core/tag_in_place.h
 	../interface/core/templates
 	../interface/core/traits
 	../interface/core/types.h
