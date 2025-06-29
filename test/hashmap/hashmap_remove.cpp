@@ -67,6 +67,13 @@ GTEST_TEST(hashmap, remove_non_trivial_type)
         ok_1_1 &= map_1_1.max_count() >= 1;
         ok_1_1 &= map_1_1.slack() >= 1;
 
+        // Re-add it and remove it with key instead of id
+        map_1_1.add({1, 11});
+        map_1_1.remove(key_type(1));
+        ok_1_1 &= !map_1_1.contains(0);
+        ok_1_1 &= map_1_1.count() == 0;
+        ok_1_1 &= map_1_1.max_count() >= 1;
+        ok_1_1 &= map_1_1.slack() >= 1;
         return std::tuple {
             ok_empty,
             ok_1_1,

@@ -1121,7 +1121,7 @@ namespace hud
 
             template<typename K = key_type>
             [[nodiscard]]
-            constexpr bool contains(const key_type &key) const noexcept
+            constexpr bool contains(const key_arg_type<K> &key) const noexcept
             {
                 return find(key) != end();
             }
@@ -1143,7 +1143,8 @@ namespace hud
                 hud::swap(other.free_slot_before_grow_, free_slot_before_grow_);
             }
 
-            constexpr void remove(const key_type &key) noexcept
+            template<typename K = key_type>
+            constexpr void remove(const key_arg_type<K> &key) noexcept
             {
                 iterator it = find(key);
                 if (it != end())
