@@ -74,7 +74,7 @@ GTEST_TEST(optional, emplace_call_destructor)
     {
         i32 destructor_count {0};
         i32 other_destructor_count {0};
-        hud::optional<type> option {hud::in_place, value, &destructor_count};
+        hud::optional<type> option {hud::tag_in_place, value, &destructor_count};
 
         option.emplace(value, &other_destructor_count);
 
@@ -230,7 +230,7 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_copy_constructib
 
     const auto test = [](const i32 before, const i32 after)
     {
-        hud::optional<type> option {hud::in_place, before};
+        hud::optional<type> option {hud::tag_in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
@@ -402,7 +402,7 @@ GTEST_TEST(optional, emplace_by_copy_in_non_empty_non_trivially_move_constructib
 
     const auto test = [](const i32 before, const i32 after)
     {
-        hud::optional<type> option {hud::in_place, before};
+        hud::optional<type> option {hud::tag_in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
@@ -584,7 +584,7 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_copy_constructib
 
     const auto test = [](const i32 before, const i32 after)
     {
-        hud::optional<type> option {hud::in_place, before};
+        hud::optional<type> option {hud::tag_in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();
@@ -763,7 +763,7 @@ GTEST_TEST(optional, emplace_by_move_in_non_empty_non_trivially_move_constructib
 
     const auto test = [](const i32 before, const i32 after)
     {
-        hud::optional<type> option {hud::in_place, before};
+        hud::optional<type> option {hud::tag_in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 value_before = option.value().id();

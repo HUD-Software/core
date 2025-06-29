@@ -4,8 +4,8 @@
 GTEST_TEST(hashmap, destructor_call_elements_destructors)
 {
 
-    using key_type = hud_test::SetBoolToTrueWhenDestroyed;
-    using value_type = hud_test::SetBoolToTrueWhenDestroyed;
+    using key_type = hud_test::non_bitwise_type;
+    using value_type = hud_test::non_bitwise_type;
     using hashmap_type = hud::hashmap<key_type, value_type>;
 
     const auto test = []()
@@ -37,14 +37,12 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
             // Ensure element's destructors are not called
             for (i32 i = 0; i < COUNT; i++)
             {
-                // Should be accepted with is_transparent
-                // const auto it = map.find(i);
-                const auto it = map.find({i, dtor_assigned_key_counter + i});
-                if (*(it->key().ptr()) != 0)
+                const auto it = map.find(i);
+                if (*it->key().destructor_counter() != 0)
                 {
                     all_keys_destructor_are_not_called = false;
                 }
-                if ((*it->value().ptr()) != 0)
+                if (*it->value().destructor_counter() != 0)
                 {
                     all_values_destructor_are_not_called = false;
                 }

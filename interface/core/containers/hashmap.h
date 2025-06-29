@@ -211,13 +211,6 @@ namespace hud
 
     } // namespace details::hashmap
 
-    /** The default hasher for hash maps. */
-    using hashmap_default_hasher = details::hashset::default_hasher;
-
-    /** The default equality comparator for hash map keys. */
-    template<typename key_t>
-    using hashmap_default_key_equal = details::hashset::default_equal<key_t>;
-
     /** The default allocator type for hash maps. */
     using hashmap_default_allocator = hud::heap_allocator;
 
@@ -234,8 +227,8 @@ namespace hud
     template<
         typename key_t,
         typename value_t,
-        typename hasher_t = hashmap_default_hasher,
-        typename key_equal_t = hashmap_default_key_equal<key_t>,
+        typename hasher_t = hud::hash_64<key_t>,
+        typename key_equal_t = hud::equal<key_t>,
         typename allocator_t = hashmap_default_allocator>
     class hashmap
         : public details::hashset::hashset_impl<details::hashmap::hashmap_storage<key_t, value_t>, hasher_t, key_equal_t, allocator_t>

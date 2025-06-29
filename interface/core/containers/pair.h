@@ -25,10 +25,10 @@
 #include "../traits/is_move_assignable.h"
 #include "../traits/is_nothrow_move_assignable.h"
 #include "../templates/swap.h"
-#include "tuple_size.h"
-#include "tuple_element.h"
 #include "../traits/conditional.h"
 #include "../traits/decay.h"
+#include "tuple.h"
+#include "../templates/tag_piecewise_constrcut.h"
 
 namespace hud
 {
@@ -102,6 +102,20 @@ namespace hud
         {
             static_assert(hud::is_nothrow_move_constructible_v<first_type, u_type_t>, "first_type(u_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
             static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
+        }
+
+        template<typename... u_type_t, typename... v_type_t>
+        requires(hud::is_constructible_v<first_type, u_type_t...> && hud::is_constructible_v<second_type, v_type_t...>)
+        constexpr pair(hud::tag_piecewise_construct_t, hud::tuple<u_type_t...> first_tuple, hud::tuple<v_type_t...> second_tuple) noexcept
+            : pair(first_tuple, second_tuple, hud::make_index_sequence_for<u_type_t...> {}, hud::make_index_sequence_for<v_type_t...> {})
+        {
+        }
+
+        template<typename tuple_first, typename tuple_second, usize... indexes_first, usize... indexes_second>
+        constexpr pair(tuple_first &first_tuple, tuple_second &second_tuple, hud::index_sequence<indexes_first...>, hud::index_sequence<indexes_second...>) noexcept
+            : first(hud::get<indexes_first>(hud::move(first_tuple))...)
+            , second(hud::get<indexes_second>(hud::move(second_tuple))...)
+        {
         }
 
         /**

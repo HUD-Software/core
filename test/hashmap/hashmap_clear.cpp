@@ -7,7 +7,7 @@ GTEST_TEST(hashmap, clear_trivially_destructible_empty_map)
     {
         using key_type = i32;
         using value_type = i64;
-        hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+        hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
         map.clear();
 
         i32 count {0};
@@ -52,7 +52,7 @@ GTEST_TEST(hashmap, clear_trivially_destructible_non_empty_map)
     {
         using key_type = i32;
         using value_type = i64;
-        hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+        hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
         map.reserve(256);
         for (u32 index = 0; index < 256; index++)
         {
@@ -104,7 +104,7 @@ GTEST_TEST(hashmap, clear_non_trivially_destructible_empty_map)
         {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             map.clear();
 
             i32 count {0};
@@ -146,7 +146,9 @@ GTEST_TEST(hashmap, clear_non_trivially_destructible_empty_map)
     {
         const auto test = []()
         {
-            hud::hashmap<hud_test::non_bitwise_type, hud_test::non_bitwise_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<hud_test::non_bitwise_type>, hud_test::allocator_watcher<1>> map;
+            using key_type = hud_test::non_bitwise_type;
+            using value_type = hud_test::non_bitwise_type;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 256;
             map.reserve(COUNT);
             map.clear();
@@ -194,7 +196,7 @@ GTEST_TEST(hashmap, clear_non_trivially_destructible_non_empty_map)
     {
         using key_type = hud_test::non_bitwise_type;
         using value_type = hud_test::non_bitwise_type;
-        hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+        hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
 
         constexpr usize COUNT = 256;
         map.reserve(COUNT);
@@ -280,7 +282,7 @@ GTEST_TEST(hashmap, clear_then_add_trivially_destructible_empty_map)
         {
             using key_type = i32;
             using value_type = i64;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 256;
             map.clear();
 
@@ -332,7 +334,7 @@ GTEST_TEST(hashmap, clear_then_add_trivially_destructible_empty_map)
         {
             using key_type = i32;
             using value_type = i64;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 256;
             map.reserve(COUNT);
             map.clear();
@@ -388,7 +390,7 @@ GTEST_TEST(hashmap, clear_then_add_trivially_destructible_non_empty_map)
         {
             using key_type = i32;
             using value_type = i64;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             // Add elements then clear the map
             constexpr usize COUNT = 128;
             for (u32 index = 0; index < COUNT; index++)
@@ -446,7 +448,7 @@ GTEST_TEST(hashmap, clear_then_add_trivially_destructible_non_empty_map)
         {
             using key_type = i32;
             using value_type = i64;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             // Add elements then clear the map
             constexpr usize COUNT = 128;
             map.reserve(COUNT * 2);
@@ -509,7 +511,7 @@ GTEST_TEST(hashmap, clear_then_add_non_trivially_destructible_empty_map)
         {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 128;
             map.clear();
 
@@ -565,7 +567,7 @@ GTEST_TEST(hashmap, clear_then_add_non_trivially_destructible_empty_map)
         {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 128;
             map.reserve(COUNT * 2);
             map.clear();
@@ -626,7 +628,7 @@ GTEST_TEST(hashmap, clear_then_add_non_trivially_destructible_non_empty_map)
         {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 128;
 
             // Add all elements
@@ -692,7 +694,7 @@ GTEST_TEST(hashmap, clear_then_add_non_trivially_destructible_non_empty_map)
         {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 128;
             map.reserve(COUNT * 2);
 

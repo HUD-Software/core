@@ -281,49 +281,49 @@ namespace hud
             key_type element_;
         };
 
-        /**
-         * A default hasher struct for hashing keys.
-         * This struct provides a mechanism to hash key and combine them with the current hasher value.
-         *
-         * @tparam key_t The type of the key to be hashed.
-         */
-        struct default_hasher
-        {
-            using is_transparent = void;
+        // /**
+        //  * A default hasher struct for hashing keys.
+        //  * This struct provides a mechanism to hash key and combine them with the current hasher value.
+        //  *
+        //  * @tparam key_t The type of the key to be hashed.
+        //  */
+        // struct default_hasher
+        // {
+        //     using is_transparent = void;
 
-            /**
-             * Operator to hash the value and combine it with the current hasher value.
-             * This function uses variadic templates to accept multiple arguments.
-             * @tparam type_t Types of the arguments to hash.
-             * @param values Arguments to hash.
-             * @return A 64-bit hash value.
-             */
-            template<typename... type_t>
-            [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
-            {
-                return hud::hash_64<hud::decay_t<type_t>...> {}(hud::forward<type_t>(values)...);
-            }
+        // /**
+        //  * Operator to hash the value and combine it with the current hasher value.
+        //  * This function uses variadic templates to accept multiple arguments.
+        //  * @tparam type_t Types of the arguments to hash.
+        //  * @param values Arguments to hash.
+        //  * @return A 64-bit hash value.
+        //  */
+        // template<typename... type_t>
+        // [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
+        // {
+        //     return hud::hash_64<hud::decay_t<type_t>...> {}(hud::forward<type_t>(values)...);
+        // }
 
-            /**
-             * Function to hash the value and combine it with the current hasher value.
-             * This function uses variadic templates to accept multiple arguments.
-             * @tparam type_t Types of the arguments to hash.
-             * @param values Arguments to hash.
-             * @return A 64-bit hash value.
-             */
-            template<typename... type_t>
-            [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
-            {
-                return (*this)(hud::forward<type_t>(values)...);
-            }
-        };
+        // /**
+        //  * Function to hash the value and combine it with the current hasher value.
+        //  * This function uses variadic templates to accept multiple arguments.
+        //  * @tparam type_t Types of the arguments to hash.
+        //  * @param values Arguments to hash.
+        //  * @return A 64-bit hash value.
+        //  */
+        // template<typename... type_t>
+        // [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
+        // {
+        //     return (*this)(hud::forward<type_t>(values)...);
+        // }
+        // };
 
-        template<typename key_t>
-        struct default_equal
-            : hud::equal<key_t>
-        {
-            using is_transparent = void;
-        };
+        // template<typename key_t>
+        // struct default_equal
+        //     : hud::equal<key_t>
+        // {
+        //     using is_transparent = void;
+        // };
 
         using default_allocator = hud::heap_allocator;
 
@@ -1041,9 +1041,9 @@ namespace hud
             }
 
             /** Find a key and return an iterator to the value. */
-            template<typename K = key_type>
+            template<typename K>
             [[nodiscard]]
-            constexpr iterator find(const key_arg_type<K> &key) noexcept
+            constexpr iterator find(const K &key) noexcept
             {
                 u64 hash {hasher_(key)};
                 u64 h1(H1(hash));
@@ -1211,7 +1211,17 @@ namespace hud
             }
 
         private:
-            constexpr bool should_be_mark_as_empty_if_deleted(usize index) noexcept
+            template<typename u_key_type>
+            [[nodiscard]] constexpr u64 compute_hash(const u_key_type &key) noexcept
+            {
+                if constexpr (hud::is_same_v<key_type, u_key_type>)
+                {
+                    return hasher_(key);
+                }
+                return hasher_(key_type {key});
+            }
+
+            constexpr bool should_be_mark_as_empty_if_deleted(usize index) const noexcept
             {
                 // If map fits entirely into a probing group.
                 if (max_slot_count_ <= group_type::SLOT_PER_GROUP)
@@ -1413,7 +1423,7 @@ namespace hud
                 {
                     auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                     {
-                        u64 hash {hud::is_same_v<key_type, typename u_storage_t::key_type> ? hasher_(slot_ptr->key()) : hasher_(key_type {slot_ptr->key()})};
+                        u64 hash {compute_hash(slot_ptr->key())};
                         // Find H1 slot index
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1488,7 +1498,7 @@ namespace hud
                     {
                         auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                         {
-                            u64 hash {hud::is_same_v<key_type, typename u_storage_t::key_type> ? hasher_(slot_ptr->key()) : hasher_(key_type {slot_ptr->key()})};
+                            u64 hash {compute_hash(slot_ptr->key())};
                             // Find H1 slot index
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1533,7 +1543,7 @@ namespace hud
              */
             [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
             {
-                u64 hash {hasher_(key)};
+                u64 hash {compute_hash(key)};
                 u64 h1(H1(hash));
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index(h1 & max_slot_count_);
@@ -1624,7 +1634,7 @@ namespace hud
                     auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                     {
                         // Compute the hash
-                        u64 hash {hasher_(slot_ptr->key())};
+                        u64 hash {compute_hash(slot_ptr->key())};
                         // Find H1 slot index
                         u64 h1 {H1(hash)};
                         usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1892,17 +1902,17 @@ namespace hud
 
     } // namespace details::hashset
 
-    using hashset_default_hasher = details::hashset::default_hasher;
+    // using hashset_default_hasher = details::hashset::default_hasher;
 
-    template<typename element_t>
-    using hashset_default_key_equal = details::hashset::default_equal<element_t>;
+    // template<typename element_t>
+    // using hashset_default_key_equal = details::hashset::default_equal<element_t>;
 
     using hashset_default_allocator = details::hashset::default_allocator;
 
     template<
         typename element_t,
-        typename hasher_t = hashset_default_hasher,
-        typename key_equal_t = hashset_default_key_equal<element_t>,
+        typename hasher_t = hud::hash_64<element_t>,
+        typename key_equal_t = hud::equal<element_t>,
         typename allocator_t = hashset_default_allocator>
     class hashset
         : public details::hashset::hashset_impl<details::hashset::hashset_storage<element_t>, hasher_t, key_equal_t, allocator_t>

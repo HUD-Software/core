@@ -89,7 +89,7 @@ GTEST_TEST(optional, constructor_in_place_of_non_trivially_constructible_type)
     auto test = []()
     {
         i32 destructor_counter = 0;
-        hud::optional<type> option(hud::in_place, 123, &destructor_counter);
+        hud::optional<type> option(hud::tag_in_place, 123, &destructor_counter);
         return std::tuple {
             option.has_value(),
             option.value().id() == 123,
@@ -126,7 +126,7 @@ GTEST_TEST(optional, constructor_in_place_of_trivially_constructible_type)
     auto test = []()
     {
         i32 destructor_counter = 42;
-        hud::optional<type> option(hud::in_place, destructor_counter);
+        hud::optional<type> option(hud::tag_in_place, destructor_counter);
         return std::tuple {
             option.has_value(),
             option.value() == 42
@@ -416,7 +416,7 @@ GTEST_TEST(optional, move_construct_non_bitwise_move_constructible_same_type)
 
     // Non constant
     {
-        const auto result = test(hud::optional<type>(hud::in_place, 123, nullptr));
+        const auto result = test(hud::optional<type>(hud::tag_in_place, 123, nullptr));
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));
@@ -429,7 +429,7 @@ GTEST_TEST(optional, move_construct_non_bitwise_move_constructible_same_type)
 
     // Constant
     {
-        constexpr auto result = test(hud::optional<type>(hud::in_place, 123, nullptr));
+        constexpr auto result = test(hud::optional<type>(hud::tag_in_place, 123, nullptr));
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));

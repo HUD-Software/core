@@ -5,6 +5,7 @@
 #include <core/traits/is_bitwise_move_constructible.h>
 #include <core/traits/is_bitwise_copy_assignable.h>
 #include <core/traits/is_bitwise_move_assignable.h>
+#include <core/templates/equal.h>
 
 namespace hud_test
 {
@@ -122,16 +123,6 @@ namespace hud_test
             is_destructor_called = ptr_to_i32;
         }
 
-        friend constexpr bool operator==(const SetBoolToTrueWhenDestroyed &a, const SetBoolToTrueWhenDestroyed &b) noexcept
-        {
-            return a.ptr() == b.ptr();
-        }
-
-        friend constexpr bool operator!=(const SetBoolToTrueWhenDestroyed &a, const SetBoolToTrueWhenDestroyed &b) noexcept
-        {
-            return !(a == b);
-        }
-
     private:
         /** ID */
         i32 id_ {0};
@@ -143,10 +134,44 @@ namespace hud_test
     static_assert(!hud::is_bitwise_move_constructible_v<SetBoolToTrueWhenDestroyed>);
     static_assert(!hud::is_bitwise_copy_assignable_v<SetBoolToTrueWhenDestroyed>);
     static_assert(!hud::is_bitwise_move_assignable_v<SetBoolToTrueWhenDestroyed>);
+
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const SetBoolToTrueWhenDestroyed &left, const SetBoolToTrueWhenDestroyed &right) noexcept
+    {
+        return left.id() == right.id();
+    }
+
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const SetBoolToTrueWhenDestroyed &left, const SetBoolToTrueWhenDestroyed &right) noexcept
+    {
+        return !(left == right);
+    }
+
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const SetBoolToTrueWhenDestroyed &left, const i32 id) noexcept
+    {
+        return left.id() == id;
+    }
+
 } // namespace hud_test
 
 namespace hud
 {
+    /** Checks whether its two arguments of type type_t compare equal (as returned by operator ==). */
+    template<>
+    struct equal<hud_test::SetBoolToTrueWhenDestroyed>
+    {
+        using is_transparent = void;
+
+        /** Member function returning whether the arguments compare equal (lhs==rhs). */
+        [[nodiscard]] constexpr bool operator()(const hud_test::SetBoolToTrueWhenDestroyed &lhs, const i32 &rhs) const noexcept
+        {
+            return lhs == rhs;
+        }
+
+        [[nodiscard]] constexpr bool operator()(const hud_test::SetBoolToTrueWhenDestroyed &lhs, const hud_test::SetBoolToTrueWhenDestroyed &rhs) const noexcept
+        {
+            return lhs == rhs;
+        }
+    };
+
     template<>
     struct hash_32<hud_test::SetBoolToTrueWhenDestroyed>
     {
@@ -174,21 +199,6 @@ namespace hud
             return hud::hash_32<i32> {}(custom);
         }
     };
-
-    // template<>
-    // struct hash_32<string>
-    // {
-    //     std::size_t operator()(const string &s) const
-    //     {
-    //         return ...;
-    //     }
-
-    // // hash_equal=true allows hashing string literals
-    // std::size_t operator()(const char *s) const
-    // {
-    //     return ...;
-    // }
-    // };
 
 } // namespace hud
 #endif // HD_INC_MISC_SETBOOLTOTRUEWHENDESTROYED_H

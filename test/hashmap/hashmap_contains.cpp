@@ -10,7 +10,7 @@ GTEST_TEST(hashmap, contains_in_hashmap_trivial_type)
 {
 
     hud_test::for_each_value<std::make_integer_sequence<usize, 64>>()(
-        []<usize max>()
+        []<usize maxx>()
         {
             const auto test = [](usize max)
             {
@@ -40,13 +40,13 @@ GTEST_TEST(hashmap, contains_in_hashmap_trivial_type)
 
             // Non constant
             {
-                const auto result = test(max);
+                const auto result = test(maxx);
                 hud_assert_true(result);
             }
 
             // Constant
             {
-                constexpr auto result = test(max);
+                constexpr auto result = test(maxx);
                 hud_assert_true(result);
             }
         }
@@ -56,7 +56,7 @@ GTEST_TEST(hashmap, contains_in_hashmap_trivial_type)
 GTEST_TEST(hashmap, contains_in_hashmap_non_trivial_type)
 {
     hud_test::for_each_value<std::make_integer_sequence<usize, 64>>()(
-        []<usize max>()
+        []<usize maxx>()
         {
             const auto test_1 = [](usize max)
             {
@@ -110,17 +110,17 @@ GTEST_TEST(hashmap, contains_in_hashmap_non_trivial_type)
 
             // Non constant
             {
-                const auto result = test_1(max);
+                const auto result = test_1(maxx);
                 hud_assert_true(result);
-                auto result_2 = test_2(max);
+                auto result_2 = test_2(maxx);
                 hud_assert_true(result_2);
             }
 
             // Constant
             {
-                constexpr auto result = test_1(max);
+                constexpr auto result = test_1(maxx);
                 hud_assert_true(result);
-                constexpr auto result_2 = test_2(max);
+                constexpr auto result_2 = test_2(maxx);
                 hud_assert_true(result_2);
             }
         }

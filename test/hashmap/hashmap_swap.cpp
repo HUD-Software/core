@@ -6,7 +6,7 @@ GTEST_TEST(hashmap, swap_empty_hashmap_do_nothing)
     using key_type = hud_test::non_bitwise_type;
     using value_type = hud_test::non_bitwise_type;
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
 
     // hud::hashmap::swap
     {
@@ -106,7 +106,7 @@ GTEST_TEST(hashmap, swap_non_trivial_type)
     using key_type = hud_test::non_bitwise_type;
     using value_type = hud_test::non_bitwise_type;
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
 
     // hud::hashmap::swap
     {
@@ -218,7 +218,7 @@ GTEST_TEST(hashmap, swap_trivial_type)
     using key_type = i32;
     using value_type = i64;
     using AllocatorType = hud_test::allocator_watcher<1>;
-    using hashmap_type = hud::hashmap<key_type, value_type, hud::hashmap_default_hasher, hud::hashmap_default_key_equal<key_type>, AllocatorType>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
 
     // hud::hashmap::swap
     {

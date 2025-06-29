@@ -23,7 +23,8 @@ GTEST_TEST(optional, assign_empty_trivial_type_with_nullopt)
 
         return std::tuple {
             had_value,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -59,7 +60,8 @@ GTEST_TEST(optional, assign_empty_non_trivial_type_with_nullopt)
 
         return std::tuple {
             had_value,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -131,7 +133,7 @@ GTEST_TEST(optional, assign_non_empty_non_trivial_type_with_nullopt)
     const auto test = []()
     {
         i32 destructor_count {0};
-        hud::optional<type> option {hud::in_place, &destructor_count};
+        hud::optional<type> option {hud::tag_in_place, &destructor_count};
         const bool had_value_before = option.has_value();
         const i32 destructor_count_before = destructor_count;
         const u32 move_assign_count_before = option.value().move_assign_count();
@@ -151,7 +153,8 @@ GTEST_TEST(optional, assign_non_empty_non_trivial_type_with_nullopt)
             move_constructor_count_before,
             copy_constructor_count_before,
             option.has_value(),
-            destructor_count};
+            destructor_count
+        };
     };
 
     // Non constant
@@ -200,7 +203,8 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_same_type)
         return std::tuple {
             had_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -239,7 +243,8 @@ GTEST_TEST(optional, assign_by_copy_empty_trivially_copy_assignable_different_ty
         return std::tuple {
             had_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -278,7 +283,8 @@ GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_same_typ
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -321,7 +327,8 @@ GTEST_TEST(optional, assign_by_copy_non_empty_trivially_copy_assignable_differen
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -369,7 +376,8 @@ GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_same_typ
             option.value().constructor_count(),
             option.value().move_constructor_count(),
             option.value().copy_constructor_count(),
-            destructor_count};
+            destructor_count
+        };
     };
 
     // Non constant
@@ -424,7 +432,8 @@ GTEST_TEST(optional, assign_by_copy_empty_non_trivially_copy_assignable_differen
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()};
+            option.value().copy_constructor_count()
+        };
     };
 
     // Non constant
@@ -460,7 +469,7 @@ GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_same
     {
         i32 destructor_count;
         i32 other_destructor_count;
-        hud::optional<type> option {hud::in_place, before, &destructor_count};
+        hud::optional<type> option {hud::tag_in_place, before, &destructor_count};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -570,7 +579,8 @@ GTEST_TEST(optional, assign_by_copy_non_empty_non_trivially_copy_assignable_diff
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()};
+            option.value().copy_constructor_count()
+        };
     };
 
     // Non constant
@@ -617,7 +627,8 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_same_type)
         return std::tuple {
             had_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -656,7 +667,8 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_copy_assignable_different_ty
         return std::tuple {
             had_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -695,7 +707,8 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_same_typ
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -738,7 +751,8 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_copy_assignable_differen
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -835,7 +849,8 @@ GTEST_TEST(optional, assign_by_move_empty_non_trivially_copy_assignable_differen
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()};
+            option.value().copy_constructor_count()
+        };
     };
 
     // Non constant
@@ -871,7 +886,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_same
     // static_assert(!hud::is_trivially_copy_assignable_v<type>);
 
     // const auto test = [](const i32 before, const i32 after) {
-    //     hud::optional<type> option{ hud::in_place, before };
+    //     hud::optional<type> option{ hud::tag_in_place, before };
 
     // const bool has_value_before = option.has_value();
     // const i32 id_before = option.value().id();
@@ -951,7 +966,8 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_copy_assignable_diff
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()};
+            option.value().copy_constructor_count()
+        };
     };
 
     // Non constant
@@ -998,7 +1014,8 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_same_type)
         return std::tuple {
             had_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -1037,7 +1054,8 @@ GTEST_TEST(optional, assign_by_move_empty_trivially_move_assignable_different_ty
         return std::tuple {
             had_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -1076,7 +1094,8 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_same_typ
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -1119,7 +1138,8 @@ GTEST_TEST(optional, assign_by_move_non_empty_trivially_move_assignable_differen
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -1258,7 +1278,7 @@ GTEST_TEST(optional, assign_by_move_non_empty_non_trivially_move_assignable_same
 
     const auto test = [](const i32 before, const i32 after)
     {
-        hud::optional<type> option {hud::in_place, before};
+        hud::optional<type> option {hud::tag_in_place, before};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -1416,7 +1436,8 @@ GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_empty_same_type
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -1454,7 +1475,8 @@ GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_non_empty_same_
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -1495,7 +1517,8 @@ GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_empty_different
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -1535,7 +1558,8 @@ GTEST_TEST(optional, copy_assign_empty_trivially_copy_assignable_non_empty_diffe
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -1574,7 +1598,8 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_empty_same_
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -1606,7 +1631,7 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_non_empty_s
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        const hud::optional<type> other {hud::in_place, value, &destructor_count_other};
+        const hud::optional<type> other {hud::tag_in_place, value, &destructor_count_other};
 
         option = other;
 
@@ -1619,7 +1644,8 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_non_empty_s
             option.value().constructor_count(),
             option.value().move_constructor_count(),
             option.value().copy_constructor_count(),
-            destructor_count_other};
+            destructor_count_other
+        };
     };
 
     // Non constant
@@ -1672,7 +1698,8 @@ GTEST_TEST(optional, copy_assign_empty_non_trivially_copy_assignable_empty_diffe
 
         return std::tuple {
             had_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -1758,7 +1785,8 @@ GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_empty_same_
         return std::tuple {
             had_value_before,
             value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -1798,7 +1826,8 @@ GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_non_empty_s
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -1841,7 +1870,8 @@ GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_empty_diffe
         return std::tuple {
             had_value_before,
             value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -1883,7 +1913,8 @@ GTEST_TEST(optional, copy_assign_non_empty_trivially_copy_assignable_non_empty_d
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -1915,7 +1946,7 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_empty_s
     const auto test = [](const i32 before, const i32 after)
     {
         i32 destructor_count;
-        hud::optional<type> option {hud::in_place, before, &destructor_count};
+        hud::optional<type> option {hud::tag_in_place, before, &destructor_count};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -1939,7 +1970,8 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_empty_s
             copy_constructor_count_before,
             destructor_count_before,
             option.has_value(),
-            destructor_count};
+            destructor_count
+        };
     };
 
     // Non constant
@@ -1984,7 +2016,7 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_non_emp
     {
         i32 destructor_count;
         i32 other_destructor_count;
-        hud::optional<type> option {hud::in_place, before, &destructor_count};
+        hud::optional<type> option {hud::tag_in_place, before, &destructor_count};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -1995,7 +2027,7 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_non_emp
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
         const i32 destructor_count_before = destructor_count;
 
-        const hud::optional<type> other {hud::in_place, after, &other_destructor_count};
+        const hud::optional<type> other {hud::tag_in_place, after, &other_destructor_count};
         option = other;
 
         return std::tuple {
@@ -2091,7 +2123,8 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_empty_d
             value_before,
             copy_assign_count_before,
             copy_constructor_count_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2145,7 +2178,8 @@ GTEST_TEST(optional, copy_assign_non_empty_non_trivially_copy_assignable_non_emp
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()};
+            option.value().copy_constructor_count()
+        };
     };
 
     // Non constant
@@ -2194,7 +2228,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_empty_same_type
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2232,7 +2267,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_non_empty_same_
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -2271,7 +2307,8 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_empty_same_
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2302,7 +2339,7 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_non_empty_s
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        const hud::optional<type> other {hud::in_place, value};
+        const hud::optional<type> other {hud::tag_in_place, value};
 
         option = hud::move(other);
 
@@ -2357,7 +2394,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_empty_different
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2397,7 +2435,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_copy_assignable_non_empty_diffe
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -2438,7 +2477,8 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_copy_assignable_empty_diffe
 
         return std::tuple {
             had_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2524,7 +2564,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_empty_same_type
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2562,7 +2603,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_non_empty_same_
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -2601,7 +2643,8 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_empty_same_
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2632,7 +2675,7 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_non_empty_s
         hud::optional<type> option;
         const bool has_value_before = option.has_value();
 
-        hud::optional<type> other {hud::in_place, value};
+        hud::optional<type> other {hud::tag_in_place, value};
 
         option = hud::move(other);
 
@@ -2693,7 +2736,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_empty_different
 
         return std::tuple {
             has_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2733,7 +2777,8 @@ GTEST_TEST(optional, move_assign_empty_trivially_move_assignable_non_empty_diffe
         return std::tuple {
             has_value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -2774,7 +2819,8 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_empty_diffe
 
         return std::tuple {
             had_value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2818,7 +2864,8 @@ GTEST_TEST(optional, move_assign_empty_non_trivially_move_assignable_non_empty_d
             option.value().copy_assign_count(),
             option.value().copy_constructor_count(),
             option.value().move_assign_count(),
-            option.value().move_constructor_count()};
+            option.value().move_constructor_count()
+        };
     };
 
     // Non constant
@@ -2947,7 +2994,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_empty_diffe
         return std::tuple {
             had_value_before,
             value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -2991,7 +3039,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_copy_assignable_non_empty_d
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -3040,7 +3089,8 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_empty_d
             value_before,
             copy_assign_count_before,
             copy_constructor_count_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -3094,7 +3144,8 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_copy_assignable_non_emp
             option.has_value(),
             option.value().id(),
             option.value().copy_assign_count(),
-            option.value().copy_constructor_count()};
+            option.value().copy_constructor_count()
+        };
     };
 
     // Non constant
@@ -3145,7 +3196,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_empty_same_
         return std::tuple {
             had_value_before,
             value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -3187,7 +3239,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_non_empty_s
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -3219,7 +3272,7 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_empty_s
     const auto test = [](const i32 before, const i32 after)
     {
         i32 destructor_count;
-        hud::optional<type> option {hud::in_place, before, &destructor_count};
+        hud::optional<type> option {hud::tag_in_place, before, &destructor_count};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -3243,7 +3296,8 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_empty_s
             copy_constructor_count_before,
             destructor_count_before,
             option.has_value(),
-            destructor_count};
+            destructor_count
+        };
     };
 
     // Non constant
@@ -3288,7 +3342,7 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_non_emp
     {
         i32 destructor_count;
         i32 other_destructor_count;
-        hud::optional<type> option {hud::in_place, before, &destructor_count};
+        hud::optional<type> option {hud::tag_in_place, before, &destructor_count};
 
         const bool has_value_before = option.has_value();
         const i32 id_before = option.value().id();
@@ -3299,7 +3353,7 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_non_emp
         const u32 copy_constructor_count_before = option.value().copy_constructor_count();
         const i32 destructor_count_before = destructor_count;
 
-        hud::optional<type> other {hud::in_place, after, &other_destructor_count};
+        hud::optional<type> other {hud::tag_in_place, after, &other_destructor_count};
         option = hud::move(other);
 
         return std::tuple {
@@ -3389,7 +3443,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_empty_diffe
         return std::tuple {
             had_value_before,
             value_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -3431,7 +3486,8 @@ GTEST_TEST(optional, move_assign_non_empty_trivially_move_assignable_non_empty_d
             had_value_before,
             value_before,
             option.has_value(),
-            option.value()};
+            option.value()
+        };
     };
 
     // Non constant
@@ -3484,7 +3540,8 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_empty_d
             copy_constructor_count_before,
             move_assign_count_before,
             move_constructor_count_before,
-            option.has_value()};
+            option.has_value()
+        };
     };
 
     // Non constant
@@ -3548,7 +3605,8 @@ GTEST_TEST(optional, move_assign_non_empty_non_trivially_move_assignable_non_emp
             option.value().copy_assign_count(),
             option.value().copy_constructor_count(),
             option.value().move_assign_count(),
-            option.value().move_constructor_count()};
+            option.value().move_constructor_count()
+        };
     };
 
     // Non constant
