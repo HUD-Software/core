@@ -1761,6 +1761,115 @@ GTEST_TEST(pair, piecewise_constructor_non_trivial_type_same_type)
     }
 }
 
+GTEST_TEST(pair, piecewise_constructor_non_trivial_type_different_type)
+{
+    // By copy
+    {
+        const auto test = []()
+        {
+            using type = hud_test::non_bitwise_type;
+            using type2 = hud_test::non_bitwise_type2;
+            const type to_copy_0;
+            const type to_copy_1;
+            hud::pair<type2, type2> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1)};
+            return std::tuple {
+                hud::get<0>(pair).constructor_count() == 0,      // 0
+                hud::get<0>(pair).copy_constructor_count() == 1, // 1
+                hud::get<0>(pair).move_constructor_count() == 0, // 2
+                hud::get<0>(pair).copy_assign_count() == 0,      // 3
+                hud::get<0>(pair).move_assign_count() == 0,      // 4
+                hud::get<1>(pair).constructor_count() == 0,      // 5
+                hud::get<1>(pair).copy_constructor_count() == 1, // 6
+                hud::get<1>(pair).move_constructor_count() == 0, // 7
+                hud::get<1>(pair).copy_assign_count() == 0,      // 8
+                hud::get<1>(pair).move_assign_count() == 0,      // 9
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+        }
+
+        // Non constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+        }
+    }
+
+    // By move
+    {
+        const auto test = []()
+        {
+            using type = hud_test::non_bitwise_type;
+            using type2 = hud_test::non_bitwise_type2;
+            hud::pair<type2, type2> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(type {}), hud::forward_as_tuple(type {})};
+            return std::tuple {
+                hud::get<0>(pair).constructor_count() == 0,      // 0
+                hud::get<0>(pair).copy_constructor_count() == 0, // 1
+                hud::get<0>(pair).move_constructor_count() == 1, // 2
+                hud::get<0>(pair).copy_assign_count() == 0,      // 3
+                hud::get<0>(pair).move_assign_count() == 0,      // 4
+                hud::get<1>(pair).constructor_count() == 0,      // 5
+                hud::get<1>(pair).copy_constructor_count() == 0, // 6
+                hud::get<1>(pair).move_constructor_count() == 1, // 7
+                hud::get<1>(pair).copy_assign_count() == 0,      // 8
+                hud::get<1>(pair).move_assign_count() == 0,      // 9
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+        }
+
+        // Non constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+        }
+    }
+}
+
 GTEST_TEST(pair, piecewise_constructor_non_trivial_copy_constructible_type_same_type)
 {
     // By copy
@@ -1773,8 +1882,8 @@ GTEST_TEST(pair, piecewise_constructor_non_trivial_copy_constructible_type_same_
             hud::pair<type, type> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1)};
             return std::tuple {
 
-                hud::get<0>(pair).copy_constructor_count() == 1, // 1
-                hud::get<1>(pair).copy_constructor_count() == 1, // 3
+                hud::get<0>(pair).copy_constructor_count() == 1, // 0
+                hud::get<1>(pair).copy_constructor_count() == 1, // 1
             };
         };
 
@@ -1796,12 +1905,182 @@ GTEST_TEST(pair, piecewise_constructor_non_trivial_copy_constructible_type_same_
 
 GTEST_TEST(pair, piecewise_constructor_non_trivial_copy_constructible_type_different_type)
 {
+    // By copy
+    {
+        const auto test = []()
+        {
+            using type = hud_test::non_bitwise_copy_constructible_type;
+            using type2 = hud_test::non_bitwise_copy_constructible_type2;
+            const type to_copy_0;
+            const type to_copy_1;
+            hud::pair<type2, type2> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1)};
+            return std::tuple {
+
+                hud::get<0>(pair).copy_constructor_count() == 1, // 0
+                hud::get<1>(pair).copy_constructor_count() == 1, // 1
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+        }
+
+        // Non constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+        }
+    }
 }
 
 GTEST_TEST(pair, piecewise_constructor_non_trivial_move_constructible_type_same_type)
 {
+    // By copy
+    {
+        const auto test = []()
+        {
+            using type = hud_test::non_bitwise_move_constructible_type;
+            const type to_copy_0;
+            const type to_copy_1;
+            hud::pair<type, type> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1)};
+            return std::tuple {
+
+                hud::get<0>(pair).copy_constructor_count() == 1, // 0
+                hud::get<1>(pair).copy_constructor_count() == 1, // 1
+                hud::get<0>(pair).move_constructor_count() == 0, // 2
+                hud::get<1>(pair).move_constructor_count() == 0, // 3
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+        }
+
+        // Non constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+        }
+    }
+
+    // By move
+    {
+        const auto test = []()
+        {
+            using type = hud_test::non_bitwise_move_constructible_type;
+            hud::pair<type, type> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(type {}), hud::forward_as_tuple(type {})};
+            return std::tuple {
+
+                hud::get<0>(pair).copy_constructor_count() == 0, // 0
+                hud::get<1>(pair).copy_constructor_count() == 0, // 1
+                hud::get<0>(pair).move_constructor_count() == 1, // 2
+                hud::get<1>(pair).move_constructor_count() == 1, // 3
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+        }
+
+        // Non constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+        }
+    }
 }
 
 GTEST_TEST(pair, piecewise_constructor_non_trivial_move_constructible_type_different_type)
 {
+    // By copy
+    {
+        const auto test = []()
+        {
+            using type = hud_test::non_bitwise_move_constructible_type;
+            using type2 = hud_test::non_bitwise_move_constructible_type2;
+            const type to_copy_0;
+            const type to_copy_1;
+            hud::pair<type2, type2> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1)};
+            return std::tuple {
+
+                hud::get<0>(pair).copy_constructor_count() == 1, // 0
+                hud::get<1>(pair).copy_constructor_count() == 1, // 1
+                hud::get<0>(pair).move_constructor_count() == 0, // 2
+                hud::get<1>(pair).move_constructor_count() == 0, // 3
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+        }
+
+        // Non constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+        }
+    }
+
+    // By move
+    {
+        const auto test = []()
+        {
+            using type = hud_test::non_bitwise_move_constructible_type;
+            using type2 = hud_test::non_bitwise_move_constructible_type2;
+            hud::pair<type2, type2> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(type {}), hud::forward_as_tuple(type {})};
+            return std::tuple {
+
+                hud::get<0>(pair).copy_constructor_count() == 0, // 0
+                hud::get<1>(pair).copy_constructor_count() == 0, // 1
+                hud::get<0>(pair).move_constructor_count() == 1, // 2
+                hud::get<1>(pair).move_constructor_count() == 1, // 3
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+        }
+
+        // Non constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+        }
+    }
 }

@@ -104,18 +104,24 @@ namespace hud
             static_assert(hud::is_nothrow_move_constructible_v<second_type, v_type_t>, "second_type(v_type_t&&) move constructor is throwable. pair is not designed to allow throwable move constructible components");
         }
 
+        /**
+         * Piecewise constructor for `pair` using two tuples of arguments to construct each element.
+         * This constructor forwards the elements of the two tuples into the respective constructors of `first` and `second`.
+         * Internally, it uses index sequences to unpack the tuple elements and delegates to the other constructor.
+         *
+         * @tparam u_type_t Parameter pack for constructing the `first_type`.
+         * @tparam v_type_t Parameter pack for constructing the `second_type`.
+         * @param hud::tag_piecewise_construct_t Tag to indicate piecewise construction.
+         * @param first_tuple Tuple containing arguments to forward to the constructor of `first`.
+         * @param second_tuple Tuple containing arguments to forward to the constructor of `second`.
+         */
         template<typename... u_type_t, typename... v_type_t>
         requires(hud::is_constructible_v<first_type, u_type_t...> && hud::is_constructible_v<second_type, v_type_t...>)
         constexpr pair(hud::tag_piecewise_construct_t, hud::tuple<u_type_t...> first_tuple, hud::tuple<v_type_t...> second_tuple) noexcept
             : pair(first_tuple, second_tuple, hud::make_index_sequence_for<u_type_t...> {}, hud::make_index_sequence_for<v_type_t...> {})
         {
-        }
-
-        template<typename tuple_first, typename tuple_second, usize... indexes_first, usize... indexes_second>
-        constexpr pair(tuple_first &first_tuple, tuple_second &second_tuple, hud::index_sequence<indexes_first...>, hud::index_sequence<indexes_second...>) noexcept
-            : first(hud::get<indexes_first>(hud::move(first_tuple))...)
-            , second(hud::get<indexes_second>(hud::move(second_tuple))...)
-        {
+            static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t...>, "first_type(u_type_t&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
+            static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t...>, "second_type(v_type_t&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
         }
 
         /**
@@ -267,6 +273,24 @@ namespace hud
             static_assert(hud::is_nothrow_swappable_v<second_type>, "swap(second_type,second_type) is throwable. pair is not designed to allow throwable swappable components");
             hud::swap(first, other.first);
             hud::swap(second, other.second);
+        }
+
+    private:
+        /**
+         * Constructs a `pair` from two tuples by unpacking their elements.
+         * @tparam tuple_first Type of the first tuple.
+         * @tparam tuple_second Type of the second tuple.
+         * @tparam indexes_first Index sequence for elements to extract from the first tuple.
+         * @tparam indexes_second Index sequence for elements to extract from the second tuple.
+         * @param first_tuple Reference to the first tuple to move from.
+         * @param second_tuple Reference to the second tuple to move from.
+         * @param ... Index sequences used to unpack the tuple elements.
+         */
+        template<typename tuple_first, typename tuple_second, usize... indexes_first, usize... indexes_second>
+        constexpr pair(tuple_first &first_tuple, tuple_second &second_tuple, hud::index_sequence<indexes_first...>, hud::index_sequence<indexes_second...>) noexcept
+            : first(hud::get<indexes_first>(hud::move(first_tuple))...)
+            , second(hud::get<indexes_second>(hud::move(second_tuple))...)
+        {
         }
     };
 
