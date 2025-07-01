@@ -31,6 +31,7 @@
 #include "../traits/is_not_same.h"
 #include "../traits/is_swappable.h"
 #include "../templates/tag_init.h"
+#include "../templates/tag_piecewise_constrcut.h"
 
 namespace hud
 {
@@ -97,6 +98,20 @@ namespace hud
             }
 
             /**
+             * Piecewise constructor.
+             * @tparam type_t Parameter pack for constructing.
+             * @tparam indexes Index sequence for elements to extract from the tuple.
+             * @param tuple_type Reference to the tuple to move from.
+             * @param ... Index sequences used to unpack the tuple elements.
+             */
+            template<typename tuple_type, usize... indexes>
+            constexpr tuple_leaf(tuple_type &tuple, hud::index_sequence<indexes...>) noexcept
+                : content(hud::get<indexes>(hud::move(tuple))...)
+            {
+                static_assert(hud::is_nothrow_constructible_v<type_t, hud::get<indexes>(hud::move(tuple))...>, "type_t(hud::get<indexes>(tuple)&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
+            }
+
+            /**
              * Assigns operator.
              * @tparam UType type_t of other tuple_leaf parameter
              * @param other Another tuple leaf
@@ -132,7 +147,7 @@ namespace hud
              * Default constructor that calls all tuple leafs default constructors.
              * Value-initializes all elements, if any.
              */
-            HD_FORCEINLINE constexpr tuple_impl(tag_init_t) noexcept
+            constexpr tuple_impl(tag_init_t) noexcept
                 : tuple_leaf<indices, types_t>(hud::tag_init)...
             {
             }
@@ -141,7 +156,7 @@ namespace hud
              * Default constructor that calls all tuple leafs default constructors.
              * Do not initializes elements, if any.
              */
-            HD_FORCEINLINE constexpr tuple_impl() noexcept
+            constexpr tuple_impl() noexcept
                 : tuple_leaf<indices, types_t>()...
             {
             }
@@ -150,7 +165,7 @@ namespace hud
              * Initialization copy constructor that calls all tuple leafs initialization copy constructors.
              * @param args List of objects to copy into the tuple
              */
-            HD_FORCEINLINE constexpr tuple_impl(const types_t &...args) noexcept
+            constexpr tuple_impl(const types_t &...args) noexcept
                 : tuple_leaf<indices, types_t>(args)...
             {
             }
@@ -160,8 +175,21 @@ namespace hud
              * @param args List of objects to move into the tuple
              */
             template<typename... u_types_t>
-            HD_FORCEINLINE constexpr tuple_impl(u_types_t &&...args) noexcept
+            constexpr tuple_impl(u_types_t &&...args) noexcept
                 : tuple_leaf<indices, types_t>(hud::forward<u_types_t>(args))...
+            {
+            }
+
+            /**
+             * Piecewise constructor for `tuple` using tuples of arguments to construct each tuple leafs.
+             * This constructor forwards the elements of the tuples into the respective constructors.
+             *
+             * @param hud::tag_piecewise_construct_t Tag to indicate piecewise construction.
+             * @param tuples Tuples containing arguments to forward to the constructor of each leafs.
+             */
+            template<typename... tuple_types>
+            constexpr tuple_impl(hud::tag_piecewise_construct_t, tuple_types... tuples) noexcept
+                : tuple_leaf<indices, types_t>(hud::get<indices>(hud::move(tuples))...)
             {
             }
 
@@ -585,11 +613,11 @@ namespace hud
         }
 
         /**
-        Initialization copy constructor.
-        This involves individually copy constructs all components, with an initialization that depends on the constructor.
-        tuple do not accept throwable copy constructible components.
-        @param args List of objects to copy construct into the tuple
-        */
+         * Initialization copy constructor.
+         * This involves individually copy constructs all components, with an initialization that depends on the constructor.
+         * tuple do not accept throwable copy constructible components.
+         * @param args List of objects to copy construct into the tuple
+         */
         explicit(hud::disjunction_v<hud::is_explicitly_copy_constructible<types_t>...>) constexpr tuple(const types_t &...args) noexcept
         requires(hud::conjunction_v<
                  hud::bool_constant<sizeof...(types_t) >= 1>,
@@ -611,6 +639,19 @@ namespace hud
                  hud::is_constructible<hud::details::tuple_leaf<0, types_t>, u_types_t>...>)
         explicit(hud::disjunction_v<hud::is_explicitly_move_constructible<types_t, u_types_t>...>) constexpr tuple(u_types_t &&...args) noexcept
             : super_type(hud::forward<u_types_t>(args)...)
+        {
+        }
+
+        /**
+         * Piecewise constructor for `tuple` using tuples of arguments to construct each element.
+         * This constructor forwards the elements of the tuples into the respective constructors.
+         *
+         * @param hud::tag_piecewise_construct_t Tag to indicate piecewise construction.
+         * @param tuples Tuples containing arguments to forward to the constructor of each element.
+         */
+        template<typename... tuple_types>
+        constexpr tuple(hud::tag_piecewise_construct_t, tuple_types... tuples) noexcept
+            : super_type(hud::tag_piecewise_construct, hud::forward<tuple_types>(tuples)...)
         {
         }
 

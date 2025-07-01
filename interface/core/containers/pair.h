@@ -107,7 +107,6 @@ namespace hud
         /**
          * Piecewise constructor for `pair` using two tuples of arguments to construct each element.
          * This constructor forwards the elements of the two tuples into the respective constructors of `first` and `second`.
-         * Internally, it uses index sequences to unpack the tuple elements and delegates to the other constructor.
          *
          * @tparam u_type_t Parameter pack for constructing the `first_type`.
          * @tparam v_type_t Parameter pack for constructing the `second_type`.
