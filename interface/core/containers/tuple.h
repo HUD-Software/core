@@ -91,6 +91,7 @@ namespace hud
              * @param arg Object to move construct into the tuple leaf
              */
             template<typename UType>
+            requires(hud::is_constructible_v<type_t, UType>)
             HD_FORCEINLINE constexpr tuple_leaf(UType &&arg) noexcept
                 : content(hud::forward<UType>(arg))
             {
@@ -105,10 +106,10 @@ namespace hud
              * @param ... Index sequences used to unpack the tuple elements.
              */
             template<typename tuple_type, usize... indexes>
-            constexpr tuple_leaf(tuple_type &tuple, hud::index_sequence<indexes...>) noexcept
-                : content(hud::get<indexes>(hud::move(tuple))...)
+            constexpr tuple_leaf(tuple_type tuple, hud::index_sequence<indexes...>) noexcept
+                : content(hud::get<indexes>(tuple)...)
             {
-                static_assert(hud::is_nothrow_constructible_v<type_t, hud::get<indexes>(hud::move(tuple))...>, "type_t(hud::get<indexes>(tuple)&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
+                // static_assert(hud::is_nothrow_constructible_v<type_t, hud::get<indexes>(tuple)...>, "type_t(hud::get<indexes>(tuple)&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
             }
 
             /**
@@ -180,18 +181,36 @@ namespace hud
             {
             }
 
-            /**
-             * Piecewise constructor for `tuple` using tuples of arguments to construct each tuple leafs.
-             * This constructor forwards the elements of the tuples into the respective constructors.
-             *
-             * @param hud::tag_piecewise_construct_t Tag to indicate piecewise construction.
-             * @param tuples Tuples containing arguments to forward to the constructor of each leafs.
-             */
+            // /**
+            //  * Piecewise constructor for `tuple` using tuples of arguments to construct each tuple leafs.
+            //  * This constructor forwards the elements of the tuples into the respective constructors.
+            //  *
+            //  * @param hud::tag_piecewise_construct_t Tag to indicate piecewise construction.
+            //  * @param tuples Tuples containing arguments to forward to the constructor of each leafs.
+            //  */
             template<typename... tuple_types>
-            constexpr tuple_impl(hud::tag_piecewise_construct_t, tuple_types... tuples) noexcept
-                : tuple_leaf<indices, types_t>(hud::get<indices>(hud::move(tuples))...)
+            constexpr tuple_impl(hud::tag_piecewise_construct_t, tuple_types &&...tuples) noexcept
+                : tuple_leaf<indices, types_t>(tuples..., hud::make_index_sequence<hud::tuple_size_v<tuples...>> {})...
             {
             }
+
+            // template<typename... tuple_types>
+            // constexpr tuple_impl(hud::tag_piecewise_construct_t, tuple_type tuple) noexcept
+            //     : tuple_leaf<indices, types_t>()
+            // {
+            // }
+
+            // template<typename... types_t, typename... tuple_rest>
+            // constexpr tuple_impl(hud::tag_piecewise_construct_t, tuple_impl<types_t...> tuple, tuple_rest... rest) noexcept
+            //     : tuple_leaf<indices, types_t>(tuple, hud::make_index_sequence_for<types_t...>)...
+            // {
+            // }
+
+            // template<typename... types_t>
+            // constexpr tuple_impl(hud::tag_piecewise_construct_t, tuple_impl<types_t...> tuple) noexcept
+            //     : tuple_leaf<indices, types_t>(tuple, hud::make_index_sequence_for<types_t...>)...
+            // {
+            // }
 
             /** Copy constructor */
             constexpr tuple_impl(const tuple_impl &) = default;
@@ -650,8 +669,8 @@ namespace hud
          * @param tuples Tuples containing arguments to forward to the constructor of each element.
          */
         template<typename... tuple_types>
-        constexpr tuple(hud::tag_piecewise_construct_t, tuple_types... tuples) noexcept
-            : super_type(hud::tag_piecewise_construct, hud::forward<tuple_types>(tuples)...)
+        constexpr tuple(hud::tag_piecewise_construct_t, tuple_types &&...tuples) noexcept
+            : super_type(hud::tag_piecewise_construct, tuples...)
         {
         }
 
