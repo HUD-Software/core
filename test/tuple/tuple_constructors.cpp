@@ -392,7 +392,7 @@ GTEST_TEST(tuple, default_constructor_explicit_types)
 {
     using tuple_type = hud::tuple<hud_test::explicit_default_constructible, hud_test::explicit_default_constructible>;
 
-    hud_assert_true(hud::is_explicitly_default_constructible_v<tuple_type>);
+    static_assert(hud::is_explicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
@@ -433,7 +433,7 @@ GTEST_TEST(tuple, default_constructor_implicit_types)
 {
     using tuple_type = hud::tuple<hud_test::implicit_default_constructible, hud_test::implicit_default_constructible>;
 
-    hud_assert_true(hud::is_implicitly_default_constructible_v<tuple_type>);
+    static_assert(hud::is_implicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
@@ -474,7 +474,7 @@ GTEST_TEST(tuple, default_constructor_mix_implicit_explicit_types)
 {
     using tuple_type = hud::tuple<hud_test::implicit_default_constructible, hud_test::explicit_default_constructible>;
 
-    hud_assert_true(hud::is_explicitly_default_constructible_v<tuple_type>);
+    static_assert(hud::is_explicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
@@ -524,7 +524,7 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
 
     const auto test = []()
     {
@@ -561,7 +561,7 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_different_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
 
     const auto test = []()
     {
@@ -598,7 +598,7 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
 
     const auto test = []()
     {
@@ -635,7 +635,7 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_different_types)
 {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
 
     const auto test = []()
     {
@@ -672,7 +672,7 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_same_ty
 {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
 
     const auto test = []()
     {
@@ -709,7 +709,7 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_differe
 {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
 
     const auto test = []()
     {
@@ -747,7 +747,7 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
 
     const auto test = []()
     {
@@ -784,7 +784,7 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_different_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
 
     const auto test = []()
     {
@@ -821,7 +821,7 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
 
     const auto test = []()
     {
@@ -858,7 +858,7 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_different_types)
 {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
 
     const auto test = []()
     {
@@ -895,7 +895,7 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_same_ty
 {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
 
     const auto test = []()
     {
@@ -932,7 +932,7 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_differe
 {
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
 
     const auto test = []()
     {
@@ -969,7 +969,7 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
 
     const auto test = []()
     {
@@ -1012,7 +1012,7 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_different_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
 
     const auto test = []()
     {
@@ -1055,7 +1055,7 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
 
     const auto test = []()
     {
@@ -1098,7 +1098,7 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_different_types)
 {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
 
     const auto test = []()
     {
@@ -1141,7 +1141,7 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_same_ty
 {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
 
     const auto test = []()
     {
@@ -1184,7 +1184,7 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_differe
 {
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
 
     const auto test = []()
     {
@@ -1228,7 +1228,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_same_types)
     using pair_type = hud::pair<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
@@ -1266,7 +1266,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_different_types
     using pair_type = hud::pair<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
@@ -1304,7 +1304,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_same_types)
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, const pair_type &>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
@@ -1342,7 +1342,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_different_types
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, const pair_type &>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
@@ -1380,7 +1380,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyabl
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
@@ -1418,7 +1418,7 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyabl
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
@@ -1456,7 +1456,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_same_types)
     using pair_type = hud::pair<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1494,7 +1494,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_different_types
     using pair_type = hud::pair<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1532,7 +1532,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_same_types)
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1570,7 +1570,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_different_types
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1608,7 +1608,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyabl
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1646,7 +1646,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyabl
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1729,7 +1729,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_different_types
     using pair_type = hud::pair<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1773,7 +1773,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_same_types)
     using pair_type = hud::pair<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1817,7 +1817,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_different_types
     using pair_type = hud::pair<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
 
-    hud_assert_true((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1861,7 +1861,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveabl
     using pair_type = hud::pair<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1905,7 +1905,7 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveabl
     using pair_type = hud::pair<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
     using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
@@ -1948,7 +1948,7 @@ GTEST_TEST(tuple, copy_constructor_copyable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
 
     const auto test = []()
     {
@@ -1986,7 +1986,7 @@ GTEST_TEST(tuple, copy_constructor_copyable_different_types)
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
     using other_tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
 
     const auto test = []()
     {
@@ -2023,7 +2023,7 @@ GTEST_TEST(tuple, copy_constructor_moveable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible &, const hud_test::explicitly_move_constructible &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible &, const hud_test::implicitly_move_constructible &>));
 
     const auto test = []()
     {
@@ -2067,7 +2067,7 @@ GTEST_TEST(tuple, copy_constructor_moveable_different_types)
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
     using other_tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible &, const hud_test::implicitly_move_constructible &>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible &, const hud_test::implicitly_move_constructible &>));
 
     const auto test = []()
     {
@@ -2110,7 +2110,7 @@ GTEST_TEST(tuple, move_constructor_copyable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
 
     const auto test = []()
     {
@@ -2148,7 +2148,7 @@ GTEST_TEST(tuple, move_constructor_copyable_different_types)
     using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
     using other_tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
 
     const auto test = []()
     {
@@ -2185,7 +2185,7 @@ GTEST_TEST(tuple, move_constructor_moveable_same_types)
 {
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
 
     const auto test = []()
     {
@@ -2229,7 +2229,7 @@ GTEST_TEST(tuple, move_constructor_moveable_different_types)
     using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
     using other_tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
-    hud_assert_true((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
+    static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
 
     const auto test = []()
     {
