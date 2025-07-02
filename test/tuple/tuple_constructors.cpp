@@ -2270,34 +2270,34 @@ GTEST_TEST(tuple, move_constructor_moveable_different_types)
 
 GTEST_TEST(tuple, piecewise_constructor_trivial_type_same_type)
 {
-    // using tuple_type = hud::tuple<i32, u32, i64, u64>;
+    using tuple_type = hud::tuple<i32, u32, i64, u64>;
 
-    // const auto test = []()
-    // {
-    //     const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(1), hud::forward_as_tuple(2), hud::forward_as_tuple(3), hud::forward_as_tuple(4)};
-    //     return std::tuple {
-    //         hud::get<0>(tuple) == 1,
-    //         hud::get<1>(tuple) == 2,
-    //         hud::get<2>(tuple) == 3,
-    //         hud::get<3>(tuple) == 4,
-    //     };
-    // };
+    const auto test = []()
+    {
+        const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(1), hud::forward_as_tuple(2), hud::forward_as_tuple(3), hud::forward_as_tuple(4)};
+        return std::tuple {
+            hud::get<0>(tuple) == 1,
+            hud::get<1>(tuple) == 2,
+            hud::get<2>(tuple) == 3,
+            hud::get<3>(tuple) == 4,
+        };
+    };
 
-    // // Non constant
-    // {
-    //     const auto result = test();
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_true(std::get<2>(result));
-    //     hud_assert_true(std::get<3>(result));
-    // }
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+    }
 
     // Constant
-    // {
-    //     constexpr auto result = test();
-    //     hud_assert_true(std::get<0>(result));
-    //     hud_assert_true(std::get<1>(result));
-    //     hud_assert_true(std::get<2>(result));
-    //     hud_assert_true(std::get<3>(result));
-    // }
+    {
+        constexpr auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+    }
 }

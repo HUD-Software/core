@@ -64,7 +64,7 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
 
     // Constant
     {
-        // constexpr auto result = test();
+        constexpr auto result = test();
         // hud_assert_true(std::get<0>(result));
         // hud_assert_true(std::get<1>(result));
     }
