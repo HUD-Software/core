@@ -41,8 +41,6 @@ GTEST_TEST(shared_pointer_safe, equal_operator)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -100,23 +98,21 @@ GTEST_TEST(shared_pointer_safe, not_equal_operator)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /* #if !defined(HD_COMPILER_MSVC)
-         {
-             constexpr auto result = test();
-             hud_assert_false(std::get<0>(result));
-             hud_assert_true(std::get<1>(result));
-             hud_assert_false(std::get<2>(result));
-             hud_assert_false(std::get<3>(result));
-             hud_assert_true(std::get<4>(result));
-             hud_assert_true(std::get<5>(result));
-             hud_assert_false(std::get<6>(result));
-             hud_assert_true(std::get<7>(result));
-             hud_assert_false(std::get<8>(result));
-             hud_assert_true(std::get<9>(result));
-         }
-     #endif*/
+       {
+           constexpr auto result = test();
+           hud_assert_false(std::get<0>(result));
+           hud_assert_true(std::get<1>(result));
+           hud_assert_false(std::get<2>(result));
+           hud_assert_false(std::get<3>(result));
+           hud_assert_true(std::get<4>(result));
+           hud_assert_true(std::get<5>(result));
+           hud_assert_false(std::get<6>(result));
+           hud_assert_true(std::get<7>(result));
+           hud_assert_false(std::get<8>(result));
+           hud_assert_true(std::get<9>(result));
+       }
+   #endif*/
 }
 
 GTEST_TEST(shared_pointer_safe, less_operator)
@@ -189,8 +185,6 @@ GTEST_TEST(shared_pointer_safe, less_operator)
 
     // Constant
     // Not testable due to lack of pointer sort at compile time
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -283,28 +277,26 @@ GTEST_TEST(shared_pointer_safe, less_equal_operator)
 
     // Constant
     // Not testable due to lack of pointer sort at compile time
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
-        {
-            constexpr auto result = test();
-            hud_assert_true(std::get<0>(result));
-            hud_assert_true(std::get<1>(result));
-            hud_assert_true(std::get<2>(result));
-            hud_assert_false(std::get<3>(result));
-            hud_assert_true(std::get<4>(result));
-            hud_assert_true(std::get<5>(result));
-            hud_assert_false(std::get<6>(result));
-            hud_assert_false(std::get<7>(result));
-            hud_assert_true(std::get<8>(result));
-            hud_assert_true(std::get<9>(result));
-            hud_assert_false(std::get<10>(result));
-            hud_assert_false(std::get<11>(result));
-            hud_assert_true(std::get<12>(result));
-            hud_assert_true(std::get<13>(result));
-            hud_assert_true(std::get<14>(result));
-        }
-    #endif*/
+      {
+          constexpr auto result = test();
+          hud_assert_true(std::get<0>(result));
+          hud_assert_true(std::get<1>(result));
+          hud_assert_true(std::get<2>(result));
+          hud_assert_false(std::get<3>(result));
+          hud_assert_true(std::get<4>(result));
+          hud_assert_true(std::get<5>(result));
+          hud_assert_false(std::get<6>(result));
+          hud_assert_false(std::get<7>(result));
+          hud_assert_true(std::get<8>(result));
+          hud_assert_true(std::get<9>(result));
+          hud_assert_false(std::get<10>(result));
+          hud_assert_false(std::get<11>(result));
+          hud_assert_true(std::get<12>(result));
+          hud_assert_true(std::get<13>(result));
+          hud_assert_true(std::get<14>(result));
+      }
+  #endif*/
 }
 
 GTEST_TEST(shared_pointer_safe, greater_operator)
@@ -377,8 +369,6 @@ GTEST_TEST(shared_pointer_safe, greater_operator)
 
     // Constant
     // Not testable due to lack of pointer sort at compile time
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -471,8 +461,6 @@ GTEST_TEST(shared_pointer_safe, greater_equal_operator)
 
     // Constant
     // Not testable due to lack of pointer sort at compile time
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();

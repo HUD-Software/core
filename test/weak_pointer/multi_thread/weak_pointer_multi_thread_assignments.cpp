@@ -30,7 +30,8 @@ GTEST_TEST(weak_pointer_safe, copy_assignement_same_type)
             locked_weak_ptr_copy.pointer()->move_assign_count() == 0u,
             locked_weak_ptr_copy.pointer()->copy_constructor_count() == 0u,
             locked_weak_ptr_copy.pointer()->move_constructor_count() == 0u,
-            dtor_count == 0};
+            dtor_count == 0
+        };
     };
 
     // Non constant
@@ -56,8 +57,6 @@ GTEST_TEST(weak_pointer_safe, copy_assignement_same_type)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test(123);
@@ -112,7 +111,8 @@ GTEST_TEST(weak_pointer_safe, copy_assignement_different_type)
             locked_weak_ptr_copy.pointer()->move_assign_count() == 0u,
             locked_weak_ptr_copy.pointer()->copy_constructor_count() == 0u,
             locked_weak_ptr_copy.pointer()->move_constructor_count() == 0u,
-            dtor_count == 0};
+            dtor_count == 0
+        };
     };
 
     // Non constant
@@ -138,8 +138,6 @@ GTEST_TEST(weak_pointer_safe, copy_assignement_different_type)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test(123);
@@ -194,7 +192,8 @@ GTEST_TEST(weak_pointer_safe, move_assignement_same_type)
             locked_weak_ptr_copy.pointer()->move_assign_count() == 0u,
             locked_weak_ptr_copy.pointer()->copy_constructor_count() == 0u,
             locked_weak_ptr_copy.pointer()->move_constructor_count() == 0u,
-            dtor_count == 0};
+            dtor_count == 0
+        };
     };
 
     // Non constant
@@ -220,8 +219,6 @@ GTEST_TEST(weak_pointer_safe, move_assignement_same_type)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test(123);
@@ -276,7 +273,8 @@ GTEST_TEST(weak_pointer_safe, move_assignement_different_type)
             locked_weak_ptr_copy.pointer()->move_assign_count() == 0u,
             locked_weak_ptr_copy.pointer()->copy_constructor_count() == 0u,
             locked_weak_ptr_copy.pointer()->move_constructor_count() == 0u,
-            dtor_count == 0};
+            dtor_count == 0
+        };
     };
 
     // Non constant
@@ -302,8 +300,6 @@ GTEST_TEST(weak_pointer_safe, move_assignement_different_type)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test(123);
@@ -350,7 +346,8 @@ GTEST_TEST(weak_pointer_safe, assign_shared_pointer_same_type)
             locked_weak_ptr_copy.pointer()->move_assign_count() == 0u,
             locked_weak_ptr_copy.pointer()->copy_constructor_count() == 0u,
             locked_weak_ptr_copy.pointer()->move_constructor_count() == 0u,
-            dtor_count == 0};
+            dtor_count == 0
+        };
     };
 
     // Non constant
@@ -370,12 +367,10 @@ GTEST_TEST(weak_pointer_safe, assign_shared_pointer_same_type)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
-    //     {
-    //         constexpr auto result = test(123);
-    //         hud_assert_true(std::get<0>(result));
+    // {
+    //     constexpr auto result = test(123);
+    //     hud_assert_true(std::get<0>(result));
     // hud_assert_true(std::get<1>(result));
     // hud_assert_true(std::get<2>(result));
     // hud_assert_true(std::get<3>(result));
@@ -386,7 +381,7 @@ GTEST_TEST(weak_pointer_safe, assign_shared_pointer_same_type)
     // hud_assert_true(std::get<8>(result));
     // hud_assert_true(std::get<9>(result));
     // hud_assert_true(std::get<10>(result));
-    //     }
+    // }
     // #endif
 }
 
@@ -412,7 +407,8 @@ GTEST_TEST(weak_pointer_safe, assign_shared_pointer_different_type)
             locked_weak_ptr_copy.pointer()->move_assign_count() == 0u,
             locked_weak_ptr_copy.pointer()->copy_constructor_count() == 0u,
             locked_weak_ptr_copy.pointer()->move_constructor_count() == 0u,
-            dtor_count == 0};
+            dtor_count == 0
+        };
     };
 
     // Non constant
@@ -432,8 +428,6 @@ GTEST_TEST(weak_pointer_safe, assign_shared_pointer_different_type)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test(123);
@@ -454,13 +448,18 @@ GTEST_TEST(weak_pointer_safe, assign_shared_pointer_different_type)
 
 GTEST_TEST(weak_pointer_safe, copy_assign_shared_pointer_to_non_empty_weak_pointer)
 {
-    const auto test = [](){
+    const auto test = []()
+    {
         i32 dtor_count = 0;
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {new hud_test::non_bitwise_type {1, &dtor_count}}; // +1 shared_count
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {
+            new hud_test::non_bitwise_type {1, &dtor_count}
+        }; // +1 shared_count
         hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_copy(shared_ptr);
 
         i32 dtor_count_2 = 0;
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr_2 { new hud_test::non_bitwise_type {2, &dtor_count_2}}; // +1 shared_count_2
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr_2 {
+            new hud_test::non_bitwise_type {2, &dtor_count_2}
+        }; // +1 shared_count_2
 
         const bool weak_ptr_own_type_pointer = weak_ptr_copy.lock().pointer() == shared_ptr.pointer();
         const bool weak_ptr_shared_counter_is_ok = weak_ptr_copy.lock().shared_count() == 2u; // +1 shared_count
@@ -469,7 +468,7 @@ GTEST_TEST(weak_pointer_safe, copy_assign_shared_pointer_to_non_empty_weak_point
 
         const auto locked_weak_ptr_copy = weak_ptr_copy.lock(); // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             weak_ptr_own_type_pointer,
             weak_ptr_shared_counter_is_ok,
             locked_weak_ptr_copy.pointer() == shared_ptr_2.pointer(),
@@ -487,8 +486,6 @@ GTEST_TEST(weak_pointer_safe, copy_assign_shared_pointer_to_non_empty_weak_point
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     // {
     //     constexpr auto result = test();
@@ -502,13 +499,18 @@ GTEST_TEST(weak_pointer_safe, copy_assign_shared_pointer_to_non_empty_weak_point
 
 GTEST_TEST(weak_pointer_safe, copy_assign_weak_pointer_to_non_empty_weak_pointer)
 {
-     const auto test = [](){
+    const auto test = []()
+    {
         i32 dtor_count = 0;
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {new hud_test::non_bitwise_type {1, &dtor_count}}; // +1 shared_count
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {
+            new hud_test::non_bitwise_type {1, &dtor_count}
+        }; // +1 shared_count
         hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr(shared_ptr);
 
         i32 dtor_count_2 = 0;
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr_2 { new hud_test::non_bitwise_type {2, &dtor_count_2}}; // +1 shared_count_2
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr_2 {
+            new hud_test::non_bitwise_type {2, &dtor_count_2}
+        }; // +1 shared_count_2
         hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_2(shared_ptr_2);
 
         const bool weak_ptr_own_type_pointer = weak_ptr.lock().pointer() == shared_ptr.pointer();
@@ -518,10 +520,10 @@ GTEST_TEST(weak_pointer_safe, copy_assign_weak_pointer_to_non_empty_weak_pointer
 
         weak_ptr = weak_ptr_2;
 
-        const auto locked_weak_ptr = weak_ptr.lock(); // +1 shared_count
+        const auto locked_weak_ptr = weak_ptr.lock();     // +1 shared_count
         const auto locked_weak_ptr_2 = weak_ptr_2.lock(); // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             weak_ptr_own_type_pointer,
             weak_ptr_shared_counter_is_ok,
             weak_ptr_2_own_type_pointer,
@@ -549,8 +551,6 @@ GTEST_TEST(weak_pointer_safe, copy_assign_weak_pointer_to_non_empty_weak_pointer
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     // {
     //     constexpr auto result = test();
@@ -569,13 +569,18 @@ GTEST_TEST(weak_pointer_safe, copy_assign_weak_pointer_to_non_empty_weak_pointer
 
 GTEST_TEST(weak_pointer_safe, move_assign_weak_pointer_to_non_empty_weak_pointer)
 {
-     const auto test = [](){
+    const auto test = []()
+    {
         i32 dtor_count = 0;
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {new hud_test::non_bitwise_type {1, &dtor_count}}; // +1 shared_count
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr {
+            new hud_test::non_bitwise_type {1, &dtor_count}
+        }; // +1 shared_count
         hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr(shared_ptr);
 
         i32 dtor_count_2 = 0;
-        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr_2 { new hud_test::non_bitwise_type {2, &dtor_count_2}}; // +1 shared_count_2
+        hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr_2 {
+            new hud_test::non_bitwise_type {2, &dtor_count_2}
+        }; // +1 shared_count_2
         hud::weak_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> weak_ptr_2(shared_ptr_2);
 
         const bool weak_ptr_own_type_pointer = weak_ptr.lock().pointer() == shared_ptr.pointer();
@@ -585,10 +590,10 @@ GTEST_TEST(weak_pointer_safe, move_assign_weak_pointer_to_non_empty_weak_pointer
 
         weak_ptr = hud::move(weak_ptr_2);
 
-        const auto locked_weak_ptr = weak_ptr.lock(); // +1 shared_count
+        const auto locked_weak_ptr = weak_ptr.lock();     // +1 shared_count
         const auto locked_weak_ptr_2 = weak_ptr_2.lock(); // +1 shared_count
 
-        return std::tuple{
+        return std::tuple {
             weak_ptr_own_type_pointer,
             weak_ptr_shared_counter_is_ok,
             weak_ptr_2_own_type_pointer,
@@ -616,8 +621,6 @@ GTEST_TEST(weak_pointer_safe, move_assign_weak_pointer_to_non_empty_weak_pointer
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     // {
     //     constexpr auto result = test();
@@ -654,7 +657,8 @@ GTEST_TEST(weak_pointer_safe, copy_assign_weak_pointer_to_same_weak_pointer)
             locked_weak_ptr.pointer()->move_assign_count() == 0u,
             locked_weak_ptr.pointer()->copy_constructor_count() == 0u,
             locked_weak_ptr.pointer()->move_constructor_count() == 0u,
-            dtor_count == 0};
+            dtor_count == 0
+        };
     };
 
     // Non constant
@@ -672,8 +676,6 @@ GTEST_TEST(weak_pointer_safe, copy_assign_weak_pointer_to_same_weak_pointer)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     // {
     //     constexpr auto result = test(123);
@@ -710,7 +712,8 @@ GTEST_TEST(weak_pointer_safe, move_assign_weak_pointer_to_same_weak_pointer)
             locked_weak_ptr.pointer()->move_assign_count() == 0u,
             locked_weak_ptr.pointer()->copy_constructor_count() == 0u,
             locked_weak_ptr.pointer()->move_constructor_count() == 0u,
-            dtor_count == 0};
+            dtor_count == 0
+        };
     };
 
     // Non constant
@@ -728,8 +731,6 @@ GTEST_TEST(weak_pointer_safe, move_assign_weak_pointer_to_same_weak_pointer)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     // {
     //     constexpr auto result = test(123);

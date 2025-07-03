@@ -21,7 +21,8 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty)
                 is_pointer_correct,
                 shared_count_before == 1u,
                 shared_ptr.pointer() == nullptr,
-                shared_ptr.shared_count() == 0u};
+                shared_ptr.shared_count() == 0u
+            };
         };
 
         // Non constant
@@ -35,8 +36,6 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty)
         }
 
         // Constant is not available with thread safe SharedPointer
-        // Not working under with msvc
-        // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
         /*#if !defined(HD_COMPILER_MSVC)
                 {
                     constexpr auto result = test();
@@ -67,7 +66,8 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty)
                 is_pointer_correct,
                 shared_count_before == 1u,
                 shared_ptr.pointer() == nullptr,
-                shared_ptr.shared_count() == 0u};
+                shared_ptr.shared_count() == 0u
+            };
         };
 
         // Non constant
@@ -81,8 +81,6 @@ GTEST_TEST(shared_pointer_safe, swap_with_empty)
         }
 
         // Constant is not available with thread safe SharedPointer
-        // Not working under with msvc
-        // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
         /*#if !defined(HD_COMPILER_MSVC)
                 {
                     constexpr auto result = test();
@@ -119,7 +117,8 @@ GTEST_TEST(shared_pointer_safe, swap_same_type)
                 shared_ptr.pointer() == ptr2,
                 shared_ptr.shared_count() == 1u,
                 shared_ptr_2.pointer() == ptr,
-                shared_ptr_2.shared_count() == 1u};
+                shared_ptr_2.shared_count() == 1u
+            };
         };
 
         // Non constant
@@ -134,8 +133,6 @@ GTEST_TEST(shared_pointer_safe, swap_same_type)
         }
 
         // Constant is not available with thread safe SharedPointer
-        // Not working under with msvc
-        // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
         /*#if !defined(HD_COMPILER_MSVC)
                 {
                     constexpr auto result = test();
@@ -169,7 +166,8 @@ GTEST_TEST(shared_pointer_safe, swap_same_type)
                 shared_ptr.pointer() == ptr2,
                 shared_ptr.shared_count() == 1u,
                 shared_ptr_2.pointer() == ptr,
-                shared_ptr_2.shared_count() == 1u};
+                shared_ptr_2.shared_count() == 1u
+            };
         };
 
         // Non constant
@@ -184,8 +182,6 @@ GTEST_TEST(shared_pointer_safe, swap_same_type)
         }
 
         // Constant is not available with thread safe SharedPointer
-        // Not working under with msvc
-        // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
         /*#if !defined(HD_COMPILER_MSVC)
                 {
                     constexpr auto result = test();

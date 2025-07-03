@@ -25,8 +25,6 @@ GTEST_TEST(shared_pointer_safe, single_thread_pointer_return_object)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -53,8 +51,6 @@ GTEST_TEST(shared_pointer_safe, single_thread_empty_pointer_return_nullptr)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -84,8 +80,6 @@ GTEST_TEST(shared_pointer_safe, single_thread_is_owning)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -116,8 +110,6 @@ GTEST_TEST(shared_pointer_safe, cast_to_bool)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -146,8 +138,6 @@ GTEST_TEST(shared_pointer_safe, operator_dereference)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -175,8 +165,6 @@ GTEST_TEST(shared_pointer_safe, operator_arrow)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /* #if !defined(HD_COMPILER_MSVC)
          {
              constexpr auto result = test();
@@ -217,8 +205,6 @@ GTEST_TEST(shared_pointer_safe, reset_to_empty)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -262,8 +248,6 @@ GTEST_TEST(shared_pointer_safe, reset_to_nullptr)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -325,8 +309,6 @@ GTEST_TEST(shared_pointer_safe, reset_to_same_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -393,8 +375,6 @@ GTEST_TEST(shared_pointer_safe, reset_to_different_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -447,8 +427,6 @@ GTEST_TEST(shared_pointer_safe, reset_to_empty_should_not_delete_if_other_refere
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();
@@ -506,8 +484,6 @@ GTEST_TEST(shared_pointer_safe, reset_to_other_pointer_should_not_delete_if_othe
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test();

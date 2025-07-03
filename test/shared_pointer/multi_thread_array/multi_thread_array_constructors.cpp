@@ -8,7 +8,8 @@ GTEST_TEST(shared_pointer_array_safe, default_constructor)
         hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr;
         return std::tuple {
             shared_ptr.pointer() == nullptr,
-            shared_ptr.shared_count()};
+            shared_ptr.shared_count()
+        };
     };
 
     // Non constant
@@ -34,7 +35,8 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_nullptr)
         hud::shared_pointer<hud_test::non_bitwise_type[2], hud::thread_safety_e::safe> shared_ptr(nullptr);
         return std::tuple {
             shared_ptr.pointer() == nullptr,
-            shared_ptr.shared_count()};
+            shared_ptr.shared_count()
+        };
     };
 
     // Non constant
@@ -69,7 +71,8 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_same_type)
             shared_ptr.pointer()[0].id() == 1,
             shared_ptr.pointer()[1].id() == 2,
             dtor_count[0] == 0,
-            dtor_count[1] == 0};
+            dtor_count[1] == 0
+        };
     };
 
     // Non constant
@@ -84,8 +87,6 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_same_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
@@ -116,7 +117,8 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_different_type)
             shared_ptr.pointer()[0].id() == 1,
             shared_ptr.pointer()[1].id() == 2,
             dtor_count[0] == 0,
-            dtor_count[1] == 0};
+            dtor_count[1] == 0
+        };
     };
 
     // Non constant
@@ -131,8 +133,6 @@ GTEST_TEST(shared_pointer_array_safe, param_constructor_different_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
@@ -205,30 +205,28 @@ GTEST_TEST(shared_pointer_array_safe, copy_constructor_same_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
-    //     {
-    //         constexpr auto result = test();
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_true(std::get<1>(result));
-    //         hud_assert_true(std::get<2>(result));
-    //         hud_assert_true(std::get<3>(result));
-    //         hud_assert_true(std::get<4>(result));
-    //         hud_assert_true(std::get<5>(result));
-    //         hud_assert_true(std::get<6>(result));
-    //         hud_assert_true(std::get<7>(result));
-    //         hud_assert_true(std::get<8>(result));
-    //         hud_assert_true(std::get<9>(result));
-    //         hud_assert_true(std::get<10>(result));
-    //         hud_assert_true(std::get<11>(result));
-    //         hud_assert_true(std::get<12>(result));
-    //         hud_assert_true(std::get<13>(result));
-    //         hud_assert_true(std::get<14>(result));
-    //         hud_assert_true(std::get<15>(result));
-    //         hud_assert_true(std::get<16>(result));
-    //         hud_assert_true(std::get<17>(result));
-    //     }
+    // {
+    //     constexpr auto result = test();
+    //     hud_assert_true(std::get<0>(result));
+    //     hud_assert_true(std::get<1>(result));
+    //     hud_assert_true(std::get<2>(result));
+    //     hud_assert_true(std::get<3>(result));
+    //     hud_assert_true(std::get<4>(result));
+    //     hud_assert_true(std::get<5>(result));
+    //     hud_assert_true(std::get<6>(result));
+    //     hud_assert_true(std::get<7>(result));
+    //     hud_assert_true(std::get<8>(result));
+    //     hud_assert_true(std::get<9>(result));
+    //     hud_assert_true(std::get<10>(result));
+    //     hud_assert_true(std::get<11>(result));
+    //     hud_assert_true(std::get<12>(result));
+    //     hud_assert_true(std::get<13>(result));
+    //     hud_assert_true(std::get<14>(result));
+    //     hud_assert_true(std::get<15>(result));
+    //     hud_assert_true(std::get<16>(result));
+    //     hud_assert_true(std::get<17>(result));
+    // }
     // #endif
 }
 
@@ -291,8 +289,6 @@ GTEST_TEST(shared_pointer_array_safe, copy_constructor_different_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
@@ -377,8 +373,6 @@ GTEST_TEST(shared_pointer_array_safe, move_constructor_same_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();
@@ -463,8 +457,6 @@ GTEST_TEST(shared_pointer_array_safe, move_constructor_different_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test();

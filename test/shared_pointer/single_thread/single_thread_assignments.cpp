@@ -26,7 +26,8 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -51,31 +52,31 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_type)
         hud_assert_eq(std::get<16>(result), 0);
     }
 
-    // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-    // #if !defined(HD_COMPILER_MSVC)
-    //     {
-    //         constexpr auto result = test(123);
-    //         hud_assert_true(std::get<0>(result));
-    //         hud_assert_eq(std::get<1>(result), 2u);
-    //         hud_assert_eq(std::get<2>(result), 123);
-    //         hud_assert_eq(std::get<3>(result), 1u);
-    //         hud_assert_eq(std::get<4>(result), 0u);
-    //         hud_assert_eq(std::get<5>(result), 0u);
-    //         hud_assert_eq(std::get<6>(result), 0u);
-    //         hud_assert_eq(std::get<7>(result), 0u);
-    //         hud_assert_true(std::get<8>(result));
-    //         hud_assert_eq(std::get<9>(result), 2u);
-    //         hud_assert_eq(std::get<10>(result), 123);
-    //         hud_assert_eq(std::get<11>(result), 1u);
-    //         hud_assert_eq(std::get<12>(result), 0u);
-    //         hud_assert_eq(std::get<13>(result), 0u);
-    //         hud_assert_eq(std::get<14>(result), 0u);
-    //         hud_assert_eq(std::get<15>(result), 0u);
-    //         hud_assert_eq(std::get<16>(result), 0);
-    //     }
-    // #endif
+// Constant
+// Not working under with msvc
+// https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
+#if !defined(HD_COMPILER_MSVC)
+    {
+        constexpr auto result = test(123);
+        hud_assert_true(std::get<0>(result));
+        hud_assert_eq(std::get<1>(result), 2u);
+        hud_assert_eq(std::get<2>(result), 123);
+        hud_assert_eq(std::get<3>(result), 1u);
+        hud_assert_eq(std::get<4>(result), 0u);
+        hud_assert_eq(std::get<5>(result), 0u);
+        hud_assert_eq(std::get<6>(result), 0u);
+        hud_assert_eq(std::get<7>(result), 0u);
+        hud_assert_true(std::get<8>(result));
+        hud_assert_eq(std::get<9>(result), 2u);
+        hud_assert_eq(std::get<10>(result), 123);
+        hud_assert_eq(std::get<11>(result), 1u);
+        hud_assert_eq(std::get<12>(result), 0u);
+        hud_assert_eq(std::get<13>(result), 0u);
+        hud_assert_eq(std::get<14>(result), 0u);
+        hud_assert_eq(std::get<15>(result), 0u);
+        hud_assert_eq(std::get<16>(result), 0);
+    }
+#endif
 }
 
 GTEST_TEST(shared_pointer_not_safe, copy_assignement_different_type)
@@ -104,7 +105,8 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_different_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -168,7 +170,8 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_an_empty_same_type)
         return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -203,7 +206,8 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_nullptr)
         return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -247,7 +251,8 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_same_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -307,7 +312,8 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_different_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -359,7 +365,8 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_an_empty_same_type)
         return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -394,7 +401,8 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_nullptr)
         return std::tuple {
             shared_ptr.pointer() == nullptr,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -429,7 +437,8 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_shared_pointer)
         return std::tuple {
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -464,7 +473,8 @@ GTEST_TEST(shared_pointer_not_safe, move_assignement_same_shared_pointer)
         return std::tuple {
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant

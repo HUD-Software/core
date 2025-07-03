@@ -8,7 +8,8 @@ GTEST_TEST(shared_pointer_safe, default_constructor)
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr;
         return std::tuple {
             shared_ptr.pointer() == nullptr,
-            shared_ptr.shared_count()};
+            shared_ptr.shared_count()
+        };
     };
 
     // Non constant
@@ -34,7 +35,8 @@ GTEST_TEST(shared_pointer_safe, param_constructor_nullptr)
         hud::shared_pointer<hud_test::non_bitwise_type, hud::thread_safety_e::safe> shared_ptr(nullptr);
         return std::tuple {
             shared_ptr.pointer() == nullptr,
-            shared_ptr.shared_count()};
+            shared_ptr.shared_count()
+        };
     };
 
     // Non constant
@@ -64,7 +66,8 @@ GTEST_TEST(shared_pointer_safe, param_constructor_same_type)
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
             shared_ptr.pointer()->id(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -77,8 +80,6 @@ GTEST_TEST(shared_pointer_safe, param_constructor_same_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
@@ -102,7 +103,8 @@ GTEST_TEST(shared_pointer_safe, param_constructor_different_type)
             shared_ptr.pointer() == type,
             shared_ptr.shared_count(),
             shared_ptr.pointer()->id(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -115,8 +117,6 @@ GTEST_TEST(shared_pointer_safe, param_constructor_different_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /* #if !defined(HD_COMPILER_MSVC)
          {
              constexpr auto result = test(123);
@@ -155,7 +155,8 @@ GTEST_TEST(shared_pointer_safe, copy_constructor_same_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -181,8 +182,6 @@ GTEST_TEST(shared_pointer_safe, copy_constructor_same_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
@@ -235,7 +234,8 @@ GTEST_TEST(shared_pointer_safe, copy_constructor_different_type)
             shared_ptr.pointer()->move_assign_count(),
             shared_ptr.pointer()->copy_constructor_count(),
             shared_ptr.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -261,8 +261,6 @@ GTEST_TEST(shared_pointer_safe, copy_constructor_different_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);
@@ -308,7 +306,8 @@ GTEST_TEST(shared_pointer_safe, move_constructor_same_type)
             shared_ptr.pointer()->move_constructor_count(),
             shared_ptr_to_move.pointer() == nullptr,
             shared_ptr_to_move.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -328,8 +327,6 @@ GTEST_TEST(shared_pointer_safe, move_constructor_same_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /* #if !defined(HD_COMPILER_MSVC)
          {
              constexpr auto result = test(123);
@@ -369,7 +366,8 @@ GTEST_TEST(shared_pointer_safe, move_constructor_different_type)
             shared_ptr.pointer()->move_constructor_count(),
             shared_ptr_to_move.pointer() == nullptr,
             shared_ptr_to_move.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -389,8 +387,6 @@ GTEST_TEST(shared_pointer_safe, move_constructor_different_type)
     }
 
     // Constant is not available with thread safe SharedPointer
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     /*#if !defined(HD_COMPILER_MSVC)
         {
             constexpr auto result = test(123);

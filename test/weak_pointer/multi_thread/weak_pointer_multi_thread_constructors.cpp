@@ -8,7 +8,8 @@ GTEST_TEST(weak_pointer_safe, default_constructor)
 
         return std::tuple {
             weak_ptr.lock().pointer() == nullptr,
-            weak_ptr.lock().shared_count()};
+            weak_ptr.lock().shared_count()
+        };
     };
 
     // Non constant
@@ -41,7 +42,8 @@ GTEST_TEST(weak_pointer_safe, param_constructor_same_type)
             shared_ptr.shared_count(),
             shared_ptr.pointer()->id(),
             dtor_count,
-            weak_ptr.lock().pointer() == type};
+            weak_ptr.lock().pointer() == type
+        };
     };
 
     // Non constant
@@ -55,8 +57,6 @@ GTEST_TEST(weak_pointer_safe, param_constructor_same_type)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test(123);
@@ -82,7 +82,8 @@ GTEST_TEST(weak_pointer_safe, param_constructor_different_type)
             shared_ptr.shared_count(),
             shared_ptr.pointer()->id(),
             dtor_count,
-            weak_ptr.lock().pointer() == type};
+            weak_ptr.lock().pointer() == type
+        };
     };
 
     // Non constant
@@ -95,8 +96,6 @@ GTEST_TEST(weak_pointer_safe, param_constructor_different_type)
     }
 
     // Constant
-    // Not working under with msvc
-    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
     // #if !defined(HD_COMPILER_MSVC)
     //     {
     //         constexpr auto result = test(123);
@@ -138,7 +137,8 @@ GTEST_TEST(weak_pointer_safe, copy_constructor_same_type)
             locked_weak_ptr_copy.pointer()->move_assign_count(),
             locked_weak_ptr_copy.pointer()->copy_constructor_count(),
             locked_weak_ptr_copy.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -221,7 +221,8 @@ GTEST_TEST(weak_pointer_safe, copy_constructor_different_type)
             locked_weak_ptr_copy.pointer()->move_assign_count(),
             locked_weak_ptr_copy.pointer()->copy_constructor_count(),
             locked_weak_ptr_copy.pointer()->move_constructor_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -297,7 +298,8 @@ GTEST_TEST(weak_pointer_safe, move_constructor_same_type)
             locked_weak_ptr_move.pointer()->move_constructor_count(),
             locked_weak_ptr_to_move.pointer() == nullptr,
             locked_weak_ptr_to_move.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
@@ -361,7 +363,8 @@ GTEST_TEST(weak_pointer_safe, move_constructor_different_type)
             locked_weak_ptr_move.pointer()->move_constructor_count(),
             locked_weak_ptr_to_move.pointer() == nullptr,
             locked_weak_ptr_to_move.shared_count(),
-            dtor_count};
+            dtor_count
+        };
     };
 
     // Non constant
