@@ -118,7 +118,7 @@ namespace hud
              */
             template<typename... Args, usize... indices>
             constexpr tuple_leaf(hud::tuple<Args...> &&tuple, hud::index_sequence<indices...>) noexcept
-                : content(hud::get<indices>(tuple)...)
+                : content(hud::forward<Args>(hud::get<indices>(tuple))...)
             {
                 static_assert(hud::is_nothrow_constructible_v<type_t, Args...>, "type_t(Args&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
             }

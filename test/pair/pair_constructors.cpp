@@ -1606,17 +1606,15 @@ GTEST_TEST(pair, piecewise_constructor_non_trivial_type_same_type)
         const auto test = []()
         {
             using type = hud_test::non_bitwise_type;
-            const type to_copy_0;
-            const type to_copy_1;
             hud::pair<type, type> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(1, nullptr), hud::forward_as_tuple(2, nullptr)};
             return std::tuple {
-                hud::get<0>(pair).id(),                          // 0
+                hud::get<0>(pair).id() == 1,                     // 0
                 hud::get<0>(pair).constructor_count() == 1,      // 1
                 hud::get<0>(pair).copy_constructor_count() == 0, // 2
                 hud::get<0>(pair).move_constructor_count() == 0, // 3
                 hud::get<0>(pair).copy_assign_count() == 0,      // 4
                 hud::get<0>(pair).move_assign_count() == 0,      // 5
-                hud::get<1>(pair).id(),                          // 6
+                hud::get<1>(pair).id() == 2,                     // 6
                 hud::get<1>(pair).constructor_count() == 1,      // 7
                 hud::get<1>(pair).copy_constructor_count() == 0, // 8
                 hud::get<1>(pair).move_constructor_count() == 0, // 9

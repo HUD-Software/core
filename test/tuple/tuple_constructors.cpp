@@ -2301,3 +2301,590 @@ GTEST_TEST(tuple, piecewise_constructor_trivial_type_same_type)
         hud_assert_true(std::get<3>(result));
     }
 }
+
+GTEST_TEST(tuple, piecewise_constructor_trivial_type_different_type)
+{
+    using tuple_type = hud::tuple<i32, u32, i64, u64>;
+
+    const auto test = []()
+    {
+        const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(u8 {1}), hud::forward_as_tuple(u8 {2}), hud::forward_as_tuple(u8 {3}), hud::forward_as_tuple(u8 {4})};
+        return std::tuple {
+            hud::get<0>(tuple) == 1,
+            hud::get<1>(tuple) == 2,
+            hud::get<2>(tuple) == 3,
+            hud::get<3>(tuple) == 4,
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+    }
+
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+    }
+}
+
+GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_same_type)
+{
+    // By param
+    {
+        using type = hud_test::non_bitwise_type;
+        using tuple_type = hud::tuple<type, type, type, type>;
+
+        const auto test = []()
+        {
+            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(1, nullptr), hud::forward_as_tuple(2, nullptr), hud::forward_as_tuple(3, nullptr), hud::forward_as_tuple(4, nullptr)};
+            return std::tuple {
+                hud::get<0>(tuple).id() == 1,                       // 0
+                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(tuple).constructor_count() == 1,        // 2
+                hud::get<0>(tuple).copy_constructor_count() == 0,   // 3
+                hud::get<0>(tuple).move_constructor_count() == 0,   // 4
+                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(tuple).id() == 2,                       // 7
+                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(tuple).constructor_count() == 1,        // 9
+                hud::get<1>(tuple).copy_constructor_count() == 0,   // 10
+                hud::get<1>(tuple).move_constructor_count() == 0,   // 11
+                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(tuple).id() == 3,                       // 14
+                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(tuple).constructor_count() == 1,        // 16
+                hud::get<2>(tuple).copy_constructor_count() == 0,   // 17
+                hud::get<2>(tuple).move_constructor_count() == 0,   // 18
+                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(tuple).id() == 4,                       // 21
+                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(tuple).constructor_count() == 1,        // 23
+                hud::get<3>(tuple).copy_constructor_count() == 0,   // 24
+                hud::get<3>(tuple).move_constructor_count() == 0,   // 25
+                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+    }
+
+    // By copy
+    {
+        using type = hud_test::non_bitwise_type;
+        using tuple_type = hud::tuple<type, type, type, type>;
+
+        const auto test = []()
+        {
+            const type to_copy_0 {1, nullptr};
+            const type to_copy_1 {2, nullptr};
+            const type to_copy_2 {3, nullptr};
+            const type to_copy_3 {4, nullptr};
+
+            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1), hud::forward_as_tuple(to_copy_2), hud::forward_as_tuple(to_copy_3)};
+            return std::tuple {
+                hud::get<0>(tuple).id() == 1,                       // 0
+                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(tuple).constructor_count() == 1,        // 2
+                hud::get<0>(tuple).copy_constructor_count() == 1,   // 3
+                hud::get<0>(tuple).move_constructor_count() == 0,   // 4
+                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(tuple).id() == 2,                       // 7
+                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(tuple).constructor_count() == 1,        // 9
+                hud::get<1>(tuple).copy_constructor_count() == 1,   // 10
+                hud::get<1>(tuple).move_constructor_count() == 0,   // 11
+                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(tuple).id() == 3,                       // 14
+                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(tuple).constructor_count() == 1,        // 16
+                hud::get<2>(tuple).copy_constructor_count() == 1,   // 17
+                hud::get<2>(tuple).move_constructor_count() == 0,   // 18
+                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(tuple).id() == 4,                       // 21
+                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(tuple).constructor_count() == 1,        // 23
+                hud::get<3>(tuple).copy_constructor_count() == 1,   // 24
+                hud::get<3>(tuple).move_constructor_count() == 0,   // 25
+                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+    }
+
+    // By move
+    {
+        using type = hud_test::non_bitwise_type;
+        using tuple_type = hud::tuple<type, type, type, type>;
+
+        const auto test = []()
+        {
+            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(type {1, nullptr}), hud::forward_as_tuple(type {2, nullptr}), hud::forward_as_tuple(type {3, nullptr}), hud::forward_as_tuple(type {4, nullptr})};
+            return std::tuple {
+                hud::get<0>(tuple).id() == 1,                       // 0
+                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(tuple).constructor_count() == 1,        // 2
+                hud::get<0>(tuple).copy_constructor_count() == 0,   // 3
+                hud::get<0>(tuple).move_constructor_count() == 1,   // 4
+                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(tuple).id() == 2,                       // 7
+                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(tuple).constructor_count() == 1,        // 9
+                hud::get<1>(tuple).copy_constructor_count() == 0,   // 10
+                hud::get<1>(tuple).move_constructor_count() == 1,   // 11
+                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(tuple).id() == 3,                       // 14
+                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(tuple).constructor_count() == 1,        // 16
+                hud::get<2>(tuple).copy_constructor_count() == 0,   // 17
+                hud::get<2>(tuple).move_constructor_count() == 1,   // 18
+                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(tuple).id() == 4,                       // 21
+                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(tuple).constructor_count() == 1,        // 23
+                hud::get<3>(tuple).copy_constructor_count() == 0,   // 24
+                hud::get<3>(tuple).move_constructor_count() == 1,   // 25
+                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+    }
+}
+
+GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_different_type)
+{
+    // By copy
+    {
+        using type = hud_test::non_bitwise_type;
+        using type2 = hud_test::non_bitwise_type2;
+        using tuple_type = hud::tuple<type2, type2, type2, type2>;
+
+        const auto test = []()
+        {
+            const type to_copy_0 {1, nullptr};
+            const type to_copy_1 {2, nullptr};
+            const type to_copy_2 {3, nullptr};
+            const type to_copy_3 {4, nullptr};
+
+            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1), hud::forward_as_tuple(to_copy_2), hud::forward_as_tuple(to_copy_3)};
+            return std::tuple {
+                hud::get<0>(tuple).id() == 1,                       // 0
+                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(tuple).constructor_count() == 1,        // 2
+                hud::get<0>(tuple).copy_constructor_count() == 1,   // 3
+                hud::get<0>(tuple).move_constructor_count() == 0,   // 4
+                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(tuple).id() == 2,                       // 7
+                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(tuple).constructor_count() == 1,        // 9
+                hud::get<1>(tuple).copy_constructor_count() == 1,   // 10
+                hud::get<1>(tuple).move_constructor_count() == 0,   // 11
+                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(tuple).id() == 3,                       // 14
+                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(tuple).constructor_count() == 1,        // 16
+                hud::get<2>(tuple).copy_constructor_count() == 1,   // 17
+                hud::get<2>(tuple).move_constructor_count() == 0,   // 18
+                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(tuple).id() == 4,                       // 21
+                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(tuple).constructor_count() == 1,        // 23
+                hud::get<3>(tuple).copy_constructor_count() == 1,   // 24
+                hud::get<3>(tuple).move_constructor_count() == 0,   // 25
+                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+    }
+
+    // By move
+    {
+        using type = hud_test::non_bitwise_type;
+        using type2 = hud_test::non_bitwise_type2;
+        using tuple_type = hud::tuple<type2, type2, type2, type2>;
+
+        const auto test = []()
+        {
+            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(type {1, nullptr}), hud::forward_as_tuple(type {2, nullptr}), hud::forward_as_tuple(type {3, nullptr}), hud::forward_as_tuple(type {4, nullptr})};
+            return std::tuple {
+                hud::get<0>(tuple).id() == 1,                       // 0
+                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(tuple).constructor_count() == 1,        // 2
+                hud::get<0>(tuple).copy_constructor_count() == 0,   // 3
+                hud::get<0>(tuple).move_constructor_count() == 1,   // 4
+                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(tuple).id() == 2,                       // 7
+                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(tuple).constructor_count() == 1,        // 9
+                hud::get<1>(tuple).copy_constructor_count() == 0,   // 10
+                hud::get<1>(tuple).move_constructor_count() == 1,   // 11
+                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(tuple).id() == 3,                       // 14
+                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(tuple).constructor_count() == 1,        // 16
+                hud::get<2>(tuple).copy_constructor_count() == 0,   // 17
+                hud::get<2>(tuple).move_constructor_count() == 1,   // 18
+                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(tuple).id() == 4,                       // 21
+                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(tuple).constructor_count() == 1,        // 23
+                hud::get<3>(tuple).copy_constructor_count() == 0,   // 24
+                hud::get<3>(tuple).move_constructor_count() == 1,   // 25
+                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+            };
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_true(std::get<0>(result));
+            hud_assert_true(std::get<1>(result));
+            hud_assert_true(std::get<2>(result));
+            hud_assert_true(std::get<3>(result));
+            hud_assert_true(std::get<4>(result));
+            hud_assert_true(std::get<5>(result));
+            hud_assert_true(std::get<6>(result));
+            hud_assert_true(std::get<7>(result));
+            hud_assert_true(std::get<8>(result));
+            hud_assert_true(std::get<9>(result));
+            hud_assert_true(std::get<10>(result));
+            hud_assert_true(std::get<11>(result));
+            hud_assert_true(std::get<12>(result));
+            hud_assert_true(std::get<13>(result));
+            hud_assert_true(std::get<14>(result));
+            hud_assert_true(std::get<15>(result));
+            hud_assert_true(std::get<16>(result));
+            hud_assert_true(std::get<17>(result));
+            hud_assert_true(std::get<18>(result));
+            hud_assert_true(std::get<19>(result));
+            hud_assert_true(std::get<20>(result));
+            hud_assert_true(std::get<21>(result));
+            hud_assert_true(std::get<22>(result));
+            hud_assert_true(std::get<23>(result));
+            hud_assert_true(std::get<24>(result));
+            hud_assert_true(std::get<25>(result));
+            hud_assert_true(std::get<26>(result));
+            hud_assert_true(std::get<27>(result));
+        }
+    }
+}
