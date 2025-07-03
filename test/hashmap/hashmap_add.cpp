@@ -4978,3 +4978,26 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
         }
     }
 }
+
+GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_same_type)
+{
+    using key_type = i32;
+    using value_type = i64;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+
+    const auto test = []()
+    {
+        constexpr usize reserved_size = 2;
+        hashmap_type map;
+        map.reserve(reserved_size);
+        // map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1), hud::forward_as_tuple(2));
+    };
+
+    // Non constant
+    {
+    }
+
+    // Constant
+    {
+    }
+}

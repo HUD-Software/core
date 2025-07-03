@@ -1002,44 +1002,6 @@ namespace hud
                 reset_control_and_slot();
             }
 
-            /**
-             * Insert a key in the hashset.
-             * @param key The key associated with the `value`
-             * @param args List of arguments pass to `value_type` constructor after the `key` itself
-             * @return Iterator to the `value`
-             */
-            template<typename... args_t>
-            requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
-            constexpr iterator add(key_type &&key, args_t &&...args) noexcept
-            {
-                hud::pair<usize, bool> res {find_or_insert_no_construct(key)};
-                slot_type *slot_ptr {slot_ptr_ + res.first};
-                if (res.second)
-                {
-                    hud::memory::construct_object_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
-                }
-                return {control_ptr_ + res.first, slot_ptr};
-            }
-
-            /**
-             * Insert a key in the hashset.
-             * @param key The key associated with the `value`
-             * @param args List of arguments pass to `value_type` constructor after the `key` itself
-             * @return Iterator to the `value`
-             */
-            template<typename... args_t>
-            requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
-            constexpr iterator add(const key_type &key, args_t &&...args) noexcept
-            {
-                hud::pair<usize, bool> res {find_or_insert_no_construct(key)};
-                slot_type *slot_ptr {slot_ptr_ + res.first};
-                if (res.second)
-                {
-                    hud::memory::construct_object_at(slot_ptr, key, hud::forward<args_t>(args)...);
-                }
-                return {control_ptr_ + res.first, slot_ptr};
-            }
-
             /** Find a key and return an iterator to the value. */
             template<typename K>
             [[nodiscard]]
@@ -1208,6 +1170,45 @@ namespace hud
             [[nodiscard]] constexpr const_iterator end() const noexcept
             {
                 return const_iterator {control_ptr_sentinel()};
+            }
+
+        protected:
+            /**
+             * Insert a key in the hashset and pass
+             * @param key The key associated with the `value`
+             * @param args List of arguments pass to `value_type` constructor after the `key` itself
+             * @return Iterator to the `value`
+             */
+            template<typename... args_t>
+            requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
+            constexpr iterator add(key_type &&key, args_t &&...args) noexcept
+            {
+                hud::pair<usize, bool> res {find_or_insert_no_construct(key)};
+                slot_type *slot_ptr {slot_ptr_ + res.first};
+                if (res.second)
+                {
+                    hud::memory::construct_object_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
+                }
+                return {control_ptr_ + res.first, slot_ptr};
+            }
+
+            /**
+             * Insert a key in the hashset.
+             * @param key The key associated with the `value`
+             * @param args List of arguments pass to `value_type` constructor after the `key` itself
+             * @return Iterator to the `value`
+             */
+            template<typename... args_t>
+            requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
+            constexpr iterator add(const key_type &key, args_t &&...args) noexcept
+            {
+                hud::pair<usize, bool> res {find_or_insert_no_construct(key)};
+                slot_type *slot_ptr {slot_ptr_ + res.first};
+                if (res.second)
+                {
+                    hud::memory::construct_object_at(slot_ptr, key, hud::forward<args_t>(args)...);
+                }
+                return {control_ptr_ + res.first, slot_ptr};
             }
 
         private:
@@ -1901,11 +1902,6 @@ namespace hud
         };
 
     } // namespace details::hashset
-
-    // using hashset_default_hasher = details::hashset::default_hasher;
-
-    // template<typename element_t>
-    // using hashset_default_key_equal = details::hashset::default_equal<element_t>;
 
     using hashset_default_allocator = details::hashset::default_allocator;
 
