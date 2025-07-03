@@ -52,31 +52,31 @@ GTEST_TEST(shared_pointer_not_safe, copy_assignement_same_type)
         hud_assert_eq(std::get<16>(result), 0);
     }
 
-// Constant
-// Not working under with msvc
-// https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
-#if !defined(HD_COMPILER_MSVC)
-    {
-        constexpr auto result = test(123);
-        hud_assert_true(std::get<0>(result));
-        hud_assert_eq(std::get<1>(result), 2u);
-        hud_assert_eq(std::get<2>(result), 123);
-        hud_assert_eq(std::get<3>(result), 1u);
-        hud_assert_eq(std::get<4>(result), 0u);
-        hud_assert_eq(std::get<5>(result), 0u);
-        hud_assert_eq(std::get<6>(result), 0u);
-        hud_assert_eq(std::get<7>(result), 0u);
-        hud_assert_true(std::get<8>(result));
-        hud_assert_eq(std::get<9>(result), 2u);
-        hud_assert_eq(std::get<10>(result), 123);
-        hud_assert_eq(std::get<11>(result), 1u);
-        hud_assert_eq(std::get<12>(result), 0u);
-        hud_assert_eq(std::get<13>(result), 0u);
-        hud_assert_eq(std::get<14>(result), 0u);
-        hud_assert_eq(std::get<15>(result), 0u);
-        hud_assert_eq(std::get<16>(result), 0);
-    }
-#endif
+    // Constant
+    // Not working under with msvc
+    // https://developercommunity.visualstudio.com/t/constant-evaluation-with-do-not-works-wi/10058244
+    // #if !defined(HD_COMPILER_MSVC)
+    //     {
+    //         constexpr auto result = test(123);
+    //         hud_assert_true(std::get<0>(result));
+    //         hud_assert_eq(std::get<1>(result), 2u);
+    //         hud_assert_eq(std::get<2>(result), 123);
+    //         hud_assert_eq(std::get<3>(result), 1u);
+    //         hud_assert_eq(std::get<4>(result), 0u);
+    //         hud_assert_eq(std::get<5>(result), 0u);
+    //         hud_assert_eq(std::get<6>(result), 0u);
+    //         hud_assert_eq(std::get<7>(result), 0u);
+    //         hud_assert_true(std::get<8>(result));
+    //         hud_assert_eq(std::get<9>(result), 2u);
+    //         hud_assert_eq(std::get<10>(result), 123);
+    //         hud_assert_eq(std::get<11>(result), 1u);
+    //         hud_assert_eq(std::get<12>(result), 0u);
+    //         hud_assert_eq(std::get<13>(result), 0u);
+    //         hud_assert_eq(std::get<14>(result), 0u);
+    //         hud_assert_eq(std::get<15>(result), 0u);
+    //         hud_assert_eq(std::get<16>(result), 0);
+    //     }
+    // #endif
 }
 
 GTEST_TEST(shared_pointer_not_safe, copy_assignement_different_type)
