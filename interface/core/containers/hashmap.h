@@ -342,6 +342,11 @@ namespace hud
         {
             return super::add(hud::forward<key_type>(key), hud::forward<key_type>(value));
         }
+
+        template<typename key_tuple_t, typename value_tuple_t>
+        constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t key_tuple, value_tuple_t value_tuple) noexcept
+        {
+        }
     };
 
     /**

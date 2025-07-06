@@ -23,6 +23,11 @@
 // Add hasher and equal object added in compressed_pair like  compressed_pair<allocator, compressed_pair<hasher, compressed_pair<equal, common>>>
 // Maybe create a compressed_tuple? ;)
 
+// Hashset
+// Difference with STL:
+// - Don't use is_transparent because we don't have the nessecity to keep compatibility with existing code.
+//   Comparaison and hasher is always transparent if the user provide a custom equal or hasher type.
+
 namespace hud
 {
     namespace details::hashset
@@ -280,50 +285,6 @@ namespace hud
             /** The key. */
             key_type element_;
         };
-
-        // /**
-        //  * A default hasher struct for hashing keys.
-        //  * This struct provides a mechanism to hash key and combine them with the current hasher value.
-        //  *
-        //  * @tparam key_t The type of the key to be hashed.
-        //  */
-        // struct default_hasher
-        // {
-        //     using is_transparent = void;
-
-        // /**
-        //  * Operator to hash the value and combine it with the current hasher value.
-        //  * This function uses variadic templates to accept multiple arguments.
-        //  * @tparam type_t Types of the arguments to hash.
-        //  * @param values Arguments to hash.
-        //  * @return A 64-bit hash value.
-        //  */
-        // template<typename... type_t>
-        // [[nodiscard]] constexpr u64 operator()(type_t &&...values) noexcept
-        // {
-        //     return hud::hash_64<hud::decay_t<type_t>...> {}(hud::forward<type_t>(values)...);
-        // }
-
-        // /**
-        //  * Function to hash the value and combine it with the current hasher value.
-        //  * This function uses variadic templates to accept multiple arguments.
-        //  * @tparam type_t Types of the arguments to hash.
-        //  * @param values Arguments to hash.
-        //  * @return A 64-bit hash value.
-        //  */
-        // template<typename... type_t>
-        // [[nodiscard]] constexpr u64 hash(type_t &&...values) noexcept
-        // {
-        //     return (*this)(hud::forward<type_t>(values)...);
-        // }
-        // };
-
-        // template<typename key_t>
-        // struct default_equal
-        //     : hud::equal<key_t>
-        // {
-        //     using is_transparent = void;
-        // };
 
         using default_allocator = hud::heap_allocator;
 
@@ -824,11 +785,10 @@ namespace hud
             /** The type of allocation done by the allocator. */
             using memory_allocation_type = typename allocator_type::template memory_allocation_type<slot_type>;
 
-            template<typename K>
-            using key_arg_type = typename KeyArg<hud::is_transparent_v<hasher_type> && hud::is_transparent_v<key_equal_type>>::template type<K, key_type>;
-
             static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
             static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
+            template<typename K>
+            using key_arg_type = typename KeyArg<hud::is_hashable_64_v<K> && hud::is_comparable_with_equal_v<key_type, K>>::template type<K, key_type>;
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             friend class hashset_impl; // Friend with other hashset_impl of other types
@@ -1005,36 +965,13 @@ namespace hud
             /** Find a key and return an iterator to the value. */
             template<typename K>
             [[nodiscard]]
-            constexpr iterator find(const K &key) noexcept
+            constexpr iterator find(K &&key) noexcept
             {
-                u64 hash {hasher_(key)};
-                u64 h1(H1(hash));
-                hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
-                usize slot_index(h1 & max_slot_count_);
-                while (true)
+                if constexpr (hud::is_hashable_64_v<K> && hud::is_comparable_with_equal_v<key_type, K>)
                 {
-                    group_type group {control_ptr_ + slot_index};
-                    group_type::mask group_mask_that_match_h2 {group.match(H2(hash))};
-                    for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
-                    {
-                        usize slot_index_that_match_h2 {slot_index + group_index_that_match_h2 & max_slot_count_};
-                        slot_type *slot_that_match_h2 {slot_ptr_ + slot_index_that_match_h2};
-                        if (key_equal_(slot_that_match_h2->key(), key)) [[likely]]
-                        {
-                            return {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
-                        }
-                    }
-
-                    // If we have free slot, we don't find it
-                    if (group.mask_of_empty_slot().has_empty_slot())
-                    {
-                        return iterator {control_ptr_sentinel()};
-                    }
-
-                    // Advance to next group (Maybe a control iterator that iterate over groups can be better alternative)
-                    slot_index += group_type::SLOT_PER_GROUP;
-                    slot_index &= max_slot_count_;
+                    return find_impl(hud::forward<K>(key));
                 }
+                return find_impl(key_type(key));
             }
 
             constexpr void rehash(i32 count) noexcept
@@ -1067,25 +1004,25 @@ namespace hud
                 rehash(0);
             }
 
-            template<typename K = key_type>
+            template<typename K>
             [[nodiscard]]
-            constexpr const_iterator find(const key_arg_type<K> &key) const noexcept
+            constexpr const_iterator find(K &&key) const noexcept
             {
-                return const_cast<hashset_impl *>(this)->find(key);
+                return const_cast<hashset_impl *>(this)->find(hud::forward<K>(key));
             }
 
-            template<typename K = key_type>
+            template<typename K>
             [[nodiscard]]
-            constexpr bool contains(const key_arg_type<K> &key) noexcept
+            constexpr bool contains(K &&key) noexcept
             {
-                return find(key) != end();
+                return find(hud::forward<K>(key)) != end();
             }
 
-            template<typename K = key_type>
+            template<typename K>
             [[nodiscard]]
-            constexpr bool contains(const key_arg_type<K> &key) const noexcept
+            constexpr bool contains(K &&key) const noexcept
             {
-                return find(key) != end();
+                return const_cast<hashset_impl *>(this)->contains(hud::forward<K>(key));
             }
 
             constexpr void swap(hashset_impl &other) noexcept
@@ -1105,10 +1042,10 @@ namespace hud
                 hud::swap(other.free_slot_before_grow_, free_slot_before_grow_);
             }
 
-            template<typename K = key_type>
-            constexpr void remove(const key_arg_type<K> &key) noexcept
+            template<typename K>
+            constexpr void remove(K &&key) noexcept
             {
-                iterator it = find(key);
+                iterator it = find(hud::forward<K>(key));
                 if (it != end())
                 {
                     remove_iterator(it);
@@ -1174,10 +1111,11 @@ namespace hud
 
         protected:
             /**
-             * Insert a key in the hashset and pass
-             * @param key The key associated with the `value`
-             * @param args List of arguments pass to `value_type` constructor after the `key` itself
-             * @return Iterator to the `value`
+             * Finds or inserts a slot corresponding to the given key.
+             * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
+             * @param key The key used to find or insert the slot.
+             * @param args The arguments forwarded to the `slot_type` constructor after the key.
+             * @return An iterator to the inserted or existing value.
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
@@ -1193,10 +1131,11 @@ namespace hud
             }
 
             /**
-             * Insert a key in the hashset.
-             * @param key The key associated with the `value`
-             * @param args List of arguments pass to `value_type` constructor after the `key` itself
-             * @return Iterator to the `value`
+             * Finds or inserts a slot corresponding to the given key.
+             * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
+             * @param key The key used to find or insert the slot.
+             * @param args The arguments forwarded to the `slot_type` constructor after the key.
+             * @return An iterator to the inserted or existing value.
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
@@ -1212,14 +1151,48 @@ namespace hud
             }
 
         private:
-            template<typename u_key_type>
-            [[nodiscard]] constexpr u64 compute_hash(const u_key_type &key) noexcept
+            template<typename K>
+            [[nodiscard]]
+            constexpr iterator find_impl(K &&key) noexcept
             {
-                if constexpr (hud::is_same_v<key_type, u_key_type>)
+                u64 hash {hasher_(hud::forward<K>(key))};
+                u64 h1(H1(hash));
+                hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
+                usize slot_index(h1 & max_slot_count_);
+                while (true)
+                {
+                    group_type group {control_ptr_ + slot_index};
+                    group_type::mask group_mask_that_match_h2 {group.match(H2(hash))};
+                    for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
+                    {
+                        usize slot_index_that_match_h2 {slot_index + group_index_that_match_h2 & max_slot_count_};
+                        slot_type *slot_that_match_h2 {slot_ptr_ + slot_index_that_match_h2};
+                        if (key_equal_(slot_that_match_h2->key(), hud::forward<K>(key))) [[likely]]
+                        {
+                            return {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
+                        }
+                    }
+
+                    // If we have free slot, we don't find it
+                    if (group.mask_of_empty_slot().has_empty_slot())
+                    {
+                        return iterator {control_ptr_sentinel()};
+                    }
+
+                    // Advance to next group (Maybe a control iterator that iterate over groups can be better alternative)
+                    slot_index += group_type::SLOT_PER_GROUP;
+                    slot_index &= max_slot_count_;
+                }
+            }
+
+            template<typename K>
+            [[nodiscard]] constexpr u64 compute_hash(const K &key) noexcept
+            {
+                if constexpr (hud::is_same_v<key_type, K>)
                 {
                     return hasher_(key);
                 }
-                return hasher_(key_type {key});
+                return hasher_(key_type(key));
             }
 
             constexpr bool should_be_mark_as_empty_if_deleted(usize index) const noexcept
