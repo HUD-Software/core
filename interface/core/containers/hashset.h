@@ -1162,20 +1162,39 @@ namespace hud
              * @param args The arguments forwarded to the `slot_type` constructor after the key.
              * @return An iterator to the inserted or existing value.
              */
-            // template<typename key_tuple_t, typename value_tuple_t>
-            // requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
-            // constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t key_tuple, value_tuple_t value_tuple) noexcept
-            // {
-            //     hud::pair<usize, bool> res {find_or_insert_no_construct(key)};
-            //     slot_type *slot_ptr {slot_ptr_ + res.first};
-            //     if (res.second)
-            //     {
-            //         hud::memory::construct_object_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
-            //     }
-            //     return {control_ptr_ + res.first, slot_ptr};
-            // }
+            template<typename key_tuple_t, typename value_tuple_t>
+            requires(hud::is_hashable_64_v<key_type, key_tuple_t> && hud::is_comparable_with_equal_v<key_type, key_tuple_t>)
+            constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
+            {
+                hud::pair<usize, bool> res = find_or_insert_no_construct(hud::forward<key_tuple_t>(key_tuple));
+                slot_type *slot_ptr {slot_ptr_ + res.first};
+                if (res.second)
+                {
+                    hud::memory::construct_object_at(slot_ptr, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
+                }
+                return {control_ptr_ + res.first, slot_ptr};
+            }
+
+            template<typename key_tuple_t, typename value_tuple_t>
+            constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
+            {
+                return add(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple), hud::make_index_sequence<hud::tuple_size_v<key_tuple_t>> {}, hud::make_index_sequence<hud::tuple_size_v<value_tuple_t>> {});
+            }
 
         private:
+            template<typename key_tuple_t, usize... indices_key, typename value_tuple_t, usize... indices_value>
+            constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple, hud::index_sequence<indices_key...>, hud::index_sequence<indices_value...>) noexcept
+            {
+                key_type key(hud::get<indices_key>(key_tuple)...);
+                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+                slot_type *slot_ptr {slot_ptr_ + res.first};
+                if (res.second)
+                {
+                    hud::memory::construct_object_at(slot_ptr, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
+                }
+                return {control_ptr_ + res.first, slot_ptr};
+            }
+
             template<typename K>
             [[nodiscard]]
             constexpr iterator find_impl(K &&key) noexcept

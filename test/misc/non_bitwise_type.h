@@ -2,6 +2,7 @@
 #define HD_INC_MISC_NON_BITWISE_TYPE_H
 #include <core/minimal.h>
 #include <core/templates/equal.h>
+#include <core/containers/tuple.h>
 
 namespace hud_test
 {
@@ -200,6 +201,11 @@ namespace hud_test
         return left.id() == id;
     }
 
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const non_bitwise_type &left, const hud::tuple<i32, i32 *> &rhs) noexcept
+    {
+        return left.id() == hud::get<0>(rhs);
+    }
+
     static_assert(hud::is_move_constructible_v<non_bitwise_type>);
     static_assert(hud::is_copy_constructible_v<non_bitwise_type>);
     static_assert(hud::is_move_assignable_v<non_bitwise_type>);
@@ -253,6 +259,11 @@ namespace hud
         {
             return lhs == rhs;
         }
+
+        [[nodiscard]] constexpr bool operator()(const hud_test::non_bitwise_type &lhs, const hud::tuple<i32, i32 *> &rhs) const noexcept
+        {
+            return lhs == hud::get<0>(rhs);
+        }
     };
 
     template<>
@@ -261,6 +272,16 @@ namespace hud
         [[nodiscard]] constexpr u32 operator()(const hud_test::non_bitwise_type &custom) const
         {
             return hud::hash_32<i32> {}(custom.id());
+        }
+
+        [[nodiscard]] constexpr u32 operator()(const i32 id) const
+        {
+            return hud::hash_32<i32> {}(id);
+        }
+
+        [[nodiscard]] constexpr bool operator()(const hud::tuple<i32, i32 *> &rhs) const noexcept
+        {
+            return hud::hash_32<i32> {}(hud::get<0>(rhs));
         }
     };
 
@@ -276,6 +297,11 @@ namespace hud
         {
             return hud::hash_64<i32> {}(id);
         }
+
+        [[nodiscard]] constexpr bool operator()(const hud::tuple<i32, i32 *> &rhs) const noexcept
+        {
+            return hud::hash_64<i32> {}(hud::get<0>(rhs));
+        }
     };
 
     template<>
@@ -285,6 +311,16 @@ namespace hud
         {
             return hud::hash_32<i32> {}(custom.id());
         }
+
+        [[nodiscard]] constexpr u32 operator()(const i32 id) const
+        {
+            return hud::hash_32<i32> {}(id);
+        }
+
+        [[nodiscard]] constexpr bool operator()(const hud::tuple<i32, i32 *> &rhs) const noexcept
+        {
+            return hud::hash_32<i32> {}(hud::get<0>(rhs));
+        }
     };
 
     template<>
@@ -293,6 +329,16 @@ namespace hud
         [[nodiscard]] constexpr u64 operator()(const hud_test::non_bitwise_type2 &custom) const
         {
             return hud::hash_64<i32> {}(custom.id());
+        }
+
+        [[nodiscard]] constexpr u64 operator()(const i32 id) const
+        {
+            return hud::hash_64<i32> {}(id);
+        }
+
+        [[nodiscard]] constexpr bool operator()(const hud::tuple<i32, i32 *> &rhs) const noexcept
+        {
+            return hud::hash_64<i32> {}(hud::get<0>(rhs));
         }
     };
 } // namespace hud

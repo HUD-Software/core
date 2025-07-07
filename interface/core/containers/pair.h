@@ -279,16 +279,16 @@ namespace hud
          * Constructs a `pair` from two tuples by unpacking their elements.
          * @tparam tuple_first Type of the first tuple.
          * @tparam tuple_second Type of the second tuple.
-         * @tparam indexes_first Index sequence for elements to extract from the first tuple.
-         * @tparam indexes_second Index sequence for elements to extract from the second tuple.
+         * @tparam indicies_first Index sequence for elements to extract from the first tuple.
+         * @tparam indicies_second Index sequence for elements to extract from the second tuple.
          * @param first_tuple Reference to the first tuple to move from.
          * @param second_tuple Reference to the second tuple to move from.
          * @param ... Index sequences used to unpack the tuple elements.
          */
-        template<typename tuple_first, typename tuple_second, usize... indexes_first, usize... indexes_second>
-        constexpr pair(tuple_first &first_tuple, tuple_second &second_tuple, hud::index_sequence<indexes_first...>, hud::index_sequence<indexes_second...>) noexcept
-            : first(hud::get<indexes_first>(hud::move(first_tuple))...)
-            , second(hud::get<indexes_second>(hud::move(second_tuple))...)
+        template<typename tuple_first, typename tuple_second, usize... indicies_first, usize... indicies_second>
+        constexpr pair(tuple_first &first_tuple, tuple_second &second_tuple, hud::index_sequence<indicies_first...>, hud::index_sequence<indicies_second...>) noexcept
+            : first(hud::get<indicies_first>(hud::move(first_tuple))...)
+            , second(hud::get<indicies_second>(hud::move(second_tuple))...)
         {
         }
     };

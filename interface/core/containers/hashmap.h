@@ -155,6 +155,19 @@ namespace hud
             }
 
             /**
+             * Constructor that initializes the hashmap_storage with a key and a value.
+             * @tparam u_key_t Type of the key.
+             * @tparam u_value_t Type of the value.
+             * @param key The key to initialize with.
+             * @param value The value to initialize with.
+             */
+            template<typename key_tuple_t, typename value_tuple_t>
+            constexpr explicit hashmap_storage(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
+                : element_(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple))
+            {
+            }
+
+            /**
              * Copy assign.
              * Does not accept throwable copy constructible components.
              * @param other Another pair object.
@@ -249,7 +262,7 @@ namespace hud
         using value_type = typename storage_type::value_type;
 
         /** Inherit constructors and methods from the base class. */
-        using super::add;
+        // using super::add;
         using super::reserve;
         using super::super;
         using typename super::allocator_type;
@@ -327,7 +340,7 @@ namespace hud
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(hud::pair<u_key_t, u_value_t> &&pair) noexcept
         {
-            return super::add(hud::get<0>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)), hud::get<1>(hud::forward<hud::pair<u_key_t, u_value_t>>(pair)));
+            return super::add(hud::forward<u_key_t &&>(pair.first), hud::forward<u_value_t &&>(pair.second));
         }
 
         /**
@@ -336,17 +349,17 @@ namespace hud
          * @param args List of arguments pass to `value_type` constructor after the `key` itself
          * @return Iterator to the `value`
          */
-
-        constexpr iterator add(key_type &&key, value_type &&value) noexcept
-        requires(hud::is_constructible_v<storage_type, key_type, value_type>)
+        template<typename u_key_t = key_t, typename u_value_t = value_t>
+        constexpr iterator add(u_key_t &&key, u_value_t &&value) noexcept
+        requires(hud::is_constructible_v<storage_type, u_key_t, u_value_t>)
         {
-            return super::add(hud::forward<key_type>(key), hud::forward<key_type>(value));
+            return super::add(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value));
         }
 
         template<typename key_tuple_t, typename value_tuple_t>
-        constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t key_tuple, value_tuple_t value_tuple) noexcept
+        constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
         {
-            // return super::add(hud::tag_piecewise_construct_t, key_tuple, value_tuple);
+            return super::add(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
         }
     };
 
