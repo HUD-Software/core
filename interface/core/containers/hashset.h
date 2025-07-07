@@ -787,8 +787,13 @@ namespace hud
 
             static_assert(hud::is_hashable_64_v<key_type>, "key_type is not hashable");
             static_assert(hud::is_comparable_with_equal_v<key_type, key_type>, "key_type is not comparable with equal");
-            template<typename K>
-            using key_arg_type = typename KeyArg<hud::is_hashable_64_v<K> && hud::is_comparable_with_equal_v<key_type, K>>::template type<K, key_type>;
+
+            /**
+             * HashableAndComparableArgType is used to select the type to be used by a fonction depending of the hashable and comparable possiblity.
+             * If the type K est not hashable or comparable, the type is `key_type`, else the type is `K`
+             */
+            // template<typename K>
+            // using HashableAndComparableArgType = typename KeyArg<hud::is_hashable_64_v<key_type, K> && hud::is_comparable_with_equal_v<key_type, K>>::template type<K, key_type>;
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             friend class hashset_impl; // Friend with other hashset_impl of other types
@@ -1150,6 +1155,26 @@ namespace hud
                 return {control_ptr_ + res.first, slot_ptr};
             }
 
+            /**
+             * Finds or inserts a slot corresponding to the given key.
+             * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
+             * @param key The key used to find or insert the slot.
+             * @param args The arguments forwarded to the `slot_type` constructor after the key.
+             * @return An iterator to the inserted or existing value.
+             */
+            // template<typename key_tuple_t, typename value_tuple_t>
+            // requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
+            // constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t key_tuple, value_tuple_t value_tuple) noexcept
+            // {
+            //     hud::pair<usize, bool> res {find_or_insert_no_construct(key)};
+            //     slot_type *slot_ptr {slot_ptr_ + res.first};
+            //     if (res.second)
+            //     {
+            //         hud::memory::construct_object_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
+            //     }
+            //     return {control_ptr_ + res.first, slot_ptr};
+            // }
+
         private:
             template<typename K>
             [[nodiscard]]
@@ -1188,7 +1213,7 @@ namespace hud
             template<typename K>
             [[nodiscard]] constexpr u64 compute_hash(const K &key) noexcept
             {
-                if constexpr (hud::is_same_v<key_type, K>)
+                if constexpr (hud::is_hashable_64_v<key_type, K>)
                 {
                     return hasher_(key);
                 }
@@ -1510,12 +1535,24 @@ namespace hud
                 }
             }
 
+            template<typename K>
+            [[nodiscard]]
+            constexpr hud::pair<usize, bool> find_or_insert_no_construct(K &&key) noexcept
+            {
+                if constexpr (hud::is_hashable_64_v<key_type, K> && hud::is_comparable_with_equal_v<key_type, K>)
+                {
+                    return find_or_insert_no_construct_impl(hud::forward<K>(key));
+                }
+                return find_or_insert_no_construct_impl(key_type(key));
+            }
+
             /**
              * Find the key and add the H2 hash in the control
              * If the key is found, return the iterator
              * If not found insert the key but do not construct the value.
              */
-            [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct(const key_type &key) noexcept
+            template<typename K>
+            [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct_impl(K &&key) noexcept
             {
                 u64 hash {compute_hash(key)};
                 u64 h1(H1(hash));

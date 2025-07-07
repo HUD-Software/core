@@ -346,6 +346,7 @@ namespace hud
         template<typename key_tuple_t, typename value_tuple_t>
         constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t key_tuple, value_tuple_t value_tuple) noexcept
         {
+            // return super::add(hud::tag_piecewise_construct_t, key_tuple, value_tuple);
         }
     };
 

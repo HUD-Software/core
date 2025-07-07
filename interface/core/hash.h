@@ -495,38 +495,50 @@ namespace hud
     };
 
     // Traits used to check if a type is hashable
-    template<typename type_t, typename = void>
+    template<typename type_t, typename u_type_t = type_t, typename = void>
     struct is_hashable_64
         : hud::false_type
     {
     };
 
     template<typename type_t>
-    struct is_hashable_64<type_t, void_t<decltype(hud::hash_64<hud::remove_cv_t<type_t>> {}(hud::declval<type_t>()))>>
+    struct is_hashable_64<type_t, type_t, void_t<decltype(hud::hash_64<hud::remove_cv_t<type_t>> {}(hud::declval<type_t>()))>>
+        : hud::true_type
+    {
+    };
+
+    template<typename type_t, typename u_type_t>
+    struct is_hashable_64<type_t, u_type_t, void_t<decltype(hud::hash_64<hud::remove_cv_t<type_t>> {}(hud::declval<u_type_t>()))>>
         : hud::true_type
     {
     };
 
     /** Equivalent of is_hashable<type_t>::value. */
-    template<typename type_t>
-    constexpr bool is_hashable_64_v = is_hashable_64<type_t>::value;
+    template<typename type_t, typename u_type_t = type_t>
+    constexpr bool is_hashable_64_v = is_hashable_64<type_t, u_type_t>::value;
 
     // Traits used to check if a type is hashable
-    template<typename type_t, typename = void>
+    template<typename type_t, typename u_type_t = type_t, typename = void>
     struct is_hashable_32
         : hud::false_type
     {
     };
 
     template<typename type_t>
-    struct is_hashable_32<type_t, void_t<decltype(hud::hash_32<hud::remove_cv_t<type_t>> {}(hud::declval<type_t>()))>>
+    struct is_hashable_32<type_t, type_t, void_t<decltype(hud::hash_32<hud::remove_cv_t<type_t>> {}(hud::declval<type_t>()))>>
+        : hud::true_type
+    {
+    };
+
+    template<typename type_t, typename u_type_t>
+    struct is_hashable_32<type_t, u_type_t, void_t<decltype(hud::hash_32<hud::remove_cv_t<type_t>> {}(hud::declval<u_type_t>()))>>
         : hud::true_type
     {
     };
 
     /** Equivalent of is_hashable<type_t>::value. */
-    template<typename type_t>
-    constexpr bool is_hashable_32_v = is_hashable_32<type_t>::value;
+    template<typename type_t, typename u_type_t = type_t>
+    constexpr bool is_hashable_32_v = is_hashable_32<type_t, u_type_t>::value;
 } // namespace hud
 
 #endif // HD_INC_CORE_HASH_H
