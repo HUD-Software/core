@@ -976,7 +976,10 @@ namespace hud
                 {
                     return find_impl(hud::forward<K>(key));
                 }
-                return find_impl(key_type(key));
+                else
+                {
+                    return find_impl(key_type(hud::forward<K>(key)));
+                }
             }
 
             constexpr void rehash(i32 count) noexcept
@@ -1158,6 +1161,8 @@ namespace hud
             /**
              * Finds or inserts a slot corresponding to the given key.
              * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
+             * If the `key_type` is not hashable with the `key_tuple_t` a temporary key is created to find it in the hashmap
+             * To make the `key_type` hashable with the `key_tuple_t` you must specialize the `hud::equal<key_type>` functor by adding the function
              * @param key The key used to find or insert the slot.
              * @param args The arguments forwarded to the `slot_type` constructor after the key.
              * @return An iterator to the inserted or existing value.
@@ -1189,53 +1194,7 @@ namespace hud
                 return {control_ptr_ + res.first, slot_ptr};
             }
 
-            // template<typename key_tuple_t, typename value_tuple_t>
-            // requires(hud::is_hashable_64_v<key_type, key_tuple_t> && hud::is_comparable_with_equal_v<key_type, key_tuple_t>)
-            // constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
-            // {
-            //     hud::pair<usize, bool> res = find_or_insert_no_construct(hud::forward<key_tuple_t>(key_tuple));
-            //     slot_type *slot_ptr {slot_ptr_ + res.first};
-            //     if (res.second)
-            //     {
-            //         hud::memory::construct_object_at(slot_ptr, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
-            //     }
-            //     return {control_ptr_ + res.first, slot_ptr};
-            // }
-
-            // template<typename key_tuple_t, typename value_tuple_t>
-            // constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
-            // {
-            //     return add(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple), hud::make_index_sequence<hud::tuple_size_v<key_tuple_t>> {});
-            // }
-
         private:
-            // template<typename key_tuple_t, usize... indices_key, typename value_tuple_t>
-            // constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple, hud::index_sequence<indices_key...>) noexcept
-            // {
-            //     key_type key(hud::get<indices_key>(key_tuple)...);
-            //     hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-            //     slot_type *slot_ptr {slot_ptr_ + res.first};
-            //     if (res.second)
-            //     {
-            //         hud::memory::construct_object_at(slot_ptr, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
-            //     }
-            //     return {control_ptr_ + res.first, slot_ptr};
-            // }
-
-            // template<typename key_tuple_t, usize... indices_key>
-            // [[nodiscard]]
-            // constexpr decltype(auto) forward_key(key_tuple_t &&key_tuple, hud::index_sequence<indices_key...>) noexcept
-            // {
-            //     if constexpr (is_hashable_and_comparable<key_tuple_t>)
-            //     {
-            //         return hud::forward<key_tuple_t>(key_tuple);
-            //     }
-            //     else
-            //     {
-            //         return key_type(hud::get<indices_key>(key_tuple)...);
-            //     }
-            // }
-
             template<typename K>
             [[nodiscard]]
             constexpr iterator find_impl(K &&key) noexcept
@@ -1271,15 +1230,15 @@ namespace hud
             }
 
             template<typename K>
-            [[nodiscard]] constexpr u64 compute_hash(const K &key) noexcept
+            [[nodiscard]] constexpr u64 compute_hash(K &&key) noexcept
             {
                 if constexpr (hud::is_hashable_64_v<key_type, K>)
                 {
-                    return hasher_(key);
+                    return hasher_(hud::forward<K>(key));
                 }
                 else
                 {
-                    return hasher_(key_type(key));
+                    return hasher_(key_type(hud::forward<K>(key)));
                 }
             }
 
@@ -1608,7 +1567,7 @@ namespace hud
                 }
                 else
                 {
-                    return find_or_insert_no_construct_impl(key_type(key));
+                    return find_or_insert_no_construct_impl(key_type(hud::forward<K>(key)));
                 }
             }
 
@@ -1656,7 +1615,6 @@ namespace hud
             [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u8 h2) noexcept
             {
                 // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
-                // TODO : check rehash_and_grow_if_necessary and implement the Squash DELETED branch
                 if (free_slot_before_grow() == 0)
                 {
                     resize(next_capacity());
