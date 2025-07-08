@@ -356,6 +356,12 @@ namespace hud
             return super::add(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value));
         }
 
+        /**
+         * Insert a key and value in the hashmap by piecewise construct them in place.
+         * If the `key_type` is not hashable with the `key_tuple_t` a temporary key is created to find it in the hashmap
+         * To make the `key_type` hashable with the `key_tuple_t` you must specialize the `hud::equal<key_type>` functor by adding the function
+         * ` template<typename T1, typename T2> [[nodiscard]] constexpr bool operator()(const hud::tuple<T1,T2> &rhs) const noexcept` or by
+         */
         template<typename key_tuple_t, typename value_tuple_t>
         constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
         {

@@ -1008,7 +1008,7 @@ namespace hud
          * @return first index of the element where the predicate array[index] == element is true, hud::index_none otherwise
          */
         template<typename compared_t>
-        requires(hud::is_comparable_with_equal_v<type_t, compared_t>)
+        requires(hud::is_comparable_with_equal_operator_v<type_t, compared_t>)
         [[nodiscard]] usize find_first_index(const compared_t &to_find) const
         {
             const type_t *HD_RESTRICT begin = data();
@@ -1032,7 +1032,7 @@ namespace hud
          * @return last index of the element where the predicate array[index] == element is true, hud::index_none otherwise
          */
         template<typename compared_t>
-        requires(hud::is_comparable_with_equal_v<type_t, compared_t>)
+        requires(hud::is_comparable_with_equal_operator_v<type_t, compared_t>)
         [[nodiscard]] usize find_last_index(const compared_t &to_find) const
         {
             const type_t *HD_RESTRICT begin = data();
@@ -1101,7 +1101,7 @@ namespace hud
          * @return true if the element is contained in the array, false otherwise
          */
         template<typename compared_t>
-        requires(hud::is_comparable_with_equal_v<type_t, compared_t>)
+        requires(hud::is_comparable_with_equal_operator_v<type_t, compared_t>)
         [[nodiscard]] bool contains(const compared_t &to_find) const
         {
             return find_first_index(to_find) != hud::index_none;

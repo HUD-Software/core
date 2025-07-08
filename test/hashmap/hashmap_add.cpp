@@ -5060,16 +5060,16 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_same_type)
     using value_type = hud_test::non_bitwise_type;
     using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
-    static_assert(hud::is_hashable_64_v<key_type, hud::tuple<i32, i32 *>>);
-    static_assert(hud::is_comparable_with_equal_v<key_type, hud::tuple<i32, i32 *>>);
-
+    static_assert(hud::is_hashable_64_v<key_type, decltype(hud::forward_as_tuple(1, (i32 *)nullptr))>);
+    static_assert(hud::is_comparable_with_equal_v<key_type, decltype(hud::forward_as_tuple(1, (i32 *)nullptr))>);
     const auto test = []()
     {
         constexpr usize reserved_size = 2;
         i32 ptr[2];
         hashmap_type map;
         map.reserve(reserved_size);
-        const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1, ptr), hud::forward_as_tuple(2, ptr + 1));
+
+        const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1, ptr + 0), hud::forward_as_tuple(2, ptr + 1));
 
         return hud::tuple {
             map.count() == 1,                           // 0

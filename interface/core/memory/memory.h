@@ -32,8 +32,8 @@
 #include "../traits/is_bitwise_copy_assignable.h"
 #include "../traits/is_bitwise_move_assignable.h"
 #include "../traits/is_bitwise_comparable.h"
-#include "../traits/is_comparable_with_equal.h"
-#include "../traits/is_comparable_with_not_equal.h"
+#include "../traits/is_comparable_with_equal_operator.h"
+#include "../traits/is_comparable_with_not_equal_operator.h"
 #include "../templates/move.h"
 #include "../templates/forward.h"
 
@@ -1464,7 +1464,7 @@ namespace hud
         template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool is_object_equal(const lhs_t *left, const rhs_t *right) noexcept
         {
-            static_assert(hud::is_comparable_with_equal_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
+            static_assert(hud::is_comparable_with_equal_operator_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
             return *left == *right;
         }
 
@@ -1486,7 +1486,7 @@ namespace hud
             }
             else
             {
-                static_assert(hud::is_comparable_with_equal_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
+                static_assert(hud::is_comparable_with_equal_operator_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
 
                 while (count)
                 {
@@ -1513,7 +1513,7 @@ namespace hud
         template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool is_object_not_equal(const lhs_t *left, const rhs_t *right) noexcept
         {
-            static_assert(hud::is_comparable_with_not_equal_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
+            static_assert(hud::is_comparable_with_not_equal_operator_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
             return *left != *right;
         }
 
@@ -1535,7 +1535,7 @@ namespace hud
             }
             else
             {
-                static_assert(hud::is_comparable_with_not_equal_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
+                static_assert(hud::is_comparable_with_not_equal_operator_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
 
                 while (count)
                 {

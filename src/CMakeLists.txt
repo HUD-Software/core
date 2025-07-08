@@ -92,12 +92,12 @@ set( interface
 	../interface/core/traits/is_bool.h
 	../interface/core/traits/is_bounded_array.h
 	../interface/core/traits/is_class.h
-	../interface/core/traits/is_comparable_with_equal.h
-	../interface/core/traits/is_comparable_with_greater.h
-	../interface/core/traits/is_comparable_with_greater_equal.h
-	../interface/core/traits/is_comparable_with_less.h
-	../interface/core/traits/is_comparable_with_less_equal.h
-	../interface/core/traits/is_comparable_with_not_equal.h
+	../interface/core/traits/is_comparable_with_equal_operator.h
+	../interface/core/traits/is_comparable_with_greater_operator.h
+	../interface/core/traits/is_comparable_with_greater_equal_operator.h
+	../interface/core/traits/is_comparable_with_less_operator.h
+	../interface/core/traits/is_comparable_with_less_equal_operator.h
+	../interface/core/traits/is_comparable_with_not_equal_operator.h
 	../interface/core/traits/is_const.h
 	../interface/core/traits/is_constant_evaluated.h
 	../interface/core/traits/is_constructible.h

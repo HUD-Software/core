@@ -191,12 +191,12 @@ set( src
 	traits/traits_is_bool.cpp
 	traits/traits_is_bounded_array.cpp
 	traits/traits_is_class.cpp
-	traits/traits_is_comparable_with_equal.cpp
-	traits/traits_is_comparable_with_greater.cpp
-	traits/traits_is_comparable_with_greater_equal.cpp
-	traits/traits_is_comparable_with_less.cpp
-	traits/traits_is_comparable_with_less_equal.cpp
-	traits/traits_is_comparable_with_not_equal.cpp
+	traits/traits_is_comparable_with_equal_operator.cpp
+	traits/traits_is_comparable_with_greater_operator.cpp
+	traits/traits_is_comparable_with_greater_equal_operator.cpp
+	traits/traits_is_comparable_with_less_operator.cpp
+	traits/traits_is_comparable_with_less_equal_operator.cpp
+	traits/traits_is_comparable_with_not_equal_operator.cpp
 	traits/traits_is_const.cpp
 	traits/traits_is_constant_evaluated.cpp
 	traits/traits_is_constructible.cpp

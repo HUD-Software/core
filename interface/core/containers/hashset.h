@@ -9,7 +9,7 @@
 #include "pair.h"
 #include "../hash.h"
 #include "../bits.h"
-#include "../traits/is_comparable_with_equal.h"
+#include "../traits/is_comparable_with_equal_operator.h"
 #include "../traits/is_trivially_copy_constructible.h"
 #include "tuple_size.h"
 #include "tuple_element.h"
@@ -792,8 +792,8 @@ namespace hud
              * HashableAndComparableArgType is used to select the type to be used by a fonction depending of the hashable and comparable possiblity.
              * If the type K est not hashable or comparable, the type is `key_type`, else the type is `K`
              */
-            // template<typename K>
-            // using HashableAndComparableArgType = typename KeyArg<hud::is_hashable_64_v<key_type, K> && hud::is_comparable_with_equal_v<key_type, K>>::template type<K, key_type>;
+            template<typename K>
+            static constexpr bool is_hashable_and_comparable = hud::conjunction_v<hud::is_hashable_64<key_type, K>, hud::is_comparable_with_equal<key_type, K>>;
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             friend class hashset_impl; // Friend with other hashset_impl of other types
@@ -972,7 +972,7 @@ namespace hud
             [[nodiscard]]
             constexpr iterator find(K &&key) noexcept
             {
-                if constexpr (hud::is_hashable_64_v<K> && hud::is_comparable_with_equal_v<key_type, K>)
+                if constexpr (is_hashable_and_comparable<K>)
                 {
                     return find_impl(hud::forward<K>(key));
                 }
@@ -1163,10 +1163,24 @@ namespace hud
              * @return An iterator to the inserted or existing value.
              */
             template<typename key_tuple_t, typename value_tuple_t>
-            requires(hud::is_hashable_64_v<key_type, key_tuple_t> && hud::is_comparable_with_equal_v<key_type, key_tuple_t>)
             constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
             {
-                hud::pair<usize, bool> res = find_or_insert_no_construct(hud::forward<key_tuple_t>(key_tuple));
+                constexpr auto forward_key = []<usize... indices_key>(
+                                                 key_tuple_t &&key_tuple,
+                                                 hud::index_sequence<indices_key...>
+                                             ) -> decltype(auto)
+                {
+                    if constexpr (is_hashable_and_comparable<key_tuple_t>)
+                    {
+                        return hud::forward<key_tuple_t>(key_tuple);
+                    }
+                    else
+                    {
+                        return key_type(hud::get<indices_key>(key_tuple)...);
+                    }
+                };
+
+                hud::pair<usize, bool> res = find_or_insert_no_construct(forward_key(hud::forward<key_tuple_t>(key_tuple), hud::make_index_sequence<hud::tuple_size_v<key_tuple_t>> {}));
                 slot_type *slot_ptr {slot_ptr_ + res.first};
                 if (res.second)
                 {
@@ -1175,25 +1189,52 @@ namespace hud
                 return {control_ptr_ + res.first, slot_ptr};
             }
 
-            template<typename key_tuple_t, typename value_tuple_t>
-            constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
-            {
-                return add(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple), hud::make_index_sequence<hud::tuple_size_v<key_tuple_t>> {}, hud::make_index_sequence<hud::tuple_size_v<value_tuple_t>> {});
-            }
+            // template<typename key_tuple_t, typename value_tuple_t>
+            // requires(hud::is_hashable_64_v<key_type, key_tuple_t> && hud::is_comparable_with_equal_v<key_type, key_tuple_t>)
+            // constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
+            // {
+            //     hud::pair<usize, bool> res = find_or_insert_no_construct(hud::forward<key_tuple_t>(key_tuple));
+            //     slot_type *slot_ptr {slot_ptr_ + res.first};
+            //     if (res.second)
+            //     {
+            //         hud::memory::construct_object_at(slot_ptr, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
+            //     }
+            //     return {control_ptr_ + res.first, slot_ptr};
+            // }
+
+            // template<typename key_tuple_t, typename value_tuple_t>
+            // constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
+            // {
+            //     return add(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple), hud::make_index_sequence<hud::tuple_size_v<key_tuple_t>> {});
+            // }
 
         private:
-            template<typename key_tuple_t, usize... indices_key, typename value_tuple_t, usize... indices_value>
-            constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple, hud::index_sequence<indices_key...>, hud::index_sequence<indices_value...>) noexcept
-            {
-                key_type key(hud::get<indices_key>(key_tuple)...);
-                hud::pair<usize, bool> res = find_or_insert_no_construct(key);
-                slot_type *slot_ptr {slot_ptr_ + res.first};
-                if (res.second)
-                {
-                    hud::memory::construct_object_at(slot_ptr, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
-                }
-                return {control_ptr_ + res.first, slot_ptr};
-            }
+            // template<typename key_tuple_t, usize... indices_key, typename value_tuple_t>
+            // constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple, hud::index_sequence<indices_key...>) noexcept
+            // {
+            //     key_type key(hud::get<indices_key>(key_tuple)...);
+            //     hud::pair<usize, bool> res = find_or_insert_no_construct(key);
+            //     slot_type *slot_ptr {slot_ptr_ + res.first};
+            //     if (res.second)
+            //     {
+            //         hud::memory::construct_object_at(slot_ptr, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
+            //     }
+            //     return {control_ptr_ + res.first, slot_ptr};
+            // }
+
+            // template<typename key_tuple_t, usize... indices_key>
+            // [[nodiscard]]
+            // constexpr decltype(auto) forward_key(key_tuple_t &&key_tuple, hud::index_sequence<indices_key...>) noexcept
+            // {
+            //     if constexpr (is_hashable_and_comparable<key_tuple_t>)
+            //     {
+            //         return hud::forward<key_tuple_t>(key_tuple);
+            //     }
+            //     else
+            //     {
+            //         return key_type(hud::get<indices_key>(key_tuple)...);
+            //     }
+            // }
 
             template<typename K>
             [[nodiscard]]
@@ -1236,7 +1277,10 @@ namespace hud
                 {
                     return hasher_(key);
                 }
-                return hasher_(key_type(key));
+                else
+                {
+                    return hasher_(key_type(key));
+                }
             }
 
             constexpr bool should_be_mark_as_empty_if_deleted(usize index) const noexcept
@@ -1558,11 +1602,14 @@ namespace hud
             [[nodiscard]]
             constexpr hud::pair<usize, bool> find_or_insert_no_construct(K &&key) noexcept
             {
-                if constexpr (hud::is_hashable_64_v<key_type, K> && hud::is_comparable_with_equal_v<key_type, K>)
+                if constexpr (is_hashable_and_comparable<K>)
                 {
                     return find_or_insert_no_construct_impl(hud::forward<K>(key));
                 }
-                return find_or_insert_no_construct_impl(key_type(key));
+                else
+                {
+                    return find_or_insert_no_construct_impl(key_type(key));
+                }
             }
 
             /**

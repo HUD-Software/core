@@ -14,12 +14,12 @@
 #include "../traits/is_trivially_copy_constructible.h"
 #include "../traits/is_trivially_move_constructible.h"
 #include "../traits/is_convertible.h"
-#include "../traits/is_comparable_with_equal.h"
-#include "../traits/is_comparable_with_not_equal.h"
-#include "../traits/is_comparable_with_less.h"
-#include "../traits/is_comparable_with_greater.h"
-#include "../traits/is_comparable_with_less_equal.h"
-#include "../traits/is_comparable_with_greater_equal.h"
+#include "../traits/is_comparable_with_equal_operator.h"
+#include "../traits/is_comparable_with_not_equal_operator.h"
+#include "../traits/is_comparable_with_less_operator.h"
+#include "../traits/is_comparable_with_greater_operator.h"
+#include "../traits/is_comparable_with_less_equal_operator.h"
+#include "../traits/is_comparable_with_greater_equal_operator.h"
 #include "../traits/is_not_same.h"
 #include "../traits/is_scalar.h"
 #include "../traits/is_object.h"
@@ -767,7 +767,7 @@ namespace hud
      * @param true if right and left optional are equal, false otherwise
      */
     template<typename left_t, typename right_t>
-    requires(hud::is_comparable_with_equal_v<left_t, right_t>)
+    requires(hud::is_comparable_with_equal_operator_v<left_t, right_t>)
     [[nodiscard]] constexpr bool operator==(const optional<left_t> &left, const optional<right_t> &right) noexcept
     {
         const bool left_has_value = left.has_value();
@@ -785,7 +785,7 @@ namespace hud
      * @param true if right and left optional are not equals, false otherwise
      */
     template<typename left_t, typename right_t>
-    requires(hud::is_comparable_with_not_equal_v<left_t, right_t>)
+    requires(hud::is_comparable_with_not_equal_operator_v<left_t, right_t>)
     [[nodiscard]] constexpr bool operator!=(const optional<left_t> &left, const optional<right_t> &right) noexcept
     {
         const bool left_has_value = left.has_value();
@@ -805,7 +805,7 @@ namespace hud
      * @param true if right is less than left optional, false otherwise
      */
     template<typename left_t, typename right_t>
-    requires(is_comparable_with_less_v<left_t, right_t>)
+    requires(is_comparable_with_less_operator_v<left_t, right_t>)
     [[nodiscard]] constexpr bool operator<(const optional<left_t> &left, const optional<right_t> &right) noexcept
     {
         return right.has_value() && (!left.has_value() || left.value() < right.value());
@@ -824,7 +824,7 @@ namespace hud
      * @param true if right is greater than left optional, false otherwise
      */
     template<typename left_t, typename right_t>
-    requires(is_comparable_with_greater_v<left_t, right_t>)
+    requires(is_comparable_with_greater_operator_v<left_t, right_t>)
     [[nodiscard]] constexpr bool operator>(const optional<left_t> &left, const optional<right_t> &right) noexcept
     {
         return left.has_value() && (!right.has_value() || left.value() > right.value());
@@ -843,7 +843,7 @@ namespace hud
      * @param true if right is less or equal than left optional, false otherwise
      */
     template<typename left_t, typename right_t>
-    requires(is_comparable_with_less_equal_v<left_t, right_t>)
+    requires(is_comparable_with_less_equal_operator_v<left_t, right_t>)
     [[nodiscard]] constexpr bool operator<=(const optional<left_t> &left, const optional<right_t> &right) noexcept
     {
         return !left.has_value() || (right.has_value() && left.value() <= right.value());
@@ -862,7 +862,7 @@ namespace hud
      * @param true if right is greater or equal than left optional, false otherwise
      */
     template<typename left_t, typename right_t>
-    requires(is_comparable_with_greater_equal_v<left_t, right_t>)
+    requires(is_comparable_with_greater_equal_operator_v<left_t, right_t>)
     [[nodiscard]] constexpr bool operator>=(const optional<left_t> &left, const optional<right_t> &right) noexcept
     {
         return !right.has_value() || (left.has_value() && left.value() >= right.value());
@@ -880,7 +880,7 @@ namespace hud
      * @param true if an optional value is equal to a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(hud::is_comparable_with_equal_v<type_t, value_t>)
+    requires(hud::is_comparable_with_equal_operator_v<type_t, value_t>)
     [[nodiscard]] constexpr bool operator==(const optional<type_t> &option, const value_t &value) noexcept
     {
         return option.has_value() ? option.value() == value : false;
@@ -898,7 +898,7 @@ namespace hud
      * @param true if a value is equal to an optional, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(hud::is_comparable_with_equal_v<value_t, type_t>)
+    requires(hud::is_comparable_with_equal_operator_v<value_t, type_t>)
     [[nodiscard]] constexpr bool operator==(const value_t &value, const optional<type_t> &option) noexcept
     {
         return option.has_value() ? value == option.value() : false;
@@ -917,7 +917,7 @@ namespace hud
      * @param true if an optional value is not equal to a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(hud::is_comparable_with_not_equal_v<type_t, value_t>)
+    requires(hud::is_comparable_with_not_equal_operator_v<type_t, value_t>)
     [[nodiscard]] constexpr bool operator!=(const optional<type_t> &option, const value_t &value) noexcept
     {
         return option.has_value() ? option.value() != value : true;
@@ -936,7 +936,7 @@ namespace hud
      * @param true if a value is not equal an optional, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(hud::is_comparable_with_not_equal_v<value_t, type_t>)
+    requires(hud::is_comparable_with_not_equal_operator_v<value_t, type_t>)
     [[nodiscard]] constexpr bool operator!=(const value_t &value, const optional<type_t> &option) noexcept
     {
         return option.has_value() ? value != option.value() : true;
@@ -955,7 +955,7 @@ namespace hud
      * @param true if an optional value is less than a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(is_comparable_with_less_v<type_t, value_t>)
+    requires(is_comparable_with_less_operator_v<type_t, value_t>)
     [[nodiscard]] constexpr bool operator<(const optional<type_t> &option, const value_t &value) noexcept
     {
         return option.has_value() ? option.value() < value : true;
@@ -973,7 +973,7 @@ namespace hud
      * @param true if an optional value is less than a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(is_comparable_with_less_v<value_t, type_t>)
+    requires(is_comparable_with_less_operator_v<value_t, type_t>)
     [[nodiscard]] constexpr bool operator<(const value_t &value, const optional<type_t> &option) noexcept
     {
         return option.has_value() ? value < option.value() : false;
@@ -991,7 +991,7 @@ namespace hud
      * @param true if an optional value is greater than a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(is_comparable_with_greater_v<type_t, value_t>)
+    requires(is_comparable_with_greater_operator_v<type_t, value_t>)
     [[nodiscard]] constexpr bool operator>(const optional<type_t> &option, const value_t &value) noexcept
     {
         return option.has_value() ? option.value() > value : false;
@@ -1010,7 +1010,7 @@ namespace hud
      * @param true if a value is greater than an optional, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(is_comparable_with_greater_v<value_t, type_t>)
+    requires(is_comparable_with_greater_operator_v<value_t, type_t>)
     [[nodiscard]] constexpr bool operator>(const value_t &value, const optional<type_t> &option) noexcept
     {
         return option.has_value() ? value > option.value() : true;
@@ -1029,7 +1029,7 @@ namespace hud
      * @param true if an optional value is less or equal to a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(is_comparable_with_less_v<type_t, value_t>)
+    requires(is_comparable_with_less_operator_v<type_t, value_t>)
     [[nodiscard]] constexpr bool operator<=(const optional<type_t> &option, const value_t &value) noexcept
     {
         return option.has_value() ? option.value() <= value : true;
@@ -1047,7 +1047,7 @@ namespace hud
      * @param true if an optional value is less or equal to a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(is_comparable_with_less_v<value_t, type_t>)
+    requires(is_comparable_with_less_operator_v<value_t, type_t>)
     [[nodiscard]] constexpr bool operator<=(const value_t &value, const optional<type_t> &option) noexcept
     {
         return option.has_value() ? value <= option.value() : false;
@@ -1065,7 +1065,7 @@ namespace hud
      * @param true if an optional value is greater or equal to a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(is_comparable_with_greater_equal_v<type_t, value_t>)
+    requires(is_comparable_with_greater_equal_operator_v<type_t, value_t>)
     [[nodiscard]] constexpr bool operator>=(const optional<type_t> &option, const value_t &value) noexcept
     {
         return option.has_value() ? option.value() >= value : false;
@@ -1084,7 +1084,7 @@ namespace hud
      * @param true if an optional value is greater or equal to a value, false otherwise
      */
     template<typename type_t, typename value_t>
-    requires(is_comparable_with_greater_equal_v<value_t, type_t>)
+    requires(is_comparable_with_greater_equal_operator_v<value_t, type_t>)
     [[nodiscard]] constexpr bool operator>=(const value_t &value, const optional<type_t> &option) noexcept
     {
         return option.has_value() ? value >= option.value() : true;
