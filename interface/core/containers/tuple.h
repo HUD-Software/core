@@ -816,6 +816,9 @@ namespace hud
         template<usize element_index, typename... u_types_t>
         friend constexpr const tuple_element_t<element_index, tuple<u_types_t...>> &&get(const tuple<u_types_t...> &&tuple) noexcept;
 
+        template<usize idx_to_reach, typename... types_t>
+        friend constexpr auto &&piecewise_get(hud::tuple<types_t...> &&tuple) noexcept;
+
     private:
         /**
          * Copy construct a tuple by unwrapping tuple element to copy and call initialisation constructor with unwrapped elements as parameter
@@ -944,6 +947,23 @@ namespace hud
         return hud::forward<const type_t>(static_cast<const details::tuple_leaf<idx_to_reach, type_t> &&>(t).content);
     }
 
+    // template <size_t _Index, class... _Types>
+    // _NODISCARD constexpr auto&& _Tuple_get(tuple<_Types...>&& _Tuple) noexcept {
+    //     // used by pair's piecewise constructor
+    //     using _Ty    = tuple_element_t<_Index, tuple<_Types...>>;
+    //     using _Ttype = typename tuple_element<_Index, tuple<_Types...>>::_Ttype;
+    //     return static_cast<_Ty&&>(static_cast<_Ttype&>(_Tuple)._Myfirst._Val);
+    // }
+
+    template<usize idx_to_reach, typename... types_t>
+    [[nodiscard]] constexpr auto &&piecewise_get(hud::tuple<types_t...> &&tuple) noexcept
+    {
+        using type_t = tuple_element_t<idx_to_reach, hud::tuple<types_t...>>;
+        return static_cast<type_t &&>(static_cast<details::tuple_leaf<idx_to_reach, type_t> &>(tuple).content);
+        // using _Ttype = typename<_Index, tuple<_Types...>>::_Ttype;
+        // return static_cast<type_t &&>(static_cast<type_t &>(tuple)._Myfirst._Val);
+    }
+
     /**
      * swap specialization for tuple
      * @tparam types_t types_t of the tuple
@@ -965,7 +985,7 @@ namespace hud
      * @return true if all elements of left tuple are equal to all elements at the same index of right tuple, false otherwise
      */
     template<typename... types_t, typename... u_types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
+    [[nodiscard]] constexpr bool operator==(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
     {
         return details::tuple_equals<sizeof...(types_t)>()(left, right);
     }
@@ -979,7 +999,7 @@ namespace hud
      * @return true if at least one elements of left tuple is not equals to the index corresponding elements of right tuple, false otherwise
      */
     template<typename... types_t, typename... u_types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
+    [[nodiscard]] constexpr bool operator!=(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
     {
         return !(left == right);
     }
@@ -992,7 +1012,7 @@ namespace hud
      * @return true if at least one elements of left tuple is not equals to the index corresponding elements of right tuple, false otherwise
      */
     template<typename... types_t, typename... u_types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
+    [[nodiscard]] constexpr bool operator<(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
     {
         return details::tuple_less<sizeof...(types_t)>()(left, right);
     }
@@ -1005,7 +1025,7 @@ namespace hud
      * @return true if all elements of left tuple are greater than all elements at the same index of right tuple, false otherwise
      */
     template<typename... types_t, typename... u_types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
+    [[nodiscard]] constexpr bool operator>(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
     {
         return right < left;
     }
@@ -1018,7 +1038,7 @@ namespace hud
      * @return true all elements of this tuple is lexicographically less or equals the other elements at the same index, false otherwise
      */
     template<typename... types_t, typename... u_types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
+    [[nodiscard]] constexpr bool operator<=(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
     {
         return !(left > right);
     }
@@ -1031,7 +1051,7 @@ namespace hud
      * @return true if all elements of left tuple are greater or equals than all elements at the same index of right tuple, false otherwise
      */
     template<typename... types_t, typename... u_types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
+    [[nodiscard]] constexpr bool operator>=(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
     {
         return !(left < right);
     }
@@ -1043,7 +1063,7 @@ namespace hud
      * @return tuple<types_t...> instance.
      */
     template<typename... types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr tuple<types_t...> make_tuple(types_t &&...args) noexcept
+    [[nodiscard]] constexpr tuple<types_t...> make_tuple(types_t &&...args) noexcept
     {
         return tuple<types_t...>(hud::forward<types_t>(args)...);
     }
@@ -1053,7 +1073,7 @@ namespace hud
      * This function is designed to forward arguments, not to store its result in a named variable, since the returned object may contain references to temporary variables.
      */
     template<typename... types_t>
-    HD_FORCEINLINE constexpr tuple<types_t &&...> forward_as_tuple(types_t &&...args) noexcept
+    [[nodiscard]] constexpr tuple<types_t &&...> forward_as_tuple(types_t &&...args) noexcept
     {
         return tuple<types_t &&...>(hud::forward<types_t>(args)...);
     }
@@ -1065,7 +1085,7 @@ namespace hud
      * @return The concatenated tuple
      */
     template<typename... tuples_t>
-    HD_FORCEINLINE constexpr typename details::tuple_cat<tuples_t...>::return_type tuple_cat(tuples_t &&...args) noexcept
+    constexpr typename details::tuple_cat<tuples_t...>::return_type tuple_cat(tuples_t &&...args) noexcept
     {
         using tuple_cat_result = details::tuple_cat<tuples_t...>;
         return tuple_cat_result::concatenate(forward_as_tuple(hud::forward<tuples_t>(args)...));

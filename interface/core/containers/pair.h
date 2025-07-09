@@ -287,8 +287,8 @@ namespace hud
          */
         template<typename tuple_first, typename tuple_second, usize... indicies_first, usize... indicies_second>
         constexpr pair(tuple_first &first_tuple, tuple_second &second_tuple, hud::index_sequence<indicies_first...>, hud::index_sequence<indicies_second...>) noexcept
-            : first(hud::get<indicies_first>(hud::move(first_tuple))...)
-            , second(hud::get<indicies_second>(hud::move(second_tuple))...)
+            : first(hud::piecewise_get<indicies_first>(hud::move(first_tuple))...)
+            , second(hud::piecewise_get<indicies_second>(hud::move(second_tuple))...)
         {
         }
     };

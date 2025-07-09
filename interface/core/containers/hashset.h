@@ -793,7 +793,7 @@ namespace hud
              * If the type K est not hashable or comparable, the type is `key_type`, else the type is `K`
              */
             template<typename K>
-            static constexpr bool is_hashable_and_comparable = hud::conjunction_v<hud::is_hashable_64<key_type, K>, hud::is_comparable_with_equal<key_type, K>>;
+            static constexpr bool is_hashable_and_comparable_v = hud::conjunction_v<hud::is_hashable_64<key_type, K>, hud::is_comparable_with_equal<key_type, K>>;
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             friend class hashset_impl; // Friend with other hashset_impl of other types
@@ -972,7 +972,7 @@ namespace hud
             [[nodiscard]]
             constexpr iterator find(K &&key) noexcept
             {
-                if constexpr (is_hashable_and_comparable<K>)
+                if constexpr (is_hashable_and_comparable_v<K>)
                 {
                     return find_impl(hud::forward<K>(key));
                 }
@@ -1188,7 +1188,7 @@ namespace hud
                                                  hud::index_sequence<indices_key...>
                                              ) -> decltype(auto)
                 {
-                    if constexpr (is_hashable_and_comparable<key_tuple_t>)
+                    if constexpr (is_hashable_and_comparable_v<key_tuple_t>)
                     {
                         return hud::forward<key_tuple_t>(key_tuple);
                     }
@@ -1576,7 +1576,7 @@ namespace hud
             [[nodiscard]]
             constexpr hud::pair<usize, bool> find_or_insert_no_construct(K &&key) noexcept
             {
-                if constexpr (is_hashable_and_comparable<K>)
+                if constexpr (is_hashable_and_comparable_v<K>)
                 {
                     return find_or_insert_no_construct_impl(hud::forward<K>(key));
                 }

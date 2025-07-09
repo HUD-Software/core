@@ -162,6 +162,7 @@ namespace hud
              * @param value The value to initialize with.
              */
             template<typename key_tuple_t, typename value_tuple_t>
+            requires(hud::is_constructible_v<pair_type, hud::tag_piecewise_construct_t, key_tuple_t, value_tuple_t>)
             constexpr explicit hashmap_storage(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
                 : element_(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple))
             {
