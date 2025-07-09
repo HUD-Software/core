@@ -1159,17 +1159,30 @@ namespace hud
             }
 
             /**
-             * Finds or inserts a slot corresponding to the given key.
-             * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
-             * If the `key_type` is not hashable with the `key_tuple_t` a temporary key is created to find it in the hashmap
-             * To make the `key_type` hashable with the `key_tuple_t` you must specialize the `hud::equal<key_type>` functor by adding the function
-             * @param key The key used to find or insert the slot.
-             * @param args The arguments forwarded to the `slot_type` constructor after the key.
-             * @return An iterator to the inserted or existing value.
+             * Adds a new element to the container using piecewise construction of the key and value.
+             *
+             * If an element with the given key already exists, returns an iterator to it.
+             * Otherwise, constructs a new element in-place using the provided key and value tuples.
+             *
+             * The key can be provided either as a fully constructed `key_type` or as a tuple of arguments
+             * used to construct the key in-place. If the key tuple can't be used directly (e.g., it's not
+             * hashable or comparable), it must be convertible into a valid `key_type`.
+             *
+             * To enable custom key lookup using a tuple of arguments, you can specialize the `hud::equal<key_type>`
+             * and `hud::hash<key_type>` functors to support comparisons and hashes against a forwarding tuple
+             * (i.e., `hud::tuple<Args&&...>&&`).
+             *
+             * @param key_tuple   Tuple of arguments used to identify or construct the key.
+             * @param value_tuple Tuple of arguments used to construct the associated value.
+             * @return An iterator to the existing or newly inserted element.
              */
             template<typename key_tuple_t, typename value_tuple_t>
             constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
             {
+                /**
+                 * If the tuple can't be used directly as a hashable/comparable key,
+                 * we unpack its elements and construct a key_type from them.
+                 */
                 constexpr auto forward_key = []<usize... indices_key>(
                                                  key_tuple_t &&key_tuple,
                                                  hud::index_sequence<indices_key...>
@@ -1181,6 +1194,8 @@ namespace hud
                     }
                     else
                     {
+                        static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is neither hashable nor comparable with the given tuple, and cannot be constructed from its values. "
+                                                                                                                        "Ensure that hud::equal and hud::hash support hud::tuple<...&&>&&, or provide a constructor for key_type that accepts the tuple elements.");
                         return key_type(hud::get<indices_key>(key_tuple)...);
                     }
                 };
