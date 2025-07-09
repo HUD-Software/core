@@ -629,9 +629,7 @@ namespace hud
          * @param args List of objects to copy construct into the tuple
          */
         explicit(hud::disjunction_v<hud::is_explicitly_copy_constructible<types_t>...>) constexpr tuple(const types_t &...args) noexcept
-        requires(hud::conjunction_v<
-                 hud::bool_constant<sizeof...(types_t) >= 1>,
-                 hud::is_copy_constructible<hud::details::tuple_leaf<0, types_t>>...>)
+        requires(hud::conjunction_v<hud::bool_constant<sizeof...(types_t) >= 1>, hud::is_copy_constructible<types_t>...>)
             : super_type(args...)
         {
         }
@@ -646,7 +644,7 @@ namespace hud
         requires(hud::conjunction_v<
                  hud::bool_constant<sizeof...(types_t) == sizeof...(u_types_t)>,
                  hud::bool_constant<sizeof...(types_t) >= 1>,
-                 hud::is_constructible<hud::details::tuple_leaf<0, types_t>, u_types_t>...>)
+                 hud::is_constructible<types_t, u_types_t>...>)
         explicit(hud::disjunction_v<hud::is_explicitly_move_constructible<types_t, u_types_t>...>) constexpr tuple(u_types_t &&...args) noexcept
             : super_type(hud::forward<u_types_t>(args)...)
         {

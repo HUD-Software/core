@@ -4985,33 +4985,34 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_same_type)
     using value_type = i64;
     using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
-    const auto test = []()
+    const auto test = []() -> decltype(auto)
     {
         constexpr usize reserved_size = 2;
         hashmap_type map;
         map.reserve(reserved_size);
         const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1), hud::forward_as_tuple(2));
-        return hud::tuple {
+        auto result = std::tuple {
             map.count() == 1, // 0
             it->key() == 1,   // 1
             it->value() == 2  // 2
         };
+        return result;
     };
 
     // Non constant
     {
         const auto result = test();
-        hud_assert_true(hud::get<0>(result));
-        hud_assert_true(hud::get<1>(result));
-        hud_assert_true(hud::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(hud::get<0>(result));
-        hud_assert_true(hud::get<1>(result));
-        hud_assert_true(hud::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
 
@@ -5030,7 +5031,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_different_type)
         map.reserve(reserved_size);
         const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(other_key_type {1}), hud::forward_as_tuple(other_value_type {2}));
 
-        return hud::tuple {
+        return std::tuple {
             map.count() == 1, // 0
             it->key() == 1,   // 1
             it->value() == 2  // 2
@@ -5040,17 +5041,17 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_different_type)
     // Non constant
     {
         const auto result = test();
-        hud_assert_true(hud::get<0>(result));
-        hud_assert_true(hud::get<1>(result));
-        hud_assert_true(hud::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(hud::get<0>(result));
-        hud_assert_true(hud::get<1>(result));
-        hud_assert_true(hud::get<2>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
 
@@ -5071,7 +5072,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_same_type)
 
         const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1, ptr + 0), hud::forward_as_tuple(2, ptr + 1));
 
-        return hud::tuple {
+        return std::tuple {
             map.count() == 1,                           // 0
             it->key().constructor_count() == 1,         // 1
             it->key().move_constructor_count() == 0,    // 2
@@ -5093,40 +5094,40 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_same_type)
     // Non constant
     {
         const auto result = test();
-        hud_assert_true(hud::get<0>(result));
-        hud_assert_true(hud::get<1>(result));
-        hud_assert_true(hud::get<2>(result));
-        hud_assert_true(hud::get<3>(result));
-        hud_assert_true(hud::get<4>(result));
-        hud_assert_true(hud::get<5>(result));
-        hud_assert_true(hud::get<6>(result));
-        hud_assert_true(hud::get<7>(result));
-        hud_assert_true(hud::get<8>(result));
-        hud_assert_true(hud::get<9>(result));
-        hud_assert_true(hud::get<10>(result));
-        hud_assert_true(hud::get<11>(result));
-        hud_assert_true(hud::get<12>(result));
-        hud_assert_true(hud::get<13>(result));
-        hud_assert_true(hud::get<14>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(hud::get<0>(result));
-        hud_assert_true(hud::get<1>(result));
-        hud_assert_true(hud::get<2>(result));
-        hud_assert_true(hud::get<3>(result));
-        hud_assert_true(hud::get<4>(result));
-        hud_assert_true(hud::get<5>(result));
-        hud_assert_true(hud::get<6>(result));
-        hud_assert_true(hud::get<7>(result));
-        hud_assert_true(hud::get<8>(result));
-        hud_assert_true(hud::get<9>(result));
-        hud_assert_true(hud::get<10>(result));
-        hud_assert_true(hud::get<11>(result));
-        hud_assert_true(hud::get<12>(result));
-        hud_assert_true(hud::get<13>(result));
-        hud_assert_true(hud::get<14>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
     }
 }
