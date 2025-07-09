@@ -4991,12 +4991,11 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_same_type)
         hashmap_type map;
         map.reserve(reserved_size);
         const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1), hud::forward_as_tuple(2));
-        auto result = std::tuple {
+        return std::tuple {
             map.count() == 1, // 0
             it->key() == 1,   // 1
             it->value() == 2  // 2
         };
-        return result;
     };
 
     // Non constant
