@@ -1033,6 +1033,11 @@ namespace hud
                 return const_cast<hashset_impl *>(this)->contains(hud::forward<K>(key));
             }
 
+            // template<typename K, typename... Args>
+            // iterator try_emplace(K &&key, Args) noexcept
+            // {
+            // }
+
             constexpr void swap(hashset_impl &other) noexcept
             requires(hud::is_swappable_v<slot_type>)
             {

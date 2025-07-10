@@ -84,6 +84,7 @@ set( src
 	hashmap/hashmap_rehash.cpp
 	hashmap/hashmap_remove.cpp
 	hashmap/hashmap_shrink_to_fit.cpp
+	hashmap/hashmap_try_emplace.cpp
 	hashset/hashset_add.cpp
 	hashset/hashset_constructors.cpp
 	hashset/hashset_iterator.cpp
