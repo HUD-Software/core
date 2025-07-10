@@ -31,7 +31,7 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
             map.reserve(COUNT);
             for (i32 i = 0; i < COUNT; i++)
             {
-                map.add({i, dtor_assigned_key_counter + i}, {i, dtor_assigned_value_counter + i});
+                map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(i, dtor_assigned_key_counter + i), hud::forward_as_tuple(i, dtor_assigned_value_counter + i));
             }
 
             // Ensure element's destructors are not called
@@ -58,14 +58,14 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
     // Non constant
     {
         const auto result = test();
-        // hud_assert_true(std::get<0>(result));
-        // hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
-        // hud_assert_true(std::get<0>(result));
-        // hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
     }
 }
