@@ -816,8 +816,8 @@ namespace hud
         template<usize element_index, typename... u_types_t>
         friend constexpr const tuple_element_t<element_index, tuple<u_types_t...>> &&get(const tuple<u_types_t...> &&tuple) noexcept;
 
-        template<usize idx_to_reach, typename... types_t>
-        friend constexpr auto &&piecewise_get(hud::tuple<types_t...> &&tuple) noexcept;
+        template<usize idx_to_reach, typename... u_types_t>
+        friend constexpr auto &&piecewise_get(hud::tuple<u_types_t...> &&tuple) noexcept;
 
     private:
         /**
@@ -891,11 +891,11 @@ namespace hud
     };
 
     /**
-     * Retrieves a lvalue reference to the member of a tuple at an index
-     * @tparam idx_to_reach The index to reach
-     * @tparam types_t... types_t of the tuple
-     * @param tuple The tuple to access
-     * @return LValue reference to the member mFirst if index is 0, mSecond if index is 1.
+     * Returns an lvalue reference to the element at `idx_to_reach`.
+     * @tparam idx_to_reach Index of the element to access.
+     * @tparam types_t Parameter pack of the tuple’s types.
+     * @param  t Tuple to access.
+     * @return `T&` reference to the selected element.
      */
     template<usize idx_to_reach, typename... types_t>
     [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, tuple<types_t...>> &get(tuple<types_t...> &t) noexcept
@@ -905,12 +905,11 @@ namespace hud
     }
 
     /**
-     * Retrieves a lvalue reference to the member of a tuple at an index
-     * @tparam idx_to_reach The index to reach
-     * @tparam T1 type_t of the first component
-     * @tparam T2 type_t of the second component
-     * @param pair The pair to access
-     * @return LValue reference to the member mFirst if index is 0, mSecond if index is 1.
+     * Returns a const lvalue reference to the element at `idx_to_reach`.
+     * @tparam idx_to_reach Index of the element to access.
+     * @tparam types_t Parameter pack of the tuple’s types.
+     * @param  t Tuple to access.
+     * @return `const T&` reference to the selected element.
      */
     template<usize idx_to_reach, typename... types_t>
     [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, tuple<types_t...>> &get(const tuple<types_t...> &t) noexcept
@@ -920,11 +919,11 @@ namespace hud
     }
 
     /**
-     * Retrieves a rvalue reference to the member of a tuple at an index
-     * @tparam idx_to_reach The index to reach
-     * @tparam types_t... types_t of the tuple
-     * @param tuple The tuple to access
-     * @return RValue reference to the member mFirst if index is 0, mSecond if index is 1.
+     * Returns an rvalue reference to the element at `idx_to_reach`.
+     * @tparam idx_to_reach Index of the element to access.
+     * @tparam types_t Parameter pack of the tuple’s types.
+     * @param  t Tuple to access (rvalue).
+     * @return `T&&` reference to the selected element, preserving cv‑qualifiers.
      */
     template<usize idx_to_reach, typename... types_t>
     [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, tuple<types_t...>> &&get(tuple<types_t...> &&t) noexcept
@@ -934,11 +933,11 @@ namespace hud
     }
 
     /**
-     * Retrieves a rvalue reference to the member of a tuple at an index
-     * @tparam idx_to_reach The index to reach
-     * @tparam types_t... types_t of the tuple
-     * @param tuple The tuple to access
-     * @return RValue reference to the member mFirst if index is 0, mSecond if index is 1.
+     * Returns a const rvalue reference to the element at `idx_to_reach`.
+     * @tparam idx_to_reach Index of the element to access.
+     * @tparam types_t Parameter pack of the tuple’s types.
+     * @param  t Tuple to access (const rvalue).
+     * @return `const T&&` reference to the selected element.
      */
     template<usize idx_to_reach, typename... types_t>
     [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, tuple<types_t...>> &&get(const tuple<types_t...> &&t) noexcept
@@ -947,6 +946,22 @@ namespace hud
         return hud::forward<const type_t>(static_cast<const details::tuple_leaf<idx_to_reach, type_t> &&>(t).content);
     }
 
+    /**
+     * Retrieves an rvalue reference to a tuple element for forwarding purposes.
+     * This function extracts the element at the specified index from an rvalue tuple and
+     * casts it explicitly to `T&&`, without preserving the value category or cv-qualifiers
+     * of the stored element.
+     * It is primarily intended for internal use in scenarios like piecewise construction,
+     * where tuple elements are forwarded to construct other objects.
+     * Warning: This function does **not** preserve reference or constness qualifiers.
+     * Using it on tuples that contain reference types (`T&`, `const T&`) or non-movable types
+     * may result in incorrect behavior or undefined reference binding.
+     * For safe and category-preserving access to tuple elements, prefer using `get<Index>(std::move(tuple))` instead.
+     * @tparam idx_to_reach The index of the element to extract.
+     * @param t The rvalue tuple from which to extract the element.
+     * @return An rvalue reference to the element at the specified index, cast as `T&&`
+     *         without regard for its original value category.
+     */
     template<usize idx_to_reach, typename... types_t>
     [[nodiscard]] constexpr auto &&piecewise_get(hud::tuple<types_t...> &&t) noexcept
     {
