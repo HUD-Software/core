@@ -1190,6 +1190,7 @@ namespace hud
                 {
                     if constexpr (is_hashable_and_comparable_v<key_tuple_t>)
                     {
+                        static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is hashable and comparable with the given tuple but cannot be constructed from its values. ");
                         return hud::forward<key_tuple_t>(key_tuple);
                     }
                     else

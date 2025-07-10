@@ -5131,3 +5131,81 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_same_type)
         hud_assert_true(std::get<14>(result));
     }
 }
+
+GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_different_type)
+{
+    using key_type = hud_test::non_bitwise_type;
+    using value_type = hud_test::non_bitwise_type;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+
+    const auto test = []()
+    {
+        constexpr usize reserved_size = 2;
+        i32 ptr[2];
+        hashmap_type map;
+        map.reserve(reserved_size);
+
+        static_assert(hud::is_hashable_64_v<key_type, decltype(hud::forward_as_tuple(i64 {1}, ptr))>);
+        static_assert(hud::is_comparable_with_equal_v<key_type, decltype(hud::forward_as_tuple(u64 {2}, ptr + 1))>);
+
+        const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(i64 {1}, ptr), hud::forward_as_tuple(u64 {2}, ptr + 1));
+
+        return std::tuple {
+            map.count() == 1,                           // 0
+            it->key().constructor_count() == 1,         // 1
+            it->key().move_constructor_count() == 0,    // 2
+            it->key().copy_constructor_count() == 0,    // 3
+            it->key().move_assign_count() == 0,         // 4
+            it->key().copy_assign_count() == 0,         // 5
+            it->key().id() == 1,                        // 6
+            it->key().destructor_counter() == ptr,      // 7
+            it->value().constructor_count() == 1,       // 8
+            it->value().move_constructor_count() == 0,  // 9
+            it->value().copy_constructor_count() == 0,  // 10
+            it->value().move_assign_count() == 0,       // 11
+            it->value().copy_assign_count() == 0,       // 12
+            it->value().id() == 2,                      // 13
+            it->value().destructor_counter() == ptr + 1 // 14
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
+    }
+
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_true(std::get<4>(result));
+        hud_assert_true(std::get<5>(result));
+        hud_assert_true(std::get<6>(result));
+        hud_assert_true(std::get<7>(result));
+        hud_assert_true(std::get<8>(result));
+        hud_assert_true(std::get<9>(result));
+        hud_assert_true(std::get<10>(result));
+        hud_assert_true(std::get<11>(result));
+        hud_assert_true(std::get<12>(result));
+        hud_assert_true(std::get<13>(result));
+        hud_assert_true(std::get<14>(result));
+    }
+}
