@@ -1606,7 +1606,8 @@ GTEST_TEST(pair, piecewise_constructor_non_trivial_type_same_type)
         const auto test = []()
         {
             using type = hud_test::non_bitwise_type;
-            hud::pair<type, type> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(1, nullptr), hud::forward_as_tuple(2, nullptr)};
+            i32 ptr[2];
+            hud::pair<type, type> pair {hud::tag_piecewise_construct, hud::forward_as_tuple(1, ptr), hud::forward_as_tuple(2, ptr + 1)};
             return std::tuple {
                 hud::get<0>(pair).id() == 1,                     // 0
                 hud::get<0>(pair).constructor_count() == 1,      // 1
@@ -2081,19 +2082,4 @@ GTEST_TEST(pair, piecewise_constructor_non_trivial_move_constructible_type_diffe
             hud_assert_true(std::get<3>(result));
         }
     }
-
-    using first_type = hud_test::non_bitwise_type;
-    using second_type = hud_test::non_bitwise_type;
-    i32 ptr[2];
-
-    // hud::pair<first_type, second_type> p(hud::tag_piecewise_construct, hud::forward_as_tuple(1, ptr), hud::forward_as_tuple(2, ptr + 1));
-    std::pair<first_type, second_type> p(std::piecewise_construct, std::forward_as_tuple(1, ptr), std::forward_as_tuple(2, ptr + 1));
-
-    // template <size_t _Index, class... _Types>
-    // _NODISCARD constexpr auto&& _Tuple_get(tuple<_Types...>&& _Tuple) noexcept {
-    //     // used by pair's piecewise constructor
-    //     using _Ty    = tuple_element_t<_Index, tuple<_Types...>>;
-    //     using _Ttype = typename tuple_element<_Index, tuple<_Types...>>::_Ttype;
-    //     return static_cast<_Ty&&>(static_cast<_Ttype&>(_Tuple)._Myfirst._Val);
-    // }
 }

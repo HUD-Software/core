@@ -947,21 +947,11 @@ namespace hud
         return hud::forward<const type_t>(static_cast<const details::tuple_leaf<idx_to_reach, type_t> &&>(t).content);
     }
 
-    // template <size_t _Index, class... _Types>
-    // _NODISCARD constexpr auto&& _Tuple_get(tuple<_Types...>&& _Tuple) noexcept {
-    //     // used by pair's piecewise constructor
-    //     using _Ty    = tuple_element_t<_Index, tuple<_Types...>>;
-    //     using _Ttype = typename tuple_element<_Index, tuple<_Types...>>::_Ttype;
-    //     return static_cast<_Ty&&>(static_cast<_Ttype&>(_Tuple)._Myfirst._Val);
-    // }
-
     template<usize idx_to_reach, typename... types_t>
-    [[nodiscard]] constexpr auto &&piecewise_get(hud::tuple<types_t...> &&tuple) noexcept
+    [[nodiscard]] constexpr auto &&piecewise_get(hud::tuple<types_t...> &&t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, hud::tuple<types_t...>>;
-        return static_cast<type_t &&>(static_cast<details::tuple_leaf<idx_to_reach, type_t> &>(tuple).content);
-        // using _Ttype = typename<_Index, tuple<_Types...>>::_Ttype;
-        // return static_cast<type_t &&>(static_cast<type_t &>(tuple)._Myfirst._Val);
+        return static_cast<type_t &&>(static_cast<details::tuple_leaf<idx_to_reach, type_t> &>(t).content);
     }
 
     /**
