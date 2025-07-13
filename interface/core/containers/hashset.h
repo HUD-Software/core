@@ -972,14 +972,15 @@ namespace hud
             [[nodiscard]]
             constexpr iterator find(K &&key) noexcept
             {
-                if constexpr (is_hashable_and_comparable_v<K>)
-                {
-                    return find_impl(hud::forward<K>(key));
-                }
-                else
-                {
-                    return find_impl(key_type(hud::forward<K>(key)));
-                }
+                return find_impl(forward_key(hud::forward<K>(key)));
+                // if constexpr (is_hashable_and_comparable_v<K>)
+                // {
+                //    return find_impl(hud::forward<K>(key));
+                // }
+                // else
+                // {
+                //    return find_impl(key_type(hud::forward<K>(key)));
+                // }
             }
 
             constexpr void rehash(i32 count) noexcept
@@ -1033,10 +1034,20 @@ namespace hud
                 return const_cast<hashset_impl *>(this)->contains(hud::forward<K>(key));
             }
 
-            // template<typename K, typename... Args>
-            // iterator try_emplace(K &&key, Args) noexcept
-            // {
-            // }
+            /** Find the given key. If it exist, return it, else insert the value  by constructing it  with args */
+            template<typename K, typename... Args>
+            iterator try_emplace(K &&key, Args &&...args) noexcept
+            {
+                return try_emplace_impl(forward_key(hud::forward<K>(key)));
+                // if constexpr (is_hashable_and_comparable_v<K>)
+                // {
+                //     return try_emplace_impl(hud::forward<K>(key));
+                // }
+                // else
+                // {
+                //     return try_emplace_impl(key_type(hud::forward<K>(key)));
+                // }
+            }
 
             constexpr void swap(hashset_impl &other) noexcept
             requires(hud::is_swappable_v<slot_type>)
@@ -1163,6 +1174,43 @@ namespace hud
                 return {control_ptr_ + res.first, slot_ptr};
             }
 
+            template<typename K>
+            [[nodiscard]] constexpr decltype(auto) forward_key(K &&k) noexcept
+            {
+                if constexpr (is_hashable_and_comparable_v<K>)
+                {
+                    return hud::forward<K>(k);
+                }
+                else
+                {
+                    return key_type(hud::forward<K>(k));
+                }
+            }
+
+            template<typename... Args>
+            [[nodiscard]] constexpr decltype(auto) forward_key(hud::tuple<Args...> &&tuple) noexcept
+            {
+                constexpr auto forward_key_tuple_impl = []<usize... indices_key>(
+                                                            hud::tuple<Args...> &&key_tuple,
+                                                            hud::index_sequence<indices_key...>
+                                                        ) -> decltype(auto)
+                {
+                    if constexpr (is_hashable_and_comparable_v<hud::tuple<Args...>>)
+                    {
+                        static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is hashable and comparable with the given tuple but cannot be constructed from its values. ");
+                        return hud::forward<hud::tuple<Args...>>(key_tuple);
+                    }
+                    else
+                    {
+                        static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is neither hashable nor comparable with the given tuple, and cannot be constructed from its values. "
+                                                                                                                        "Ensure that hud::equal and hud::hash support hud::tuple<...&&>&&, or provide a constructor for key_type that accepts the tuple elements.");
+                        return key_type(hud::get<indices_key>(key_tuple)...);
+                    }
+                };
+
+                return forward_key_tuple_impl(hud::forward<hud::tuple<Args...>>(tuple), hud::make_index_sequence<hud::tuple_size_v<hud::tuple<Args...>>> {});
+            }
+
             /**
              * Adds a new element to the container using piecewise construction of the key and value.
              *
@@ -1184,29 +1232,29 @@ namespace hud
             template<typename key_tuple_t, typename value_tuple_t>
             constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
             {
-                /**
-                 * If the tuple can't be used directly as a hashable/comparable key,
-                 * we unpack its elements and construct a key_type from them.
-                 */
-                constexpr auto forward_key = []<usize... indices_key>(
-                                                 key_tuple_t &&key_tuple,
-                                                 hud::index_sequence<indices_key...>
-                                             ) -> decltype(auto)
-                {
-                    if constexpr (is_hashable_and_comparable_v<key_tuple_t>)
-                    {
-                        static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is hashable and comparable with the given tuple but cannot be constructed from its values. ");
-                        return hud::forward<key_tuple_t>(key_tuple);
-                    }
-                    else
-                    {
-                        static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is neither hashable nor comparable with the given tuple, and cannot be constructed from its values. "
-                                                                                                                        "Ensure that hud::equal and hud::hash support hud::tuple<...&&>&&, or provide a constructor for key_type that accepts the tuple elements.");
-                        return key_type(hud::get<indices_key>(key_tuple)...);
-                    }
-                };
+                // /**
+                //  * If the tuple can't be used directly as a hashable/comparable key,
+                //  * we unpack its elements and construct a key_type from them.
+                //  */
+                // constexpr auto forward_key = []<usize... indices_key>(
+                //                                  key_tuple_t &&key_tuple,
+                //                                  hud::index_sequence<indices_key...>
+                //                              ) -> decltype(auto)
+                // {
+                //     if constexpr (is_hashable_and_comparable_v<key_tuple_t>)
+                //     {
+                //         static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is hashable and comparable with the given tuple but cannot be constructed from its values. ");
+                //         return hud::forward<key_tuple_t>(key_tuple);
+                //     }
+                //     else
+                //     {
+                //         static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is neither hashable nor comparable with the given tuple, and cannot be constructed from its values. "
+                //                                                                                                         "Ensure that hud::equal and hud::hash support hud::tuple<...&&>&&, or provide a constructor for key_type that accepts the tuple elements.");
+                //         return key_type(hud::get<indices_key>(key_tuple)...);
+                //     }
+                // };
 
-                hud::pair<usize, bool> res = find_or_insert_no_construct(forward_key(hud::forward<key_tuple_t>(key_tuple), hud::make_index_sequence<hud::tuple_size_v<key_tuple_t>> {}));
+                hud::pair<usize, bool> res = find_or_insert_no_construct(forward_key(hud::forward<key_tuple_t>(key_tuple)));
                 slot_type *slot_ptr {slot_ptr_ + res.first};
                 if (res.second)
                 {
@@ -1248,6 +1296,13 @@ namespace hud
                     slot_index += group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
+            }
+
+            template<typename K>
+            [[nodiscard]]
+            constexpr iterator try_emplace_impl(K &&key) noexcept
+            {
+                find_or_insert_no_construct(key);
             }
 
             template<typename K>
