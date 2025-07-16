@@ -1596,14 +1596,7 @@ namespace hud
             [[nodiscard]]
             constexpr hud::pair<iterator, bool> find_or_insert_no_construct(K &&key) noexcept
             {
-                if constexpr (is_hashable_and_comparable_v<K>)
-                {
-                    return find_or_insert_no_construct_impl(hud::forward<K>(key));
-                }
-                else
-                {
-                    return find_or_insert_no_construct_impl(key_type(hud::forward<K>(key)));
-                }
+                return find_or_insert_no_construct_impl(forward_key(hud::forward<K>(key)));
             }
 
             /**
