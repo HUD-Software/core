@@ -973,14 +973,6 @@ namespace hud
             constexpr iterator find(K &&key) noexcept
             {
                 return find_impl(forward_key(hud::forward<K>(key)));
-                // if constexpr (is_hashable_and_comparable_v<K>)
-                // {
-                //    return find_impl(hud::forward<K>(key));
-                // }
-                // else
-                // {
-                //    return find_impl(key_type(hud::forward<K>(key)));
-                // }
             }
 
             constexpr void rehash(i32 count) noexcept
@@ -1039,14 +1031,6 @@ namespace hud
             iterator try_emplace(K &&key, Args &&...args) noexcept
             {
                 return try_emplace_impl(forward_key(hud::forward<K>(key)));
-                // if constexpr (is_hashable_and_comparable_v<K>)
-                // {
-                //     return try_emplace_impl(hud::forward<K>(key));
-                // }
-                // else
-                // {
-                //     return try_emplace_impl(key_type(hud::forward<K>(key)));
-                // }
             }
 
             constexpr void swap(hashset_impl &other) noexcept
@@ -1145,13 +1129,12 @@ namespace hud
             requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
             constexpr iterator add(key_type &&key, args_t &&...args) noexcept
             {
-                hud::pair<usize, bool> res {find_or_insert_no_construct(key)};
-                slot_type *slot_ptr {slot_ptr_ + res.first};
+                hud::pair<iterator, bool> res {find_or_insert_no_construct(key)};
                 if (res.second)
                 {
-                    hud::memory::construct_object_at(slot_ptr, hud::move(key), hud::forward<args_t>(args)...);
+                    hud::memory::construct_object_at(res.first.slot_ptr_, hud::move(key), hud::forward<args_t>(args)...);
                 }
-                return {control_ptr_ + res.first, slot_ptr};
+                return res.first;
             }
 
             /**
@@ -1165,13 +1148,12 @@ namespace hud
             requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
             constexpr iterator add(const key_type &key, args_t &&...args) noexcept
             {
-                hud::pair<usize, bool> res {find_or_insert_no_construct(key)};
-                slot_type *slot_ptr {slot_ptr_ + res.first};
+                hud::pair<iterator, bool> res {find_or_insert_no_construct(key)};
                 if (res.second)
                 {
-                    hud::memory::construct_object_at(slot_ptr, key, hud::forward<args_t>(args)...);
+                    hud::memory::construct_object_at(res.first.slot_ptr_, key, hud::forward<args_t>(args)...);
                 }
-                return {control_ptr_ + res.first, slot_ptr};
+                return res.first;
             }
 
             template<typename K>
@@ -1232,35 +1214,12 @@ namespace hud
             template<typename key_tuple_t, typename value_tuple_t>
             constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
             {
-                // /**
-                //  * If the tuple can't be used directly as a hashable/comparable key,
-                //  * we unpack its elements and construct a key_type from them.
-                //  */
-                // constexpr auto forward_key = []<usize... indices_key>(
-                //                                  key_tuple_t &&key_tuple,
-                //                                  hud::index_sequence<indices_key...>
-                //                              ) -> decltype(auto)
-                // {
-                //     if constexpr (is_hashable_and_comparable_v<key_tuple_t>)
-                //     {
-                //         static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is hashable and comparable with the given tuple but cannot be constructed from its values. ");
-                //         return hud::forward<key_tuple_t>(key_tuple);
-                //     }
-                //     else
-                //     {
-                //         static_assert(hud::is_constructible_v<key_type, decltype(hud::get<indices_key>(key_tuple))...>, "key_type is neither hashable nor comparable with the given tuple, and cannot be constructed from its values. "
-                //                                                                                                         "Ensure that hud::equal and hud::hash support hud::tuple<...&&>&&, or provide a constructor for key_type that accepts the tuple elements.");
-                //         return key_type(hud::get<indices_key>(key_tuple)...);
-                //     }
-                // };
-
-                hud::pair<usize, bool> res = find_or_insert_no_construct(forward_key(hud::forward<key_tuple_t>(key_tuple)));
-                slot_type *slot_ptr {slot_ptr_ + res.first};
+                hud::pair<iterator, bool> res = find_or_insert_no_construct(forward_key(hud::forward<key_tuple_t>(key_tuple)));
                 if (res.second)
                 {
-                    hud::memory::construct_object_at(slot_ptr, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
+                    hud::memory::construct_object_at(res.first.slot_ptr_, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
                 }
-                return {control_ptr_ + res.first, slot_ptr};
+                return res.first;
             }
 
         private:
@@ -1282,7 +1241,7 @@ namespace hud
                         slot_type *slot_that_match_h2 {slot_ptr_ + slot_index_that_match_h2};
                         if (key_equal_(slot_that_match_h2->key(), hud::forward<K>(key))) [[likely]]
                         {
-                            return {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
+                            return iterator {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
                         }
                     }
 
@@ -1635,7 +1594,7 @@ namespace hud
 
             template<typename K>
             [[nodiscard]]
-            constexpr hud::pair<usize, bool> find_or_insert_no_construct(K &&key) noexcept
+            constexpr hud::pair<iterator, bool> find_or_insert_no_construct(K &&key) noexcept
             {
                 if constexpr (is_hashable_and_comparable_v<K>)
                 {
@@ -1653,7 +1612,7 @@ namespace hud
              * If not found insert the key but do not construct the value.
              */
             template<typename K>
-            [[nodiscard]] constexpr hud::pair<usize, bool> find_or_insert_no_construct_impl(K &&key) noexcept
+            [[nodiscard]] constexpr hud::pair<iterator, bool> find_or_insert_no_construct_impl(K &&key) noexcept
             {
                 u64 hash {compute_hash(key)};
                 u64 h1(H1(hash));
@@ -1670,7 +1629,10 @@ namespace hud
                         slot_type *slot_that_match_h2 {slot_ptr_ + slot_index_that_match_h2};
                         if (key_equal_(slot_that_match_h2->key(), key)) [[likely]]
                         {
-                            return {slot_index_that_match_h2, false};
+                            return {
+                                iterator {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2},
+                                false
+                            };
                         }
                     }
 
@@ -1688,7 +1650,7 @@ namespace hud
             }
 
             /** Insert a slot index associated with the given h2 hash. */
-            [[nodiscard]] constexpr usize insert_no_construct(u64 h1, u8 h2) noexcept
+            [[nodiscard]] constexpr iterator insert_no_construct(u64 h1, u8 h2) noexcept
             {
                 // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
                 if (free_slot_before_grow() == 0)
@@ -1702,8 +1664,7 @@ namespace hud
                 control::set(control_ptr_, slot_index, h2, max_slot_count_);
 
                 free_slot_before_grow_--;
-
-                return slot_index;
+                return iterator {control_ptr_ + slot_index, slot_ptr_ + slot_index}; // slot_index;
             }
 
             constexpr void resize(usize new_max_slot_count) noexcept
