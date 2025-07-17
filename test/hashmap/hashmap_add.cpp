@@ -5068,7 +5068,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_same_type)
         map.reserve(reserved_size);
 
         static_assert(hud::is_hashable_64_v<key_type, decltype(hud::forward_as_tuple(1, ptr))>);
-        static_assert(hud::is_comparable_with_equal_v<key_type, decltype(hud::forward_as_tuple(2, ptr + 1))>);
+        static_assert(hud::is_comparable_with_equal_v<key_type, decltype(hud::forward_as_tuple(1, ptr))>);
 
         const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1, ptr), hud::forward_as_tuple(2, ptr + 1));
 
@@ -5146,7 +5146,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_different_type)
         map.reserve(reserved_size);
 
         static_assert(hud::is_hashable_64_v<key_type, decltype(hud::forward_as_tuple(i64 {1}, ptr))>);
-        static_assert(hud::is_comparable_with_equal_v<key_type, decltype(hud::forward_as_tuple(u64 {2}, ptr + 1))>);
+        static_assert(hud::is_comparable_with_equal_v<key_type, decltype(hud::forward_as_tuple(i64 {1}, ptr))>);
 
         const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(i64 {1}, ptr), hud::forward_as_tuple(u64 {2}, ptr + 1));
 
@@ -5207,5 +5207,57 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_different_type)
         hud_assert_true(std::get<12>(result));
         hud_assert_true(std::get<13>(result));
         hud_assert_true(std::get<14>(result));
+    }
+}
+
+GTEST_TEST(hashmap, add_by_piecewise_construct_tuples)
+{
+    using key_type = hud::tuple<i32, u64, hud_test::non_bitwise_type>;
+    using value_type = hud::tuple<i32, u64, hud_test::non_bitwise_type>;
+    using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+
+    const auto test = []()
+    {
+        constexpr usize reserved_size = 2;
+        i32 ptr[2];
+        hashmap_type map;
+        map.reserve(reserved_size);
+
+        static_assert(hud::is_hashable_64_v<key_type, decltype(hud::forward_as_tuple(1, 2, hud_test::non_bitwise_type {3, ptr}))>);
+        static_assert(hud::is_comparable_with_equal_v<key_type, decltype(hud::forward_as_tuple(1, 2, hud_test::non_bitwise_type {3, ptr}))>);
+
+        const auto it = map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1, 2, hud_test::non_bitwise_type {3, ptr}), hud::forward_as_tuple(4, 5, hud_test::non_bitwise_type {6, ptr + 1}));
+
+        const key_type expected_key {
+            1,
+            2,
+            hud_test::non_bitwise_type {3, ptr}
+        };
+        const value_type expected_value {
+            4,
+            5,
+            hud_test::non_bitwise_type {6, ptr + 1}
+        };
+        return std::tuple {
+            map.count() == 1,              // 0
+            it->key() == expected_key,     // 1
+            it->value() == expected_value, // 2
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+    }
+
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }

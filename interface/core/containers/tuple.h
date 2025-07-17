@@ -582,6 +582,39 @@ namespace hud
                 return tuples_cat_impl_type::concatenate(element_index_seq(), mask_index_seq(), hud::forward<tuple_t>(tuple));
             }
         };
+
+        /**
+         * Hashes all elements of a tuple and combines them into a single hash value.
+         * This is a recursive template that processes one element per call.
+         * @tparam count Number of elements remaining to hash.
+         */
+        template<usize count>
+        struct tuple_hash
+        {
+            /**
+             * Hashes the elements of the given tuple recursively, starting from the first unprocessed element.
+             * @tparam Hasher Type of the hasher used.
+             * @tparam types_t Types of the tuple elements.
+             * @param hasher The hasher instance used to compute the hash.
+             * @param t The tuple whose elements are to be hashed.
+             * @return The final combined hash value.
+             */
+            template<typename Hasher, typename... types_t>
+            [[nodiscard]] constexpr decltype(hud::declval<Hasher>().result()) operator()(Hasher &hasher, [[maybe_unused]] const tuple<types_t...> &t) noexcept
+            {
+                if constexpr (count > 0u)
+                {
+                    constexpr const usize index_to_hash = tuple_size_v<tuple<types_t...>> - count;
+                    hasher.hash(hud::get<index_to_hash>(t));
+                    return tuple_hash<count - 1u>()(hasher, t);
+                }
+                else
+                {
+                    return hasher.result();
+                }
+            }
+        };
+
     } // namespace details
 
     /**
@@ -978,7 +1011,7 @@ namespace hud
     template<typename... types_t, typename... u_types_t>
     static constexpr void swap(tuple<types_t...> &first, tuple<u_types_t...> &second) noexcept
     {
-        details::tuple_swap<sizeof...(types_t)>()(first, second);
+        details::tuple_swap<sizeof...(types_t)> {}(first, second);
     }
 
     /**
@@ -992,7 +1025,7 @@ namespace hud
     template<typename... types_t, typename... u_types_t>
     [[nodiscard]] constexpr bool operator==(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
     {
-        return details::tuple_equals<sizeof...(types_t)>()(left, right);
+        return details::tuple_equals<sizeof...(types_t)> {}(left, right);
     }
 
     /**
@@ -1019,7 +1052,7 @@ namespace hud
     template<typename... types_t, typename... u_types_t>
     [[nodiscard]] constexpr bool operator<(const tuple<types_t...> &left, const tuple<u_types_t...> &right) noexcept
     {
-        return details::tuple_less<sizeof...(types_t)>()(left, right);
+        return details::tuple_less<sizeof...(types_t)> {}(left, right);
     }
 
     /**
@@ -1095,6 +1128,36 @@ namespace hud
         using tuple_cat_result = details::tuple_cat<tuples_t...>;
         return tuple_cat_result::concatenate(forward_as_tuple(hud::forward<tuples_t>(args)...));
     }
+
+    template<typename... types_t>
+    struct equal<hud::tuple<types_t...>>
+    {
+        template<typename... u_types_t>
+        [[nodiscard]] constexpr bool operator()(const hud::tuple<types_t...> &lhs, const hud::tuple<u_types_t...> &rhs) const noexcept
+        {
+            return lhs == rhs;
+        }
+    };
+
+    template<typename... types_t>
+    struct hash_32<hud::tuple<types_t...>>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud::tuple<types_t...> &t) const noexcept
+        {
+            hasher_32 hasher;
+            return details::tuple_hash<sizeof...(types_t)> {}(hasher, t);
+        }
+    };
+
+    template<typename... types_t>
+    struct hash_64<hud::tuple<types_t...>>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud::tuple<types_t...> &t) const noexcept
+        {
+            hasher_64 hasher;
+            return details::tuple_hash<sizeof...(types_t)> {}(hasher, t);
+        }
+    };
 
 } // namespace hud
 

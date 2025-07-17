@@ -125,6 +125,32 @@ namespace hud
             }
 
             /**
+             * Constructor that initializes the hashmap_storage with a key and a default value.
+             * @tparam u_key_t Type of the key.
+             * @param key The key to initialize with.
+             */
+            template<typename u_key_t>
+            requires(hud::is_constructible_v<pair_type, const u_key_t &, const value_type &>)
+            constexpr explicit hashmap_storage(const u_key_t &key) noexcept
+                : element_(key, value_type {})
+            {
+                static_assert(hud::is_nothrow_constructible_v<pair_type, const u_key_t &, const value_type &>);
+            }
+
+            /**
+             * Constructor that initializes the hashmap_storage with a key and a default value.
+             * @tparam u_key_t Type of the key.
+             * @param key The key to initialize with.
+             */
+            template<typename u_key_t>
+            requires(hud::is_constructible_v<pair_type, u_key_t, value_type>)
+            constexpr explicit hashmap_storage(u_key_t &&key) noexcept
+                : element_(hud::forward<u_key_t>(key), value_type {})
+            {
+                static_assert(hud::is_nothrow_constructible_v<pair_type, u_key_t, value_type>);
+            }
+
+            /**
              * Constructor that initializes the hashmap_storage with a key and a value.
              * @tparam u_key_t Type of the key.
              * @tparam u_value_t Type of the value.
@@ -379,6 +405,13 @@ namespace hud
         constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
         {
             return super::add(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
+        }
+
+        template<typename KeyArgs>
+        constexpr value_type &operator[](KeyArgs &&args) noexcept
+        {
+            iterator it = super::add(hud::forward<KeyArgs>(args));
+            return it->value();
         }
     };
 

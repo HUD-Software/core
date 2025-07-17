@@ -164,6 +164,11 @@ namespace hud
         {
             return hud::hash_32<ansichar *, usize> {}(value, length);
         }
+
+        [[nodiscard]] constexpr u32 operator()(const ansichar *value) const
+        {
+            return hud::hash_32<ansichar *, usize> {}(value, cstring::length(value));
+        }
     };
 
     /** Retrieves the 32 bits hash of a wchar null-terminated string. */
@@ -361,6 +366,11 @@ namespace hud
         {
             return hud::hash_64<ansichar *, usize> {}(value, length);
         }
+
+        [[nodiscard]] constexpr u64 operator()(const ansichar *value) const
+        {
+            return hud::hash_64<ansichar *, usize> {}(value, cstring::length(value));
+        }
     };
 
     /** Retrieves the 64 bits hash of a wchar null-terminated string. */
@@ -444,7 +454,7 @@ namespace hud
 
         /** Hash the value and combine the value with the current hasher value. */
         template<typename... type_t>
-        [[nodiscard]] constexpr hasher_32 &hash(type_t &&...values) noexcept
+        constexpr hasher_32 &hash(type_t &&...values) noexcept
         {
             return (*this)(hud::forward<type_t>(values)...);
         }
@@ -485,7 +495,7 @@ namespace hud
 
         /** Hash the value and combine the value with the current hasher value. */
         template<typename... type_t>
-        [[nodiscard]] constexpr hasher_64 &hash(type_t &&...values) noexcept
+        constexpr hasher_64 &hash(type_t &&...values) noexcept
         {
             return (*this)(hud::forward<type_t>(values)...);
         }

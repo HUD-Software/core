@@ -515,6 +515,40 @@ namespace hud
         }
     }
 
+    template<typename FirstType, typename SecondType>
+    struct equal<hud::pair<FirstType, SecondType>>
+    {
+        template<typename FirstTypeU, typename SecondTypeU>
+        [[nodiscard]] constexpr bool operator()(const hud::pair<FirstType, SecondType> &lhs, const hud::pair<FirstTypeU, SecondTypeU> &rhs) const noexcept
+        {
+            return lhs == rhs;
+        }
+    };
+
+    template<typename FirstType, typename SecondType>
+    struct hash_32<hud::pair<FirstType, SecondType>>
+    {
+        [[nodiscard]] constexpr u32 operator()(const hud::pair<FirstType, SecondType> &t) const noexcept
+        {
+            hasher_32 hasher;
+            hasher.hash(t.first);
+            hasher.hash(t.second);
+            return hasher.result();
+        }
+    };
+
+    template<typename FirstType, typename SecondType>
+    struct hash_64<hud::pair<FirstType, SecondType>>
+    {
+        [[nodiscard]] constexpr u64 operator()(const hud::pair<FirstType, SecondType> &t) const noexcept
+        {
+            hasher_64 hasher;
+            hasher.hash(t.first);
+            hasher.hash(t.second);
+            return hasher.result();
+        }
+    };
+
 } // namespace hud
 
 #endif // HD_INC_CORE_PAIR_H

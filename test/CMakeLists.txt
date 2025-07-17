@@ -121,6 +121,7 @@ set( src
 	pair/pair_destructor.cpp
 	pair/pair_misc.cpp
 	pair/pair_swap.cpp
+	pair/pair_hash.cpp
 	shared_pointer/multi_thread/shared_pointer_multi_thread_assignments.cpp
 	shared_pointer/multi_thread/shared_pointer_multi_thread_comparison.cpp
 	shared_pointer/multi_thread/shared_pointer_multi_thread_constructors.cpp
@@ -285,6 +286,7 @@ set( src
 	tuple/tuple_swap.cpp
 	tuple/tuple_element.cpp
 	tuple/tuple_size.cpp
+	tuple/tuple_hash.cpp
 	u128/u128_assign.cpp
 	u128/u128_cast.cpp
 	u128/u128_comparisons.cpp
