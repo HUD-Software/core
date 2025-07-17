@@ -1026,13 +1026,6 @@ namespace hud
                 return const_cast<hashset_impl *>(this)->contains(hud::forward<K>(key));
             }
 
-            /** Find the given key. If it exist, return it, else insert the value  by constructing it  with args */
-            template<typename K, typename... Args>
-            iterator try_emplace(K &&key, Args &&...args) noexcept
-            {
-                return try_emplace_impl(forward_key(hud::forward<K>(key)));
-            }
-
             constexpr void swap(hashset_impl &other) noexcept
             requires(hud::is_swappable_v<slot_type>)
             {
@@ -1255,13 +1248,6 @@ namespace hud
                     slot_index += group_type::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
-            }
-
-            template<typename K>
-            [[nodiscard]]
-            constexpr iterator try_emplace_impl(K &&key) noexcept
-            {
-                find_or_insert_no_construct(key);
             }
 
             template<typename K>
@@ -1592,6 +1578,11 @@ namespace hud
                 }
             }
 
+            /**
+             * Find the key and add the H2 hash in the control
+             * If the key is found, return the iterator and false
+             * If not found insert the key but do not construct the value, retrun the iterator and true
+             */
             template<typename K>
             [[nodiscard]]
             constexpr hud::pair<iterator, bool> find_or_insert_no_construct(K &&key) noexcept
