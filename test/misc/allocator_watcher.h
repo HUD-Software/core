@@ -56,7 +56,7 @@ namespace hud_test
         template<typename type_t = u8>
         [[nodiscard]] constexpr memory_allocation_type<type_t> allocate(const usize count) noexcept
         {
-            auto buffer = allocator.template allocate<type_t>(count);
+            memory_allocation_type<type_t> buffer = allocator.template allocate<type_t>(count);
             if (!buffer.is_empty())
             {
                 count_of_alloc++;

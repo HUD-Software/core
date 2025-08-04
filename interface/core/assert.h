@@ -13,12 +13,15 @@ namespace hud
      */
     static constexpr void check([[maybe_unused]] const bool condition) noexcept
     {
-        if constexpr (hud::compilation::is_assertion_enabled() && !hud::is_constant_evaluated())
+        if (!hud::is_constant_evaluated())
         {
-            hud::debugger::break_here_if(!condition);
+            if constexpr (hud::compilation::is_assertion_enabled())
+            {
+                hud::debugger::break_here_if(!condition);
 #if defined HD_ABORT_ON_ASSERT
-            hud::debugger::abort_if(!condition);
+                hud::debugger::abort_if(!condition);
 #endif
+            }
         }
     }
 

@@ -1839,8 +1839,8 @@ namespace hud
                 }
                 else
                 {
-                    control_ptr_ = hud::bit_cast<control_type *>(allocator_.template allocate<slot_type>(aligned_allocation_size).data());
-                    slot_ptr_ = hud::bit_cast<slot_type *>(control_ptr_ + aligned_control_size);
+                    control_ptr_ = allocator_.template allocate<control_type>(aligned_allocation_size).data();
+                    slot_ptr_ = reinterpret_cast<slot_type *>(hud::memory::align_address(reinterpret_cast<const uptr>(control_ptr_ + ctrl_size), alignof(slot_type)));
                     hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
                 }
                 return ctrl_size;

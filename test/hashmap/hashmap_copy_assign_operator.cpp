@@ -5417,11 +5417,16 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
                 to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
             }
             // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
-            hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
-
+            if (count_in_assigned > 0)
+            {
+                hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            }
+            if (count_to_assigned > 0)
+            {
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            }
             assigned = to_assign;
 
             // Ensure we destroy all elements that is in assigned
@@ -5686,10 +5691,16 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
                 to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
             }
             // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
-            hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            if (count_in_assigned > 0)
+            {
+                hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            }
+            if (count_to_assigned > 0)
+            {
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            }
 
             assigned = to_assign;
 
@@ -6402,10 +6413,16 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
                 to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
             }
             // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
-            hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            if (count_in_assigned > 0)
+            {
+                hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            }
+            if (count_to_assigned > 0)
+            {
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            }
 
             assigned = to_assign;
 
@@ -6669,10 +6686,16 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
                 to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
             }
             // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
-            hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
-            hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            if (count_in_assigned > 0)
+            {
+                hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
+            }
+            if (count_to_assigned > 0)
+            {
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
+                hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
+            }
 
             assigned = to_assign;
 
