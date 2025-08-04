@@ -8,10 +8,13 @@ GTEST_TEST(hashmap, indexed_operator_trivial_same_type)
         map[1] = 2;
         hud::hashmap<const char *, const char *> map2;
         map2["key"] = "value";
-
+        const bool ok = map2.find("key")->value() = "value";
+        map2["key"] = "value2";
+        const bool ok2 = map2.find("key")->value() = "value2";
         return std::tuple {
             map.find(1)->value() = 2,
-            map2.find("key")->value() = "value",
+            ok,
+            ok2
         };
     };
 }
