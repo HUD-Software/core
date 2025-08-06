@@ -918,12 +918,44 @@ GTEST_TEST(cstring, to_lowercase_partial_safe)
 
 GTEST_TEST(cstring, equals)
 {
-    hud_assert_true(hud::cstring::equals("abc", "abc"));
-    hud_assert_false(hud::cstring::equals("aBc", "abc"));
-    hud_assert_false(hud::cstring::equals("abc", "ab"));
-    hud_assert_true(hud::cstring::equals(L"abc", L"abc"));
-    hud_assert_false(hud::cstring::equals(L"aBc", L"abc"));
-    hud_assert_false(hud::cstring::equals(L"abc", L"ab"));
+    const auto test = []()
+    {
+        return std::tuple {
+            hud::cstring::equals("abc", "abc"),   // 0
+            hud::cstring::equals("aBc", "abc"),   // 1
+            hud::cstring::equals("abc", "ab"),    // 2
+            hud::cstring::equals(L"abc", L"abc"), // 3
+            hud::cstring::equals(L"aBc", L"abc"), // 4
+            hud::cstring::equals(L"abc", L"ab"),  // 5
+            hud::cstring::equals("abc", ""),      // 6
+            hud::cstring::equals("", "abc")       // 7
+        };
+    };
+
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_false(std::get<1>(result));
+        hud_assert_false(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_false(std::get<4>(result));
+        hud_assert_false(std::get<5>(result));
+        hud_assert_false(std::get<6>(result));
+        hud_assert_false(std::get<7>(result));
+    }
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_false(std::get<1>(result));
+        hud_assert_false(std::get<2>(result));
+        hud_assert_true(std::get<3>(result));
+        hud_assert_false(std::get<4>(result));
+        hud_assert_false(std::get<5>(result));
+        hud_assert_false(std::get<6>(result));
+        hud_assert_false(std::get<7>(result));
+    }
 }
 
 GTEST_TEST(cstring, equals_partial)

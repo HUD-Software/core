@@ -422,9 +422,25 @@ namespace hud::common
          * @param string_1 Null-terminated string
          * @return true if equal, false otherwise
          */
-        static HD_FORCEINLINE bool equals(const ansichar *string_0, const ansichar *string_1) noexcept
+        static constexpr bool equals(const ansichar *string_0, const ansichar *string_1) noexcept
         {
-            return strcmp(string_0, string_1) == 0;
+            if (hud::is_constant_evaluated())
+            {
+                if (!string_0 || !string_1)
+                    return false;
+                while (*string_0 && *string_1)
+                {
+                    if (*string_0 != *string_1)
+                        return false;
+                    ++string_0;
+                    ++string_1;
+                }
+                return *string_0 == *string_1;
+            }
+            else
+            {
+                return strcmp(string_0, string_1) == 0;
+            }
         }
 
         /**
@@ -433,9 +449,25 @@ namespace hud::common
          * @param string_1 Null-terminated string
          * @return 1 if equal, 0 otherwise
          */
-        static HD_FORCEINLINE bool equals(const wchar *string_0, const wchar *string_1) noexcept
+        static constexpr bool equals(const wchar *string_0, const wchar *string_1) noexcept
         {
-            return wcscmp(string_0, string_1) == 0;
+            if (hud::is_constant_evaluated())
+            {
+                if (!string_0 || !string_1)
+                    return false;
+                while (*string_0 && *string_1)
+                {
+                    if (*string_0 != *string_1)
+                        return false;
+                    ++string_0;
+                    ++string_1;
+                }
+                return *string_0 == *string_1;
+            }
+            else
+            {
+                return wcscmp(string_0, string_1) == 0;
+            }
         }
 
         /**
