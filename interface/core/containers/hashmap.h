@@ -132,7 +132,7 @@ namespace hud
             template<typename u_key_t>
             requires(hud::is_constructible_v<pair_type, const u_key_t &, const value_type &>)
             constexpr explicit hashmap_storage(const u_key_t &key) noexcept
-                : element_(key, value_type {})
+                : element_(hud::tag_piecewise_construct, hud::forward_as_tuple(key), hud::forward_as_tuple())
             {
                 static_assert(hud::is_nothrow_constructible_v<pair_type, const u_key_t &, const value_type &>);
             }
@@ -145,7 +145,7 @@ namespace hud
             template<typename u_key_t>
             requires(hud::is_constructible_v<pair_type, u_key_t, value_type>)
             constexpr explicit hashmap_storage(u_key_t &&key) noexcept
-                : element_(hud::forward<u_key_t>(key), value_type {})
+                : element_(hud::tag_piecewise_construct, hud::forward_as_tuple(hud::forward<u_key_t>(key)), hud::forward_as_tuple())
             {
                 static_assert(hud::is_nothrow_constructible_v<pair_type, u_key_t, value_type>);
             }

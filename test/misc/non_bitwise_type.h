@@ -221,7 +221,6 @@ namespace hud_test
     template<typename = void>
     struct non_bitwise_type2_gcc : public non_bitwise_type
     {
-
         constexpr non_bitwise_type2_gcc(const non_bitwise_type &other) noexcept
             : non_bitwise_type(other)
         {
@@ -229,6 +228,11 @@ namespace hud_test
 
         constexpr non_bitwise_type2_gcc(non_bitwise_type &&other) noexcept
             : non_bitwise_type(hud::move(other))
+        {
+        }
+
+        constexpr non_bitwise_type2_gcc(i32 id) noexcept
+            : non_bitwise_type(id)
         {
         }
 
