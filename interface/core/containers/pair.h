@@ -116,8 +116,8 @@ namespace hud
          */
         template<typename... u_type_t, typename... v_type_t>
         requires(hud::is_constructible_v<first_type, u_type_t...> && hud::is_constructible_v<second_type, v_type_t...>)
-        constexpr pair(hud::tag_piecewise_construct_t, hud::tuple<u_type_t...> first_tuple, hud::tuple<v_type_t...> second_tuple) noexcept
-            : pair(first_tuple, second_tuple, hud::make_index_sequence_for<u_type_t...> {}, hud::make_index_sequence_for<v_type_t...> {})
+        constexpr pair(hud::tag_piecewise_construct_t, hud::tuple<u_type_t...> &&first_tuple, hud::tuple<v_type_t...> &&second_tuple) noexcept
+            : pair(hud::forward<hud::tuple<u_type_t...>>(first_tuple), hud::forward<hud::tuple<v_type_t...> &&>(second_tuple), hud::make_index_sequence_for<u_type_t...> {}, hud::make_index_sequence_for<v_type_t...> {})
         {
             static_assert(hud::is_nothrow_constructible_v<first_type, u_type_t...>, "first_type(u_type_t&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
             static_assert(hud::is_nothrow_constructible_v<second_type, v_type_t...>, "second_type(v_type_t&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
@@ -286,9 +286,9 @@ namespace hud
          * @param ... Index sequences used to unpack the tuple elements.
          */
         template<typename tuple_first, typename tuple_second, usize... indicies_first, usize... indicies_second>
-        constexpr pair(tuple_first &first_tuple, tuple_second &second_tuple, hud::index_sequence<indicies_first...>, hud::index_sequence<indicies_second...>) noexcept
-            : first(hud::piecewise_get<indicies_first>(hud::move(first_tuple))...)
-            , second(hud::piecewise_get<indicies_second>(hud::move(second_tuple))...)
+        constexpr pair(tuple_first &&first_tuple, tuple_second &&second_tuple, hud::index_sequence<indicies_first...>, hud::index_sequence<indicies_second...>) noexcept
+            : first(hud::piecewise_get<indicies_first>(hud::forward<tuple_first>(first_tuple))...)
+            , second(hud::piecewise_get<indicies_second>(hud::forward<tuple_second>(second_tuple))...)
         {
         }
     };

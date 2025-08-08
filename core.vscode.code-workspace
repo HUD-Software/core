@@ -6,8 +6,8 @@
     ],
     "settings": {
         "editor.renderWhitespace": "boundary",
-        "editor.fontSize": 10,
-        "terminal.integrated.fontSize": 10,
+        "editor.fontSize": 12,
+        "terminal.integrated.fontSize": 12,
         "cmake.buildDirectory": "${workspaceFolder}/target",
         "cmake.configureOnEdit": false,
         "C_Cpp.autoAddFileAssociations": false,

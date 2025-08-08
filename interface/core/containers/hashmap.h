@@ -240,6 +240,7 @@ namespace hud
             /** hashmap_storage with other key or value can access private members of hashmap_storage. */
             template<typename u_key_t, typename u_value_t>
             friend class hashmap_storage;
+
             /** Only the slot can move construct storage. */
             template<typename u_storage>
             friend struct slot;
@@ -289,7 +290,6 @@ namespace hud
         using value_type = typename storage_type::value_type;
 
         /** Inherit constructors and methods from the base class. */
-        // using super::add;
         using super::reserve;
         using super::super;
         using typename super::allocator_type;
@@ -367,7 +367,7 @@ namespace hud
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(hud::pair<u_key_t, u_value_t> &&pair) noexcept
         {
-            return super::add(hud::forward<u_key_t &&>(pair.first), hud::forward<u_value_t &&>(pair.second));
+            return super::add_impl(hud::forward<u_key_t &&>(pair.first), hud::forward<u_value_t &&>(pair.second));
         }
 
         /**
@@ -380,7 +380,7 @@ namespace hud
         constexpr iterator add(u_key_t &&key, u_value_t &&value) noexcept
         requires(hud::is_constructible_v<storage_type, u_key_t, u_value_t>)
         {
-            return super::add(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value));
+            return super::add_impl(hud::forward<u_key_t>(key), hud::forward<u_value_t>(value));
         }
 
         /**
@@ -404,13 +404,13 @@ namespace hud
         template<typename key_tuple_t, typename value_tuple_t>
         constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
         {
-            return super::add(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
+            return super::add_impl(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
         }
 
         template<typename KeyArgs>
         constexpr value_type &operator[](KeyArgs &&args) noexcept
         {
-            iterator it = super::add(hud::forward<KeyArgs>(args));
+            iterator it = super::add_impl(hud::forward<KeyArgs>(args));
             return it->value();
         }
     };

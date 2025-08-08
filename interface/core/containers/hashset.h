@@ -149,13 +149,13 @@ namespace hud
             /** Retrieves non mutable reference to the key. */
             [[nodiscard]] constexpr const key_type &key() noexcept
             {
-                return hud::get<0>(element_);
+                return element_;
             }
 
             /** Retrieves non mutable reference to the key. */
             [[nodiscard]] constexpr const key_type &key() const noexcept
             {
-                return hud::get<0>(element_);
+                return element_;
             }
 
             /**
@@ -167,7 +167,6 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(hashset_storage &s) noexcept
             {
-                static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
@@ -180,7 +179,6 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const hashset_storage &s) noexcept
             {
-                static_assert(idx_to_reach == 0, "Index out of bound");
                 return s.element_;
             }
 
@@ -193,8 +191,7 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(hashset_storage &&s) noexcept
             {
-                static_assert(idx_to_reach == 0, "Index out of bound");
-                return hud::forward<key_type>(hud::forward<hashset_storage>(s).element_);
+                return hud::forward<hashset_storage>(s).element_;
             }
 
             /**
@@ -206,8 +203,7 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const hashset_storage &&s) noexcept
             {
-                static_assert(idx_to_reach == 0, "Index out of bound");
-                return hud::forward<const key_type>(hud::forward<const hashset_storage>(s).element_);
+                return hud::forward<const hashset_storage>(s).element_;
             }
 
             /**
@@ -215,22 +211,39 @@ namespace hud
              * Does not accept throwable copy constructible components.
              * @param other Another pair object.
              */
-            constexpr explicit(!(hud::is_convertible_v<const key_type &, key_type>)) hashset_storage(const hashset_storage &other) noexcept = default;
+            constexpr explicit(!(hud::is_convertible_v<const key_type &, key_type>)) hashset_storage(const hashset_storage &other) noexcept
+            requires(hud::is_nothrow_copy_constructible_v<key_type>)
+            = default;
 
             /**
-             * Constructor that initializes the hashset_storage with a key.
+             * Copy constructor for different key and value types.
+             * @tparam u_key_t Type of the key in the other hashset_storage.
+             * @tparam u_value_t Type of the value in the other hashset_storage.
+             * @param other The other hashset_storage object to copy from.
+             */
+            template<typename u_key_t>
+            requires(hud::is_copy_constructible_v<key_type, u_key_t>)
+            constexpr explicit(!hud::is_convertible_v<const key_type &, key_type>) hashset_storage(const hashset_storage<u_key_t> &other) noexcept
+                : element_(other.element_)
+            {
+                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashset_storage is not designed to allow throwable copy constructible components");
+            }
+
+            /**
+             * Constructor that initializes the hashset_storage with a key and a default value.
              * @tparam u_key_t Type of the key.
              * @param key The key to initialize with.
              */
             template<typename u_key_t>
-            requires(hud::is_constructible_v<key_type, u_key_t>)
+            requires(hud::is_constructible_v<key_type, const u_key_t &>)
             constexpr explicit hashset_storage(const u_key_t &key) noexcept
                 : element_(key)
             {
+                static_assert(hud::is_nothrow_constructible_v<key_type, const u_key_t &>);
             }
 
             /**
-             * Constructor that initializes the hashset_storage with a key.
+             * Constructor that initializes the hashset_storage with a key and a default value.
              * @tparam u_key_t Type of the key.
              * @param key The key to initialize with.
              */
@@ -239,21 +252,32 @@ namespace hud
             constexpr explicit hashset_storage(u_key_t &&key) noexcept
                 : element_(hud::forward<u_key_t>(key))
             {
+                static_assert(hud::is_nothrow_constructible_v<key_type, u_key_t>);
             }
 
             /**
-             * Copy constructor for different key type.
-             * @tparam u_key_t Type of the key in the other hashset_storage.
-             * @param other The other hashset_storage object to copy from.
+             * Constructor that initializes the hashset_storage with a key and a value.
+             * @tparam u_key_t Type of the key.
+             * @tparam u_value_t Type of the value.
+             * @param key The key to initialize with.
+             * @param value The value to initialize with.
              */
-
-            template<typename u_key_t = key_t>
-            requires(hud::is_copy_constructible_v<key_type, u_key_t>)
-            constexpr explicit(!(hud::is_convertible_v<const key_type &, u_key_t>)) hashset_storage(const hashset_storage<u_key_t> &other) noexcept
-                : element_(other.element_)
+            template<typename... u_type_t>
+            requires(hud::is_constructible_v<key_type, u_type_t...>)
+            constexpr explicit hashset_storage(hud::tag_piecewise_construct_t, hud::tuple<u_type_t...> &&key_tuple) noexcept
+                : hashset_storage(hud::forward<hud::tuple<u_type_t...>>(key_tuple), hud::make_index_sequence_for<u_type_t...> {})
             {
-                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashset_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_constructible_v<key_type, u_type_t...>, "key_type(u_type_t&&...) constructor is throwable. key_type is not designed to allow throwable constructible components");
             }
+
+            /**
+             * Copy assign.
+             * Does not accept throwable copy constructible components.
+             * @param other Another hashset_storage object.
+             */
+            constexpr hashset_storage &operator=(const hashset_storage &other) noexcept
+            requires(hud::is_nothrow_copy_assignable_v<key_type>)
+            = default;
 
         protected:
             /**
@@ -261,25 +285,56 @@ namespace hud
              * Does not accept throwable copy constructible components.
              * @param other Another hashset_storage object to move from.
              */
-            constexpr hashset_storage(hashset_storage &&other) noexcept = default;
+            constexpr hashset_storage(hashset_storage &&other) noexcept
+            requires(hud::is_nothrow_move_constructible_v<key_type>)
+            = default;
+
+            /**
+             * Move assign.
+             * Does not accept throwable move constructible components.
+             * @param other Another pair object.
+             */
+            constexpr hashset_storage &operator=(hashset_storage &&other) noexcept
+            requires(hud::is_nothrow_move_assignable_v<key_type>)
+            = default;
 
             /**
              * Move constructor for different key and value types.
              * @tparam u_key_t Type of the key in the other hashset_storage.
+             * @tparam u_value_t Type of the value in the other hashset_storage.
              * @param other The other hashset_storage object to move from.
              */
-            template<typename u_key_t = key_t>
+            template<typename u_key_t>
             requires(hud::is_move_constructible_v<key_type, u_key_t>)
-            constexpr explicit(!hud::is_convertible_v<key_type, u_key_t>) hashset_storage(u_key_t &&other) noexcept
+            constexpr explicit(!hud::is_convertible_v<key_type, key_type>) hashset_storage(hashset_storage<u_key_t> &&other) noexcept
                 : element_(hud::move(other.element_))
             {
-                static_assert(hud::is_nothrow_copy_constructible_v<key_t, u_key_t>, "key_t(const u_key_t&) copy constructor is throwable. hashset_storage is not designed to allow throwable copy constructible components");
+                static_assert(hud::is_nothrow_move_constructible_v<key_t, u_key_t>, "key_t(u_key_t&&) move constructor is throwable. hashset_storage is not designed to allow throwable move constructible components");
             }
 
-        private:
+            /**
+             * Constructs a `key_type` from a tuples by unpacking their elements.
+             * @tparam tuple_first Type of the first tuple.
+             * @tparam tuple_second Type of the second tuple.
+             * @tparam indicies_first Index sequence for elements to extract from the first tuple.
+             * @tparam indicies_second Index sequence for elements to extract from the second tuple.
+             * @param first_tuple Reference to the first tuple to move from.
+             * @param second_tuple Reference to the second tuple to move from.
+             * @param ... Index sequences used to unpack the tuple elements.
+             */
+            template<typename key_tuple, usize... indicies>
+            constexpr hashset_storage(key_tuple &&tuple, hud::index_sequence<indicies...>) noexcept
+                : element_(hud::piecewise_get<indicies>(hud::forward<key_tuple>(tuple))...)
+            {
+            }
+
             /** hashset_storage with other key or value can access private members of hashset_storage. */
-            template<typename u_key_ts>
+            template<typename u_key_t>
             friend class hashset_storage;
+
+            /** Only the slot can move construct storage. */
+            template<typename u_storage>
+            friend struct slot;
 
         protected:
             /** The key. */
@@ -1120,7 +1175,7 @@ namespace hud
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
-            constexpr iterator add(key_type &&key, args_t &&...args) noexcept
+            constexpr iterator add_impl(key_type &&key, args_t &&...args) noexcept
             {
                 hud::pair<iterator, bool> res {find_or_insert_no_construct(key)};
                 if (res.second)
@@ -1139,12 +1194,41 @@ namespace hud
              */
             template<typename... args_t>
             requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
-            constexpr iterator add(const key_type &key, args_t &&...args) noexcept
+            constexpr iterator add_impl(const key_type &key, args_t &&...args) noexcept
             {
                 hud::pair<iterator, bool> res {find_or_insert_no_construct(key)};
                 if (res.second)
                 {
                     hud::memory::construct_object_at(res.first.slot_ptr_, key, hud::forward<args_t>(args)...);
+                }
+                return res.first;
+            }
+
+            /**
+             * Adds a new element to the container using piecewise construction of the key and value.
+             *
+             * If an element with the given key already exists, returns an iterator to it.
+             * Otherwise, constructs a new element in-place using the provided key and value tuples.
+             *
+             * The key can be provided either as a fully constructed `key_type` or as a tuple of arguments
+             * used to construct the key in-place. If the key tuple can't be used directly (e.g., it's not
+             * hashable or comparable), it must be convertible into a valid `key_type`.
+             *
+             * To enable custom key lookup using a tuple of arguments, you can specialize the `hud::equal<key_type>`
+             * and `hud::hash<key_type>` functors to support comparisons and hashes against a forwarding tuple
+             * (i.e., `hud::tuple<Args&&...>&&`).
+             *
+             * @param key_tuple   Tuple of arguments used to identify or construct the key.
+             * @param value_tuple Tuple of arguments used to construct the associated value.
+             * @return An iterator to the existing or newly inserted element.
+             */
+            template<typename key_tuple_t, typename... u_tuple_t>
+            constexpr iterator add_impl(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, u_tuple_t &&...tuples) noexcept
+            {
+                hud::pair<iterator, bool> res = find_or_insert_no_construct(forward_key(hud::forward<key_tuple_t>(key_tuple)));
+                if (res.second)
+                {
+                    hud::memory::construct_object_at(res.first.slot_ptr_, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<u_tuple_t>(tuples)...);
                 }
                 return res.first;
             }
@@ -1184,35 +1268,6 @@ namespace hud
                 };
 
                 return forward_key_tuple_impl(hud::forward<hud::tuple<Args...>>(tuple), hud::make_index_sequence<hud::tuple_size_v<hud::tuple<Args...>>> {});
-            }
-
-            /**
-             * Adds a new element to the container using piecewise construction of the key and value.
-             *
-             * If an element with the given key already exists, returns an iterator to it.
-             * Otherwise, constructs a new element in-place using the provided key and value tuples.
-             *
-             * The key can be provided either as a fully constructed `key_type` or as a tuple of arguments
-             * used to construct the key in-place. If the key tuple can't be used directly (e.g., it's not
-             * hashable or comparable), it must be convertible into a valid `key_type`.
-             *
-             * To enable custom key lookup using a tuple of arguments, you can specialize the `hud::equal<key_type>`
-             * and `hud::hash<key_type>` functors to support comparisons and hashes against a forwarding tuple
-             * (i.e., `hud::tuple<Args&&...>&&`).
-             *
-             * @param key_tuple   Tuple of arguments used to identify or construct the key.
-             * @param value_tuple Tuple of arguments used to construct the associated value.
-             * @return An iterator to the existing or newly inserted element.
-             */
-            template<typename key_tuple_t, typename value_tuple_t>
-            constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, value_tuple_t &&value_tuple) noexcept
-            {
-                hud::pair<iterator, bool> res = find_or_insert_no_construct(forward_key(hud::forward<key_tuple_t>(key_tuple)));
-                if (res.second)
-                {
-                    hud::memory::construct_object_at(res.first.slot_ptr_, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
-                }
-                return res.first;
             }
 
         private:
@@ -1974,17 +2029,18 @@ namespace hud
     public:
         /** Type of the hash function. */
         using typename super::hasher_type;
-        /** Type of the slot. */
-        using slot_type = typename super::slot_type;
+        /** Type of the storage used to store key-value pairs. */
+        using storage_type = typename super::storage_type;
         /** Type of the key. */
-        using key_type = typename slot_type::key_type;
-        /** Type of the value. */
-        using super::add;
+        using key_type = typename storage_type::key_type;
+        /** Inherit constructors and methods from the base class. */
         using super::reserve;
         using super::super;
         using typename super::allocator_type;
         using typename super::const_iterator;
         using typename super::iterator;
+        using super::operator=;
+
         explicit constexpr hashset() noexcept = default;
 
         constexpr explicit hashset(const allocator_type &allocator) noexcept
@@ -1993,7 +2049,7 @@ namespace hud
         }
 
         template<typename u_element_t>
-        requires(hud::is_constructible_v<slot_type, u_element_t>)
+        requires(hud::is_constructible_v<storage_type, u_element_t>)
         constexpr hashset(std::initializer_list<u_element_t> list, const allocator_type &allocator = allocator_type()) noexcept
             : super {allocator}
         {
@@ -2002,6 +2058,42 @@ namespace hud
             {
                 add(hud::move(value));
             }
+        }
+
+        /**
+         * Insert a key in the hashset.
+         * @param key The key
+         * @return Iterator to the storage containing the `key`
+         */
+        template<typename u_key_t = key_type>
+        constexpr iterator add(u_key_t &&key) noexcept
+        requires(hud::is_constructible_v<storage_type, u_key_t>)
+        {
+            return super::add_impl(hud::forward<u_key_t>(key));
+        }
+
+        /**
+         * Adds a new element to the container using piecewise construction of the key and value.
+         *
+         * If an element with the given key already exists, returns an iterator to it.
+         * Otherwise, constructs a new element in-place using the provided key and value tuples.
+         *
+         * The key can be provided either as a fully constructed `key_type` or as a tuple of arguments
+         * used to construct the key in-place. If the key tuple can't be used directly (e.g., it's not
+         * hashable or comparable), it must be convertible into a valid `key_type`.
+         *
+         * To enable custom key lookup using a tuple of arguments, you can specialize the `hud::equal<key_type>`
+         * and `hud::hash<key_type>` functors to support comparisons and hashes against a forwarding tuple
+         * (i.e., `hud::tuple<Args&&...>&&`).
+         *
+         * @param key_tuple   Tuple of arguments used to identify or construct the key.
+         * @param value_tuple Tuple of arguments used to construct the associated value.
+         * @return An iterator to the existing or newly inserted element.
+         */
+        template<typename key_tuple_t>
+        constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple) noexcept
+        {
+            return super::add_impl(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple));
         }
     };
 
