@@ -285,7 +285,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_1st->key() == 1 && it_1st->value() == 11,                                  // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 it_1st->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -299,7 +299,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_same->key() == 1 && it_same->value() == 11,                                // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 it_same->value().copy_constructor_count() == 1,                               // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -312,7 +312,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_2nd->key() == 2 && it_2nd->value() == 22,                                  // 0
                 map.count() == 2,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 it_2nd->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 5
                 map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 6
@@ -411,7 +411,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_1st->key() == 1 && it_1st->value() == 11,                                  // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 it_1st->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -425,7 +425,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_same->key() == 1 && it_same->value() == 11,                                // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 it_same->value().copy_constructor_count() == 1,                               // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -438,7 +438,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_2nd->key() == 2 && it_2nd->value() == 22,                                  // 0
                 map.count() == 2,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 it_2nd->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -1252,7 +1252,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_1st->key() == 1 && it_1st->value() == 11,                                  // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 it_1st->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -1265,7 +1265,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_same->key() == 1 && it_same->value() == 11,                                // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 it_same->value().copy_constructor_count() == 1,                               // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -1278,7 +1278,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_2nd->key() == 2 && it_2nd->value() == 22,                                  // 0
                 map.count() == 2,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 it_2nd->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 5
                 map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 6
@@ -1377,7 +1377,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_1st->key() == 1 && it_1st->value() == 11,                                  // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 it_1st->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -1390,7 +1390,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_same->key() == 1 && it_same->value() == 11,                                // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 it_same->value().copy_constructor_count() == 1,                               // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -1403,7 +1403,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_2nd->key() == 2 && it_2nd->value() == 22,                                  // 0
                 map.count() == 2,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 it_2nd->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -2256,7 +2256,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
                 it_1st->key().copy_constructor_count() == 0,                                  // 3
-                it_1st->key().move_constructor_count() == 2,                                  // 4
+                it_1st->key().move_constructor_count() == 1,                                  // 4
                 it_1st->value().copy_constructor_count() == 0,                                // 5
                 it_1st->value().move_constructor_count() == 1,                                // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -2271,7 +2271,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
                 it_same->key().copy_constructor_count() == 0,                                 // 3
-                it_same->key().move_constructor_count() == 2,                                 // 4
+                it_same->key().move_constructor_count() == 1,                                 // 4
                 it_same->value().copy_constructor_count() == 0,                               // 5
                 it_same->value().move_constructor_count() == 1,                               // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -2286,7 +2286,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
                 map.count() == 2,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
                 it_2nd->key().copy_constructor_count() == 0,                                  // 3
-                it_2nd->key().move_constructor_count() == 2,                                  // 4
+                it_2nd->key().move_constructor_count() == 1,                                  // 4
                 it_2nd->value().copy_constructor_count() == 0,                                // 5
                 it_2nd->value().move_constructor_count() == 1,                                // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 7
@@ -2399,7 +2399,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
                 it_1st->key().copy_constructor_count() == 0,                                  // 3
-                it_1st->key().move_constructor_count() == 2,                                  // 4
+                it_1st->key().move_constructor_count() == 1,                                  // 4
                 it_1st->value().copy_constructor_count() == 0,                                // 5
                 it_1st->value().move_constructor_count() == 1,                                // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -2414,7 +2414,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
                 it_same->key().copy_constructor_count() == 0,                                 // 3
-                it_same->key().move_constructor_count() == 2,                                 // 4
+                it_same->key().move_constructor_count() == 1,                                 // 4
                 it_same->value().copy_constructor_count() == 0,                               // 5
                 it_same->value().move_constructor_count() == 1,                               // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -2429,7 +2429,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
                 map.count() == 2,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
                 it_2nd->key().copy_constructor_count() == 0,                                  // 3
-                it_2nd->key().move_constructor_count() == 2,                                  // 4
+                it_2nd->key().move_constructor_count() == 1,                                  // 4
                 it_2nd->value().copy_constructor_count() == 0,                                // 5
                 it_2nd->value().move_constructor_count() == 1,                                // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -2800,7 +2800,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
                 it_1st->key() == 1 && it_1st->value() == 11,                                  // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 it_1st->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -2812,7 +2812,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
                 it_same->key() == 1 && it_same->value() == 11,                                // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 it_same->value().copy_constructor_count() == 1,                               // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -2824,7 +2824,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
                 it_2nd->key() == 2 && it_2nd->value() == 22,                                  // 0
                 map.count() == 2,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 it_2nd->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 5
                 map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 6
@@ -2920,7 +2920,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
                 it_1st->key() == 1 && it_1st->value() == 11,                                  // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 it_1st->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -2932,7 +2932,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
                 it_same->key() == 1 && it_same->value() == 11,                                // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 it_same->value().copy_constructor_count() == 1,                               // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -2944,7 +2944,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
                 it_2nd->key() == 2 && it_2nd->value() == 22,                                  // 0
                 map.count() == 2,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 it_2nd->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -3737,7 +3737,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
                 it_1st->key() == 1 && it_1st->value() == 11,                                  // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.max_count(),                                           // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 it_1st->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -3749,7 +3749,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
                 it_same->key() == 1 && it_same->value() == 11,                                // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.max_count(),                                           // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 it_same->value().copy_constructor_count() == 1,                               // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -3761,7 +3761,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
                 it_2nd->key() == 2 && it_2nd->value() == 22,                                  // 0
                 map.count() == 2,                                                             // 1
                 map.max_count() >= map.max_count(),                                           // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 it_2nd->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 5
                 map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 6
@@ -3858,7 +3858,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
                 it_1st->key() == 1 && it_1st->value() == 11,                                  // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 it_1st->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -3870,7 +3870,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
                 it_same->key() == 1 && it_same->value() == 11,                                // 0
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 it_same->value().copy_constructor_count() == 1,                               // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -3882,7 +3882,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
                 it_2nd->key() == 2 && it_2nd->value() == 22,                                  // 0
                 map.count() == 2,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 it_2nd->value().copy_constructor_count() == 1,                                // 4
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 map.allocator().free_count() == 0,                                            // 6
@@ -4714,7 +4714,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
                 it_1st->key().copy_constructor_count() == 0,                                  // 3
-                it_1st->key().move_constructor_count() == 2,                                  // 4
+                it_1st->key().move_constructor_count() == 1,                                  // 4
                 it_1st->value().copy_constructor_count() == 0,                                // 5
                 it_1st->value().move_constructor_count() == 1,                                // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -4728,7 +4728,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
                 map.count() == 1,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
                 it_same->key().copy_constructor_count() == 0,                                 // 3
-                it_same->key().move_constructor_count() == 2,                                 // 4
+                it_same->key().move_constructor_count() == 1,                                 // 4
                 it_same->value().copy_constructor_count() == 0,                               // 5
                 it_same->value().move_constructor_count() == 1,                               // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -4742,7 +4742,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
                 map.count() == 2,                                                             // 1
                 map.max_count() >= map.count(),                                               // 2
                 it_2nd->key().copy_constructor_count() == 0,                                  // 3
-                it_2nd->key().move_constructor_count() == 2,                                  // 4
+                it_2nd->key().move_constructor_count() == 1,                                  // 4
                 it_2nd->value().copy_constructor_count() == 0,                                // 5
                 it_2nd->value().move_constructor_count() == 1,                                // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 7
@@ -4853,7 +4853,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
                 it_1st->key().copy_constructor_count() == 0,                                  // 3
-                it_1st->key().move_constructor_count() == 2,                                  // 4
+                it_1st->key().move_constructor_count() == 1,                                  // 4
                 it_1st->value().copy_constructor_count() == 0,                                // 5
                 it_1st->value().move_constructor_count() == 1,                                // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -4867,7 +4867,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
                 map.count() == 1,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
                 it_same->key().copy_constructor_count() == 0,                                 // 3
-                it_same->key().move_constructor_count() == 2,                                 // 4
+                it_same->key().move_constructor_count() == 1,                                 // 4
                 it_same->value().copy_constructor_count() == 0,                               // 5
                 it_same->value().move_constructor_count() == 1,                               // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7
@@ -4881,7 +4881,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
                 map.count() == 2,                                                             // 1
                 map.max_count() >= reserved_size,                                             // 2
                 it_2nd->key().copy_constructor_count() == 0,                                  // 3
-                it_2nd->key().move_constructor_count() == 2,                                  // 4
+                it_2nd->key().move_constructor_count() == 1,                                  // 4
                 it_2nd->value().copy_constructor_count() == 0,                                // 5
                 it_2nd->value().move_constructor_count() == 1,                                // 6
                 map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 7

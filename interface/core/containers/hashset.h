@@ -165,7 +165,7 @@ namespace hud
              * @return A reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(hashset_storage &s) noexcept
+            [[nodiscard]] friend constexpr const key_type &get(hashset_storage &s) noexcept
             {
                 return s.element_;
             }
@@ -177,7 +177,7 @@ namespace hud
              * @return A const reference to the element at the specified index.
              */
             template<usize idx_to_reach>
-            [[nodiscard]] friend constexpr decltype(auto) get(const hashset_storage &s) noexcept
+            [[nodiscard]] friend constexpr const key_type &get(const hashset_storage &s) noexcept
             {
                 return s.element_;
             }
@@ -191,7 +191,7 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(hashset_storage &&s) noexcept
             {
-                return hud::forward<hashset_storage>(s).element_;
+                return hud::forward<key_type &&>(s.element_);
             }
 
             /**
@@ -203,7 +203,7 @@ namespace hud
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(const hashset_storage &&s) noexcept
             {
-                return hud::forward<const hashset_storage>(s).element_;
+                return hud::forward<const key_type &&>(s.element_);
             }
 
             /**
@@ -797,21 +797,21 @@ namespace hud
             slot_type *slot_ptr_;
         };
 
-        template<bool is_transparent>
-        struct KeyArg
-        {
-            // Transparent. Forward `K`.
-            template<typename K, typename key_type>
-            using type = K;
-        };
+        // template<bool is_transparent>
+        // struct KeyArg
+        // {
+        //     // Transparent. Forward `K`.
+        //     template<typename K, typename key_type>
+        //     using type = K;
+        // };
 
-        template<>
-        struct KeyArg<false>
-        {
-            // Not transparent. Always use `key_type`.
-            template<typename K, typename key_type>
-            using type = key_type;
-        };
+        // template<>
+        // struct KeyArg<false>
+        // {
+        //     // Not transparent. Always use `key_type`.
+        //     template<typename K, typename key_type>
+        //     using type = key_type;
+        // };
 
         template<
             typename storage_t,
@@ -1173,36 +1173,35 @@ namespace hud
              * @param args The arguments forwarded to the `slot_type` constructor after the key.
              * @return An iterator to the inserted or existing value.
              */
-            template<typename... args_t>
-            requires(hud::is_constructible_v<slot_type, key_type, args_t...>)
-            constexpr iterator add_impl(key_type &&key, args_t &&...args) noexcept
+            template<typename K, typename... args_t>
+            constexpr iterator add_impl(K &&key, args_t &&...args) noexcept
             {
-                hud::pair<iterator, bool> res {find_or_insert_no_construct(key)};
+                hud::pair<iterator, bool> res {find_or_insert_no_construct(hud::forward<K>(key))};
                 if (res.second)
                 {
-                    hud::memory::construct_object_at(res.first.slot_ptr_, hud::move(key), hud::forward<args_t>(args)...);
+                    hud::memory::construct_object_at(res.first.slot_ptr_, hud::forward<K>(key), hud::forward<args_t>(args)...);
                 }
                 return res.first;
             }
 
-            /**
-             * Finds or inserts a slot corresponding to the given key.
-             * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
-             * @param key The key used to find or insert the slot.
-             * @param args The arguments forwarded to the `slot_type` constructor after the key.
-             * @return An iterator to the inserted or existing value.
-             */
-            template<typename... args_t>
-            requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
-            constexpr iterator add_impl(const key_type &key, args_t &&...args) noexcept
-            {
-                hud::pair<iterator, bool> res {find_or_insert_no_construct(key)};
-                if (res.second)
-                {
-                    hud::memory::construct_object_at(res.first.slot_ptr_, key, hud::forward<args_t>(args)...);
-                }
-                return res.first;
-            }
+            // /**
+            //  * Finds or inserts a slot corresponding to the given key.
+            //  * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
+            //  * @param key The key used to find or insert the slot.
+            //  * @param args The arguments forwarded to the `slot_type` constructor after the key.
+            //  * @return An iterator to the inserted or existing value.
+            //  */
+            // template<typename... args_t>
+            // requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
+            // constexpr iterator add_impl(const key_type &key, args_t &&...args) noexcept
+            // {
+            //     hud::pair<iterator, bool> res {find_or_insert_no_construct(key)};
+            //     if (res.second)
+            //     {
+            //         hud::memory::construct_object_at(res.first.slot_ptr_, key, hud::forward<args_t>(args)...);
+            //     }
+            //     return res.first;
+            // }
 
             /**
              * Adds a new element to the container using piecewise construction of the key and value.
@@ -1225,7 +1224,7 @@ namespace hud
             template<typename key_tuple_t, typename... u_tuple_t>
             constexpr iterator add_impl(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple, u_tuple_t &&...tuples) noexcept
             {
-                hud::pair<iterator, bool> res = find_or_insert_no_construct(forward_key(hud::forward<key_tuple_t>(key_tuple)));
+                hud::pair<iterator, bool> res = find_or_insert_no_construct(hud::forward<key_tuple_t>(key_tuple));
                 if (res.second)
                 {
                     hud::memory::construct_object_at(res.first.slot_ptr_, hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<u_tuple_t>(tuples)...);
@@ -2061,6 +2060,28 @@ namespace hud
         }
 
         /**
+         * Constructor that initializes the hash map with a list of key-value pairs and additional capacity.
+         * @tparam u_key_t The type of the keys in the initializer list.
+         * @tparam u_value_t The type of the values in the initializer list.
+         * @param list The initializer list of key-value pairs.
+         * @param extra_element_count Additional capacity to reserve.
+         * @param allocator The allocator to use for memory management.
+         */
+
+        template<typename u_key_t = key_type>
+        requires(hud::is_copy_constructible_v<key_type, u_key_t>)
+        constexpr hashset(std::initializer_list<u_key_t> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
+            : super(allocator)
+        {
+            static_assert(hud::is_nothrow_copy_constructible_v<key_type, u_key_t>, "key_type(const u_key_t&) copy constructor is throwable. hashset_storage is not designed to allow throwable copy constructible components");
+            reserve(list.size() + extra_element_count);
+            for (const auto &element : list)
+            {
+                add(element);
+            }
+        }
+
+        /**
          * Insert a key in the hashset.
          * @param key The key
          * @return Iterator to the storage containing the `key`
@@ -2098,16 +2119,16 @@ namespace hud
     };
 
     template<typename key_t>
-    struct tuple_size<details::hashset::slot<key_t>>
+    struct tuple_size<details::hashset::hashset_storage<key_t>>
         : hud::integral_constant<usize, 1>
     {
     };
 
     template<usize idx_to_reach, typename key_t>
-    struct tuple_element<idx_to_reach, details::hashset::slot<key_t>>
+    struct tuple_element<idx_to_reach, details::hashset::hashset_storage<key_t>>
     {
-        static_assert(idx_to_reach < 1, "hashset slot index out of bounds");
-        using type = const typename details::hashset::slot<key_t>::key_type;
+        static_assert(idx_to_reach < 1, "hashset hashset_storage index out of bounds");
+        using type = const typename details::hashset::hashset_storage<key_t>::key_type;
     };
 
     template<typename key_t, typename hasher_t, typename key_equal_t, typename allocator_t>
@@ -2141,14 +2162,14 @@ namespace hud
 namespace std
 {
     template<typename key_t>
-    struct tuple_size<hud::details::hashset::slot<key_t>>
-        : hud::tuple_size<hud::details::hashset::slot<key_t>>
+    struct tuple_size<hud::details::hashset::hashset_storage<key_t>>
+        : hud::tuple_size<hud::details::hashset::hashset_storage<key_t>>
     {
     };
 
     template<std::size_t idx_to_reach, typename key_t>
-    struct tuple_element<idx_to_reach, hud::details::hashset::slot<key_t>>
-        : hud::tuple_element<idx_to_reach, hud::details::hashset::slot<key_t>>
+    struct tuple_element<idx_to_reach, hud::details::hashset::hashset_storage<key_t>>
+        : hud::tuple_element<idx_to_reach, hud::details::hashset::hashset_storage<key_t>>
     {
     };
 

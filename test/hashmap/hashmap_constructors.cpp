@@ -547,7 +547,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
-                key_1_is_correct &= it_1->key().copy_constructor_count() == 2;
+                key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
 
                 // Validate value is correctly added
                 key_1_is_correct &= it_1->value() == 11;
@@ -562,7 +562,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
-                key_2_is_correct &= it_2->key().copy_constructor_count() == 2;
+                key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
 
                 // Validate value is correctly added
                 key_2_is_correct &= it_2->value() == 22;
@@ -577,7 +577,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
-                key_3_is_correct &= it_3->key().copy_constructor_count() == 2;
+                key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
 
                 // Validate value is correctly added
                 key_3_is_correct &= it_3->value() == 33;
@@ -647,7 +647,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
-                key_1_is_correct &= it_1->key().copy_constructor_count() == 2;
+                key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
 
                 // Validate value is correctly added
                 key_1_is_correct &= it_1->value() == 11;
@@ -662,7 +662,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
-                key_2_is_correct &= it_2->key().copy_constructor_count() == 2;
+                key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
 
                 // Validate value is correctly added
                 key_2_is_correct &= it_2->value() == 22;
@@ -677,7 +677,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
-                key_3_is_correct &= it_3->key().copy_constructor_count() == 2;
+                key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
 
                 // Validate value is correctly added
                 key_3_is_correct &= it_3->value() == 33;
@@ -981,7 +981,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
-                key_1_is_correct &= it_1->key().move_constructor_count() == 1;
+                key_1_is_correct &= it_1->key().move_constructor_count() == 0;
 
                 // Validate value is correctly added
                 key_1_is_correct &= it_1->value() == 11;
@@ -998,7 +998,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
-                key_2_is_correct &= it_2->key().move_constructor_count() == 1;
+                key_2_is_correct &= it_2->key().move_constructor_count() == 0;
 
                 // Validate value is correctly added
                 key_2_is_correct &= it_2->value() == 22;
@@ -1015,7 +1015,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
-                key_3_is_correct &= it_3->key().move_constructor_count() == 1;
+                key_3_is_correct &= it_3->key().move_constructor_count() == 0;
 
                 // Validate value is correctly added
                 key_3_is_correct &= it_3->value() == 33;
@@ -1087,7 +1087,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
-                key_1_is_correct &= it_1->key().move_constructor_count() == 1;
+                key_1_is_correct &= it_1->key().move_constructor_count() == 0;
 
                 // Validate value is correctly added
                 key_1_is_correct &= it_1->value() == 11;
@@ -1104,7 +1104,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
-                key_2_is_correct &= it_2->key().move_constructor_count() == 1;
+                key_2_is_correct &= it_2->key().move_constructor_count() == 0;
 
                 // Validate value is correctly added
                 key_2_is_correct &= it_2->value() == 22;
@@ -1121,7 +1121,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
-                key_3_is_correct &= it_3->key().move_constructor_count() == 1;
+                key_3_is_correct &= it_3->key().move_constructor_count() == 0;
 
                 // Validate value is correctly added
                 key_3_is_correct &= it_3->value() == 33;

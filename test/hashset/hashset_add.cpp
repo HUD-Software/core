@@ -255,7 +255,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_1st->key() == 1,                                                           // 0
                 set.count() == 1,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -267,7 +267,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_same->key() == 1,                                                          // 0
                 set.count() == 1,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -278,7 +278,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_2nd->key() == 2,                                                           // 0
                 set.count() == 2,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 4
                 set.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 5
             };
@@ -369,7 +369,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_1st->key() == 1,                                                           // 0
                 set.count() == 1,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -381,7 +381,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_same->key() == 1,                                                          // 0
                 set.count() == 1,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -392,7 +392,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
                 it_2nd->key() == 2,                                                           // 0
                 set.count() == 2,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -1152,7 +1152,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_1st->key() == 1,                                                           // 0
                 set.count() == 1,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -1163,7 +1163,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_same->key() == 1,                                                          // 0
                 set.count() == 1,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -1174,7 +1174,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_2nd->key() == 2,                                                           // 0
                 set.count() == 2,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 4
                 set.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 5
             };
@@ -1265,7 +1265,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_1st->key() == 1,                                                           // 0
                 set.count() == 1,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
-                it_1st->key().copy_constructor_count() == 2,                                  // 3
+                it_1st->key().copy_constructor_count() == 1,                                  // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -1276,7 +1276,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_same->key() == 1,                                                          // 0
                 set.count() == 1,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
-                it_same->key().copy_constructor_count() == 2,                                 // 3
+                it_same->key().copy_constructor_count() == 1,                                 // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -1287,7 +1287,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
                 it_2nd->key() == 2,                                                           // 0
                 set.count() == 2,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
-                it_2nd->key().copy_constructor_count() == 2,                                  // 3
+                it_2nd->key().copy_constructor_count() == 1,                                  // 3
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 4
                 set.allocator().free_count() == 0,                                            // 5
             };
@@ -2068,7 +2068,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
                 set.count() == 1,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
                 it_1st->key().copy_constructor_count() == 0,                                  // 3
-                it_1st->key().move_constructor_count() == 2,                                  // 4
+                it_1st->key().move_constructor_count() == 1,                                  // 4
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 set.allocator().free_count() == 0,                                            // 6
             };
@@ -2080,7 +2080,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
                 set.count() == 1,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
                 it_same->key().copy_constructor_count() == 0,                                 // 3
-                it_same->key().move_constructor_count() == 2,                                 // 4
+                it_same->key().move_constructor_count() == 1,                                 // 4
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 set.allocator().free_count() == 0,                                            // 6
             };
@@ -2092,7 +2092,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
                 set.count() == 2,                                                             // 1
                 set.max_count() >= set.count(),                                               // 2
                 it_2nd->key().copy_constructor_count() == 0,                                  // 3
-                it_2nd->key().move_constructor_count() == 2,                                  // 4
+                it_2nd->key().move_constructor_count() == 1,                                  // 4
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 4 : 2), // 5
                 set.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 6
             };
@@ -2190,7 +2190,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
                 set.count() == 1,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
                 it_1st->key().copy_constructor_count() == 0,                                  // 3
-                it_1st->key().move_constructor_count() == 2,                                  // 4
+                it_1st->key().move_constructor_count() == 1,                                  // 4
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 set.allocator().free_count() == 0,                                            // 6
             };
@@ -2202,7 +2202,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
                 set.count() == 1,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
                 it_same->key().copy_constructor_count() == 0,                                 // 3
-                it_same->key().move_constructor_count() == 2,                                 // 4
+                it_same->key().move_constructor_count() == 1,                                 // 4
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 set.allocator().free_count() == 0,                                            // 6
             };
@@ -2214,7 +2214,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
                 set.count() == 2,                                                             // 1
                 set.max_count() >= reserved_size,                                             // 2
                 it_2nd->key().copy_constructor_count() == 0,                                  // 3
-                it_2nd->key().move_constructor_count() == 2,                                  // 4
+                it_2nd->key().move_constructor_count() == 1,                                  // 4
                 set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 5
                 set.allocator().free_count() == 0,                                            // 6
             };
