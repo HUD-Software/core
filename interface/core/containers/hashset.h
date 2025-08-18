@@ -1880,20 +1880,33 @@ namespace hud
 
             constexpr usize allocate_control_and_slot(usize max_slot_count) noexcept
             {
+                /**
+                 *  Allocation layout is :
+                 *
+                 *  |      aligned_control_size      | slots_size |
+                 *  | control_size  |                |
+                 *  |  controls     |  slot padding  |    slots   |
+                 *  ^                                ^
+                 *  control_ptr_                      slot_ptr_
+                 *
+                 */
+
                 const usize control_size {control_size_for_max_count(max_slot_count)};
-                const usize slot_size {max_slot_count * sizeof(slot_type)};
+                const usize slots_size {max_slot_count * sizeof(slot_type)};
                 const uptr aligned_control_size {hud::memory::align_address(control_size, sizeof(slot_type))};
 
                 if (hud::is_constant_evaluated())
                 {
                     control_ptr_ = allocator_.template allocate<control_type>(aligned_control_size).data();
-                    slot_ptr_ = allocator_.template allocate<slot_type>(slot_size).data();
+                    slot_ptr_ = allocator_.template allocate<slot_type>(slots_size).data();
                 }
                 else
                 {
-                    const usize aligned_allocation_size {aligned_control_size + slot_size};
+
+                    const usize aligned_allocation_size {aligned_control_size + slots_size};
                     control_ptr_ = allocator_.template allocate<control_type>(aligned_allocation_size).data();
-                    slot_ptr_ = reinterpret_cast<slot_type *>(hud::memory::align_address(reinterpret_cast<const uptr>(control_ptr_ + control_size), alignof(slot_type)));
+                    slot_ptr_ = reinterpret_cast<slot_type *>(control_ptr_ + aligned_control_size, alignof(slot_type));
+                    hud::check((u8 *)slot_ptr_ - (u8 *)control_ptr_ == aligned_control_size);
                     hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
                 }
                 return control_size;
@@ -1904,7 +1917,7 @@ namespace hud
                 if (max_slot_count > 0)
                 {
                     const usize control_size {control_size_for_max_count(max_slot_count)};
-                    const usize slot_size {max_slot_count * sizeof(slot_type)};
+                    const usize slots_size {max_slot_count * sizeof(slot_type)};
                     const uptr aligned_control_size {hud::memory::align_address(control_size, sizeof(slot_type))};
 
                     // In a constant-evaluated context, bit_cast cannot be used with pointers
@@ -1912,11 +1925,11 @@ namespace hud
                     if (hud::is_constant_evaluated())
                     {
                         allocator_.template free<control_type>({control_ptr, aligned_control_size});
-                        allocator_.template free<slot_type>({slot_ptr, slot_size});
+                        allocator_.template free<slot_type>({slot_ptr, slots_size});
                     }
                     else
                     {
-                        const usize aligned_allocation_size {aligned_control_size + slot_size};
+                        const usize aligned_allocation_size {aligned_control_size + slots_size};
                         allocator_.template free<control_type>({control_ptr, aligned_allocation_size});
                     }
                 }
