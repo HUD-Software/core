@@ -1780,7 +1780,7 @@ namespace hud
             /** Compute the size of the allocation needed for the given slot count. */
             [[nodiscard]] constexpr usize current_allocation_size() const noexcept
             {
-                const usize control_size {max_slot_count_ + 1 + control::COUNT_CLONED_BYTE};
+                const usize control_size {control_size_for_max_count(max_slot_count_)};
                 const uptr aligned_control_size {hud::memory::align_address(control_size, sizeof(slot_type))};
                 return aligned_control_size + max_slot_count_ * sizeof(slot_type);
             }
@@ -1880,11 +1880,9 @@ namespace hud
 
             constexpr usize allocate_control_and_slot(usize max_slot_count) noexcept
             {
-                const usize ctrl_size {control_size_for_max_count(max_slot_count)};
+                const usize control_size {control_size_for_max_count(max_slot_count)};
                 const usize slot_size {max_slot_count * sizeof(slot_type)};
-
-                const uptr aligned_control_size {hud::memory::align_address(ctrl_size, sizeof(slot_type))};
-                const usize aligned_allocation_size {aligned_control_size + slot_size};
+                const uptr aligned_control_size {hud::memory::align_address(control_size, sizeof(slot_type))};
 
                 if (hud::is_constant_evaluated())
                 {
@@ -1893,32 +1891,33 @@ namespace hud
                 }
                 else
                 {
+                    const usize aligned_allocation_size {aligned_control_size + slot_size};
                     control_ptr_ = allocator_.template allocate<control_type>(aligned_allocation_size).data();
-                    slot_ptr_ = reinterpret_cast<slot_type *>(hud::memory::align_address(reinterpret_cast<const uptr>(control_ptr_ + ctrl_size), alignof(slot_type)));
+                    slot_ptr_ = reinterpret_cast<slot_type *>(hud::memory::align_address(reinterpret_cast<const uptr>(control_ptr_ + control_size), alignof(slot_type)));
                     hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
                 }
-                return ctrl_size;
+                return control_size;
             }
 
             constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize max_slot_count) noexcept
             {
                 if (max_slot_count > 0)
                 {
+                    const usize control_size {control_size_for_max_count(max_slot_count)};
+                    const usize slot_size {max_slot_count * sizeof(slot_type)};
+                    const uptr aligned_control_size {hud::memory::align_address(control_size, sizeof(slot_type))};
+
                     // In a constant-evaluated context, bit_cast cannot be used with pointers
                     // and allocation is done in two separate allocation
                     if (hud::is_constant_evaluated())
                     {
-                        // Control size is the number of slot + sentinel + number of cloned bytes
-                        const usize control_size {control_size_for_max_count(max_slot_count)};
-                        const usize slot_size {max_slot_count * sizeof(slot_type)};
-                        const uptr aligned_control_size {hud::memory::align_address(control_size, sizeof(slot_type))};
-
                         allocator_.template free<control_type>({control_ptr, aligned_control_size});
                         allocator_.template free<slot_type>({slot_ptr, slot_size});
                     }
                     else
                     {
-                        allocator_.template free<slot_type>({hud::bit_cast<slot_type *>(control_ptr), current_allocation_size()});
+                        const usize aligned_allocation_size {aligned_control_size + slot_size};
+                        allocator_.template free<control_type>({control_ptr, aligned_allocation_size});
                     }
                 }
             }
@@ -2146,10 +2145,20 @@ namespace hud
             return false;
         }
 
-        for (const auto &elem : left)
+        // Speed of find is dependent of the max_slot_count_
+        // We want to find in the smallest max_slot_count and iterate on the bigger only once
+        const hashset<key_t, hasher_t, key_equal_t, allocator_t> *biggest_capacity = &left;
+        const hashset<key_t, hasher_t, key_equal_t, allocator_t> *smallest_capacity = &right;
+        if (smallest_capacity->max_count() > biggest_capacity->max_count())
         {
-            const auto &it = right.find(elem.key());
-            if (it == right.end() && !(it->value() == elem.value()))
+            hud::swap(biggest_capacity, smallest_capacity);
+        }
+
+        // Iterate over biggest capacity and find in the smallest each elements
+        for (const auto &elem : *biggest_capacity)
+        {
+            const auto &it = smallest_capacity->find(elem.key());
+            if (it == smallest_capacity->end())
             {
                 return false;
             }

@@ -1,25 +1,24 @@
-#include <core/containers/hashmap.h>
+#include <core/containers/hashset.h>
 #include "../misc/allocator_watcher.h"
 
-GTEST_TEST(hashmap, clear_shrink_trivially_destructible_empty_map)
+GTEST_TEST(hashset, clear_shrink_trivially_destructible_empty_map)
 {
     const auto test = []()
     {
         using key_type = i32;
-        using value_type = i64;
-        hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
-        map.clear_shrink();
+        hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
+        set.clear_shrink();
 
         i32 count {0};
-        for (const auto &_ : map)
+        for (const auto &_ : set)
         {
             count++;
         }
         return std::tuple {
-            map.count() == 0,                        // 0
-            map.max_count() == 0,                    // 1
-            map.allocator().allocation_count() == 0, // 2
-            map.allocator().free_count() == 0,       // 3
+            set.count() == 0,                        // 0
+            set.max_count() == 0,                    // 1
+            set.allocator().allocation_count() == 0, // 2
+            set.allocator().free_count() == 0,       // 3
             count == 0                               // 4
         };
     };
@@ -45,31 +44,30 @@ GTEST_TEST(hashmap, clear_shrink_trivially_destructible_empty_map)
     }
 }
 
-GTEST_TEST(hashmap, clear_shrink_trivially_destructible_non_empty_map)
+GTEST_TEST(hashset, clear_shrink_trivially_destructible_non_empty_map)
 {
 
     const auto test = []()
     {
         using key_type = i32;
-        using value_type = i64;
-        hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
-        map.reserve(256);
+        hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
+        set.reserve(256);
         for (u32 index = 0; index < 256; index++)
         {
-            map.add({index, index * 10});
+            set.add(index);
         }
 
-        map.clear_shrink();
+        set.clear_shrink();
         i32 count {0};
-        for (const auto &_ : map)
+        for (const auto &_ : set)
         {
             count++;
         }
         return std::tuple {
-            map.count() == 0,                                                             // 0
-            map.max_count() == 0,                                                         // 1
-            map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
-            map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
+            set.count() == 0,                                                             // 0
+            set.max_count() == 0,                                                         // 1
+            set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
+            set.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
             count == 0                                                                    // 4
         };
     };
@@ -95,7 +93,7 @@ GTEST_TEST(hashmap, clear_shrink_trivially_destructible_non_empty_map)
     }
 }
 
-GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_empty_map)
+GTEST_TEST(hashset, clear_shrink_non_trivially_destructible_empty_map)
 {
 
     // No memory allocated
@@ -103,20 +101,19 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_empty_map)
         const auto test = []()
         {
             using key_type = hud_test::non_bitwise_type;
-            using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
-            map.clear_shrink();
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
+            set.clear_shrink();
 
             i32 count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 count++;
             }
             return std::tuple {
-                map.count() == 0,                        // 0
-                map.max_count() == 0,                    // 1
-                map.allocator().allocation_count() == 0, // 2
-                map.allocator().free_count() == 0,       // 3
+                set.count() == 0,                        // 0
+                set.max_count() == 0,                    // 1
+                set.allocator().allocation_count() == 0, // 2
+                set.allocator().free_count() == 0,       // 3
                 count == 0                               // 4
             };
         };
@@ -147,22 +144,21 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_empty_map)
         const auto test = []()
         {
             using key_type = hud_test::non_bitwise_type;
-            using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
             constexpr usize COUNT = 256;
-            map.reserve(COUNT);
-            map.clear_shrink();
+            set.reserve(COUNT);
+            set.clear_shrink();
 
             i32 count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 count++;
             }
             return std::tuple {
-                map.count() == 0,                                                             // 0
-                map.max_count() == 0,                                                         // 1
-                map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
-                map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
+                set.count() == 0,                                                             // 0
+                set.max_count() == 0,                                                         // 1
+                set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
+                set.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
                 count == 0                                                                    // 4
             };
         };
@@ -189,37 +185,33 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_empty_map)
     }
 }
 
-GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_non_empty_map)
+GTEST_TEST(hashset, clear_shrink_non_trivially_destructible_non_empty_map)
 {
 
     const auto test = []()
     {
         using key_type = hud_test::non_bitwise_type;
-        using value_type = hud_test::non_bitwise_type;
-        hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
+        hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
 
         constexpr usize COUNT = 256;
-        map.reserve(COUNT);
+        set.reserve(COUNT);
         i32 key_destructor_called_count[COUNT];
-        i32 value_destructor_called_count[COUNT];
 
         // Add all elements
         for (i32 index = 0; index < COUNT; index++)
         {
-            map.add(
-                key_type {index, key_destructor_called_count + index},
-                value_type {index * 10, value_destructor_called_count + index}
+            set.add(
+                key_type {index, key_destructor_called_count + index}
             );
         }
         hud::memory::set_memory_safe(key_destructor_called_count, 0);
-        hud::memory::set_memory_safe(value_destructor_called_count, 0);
 
-        // Clear the hashmap
-        map.clear_shrink();
+        // Clear the hashset
+        set.clear_shrink();
 
-        // Ensure we have no element left in the map
+        // Ensure we have no element left in the set
         i32 count {0};
-        for (const auto &_ : map)
+        for (const auto &_ : set)
         {
             count++;
         }
@@ -233,18 +225,13 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_non_empty_map)
                 all_destructor_called_after_clear = false;
                 break;
             }
-            if (value_destructor_called_count[index] != 1)
-            {
-                all_destructor_called_after_clear = false;
-                break;
-            }
         }
 
         return std::tuple {
-            map.count() == 0,                                                             // 0
-            map.max_count() == 0,                                                         // 1
-            map.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
-            map.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
+            set.count() == 0,                                                             // 0
+            set.max_count() == 0,                                                         // 1
+            set.allocator().allocation_count() == (hud::is_constant_evaluated() ? 2 : 1), // 2
+            set.allocator().free_count() == (hud::is_constant_evaluated() ? 2 : 1),       // 3
             count == 0,                                                                   // 4
             all_destructor_called_after_clear                                             // 5
         };
@@ -273,7 +260,7 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_non_empty_map)
     }
 }
 
-GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
+GTEST_TEST(hashset, clear_shrink_then_add_trivially_destructible_empty_map)
 {
 
     // No reserve
@@ -281,28 +268,27 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
         const auto test = []()
         {
             using key_type = i32;
-            using value_type = i64;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
             constexpr usize COUNT = 256;
-            map.clear_shrink();
+            set.clear_shrink();
 
             for (u32 index = 0; index < COUNT; index++)
             {
-                map.add({index, index * 10});
+                set.add(index);
             }
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 count++;
             }
 
             return std::tuple {
-                map.count() == COUNT,                   // 0
-                map.max_count() > COUNT,                // 1
-                map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() > 0,       // 3
+                set.count() == COUNT,                   // 0
+                set.max_count() > COUNT,                // 1
+                set.allocator().allocation_count() > 0, // 2
+                set.allocator().free_count() > 0,       // 3
                 count == COUNT                          // 4
             };
         };
@@ -333,29 +319,28 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
         const auto test = []()
         {
             using key_type = i32;
-            using value_type = i64;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
             constexpr usize COUNT = 256;
-            map.reserve(COUNT);
-            map.clear_shrink();
+            set.reserve(COUNT);
+            set.clear_shrink();
 
             for (u32 index = 0; index < COUNT; index++)
             {
-                map.add({index, index * 10});
+                set.add(index);
             }
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 count++;
             }
 
             return std::tuple {
-                map.count() == COUNT,                   // 0
-                map.max_count() > COUNT,                // 1
-                map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() > 0,       // 3
+                set.count() == COUNT,                   // 0
+                set.max_count() > COUNT,                // 1
+                set.allocator().allocation_count() > 0, // 2
+                set.allocator().free_count() > 0,       // 3
                 count == COUNT                          // 4
             };
         };
@@ -382,41 +367,40 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
     }
 }
 
-GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_non_empty_map)
+GTEST_TEST(hashset, clear_shrink_then_add_trivially_destructible_non_empty_map)
 {
     // No reserve
     {
         const auto test = []()
         {
             using key_type = i32;
-            using value_type = i64;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
-            // Add elements then clear the map
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
+            // Add elements then clear the set
             constexpr usize COUNT = 128;
             for (u32 index = 0; index < COUNT; index++)
             {
-                map.add({index, index * 10});
+                set.add(index);
             }
-            map.clear_shrink();
+            set.clear_shrink();
 
             // Add elements again
             for (u32 index = 0; index < COUNT * 2; index++)
             {
-                map.add({index, index * 10});
+                set.add(index);
             }
 
             // Check that we can iterate over all elements
             i32 element_count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 element_count++;
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,               // 0
-                map.max_count() > map.count(),          // 1
-                map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() > 0,       // 3
+                set.count() == COUNT * 2,               // 0
+                set.max_count() > set.count(),          // 1
+                set.allocator().allocation_count() > 0, // 2
+                set.allocator().free_count() > 0,       // 3
                 element_count == COUNT * 2              // 4
             };
         };
@@ -447,35 +431,34 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_non_empty_map)
         const auto test = []()
         {
             using key_type = i32;
-            using value_type = i64;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
-            // Add elements then clear the map
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
+            // Add elements then clear the set
             constexpr usize COUNT = 128;
-            map.reserve(COUNT * 2);
+            set.reserve(COUNT * 2);
             for (u32 index = 0; index < COUNT; index++)
             {
-                map.add({index, index * 10});
+                set.add(index);
             }
-            map.clear_shrink();
+            set.clear_shrink();
 
             // Add elements again
             for (u32 index = 0; index < COUNT * 2; index++)
             {
-                map.add({index, index * 10});
+                set.add(index);
             }
 
             // Check that we can iterate over all elements
             i32 element_count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 element_count++;
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,               // 0
-                map.max_count() > map.count(),          // 1
-                map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() > 0,       // 3
+                set.count() == COUNT * 2,               // 0
+                set.max_count() > set.count(),          // 1
+                set.allocator().allocation_count() > 0, // 2
+                set.allocator().free_count() > 0,       // 3
                 element_count == COUNT * 2              // 4
             };
         };
@@ -502,7 +485,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_non_empty_map)
     }
 }
 
-GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
+GTEST_TEST(hashset, clear_shrink_then_add_non_trivially_destructible_empty_map)
 {
 
     // No reserve
@@ -510,32 +493,28 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
         const auto test = []()
         {
             using key_type = hud_test::non_bitwise_type;
-            using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
             constexpr usize COUNT = 128;
-            map.clear_shrink();
+            set.clear_shrink();
 
             // Add all elements
             for (i32 index = 0; index < COUNT * 2; index++)
             {
-                map.add(
-                    key_type {index},
-                    value_type {index * 10}
-                );
+                set.add(index);
             }
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 count++;
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,               // 0
-                map.max_count() > COUNT,                // 1
-                map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() > 0,       // 3
+                set.count() == COUNT * 2,               // 0
+                set.max_count() > COUNT,                // 1
+                set.allocator().allocation_count() > 0, // 2
+                set.allocator().free_count() > 0,       // 3
                 count == COUNT * 2                      // 4
             };
         };
@@ -566,33 +545,29 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
         const auto test = []()
         {
             using key_type = hud_test::non_bitwise_type;
-            using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
             constexpr usize COUNT = 128;
-            map.reserve(COUNT * 2);
-            map.clear_shrink();
+            set.reserve(COUNT * 2);
+            set.clear_shrink();
 
             // Add all elements
             for (i32 index = 0; index < COUNT * 2; index++)
             {
-                map.add(
-                    key_type {index},
-                    value_type {index * 10}
-                );
+                set.add(index);
             }
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 count++;
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,               // 0
-                map.max_count() > COUNT,                // 1
-                map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() > 0,       // 3
+                set.count() == COUNT * 2,               // 0
+                set.max_count() > COUNT,                // 1
+                set.allocator().allocation_count() > 0, // 2
+                set.allocator().free_count() > 0,       // 3
                 count == COUNT * 2                      // 4
             };
         };
@@ -619,7 +594,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
     }
 }
 
-GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_map)
+GTEST_TEST(hashset, clear_shrink_then_add_non_trivially_destructible_non_empty_map)
 {
 
     // No reserve
@@ -627,42 +602,35 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
         const auto test = []()
         {
             using key_type = hud_test::non_bitwise_type;
-            using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
             constexpr usize COUNT = 128;
 
             // Add all elements
             for (i32 index = 0; index < COUNT; index++)
             {
-                map.add(
-                    key_type {index},
-                    value_type {index * 10}
-                );
+                set.add(index);
             }
 
-            map.clear_shrink();
+            set.clear_shrink();
 
             // Add all elements
             for (i32 index = 0; index < COUNT * 2; index++)
             {
-                map.add(
-                    key_type {index},
-                    value_type {index * 10}
-                );
+                set.add(index);
             }
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 count++;
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,               // 0
-                map.max_count() > COUNT,                // 1
-                map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() > 0,       // 3
+                set.count() == COUNT * 2,               // 0
+                set.max_count() > COUNT,                // 1
+                set.allocator().allocation_count() > 0, // 2
+                set.allocator().free_count() > 0,       // 3
                 count == COUNT * 2                      // 4
             };
         };
@@ -693,43 +661,38 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
         const auto test = []()
         {
             using key_type = hud_test::non_bitwise_type;
-            using value_type = hud_test::non_bitwise_type;
-            hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
+            hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> set;
             constexpr usize COUNT = 128;
-            map.reserve(COUNT * 2);
+            set.reserve(COUNT * 2);
 
             // Add all elements
             for (i32 index = 0; index < COUNT; index++)
             {
-                map.add(
-                    key_type {index},
-                    value_type {index * 10}
-                );
+                set.add(index);
             }
 
-            map.clear_shrink();
+            set.clear_shrink();
 
             // Add all elements
             for (i32 index = 0; index < COUNT * 2; index++)
             {
-                map.add(
-                    key_type {index},
-                    value_type {index * 10}
+                set.add(
+                    index
                 );
             }
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
+            for (const auto &_ : set)
             {
                 count++;
             }
 
             return std::tuple {
-                map.count() == COUNT * 2,               // 0
-                map.max_count() > COUNT,                // 1
-                map.allocator().allocation_count() > 0, // 2
-                map.allocator().free_count() > 0,       // 3
+                set.count() == COUNT * 2,               // 0
+                set.max_count() > COUNT,                // 1
+                set.allocator().allocation_count() > 0, // 2
+                set.allocator().free_count() > 0,       // 3
                 count == COUNT * 2                      // 4
             };
         };

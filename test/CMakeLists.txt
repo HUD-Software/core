@@ -85,7 +85,12 @@ set( src
 	hashmap/hashmap_remove.cpp
 	hashmap/hashmap_shrink_to_fit.cpp
 	hashset/hashset_add.cpp
+	hashset/hashset_clear_shrink.cpp
+	hashset/hashset_clear.cpp
+	hashset/hashset_comparison.cpp
 	hashset/hashset_constructors.cpp
+	hashset/hashset_contains.cpp
+	hashset/hashset_copy_assign_operator.cpp
 	hashset/hashset_iterator.cpp
 	hashset/hashset_misc.cpp
 	i128/i128_assign.cpp

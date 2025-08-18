@@ -4,7 +4,7 @@
 GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_same_type)
 {
     using key_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type>);
 
@@ -12,7 +12,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_same_ty
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             const key_type key_to_copy(1);
             const auto it_1st = set.add(key_to_copy);
 
@@ -124,7 +124,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_same_ty
         const auto test = []()
         {
             constexpr usize reserved_size = 2;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             const key_type key_to_copy(1);
             const auto it_1st = set.add(key_to_copy);
@@ -239,7 +239,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
     using key_type = hud_test::non_bitwise_copy_constructible_type2;
     using other_key_type = hud_test::non_bitwise_copy_constructible_type;
 
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
 
@@ -247,7 +247,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             const other_key_type key_to_copy(1);
             const auto it_1st = set.add(key_to_copy);
 
@@ -359,7 +359,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
         const auto test = []()
         {
             constexpr usize reserved_size = 2;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(2);
             const other_key_type key_to_copy(1);
 
@@ -473,7 +473,7 @@ GTEST_TEST(hashset, add_by_copy_construct_non_bitwise_copy_constructible_differe
 GTEST_TEST(hashset, add_by_copy_construct_bitwise_copy_constructible_same_type)
 {
     using key_type = usize;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type, key_type>);
 
@@ -481,7 +481,7 @@ GTEST_TEST(hashset, add_by_copy_construct_bitwise_copy_constructible_same_type)
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             const key_type key_to_copy(1);
             const auto it_1st = set.add(key_to_copy);
 
@@ -584,7 +584,7 @@ GTEST_TEST(hashset, add_by_copy_construct_bitwise_copy_constructible_same_type)
         const auto test = []()
         {
             constexpr usize reserved_size = 2;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             const key_type key_to_copy(1);
             const auto it_1st = set.add(key_to_copy);
@@ -689,7 +689,7 @@ GTEST_TEST(hashset, add_by_copy_construct_bitwise_copy_constructible_different_t
 {
     using key_type = usize;
     using other_key_type = isize;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
 
@@ -697,7 +697,7 @@ GTEST_TEST(hashset, add_by_copy_construct_bitwise_copy_constructible_different_t
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             const other_key_type key_to_copy(1);
             const auto it_1st = set.add(key_to_copy);
 
@@ -799,7 +799,7 @@ GTEST_TEST(hashset, add_by_copy_construct_bitwise_copy_constructible_different_t
         const auto test = []()
         {
             constexpr usize reserved_size = 2;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             const other_key_type key_to_copy(1);
             const auto it_1st = set.add(key_to_copy);
@@ -903,7 +903,7 @@ GTEST_TEST(hashset, add_by_copy_construct_bitwise_copy_constructible_different_t
 GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_same_type)
 {
     using key_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type>);
 
@@ -911,7 +911,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_same_ty
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             key_type key_to_copy(1);
             const auto it_1st = set.add(hud::move(key_to_copy));
 
@@ -1022,7 +1022,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_same_ty
         const auto test = []()
         {
             constexpr usize reserved_size = 2;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             key_type key_to_copy(1);
 
@@ -1136,7 +1136,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
 {
     using key_type = hud_test::non_bitwise_copy_constructible_type2;
     using other_key_type = hud_test::non_bitwise_copy_constructible_type;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
 
@@ -1144,7 +1144,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             other_key_type key_to_copy(1);
             const auto it_1st = set.add(hud::move(key_to_copy));
 
@@ -1255,7 +1255,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
         const auto test = []()
         {
             constexpr usize reserved_size = 2;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             other_key_type key_to_copy(1);
 
@@ -1368,7 +1368,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_copy_constructible_differe
 GTEST_TEST(hashset, add_by_move_construct_bitwise_copy_constructible_same_type)
 {
     using key_type = usize;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type>);
 
@@ -1376,7 +1376,7 @@ GTEST_TEST(hashset, add_by_move_construct_bitwise_copy_constructible_same_type)
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             key_type key_to_copy(1);
             const auto it_1st = set.add(hud::move(key_to_copy));
 
@@ -1479,7 +1479,7 @@ GTEST_TEST(hashset, add_by_move_construct_bitwise_copy_constructible_same_type)
         const auto test = []()
         {
             constexpr usize reserved_size = 3;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             key_type key_to_copy(1);
             const auto it_1st = set.add(hud::move(key_to_copy));
@@ -1584,7 +1584,7 @@ GTEST_TEST(hashset, add_by_move_construct_bitwise_copy_constructible_different_t
 {
     using key_type = usize;
     using other_key_type = isize;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(hud::is_bitwise_copy_constructible_v<key_type, other_key_type>);
 
@@ -1592,7 +1592,7 @@ GTEST_TEST(hashset, add_by_move_construct_bitwise_copy_constructible_different_t
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             other_key_type key_to_copy(1);
             const auto it_1st = set.add(hud::move(key_to_copy));
 
@@ -1695,7 +1695,7 @@ GTEST_TEST(hashset, add_by_move_construct_bitwise_copy_constructible_different_t
         const auto test = []()
         {
             constexpr usize reserved_size = 3;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             other_key_type key_to_copy(1);
             const auto it_1st = set.add(hud::move(key_to_copy));
@@ -1799,7 +1799,7 @@ GTEST_TEST(hashset, add_by_move_construct_bitwise_copy_constructible_different_t
 GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_same_type)
 {
     using key_type = hud_test::non_bitwise_move_constructible_type;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_move_constructible_v<key_type>);
 
@@ -1807,7 +1807,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_same_ty
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             key_type key_to_copy(1);
             const auto it_1st = set.add(hud::move(key_to_copy));
 
@@ -1927,7 +1927,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_same_ty
         const auto test = []()
         {
             constexpr usize reserved_size = 2;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             key_type key_to_copy(1);
 
@@ -2051,7 +2051,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
     using key_type = hud_test::non_bitwise_move_constructible_type2;
     using other_key_type = hud_test::non_bitwise_move_constructible_type;
 
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     static_assert(!hud::is_bitwise_move_constructible_v<key_type, other_key_type>);
 
@@ -2059,7 +2059,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
     {
         const auto test = []()
         {
-            hashmap_type set;
+            hashset_type set;
             other_key_type key_to_copy(1);
             const auto it_1st = set.add(hud::move(key_to_copy));
 
@@ -2179,7 +2179,7 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
         const auto test = []()
         {
             constexpr usize reserved_size = 2;
-            hashmap_type set;
+            hashset_type set;
             set.reserve(reserved_size);
             other_key_type key_to_copy(1);
 
@@ -2301,12 +2301,12 @@ GTEST_TEST(hashset, add_by_move_construct_non_bitwise_move_constructible_differe
 GTEST_TEST(hashset, add_by_piecewise_construct_bitwise_same_type)
 {
     using key_type = i32;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     const auto test = []() -> decltype(auto)
     {
         constexpr usize reserved_size = 2;
-        hashmap_type set;
+        hashset_type set;
         set.reserve(reserved_size);
         const auto it = set.add(hud::tag_piecewise_construct, hud::forward_as_tuple(1));
         return std::tuple {
@@ -2334,12 +2334,12 @@ GTEST_TEST(hashset, add_by_piecewise_construct_bitwise_different_type)
 {
     using key_type = i32;
     using other_key_type = u32;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     const auto test = []()
     {
         constexpr usize reserved_size = 2;
-        hashmap_type set;
+        hashset_type set;
         set.reserve(reserved_size);
         const auto it = set.add(hud::tag_piecewise_construct, hud::forward_as_tuple(other_key_type {1}));
 
@@ -2367,13 +2367,13 @@ GTEST_TEST(hashset, add_by_piecewise_construct_bitwise_different_type)
 GTEST_TEST(hashset, add_by_piecewise_construct_non_bitwise_same_type)
 {
     using key_type = hud_test::non_bitwise_type;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     const auto test = []()
     {
         constexpr usize reserved_size = 2;
         i32 ptr[2];
-        hashmap_type set;
+        hashset_type set;
         set.reserve(reserved_size);
 
         static_assert(hud::is_hashable_64_v<key_type, decltype(hud::forward_as_tuple(1, ptr))>);
@@ -2423,13 +2423,13 @@ GTEST_TEST(hashset, add_by_piecewise_construct_non_bitwise_same_type)
 GTEST_TEST(hashset, add_by_piecewise_construct_non_bitwise_different_type)
 {
     using key_type = hud_test::non_bitwise_type;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     const auto test = []()
     {
         constexpr usize reserved_size = 2;
         i32 ptr[2];
-        hashmap_type set;
+        hashset_type set;
         set.reserve(reserved_size);
 
         static_assert(hud::is_hashable_64_v<key_type, decltype(hud::forward_as_tuple(i64 {1}, ptr))>);
@@ -2479,13 +2479,13 @@ GTEST_TEST(hashset, add_by_piecewise_construct_non_bitwise_different_type)
 GTEST_TEST(hashset, add_by_piecewise_construct_tuples)
 {
     using key_type = hud::tuple<i32, u64, hud_test::non_bitwise_type>;
-    using hashmap_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
+    using hashset_type = hud::hashset<key_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
     const auto test = []()
     {
         constexpr usize reserved_size = 2;
         i32 ptr[2];
-        hashmap_type set;
+        hashset_type set;
         set.reserve(reserved_size);
 
         static_assert(hud::is_hashable_64_v<key_type, decltype(hud::forward_as_tuple(1, 2, hud_test::non_bitwise_type {3, ptr}))>);
