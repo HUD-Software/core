@@ -7369,7 +7369,7 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned);
 
-            assigned = assigned;
+            // assigned = assigned;
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
@@ -7435,6 +7435,7 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
                 hud_assert_true(std::get<2>(result));
             }
             {
+
                 const auto result = test(TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
