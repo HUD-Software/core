@@ -91,8 +91,18 @@ set( src
 	hashset/hashset_constructors.cpp
 	hashset/hashset_contains.cpp
 	hashset/hashset_copy_assign_operator.cpp
+	hashset/hashset_copy_constructors.cpp
+	hashset/hashset_destructeur.cpp
+	hashset/hashset_find.cpp
 	hashset/hashset_iterator.cpp
 	hashset/hashset_misc.cpp
+	hashset/hashset_move_assign_operator.cpp
+	hashset/hashset_move_constructors.cpp
+	hashset/hashset_rehash.cpp
+	hashset/hashset_remove.cpp
+	hashset/hashset_reserve.cpp
+	hashset/hashset_shrink_to_fit.cpp
+	hashset/hashset_swap.cpp
 	i128/i128_assign.cpp
 	i128/i128_cast.cpp
 	i128/i128_comparisons.cpp
