@@ -24,6 +24,7 @@ set( interface
 	../interface/core/containers/aligned_buffer.h
 	../interface/core/containers/array.h
 	../interface/core/containers/compressed_pair.h
+	../interface/core/containers/compressed_tuple.h
 	../interface/core/containers/hashmap.h
 	../interface/core/containers/hashset.h
 	../interface/core/containers/optional.h

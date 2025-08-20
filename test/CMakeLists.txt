@@ -55,11 +55,12 @@ set( src
 	bits/bits_rotate.cpp
 	bits/bits_trailing_zero.cpp
 	bits/bits.cpp
+	compressed_pair/compressed_pair_assignments.cpp
+	compressed_pair/compressed_pair_comparison.cpp
 	compressed_pair/compressed_pair_constructors.cpp
 	compressed_pair/compressed_pair_misc.cpp
 	compressed_pair/compressed_pair_swap.cpp
-	compressed_pair/compressed_pair_assignments.cpp
-	compressed_pair/compressed_pair_comparison.cpp
+	compressed_tuple/compressed_tuple_constructors.cpp
 	hash/city_hash.cpp
 	hash/crc32.cpp
 	hash/hash_32.cpp

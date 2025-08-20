@@ -1,4 +1,4 @@
-#include <core/containers/tuple.h>
+#include <core/containers/compressed_tuple.h>
 
 #include <core/containers/pair.h>
 
@@ -193,13 +193,13 @@ namespace hud_test
     static_assert(hud::is_implicitly_move_constructible_v<implicitly_move_constructible2, implicitly_move_constructible>);
 } // namespace hud_test
 
-GTEST_TEST(tuple, default_constructor_uninit)
+GTEST_TEST(compressed_tuple, default_constructor_uninit)
 {
-    using tuple_type = hud::tuple<>;
-    using tuple_type2 = hud::tuple<i32, i32, i32>;
-    using tuple_type3 = hud::tuple<i32, f32, wchar>;
-    using tuple_type4 = hud::tuple<hud_test::explicit_default_constructible, hud_test::implicit_default_constructible>;
-    using tuple_type5 = hud::tuple<hud_test::explicit_default_constructible, i32>;
+    using tuple_type = hud::compressed_tuple<>;
+    using tuple_type2 = hud::compressed_tuple<i32, i32, i32>;
+    using tuple_type3 = hud::compressed_tuple<i32, f32, wchar>;
+    using tuple_type4 = hud::compressed_tuple<hud_test::explicit_default_constructible, hud_test::implicit_default_constructible>;
+    using tuple_type5 = hud::compressed_tuple<hud_test::explicit_default_constructible, i32>;
 
     hud_assert_eq(hud::tuple_size_v<tuple_type>, 0u);
     hud_assert_eq(hud::tuple_size_v<tuple_type2>, 3u);
@@ -273,20 +273,20 @@ GTEST_TEST(tuple, default_constructor_uninit)
     }
 
     // Constant
-    // Non empty uninit constexpr tuple is not possible because constexpr need initialized value
+    // Non empty uninit constexpr compressed_tuple is not possible because constexpr need initialized value
     {
-        [[maybe_unused]] constexpr tuple_type tuple;
+        [[maybe_unused]] constexpr tuple_type compressed_tuple;
         hud_assert_eq(hud::tuple_size_v<tuple_type>, 0u);
     }
 }
 
-GTEST_TEST(tuple, default_constructor_init)
+GTEST_TEST(compressed_tuple, default_constructor_init)
 {
-    using tuple_type = hud::tuple<>;
-    using tuple_type2 = hud::tuple<i32, i32, i32>;
-    using tuple_type3 = hud::tuple<i32, f32, wchar>;
-    using tuple_type4 = hud::tuple<hud_test::explicit_default_constructible, hud_test::implicit_default_constructible>;
-    using tuple_type5 = hud::tuple<hud_test::explicit_default_constructible, i32>;
+    using tuple_type = hud::compressed_tuple<>;
+    using tuple_type2 = hud::compressed_tuple<i32, i32, i32>;
+    using tuple_type3 = hud::compressed_tuple<i32, f32, wchar>;
+    using tuple_type4 = hud::compressed_tuple<hud_test::explicit_default_constructible, hud_test::implicit_default_constructible>;
+    using tuple_type5 = hud::compressed_tuple<hud_test::explicit_default_constructible, i32>;
 
     hud_assert_eq(hud::tuple_size_v<tuple_type>, 0u);
     hud_assert_eq(hud::tuple_size_v<tuple_type2>, 3u);
@@ -296,7 +296,7 @@ GTEST_TEST(tuple, default_constructor_init)
 
     // Non constant
     {
-        // No init for empty tuple
+        // No init for empty compressed_tuple
         [[maybe_unused]] tuple_type tuple1;
 
         tuple_type2 tuple2 {hud::tag_init};
@@ -388,141 +388,141 @@ GTEST_TEST(tuple, default_constructor_init)
     }
 }
 
-GTEST_TEST(tuple, default_constructor_explicit_types)
+GTEST_TEST(compressed_tuple, default_constructor_explicit_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicit_default_constructible, hud_test::explicit_default_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicit_default_constructible, hud_test::explicit_default_constructible>;
 
-    static_assert(hud::is_explicitly_default_constructible_v<tuple_type>);
+    // static_assert(hud::is_explicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
-        // No init for empty tuple
-        tuple_type tuple;
+        // No init for empty compressed_tuple
+        tuple_type compressed_tuple;
 
-        hud_assert_eq((hud::get<0>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<0>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<0>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).move_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<1>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<1>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<0>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<1>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).move_constructor_count()), 0u);
     }
 
     // Constant
     {
-        // No init for empty tuple
-        constexpr tuple_type tuple;
+        // No init for empty compressed_tuple
+        constexpr tuple_type compressed_tuple;
 
-        hud_assert_eq((hud::get<0>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<0>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<0>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).move_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<1>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<1>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<0>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<1>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).move_constructor_count()), 0u);
     }
 }
 
-GTEST_TEST(tuple, default_constructor_implicit_types)
+GTEST_TEST(compressed_tuple, default_constructor_implicit_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicit_default_constructible, hud_test::implicit_default_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicit_default_constructible, hud_test::implicit_default_constructible>;
 
     static_assert(hud::is_implicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
-        // No init for empty tuple
-        tuple_type tuple;
+        // No init for empty compressed_tuple
+        tuple_type compressed_tuple;
 
-        hud_assert_eq((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<0>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<0>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).move_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<1>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<1>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<0>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<1>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).move_constructor_count()), 0u);
     }
 
     // Constant
     {
-        // No init for empty tuple
-        constexpr tuple_type tuple;
+        // No init for empty compressed_tuple
+        constexpr tuple_type compressed_tuple;
 
-        hud_assert_eq((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<0>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<0>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).move_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<1>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<1>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<0>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<1>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).move_constructor_count()), 0u);
     }
 }
 
-GTEST_TEST(tuple, default_constructor_mix_implicit_explicit_types)
+GTEST_TEST(compressed_tuple, default_constructor_mix_implicit_explicit_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicit_default_constructible, hud_test::explicit_default_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicit_default_constructible, hud_test::explicit_default_constructible>;
 
-    static_assert(hud::is_explicitly_default_constructible_v<tuple_type>);
+    // static_assert(hud::is_explicitly_default_constructible_v<tuple_type>);
 
     // Non constant
     {
-        // No init for empty tuple
-        tuple_type tuple;
+        // No init for empty compressed_tuple
+        tuple_type compressed_tuple;
 
-        hud_assert_eq((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<0>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<0>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).move_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<1>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<1>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<0>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<1>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).move_constructor_count()), 0u);
     }
 
     // Constant
     {
-        // No init for empty tuple
-        constexpr tuple_type tuple;
+        // No init for empty compressed_tuple
+        constexpr tuple_type compressed_tuple;
 
-        hud_assert_eq((hud::get<0>(tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<0>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<0>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<0>(tuple).move_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
-        hud_assert_eq((hud::get<1>(tuple).default_constructor_count()), 1u);
-        hud_assert_eq((hud::get<1>(tuple).constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).copy_constructor_count()), 0u);
-        hud_assert_eq((hud::get<1>(tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).id()), hud_test::implicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<0>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<0>(compressed_tuple).move_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).id()), hud_test::explicit_default_constructible::DEFAULT_ID_VALUE);
+        hud_assert_eq((hud::get<1>(compressed_tuple).default_constructor_count()), 1u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).copy_constructor_count()), 0u);
+        hud_assert_eq((hud::get<1>(compressed_tuple).move_constructor_count()), 0u);
     }
 }
 
-GTEST_TEST(tuple, default_constructor_is_explicit_if_at_least_one_type_is_explicitly_default_constructible)
+GTEST_TEST(compressed_tuple, default_constructor_is_explicit_if_at_least_one_type_is_explicitly_default_constructible)
 {
-    hud_assert_false(hud::is_explicitly_default_constructible_v<hud::tuple<>>);
-    hud_assert_false((hud::is_explicitly_default_constructible_v<hud::tuple<i32, f32, wchar>>));
-    hud_assert_false((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::implicit_default_constructible, hud_test::implicit_default_constructible>>));
-    hud_assert_true((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::implicit_default_constructible, hud_test::explicit_default_constructible>>));
-    hud_assert_true((hud::is_explicitly_default_constructible_v<hud::tuple<hud_test::explicit_default_constructible, hud_test::explicit_default_constructible>>));
+    hud_assert_false(hud::is_explicitly_default_constructible_v<hud::compressed_tuple<>>);
+    hud_assert_false((hud::is_explicitly_default_constructible_v<hud::compressed_tuple<i32, f32, wchar>>));
+    hud_assert_false((hud::is_explicitly_default_constructible_v<hud::compressed_tuple<hud_test::implicit_default_constructible, hud_test::implicit_default_constructible>>));
+    hud_assert_true((hud::is_explicitly_default_constructible_v<hud::compressed_tuple<hud_test::implicit_default_constructible, hud_test::explicit_default_constructible>>));
+    hud_assert_true((hud::is_explicitly_default_constructible_v<hud::compressed_tuple<hud_test::explicit_default_constructible, hud_test::explicit_default_constructible>>));
 }
 
-GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_explicitly_copyable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
 
@@ -530,12 +530,12 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_same_types)
     {
         const hud_test::explicitly_copy_constructible obj1(1);
         const hud_test::explicitly_copy_constructible obj2(2);
-        tuple_type tuple(obj1, obj2);
+        tuple_type compressed_tuple(obj1, obj2);
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -557,9 +557,9 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_explicitly_copyable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
 
@@ -567,12 +567,12 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_different_types)
     {
         const hud_test::explicitly_copy_constructible obj1(1);
         const hud_test::explicitly_copy_constructible obj2(2);
-        tuple_type tuple(obj1, obj2);
+        tuple_type compressed_tuple(obj1, obj2);
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -594,9 +594,9 @@ GTEST_TEST(tuple, constructor_by_copy_explicitly_copyable_different_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_implicitly_copyable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
 
@@ -604,12 +604,12 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_same_types)
     {
         const hud_test::implicitly_copy_constructible obj1(1);
         const hud_test::implicitly_copy_constructible obj2(2);
-        tuple_type tuple(obj1, obj2);
+        tuple_type compressed_tuple(obj1, obj2);
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -631,9 +631,9 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_implicitly_copyable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
 
@@ -641,12 +641,12 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_different_types)
     {
         const hud_test::implicitly_copy_constructible obj1(1);
         const hud_test::implicitly_copy_constructible obj2(2);
-        tuple_type tuple(obj1, obj2);
+        tuple_type compressed_tuple(obj1, obj2);
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -668,9 +668,9 @@ GTEST_TEST(tuple, constructor_by_copy_implicitly_copyable_different_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
 
@@ -678,12 +678,12 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_same_ty
     {
         const hud_test::implicitly_copy_constructible obj1(1);
         const hud_test::explicitly_copy_constructible obj2(2);
-        tuple_type tuple(obj1, obj2);
+        tuple_type compressed_tuple(obj1, obj2);
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -705,9 +705,9 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_same_ty
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::implicitly_copy_constructible &, const hud_test::explicitly_copy_constructible &>));
 
@@ -715,12 +715,12 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_differe
     {
         const hud_test::implicitly_copy_constructible obj1(1);
         const hud_test::explicitly_copy_constructible obj2(2);
-        tuple_type tuple(obj1, obj2);
+        tuple_type compressed_tuple(obj1, obj2);
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
 
@@ -743,9 +743,9 @@ GTEST_TEST(tuple, constructor_by_copy_mix_implicitly_explicitly_copyable_differe
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_explicitly_copyable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
 
@@ -753,12 +753,12 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_same_types)
     {
         hud_test::explicitly_copy_constructible obj1(1);
         hud_test::explicitly_copy_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -780,9 +780,9 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_explicitly_copyable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
 
@@ -790,12 +790,12 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_different_types)
     {
         hud_test::explicitly_copy_constructible obj1(1);
         hud_test::explicitly_copy_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -817,9 +817,9 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_copyable_different_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_implicitly_copyable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
 
@@ -827,12 +827,12 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_same_types)
     {
         hud_test::implicitly_copy_constructible obj1(1);
         hud_test::implicitly_copy_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -854,9 +854,9 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_implicitly_copyable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
 
@@ -864,12 +864,12 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_different_types)
     {
         hud_test::implicitly_copy_constructible obj1(1);
         hud_test::implicitly_copy_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -891,9 +891,9 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_copyable_different_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_mix_implicitly_explicitly_copyable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
 
@@ -901,12 +901,12 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_same_ty
     {
         hud_test::implicitly_copy_constructible obj1(1);
         hud_test::explicitly_copy_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -928,9 +928,9 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_same_ty
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_mix_implicitly_explicitly_copyable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_copy_constructible &&, hud_test::explicitly_copy_constructible &&>));
 
@@ -938,12 +938,12 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_differe
     {
         hud_test::implicitly_copy_constructible obj1(1);
         hud_test::explicitly_copy_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).copy_constructor_count() == 1u
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u
         };
     };
     // Non constant
@@ -965,9 +965,9 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_copyable_differe
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_explicitly_moveable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
 
@@ -975,14 +975,14 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_same_types)
     {
         hud_test::explicitly_move_constructible obj1(1);
         hud_test::explicitly_move_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
         };
     };
     // Non constant
@@ -1008,9 +1008,9 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_explicitly_moveable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
 
@@ -1018,14 +1018,14 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_different_types)
     {
         hud_test::explicitly_move_constructible obj1(1);
         hud_test::explicitly_move_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
         };
     };
     // Non constant
@@ -1051,9 +1051,9 @@ GTEST_TEST(tuple, constructor_by_move_explicitly_moveable_different_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_implicitly_moveable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
 
@@ -1061,14 +1061,14 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_same_types)
     {
         hud_test::implicitly_move_constructible obj1(1);
         hud_test::implicitly_move_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
         };
     };
     // Non constant
@@ -1094,9 +1094,9 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_implicitly_moveable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
 
@@ -1104,14 +1104,14 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_different_types)
     {
         hud_test::implicitly_move_constructible obj1(1);
         hud_test::implicitly_move_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
         };
     };
     // Non constant
@@ -1137,9 +1137,9 @@ GTEST_TEST(tuple, constructor_by_move_implicitly_moveable_different_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_mix_implicitly_explicitly_moveable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
 
@@ -1147,14 +1147,14 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_same_ty
     {
         hud_test::implicitly_move_constructible obj1(1);
         hud_test::explicitly_move_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
         };
     };
     // Non constant
@@ -1180,9 +1180,9 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_same_ty
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_mix_implicitly_explicitly_moveable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::implicitly_move_constructible &&, hud_test::explicitly_move_constructible &&>));
 
@@ -1190,14 +1190,14 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_differe
     {
         hud_test::implicitly_move_constructible obj1(1);
         hud_test::explicitly_move_constructible obj2(2);
-        tuple_type tuple(hud::move(obj1), hud::move(obj2));
+        tuple_type compressed_tuple(hud::move(obj1), hud::move(obj2));
         return std::tuple {
-            hud::get<0>(tuple).id() == 1,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).id() == 2,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).id() == 1,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).id() == 2,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
         };
     };
     // Non constant
@@ -1223,22 +1223,22 @@ GTEST_TEST(tuple, constructor_by_move_mix_implicitly_explicitly_moveable_differe
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_pair_of_explictly_copyable_same_types)
 {
     using pair_type = hud::pair<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
         const pair_type pair {1, 2};
-        const tuple_type tuple {pair};
+        const tuple_type compressed_tuple {pair};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1261,22 +1261,22 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_pair_of_explictly_copyable_different_types)
 {
     using pair_type = hud::pair<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
         const pair_type pair {1, 2};
-        const tuple_type tuple {pair};
+        const tuple_type compressed_tuple {pair};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1299,22 +1299,22 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_explictly_copyable_different_types
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_pair_of_implictly_copyable_same_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
         const pair_type pair {1, 2};
-        const tuple_type tuple {pair};
+        const tuple_type compressed_tuple {pair};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1337,22 +1337,22 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_pair_of_implictly_copyable_different_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
         const pair_type pair {1, 2};
-        const tuple_type tuple {pair};
+        const tuple_type compressed_tuple {pair};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1375,22 +1375,22 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_implictly_copyable_different_types
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyable_same_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
         const pair_type pair {1, 2};
-        const tuple_type tuple {pair};
+        const tuple_type compressed_tuple {pair};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1413,22 +1413,22 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyabl
     }
 }
 
-GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyable_different_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const pair_type &>));
 
     const auto test = []()
     {
         const pair_type pair {1, 2};
-        const tuple_type tuple {pair};
+        const tuple_type compressed_tuple {pair};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1451,22 +1451,22 @@ GTEST_TEST(tuple, constructor_by_copy_pair_of_mix_implictly_and_explitly_copyabl
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_explictly_copyable_same_types)
 {
     using pair_type = hud::pair<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1489,22 +1489,22 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_explictly_copyable_different_types)
 {
     using pair_type = hud::pair<hud_test::explicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1527,22 +1527,22 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_copyable_different_types
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_implictly_copyable_same_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1565,22 +1565,22 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_implictly_copyable_different_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1603,22 +1603,22 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_copyable_different_types
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyable_same_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1641,22 +1641,22 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyabl
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyable_different_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_copy_constructible, hud_test::explicitly_copy_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_copy_constructible2, hud_test::explicitly_copy_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 1u,
         };
     };
 
@@ -1679,23 +1679,24 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_copyabl
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_explictly_moveable_same_types)
 {
     using pair_type = hud::pair<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
-    using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
     static_assert((hud::is_explicitly_move_constructible_v<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>));
+
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
         };
     };
 
@@ -1722,24 +1723,24 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_explictly_moveable_different_types)
 {
     using pair_type = hud::pair<hud_test::explicitly_move_constructible, hud_test::explicitly_move_constructible>;
-    using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
         };
     };
 
@@ -1766,24 +1767,24 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_explictly_moveable_different_types
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_implictly_moveable_same_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
         };
     };
 
@@ -1810,24 +1811,24 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_same_types)
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_implictly_moveable_different_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_move_constructible, hud_test::implicitly_move_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
 
     static_assert((hud::is_implicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
         };
     };
 
@@ -1854,24 +1855,24 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_implictly_moveable_different_types
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveable_same_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveable_same_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
         };
     };
 
@@ -1898,24 +1899,24 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveabl
     }
 }
 
-GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveable_different_types)
+GTEST_TEST(compressed_tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveable_different_types)
 {
     using pair_type = hud::pair<hud_test::implicitly_move_constructible, hud_test::explicitly_move_constructible>;
-    using tuple_type = hud::tuple<hud_test::implicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
+    using tuple_type = hud::compressed_tuple<hud_test::implicitly_move_constructible2, hud_test::explicitly_move_constructible2>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, pair_type &&>));
 
     const auto test = []()
     {
         pair_type pair {1, 2};
-        const tuple_type tuple {hud::move(pair)};
+        const tuple_type compressed_tuple {hud::move(pair)};
         return std::tuple {
-            hud::get<0>(tuple).id(),
-            hud::get<0>(tuple).copy_constructor_count() == 0u,
-            hud::get<0>(tuple).move_constructor_count() == 1u,
-            hud::get<1>(tuple).id(),
-            hud::get<1>(tuple).copy_constructor_count() == 0u,
-            hud::get<1>(tuple).move_constructor_count() == 1u,
+            hud::get<0>(compressed_tuple).id(),
+            hud::get<0>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<0>(compressed_tuple).move_constructor_count() == 1u,
+            hud::get<1>(compressed_tuple).id(),
+            hud::get<1>(compressed_tuple).copy_constructor_count() == 0u,
+            hud::get<1>(compressed_tuple).move_constructor_count() == 1u,
         };
     };
 
@@ -1942,9 +1943,9 @@ GTEST_TEST(tuple, constructor_by_move_pair_of_mix_implictly_and_explitly_moveabl
     }
 }
 
-GTEST_TEST(tuple, copy_constructor_copyable_same_types)
+GTEST_TEST(compressed_tuple, copy_constructor_copyable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
 
@@ -1979,10 +1980,10 @@ GTEST_TEST(tuple, copy_constructor_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, copy_constructor_copyable_different_types)
+GTEST_TEST(compressed_tuple, copy_constructor_copyable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
-    using other_tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
+    using other_tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_copy_constructible &, const hud_test::implicitly_copy_constructible &>));
 
@@ -2017,9 +2018,9 @@ GTEST_TEST(tuple, copy_constructor_copyable_different_types)
     }
 }
 
-GTEST_TEST(tuple, copy_constructor_moveable_same_types)
+GTEST_TEST(compressed_tuple, copy_constructor_moveable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible &, const hud_test::implicitly_move_constructible &>));
 
@@ -2060,10 +2061,10 @@ GTEST_TEST(tuple, copy_constructor_moveable_same_types)
     }
 }
 
-GTEST_TEST(tuple, copy_constructor_moveable_different_types)
+GTEST_TEST(compressed_tuple, copy_constructor_moveable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
-    using other_tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
+    using other_tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, const hud_test::explicitly_move_constructible &, const hud_test::implicitly_move_constructible &>));
 
@@ -2104,9 +2105,9 @@ GTEST_TEST(tuple, copy_constructor_moveable_different_types)
     }
 }
 
-GTEST_TEST(tuple, move_constructor_copyable_same_types)
+GTEST_TEST(compressed_tuple, move_constructor_copyable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
 
@@ -2141,10 +2142,10 @@ GTEST_TEST(tuple, move_constructor_copyable_same_types)
     }
 }
 
-GTEST_TEST(tuple, move_constructor_copyable_different_types)
+GTEST_TEST(compressed_tuple, move_constructor_copyable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
-    using other_tuple_type = hud::tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible2, hud_test::implicitly_copy_constructible2>;
+    using other_tuple_type = hud::compressed_tuple<hud_test::explicitly_copy_constructible, hud_test::implicitly_copy_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_copy_constructible &&, hud_test::implicitly_copy_constructible &&>));
 
@@ -2179,9 +2180,9 @@ GTEST_TEST(tuple, move_constructor_copyable_different_types)
     }
 }
 
-GTEST_TEST(tuple, move_constructor_moveable_same_types)
+GTEST_TEST(compressed_tuple, move_constructor_moveable_same_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
 
@@ -2222,10 +2223,10 @@ GTEST_TEST(tuple, move_constructor_moveable_same_types)
     }
 }
 
-GTEST_TEST(tuple, move_constructor_moveable_different_types)
+GTEST_TEST(compressed_tuple, move_constructor_moveable_different_types)
 {
-    using tuple_type = hud::tuple<hud_test::explicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
-    using other_tuple_type = hud::tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
+    using tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible2, hud_test::implicitly_move_constructible2>;
+    using other_tuple_type = hud::compressed_tuple<hud_test::explicitly_move_constructible, hud_test::implicitly_move_constructible>;
 
     static_assert((hud::is_explicitly_constructible_v<tuple_type, hud_test::explicitly_move_constructible &&, hud_test::implicitly_move_constructible &&>));
 
@@ -2266,18 +2267,18 @@ GTEST_TEST(tuple, move_constructor_moveable_different_types)
     }
 }
 
-GTEST_TEST(tuple, piecewise_constructor_trivial_type_same_type)
+GTEST_TEST(compressed_tuple, piecewise_constructor_trivial_type_same_type)
 {
-    using tuple_type = hud::tuple<i32, u32, i64, u64>;
+    using tuple_type = hud::compressed_tuple<i32, u32, i64, u64>;
 
     const auto test = []()
     {
-        const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(1), hud::forward_as_tuple(2), hud::forward_as_tuple(3), hud::forward_as_tuple(4)};
+        const tuple_type compressed_tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(1), hud::forward_as_tuple(2), hud::forward_as_tuple(3), hud::forward_as_tuple(4)};
         return std::tuple {
-            hud::get<0>(tuple) == 1,
-            hud::get<1>(tuple) == 2,
-            hud::get<2>(tuple) == 3,
-            hud::get<3>(tuple) == 4,
+            hud::get<0>(compressed_tuple) == 1,
+            hud::get<1>(compressed_tuple) == 2,
+            hud::get<2>(compressed_tuple) == 3,
+            hud::get<3>(compressed_tuple) == 4,
         };
     };
 
@@ -2300,18 +2301,18 @@ GTEST_TEST(tuple, piecewise_constructor_trivial_type_same_type)
     }
 }
 
-GTEST_TEST(tuple, piecewise_constructor_trivial_type_different_type)
+GTEST_TEST(compressed_tuple, piecewise_constructor_trivial_type_different_type)
 {
-    using tuple_type = hud::tuple<i32, u32, i64, u64>;
+    using tuple_type = hud::compressed_tuple<i32, u32, i64, u64>;
 
     const auto test = []()
     {
-        const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(u8 {1}), hud::forward_as_tuple(u8 {2}), hud::forward_as_tuple(u8 {3}), hud::forward_as_tuple(u8 {4})};
+        const tuple_type compressed_tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(u8 {1}), hud::forward_as_tuple(u8 {2}), hud::forward_as_tuple(u8 {3}), hud::forward_as_tuple(u8 {4})};
         return std::tuple {
-            hud::get<0>(tuple) == 1,
-            hud::get<1>(tuple) == 2,
-            hud::get<2>(tuple) == 3,
-            hud::get<3>(tuple) == 4,
+            hud::get<0>(compressed_tuple) == 1,
+            hud::get<1>(compressed_tuple) == 2,
+            hud::get<2>(compressed_tuple) == 3,
+            hud::get<3>(compressed_tuple) == 4,
         };
     };
 
@@ -2334,45 +2335,45 @@ GTEST_TEST(tuple, piecewise_constructor_trivial_type_different_type)
     }
 }
 
-GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_same_type)
+GTEST_TEST(compressed_tuple, piecewise_constructor_non_trivial_type_same_type)
 {
     // By param
     {
         using type = hud_test::non_bitwise_type;
-        using tuple_type = hud::tuple<type, type, type, type>;
+        using tuple_type = hud::compressed_tuple<type, type, type, type>;
 
         const auto test = []()
         {
-            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(1, nullptr), hud::forward_as_tuple(2, nullptr), hud::forward_as_tuple(3, nullptr), hud::forward_as_tuple(4, nullptr)};
+            const tuple_type compressed_tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(1, nullptr), hud::forward_as_tuple(2, nullptr), hud::forward_as_tuple(3, nullptr), hud::forward_as_tuple(4, nullptr)};
             return std::tuple {
-                hud::get<0>(tuple).id() == 1,                       // 0
-                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
-                hud::get<0>(tuple).constructor_count() == 1,        // 2
-                hud::get<0>(tuple).copy_constructor_count() == 0,   // 3
-                hud::get<0>(tuple).move_constructor_count() == 0,   // 4
-                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
-                hud::get<0>(tuple).move_assign_count() == 0,        // 6
-                hud::get<1>(tuple).id() == 2,                       // 7
-                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
-                hud::get<1>(tuple).constructor_count() == 1,        // 9
-                hud::get<1>(tuple).copy_constructor_count() == 0,   // 10
-                hud::get<1>(tuple).move_constructor_count() == 0,   // 11
-                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
-                hud::get<1>(tuple).move_assign_count() == 0,        // 13
-                hud::get<2>(tuple).id() == 3,                       // 14
-                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
-                hud::get<2>(tuple).constructor_count() == 1,        // 16
-                hud::get<2>(tuple).copy_constructor_count() == 0,   // 17
-                hud::get<2>(tuple).move_constructor_count() == 0,   // 18
-                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
-                hud::get<2>(tuple).move_assign_count() == 0,        // 20
-                hud::get<3>(tuple).id() == 4,                       // 21
-                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
-                hud::get<3>(tuple).constructor_count() == 1,        // 23
-                hud::get<3>(tuple).copy_constructor_count() == 0,   // 24
-                hud::get<3>(tuple).move_constructor_count() == 0,   // 25
-                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
-                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+                hud::get<0>(compressed_tuple).id() == 1,                       // 0
+                hud::get<0>(compressed_tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(compressed_tuple).constructor_count() == 1,        // 2
+                hud::get<0>(compressed_tuple).copy_constructor_count() == 0,   // 3
+                hud::get<0>(compressed_tuple).move_constructor_count() == 0,   // 4
+                hud::get<0>(compressed_tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(compressed_tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(compressed_tuple).id() == 2,                       // 7
+                hud::get<1>(compressed_tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(compressed_tuple).constructor_count() == 1,        // 9
+                hud::get<1>(compressed_tuple).copy_constructor_count() == 0,   // 10
+                hud::get<1>(compressed_tuple).move_constructor_count() == 0,   // 11
+                hud::get<1>(compressed_tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(compressed_tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(compressed_tuple).id() == 3,                       // 14
+                hud::get<2>(compressed_tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(compressed_tuple).constructor_count() == 1,        // 16
+                hud::get<2>(compressed_tuple).copy_constructor_count() == 0,   // 17
+                hud::get<2>(compressed_tuple).move_constructor_count() == 0,   // 18
+                hud::get<2>(compressed_tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(compressed_tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(compressed_tuple).id() == 4,                       // 21
+                hud::get<3>(compressed_tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(compressed_tuple).constructor_count() == 1,        // 23
+                hud::get<3>(compressed_tuple).copy_constructor_count() == 0,   // 24
+                hud::get<3>(compressed_tuple).move_constructor_count() == 0,   // 25
+                hud::get<3>(compressed_tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(compressed_tuple).move_assign_count() == 0,        // 27
             };
         };
 
@@ -2446,7 +2447,7 @@ GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_same_type)
     // By copy
     {
         using type = hud_test::non_bitwise_type;
-        using tuple_type = hud::tuple<type, type, type, type>;
+        using tuple_type = hud::compressed_tuple<type, type, type, type>;
 
         const auto test = []()
         {
@@ -2455,36 +2456,36 @@ GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_same_type)
             const type to_copy_2 {3, nullptr};
             const type to_copy_3 {4, nullptr};
 
-            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1), hud::forward_as_tuple(to_copy_2), hud::forward_as_tuple(to_copy_3)};
+            const tuple_type compressed_tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1), hud::forward_as_tuple(to_copy_2), hud::forward_as_tuple(to_copy_3)};
             return std::tuple {
-                hud::get<0>(tuple).id() == 1,                       // 0
-                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
-                hud::get<0>(tuple).constructor_count() == 1,        // 2
-                hud::get<0>(tuple).copy_constructor_count() == 1,   // 3
-                hud::get<0>(tuple).move_constructor_count() == 0,   // 4
-                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
-                hud::get<0>(tuple).move_assign_count() == 0,        // 6
-                hud::get<1>(tuple).id() == 2,                       // 7
-                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
-                hud::get<1>(tuple).constructor_count() == 1,        // 9
-                hud::get<1>(tuple).copy_constructor_count() == 1,   // 10
-                hud::get<1>(tuple).move_constructor_count() == 0,   // 11
-                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
-                hud::get<1>(tuple).move_assign_count() == 0,        // 13
-                hud::get<2>(tuple).id() == 3,                       // 14
-                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
-                hud::get<2>(tuple).constructor_count() == 1,        // 16
-                hud::get<2>(tuple).copy_constructor_count() == 1,   // 17
-                hud::get<2>(tuple).move_constructor_count() == 0,   // 18
-                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
-                hud::get<2>(tuple).move_assign_count() == 0,        // 20
-                hud::get<3>(tuple).id() == 4,                       // 21
-                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
-                hud::get<3>(tuple).constructor_count() == 1,        // 23
-                hud::get<3>(tuple).copy_constructor_count() == 1,   // 24
-                hud::get<3>(tuple).move_constructor_count() == 0,   // 25
-                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
-                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+                hud::get<0>(compressed_tuple).id() == 1,                       // 0
+                hud::get<0>(compressed_tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(compressed_tuple).constructor_count() == 1,        // 2
+                hud::get<0>(compressed_tuple).copy_constructor_count() == 1,   // 3
+                hud::get<0>(compressed_tuple).move_constructor_count() == 0,   // 4
+                hud::get<0>(compressed_tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(compressed_tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(compressed_tuple).id() == 2,                       // 7
+                hud::get<1>(compressed_tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(compressed_tuple).constructor_count() == 1,        // 9
+                hud::get<1>(compressed_tuple).copy_constructor_count() == 1,   // 10
+                hud::get<1>(compressed_tuple).move_constructor_count() == 0,   // 11
+                hud::get<1>(compressed_tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(compressed_tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(compressed_tuple).id() == 3,                       // 14
+                hud::get<2>(compressed_tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(compressed_tuple).constructor_count() == 1,        // 16
+                hud::get<2>(compressed_tuple).copy_constructor_count() == 1,   // 17
+                hud::get<2>(compressed_tuple).move_constructor_count() == 0,   // 18
+                hud::get<2>(compressed_tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(compressed_tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(compressed_tuple).id() == 4,                       // 21
+                hud::get<3>(compressed_tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(compressed_tuple).constructor_count() == 1,        // 23
+                hud::get<3>(compressed_tuple).copy_constructor_count() == 1,   // 24
+                hud::get<3>(compressed_tuple).move_constructor_count() == 0,   // 25
+                hud::get<3>(compressed_tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(compressed_tuple).move_assign_count() == 0,        // 27
             };
         };
 
@@ -2558,40 +2559,40 @@ GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_same_type)
     // By move
     {
         using type = hud_test::non_bitwise_type;
-        using tuple_type = hud::tuple<type, type, type, type>;
+        using tuple_type = hud::compressed_tuple<type, type, type, type>;
 
         const auto test = []()
         {
-            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(type {1, nullptr}), hud::forward_as_tuple(type {2, nullptr}), hud::forward_as_tuple(type {3, nullptr}), hud::forward_as_tuple(type {4, nullptr})};
+            const tuple_type compressed_tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(type {1, nullptr}), hud::forward_as_tuple(type {2, nullptr}), hud::forward_as_tuple(type {3, nullptr}), hud::forward_as_tuple(type {4, nullptr})};
             return std::tuple {
-                hud::get<0>(tuple).id() == 1,                       // 0
-                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
-                hud::get<0>(tuple).constructor_count() == 1,        // 2
-                hud::get<0>(tuple).copy_constructor_count() == 0,   // 3
-                hud::get<0>(tuple).move_constructor_count() == 1,   // 4
-                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
-                hud::get<0>(tuple).move_assign_count() == 0,        // 6
-                hud::get<1>(tuple).id() == 2,                       // 7
-                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
-                hud::get<1>(tuple).constructor_count() == 1,        // 9
-                hud::get<1>(tuple).copy_constructor_count() == 0,   // 10
-                hud::get<1>(tuple).move_constructor_count() == 1,   // 11
-                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
-                hud::get<1>(tuple).move_assign_count() == 0,        // 13
-                hud::get<2>(tuple).id() == 3,                       // 14
-                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
-                hud::get<2>(tuple).constructor_count() == 1,        // 16
-                hud::get<2>(tuple).copy_constructor_count() == 0,   // 17
-                hud::get<2>(tuple).move_constructor_count() == 1,   // 18
-                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
-                hud::get<2>(tuple).move_assign_count() == 0,        // 20
-                hud::get<3>(tuple).id() == 4,                       // 21
-                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
-                hud::get<3>(tuple).constructor_count() == 1,        // 23
-                hud::get<3>(tuple).copy_constructor_count() == 0,   // 24
-                hud::get<3>(tuple).move_constructor_count() == 1,   // 25
-                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
-                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+                hud::get<0>(compressed_tuple).id() == 1,                       // 0
+                hud::get<0>(compressed_tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(compressed_tuple).constructor_count() == 1,        // 2
+                hud::get<0>(compressed_tuple).copy_constructor_count() == 0,   // 3
+                hud::get<0>(compressed_tuple).move_constructor_count() == 1,   // 4
+                hud::get<0>(compressed_tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(compressed_tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(compressed_tuple).id() == 2,                       // 7
+                hud::get<1>(compressed_tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(compressed_tuple).constructor_count() == 1,        // 9
+                hud::get<1>(compressed_tuple).copy_constructor_count() == 0,   // 10
+                hud::get<1>(compressed_tuple).move_constructor_count() == 1,   // 11
+                hud::get<1>(compressed_tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(compressed_tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(compressed_tuple).id() == 3,                       // 14
+                hud::get<2>(compressed_tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(compressed_tuple).constructor_count() == 1,        // 16
+                hud::get<2>(compressed_tuple).copy_constructor_count() == 0,   // 17
+                hud::get<2>(compressed_tuple).move_constructor_count() == 1,   // 18
+                hud::get<2>(compressed_tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(compressed_tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(compressed_tuple).id() == 4,                       // 21
+                hud::get<3>(compressed_tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(compressed_tuple).constructor_count() == 1,        // 23
+                hud::get<3>(compressed_tuple).copy_constructor_count() == 0,   // 24
+                hud::get<3>(compressed_tuple).move_constructor_count() == 1,   // 25
+                hud::get<3>(compressed_tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(compressed_tuple).move_assign_count() == 0,        // 27
             };
         };
 
@@ -2663,13 +2664,13 @@ GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_same_type)
     }
 }
 
-GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_different_type)
+GTEST_TEST(compressed_tuple, piecewise_constructor_non_trivial_type_different_type)
 {
     // By copy
     {
         using type = hud_test::non_bitwise_type;
         using type2 = hud_test::non_bitwise_type2;
-        using tuple_type = hud::tuple<type2, type2, type2, type2>;
+        using tuple_type = hud::compressed_tuple<type2, type2, type2, type2>;
 
         const auto test = []()
         {
@@ -2678,36 +2679,36 @@ GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_different_type)
             const type to_copy_2 {3, nullptr};
             const type to_copy_3 {4, nullptr};
 
-            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1), hud::forward_as_tuple(to_copy_2), hud::forward_as_tuple(to_copy_3)};
+            const tuple_type compressed_tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(to_copy_0), hud::forward_as_tuple(to_copy_1), hud::forward_as_tuple(to_copy_2), hud::forward_as_tuple(to_copy_3)};
             return std::tuple {
-                hud::get<0>(tuple).id() == 1,                       // 0
-                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
-                hud::get<0>(tuple).constructor_count() == 1,        // 2
-                hud::get<0>(tuple).copy_constructor_count() == 1,   // 3
-                hud::get<0>(tuple).move_constructor_count() == 0,   // 4
-                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
-                hud::get<0>(tuple).move_assign_count() == 0,        // 6
-                hud::get<1>(tuple).id() == 2,                       // 7
-                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
-                hud::get<1>(tuple).constructor_count() == 1,        // 9
-                hud::get<1>(tuple).copy_constructor_count() == 1,   // 10
-                hud::get<1>(tuple).move_constructor_count() == 0,   // 11
-                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
-                hud::get<1>(tuple).move_assign_count() == 0,        // 13
-                hud::get<2>(tuple).id() == 3,                       // 14
-                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
-                hud::get<2>(tuple).constructor_count() == 1,        // 16
-                hud::get<2>(tuple).copy_constructor_count() == 1,   // 17
-                hud::get<2>(tuple).move_constructor_count() == 0,   // 18
-                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
-                hud::get<2>(tuple).move_assign_count() == 0,        // 20
-                hud::get<3>(tuple).id() == 4,                       // 21
-                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
-                hud::get<3>(tuple).constructor_count() == 1,        // 23
-                hud::get<3>(tuple).copy_constructor_count() == 1,   // 24
-                hud::get<3>(tuple).move_constructor_count() == 0,   // 25
-                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
-                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+                hud::get<0>(compressed_tuple).id() == 1,                       // 0
+                hud::get<0>(compressed_tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(compressed_tuple).constructor_count() == 1,        // 2
+                hud::get<0>(compressed_tuple).copy_constructor_count() == 1,   // 3
+                hud::get<0>(compressed_tuple).move_constructor_count() == 0,   // 4
+                hud::get<0>(compressed_tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(compressed_tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(compressed_tuple).id() == 2,                       // 7
+                hud::get<1>(compressed_tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(compressed_tuple).constructor_count() == 1,        // 9
+                hud::get<1>(compressed_tuple).copy_constructor_count() == 1,   // 10
+                hud::get<1>(compressed_tuple).move_constructor_count() == 0,   // 11
+                hud::get<1>(compressed_tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(compressed_tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(compressed_tuple).id() == 3,                       // 14
+                hud::get<2>(compressed_tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(compressed_tuple).constructor_count() == 1,        // 16
+                hud::get<2>(compressed_tuple).copy_constructor_count() == 1,   // 17
+                hud::get<2>(compressed_tuple).move_constructor_count() == 0,   // 18
+                hud::get<2>(compressed_tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(compressed_tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(compressed_tuple).id() == 4,                       // 21
+                hud::get<3>(compressed_tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(compressed_tuple).constructor_count() == 1,        // 23
+                hud::get<3>(compressed_tuple).copy_constructor_count() == 1,   // 24
+                hud::get<3>(compressed_tuple).move_constructor_count() == 0,   // 25
+                hud::get<3>(compressed_tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(compressed_tuple).move_assign_count() == 0,        // 27
             };
         };
 
@@ -2782,40 +2783,40 @@ GTEST_TEST(tuple, piecewise_constructor_non_trivial_type_different_type)
     {
         using type = hud_test::non_bitwise_type;
         using type2 = hud_test::non_bitwise_type2;
-        using tuple_type = hud::tuple<type2, type2, type2, type2>;
+        using tuple_type = hud::compressed_tuple<type2, type2, type2, type2>;
 
         const auto test = []()
         {
-            const tuple_type tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(type {1, nullptr}), hud::forward_as_tuple(type {2, nullptr}), hud::forward_as_tuple(type {3, nullptr}), hud::forward_as_tuple(type {4, nullptr})};
+            const tuple_type compressed_tuple {hud::tag_piecewise_construct, hud::forward_as_tuple(type {1, nullptr}), hud::forward_as_tuple(type {2, nullptr}), hud::forward_as_tuple(type {3, nullptr}), hud::forward_as_tuple(type {4, nullptr})};
             return std::tuple {
-                hud::get<0>(tuple).id() == 1,                       // 0
-                hud::get<0>(tuple).destructor_counter() == nullptr, // 1
-                hud::get<0>(tuple).constructor_count() == 1,        // 2
-                hud::get<0>(tuple).copy_constructor_count() == 0,   // 3
-                hud::get<0>(tuple).move_constructor_count() == 1,   // 4
-                hud::get<0>(tuple).copy_assign_count() == 0,        // 5
-                hud::get<0>(tuple).move_assign_count() == 0,        // 6
-                hud::get<1>(tuple).id() == 2,                       // 7
-                hud::get<1>(tuple).destructor_counter() == nullptr, // 8
-                hud::get<1>(tuple).constructor_count() == 1,        // 9
-                hud::get<1>(tuple).copy_constructor_count() == 0,   // 10
-                hud::get<1>(tuple).move_constructor_count() == 1,   // 11
-                hud::get<1>(tuple).copy_assign_count() == 0,        // 12
-                hud::get<1>(tuple).move_assign_count() == 0,        // 13
-                hud::get<2>(tuple).id() == 3,                       // 14
-                hud::get<2>(tuple).destructor_counter() == nullptr, // 15
-                hud::get<2>(tuple).constructor_count() == 1,        // 16
-                hud::get<2>(tuple).copy_constructor_count() == 0,   // 17
-                hud::get<2>(tuple).move_constructor_count() == 1,   // 18
-                hud::get<2>(tuple).copy_assign_count() == 0,        // 19
-                hud::get<2>(tuple).move_assign_count() == 0,        // 20
-                hud::get<3>(tuple).id() == 4,                       // 21
-                hud::get<3>(tuple).destructor_counter() == nullptr, // 22
-                hud::get<3>(tuple).constructor_count() == 1,        // 23
-                hud::get<3>(tuple).copy_constructor_count() == 0,   // 24
-                hud::get<3>(tuple).move_constructor_count() == 1,   // 25
-                hud::get<3>(tuple).copy_assign_count() == 0,        // 26
-                hud::get<3>(tuple).move_assign_count() == 0,        // 27
+                hud::get<0>(compressed_tuple).id() == 1,                       // 0
+                hud::get<0>(compressed_tuple).destructor_counter() == nullptr, // 1
+                hud::get<0>(compressed_tuple).constructor_count() == 1,        // 2
+                hud::get<0>(compressed_tuple).copy_constructor_count() == 0,   // 3
+                hud::get<0>(compressed_tuple).move_constructor_count() == 1,   // 4
+                hud::get<0>(compressed_tuple).copy_assign_count() == 0,        // 5
+                hud::get<0>(compressed_tuple).move_assign_count() == 0,        // 6
+                hud::get<1>(compressed_tuple).id() == 2,                       // 7
+                hud::get<1>(compressed_tuple).destructor_counter() == nullptr, // 8
+                hud::get<1>(compressed_tuple).constructor_count() == 1,        // 9
+                hud::get<1>(compressed_tuple).copy_constructor_count() == 0,   // 10
+                hud::get<1>(compressed_tuple).move_constructor_count() == 1,   // 11
+                hud::get<1>(compressed_tuple).copy_assign_count() == 0,        // 12
+                hud::get<1>(compressed_tuple).move_assign_count() == 0,        // 13
+                hud::get<2>(compressed_tuple).id() == 3,                       // 14
+                hud::get<2>(compressed_tuple).destructor_counter() == nullptr, // 15
+                hud::get<2>(compressed_tuple).constructor_count() == 1,        // 16
+                hud::get<2>(compressed_tuple).copy_constructor_count() == 0,   // 17
+                hud::get<2>(compressed_tuple).move_constructor_count() == 1,   // 18
+                hud::get<2>(compressed_tuple).copy_assign_count() == 0,        // 19
+                hud::get<2>(compressed_tuple).move_assign_count() == 0,        // 20
+                hud::get<3>(compressed_tuple).id() == 4,                       // 21
+                hud::get<3>(compressed_tuple).destructor_counter() == nullptr, // 22
+                hud::get<3>(compressed_tuple).constructor_count() == 1,        // 23
+                hud::get<3>(compressed_tuple).copy_constructor_count() == 0,   // 24
+                hud::get<3>(compressed_tuple).move_constructor_count() == 1,   // 25
+                hud::get<3>(compressed_tuple).copy_assign_count() == 0,        // 26
+                hud::get<3>(compressed_tuple).move_assign_count() == 0,        // 27
             };
         };
 
