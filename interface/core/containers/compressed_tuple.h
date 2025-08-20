@@ -189,8 +189,11 @@ namespace hud
         template<typename index_seq_t, typename... types_t>
         struct compressed_tuple_impl;
 
+#if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_MSVC)
+    #define EBCO_MSVC __declspec(empty_bases)
+#endif
         template<usize... indices, typename... types_t>
-        struct __declspec(empty_bases) compressed_tuple_impl<index_sequence<indices...>, types_t...>
+        struct EBCO_MSVC compressed_tuple_impl<index_sequence<indices...>, types_t...>
             : tuple_leaf_select<indices, types_t>::type...
         {
 
