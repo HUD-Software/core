@@ -256,52 +256,6 @@ namespace hud
             constexpr compressed_tuple_impl(compressed_tuple_impl &&) = default;
         };
 
-        /**
-         * Recursively assign a compressed_tuple to another.
-         * @tparam count Number of element to assign
-         */
-        template<usize count>
-        struct tuple_assign
-        {
-            /**
-             * Assign a 2 compressed_tuple elements.
-             * @tparam types_t... List of types_t of the compressed_tuple to
-             * @tparam u_types_t... List of types_t of the compressed_tuple from
-             * @param to The assigned compressed_tuple
-             * @param from The compressed_tuple to assign
-             */
-            template<typename... types_t, typename... u_types_t>
-            constexpr void operator()([[maybe_unused]] hud::compressed_tuple<types_t...> &to, [[maybe_unused]] const hud::compressed_tuple<u_types_t...> &from) noexcept
-            {
-                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
-                if constexpr (count > 0u)
-                {
-                    constexpr const usize idx = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
-                    hud::get<idx>(to) = hud::get<idx>(from);
-                    tuple_assign<count - 1u>()(to, from);
-                }
-            }
-
-            /**
-             * Assign a 2 compressed_tuple elements.
-             * @tparam types_t... List of types_t of the compressed_tuple to
-             * @tparam u_types_t... List of types_t of the compressed_tuple from
-             * @param to The assigned compressed_tuple
-             * @param from The compressed_tuple to assign
-             */
-            template<typename... types_t, typename... u_types_t>
-            constexpr void operator()([[maybe_unused]] hud::compressed_tuple<types_t...> &to, [[maybe_unused]] hud::compressed_tuple<u_types_t...> &&from) noexcept
-            {
-                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
-                if constexpr (count > 0)
-                {
-                    constexpr const usize idx = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
-                    hud::get<idx>(to) = hud::get<idx>(hud::move(from));
-                    tuple_assign<count - 1u>()(to, hud::move(from));
-                }
-            }
-        };
-
         /** Swap tuple1_t and tuple2_t element at the index if element is swappable. */
         template<usize type_index, typename tuple1_t, typename tuple2_t, bool = hud::is_swappable_v<hud::tuple_element_t<type_index, tuple1_t>, hud::tuple_element_t<type_index, tuple2_t>>>
         struct swap_element
@@ -752,7 +706,7 @@ namespace hud
         constexpr compressed_tuple &operator=(const compressed_tuple &other) noexcept
         requires(hud::conjunction_v<hud::is_copy_assignable<types_t>...>)
         {
-            details::compressed_tuple::tuple_assign<sizeof...(types_t)>()(*this, other);
+            details::tuple::tuple_assign<sizeof...(types_t), compressed_tuple, compressed_tuple>()(*this, other);
             return *this;
         }
 
@@ -767,7 +721,7 @@ namespace hud
         requires(hud::conjunction_v<hud::is_copy_assignable<types_t, u_types_t>...>)
         constexpr compressed_tuple &operator=(const compressed_tuple<u_types_t...> &other) noexcept
         {
-            details::compressed_tuple::tuple_assign<sizeof...(types_t)>()(*this, other);
+            details::tuple::tuple_assign<sizeof...(types_t), compressed_tuple, compressed_tuple<u_types_t...>>()(*this, other);
             return *this;
         }
 
@@ -781,7 +735,7 @@ namespace hud
         constexpr compressed_tuple &operator=(compressed_tuple &&other) noexcept
         requires(hud::conjunction_v<hud::is_move_assignable<types_t>...>)
         {
-            details::compressed_tuple::tuple_assign<sizeof...(types_t)>()(*this, hud::move(other));
+            details::tuple::tuple_assign<sizeof...(types_t), compressed_tuple, compressed_tuple>()(*this, hud::move(other));
             return *this;
         }
 
@@ -796,7 +750,7 @@ namespace hud
         requires(hud::conjunction_v<hud::is_move_assignable<types_t, u_types_t>...>)
         constexpr compressed_tuple &operator=(compressed_tuple<u_types_t...> &&other) noexcept
         {
-            details::compressed_tuple::tuple_assign<sizeof...(types_t)>()(*this, hud::move(other));
+            details::tuple::tuple_assign<sizeof...(types_t), compressed_tuple, compressed_tuple<u_types_t...>>()(*this, hud::move(other));
             return *this;
         }
 
@@ -897,7 +851,7 @@ namespace hud
     [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &get(compressed_tuple<types_t...> &t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, compressed_tuple<types_t...>>;
-        return static_cast<details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &>(t).element();
+        return static_cast<typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &>(t).element();
     }
 
     /**
@@ -911,7 +865,7 @@ namespace hud
     [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &get(const compressed_tuple<types_t...> &t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, compressed_tuple<types_t...>>;
-        return static_cast<const details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &>(t).element();
+        return static_cast<const typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &>(t).element();
     }
 
     /**
@@ -925,7 +879,7 @@ namespace hud
     [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &&get(compressed_tuple<types_t...> &&t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, compressed_tuple<types_t...>>;
-        return hud::forward<type_t>(static_cast<details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &&>(t).element());
+        return hud::forward<type_t>(static_cast<typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &&>(t).element());
     }
 
     /**
@@ -939,7 +893,7 @@ namespace hud
     [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &&get(const compressed_tuple<types_t...> &&t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, compressed_tuple<types_t...>>;
-        return hud::forward<const type_t>(static_cast<const details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &&>(t).element());
+        return hud::forward<const type_t>(static_cast<const typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &&>(t).element());
     }
 
     /**

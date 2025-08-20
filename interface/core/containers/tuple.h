@@ -320,9 +320,14 @@ namespace hud
          * Recursively assign a tuple to another.
          * @tparam count Number of element to assign
          */
-        template<usize count>
-        struct tuple_assign
+        template<usize count, typename tuple_to_type, typename tuple_from_type>
+        struct tuple_assign;
+
+        template<usize count, typename... types_t, typename... u_types_t>
+        struct tuple_assign<count, hud::tuple<types_t...>, hud::tuple<u_types_t...>>
         {
+            using tuple_to_type = hud::tuple<types_t...>;
+            using tuple_from_type = hud::tuple<u_types_t...>;
 
             /**
              * Assign a 2 tuple elements.
@@ -332,14 +337,14 @@ namespace hud
              * @param from The tuple to assign
              */
             template<typename... types_t, typename... u_types_t>
-            constexpr void operator()([[maybe_unused]] hud::tuple<types_t...> &to, [[maybe_unused]] const hud::tuple<u_types_t...> &from) noexcept
+            constexpr void operator()([[maybe_unused]] tuple_to_type &to, [[maybe_unused]] const tuple_from_type &from) noexcept
             {
-                static_assert(hud::tuple_size_v<hud::tuple<types_t...>> == hud::tuple_size_v<hud::tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<tuple_to_type> == hud::tuple_size_v<tuple_from_type>, "Assigning tuples of different size is not supported");
                 if constexpr (count > 0u)
                 {
-                    constexpr const usize idx = tuple_size_v<hud::tuple<types_t...>> - count;
+                    constexpr const usize idx = tuple_size_v<tuple_to_type> - count;
                     hud::get<idx>(to) = hud::get<idx>(from);
-                    tuple_assign<count - 1u>()(to, from);
+                    tuple_assign<count - 1u, tuple_to_type, tuple_from_type>()(to, from);
                 }
             }
 
@@ -351,14 +356,14 @@ namespace hud
              * @param from The tuple to assign
              */
             template<typename... types_t, typename... u_types_t>
-            constexpr void operator()([[maybe_unused]] hud::tuple<types_t...> &to, [[maybe_unused]] hud::tuple<u_types_t...> &&from) noexcept
+            constexpr void operator()([[maybe_unused]] tuple_to_type &to, [[maybe_unused]] tuple_from_type &&from) noexcept
             {
-                static_assert(hud::tuple_size_v<hud::tuple<types_t...>> == hud::tuple_size_v<hud::tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<tuple_to_type> == hud::tuple_size_v<tuple_from_type>, "Assigning tuples of different size is not supported");
                 if constexpr (count > 0)
                 {
-                    constexpr const usize idx = tuple_size_v<hud::tuple<types_t...>> - count;
+                    constexpr const usize idx = tuple_size_v<tuple_to_type> - count;
                     hud::get<idx>(to) = hud::get<idx>(hud::move(from));
-                    tuple_assign<count - 1u>()(to, hud::move(from));
+                    tuple_assign<count - 1u, tuple_to_type, tuple_from_type>()(to, hud::move(from));
                 }
             }
         };
@@ -812,7 +817,7 @@ namespace hud
         constexpr tuple &operator=(const tuple &other) noexcept
         requires(hud::conjunction_v<hud::is_copy_assignable<types_t>...>)
         {
-            details::tuple::tuple_assign<sizeof...(types_t)>()(*this, other);
+            details::tuple::tuple_assign<sizeof...(types_t), tuple, tuple>()(*this, other);
             return *this;
         }
 
@@ -827,7 +832,7 @@ namespace hud
         requires(hud::conjunction_v<hud::is_copy_assignable<types_t, u_types_t>...>)
         constexpr tuple &operator=(const tuple<u_types_t...> &other) noexcept
         {
-            details::tuple::tuple_assign<sizeof...(types_t)>()(*this, other);
+            details::tuple::tuple_assign<sizeof...(types_t), tuple, tuple<u_types_t...>>()(*this, other);
             return *this;
         }
 
@@ -841,7 +846,7 @@ namespace hud
         constexpr tuple &operator=(tuple &&other) noexcept
         requires(hud::conjunction_v<hud::is_move_assignable<types_t>...>)
         {
-            details::tuple::tuple_assign<sizeof...(types_t)>()(*this, hud::move(other));
+            details::tuple::tuple_assign<sizeof...(types_t), tuple, tuple>()(*this, hud::move(other));
             return *this;
         }
 
@@ -856,7 +861,7 @@ namespace hud
         requires(hud::conjunction_v<hud::is_move_assignable<types_t, u_types_t>...>)
         constexpr tuple &operator=(tuple<u_types_t...> &&other) noexcept
         {
-            details::tuple::tuple_assign<sizeof...(types_t)>()(*this, hud::move(other));
+            details::tuple::tuple_assign<sizeof...(types_t), tuple, tuple<u_types_t...>>()(*this, hud::move(other));
             return *this;
         }
 
