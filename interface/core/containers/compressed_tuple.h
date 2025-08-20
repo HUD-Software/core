@@ -189,9 +189,13 @@ namespace hud
         template<typename index_seq_t, typename... types_t>
         struct compressed_tuple_impl;
 
+        /** We need this to force MSVC to do EBCO of multiple inheritance. */
 #if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_MSVC)
     #define EBCO_MSVC __declspec(empty_bases)
+#else
+    #define EBCO_MSVC
 #endif
+
         template<usize... indices, typename... types_t>
         struct EBCO_MSVC compressed_tuple_impl<index_sequence<indices...>, types_t...>
             : tuple_leaf_select<indices, types_t>::type...
@@ -259,7 +263,6 @@ namespace hud
         template<usize count>
         struct tuple_assign
         {
-
             /**
              * Assign a 2 compressed_tuple elements.
              * @tparam types_t... List of types_t of the compressed_tuple to
