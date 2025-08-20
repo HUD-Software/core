@@ -273,7 +273,7 @@ namespace hud
             template<typename... types_t, typename... u_types_t>
             constexpr void operator()([[maybe_unused]] hud::compressed_tuple<types_t...> &to, [[maybe_unused]] const hud::compressed_tuple<u_types_t...> &from) noexcept
             {
-                static_assert(hud::is_same_size_v<hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
                 if constexpr (count > 0u)
                 {
                     constexpr const usize idx = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
@@ -292,7 +292,7 @@ namespace hud
             template<typename... types_t, typename... u_types_t>
             constexpr void operator()([[maybe_unused]] hud::compressed_tuple<types_t...> &to, [[maybe_unused]] hud::compressed_tuple<u_types_t...> &&from) noexcept
             {
-                static_assert(hud::is_same_size_v<hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Assigning tuples of different size is not supported");
                 if constexpr (count > 0)
                 {
                     constexpr const usize idx = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
@@ -338,7 +338,7 @@ namespace hud
             template<typename... types_t, typename... u_types_t>
             constexpr void operator()([[maybe_unused]] hud::compressed_tuple<types_t...> &first, [[maybe_unused]] hud::compressed_tuple<u_types_t...> &second) noexcept
             {
-                static_assert(hud::is_same_size_v<hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>>, "Swapping tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Swapping tuples of different size is not supported");
 
                 if constexpr (count > 0u)
                 {
@@ -366,7 +366,7 @@ namespace hud
             template<typename... types_t, typename... u_types_t>
             [[nodiscard]] constexpr bool operator()([[maybe_unused]] const hud::compressed_tuple<types_t...> &first, [[maybe_unused]] const hud::compressed_tuple<u_types_t...> &second) noexcept
             {
-                static_assert(hud::is_same_size_v<hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
                 if constexpr (count > 0u)
                 {
                     constexpr const usize index_to_swap = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
@@ -396,7 +396,7 @@ namespace hud
             template<typename... types_t, typename... u_types_t>
             [[nodiscard]] constexpr bool operator()([[maybe_unused]] const hud::compressed_tuple<types_t...> &first, [[maybe_unused]] const hud::compressed_tuple<u_types_t...> &second) noexcept
             {
-                static_assert(hud::is_same_size_v<hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
                 if constexpr (count > 0u)
                 {
                     constexpr const usize index_to_swap = hud::tuple_size_v<hud::compressed_tuple<types_t...>> - count;
