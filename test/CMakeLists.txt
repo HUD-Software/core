@@ -61,6 +61,7 @@ set( src
 	compressed_pair/compressed_pair_misc.cpp
 	compressed_pair/compressed_pair_swap.cpp
 	compressed_tuple/compressed_tuple_constructors.cpp
+	compressed_tuple/compressed_tuple_assignments.cpp
 	hash/city_hash.cpp
 	hash/crc32.cpp
 	hash/hash_32.cpp
