@@ -916,7 +916,7 @@ namespace hud
     [[nodiscard]] constexpr auto &&piecewise_get(hud::compressed_tuple<types_t...> &&t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, hud::compressed_tuple<types_t...>>;
-        return static_cast<type_t &&>(static_cast<details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &>(t).content);
+        return static_cast<type_t &&>(static_cast<typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &>(t).content);
     }
 
     /**

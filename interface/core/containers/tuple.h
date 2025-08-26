@@ -336,7 +336,6 @@ namespace hud
              * @param to The assigned tuple
              * @param from The tuple to assign
              */
-            template<typename... types_t, typename... u_types_t>
             constexpr void operator()([[maybe_unused]] tuple_to_type &to, [[maybe_unused]] const tuple_from_type &from) noexcept
             {
                 static_assert(hud::tuple_size_v<tuple_to_type> == hud::tuple_size_v<tuple_from_type>, "Assigning tuples of different size is not supported");
@@ -355,7 +354,6 @@ namespace hud
              * @param to The assigned tuple
              * @param from The tuple to assign
              */
-            template<typename... types_t, typename... u_types_t>
             constexpr void operator()([[maybe_unused]] tuple_to_type &to, [[maybe_unused]] tuple_from_type &&from) noexcept
             {
                 static_assert(hud::tuple_size_v<tuple_to_type> == hud::tuple_size_v<tuple_from_type>, "Assigning tuples of different size is not supported");
