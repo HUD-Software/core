@@ -362,13 +362,6 @@ namespace hud
             }
         };
 
-        // template<usize count, typename... types_t, typename... u_types_t>
-        // struct tuple_assign<count, hud::tuple<types_t...>, hud::tuple<u_types_t...>>
-        // {
-        //     using tuple_to_type = hud::tuple<types_t...>;
-        //     using tuple_from_type = hud::tuple<u_types_t...>;
-        // };
-
         /** Swap tuple1_t and tuple2_t element at the index if element is swappable. */
         template<usize type_index, typename tuple1_t, typename tuple2_t, bool = hud::is_swappable_v<hud::tuple_element_t<type_index, tuple1_t>, hud::tuple_element_t<type_index, tuple2_t>>>
         struct swap_element
@@ -378,12 +371,12 @@ namespace hud
             static_assert(EvaluateIfInstanciate<hud::false_type>, "type_t is not swappable");
         };
 
-        template<usize type_index, typename... types_t, typename... u_types_t>
-        struct swap_element<type_index, hud::tuple<types_t...>, hud::tuple<u_types_t...>, true>
+        template<usize type_index, typename tuple1_t, typename tuple2_t>
+        struct swap_element<type_index, tuple1_t, tuple2_t, true>
         {
-            constexpr void operator()(hud::tuple<types_t...> &first, hud::tuple<u_types_t...> &second) noexcept
+            constexpr void operator()(tuple1_t &first, tuple2_t &second) noexcept
             {
-                hud::swap(hud::get<type_index>(first), hud::get<type_index>(second));
+                hud::swap(get<type_index>(first), get<type_index>(second));
             }
         };
 
@@ -401,15 +394,15 @@ namespace hud
              * @param first The first tuple to swap
              * @param second The second tulpe to swap
              */
-            template<typename... types_t, typename... u_types_t>
-            constexpr void operator()([[maybe_unused]] hud::tuple<types_t...> &first, [[maybe_unused]] hud::tuple<u_types_t...> &second) noexcept
+            template<typename tuple1_t, typename tuple2_t>
+            constexpr void operator()([[maybe_unused]] tuple1_t &first, [[maybe_unused]] tuple2_t &second) noexcept
             {
-                static_assert(hud::tuple_size_v<hud::tuple<types_t...>> == hud::tuple_size_v<hud::tuple<u_types_t...>>, "Swapping tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<tuple1_t> == hud::tuple_size_v<tuple2_t>, "Swapping tuples of different size is not supported");
 
                 if constexpr (count > 0u)
                 {
-                    constexpr const usize index_to_swap = tuple_size_v<hud::tuple<types_t...>> - count;
-                    swap_element<index_to_swap, hud::tuple<types_t...>, hud::tuple<u_types_t...>>()(first, second);
+                    constexpr const usize index_to_swap = tuple_size_v<tuple1_t> - count;
+                    swap_element<index_to_swap, tuple1_t, tuple2_t>()(first, second);
                     tuple_swap<count - 1u>()(first, second);
                 }
             }
@@ -429,14 +422,14 @@ namespace hud
              * @param first The first tuple to compare
              * @param second The second tulpe to compare
              */
-            template<typename... types_t, typename... u_types_t>
-            [[nodiscard]] constexpr bool operator()([[maybe_unused]] const hud::tuple<types_t...> &first, [[maybe_unused]] const hud::tuple<u_types_t...> &second) noexcept
+            template<typename tuple1_t, typename tuple2_t>
+            [[nodiscard]] constexpr bool operator()([[maybe_unused]] const tuple1_t &first, [[maybe_unused]] const tuple2_t &second) noexcept
             {
-                static_assert(hud::tuple_size_v<hud::tuple<types_t...>> == hud::tuple_size_v<hud::tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<tuple1_t> == hud::tuple_size_v<tuple2_t>, "Comparing tuples of different size is not supported");
                 if constexpr (count > 0u)
                 {
-                    constexpr const usize index_to_swap = tuple_size_v<hud::tuple<types_t...>> - count;
-                    return hud::get<index_to_swap>(first) == hud::get<index_to_swap>(second) && tuple_equals<count - 1u>()(first, second);
+                    constexpr const usize index_to_swap = tuple_size_v<tuple1_t> - count;
+                    return get<index_to_swap>(first) == get<index_to_swap>(second) && tuple_equals<count - 1u>()(first, second);
                 }
                 else
                 {
@@ -459,18 +452,18 @@ namespace hud
              * @param first The first tuple to compare
              * @param second The second tulpe to compare
              */
-            template<typename... types_t, typename... u_types_t>
-            [[nodiscard]] constexpr bool operator()([[maybe_unused]] const hud::tuple<types_t...> &first, [[maybe_unused]] const hud::tuple<u_types_t...> &second) noexcept
+            template<typename tuple1_t, typename tuple2_t>
+            [[nodiscard]] constexpr bool operator()([[maybe_unused]] const tuple1_t &first, [[maybe_unused]] const tuple2_t &second) noexcept
             {
-                static_assert(hud::tuple_size_v<hud::tuple<types_t...>> == hud::tuple_size_v<hud::tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
+                static_assert(hud::tuple_size_v<tuple1_t> == hud::tuple_size_v<tuple2_t>, "Comparing tuples of different size is not supported");
                 if constexpr (count > 0u)
                 {
-                    constexpr const usize index_to_swap = hud::tuple_size_v<hud::tuple<types_t...>> - count;
-                    if (hud::get<index_to_swap>(first) < hud::get<index_to_swap>(second))
+                    constexpr const usize index_to_swap = hud::tuple_size_v<tuple1_t> - count;
+                    if (get<index_to_swap>(first) < get<index_to_swap>(second))
                     {
                         return true;
                     }
-                    if (hud::get<index_to_swap>(second) < hud::get<index_to_swap>(first))
+                    if (get<index_to_swap>(second) < get<index_to_swap>(first))
                     {
                         return false;
                     }
@@ -483,75 +476,72 @@ namespace hud
             }
         };
 
+        /**
+         * Create a new tuple equivalent to all input tuples arguments inside a single tuple.
+         * For exemple:
+         *     If tuples_t... is tuple<u32, f32>, tuple<char, wchar, char16>, tuple<u64, f64>
+         *     tuple_type is tuple<u32, f32, char, wchar, char16, u64 f64>
+         */
+        template<typename tuple_t, typename... rest_t>
+        struct cat_tuples_arg
+        {
+            using tuple_type = tuple_t;
+        };
+
+        template<typename... args1_t, typename... args2_t, typename... rest_t>
+        struct cat_tuples_arg<hud::tuple<args1_t...>, hud::tuple<args2_t...>, rest_t...>
+        {
+            using tuple_type = typename cat_tuples_arg<hud::tuple<args1_t..., args2_t...>, rest_t...>::tuple_type;
+        };
+
+        /**
+         * Create an hud::index_sequence of the tuples_t... list element index.
+         * For exemple:
+         *     If tuples_t... is tuple<u32, f32>, tuple<char, wchar, char16>, tuple<u64, f64>
+         *     tuple_type is tuple<u32, f32, char, wchar, char16, u64 f64>
+         *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
+         */
+        template<typename element_indices_seq, typename...>
+        struct cat_element_index
+        {
+            using element_index_seq = element_indices_seq;
+        };
+
+        template<usize... element_indices, typename... args_t, typename... rest_t>
+        struct cat_element_index<hud::index_sequence<element_indices...>, hud::tuple<args_t...>, rest_t...>
+        {
+            using element_index_seq = typename cat_element_index<cat_integer_sequence_t<hud::index_sequence<element_indices...>, hud::make_index_sequence_for<args_t...>>, rest_t...>::element_index_seq;
+        };
+
+        /**
+         * Create a hud::index_sequence of the tuples_t... list index mask to match the element index hud::index_sequence.
+         * For exemple:
+         *     If tuples_t... is tuple<u32, f32>, tuple<char, wchar, char16>, tuple<u64, f64>
+         *     tuple_type is tuple<u32, f32, char, wchar, char16, u64 f64>
+         *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
+         *     mask_index_seq is hud::index_sequence< 0,0, 1,1,1, 2,2>
+         */
+        template<usize mask_index, typename type_t>
+        static constexpr usize repeat_mask_index = mask_index;
+
+        template<usize tuple_index, typename mask_seq, typename... rest_t>
+        struct cat_mask_index
+        {
+            using mask_index_seq = mask_seq;
+            static_assert(sizeof...(rest_t) == 0, "Unsupported tuple_cat arguments.");
+        };
+
+        template<usize tuple_index, usize... mask_indices, typename... args_t, typename... rest_t>
+        struct cat_mask_index<tuple_index, hud::index_sequence<mask_indices...>, hud::tuple<args_t...>, rest_t...>
+        {
+            using mask_index_seq = typename cat_mask_index<tuple_index + 1u, cat_integer_sequence_t<hud::index_sequence<mask_indices...>, hud::index_sequence<repeat_mask_index<tuple_index, args_t>...>>, rest_t...>::mask_index_seq;
+        };
+
         template<typename... tuples_t>
         struct tuples_cat_impl
         {
-
-            /**
-             * Create a new tuple equivalent to all input tuples arguments inside a single tuple.
-             * For exemple:
-             *     If tuples_t... is tuple<u32, f32>, tuple<char, wchar, char16>, tuple<u64, f64>
-             *     tuple_type is tuple<u32, f32, char, wchar, char16, u64 f64>
-             */
-            template<typename tuple_t, typename... rest_t>
-            struct cat_tuples_arg
-            {
-                using tuple_type = tuple_t;
-            };
-
-            template<typename... args1_t, typename... args2_t, typename... rest_t>
-            struct cat_tuples_arg<hud::tuple<args1_t...>, hud::tuple<args2_t...>, rest_t...>
-            {
-                using tuple_type = typename cat_tuples_arg<hud::tuple<args1_t..., args2_t...>, rest_t...>::tuple_type;
-            };
-
             using return_type = typename cat_tuples_arg<tuples_t...>::tuple_type;
-
-            /**
-             * Create an hud::index_sequence of the tuples_t... list element index.
-             * For exemple:
-             *     If tuples_t... is tuple<u32, f32>, tuple<char, wchar, char16>, tuple<u64, f64>
-             *     tuple_type is tuple<u32, f32, char, wchar, char16, u64 f64>
-             *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
-             */
-            template<typename element_indices_seq, typename...>
-            struct cat_element_index
-            {
-                using element_index_seq = element_indices_seq;
-            };
-
-            template<usize... element_indices, typename... args_t, typename... rest_t>
-            struct cat_element_index<hud::index_sequence<element_indices...>, hud::tuple<args_t...>, rest_t...>
-            {
-                using element_index_seq = typename cat_element_index<cat_integer_sequence_t<hud::index_sequence<element_indices...>, hud::make_index_sequence_for<args_t...>>, rest_t...>::element_index_seq;
-            };
-
             using element_index_seq = typename cat_element_index<hud::make_index_sequence_for<>, tuples_t...>::element_index_seq;
-
-            /**
-             * Create a hud::index_sequence of the tuples_t... list index mask to match the element index hud::index_sequence.
-             * For exemple:
-             *     If tuples_t... is tuple<u32, f32>, tuple<char, wchar, char16>, tuple<u64, f64>
-             *     tuple_type is tuple<u32, f32, char, wchar, char16, u64 f64>
-             *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
-             *     mask_index_seq is hud::index_sequence< 0,0, 1,1,1, 2,2>
-             */
-            template<usize mask_index, typename type_t>
-            static constexpr usize repeat_mask_index = mask_index;
-
-            template<usize tuple_index, typename mask_seq, typename... rest_t>
-            struct cat_mask_index
-            {
-                using mask_index_seq = mask_seq;
-                static_assert(sizeof...(rest_t) == 0, "Unsupported tuple_cat arguments.");
-            };
-
-            template<usize tuple_index, usize... mask_indices, typename... args_t, typename... rest_t>
-            struct cat_mask_index<tuple_index, hud::index_sequence<mask_indices...>, hud::tuple<args_t...>, rest_t...>
-            {
-                using mask_index_seq = typename cat_mask_index<tuple_index + 1u, cat_integer_sequence_t<hud::index_sequence<mask_indices...>, hud::index_sequence<repeat_mask_index<tuple_index, args_t>...>>, rest_t...>::mask_index_seq;
-            };
-
             using mask_index_seq = typename cat_mask_index<0, hud::make_index_sequence_for<>, tuples_t...>::mask_index_seq;
 
             /**
@@ -567,7 +557,7 @@ namespace hud
             template<typename tuple_t, usize... element_indices, usize... mask_indices>
             static HD_FORCEINLINE constexpr return_type concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, tuple_t &&tuple) noexcept
             {
-                return return_type(hud::get<element_indices>(hud::get<mask_indices>(hud::forward<tuple>(tuple)))...);
+                return return_type(get<element_indices>(get<mask_indices>(hud::forward<tuple>(tuple)))...);
             }
         };
 
@@ -593,7 +583,6 @@ namespace hud
         template<typename... tuples_t>
         struct tuple_cat
         {
-
             using tuples_cat_impl_type = tuples_cat_impl<hud::decay_t<tuples_t>...>;
             using return_type = typename tuples_cat_impl_type::return_type;
             using element_index_seq = typename tuples_cat_impl_type::element_index_seq;
@@ -628,12 +617,12 @@ namespace hud
              * @param t The tuple whose elements are to be hashed.
              * @return The final combined hash value.
              */
-            template<typename Hasher, typename... types_t>
-            [[nodiscard]] constexpr decltype(hud::declval<Hasher>().result()) operator()(Hasher &hasher, [[maybe_unused]] const hud::tuple<types_t...> &t) noexcept
+            template<typename Hasher, typename tuple_t>
+            [[nodiscard]] constexpr decltype(hud::declval<Hasher>().result()) operator()(Hasher &hasher, [[maybe_unused]] const tuple_t &t) noexcept
             {
                 if constexpr (count > 0u)
                 {
-                    constexpr const usize index_to_hash = tuple_size_v<hud::tuple<types_t...>> - count;
+                    constexpr const usize index_to_hash = tuple_size_v<tuple_t> - count;
                     hasher.hash(hud::get<index_to_hash>(t));
                     return tuple_hash<count - 1u>()(hasher, t);
                 }

@@ -6,7 +6,7 @@ GTEST_TEST(compressed_tuple, hash_empty_tuple)
     const auto test = []()
     {
         using TupleType = hud::compressed_tuple<>;
-        return std::compressed_tuple {
+        return std::tuple {
             hud::hash_32<TupleType> {}(TupleType {}) == 0,
             hud::hash_64<TupleType> {}(TupleType {}) == 0
         };
@@ -43,7 +43,7 @@ GTEST_TEST(compressed_tuple, hash_tuple)
         hasher64.hash(i32 {1});
         hasher64.hash(hud_test::non_bitwise_type {2});
         hasher64.hash("hello");
-        return std::compressed_tuple {
+        return std::tuple {
             result_hash32 == hasher32.result(),
             result_hash64 == hasher64.result()
         };

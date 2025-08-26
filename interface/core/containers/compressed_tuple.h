@@ -49,6 +49,24 @@ namespace hud
             : hud::disjunction<hud::is_explicitly_move_constructible<tuple_type0_t, pair_type0_t>, hud::is_explicitly_move_constructible<tuple_type1_t, pair_type1_t>>
         {
         };
+
+        template<typename... args1_t, typename... args2_t, typename... rest_t>
+        struct cat_tuples_arg<hud::compressed_tuple<args1_t...>, hud::compressed_tuple<args2_t...>, rest_t...>
+        {
+            using tuple_type = typename cat_tuples_arg<hud::compressed_tuple<args1_t..., args2_t...>, rest_t...>::tuple_type;
+        };
+
+        template<usize... element_indices, typename... args_t, typename... rest_t>
+        struct cat_element_index<hud::index_sequence<element_indices...>, hud::compressed_tuple<args_t...>, rest_t...>
+        {
+            using element_index_seq = typename cat_element_index<cat_integer_sequence_t<hud::index_sequence<element_indices...>, hud::make_index_sequence_for<args_t...>>, rest_t...>::element_index_seq;
+        };
+
+        template<usize tuple_index, usize... mask_indices, typename... args_t, typename... rest_t>
+        struct cat_mask_index<tuple_index, hud::index_sequence<mask_indices...>, hud::compressed_tuple<args_t...>, rest_t...>
+        {
+            using mask_index_seq = typename cat_mask_index<tuple_index + 1u, cat_integer_sequence_t<hud::index_sequence<mask_indices...>, hud::index_sequence<repeat_mask_index<tuple_index, args_t>...>>, rest_t...>::mask_index_seq;
+        };
     } // namespace details::tuple
 
     namespace details::compressed_tuple
@@ -256,249 +274,249 @@ namespace hud
             constexpr compressed_tuple_impl(compressed_tuple_impl &&) = default;
         };
 
-        /** Swap tuple1_t and tuple2_t element at the index if element is swappable. */
-        template<usize type_index, typename tuple1_t, typename tuple2_t, bool = hud::is_swappable_v<hud::tuple_element_t<type_index, tuple1_t>, hud::tuple_element_t<type_index, tuple2_t>>>
-        struct swap_element
-        {
-            template<typename>
-            static constexpr bool EvaluateIfInstanciate = false;
-            static_assert(EvaluateIfInstanciate<hud::false_type>, "type_t is not swappable");
-        };
+        // /** Swap tuple1_t and tuple2_t element at the index if element is swappable. */
+        // template<usize type_index, typename tuple1_t, typename tuple2_t, bool = hud::is_swappable_v<hud::tuple_element_t<type_index, tuple1_t>, hud::tuple_element_t<type_index, tuple2_t>>>
+        // struct swap_element
+        // {
+        //     template<typename>
+        //     static constexpr bool EvaluateIfInstanciate = false;
+        //     static_assert(EvaluateIfInstanciate<hud::false_type>, "type_t is not swappable");
+        // };
 
-        template<usize type_index, typename... types_t, typename... u_types_t>
-        struct swap_element<type_index, hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>, true>
-        {
-            constexpr void operator()(hud::compressed_tuple<types_t...> &first, hud::compressed_tuple<u_types_t...> &second) noexcept
-            {
-                hud::swap(hud::get<type_index>(first), hud::get<type_index>(second));
-            }
-        };
+        // template<usize type_index, typename... types_t, typename... u_types_t>
+        // struct swap_element<type_index, hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>, true>
+        // {
+        //     constexpr void operator()(hud::compressed_tuple<types_t...> &first, hud::compressed_tuple<u_types_t...> &second) noexcept
+        //     {
+        //         hud::swap(hud::get<type_index>(first), hud::get<type_index>(second));
+        //     }
+        // };
 
         /**
          * Recursively swap a compressed_tuple to another.
          * @tparam count Number of element to swap
-         */
-        template<usize count>
-        struct tuple_swap
-        {
+        //  */
+        // template<usize count>
+        // struct tuple_swap
+        // {
 
-            /**
-             * Swap a 2 compressed_tuple elements.
-             * @tparam types_t... List of types_t of the compressed_tuple first
-             * @tparam u_types_t... List of types_t of the compressed_tuple second
-             * @param first The first compressed_tuple to swap
-             * @param second The second tulpe to swap
-             */
-            template<typename... types_t, typename... u_types_t>
-            constexpr void operator()([[maybe_unused]] hud::compressed_tuple<types_t...> &first, [[maybe_unused]] hud::compressed_tuple<u_types_t...> &second) noexcept
-            {
-                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Swapping tuples of different size is not supported");
+        // /**
+        //  * Swap a 2 compressed_tuple elements.
+        //  * @tparam types_t... List of types_t of the compressed_tuple first
+        //  * @tparam u_types_t... List of types_t of the compressed_tuple second
+        //  * @param first The first compressed_tuple to swap
+        //  * @param second The second tulpe to swap
+        //  */
+        // template<typename... types_t, typename... u_types_t>
+        // constexpr void operator()([[maybe_unused]] hud::compressed_tuple<types_t...> &first, [[maybe_unused]] hud::compressed_tuple<u_types_t...> &second) noexcept
+        // {
+        //     static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Swapping tuples of different size is not supported");
 
-                if constexpr (count > 0u)
-                {
-                    constexpr const usize index_to_swap = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
-                    swap_element<index_to_swap, hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>>()(first, second);
-                    tuple_swap<count - 1u>()(first, second);
-                }
-            }
-        };
+        // if constexpr (count > 0u)
+        // {
+        //     constexpr const usize index_to_swap = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
+        //     swap_element<index_to_swap, hud::compressed_tuple<types_t...>, hud::compressed_tuple<u_types_t...>>()(first, second);
+        //     tuple_swap<count - 1u>()(first, second);
+        // }
+        // }
+        // };
 
         /**
          * Recursively compare a compressed_tuple to another.
          * @tparam count Number of element to compare
          */
-        template<usize count>
-        struct tuple_equals
-        {
-            /**
-             * Compare a 2 compressed_tuple elements.
-             * @tparam types_t... List of types_t of the compressed_tuple first
-             * @tparam u_types_t... List of types_t of the compressed_tuple second
-             * @param first The first compressed_tuple to compare
-             * @param second The second tulpe to compare
-             */
-            template<typename... types_t, typename... u_types_t>
-            [[nodiscard]] constexpr bool operator()([[maybe_unused]] const hud::compressed_tuple<types_t...> &first, [[maybe_unused]] const hud::compressed_tuple<u_types_t...> &second) noexcept
-            {
-                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
-                if constexpr (count > 0u)
-                {
-                    constexpr const usize index_to_swap = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
-                    return hud::get<index_to_swap>(first) == hud::get<index_to_swap>(second) && tuple_equals<count - 1u>()(first, second);
-                }
-                else
-                {
-                    return true;
-                }
-            }
-        };
+        // template<usize count>
+        // struct tuple_equals
+        // {
+        //     /**
+        //      * Compare a 2 compressed_tuple elements.
+        //      * @tparam types_t... List of types_t of the compressed_tuple first
+        //      * @tparam u_types_t... List of types_t of the compressed_tuple second
+        //      * @param first The first compressed_tuple to compare
+        //      * @param second The second tulpe to compare
+        //      */
+        //     template<typename... types_t, typename... u_types_t>
+        //     [[nodiscard]] constexpr bool operator()([[maybe_unused]] const hud::compressed_tuple<types_t...> &first, [[maybe_unused]] const hud::compressed_tuple<u_types_t...> &second) noexcept
+        //     {
+        //         static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
+        //         if constexpr (count > 0u)
+        //         {
+        //             constexpr const usize index_to_swap = tuple_size_v<hud::compressed_tuple<types_t...>> - count;
+        //             return hud::get<index_to_swap>(first) == hud::get<index_to_swap>(second) && tuple_equals<count - 1u>()(first, second);
+        //         }
+        //         else
+        //         {
+        //             return true;
+        //         }
+        //     }
+        // };
 
         /**
          * Recursively compare a compressed_tuple to another with operator<.
          * @tparam count Number of element to compare
          */
-        template<usize count>
-        struct tuple_less
-        {
-            /**
-             * Compare a 2 compressed_tuple elements with operator<.
-             * @tparam types_t... List of types_t of the compressed_tuple first
-             * @tparam u_types_t... List of types_t of the compressed_tuple second
-             * @param first The first compressed_tuple to compare
-             * @param second The second tulpe to compare
-             */
-            template<typename... types_t, typename... u_types_t>
-            [[nodiscard]] constexpr bool operator()([[maybe_unused]] const hud::compressed_tuple<types_t...> &first, [[maybe_unused]] const hud::compressed_tuple<u_types_t...> &second) noexcept
-            {
-                static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
-                if constexpr (count > 0u)
-                {
-                    constexpr const usize index_to_swap = hud::tuple_size_v<hud::compressed_tuple<types_t...>> - count;
-                    if (hud::get<index_to_swap>(first) < hud::get<index_to_swap>(second))
-                    {
-                        return true;
-                    }
-                    if (hud::get<index_to_swap>(second) < hud::get<index_to_swap>(first))
-                    {
-                        return false;
-                    }
-                    return tuple_less<count - 1u>()(first, second);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        };
+        // template<usize count>
+        // struct tuple_less
+        // {
+        //     /**
+        //      * Compare a 2 compressed_tuple elements with operator<.
+        //      * @tparam types_t... List of types_t of the compressed_tuple first
+        //      * @tparam u_types_t... List of types_t of the compressed_tuple second
+        //      * @param first The first compressed_tuple to compare
+        //      * @param second The second tulpe to compare
+        //      */
+        //     template<typename... types_t, typename... u_types_t>
+        //     [[nodiscard]] constexpr bool operator()([[maybe_unused]] const hud::compressed_tuple<types_t...> &first, [[maybe_unused]] const hud::compressed_tuple<u_types_t...> &second) noexcept
+        //     {
+        //         static_assert(hud::tuple_size_v<hud::compressed_tuple<types_t...>> == hud::tuple_size_v<hud::compressed_tuple<u_types_t...>>, "Comparing tuples of different size is not supported");
+        //         if constexpr (count > 0u)
+        //         {
+        //             constexpr const usize index_to_swap = hud::tuple_size_v<hud::compressed_tuple<types_t...>> - count;
+        //             if (hud::get<index_to_swap>(first) < hud::get<index_to_swap>(second))
+        //             {
+        //                 return true;
+        //             }
+        //             if (hud::get<index_to_swap>(second) < hud::get<index_to_swap>(first))
+        //             {
+        //                 return false;
+        //             }
+        //             return tuple_less<count - 1u>()(first, second);
+        //         }
+        //         else
+        //         {
+        //             return false;
+        //         }
+        //     }
+        // };
 
-        template<typename... tuples_t>
-        struct tuples_cat_impl
-        {
+        // template<typename... tuples_t>
+        // struct tuples_cat_impl
+        // {
 
-            /**
-             * Create a new compressed_tuple equivalent to all input tuples arguments inside a single compressed_tuple.
-             * For exemple:
-             *     If tuples_t... is compressed_tuple<u32, f32>, compressed_tuple<char, wchar, char16>, compressed_tuple<u64, f64>
-             *     tuple_type is compressed_tuple<u32, f32, char, wchar, char16, u64 f64>
-             */
-            template<typename tuple_t, typename... rest_t>
-            struct cat_tuples_arg
-            {
-                using tuple_type = tuple_t;
-            };
+        // /**
+        //  * Create a new compressed_tuple equivalent to all input tuples arguments inside a single compressed_tuple.
+        //  * For exemple:
+        //  *     If tuples_t... is compressed_tuple<u32, f32>, compressed_tuple<char, wchar, char16>, compressed_tuple<u64, f64>
+        //  *     tuple_type is compressed_tuple<u32, f32, char, wchar, char16, u64 f64>
+        //  */
+        // template<typename tuple_t, typename... rest_t>
+        // struct cat_tuples_arg
+        // {
+        //     using tuple_type = tuple_t;
+        // };
 
-            template<typename... args1_t, typename... args2_t, typename... rest_t>
-            struct cat_tuples_arg<hud::compressed_tuple<args1_t...>, hud::compressed_tuple<args2_t...>, rest_t...>
-            {
-                using tuple_type = typename cat_tuples_arg<hud::compressed_tuple<args1_t..., args2_t...>, rest_t...>::tuple_type;
-            };
+        // template<typename... args1_t, typename... args2_t, typename... rest_t>
+        // struct cat_tuples_arg<hud::compressed_tuple<args1_t...>, hud::compressed_tuple<args2_t...>, rest_t...>
+        // {
+        //     using tuple_type = typename cat_tuples_arg<hud::compressed_tuple<args1_t..., args2_t...>, rest_t...>::tuple_type;
+        // };
 
-            using return_type = typename cat_tuples_arg<tuples_t...>::tuple_type;
+        // using return_type = typename cat_tuples_arg<tuples_t...>::tuple_type;
 
-            /**
-             * Create an hud::index_sequence of the tuples_t... list element index.
-             * For exemple:
-             *     If tuples_t... is compressed_tuple<u32, f32>, compressed_tuple<char, wchar, char16>, compressed_tuple<u64, f64>
-             *     tuple_type is compressed_tuple<u32, f32, char, wchar, char16, u64 f64>
-             *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
-             */
-            template<typename element_indices_seq, typename...>
-            struct cat_element_index
-            {
-                using element_index_seq = element_indices_seq;
-            };
+        // /**
+        //  * Create an hud::index_sequence of the tuples_t... list element index.
+        //  * For exemple:
+        //  *     If tuples_t... is compressed_tuple<u32, f32>, compressed_tuple<char, wchar, char16>, compressed_tuple<u64, f64>
+        //  *     tuple_type is compressed_tuple<u32, f32, char, wchar, char16, u64 f64>
+        //  *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
+        //  */
+        // template<typename element_indices_seq, typename...>
+        // struct cat_element_index
+        // {
+        //     using element_index_seq = element_indices_seq;
+        // };
 
-            template<usize... element_indices, typename... args_t, typename... rest_t>
-            struct cat_element_index<hud::index_sequence<element_indices...>, hud::compressed_tuple<args_t...>, rest_t...>
-            {
-                using element_index_seq = typename cat_element_index<cat_integer_sequence_t<hud::index_sequence<element_indices...>, hud::make_index_sequence_for<args_t...>>, rest_t...>::element_index_seq;
-            };
+        // template<usize... element_indices, typename... args_t, typename... rest_t>
+        // struct cat_element_index<hud::index_sequence<element_indices...>, hud::compressed_tuple<args_t...>, rest_t...>
+        // {
+        //     using element_index_seq = typename cat_element_index<cat_integer_sequence_t<hud::index_sequence<element_indices...>, hud::make_index_sequence_for<args_t...>>, rest_t...>::element_index_seq;
+        // };
 
-            using element_index_seq = typename cat_element_index<hud::make_index_sequence_for<>, tuples_t...>::element_index_seq;
+        // using element_index_seq = typename cat_element_index<hud::make_index_sequence_for<>, tuples_t...>::element_index_seq;
 
-            /**
-             * Create a hud::index_sequence of the tuples_t... list index mask to match the element index hud::index_sequence.
-             * For exemple:
-             *     If tuples_t... is compressed_tuple<u32, f32>, compressed_tuple<char, wchar, char16>, compressed_tuple<u64, f64>
-             *     tuple_type is compressed_tuple<u32, f32, char, wchar, char16, u64 f64>
-             *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
-             *     mask_index_seq is hud::index_sequence< 0,0, 1,1,1, 2,2>
-             */
-            template<usize mask_index, typename type_t>
-            static constexpr usize repeat_mask_index = mask_index;
+        // /**
+        //  * Create a hud::index_sequence of the tuples_t... list index mask to match the element index hud::index_sequence.
+        //  * For exemple:
+        //  *     If tuples_t... is compressed_tuple<u32, f32>, compressed_tuple<char, wchar, char16>, compressed_tuple<u64, f64>
+        //  *     tuple_type is compressed_tuple<u32, f32, char, wchar, char16, u64 f64>
+        //  *     element_index_seq is hud::index_sequence< 0,1, 0,1,2, 0,1>
+        //  *     mask_index_seq is hud::index_sequence< 0,0, 1,1,1, 2,2>
+        //  */
+        // template<usize mask_index, typename type_t>
+        // static constexpr usize repeat_mask_index = mask_index;
 
-            template<usize tuple_index, typename mask_seq, typename... rest_t>
-            struct cat_mask_index
-            {
-                using mask_index_seq = mask_seq;
-                static_assert(sizeof...(rest_t) == 0, "Unsupported tuple_cat arguments.");
-            };
+        // template<usize tuple_index, typename mask_seq, typename... rest_t>
+        // struct cat_mask_index
+        // {
+        //     using mask_index_seq = mask_seq;
+        //     static_assert(sizeof...(rest_t) == 0, "Unsupported tuple_cat arguments.");
+        // };
 
-            template<usize tuple_index, usize... mask_indices, typename... args_t, typename... rest_t>
-            struct cat_mask_index<tuple_index, hud::index_sequence<mask_indices...>, hud::compressed_tuple<args_t...>, rest_t...>
-            {
-                using mask_index_seq = typename cat_mask_index<tuple_index + 1u, cat_integer_sequence_t<hud::index_sequence<mask_indices...>, hud::index_sequence<repeat_mask_index<tuple_index, args_t>...>>, rest_t...>::mask_index_seq;
-            };
+        // template<usize tuple_index, usize... mask_indices, typename... args_t, typename... rest_t>
+        // struct cat_mask_index<tuple_index, hud::index_sequence<mask_indices...>, hud::compressed_tuple<args_t...>, rest_t...>
+        // {
+        //     using mask_index_seq = typename cat_mask_index<tuple_index + 1u, cat_integer_sequence_t<hud::index_sequence<mask_indices...>, hud::index_sequence<repeat_mask_index<tuple_index, args_t>...>>, rest_t...>::mask_index_seq;
+        // };
 
-            using mask_index_seq = typename cat_mask_index<0, hud::make_index_sequence_for<>, tuples_t...>::mask_index_seq;
+        // using mask_index_seq = typename cat_mask_index<0, hud::make_index_sequence_for<>, tuples_t...>::mask_index_seq;
 
-            /**
-             * Constructs a compressed_tuple that is a concatenation of all tuples in the given "compressed_tuple of tulpes" in the same order.
-             * @tparam compressed_tuple The compressed_tuple type of tuples to concatenate
-             * @tparam element_indices List element index
-             * @tparam mask_indices List index mask to match the element index hud::index_sequence
-             * @param hud::index_sequence of element_indices
-             * @param hud::index_sequence of mask_indices
-             * @param tulpe The compressed_tuple of tulpes to concatenate
-             * @return The concatenated compressed_tuple
-             */
-            template<typename tuple_t, usize... element_indices, usize... mask_indices>
-            static HD_FORCEINLINE constexpr return_type concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, tuple_t &&compressed_tuple) noexcept
-            {
-                return return_type(hud::get<element_indices>(hud::get<mask_indices>(hud::forward<hud::compressed_tuple>(compressed_tuple)))...);
-            }
-        };
+        // /**
+        //  * Constructs a compressed_tuple that is a concatenation of all tuples in the given "compressed_tuple of tulpes" in the same order.
+        //  * @tparam compressed_tuple The compressed_tuple type of tuples to concatenate
+        //  * @tparam element_indices List element index
+        //  * @tparam mask_indices List index mask to match the element index hud::index_sequence
+        //  * @param hud::index_sequence of element_indices
+        //  * @param hud::index_sequence of mask_indices
+        //  * @param tulpe The compressed_tuple of tulpes to concatenate
+        //  * @return The concatenated compressed_tuple
+        //  */
+        // template<typename tuple_t, usize... element_indices, usize... mask_indices>
+        // static HD_FORCEINLINE constexpr return_type concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, tuple_t &&compressed_tuple) noexcept
+        // {
+        //     return return_type(hud::get<element_indices>(hud::get<mask_indices>(hud::forward<hud::compressed_tuple>(compressed_tuple)))...);
+        // }
+        // };
 
-        template<>
-        struct tuples_cat_impl<>
-        {
-            using return_type = hud::compressed_tuple<>;
-            using element_index_seq = hud::index_sequence<>;
-            using mask_index_seq = hud::index_sequence<>;
+        // template<>
+        // struct tuples_cat_impl<>
+        // {
+        //     using return_type = hud::compressed_tuple<>;
+        //     using element_index_seq = hud::index_sequence<>;
+        //     using mask_index_seq = hud::index_sequence<>;
 
-            /**
-             * Constructs an empty compressed_tuple
-             * @param tulpe The compressed_tuple of tulpes to concatenate
-             * @return The concatenated compressed_tuple
-             */
-            template<typename EmptyTuple, usize... element_indices, usize... mask_indices>
-            static HD_FORCEINLINE constexpr EmptyTuple concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, EmptyTuple &&) noexcept
-            {
-                return EmptyTuple();
-            }
-        };
+        // /**
+        //  * Constructs an empty compressed_tuple
+        //  * @param tulpe The compressed_tuple of tulpes to concatenate
+        //  * @return The concatenated compressed_tuple
+        //  */
+        // template<typename EmptyTuple, usize... element_indices, usize... mask_indices>
+        // static HD_FORCEINLINE constexpr EmptyTuple concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, EmptyTuple &&) noexcept
+        // {
+        //     return EmptyTuple();
+        // }
+        // };
 
-        template<typename... tuples_t>
-        struct tuple_cat
-        {
+        // template<typename... tuples_t>
+        // struct tuple_cat
+        // {
 
-            using tuples_cat_impl_type = tuples_cat_impl<hud::decay_t<tuples_t>...>;
-            using return_type = typename tuples_cat_impl_type::return_type;
-            using element_index_seq = typename tuples_cat_impl_type::element_index_seq;
-            using mask_index_seq = typename tuples_cat_impl_type::mask_index_seq;
+        // using tuples_cat_impl_type = tuples_cat_impl<hud::decay_t<tuples_t>...>;
+        // using return_type = typename tuples_cat_impl_type::return_type;
+        // using element_index_seq = typename tuples_cat_impl_type::element_index_seq;
+        // using mask_index_seq = typename tuples_cat_impl_type::mask_index_seq;
 
-            /**
-             * Constructs a compressed_tuple that is a concatenation of all tuples in the given "compressed_tuple of tulpes" in the same order.
-             * @tparam compressed_tuple The compressed_tuple type of tuples to concatenate
-             * @param tulpe The compressed_tuple of tulpes to concatenate
-             * @return The concatenated compressed_tuple
-             */
-            template<typename tuple_t>
-            static HD_FORCEINLINE constexpr return_type concatenate(tuple_t &&compressed_tuple) noexcept
-            {
-                return tuples_cat_impl_type::concatenate(element_index_seq(), mask_index_seq(), hud::forward<tuple_t>(compressed_tuple));
-            }
-        };
+        // /**
+        //  * Constructs a compressed_tuple that is a concatenation of all tuples in the given "compressed_tuple of tulpes" in the same order.
+        //  * @tparam compressed_tuple The compressed_tuple type of tuples to concatenate
+        //  * @param tulpe The compressed_tuple of tulpes to concatenate
+        //  * @return The concatenated compressed_tuple
+        //  */
+        // template<typename tuple_t>
+        // static HD_FORCEINLINE constexpr return_type concatenate(tuple_t &&compressed_tuple) noexcept
+        // {
+        //     return tuples_cat_impl_type::concatenate(element_index_seq(), mask_index_seq(), hud::forward<tuple_t>(compressed_tuple));
+        // }
+        // };
 
         /**
          * Hashes all elements of a compressed_tuple and combines them into a single hash value.
@@ -928,7 +946,7 @@ namespace hud
     template<typename... types_t, typename... u_types_t>
     static constexpr void swap(compressed_tuple<types_t...> &first, compressed_tuple<u_types_t...> &second) noexcept
     {
-        details::compressed_tuple::tuple_swap<sizeof...(types_t)> {}(first, second);
+        details::tuple::tuple_swap<sizeof...(types_t)> {}(first, second);
     }
 
     /**
@@ -942,7 +960,7 @@ namespace hud
     template<typename... types_t, typename... u_types_t>
     [[nodiscard]] constexpr bool operator==(const compressed_tuple<types_t...> &left, const compressed_tuple<u_types_t...> &right) noexcept
     {
-        return details::compressed_tuple::tuple_equals<sizeof...(types_t)> {}(left, right);
+        return details::tuple::tuple_equals<sizeof...(types_t)> {}(left, right);
     }
 
     /**
@@ -969,7 +987,7 @@ namespace hud
     template<typename... types_t, typename... u_types_t>
     [[nodiscard]] constexpr bool operator<(const compressed_tuple<types_t...> &left, const compressed_tuple<u_types_t...> &right) noexcept
     {
-        return details::compressed_tuple::tuple_less<sizeof...(types_t)> {}(left, right);
+        return details::tuple::tuple_less<sizeof...(types_t)> {}(left, right);
     }
 
     /**
@@ -1018,7 +1036,7 @@ namespace hud
      * @return compressed_tuple<types_t...> instance.
      */
     template<typename... types_t>
-    [[nodiscard]] constexpr compressed_tuple<types_t...> make_tuple(types_t &&...args) noexcept
+    [[nodiscard]] constexpr compressed_tuple<types_t...> make_compressed_tuple(types_t &&...args) noexcept
     {
         return compressed_tuple<types_t...>(hud::forward<types_t>(args)...);
     }
@@ -1029,12 +1047,12 @@ namespace hud
      * @param args Zero or more compressed_tuple to concatenate
      * @return The concatenated compressed_tuple
      */
-    template<typename... tuples_t>
-    constexpr typename details::compressed_tuple::tuple_cat<tuples_t...>::return_type tuple_cat(tuples_t &&...args) noexcept
-    {
-        using tuple_cat_result = details::compressed_tuple::tuple_cat<tuples_t...>;
-        return tuple_cat_result::concatenate(forward_as_tuple(hud::forward<tuples_t>(args)...));
-    }
+    // template<typename... tuples_t>
+    // constexpr typename details::tuple::tuple_cat<tuples_t...>::return_type tuple_cat(tuples_t &&...args) noexcept
+    // {
+    //     using tuple_cat_result = details::tuple::tuple_cat<tuples_t...>;
+    //     return tuple_cat_result::concatenate(forward_as_tuple(hud::forward<tuples_t>(args)...));
+    // }
 
     template<typename... types_t>
     struct equal<hud::compressed_tuple<types_t...>>

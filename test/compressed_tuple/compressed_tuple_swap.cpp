@@ -9,7 +9,7 @@ GTEST_TEST(compressed_tuple, swap_non_trivially_copy_assignable_same_types)
         tuple_type tuple_a {1, 12.0f, 123, L'c'};
         tuple_type tuple_b {2, 36.0f, 568, L'p'};
         hud::swap(tuple_a, tuple_b);
-        return std::compressed_tuple {
+        return std::tuple {
             hud::get<0>(tuple_a).id() == 2,
             hud::get<0>(tuple_a).move_assign_count() == 1u,
             hud::get<0>(tuple_a).copy_assign_count() == 0u,
@@ -81,7 +81,7 @@ GTEST_TEST(compressed_tuple, swap_non_trivially_copy_assignable_different_types)
         tuple_type tuple_a {1, 12.0f, 123, L'c'};
         other_tuple_type tuple_b {2, 36.0f, 568, L'p'};
         hud::swap(tuple_a, tuple_b);
-        return std::compressed_tuple {
+        return std::tuple {
             hud::get<0>(tuple_a).id() == 2,
             hud::get<0>(tuple_a).move_assign_count() == 1u,
             hud::get<0>(tuple_a).copy_assign_count() == 0u,

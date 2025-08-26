@@ -60,8 +60,14 @@ set( src
 	compressed_pair/compressed_pair_constructors.cpp
 	compressed_pair/compressed_pair_misc.cpp
 	compressed_pair/compressed_pair_swap.cpp
-	compressed_tuple/compressed_tuple_constructors.cpp
 	compressed_tuple/compressed_tuple_assignments.cpp
+	compressed_tuple/compressed_tuple_comparison.cpp
+	compressed_tuple/compressed_tuple_constructors.cpp
+	compressed_tuple/compressed_tuple_element.cpp
+	compressed_tuple/compressed_tuple_hash.cpp
+	compressed_tuple/compressed_tuple_misc.cpp
+	compressed_tuple/compressed_tuple_size.cpp
+	compressed_tuple/compressed_tuple_swap.cpp
 	hash/city_hash.cpp
 	hash/crc32.cpp
 	hash/hash_32.cpp

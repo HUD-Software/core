@@ -11,7 +11,7 @@ namespace hud_test
 GTEST_TEST(compressed_tuple, sizeof_is_correct)
 {
     hud_assert_eq(sizeof(hud::compressed_tuple<>), 1u);
-    hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, hud_test::empty, hud_test::empty>), 1u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, hud_test::empty, hud_test::empty>), 3u);
     hud_assert_eq(sizeof(hud::compressed_tuple<i32, hud_test::empty, hud_test::empty>), 4u);
     hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, i32, hud_test::empty>), 4u);
     hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, hud_test::empty, i32>), 4u);
@@ -22,19 +22,19 @@ GTEST_TEST(compressed_tuple, sizeof_is_correct)
 
 GTEST_TEST(compressed_tuple, make_tuple)
 {
-    auto compressed_tuple = hud::make_tuple(12, 15.0f, L'w');
+    auto compressed_tuple = hud::make_compressed_tuple(12, 15.0f, L'w');
     hud_assert_true((hud::is_same_v<decltype(compressed_tuple), hud::compressed_tuple<i32, f32, wchar>>));
     hud_assert_eq(hud::get<0>(compressed_tuple), 12);
     hud_assert_eq(hud::get<1>(compressed_tuple), 15.0f);
     hud_assert_eq(hud::get<2>(compressed_tuple), L'w');
 
-    const auto tuple2 = hud::make_tuple(12, 15.0f, L'w');
+    const auto tuple2 = hud::make_compressed_tuple(12, 15.0f, L'w');
     hud_assert_true((hud::is_same_v<decltype(tuple2), const hud::compressed_tuple<i32, f32, wchar>>));
     hud_assert_eq(hud::get<0>(tuple2), 12);
     hud_assert_eq(hud::get<1>(tuple2), 15.0f);
     hud_assert_eq(hud::get<2>(tuple2), L'w');
 
-    constexpr auto tuple3 = hud::make_tuple(12, 15.0f, L'w');
+    constexpr auto tuple3 = hud::make_compressed_tuple(12, 15.0f, L'w');
     hud_assert_true((hud::is_same_v<decltype(tuple3), const hud::compressed_tuple<i32, f32, wchar>>));
     hud_assert_eq(hud::get<0>(tuple3), 12);
     hud_assert_eq(hud::get<1>(tuple3), 15.0f);
@@ -45,8 +45,8 @@ GTEST_TEST(compressed_tuple, get)
 {
     const auto test = []()
     {
-        auto compressed_tuple = hud::make_tuple(12, 15.0f, L'w');
-        return std::compressed_tuple {
+        auto compressed_tuple = hud::make_compressed_tuple(12, 15.0f, L'w');
+        return std::tuple {
             hud::get<0>(compressed_tuple) == 12,
             hud::get<1>(compressed_tuple) == 15.0f,
             hud::get<2>(compressed_tuple) == L'w',
@@ -149,7 +149,7 @@ GTEST_TEST(compressed_tuple, structure_binding_by_copy)
         first_cpy = type {321, nullptr};
         second_cpy = type {654, nullptr};
         third_cpy = type {987, nullptr};
-        return std::compressed_tuple {
+        return std::tuple {
             first_cpy.constructor_count(),
             first_cpy.move_constructor_count(),
             first_cpy.copy_constructor_count(),
@@ -230,7 +230,7 @@ GTEST_TEST(compressed_tuple, structure_binding_rvalue)
         first_ref = type {321, nullptr};
         second_ref = type {654, nullptr};
         third_ref = type {987, nullptr};
-        return std::compressed_tuple {
+        return std::tuple {
             first_ref.constructor_count(),
             first_ref.move_constructor_count(),
             first_ref.copy_constructor_count(),
@@ -308,7 +308,7 @@ GTEST_TEST(compressed_tuple, structure_binding_const_rvalue)
     {
         auto compressed_tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         const auto &[first_ref, second_ref, third_ref] = compressed_tuple;
-        return std::compressed_tuple {
+        return std::tuple {
             first_ref.constructor_count(),
             first_ref.move_constructor_count(),
             first_ref.copy_constructor_count(),
@@ -390,7 +390,7 @@ GTEST_TEST(compressed_tuple, structure_binding_lvalue)
         first_ref = type {321, nullptr};
         second_ref = type {654, nullptr};
         third_ref = type {987, nullptr};
-        return std::compressed_tuple {
+        return std::tuple {
             first_ref.constructor_count(),
             first_ref.move_constructor_count(),
             first_ref.copy_constructor_count(),
@@ -472,7 +472,7 @@ GTEST_TEST(compressed_tuple, structure_binding_const_tuple_lvalue)
         // first_ref = type {321, nullptr};
         // second_ref = type {654, nullptr};
         // third_ref = type {987, nullptr};
-        return std::compressed_tuple {
+        return std::tuple {
             first_ref.constructor_count(),
             first_ref.move_constructor_count(),
             first_ref.copy_constructor_count(),

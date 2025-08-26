@@ -44,7 +44,7 @@ GTEST_TEST(compressed_tuple, equal_operator_same_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
             hud::compressed_tuple<> {}
                 == hud::compressed_tuple<> {},
             tuple_type {22, L'a', hud_test::comparable(33)}
@@ -85,7 +85,7 @@ GTEST_TEST(compressed_tuple, equal_operator_different_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
             tuple_type {     22, L'a', hud_test::comparable(33)}
                 == hud::compressed_tuple<i32, wchar, i32> {     22, L'a',                       33},
             tuple_type {     22, L'a', hud_test::comparable(33)}
@@ -130,7 +130,7 @@ GTEST_TEST(compressed_tuple, not_equal_operator_same_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
             hud::compressed_tuple<> {}
                 != hud::compressed_tuple<> {},
             tuple_type {22, L'a', hud_test::comparable(33)}
@@ -171,7 +171,7 @@ GTEST_TEST(compressed_tuple, not_equal_operator_different_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
             tuple_type {     22, L'a', hud_test::comparable(33)}
                 != hud::compressed_tuple<i32, wchar, i32> {     22, L'a',                       33},
             tuple_type {     22, L'a', hud_test::comparable(33)}
@@ -216,7 +216,7 @@ GTEST_TEST(compressed_tuple, less_operator_same_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
             hud::compressed_tuple<> {}
                 < hud::compressed_tuple<> {},
             tuple_type {22, L'a', hud_test::comparable(33)}
@@ -269,7 +269,7 @@ GTEST_TEST(compressed_tuple, less_operator_different_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
 
             hud::compressed_tuple<> {}
                 < hud::compressed_tuple<> {},
@@ -331,7 +331,7 @@ GTEST_TEST(compressed_tuple, less_equal_operator_same_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
             hud::compressed_tuple<> {}
                 <= hud::compressed_tuple<> {},
             tuple_type {22, L'a', hud_test::comparable(33)}
@@ -384,7 +384,7 @@ GTEST_TEST(compressed_tuple, less_equal_operator_different_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
 
             hud::compressed_tuple<> {}
                 <= hud::compressed_tuple<> {},
@@ -446,7 +446,7 @@ GTEST_TEST(compressed_tuple, greater_operator_same_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
             hud::compressed_tuple<> {}
                 > hud::compressed_tuple<> {},
             tuple_type {22, L'a', hud_test::comparable(33)}
@@ -499,7 +499,7 @@ GTEST_TEST(compressed_tuple, greater_equal_operator_different_types)
 
     const auto test = []()
     {
-        return std::compressed_tuple {
+        return std::tuple {
 
             hud::compressed_tuple<> {}
                 >= hud::compressed_tuple<> {},
