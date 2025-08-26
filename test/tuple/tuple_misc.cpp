@@ -133,6 +133,7 @@ GTEST_TEST(tuple, tuple_cat)
     hud_assert_eq(hud::get<8>(tuple).move_assign_count(), 0u);
 
     using EmptyCatType = decltype(hud::tuple_cat());
+    hud_assert_true((hud::is_same_v<EmptyCatType, hud::tuple<>>));
     hud_assert_eq(hud::tuple_size_v<EmptyCatType>, 0u);
 }
 

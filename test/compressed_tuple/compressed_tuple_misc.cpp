@@ -12,8 +12,8 @@ GTEST_TEST(compressed_tuple, sizeof_is_correct)
 {
     hud_assert_eq(sizeof(hud::compressed_tuple<>), 1u);
     hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, hud_test::empty, hud_test::empty>), 3u);
-    hud_assert_eq(sizeof(hud::compressed_tuple<i32, hud_test::empty, hud_test::empty>), 4u);
-    hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, i32, hud_test::empty>), 4u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<i32, hud_test::empty, hud_test::empty>), 8u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, i32, hud_test::empty>), 8u);
     hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, hud_test::empty, i32>), 4u);
     hud_assert_eq(sizeof(hud::compressed_tuple<i32>), 4u);
     hud_assert_eq(sizeof(hud::compressed_tuple<i32, i32>), 8u);
@@ -132,7 +132,8 @@ GTEST_TEST(compressed_tuple, tuple_cat)
     hud_assert_eq(hud::get<8>(compressed_tuple).copy_assign_count(), 0u);
     hud_assert_eq(hud::get<8>(compressed_tuple).move_assign_count(), 0u);
 
-    using EmptyCatType = decltype(hud::tuple_cat());
+    using EmptyCatType = decltype(hud::compressed_tuple_cat());
+    hud_assert_true((hud::is_same_v<EmptyCatType, hud::compressed_tuple<>>));
     hud_assert_eq(hud::tuple_size_v<EmptyCatType>, 0u);
 }
 
