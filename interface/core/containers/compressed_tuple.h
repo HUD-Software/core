@@ -706,7 +706,7 @@ namespace hud
         constexpr compressed_tuple &operator=(const compressed_tuple &other) noexcept
         requires(hud::conjunction_v<hud::is_copy_assignable<types_t>...>)
         {
-            details::tuple::tuple_assign<sizeof...(types_t), compressed_tuple, compressed_tuple>()(*this, other);
+            details::tuple::tuple_assign<sizeof...(types_t)>()(*this, other);
             return *this;
         }
 
@@ -721,7 +721,7 @@ namespace hud
         requires(hud::conjunction_v<hud::is_copy_assignable<types_t, u_types_t>...>)
         constexpr compressed_tuple &operator=(const compressed_tuple<u_types_t...> &other) noexcept
         {
-            details::tuple::tuple_assign<sizeof...(types_t), compressed_tuple, compressed_tuple<u_types_t...>>()(*this, other);
+            details::tuple::tuple_assign<sizeof...(types_t)>()(*this, other);
             return *this;
         }
 
@@ -735,7 +735,7 @@ namespace hud
         constexpr compressed_tuple &operator=(compressed_tuple &&other) noexcept
         requires(hud::conjunction_v<hud::is_move_assignable<types_t>...>)
         {
-            details::tuple::tuple_assign<sizeof...(types_t), compressed_tuple, compressed_tuple>()(*this, hud::move(other));
+            details::tuple::tuple_assign<sizeof...(types_t)>()(*this, hud::move(other));
             return *this;
         }
 
@@ -750,7 +750,7 @@ namespace hud
         requires(hud::conjunction_v<hud::is_move_assignable<types_t, u_types_t>...>)
         constexpr compressed_tuple &operator=(compressed_tuple<u_types_t...> &&other) noexcept
         {
-            details::tuple::tuple_assign<sizeof...(types_t), compressed_tuple, compressed_tuple<u_types_t...>>()(*this, hud::move(other));
+            details::tuple::tuple_assign<sizeof...(types_t)>()(*this, hud::move(other));
             return *this;
         }
 
