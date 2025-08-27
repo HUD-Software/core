@@ -14,16 +14,13 @@ jobs:
         run: |
           C:/msys64/usr/bin/pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain --noconfirm
           $env:Path += ";C:\msys64\ucrt64\bin"
-      - name: Install Emscripten
+      - name: Generate
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
           cd emsdk
           git pull
           emsdk.bat install latest
           emsdk.bat activate latest
-        shell: cmd
-      - name: Generate
-        run: |
           emsdk_env.bat
           echo %PATH%
           emcmake.bat cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
