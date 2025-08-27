@@ -1,20 +1,48 @@
 #include <core/containers/compressed_tuple.h>
 #include <core/traits/is_same.h>
 
-namespace hud_test
+GTEST_TEST(compressed_tuple, sizeof_is_correct)
 {
     struct empty
     {
     };
-} // namespace hud_test
 
-GTEST_TEST(compressed_tuple, sizeof_is_correct)
-{
+    struct empty_2
+    {
+    };
+
+    struct empty_3
+    {
+    };
+
+    struct non_empty
+    {
+        int x;
+    };
+
     hud_assert_eq(sizeof(hud::compressed_tuple<>), 1u);
-    hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, hud_test::empty, hud_test::empty>), 3u);
-    hud_assert_eq(sizeof(hud::compressed_tuple<i32, hud_test::empty, hud_test::empty>), 8u);
-    hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, i32, hud_test::empty>), 8u);
-    hud_assert_eq(sizeof(hud::compressed_tuple<hud_test::empty, hud_test::empty, i32>), 4u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, empty, empty>), 3u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty_2, empty, empty>), 2u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, empty_2, empty>), 2u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, empty, empty_2>), 2u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, empty_2, empty_3>), 1u);
+
+    hud_assert_eq(sizeof(hud::compressed_tuple<non_empty, empty, empty>), 8u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, non_empty, empty>), 8u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, empty, non_empty>), 4u);
+
+    hud_assert_eq(sizeof(hud::compressed_tuple<non_empty, empty, empty_2>), 4u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, non_empty, empty_2>), 4u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, empty_2, non_empty>), 4u);
+
+    hud_assert_eq(sizeof(hud::compressed_tuple<i32, empty, empty>), 8u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, i32, empty>), 8u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, empty, i32>), 4u);
+
+    hud_assert_eq(sizeof(hud::compressed_tuple<i32, empty, empty_2>), 4u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, i32, empty_2>), 4u);
+    hud_assert_eq(sizeof(hud::compressed_tuple<empty, empty_2, i32>), 4u);
+
     hud_assert_eq(sizeof(hud::compressed_tuple<i32>), 4u);
     hud_assert_eq(sizeof(hud::compressed_tuple<i32, i32>), 8u);
     hud_assert_eq(sizeof(hud::compressed_tuple<i32, i8, i32>), 12u);

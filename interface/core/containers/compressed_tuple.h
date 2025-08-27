@@ -342,11 +342,19 @@ namespace hud
     } // namespace details::compressed_tuple
 
     /**
-     * tuples_t are objects that pack elements of possibly different types together in a single object, just like pair objects do for pairs of elements, but generalized for any number of elements.
-     * Conceptually, they are similar to plain old data structures (C-like structs) but instead of having named data members, its elements are accessed by their order in the compressed_tuple.
-     * The selection of particular elements within a compressed_tuple is done at the template-instantiation level, and thus, it must be specified at compile-time, with helper functions.
-     * The compressed_tuple class is closely related to the pair class: tuples_t can be constructed from pairs, and pairs can be treated as tuples for certain purposes.
-     * @tparam types_t... List of types of the compressed_tuple
+     * compressed_tuple is an optimized variant of tuple that leverages the Empty Base Class Optimization (EBCO)
+     * to reduce memory footprint when storing empty types (empty classes).
+     *
+     * Like tuple, compressed_tuple groups a heterogeneous set of objects into a single entity,
+     * with element access performed at compile-time through helper functions. Its functionality
+     * remains similar to tuple (element access, construction, pair compatibility, etc.),
+     * but with a focus on memory compression.
+     *
+     * To maximize the effect of EBCO, it is recommended to place empty types first
+     * in the template parameter list. If the same empty class type is used multiple times,
+     * all of its occurrences should be placed at the beginning to ensure maximum compression.
+     *
+     * @tparam types_t... List of types stored in the compressed_tuple
      */
     template<typename... types_t>
     class compressed_tuple
