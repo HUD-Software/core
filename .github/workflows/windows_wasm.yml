@@ -33,7 +33,8 @@ jobs:
           echo "$PWD/upstream/emscripten" >> $GITHUB_PATH
         shell: bash
       - name: Generate
-        run: emcmake.bat cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
+        run: emcmake cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
+        shell: bash
       - name: Build
         run: cmake --build target -- -j 16
       - name: Test
