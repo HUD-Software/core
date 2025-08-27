@@ -22,6 +22,7 @@ jobs:
           ./emsdk.bat install latest
           ./emsdk.bat activate latest
           ./emsdk_env.bat
+          echo "PATH=%PATH%" >> %GITHUB_ENV%
       - name: Generate
         run: ./emcmake.bat cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
       - name: Build
