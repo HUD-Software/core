@@ -21,11 +21,11 @@ jobs:
           git pull
           emsdk.bat install latest
           emsdk.bat activate latest
-          
         shell: cmd
       - name: Generate
         run: |
           emsdk_env.bat
+          echo %PATH%
           emcmake.bat cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -Btarget
         shell: cmd
       - name: Build
