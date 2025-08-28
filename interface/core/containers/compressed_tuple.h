@@ -72,13 +72,20 @@ namespace hud
     namespace details::compressed_tuple
     {
 
+        /** We need this to force MSVC to do EBCO of multiple inheritance. */
+#if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_MSVC)
+    #define EBCO_MSVC __declspec(empty_bases)
+#else
+    #define EBCO_MSVC
+#endif
+
         /**
          * compressed_tuple_leaf is one compressed_tuple content associated with an index
          * @tparam leaf_index The index of the leaf
          * @tparam type_t The type of the content
          */
         template<usize leaf_index, typename type_t>
-        struct compressed_tuple_leaf
+        struct EBCO_MSVC compressed_tuple_leaf
             : type_t
         {
 
@@ -206,13 +213,6 @@ namespace hud
          */
         template<typename index_seq_t, typename... types_t>
         struct compressed_tuple_impl;
-
-        /** We need this to force MSVC to do EBCO of multiple inheritance. */
-#if defined(HD_COMPILER_CLANG_CL) || defined(HD_COMPILER_MSVC)
-    #define EBCO_MSVC __declspec(empty_bases)
-#else
-    #define EBCO_MSVC
-#endif
 
         template<usize... indices, typename... types_t>
         struct EBCO_MSVC compressed_tuple_impl<index_sequence<indices...>, types_t...>
