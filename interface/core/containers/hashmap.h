@@ -282,6 +282,14 @@ namespace hud
     public:
         /** Type of the hash function. */
         using typename super::hasher_type;
+        /** Type of the equal function. */
+        using typename super::key_equal_type;
+        /** Type of the iterator. */
+        using typename super::iterator;
+        /** Type of the const iterator. */
+        using typename super::const_iterator;
+        /**  Type of the allocator. */
+        using typename super::allocator_type;
         /** Type of the storage used to store key-value pairs. */
         using storage_type = typename super::storage_type;
         /** Type of the key. */
@@ -292,9 +300,6 @@ namespace hud
         /** Inherit constructors and methods from the base class. */
         using super::reserve;
         using super::super;
-        using typename super::allocator_type;
-        using typename super::const_iterator;
-        using typename super::iterator;
         using super::operator=;
 
         /** Default constructor. */

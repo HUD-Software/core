@@ -797,22 +797,6 @@ namespace hud
             slot_type *slot_ptr_;
         };
 
-        // template<bool is_transparent>
-        // struct KeyArg
-        // {
-        //     // Transparent. Forward `K`.
-        //     template<typename K, typename key_type>
-        //     using type = K;
-        // };
-
-        // template<>
-        // struct KeyArg<false>
-        // {
-        //     // Not transparent. Always use `key_type`.
-        //     template<typename K, typename key_type>
-        //     using type = key_type;
-        // };
-
         template<
             typename storage_t,
             typename hasher_t,
@@ -1183,25 +1167,6 @@ namespace hud
                 }
                 return res.first;
             }
-
-            // /**
-            //  * Finds or inserts a slot corresponding to the given key.
-            //  * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
-            //  * @param key The key used to find or insert the slot.
-            //  * @param args The arguments forwarded to the `slot_type` constructor after the key.
-            //  * @return An iterator to the inserted or existing value.
-            //  */
-            // template<typename... args_t>
-            // requires(hud::is_constructible_v<slot_type, const key_type &, args_t...>)
-            // constexpr iterator add_impl(const key_type &key, args_t &&...args) noexcept
-            // {
-            //     hud::pair<iterator, bool> res {find_or_insert_no_construct(key)};
-            //     if (res.second)
-            //     {
-            //         hud::memory::construct_object_at(res.first.slot_ptr_, key, hud::forward<args_t>(args)...);
-            //     }
-            //     return res.first;
-            // }
 
             /**
              * Adds a new element to the container using piecewise construction of the key and value.
@@ -2034,16 +1999,22 @@ namespace hud
     public:
         /** Type of the hash function. */
         using typename super::hasher_type;
-        /** Type of the storage used to store key-value pairs. */
+        /** Type of the equal function. */
+        using typename super::key_equal_type;
+        /** Type of the iterator. */
+        using typename super::iterator;
+        /** Type of the const iterator. */
+        using typename super::const_iterator;
+        /**  Type of the allocator. */
+        using typename super::allocator_type;
+        /** Type of the storage used to store key. */
         using storage_type = typename super::storage_type;
         /** Type of the key. */
         using key_type = typename storage_type::key_type;
+
         /** Inherit constructors and methods from the base class. */
         using super::reserve;
         using super::super;
-        using typename super::allocator_type;
-        using typename super::const_iterator;
-        using typename super::iterator;
         using super::operator=;
 
         explicit constexpr hashset() noexcept = default;
