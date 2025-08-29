@@ -13,9 +13,9 @@
 #include "../traits/is_trivially_copy_constructible.h"
 #include "tuple_size.h"
 #include "tuple_element.h"
-#include "compressed_pair.h"
 #include "../traits/is_transparent.h"
 #include "../traits/conditional.h"
+#include "compressed_tuple.h"
 
 // TODO:
 // Move common to a common class that contains max_slot_count_, count_, control_ptr_, slot_ptr_ and free_slot_before_grow_
@@ -842,7 +842,7 @@ namespace hud
             explicit constexpr hashset_impl() noexcept = default;
 
             constexpr explicit hashset_impl(const allocator_type &allocator) noexcept
-                : allocator_ {allocator}
+                : compressed_ {allocator, 0}
             {
             }
 
@@ -859,10 +859,9 @@ namespace hud
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, const allocator_type &allocator) noexcept
-                : allocator_ {allocator}
-                , max_slot_count_ {other.max_count()}
+                : max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
-                , free_slot_before_grow_(other.free_slot_before_grow_)
+                , compressed_ {allocator, other.free_slot_before_grow_compressed()}
             {
                 copy_construct(other);
             }
@@ -875,10 +874,9 @@ namespace hud
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count, const allocator_type &allocator) noexcept
-                : allocator_ {allocator}
-                , max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
+                : max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
-                , free_slot_before_grow_(max_slot_before_grow(max_slot_count_) - count_)
+                , compressed_ {allocator, max_slot_before_grow(max_slot_count_) - count_}
             {
                 copy_construct(other, extra_max_count);
             }
@@ -891,10 +889,9 @@ namespace hud
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, const allocator_type &allocator) noexcept
-                : allocator_ {allocator}
-                , max_slot_count_ {other.max_count()}
+                : max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
-                , free_slot_before_grow_(other.free_slot_before_grow_)
+                , compressed_ {allocator, other.free_slot_before_grow_compressed()}
             {
                 move_construct(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other));
             }
@@ -907,10 +904,9 @@ namespace hud
 
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count, const allocator_type &allocator) noexcept
-                : allocator_ {allocator}
-                , max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
+                : max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
-                , free_slot_before_grow_(max_slot_before_grow(max_slot_count_) - count_)
+                , compressed_ {allocator, max_slot_before_grow(max_slot_count_) - count_}
             {
                 move_construct(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other), extra_max_count);
             }
@@ -1072,14 +1068,14 @@ namespace hud
 
                 if constexpr (hud::allocator_traits<allocator_type>::swap_when_container_swap::value)
                 {
-                    hud::swap(allocator_(), other.allocator_());
+                    hud::swap(hud::get<0>(compressed_), hud::get<0>(other.compressed_));
                 }
 
                 hud::swap(other.count_, count_);
                 hud::swap(other.control_ptr_, control_ptr_);
                 hud::swap(other.slot_ptr_, slot_ptr_);
                 hud::swap(other.max_slot_count_, max_slot_count_);
-                hud::swap(other.free_slot_before_grow_, free_slot_before_grow_);
+                hud::swap(other.free_slot_before_grow_compressed(), free_slot_before_grow_compressed());
             }
 
             template<typename K>
@@ -1095,7 +1091,7 @@ namespace hud
             /** Retrieves the allocator. */
             [[nodiscard]] HD_FORCEINLINE constexpr const allocator_type &allocator() const noexcept
             {
-                return allocator_;
+                return hud::get<0>(compressed_);
             }
 
             /** Return the slack in number of elements. */
@@ -1311,12 +1307,12 @@ namespace hud
                 if (should_be_mark_as_empty_if_deleted(index))
                 {
                     control::set(control_ptr_, index, empty_byte, max_slot_count_);
-                    free_slot_before_grow_++;
+                    free_slot_before_grow_compressed()++;
                 }
                 else
                 {
                     control::set(control_ptr_, index, deleted_byte, max_slot_count_);
-                    free_slot_before_grow_ |= ~((~usize {}) >> 1); // Set the sign bit that represent the presence of delete slots
+                    free_slot_before_grow_compressed() |= ~((~usize {}) >> 1); // Set the sign bit that represent the presence of delete slots
                 }
                 count_--;
             }
@@ -1422,7 +1418,7 @@ namespace hud
                     other.slot_ptr_ = nullptr;
                     other.max_slot_count_ = 0;
                     other.count_ = 0;
-                    other.free_slot_before_grow_ = 0;
+                    other.free_slot_before_grow_compressed() = 0;
                 }
             }
 
@@ -1448,12 +1444,12 @@ namespace hud
                     // Copy the allocator if copy_when_container_copy_assigned is true
                     if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                     {
-                        allocator_ = other.allocator_;
+                        hud::get<0>(compressed_) = hud::get<0>(other.compressed_);
                     }
                     // Copy the number of element
                     count_ = other.count_;
                     // Compute the free slot count before growing
-                    free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                    free_slot_before_grow_compressed() = max_slot_before_grow(max_slot_count_) - count_;
                 }
                 else // If we don't have enough memory
                 {
@@ -1463,14 +1459,14 @@ namespace hud
                     // Copy the allocator if copy_when_container_copy_assigned is true
                     if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                     {
-                        allocator_ = other.allocator_;
+                        hud::get<0>(compressed_) = hud::get<0>(other.compressed_);
                     }
                     // Copy the number of element
                     count_ = other.count_;
                     // Copy the max number of element
                     max_slot_count_ = normalize_max_count(count_);
                     // Compute the free slot count before growing
-                    free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                    free_slot_before_grow_compressed() = max_slot_before_grow(max_slot_count_) - count_;
                     // Allocate the control and slot
                     usize control_size {allocate_control_and_slot(max_slot_count_)};
 
@@ -1524,12 +1520,12 @@ namespace hud
                         // Copy the allocator if copy_when_container_copy_assigned is true
                         if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                         {
-                            allocator_ = hud::move(other.allocator_);
+                            hud::get<0>(compressed_) = hud::move(hud::get<0>(other.compressed_));
                         }
                         // Copy the number of element
                         count_ = other.count_;
                         // Compute the free slot count before growing
-                        free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                        free_slot_before_grow_compressed() = max_slot_before_grow(max_slot_count_) - count_;
                     }
                     else // If we don't have enough memory
                     {
@@ -1539,14 +1535,14 @@ namespace hud
                         // Copy the allocator if copy_when_container_copy_assigned is true
                         if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                         {
-                            allocator_ = hud::move(other.allocator_);
+                            hud::get<0>(compressed_) = hud::move(hud::get<0>(other.compressed_));
                         }
                         // Copy the number of element
                         count_ = other.count_;
                         // Copy the max number of element
                         max_slot_count_ = normalize_max_count(count_);
                         // Compute the free slot count before growing
-                        free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                        free_slot_before_grow_compressed() = max_slot_before_grow(max_slot_count_) - count_;
                         // Allocate the control and slot
                         usize control_size {allocate_control_and_slot(max_slot_count_)};
 
@@ -1582,7 +1578,7 @@ namespace hud
                     // Move allocator and move members
                     if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::move_when_container_move_assigned::value)
                     {
-                        allocator_ = hud::move(other.allocator_);
+                        hud::get<0>(compressed_) = hud::move(hud::get<0>(other.compressed_));
                     }
                     control_ptr_ = other.control_ptr_;
                     other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
@@ -1592,8 +1588,8 @@ namespace hud
                     other.count_ = 0;
                     max_slot_count_ = other.max_slot_count_;
                     other.max_slot_count_ = 0;
-                    free_slot_before_grow_ = other.free_slot_before_grow_;
-                    other.free_slot_before_grow_ = 0;
+                    free_slot_before_grow_compressed() = other.free_slot_before_grow_compressed();
+                    other.free_slot_before_grow_compressed() = 0;
                 }
             }
 
@@ -1666,7 +1662,7 @@ namespace hud
                 count_++;
                 control::set(control_ptr_, slot_index, h2, max_slot_count_);
 
-                free_slot_before_grow_--;
+                free_slot_before_grow_compressed()--;
                 return iterator {control_ptr_ + slot_index, slot_ptr_ + slot_index}; // slot_index;
             }
 
@@ -1694,7 +1690,7 @@ namespace hud
                 usize control_size {allocate_control_and_slot(max_slot_count_)};
 
                 // Update number of slot we should put into the table before a resizing rehash
-                free_slot_before_grow_ = max_slot_before_grow(max_slot_count_) - count_;
+                free_slot_before_grow_compressed() = max_slot_before_grow(max_slot_count_) - count_;
 
                 // Set control to empty ending with sentinel
                 hud::memory::set_memory(control_ptr_, control_size, empty_byte);
@@ -1725,7 +1721,7 @@ namespace hud
             [[nodiscard]] constexpr usize free_slot_before_grow() const noexcept
             {
                 // Remove the sign bit that represent if the map contains deleted slots
-                return free_slot_before_grow_ & ((~usize {}) >> 1);
+                return free_slot_before_grow_compressed() & ((~usize {}) >> 1);
             }
 
             /** Retrieves the next capacity after a grow. */
@@ -1858,14 +1854,14 @@ namespace hud
 
                 if (hud::is_constant_evaluated())
                 {
-                    control_ptr_ = allocator_.template allocate<control_type>(control_size).data();
-                    slot_ptr_ = allocator_.template allocate<slot_type>(slots_size).data();
+                    control_ptr_ = hud::get<0>(compressed_).template allocate<control_type>(control_size).data();
+                    slot_ptr_ = hud::get<0>(compressed_).template allocate<slot_type>(slots_size).data();
                 }
                 else
                 {
                     // Allocate control, slot, and slot size to satisfy slot_ptr_ alignment requirements
                     const usize aligned_allocation_size {control_size + sizeof(slot_type) + slots_size};
-                    control_ptr_ = allocator_.template allocate<control_type>(aligned_allocation_size).data();
+                    control_ptr_ = hud::get<0>(compressed_).template allocate<control_type>(aligned_allocation_size).data();
                     slot_ptr_ = reinterpret_cast<slot_type *>(hud::memory::align_address(reinterpret_cast<const uptr>(control_ptr_ + control_size), sizeof(slot_type)));
                     hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
                 }
@@ -1883,13 +1879,13 @@ namespace hud
                     // and allocation is done in two separate allocation
                     if (hud::is_constant_evaluated())
                     {
-                        allocator_.template free<control_type>({control_ptr, control_size});
-                        allocator_.template free<slot_type>({slot_ptr, slots_size});
+                        hud::get<0>(compressed_).template free<control_type>({control_ptr, control_size});
+                        hud::get<0>(compressed_).template free<slot_type>({slot_ptr, slots_size});
                     }
                     else
                     {
                         const usize aligned_allocation_size {control_size + sizeof(slot_type) + slots_size};
-                        allocator_.template free<control_type>({control_ptr, aligned_allocation_size});
+                        hud::get<0>(compressed_).template free<control_type>({control_ptr, aligned_allocation_size});
                     }
                 }
             }
@@ -1900,7 +1896,7 @@ namespace hud
                 control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
                 max_slot_count_ = 0;
                 count_ = 0;
-                free_slot_before_grow_ = 0;
+                free_slot_before_grow_compressed() = 0;
             }
 
             constexpr void destroy_all_slots() noexcept
@@ -1955,9 +1951,27 @@ namespace hud
                 }
             }
 
+            [[nodiscard]] constexpr usize &free_slot_before_grow_compressed() noexcept
+            {
+                return hud::get<1>(compressed_);
+            }
+
+            [[nodiscard]] constexpr const usize &free_slot_before_grow_compressed() const noexcept
+            {
+                return hud::get<1>(compressed_);
+            }
+
         private:
+            /** Max count of slot in the map. Always a power of two mask value. */
+            usize max_slot_count_ {0};
+
+            /** The count of values in the hashmap. */
+            usize count_ {0};
+
+            hud::compressed_tuple<allocator_type, usize> compressed_ {hud::tag_init};
+
             /** The allocator. */
-            allocator_type allocator_;
+            // allocator_type allocator_;
 
             /** The hasher function. */
             hasher_type hasher_;
@@ -1971,14 +1985,8 @@ namespace hud
             /** Pointer to the slot segment. */
             slot_type *slot_ptr_ {nullptr};
 
-            /** Max count of slot in the map. Always a power of two mask value. */
-            usize max_slot_count_ {0};
-
-            /** The count of values in the hashmap. */
-            usize count_ {0};
-
             /** Number of slot we should put into the table before a resizing rehash. */
-            usize free_slot_before_grow_ {0};
+            // usize free_slot_before_grow_ {0};
         };
 
     } // namespace details::hashset
