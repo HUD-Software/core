@@ -138,14 +138,12 @@ GTEST_TEST(hashmap, sizeof_map_is_correct)
 
     // hashmp is compressed, all empty element like allocator, comparator, hasher must be 0 size
     // This test must be updated if the member of hashmap is changed
-    constexpr usize allocator_size = sizeof(hud::hashmap<i32, i32>::allocator_type);
-    constexpr usize hasher_size = sizeof(hud::hashmap<i32, i32>::hasher_type);
-    constexpr usize equal_size = sizeof(hud::hashmap<i32, i32>::key_equal_type);
     constexpr usize control_ptr_size = sizeof(void *);
     constexpr usize slot_ptr_size = sizeof(void *);
-    constexpr usize count_and_max_count_and_free_slot_before_grow_size = 3 * sizeof(usize);
+    constexpr usize count_size = sizeof(usize);
+    constexpr usize max_count_size = sizeof(usize);
+    constexpr usize free_slot_before_grow_size = sizeof(usize);
 
     constexpr usize sizeof_map = sizeof(hud::hashmap<i32, i32>);
-    // hud_assert_true(sizeof_map == 24);
-    // hud_assert_true(sizeof_map <= (allocator_size + hasher_size + equal_size + control_ptr_size + slot_ptr_size + count_and_max_count_and_free_slot_before_grow_size));
+    hud_assert_true(sizeof_map == control_ptr_size + slot_ptr_size + count_size + max_count_size + free_slot_before_grow_size);
 }

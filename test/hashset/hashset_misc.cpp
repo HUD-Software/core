@@ -127,3 +127,20 @@ GTEST_TEST(hashset, count_return_count_of_element)
         hud_assert_true(std::get<2>(result));
     }
 }
+
+GTEST_TEST(hashset, sizeof_map_is_correct)
+{
+    // Size of hashmap do not depends of the key and value types
+    hud_assert_true(sizeof(hud::hashset<i32>) == sizeof(hud::hashset<i64>));
+
+    // hashmp is compressed, all empty element like allocator, comparator, hasher must be 0 size
+    // This test must be updated if the member of hashmap is changed
+    constexpr usize control_ptr_size = sizeof(void *);
+    constexpr usize slot_ptr_size = sizeof(void *);
+    constexpr usize count_size = sizeof(usize);
+    constexpr usize max_count_size = sizeof(usize);
+    constexpr usize free_slot_before_grow_size = sizeof(usize);
+
+    constexpr usize sizeof_map = sizeof(hud::hashset<i32>);
+    hud_assert_true(sizeof_map == control_ptr_size + slot_ptr_size + count_size + max_count_size + free_slot_before_grow_size);
+}

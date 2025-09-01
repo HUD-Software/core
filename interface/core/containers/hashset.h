@@ -842,7 +842,7 @@ namespace hud
             explicit constexpr hashset_impl() noexcept = default;
 
             constexpr explicit hashset_impl(const allocator_type &allocator) noexcept
-                : compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple())
+                : compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(), hud::forward_as_tuple())
             {
             }
 
@@ -861,7 +861,7 @@ namespace hud
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, const allocator_type &allocator) noexcept
                 : max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
-                , compressed_ {hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(other.free_slot_before_grow_compressed())}
+                , compressed_ {hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(), hud::forward_as_tuple(other.free_slot_before_grow_compressed())}
             {
                 copy_construct(other);
             }
@@ -876,7 +876,7 @@ namespace hud
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
-                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(max_slot_before_grow(max_slot_count_) - count_))
+                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(), hud::forward_as_tuple(max_slot_before_grow(max_slot_count_) - count_))
             {
                 copy_construct(other, extra_max_count);
             }
@@ -891,7 +891,7 @@ namespace hud
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, const allocator_type &allocator) noexcept
                 : max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
-                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(other.free_slot_before_grow_compressed()))
+                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(), hud::forward_as_tuple(other.free_slot_before_grow_compressed()))
             {
                 move_construct(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other));
             }
@@ -906,7 +906,7 @@ namespace hud
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
-                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(max_slot_before_grow(max_slot_count_) - count_))
+                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(), hud::forward_as_tuple(max_slot_before_grow(max_slot_count_) - count_))
             {
                 move_construct(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other), extra_max_count);
             }
@@ -1247,7 +1247,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 {slot_index + group_index_that_match_h2 & max_slot_count_};
                         slot_type *slot_that_match_h2 {slot_ptr_ + slot_index_that_match_h2};
-                        if (key_equal_(slot_that_match_h2->key(), hud::forward<K>(key))) [[likely]]
+                        if (key_equal()(slot_that_match_h2->key(), hud::forward<K>(key))) [[likely]]
                         {
                             return iterator {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2};
                         }
@@ -1626,7 +1626,7 @@ namespace hud
                     {
                         usize slot_index_that_match_h2 {slot_index + group_index_that_match_h2 & max_slot_count_};
                         slot_type *slot_that_match_h2 {slot_ptr_ + slot_index_that_match_h2};
-                        if (key_equal_(slot_that_match_h2->key(), key)) [[likely]]
+                        if (key_equal()(slot_that_match_h2->key(), key)) [[likely]]
                         {
                             return {
                                 iterator {control_ptr_ + slot_index_that_match_h2, slot_that_match_h2},
@@ -1953,12 +1953,12 @@ namespace hud
 
             [[nodiscard]] constexpr usize &free_slot_before_grow_compressed() noexcept
             {
-                return hud::get<2>(compressed_);
+                return hud::get<3>(compressed_);
             }
 
             [[nodiscard]] constexpr const usize &free_slot_before_grow_compressed() const noexcept
             {
-                return hud::get<2>(compressed_);
+                return hud::get<3>(compressed_);
             }
 
             [[nodiscard]] constexpr allocator_type &allocator_mut() noexcept
@@ -1976,6 +1976,16 @@ namespace hud
                 return hud::get<1>(compressed_);
             }
 
+            [[nodiscard]] constexpr key_equal_type &key_equal() noexcept
+            {
+                return hud::get<2>(compressed_);
+            }
+
+            [[nodiscard]] constexpr const key_equal_type &key_equal() const noexcept
+            {
+                return hud::get<2>(compressed_);
+            }
+
         private:
             /** Max count of slot in the map. Always a power of two mask value. */
             usize max_slot_count_ {0};
@@ -1983,7 +1993,7 @@ namespace hud
             /** The count of values in the hashmap. */
             usize count_ {0};
 
-            hud::compressed_tuple<allocator_type, hasher_type, usize> compressed_ {hud::tag_init};
+            hud::compressed_tuple<allocator_type, hasher_type, key_equal_type, usize> compressed_ {hud::tag_init};
 
             /** The allocator. */
             // allocator_type allocator_;
@@ -1992,7 +2002,7 @@ namespace hud
             // hasher_type hasher_;
 
             /** The key equal function. */
-            key_equal_type key_equal_;
+            // key_equal_type key_equal_;
 
             /** The control of the hashmap. Initialized to sentinel. */
             control_type *control_ptr_ {const_cast<control_type *>(&INIT_GROUP[16])};
