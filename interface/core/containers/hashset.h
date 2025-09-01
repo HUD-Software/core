@@ -1068,7 +1068,7 @@ namespace hud
 
                 if constexpr (hud::allocator_traits<allocator_type>::swap_when_container_swap::value)
                 {
-                    hud::swap(hud::get<0>(compressed_), hud::get<0>(other.compressed_));
+                    hud::swap(allocator_mut(), other.allocator_mut());
                 }
 
                 hud::swap(other.count_, count_);
@@ -1444,7 +1444,7 @@ namespace hud
                     // Copy the allocator if copy_when_container_copy_assigned is true
                     if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                     {
-                        hud::get<0>(compressed_) = hud::get<0>(other.compressed_);
+                        allocator_mut() = other.allocator();
                     }
                     // Copy the number of element
                     count_ = other.count_;
@@ -1459,7 +1459,7 @@ namespace hud
                     // Copy the allocator if copy_when_container_copy_assigned is true
                     if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                     {
-                        hud::get<0>(compressed_) = hud::get<0>(other.compressed_);
+                        allocator_mut() = other.allocator();
                     }
                     // Copy the number of element
                     count_ = other.count_;
@@ -1520,7 +1520,7 @@ namespace hud
                         // Copy the allocator if copy_when_container_copy_assigned is true
                         if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                         {
-                            hud::get<0>(compressed_) = hud::move(hud::get<0>(other.compressed_));
+                            allocator_mut() = hud::move(other.allocator_mut());
                         }
                         // Copy the number of element
                         count_ = other.count_;
@@ -1535,7 +1535,7 @@ namespace hud
                         // Copy the allocator if copy_when_container_copy_assigned is true
                         if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
                         {
-                            hud::get<0>(compressed_) = hud::move(hud::get<0>(other.compressed_));
+                            allocator_mut() = hud::move(other.allocator_mut());
                         }
                         // Copy the number of element
                         count_ = other.count_;
@@ -1578,7 +1578,7 @@ namespace hud
                     // Move allocator and move members
                     if constexpr (hud::is_not_same_v<u_allocator_t, allocator_type> || hud::allocator_traits<allocator_t>::move_when_container_move_assigned::value)
                     {
-                        hud::get<0>(compressed_) = hud::move(hud::get<0>(other.compressed_));
+                        allocator_mut() = hud::move(other.allocator_mut());
                     }
                     control_ptr_ = other.control_ptr_;
                     other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
@@ -1854,14 +1854,14 @@ namespace hud
 
                 if (hud::is_constant_evaluated())
                 {
-                    control_ptr_ = hud::get<0>(compressed_).template allocate<control_type>(control_size).data();
-                    slot_ptr_ = hud::get<0>(compressed_).template allocate<slot_type>(slots_size).data();
+                    control_ptr_ = allocator_mut().template allocate<control_type>(control_size).data();
+                    slot_ptr_ = allocator_mut().template allocate<slot_type>(slots_size).data();
                 }
                 else
                 {
                     // Allocate control, slot, and slot size to satisfy slot_ptr_ alignment requirements
                     const usize aligned_allocation_size {control_size + sizeof(slot_type) + slots_size};
-                    control_ptr_ = hud::get<0>(compressed_).template allocate<control_type>(aligned_allocation_size).data();
+                    control_ptr_ = allocator_mut().template allocate<control_type>(aligned_allocation_size).data();
                     slot_ptr_ = reinterpret_cast<slot_type *>(hud::memory::align_address(reinterpret_cast<const uptr>(control_ptr_ + control_size), sizeof(slot_type)));
                     hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
                 }
@@ -1879,13 +1879,13 @@ namespace hud
                     // and allocation is done in two separate allocation
                     if (hud::is_constant_evaluated())
                     {
-                        hud::get<0>(compressed_).template free<control_type>({control_ptr, control_size});
-                        hud::get<0>(compressed_).template free<slot_type>({slot_ptr, slots_size});
+                        allocator_mut().template free<control_type>({control_ptr, control_size});
+                        allocator_mut().template free<slot_type>({slot_ptr, slots_size});
                     }
                     else
                     {
                         const usize aligned_allocation_size {control_size + sizeof(slot_type) + slots_size};
-                        hud::get<0>(compressed_).template free<control_type>({control_ptr, aligned_allocation_size});
+                        allocator_mut().template free<control_type>({control_ptr, aligned_allocation_size});
                     }
                 }
             }
@@ -1959,6 +1959,11 @@ namespace hud
             [[nodiscard]] constexpr const usize &free_slot_before_grow_compressed() const noexcept
             {
                 return hud::get<1>(compressed_);
+            }
+
+            [[nodiscard]] constexpr allocator_type &allocator_mut() noexcept
+            {
+                return hud::get<0>(compressed_);
             }
 
         private:
