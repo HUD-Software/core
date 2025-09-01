@@ -842,7 +842,7 @@ namespace hud
             explicit constexpr hashset_impl() noexcept = default;
 
             constexpr explicit hashset_impl(const allocator_type &allocator) noexcept
-                : compressed_ {allocator, 0}
+                : compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple())
             {
             }
 
@@ -861,7 +861,7 @@ namespace hud
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, const allocator_type &allocator) noexcept
                 : max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
-                , compressed_ {allocator, other.free_slot_before_grow_compressed()}
+                , compressed_ {hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(other.free_slot_before_grow_compressed())}
             {
                 copy_construct(other);
             }
@@ -876,7 +876,7 @@ namespace hud
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
-                , compressed_ {allocator, max_slot_before_grow(max_slot_count_) - count_}
+                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(max_slot_before_grow(max_slot_count_) - count_))
             {
                 copy_construct(other, extra_max_count);
             }
@@ -891,7 +891,7 @@ namespace hud
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, const allocator_type &allocator) noexcept
                 : max_slot_count_ {other.max_count()}
                 , count_ {other.count()}
-                , compressed_ {allocator, other.free_slot_before_grow_compressed()}
+                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(other.free_slot_before_grow_compressed()))
             {
                 move_construct(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other));
             }
@@ -906,7 +906,7 @@ namespace hud
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
                 , count_ {other.count()}
-                , compressed_ {allocator, max_slot_before_grow(max_slot_count_) - count_}
+                , compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(max_slot_before_grow(max_slot_count_) - count_))
             {
                 move_construct(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other), extra_max_count);
             }
@@ -1235,7 +1235,7 @@ namespace hud
             [[nodiscard]]
             constexpr iterator find_impl(K &&key) noexcept
             {
-                u64 hash {hasher_(hud::forward<K>(key))};
+                u64 hash {hasher()(hud::forward<K>(key))};
                 u64 h1(H1(hash));
                 hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index(h1 & max_slot_count_);
@@ -1270,11 +1270,11 @@ namespace hud
             {
                 if constexpr (hud::is_hashable_64_v<key_type, K>)
                 {
-                    return hasher_(hud::forward<K>(key));
+                    return hasher()(hud::forward<K>(key));
                 }
                 else
                 {
-                    return hasher_(key_type(hud::forward<K>(key)));
+                    return hasher()(key_type(hud::forward<K>(key)));
                 }
             }
 
@@ -1346,7 +1346,7 @@ namespace hud
                         auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                         {
                             // Compute the hash
-                            u64 hash {hasher_(slot_ptr->key())};
+                            u64 hash {hasher()(slot_ptr->key())};
                             // Find H1 slot index
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1397,7 +1397,7 @@ namespace hud
                         auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                         {
                             // Compute the hash
-                            u64 hash {hasher_(slot_ptr->key())};
+                            u64 hash {hasher()(slot_ptr->key())};
                             // Find H1 slot index
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
@@ -1953,17 +1953,27 @@ namespace hud
 
             [[nodiscard]] constexpr usize &free_slot_before_grow_compressed() noexcept
             {
-                return hud::get<1>(compressed_);
+                return hud::get<2>(compressed_);
             }
 
             [[nodiscard]] constexpr const usize &free_slot_before_grow_compressed() const noexcept
             {
-                return hud::get<1>(compressed_);
+                return hud::get<2>(compressed_);
             }
 
             [[nodiscard]] constexpr allocator_type &allocator_mut() noexcept
             {
                 return hud::get<0>(compressed_);
+            }
+
+            [[nodiscard]] constexpr hasher_type &hasher() noexcept
+            {
+                return hud::get<1>(compressed_);
+            }
+
+            [[nodiscard]] constexpr const hasher_type &hasher() const noexcept
+            {
+                return hud::get<1>(compressed_);
             }
 
         private:
@@ -1973,13 +1983,13 @@ namespace hud
             /** The count of values in the hashmap. */
             usize count_ {0};
 
-            hud::compressed_tuple<allocator_type, usize> compressed_ {hud::tag_init};
+            hud::compressed_tuple<allocator_type, hasher_type, usize> compressed_ {hud::tag_init};
 
             /** The allocator. */
             // allocator_type allocator_;
 
             /** The hasher function. */
-            hasher_type hasher_;
+            // hasher_type hasher_;
 
             /** The key equal function. */
             key_equal_type key_equal_;

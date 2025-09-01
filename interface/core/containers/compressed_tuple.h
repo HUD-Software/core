@@ -91,9 +91,8 @@ namespace hud
 
             /** Default constructor. Value-initialize content. */
             HD_FORCEINLINE constexpr compressed_tuple_leaf(hud::tag_init_t) noexcept
-                : type_t()
+                : compressed_tuple_leaf()
             {
-                static_assert(hud::is_nothrow_default_constructible_v<type_t>, "type_t() default constructor is throwable. compressed_tuple is not designed to allow throwable default constructible components");
             }
 
             /** Default constructor. Do not initializes content. */
@@ -127,26 +126,26 @@ namespace hud
             }
 
             /**
-             * Piecewise constructor forwarding a compressed_tuple of arguments.
-             * @tparam Args Types of the elements in the compressed_tuple used for construction.
-             * @param compressed_tuple Tuple of arguments to forward to the constructor of type_t.
+             * Piecewise constructor forwarding a tuple of arguments.
+             * @tparam Args Types of the elements in the tuple used for construction.
+             * @param tuple Tuple of arguments to forward to the constructor of type_t.
              */
             template<typename... Args>
-            constexpr compressed_tuple_leaf(hud::tag_piecewise_construct_t, hud::compressed_tuple<Args...> &&compressed_tuple) noexcept
-                : compressed_tuple_leaf(hud::forward<hud::compressed_tuple<Args...>>(compressed_tuple), hud::make_index_sequence_for<Args...> {})
+            constexpr compressed_tuple_leaf(hud::tag_piecewise_construct_t, hud::tuple<Args...> &&tuple) noexcept
+                : compressed_tuple_leaf(hud::forward<hud::tuple<Args...>>(tuple), hud::make_index_sequence_for<Args...> {})
             {
             }
 
             /**
-             * Piecewise constructor that unpacks a compressed_tuple into individual arguments.
+             * Piecewise constructor that unpacks a tuple into individual arguments.
              *
-             * @tparam Args Types of the elements in the compressed_tuple used for construction.
-             * @tparam indices Index sequence used to extract each element from the compressed_tuple.
-             * @param compressed_tuple Tuple whose elements are forwarded to the constructor of type_t.
+             * @tparam Args Types of the elements in the tuple used for construction.
+             * @tparam indices Index sequence used to extract each element from the tuple.
+             * @param tuple Tuple whose elements are forwarded to the constructor of type_t.
              */
             template<typename... Args, usize... indices>
-            constexpr compressed_tuple_leaf(hud::compressed_tuple<Args...> &&compressed_tuple, hud::index_sequence<indices...>) noexcept
-                : type_t(hud::forward<Args>(hud::get<indices>(compressed_tuple))...)
+            constexpr compressed_tuple_leaf(hud::tuple<Args...> &&tuple, hud::index_sequence<indices...>) noexcept
+                : type_t(hud::forward<Args>(hud::get<indices>(tuple))...)
             {
                 static_assert(hud::is_nothrow_constructible_v<type_t, Args...>, "type_t(Args&&...) constructor is throwable. pair is not designed to allow throwable constructible components");
             }
@@ -278,25 +277,6 @@ namespace hud
         struct compressed_tuples_cat_impl
             : details::tuple::tuples_cat_impl<tuples_t...>
         {
-            // using return_type = typename compressed_cat_tuples_arg<tuples_t...>::tuple_type;
-            // using element_index_seq = typename details::tuple::cat_element_index<hud::make_index_sequence_for<>, tuples_t...>::element_index_seq;
-            // using mask_index_seq = typename details::tuple::cat_mask_index<0, hud::make_index_sequence_for<>, tuples_t...>::mask_index_seq;
-
-            // /**
-            //  * Constructs a tuple that is a concatenation of all tuples in the given "tuple of tulpes" in the same order.
-            //  * @tparam tuple The tuple type of tuples to concatenate
-            //  * @tparam element_indices List element index
-            //  * @tparam mask_indices List index mask to match the element index hud::index_sequence
-            //  * @param hud::index_sequence of element_indices
-            //  * @param hud::index_sequence of mask_indices
-            //  * @param tulpe The tuple of tulpes to concatenate
-            //  * @return The concatenated tuple
-            //  */
-            // template<typename tuple_t, usize... element_indices, usize... mask_indices>
-            // static HD_FORCEINLINE constexpr return_type concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, tuple_t &&tuple) noexcept
-            // {
-            //     return return_type(get<element_indices>(get<mask_indices>(hud::forward<tuple>(tuple)))...);
-            // }
         };
 
         template<>
@@ -312,7 +292,7 @@ namespace hud
              * @return The concatenated tuple
              */
             template<typename EmptyTuple, usize... element_indices, usize... mask_indices>
-            static HD_FORCEINLINE constexpr EmptyTuple concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, EmptyTuple &&) noexcept
+            static constexpr EmptyTuple concatenate(hud::index_sequence<element_indices...>, hud::index_sequence<mask_indices...>, EmptyTuple &&) noexcept
             {
                 return EmptyTuple();
             }
@@ -333,7 +313,7 @@ namespace hud
              * @return The concatenated tuple
              */
             template<typename tuple_t>
-            static HD_FORCEINLINE constexpr return_type concatenate(tuple_t &&tuple) noexcept
+            static constexpr return_type concatenate(tuple_t &&tuple) noexcept
             {
                 return tuples_cat_impl_type::concatenate(element_index_seq(), mask_index_seq(), hud::forward<tuple_t>(tuple));
             }
@@ -593,7 +573,7 @@ namespace hud
          * @param indices... The hud::index_sequence of indices
          */
         template<typename tuple_t, usize... indices>
-        HD_FORCEINLINE constexpr explicit compressed_tuple(tuple_t &&compressed_tuple, hud::index_sequence<indices...>) noexcept
+        constexpr explicit compressed_tuple(tuple_t &&compressed_tuple, hud::index_sequence<indices...>) noexcept
             : super_type(hud::get<indices>(hud::forward<tuple_t>(compressed_tuple))...)
         {
         }
@@ -663,7 +643,7 @@ namespace hud
      * @return `T&` reference to the selected element.
      */
     template<usize idx_to_reach, typename... types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &get(compressed_tuple<types_t...> &t) noexcept
+    [[nodiscard]] constexpr tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &get(compressed_tuple<types_t...> &t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, compressed_tuple<types_t...>>;
         return static_cast<typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &>(t).element();
@@ -677,7 +657,7 @@ namespace hud
      * @return `const T&` reference to the selected element.
      */
     template<usize idx_to_reach, typename... types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &get(const compressed_tuple<types_t...> &t) noexcept
+    [[nodiscard]] constexpr const tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &get(const compressed_tuple<types_t...> &t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, compressed_tuple<types_t...>>;
         return static_cast<const typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &>(t).element();
@@ -691,7 +671,7 @@ namespace hud
      * @return `T&&` reference to the selected element, preserving cv‑qualifiers.
      */
     template<usize idx_to_reach, typename... types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &&get(compressed_tuple<types_t...> &&t) noexcept
+    [[nodiscard]] constexpr tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &&get(compressed_tuple<types_t...> &&t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, compressed_tuple<types_t...>>;
         return hud::forward<type_t>(static_cast<typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &&>(t).element());
@@ -705,7 +685,7 @@ namespace hud
      * @return `const T&&` reference to the selected element.
      */
     template<usize idx_to_reach, typename... types_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr const tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &&get(const compressed_tuple<types_t...> &&t) noexcept
+    [[nodiscard]] constexpr const tuple_element_t<idx_to_reach, compressed_tuple<types_t...>> &&get(const compressed_tuple<types_t...> &&t) noexcept
     {
         using type_t = tuple_element_t<idx_to_reach, compressed_tuple<types_t...>>;
         return hud::forward<const type_t>(static_cast<const typename details::compressed_tuple::tuple_leaf_select<idx_to_reach, type_t>::type &&>(t).element());
