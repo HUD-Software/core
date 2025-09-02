@@ -19,10 +19,6 @@
 
 // TODO:
 // Move common to a common class that contains max_slot_count_, count_, control_ptr_, slot_ptr_ and free_slot_before_grow_
-// Use compressed_pair with allocator and the common object
-// Add hasher and equal object added in compressed_pair like  compressed_pair<allocator, compressed_pair<hasher, compressed_pair<equal, common>>>
-// Maybe create a compressed_tuple? ;)
-
 // Hashset
 // Difference with STL:
 // - Don't use is_transparent because we don't have the nessecity to keep compatibility with existing code.
