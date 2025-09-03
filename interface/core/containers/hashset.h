@@ -17,6 +17,9 @@
 #include "../traits/conditional.h"
 #include "compressed_tuple.h"
 
+#if defined(HD_SSSE3)
+    #include <tmmintrin.h>
+#endif
 // TODO:
 // Move common to a common class that contains max_slot_count_, count_, control_ptr_, slot_ptr_ and free_slot_before_grow_
 // Hashset
@@ -362,7 +365,154 @@ namespace hud
         static constexpr control_type empty_byte = 0b10000000;    // The slot is empty (0x80)
         static constexpr control_type deleted_byte = 0b11111110;  // The slot is deleted (0xFE)
         static constexpr control_type sentinel_byte = 0b11111111; // The slot is a sentinel, A sentinel is a special caracter that mark the end of the control for iteration (0xFF)
+#if defined(HD_SSE2)
+        struct sse2_group
+        {
+            static constexpr usize SLOT_PER_GROUP = 16;
 
+            struct mask
+            {
+                constexpr mask(u16 mask_value) noexcept
+                    : mask_value_ {mask_value}
+                {
+                }
+
+                [[nodiscard]]
+                friend constexpr bool operator==(const mask &a, const mask &b) noexcept
+                {
+                    return a.mask_value_ == b.mask_value_;
+                }
+
+                [[nodiscard]]
+                friend constexpr bool operator!=(const mask &a, const mask &b) noexcept
+                {
+                    return !(a == b);
+                }
+
+                /** Retrieves the index of the first non null byte set. 0 otherwise. */
+                [[nodiscard]] constexpr u32 first_non_null_index() const noexcept
+                {
+                    // Get number of trailing zero to get the insert offset of the byte
+                    return hud::bits::trailing_zeros(mask_value_);
+                }
+
+                [[nodiscard]]
+                constexpr operator u16() const noexcept
+                {
+                    return mask_value_;
+                }
+
+            protected:
+                u16 mask_value_;
+            };
+
+            struct empty_mask
+                : mask
+            {
+                using mask::mask;
+
+                [[nodiscard]] constexpr bool has_empty_slot() const noexcept
+                {
+                    return *this;
+                }
+
+                [[nodiscard]] constexpr u32 first_empty_index() const noexcept
+                {
+                    return first_non_null_index();
+                }
+
+                [[nodiscard]] constexpr u32 trailing_zeros() const noexcept
+                {
+                    return hud::bits::trailing_zeros(mask_value_);
+                }
+
+                [[nodiscard]] constexpr u32 leading_zeros() const noexcept
+                {
+                    return hud::bits::leading_zeros(mask_value_);
+                }
+            };
+
+            struct empty_or_deleted_mask
+                : mask
+            {
+                using mask::mask;
+
+                [[nodiscard]] constexpr bool has_empty_or_deleted_slot() const noexcept
+                {
+                    return *this;
+                }
+
+                [[nodiscard]] constexpr u32 first_empty_or_deleted_index() const noexcept
+                {
+                    return first_non_null_index();
+                }
+            };
+
+            struct full_mask
+                : mask
+            {
+                using mask::mask;
+
+                [[nodiscard]] constexpr bool has_full_slot() const noexcept
+                {
+                    return *this;
+                }
+
+                [[nodiscard]] constexpr u32 first_full_index() const noexcept
+                {
+                    return first_non_null_index();
+                }
+            };
+
+            /** Load a 16 bytes control into the group. */
+            constexpr sse2_group(const control_type *control) noexcept
+                : value_(hud::memory::unaligned_load128(control))
+            {
+            }
+
+            /**Retrieve a mask where H2 matching control byte have value 0x80 and non matching have value 0x00. */
+            mask match(u8 h2_hash) const noexcept
+            {
+                __m128i match = _mm_set1_epi8(static_cast<char>(h2_hash));
+                return mask(_mm_movemask_epi8(_mm_cmpeq_epi8(match, value_)));
+            }
+
+            /** Retrieve a mask where empty control bytes have value 0x80 and others have value 0x00. */
+            empty_mask mask_of_empty_slot() const noexcept
+            {
+    #if defined(HD_SSSE3)
+                return _mm_movemask_epi8(_mm_sign_epi8(value_, value_));
+    #else
+                __m128i match = _mm_set1_epi8(static_cast<char>(empty_byte));
+                return _mm_movemask_epi8(_mm_cmpeq_epi8(match, value_));
+    #endif
+            };
+
+            /** Retrieve a mask where empty and deleted control bytes have value 0x80 and others have value 0x00. */
+            empty_or_deleted_mask mask_of_empty_or_deleted_slot() const noexcept
+            {
+                __m128i special = _mm_set1_epi8(static_cast<char>(sentinel_byte));
+                return _mm_movemask_epi8(_mm_cmpgt_epi8(special, value_));
+            }
+
+            /** Retrieve a mask where full control bytes have value 0x80 and others have value 0x00. */
+            full_mask mask_of_full_slot() const noexcept
+            {
+                return _mm_movemask_epi8(value_) ^ 0xffff;
+            }
+
+            u32 count_leading_empty_or_deleted() const noexcept
+            {
+                auto special = _mm_set1_epi8(static_cast<char>(sentinel_byte));
+                u32 mask = _mm_movemask_epi8(_mm_cmpgt_epi8(special, value_)) + 1;
+                return hud::bits::trailing_zeros(mask);
+            }
+
+        private:
+            /** The 16 bytes value of the group. */
+            __m128i value_;
+        };
+#endif
         /** Portable group used to analyze a group. */
         struct portable_group
         {
@@ -594,8 +744,6 @@ namespace hud
                 // kDeleted. We lower all other bits and count number of trailing zeros.
                 constexpr uint64_t bits {0x0101010101010101ULL};
                 return static_cast<u32>(hud::bits::trailing_zeros((value_ | ~(value_ >> 7)) & bits) >> 3);
-                // return static_cast<u32>(countr_zero((ctrl | ~(ctrl >> 7)) & bits) >> 3);
-                // return 0;
             }
 
         private:

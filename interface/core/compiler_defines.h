@@ -44,6 +44,19 @@ __arm__. If defined, you can further check:
 __powerpc64__
 __aarch64__
 
+---- To check SIMD
+MSVC :
+AVX-512         __AVX512F__
+AVX2            __AVX2__
+AVX             __AVX__
+SSE2            _M_IX86_FP == 2
+SSE             _M_IX86_FP == 1
+Clang :
+AVX-512         __AVX512F__
+AVX2            __AVX2__
+AVX             __AVX__
+SSE2            __SSE__
+SSE             __SSE2__
 */
 
 /** Detect target OS */
@@ -179,5 +192,39 @@ static_assert(sizeof(void *) == 8, "HD_TARGET_64_BITS is defined but size of poi
 #else
     #error Target should be 32 bits or 64 bits
 #endif
+
+/**  Detect SIMD
+- MSVC :
+AVX-512         __AVX512F__
+AVX2            __AVX2__
+AVX             __AVX__
+SSE2            _M_IX86_FP == 2
+SSE             _M_IX86_FP == 1
+- Clang, GCC:
+AVX-512         __AVX512F__
+AVX2            __AVX2__
+AVX             __AVX__
+SSE2            __SSE2__
+SSE             __SSE__
+*/
+#if defined(__AVX512F__)
+    #define HD_AVX512
+#endif
+#if defined(__AVX2__)
+    #define HD_AVX2
+#endif
+#if defined(__AVX__)
+    #define HD_AVX
+#endif
+#if defined(__SSE__) || (_M_IX86_FP == 2)
+    #define HD_SSE2
+#endif
+#if defined(__SSE__) || (_M_IX86_FP == 1)
+    #define HD_SSE
+#endif
+
+// #if defined(__SSSE3__)
+//     #define HD_SSSE3
+// #endif
 
 #endif // HD_INC_CORE_COMPILER_DEFINES_H
