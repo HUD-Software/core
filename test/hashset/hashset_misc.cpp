@@ -94,12 +94,36 @@ GTEST_TEST(hashset, control_type_and_group_are_ok)
         // The slot is empty (0x80)
         // The slot is deleted (0xFE)
         // The slot is a sentinel (0xFF)
-        u128 group_value = 0x80FEFF7F80FEFF7F;
+        u128 group_value = u128 {0x80FEFF7F80FEFF7F, 0x80FEFF7F80FEFF7F};
         group_type g {reinterpret_cast<control_type *>(&group_value)};
-        hud_assert_eq(g.match(0x7F), mask_type {0b00010001});
-        hud_assert_eq(g.mask_of_empty_slot(), mask_empty_type {0b10001000});
-        hud_assert_eq(g.mask_of_empty_or_deleted_slot(), mask_empty_or_deleted_type {0b11001100});
-        hud_assert_eq(g.mask_of_full_slot(), mask_full_type {0b1111111100010001}); // 00 is full
+        hud_assert_eq(g.match(0x7F), mask_type {0b0001000100010001});
+        hud_assert_eq(g.mask_of_empty_slot(), mask_empty_type {0b1000100010001000});
+        hud_assert_eq(g.mask_of_empty_or_deleted_slot(), mask_empty_or_deleted_type {0b1100110011001100});
+        hud_assert_eq(g.mask_of_full_slot(), mask_full_type {0b0001000100010001}); // 00 is full
+
+        // Test group at index
+        // empty (0x80), deleted (0xFE), sentinel (0xFF)
+        u128 two_group[2] = {
+            {0x80FEFF7F80FEFF7F, 0x7F00806DFE002A6D},
+            {0x807B00800000FEFF, 0x80FEFF7F80FEFF7F}
+        };
+
+        control_type *metadata_ptr(reinterpret_cast<control_type *>(&two_group));
+        group_type g0 {metadata_ptr};
+        // Read first group
+        hud_assert_eq(g0.match(0x7F), mask_type {0b0001000110000000});
+        hud_assert_eq(g0.match(0x2A), mask_type {0b0000000000000010});
+        hud_assert_eq(g0.match(0x6D), mask_type {0b0000000000010001});
+        hud_assert_eq(g0.mask_of_empty_or_deleted_slot(), mask_empty_or_deleted_type {0b1100110000101000});
+        hud_assert_eq(g0.mask_of_empty_slot(), mask_empty_type {0b1000100000100000});
+        hud_assert_eq(g0.mask_of_full_slot(), mask_full_type {0b0001000111010111});
+
+        group_type g1 {metadata_ptr + group_type::SLOT_PER_GROUP * 1};
+        // Read second group
+        hud_assert_eq(g1.match(0x7B), mask_type {0b0100000000000000});
+        hud_assert_eq(g1.mask_of_empty_or_deleted_slot(), mask_empty_or_deleted_type {0b1001001011001100});
+        hud_assert_eq(g1.mask_of_empty_slot(), mask_empty_type {0b1001000010001000});
+        hud_assert_eq(g1.mask_of_full_slot(), mask_full_type {0b0110110000010001});
     }
 #endif
 }
