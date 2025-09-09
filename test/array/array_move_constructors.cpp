@@ -196,9 +196,8 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type_same_alloc
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
 
@@ -376,9 +375,7 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type_same_alloc
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -580,9 +577,8 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type_different_
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
 
@@ -760,9 +756,7 @@ GTEST_TEST(array, move_construct_bitwise_copy_constructible_same_type_different_
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -967,9 +961,8 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type_same_
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -1150,9 +1143,7 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type_same_
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -1359,9 +1350,8 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type_diffe
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -1542,9 +1532,7 @@ GTEST_TEST(array, move_construct_bitwise_move_constructible_different_type_diffe
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -1745,9 +1733,8 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type_same_a
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -1928,9 +1915,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type_same_a
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -2134,9 +2119,8 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_different_type_s
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -2317,9 +2301,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_different_type_s
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -2522,9 +2504,8 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type_differ
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -2705,9 +2686,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_same_type_differ
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -2912,9 +2891,8 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_different_type_d
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -3095,9 +3073,7 @@ GTEST_TEST(array, move_construct_non_bitwise_copy_constructible_different_type_d
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -3307,9 +3283,8 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type_same_a
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -3500,9 +3475,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type_same_a
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -3714,9 +3687,8 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type_differ
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -3907,9 +3879,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_same_type_differ
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -4120,9 +4090,8 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type_s
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -4313,9 +4282,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type_s
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -4529,9 +4496,8 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type_d
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -4722,9 +4688,7 @@ GTEST_TEST(array, move_construct_non_bitwise_move_constructible_different_type_d
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -4944,9 +4908,8 @@ GTEST_TEST(array, move_construct_non_bitwise_same_type_same_allocator)
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -5147,9 +5110,7 @@ GTEST_TEST(array, move_construct_non_bitwise_same_type_same_allocator)
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -5371,9 +5332,8 @@ GTEST_TEST(array, move_construct_non_bitwise_same_type_different_allocator)
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -5574,9 +5534,7 @@ GTEST_TEST(array, move_construct_non_bitwise_same_type_different_allocator)
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -5797,9 +5755,8 @@ GTEST_TEST(array, move_construct_non_bitwise_different_type_same_allocator)
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -6000,9 +5957,7 @@ GTEST_TEST(array, move_construct_non_bitwise_different_type_same_allocator)
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -6226,9 +6181,8 @@ GTEST_TEST(array, move_construct_non_bitwise_different_type_different_allocator)
 
     // Test with extra
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
@@ -6429,8 +6383,6 @@ GTEST_TEST(array, move_construct_non_bitwise_different_type_different_allocator)
                         hud_assert_eq(std::get<11>(result), 0u);
                         hud_assert_eq(std::get<12>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }

@@ -2,6 +2,14 @@
 #define HD_INC_CORE_COMPILATION_H
 #include "defines.h"
 
+#ifndef HUD_ASSERTION_ENABLED
+    #if defined(HD_DEBUG) || defined(HD_DEBUGOPTIMIZED)
+        #define HUD_ASSERTION_ENABLED 1
+    #else
+        #define HUD_ASSERTION_ENABLED 0
+    #endif
+#endif
+
 namespace hud
 {
 
@@ -174,11 +182,7 @@ namespace hud
         /** Retrieves if the assertion are enabled. */
         static constexpr bool is_assertion_enabled() noexcept
         {
-#if defined(HD_DEBUG) || defined(HD_DEBUGOPTIMIZED)
-            return true;
-#else
-            return false;
-#endif
+            return HUD_ASSERTION_ENABLED == 1;
         }
 
         /** Retrieves the endianness of scalar types. */

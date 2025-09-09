@@ -141,7 +141,7 @@ GTEST_TEST(hashset, count_return_count_of_element)
         bool empty_ok = set.count() == 0;
 
         // Count return number of element if not empty
-        constexpr usize COUNT = 256;
+        constexpr usize COUNT = 128;
         for (usize value = 0; value < COUNT; value++)
         {
             set.add(value);

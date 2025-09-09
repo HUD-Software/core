@@ -176,7 +176,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
         }
 
         {
-            hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+            hud_test::for_each_value(std::make_integer_sequence<usize, 5>(),
                 []<usize extra>() {
 
                 // Test default allocator with extra
@@ -516,9 +516,8 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
     }
 
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allcoator with extra
                 {
                     auto test_default_allocator = [](const type *raw, usize element_count)
@@ -704,9 +703,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         hud_assert_eq(std::get<6>(result), 1u);
                         hud_assert_eq(std::get<7>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -864,7 +861,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_bitwise_copy_constructi
                 }
 
                 {
-                    hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
+                    hud_test::for_each_value(std::make_integer_sequence<usize, 5>(),
                         []<usize extra>() {
 
                         // Test default allocator with extra
@@ -1207,9 +1204,8 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
     }
 
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allcoator with extra
                 {
                     auto test_default_allocator = [](const Type1 *raw, usize element_count)
@@ -1395,9 +1391,7 @@ GTEST_TEST(array, construct_by_copying_raw_data_array_of_non_bitwise_copy_constr
                         hud_assert_eq(std::get<6>(result), 1u);
                         hud_assert_eq(std::get<7>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -1544,9 +1538,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
     }
 
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator with extra
                 {
                     auto test_default_allocator = [](std::initializer_list<type> initializer)
@@ -1681,9 +1674,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                         hud_assert_eq(std::get<5>(result), 1u);
                         hud_assert_eq(std::get<6>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -1832,9 +1823,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
     }
 
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allocator with extra
                 {
                     auto test_default_allocator = [](std::initializer_list<Type1> initializer)
@@ -1969,9 +1959,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_bitwise_copy_constructible_
                         hud_assert_eq(std::get<5>(result), 1u);
                         hud_assert_eq(std::get<6>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -2161,9 +2149,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
     }
 
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allcoator with extra
                 {
                     auto test_default_allocator = [](std::initializer_list<type> initializer)
@@ -2341,9 +2328,7 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                         hud_assert_eq(std::get<6>(result), 1u);
                         hud_assert_eq(std::get<7>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }
 
@@ -2534,9 +2519,8 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
     }
 
     {
-        hud_test::for_each_value<std::make_integer_sequence<usize, 5>>()(
-            []<usize extra>()
-            {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
+                                 {
                 // Test default allcoator with extra
                 {
                     auto test_default_allocator = [](std::initializer_list<Type1> initializer)
@@ -2714,8 +2698,6 @@ GTEST_TEST(array, construct_with_initializer_list_of_non_bitwise_copy_constructi
                         hud_assert_eq(std::get<6>(result), 1u);
                         hud_assert_eq(std::get<7>(result), 0u);
                     }
-                }
-            }
-        );
+                } });
     }
 }

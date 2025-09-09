@@ -394,9 +394,9 @@ namespace hud
         static constexpr void u128_from_f32(f32 value, u64 &high, u64 &low) noexcept
         {
             // Check value is not NaN or infinite
-            hud::check(hud::math::is_finite(value));
+            HUD_CHECK(hud::math::is_finite(value));
             // Ensure we are positive
-            hud::check(value > -1);
+            HUD_CHECK(value > -1);
             if (value >= hud::math::ldexp(static_cast<f32>(1), 64))
             {
                 high = static_cast<u64>(hud::math::ldexp(value, -64));
@@ -412,11 +412,11 @@ namespace hud
         static constexpr void u128_from_f64(f64 value, u64 &high, u64 &low) noexcept
         {
             // Check value is not NaN or infinite
-            hud::check(hud::math::is_finite(value));
+            HUD_CHECK(hud::math::is_finite(value));
             // Ensure we are positive
-            hud::check(value > -1);
+            HUD_CHECK(value > -1);
             // Check value is lower than 2^128
-            hud::check(value < hud::math::ldexp(static_cast<f64>(1), 128));
+            HUD_CHECK(value < hud::math::ldexp(static_cast<f64>(1), 128));
 
             // If value is greater than value*(2^64)
             if (value >= hud::math::ldexp(static_cast<f64>(1), 64))
@@ -907,7 +907,7 @@ namespace hud
         constexpr i128_portable i128_portable::operator<<(i32 amount) const noexcept
         {
             // i64 shifts of >= 63 are undefined, so we need some special-casing.
-            hud::check(amount >= 0 && amount < 127);
+            HUD_CHECK(amount >= 0 && amount < 127);
             if (amount <= 0)
             {
                 return *this;
@@ -939,7 +939,7 @@ namespace hud
         constexpr i128_portable i128_portable::operator>>(i32 amount) const noexcept
         {
             // i64 shifts of >= 63 are undefined, so we need some special-casing.
-            hud::check(amount >= 0 && amount < 127);
+            HUD_CHECK(amount >= 0 && amount < 127);
             if (amount <= 0)
             {
                 return *this;
@@ -974,7 +974,7 @@ namespace hud
         // https://stackoverflow.com/questions/5386377/division-without-using
         static constexpr void div_mod_impl(u128_portable dividend, u128_portable divisor, u128_portable *quotient_ret, u128_portable *remainder_ret)
         {
-            hud::check(divisor != 0);
+            HUD_CHECK(divisor != 0);
 
             if (divisor > dividend)
             {
@@ -1002,12 +1002,12 @@ namespace hud
             {
                 if (u64 hi = n.high_)
                 {
-                    hud::check(hi != 0);
+                    HUD_CHECK(hi != 0);
                     HD_ASSUME(hi != 0);
                     return 127 - hud::bits::leading_zeros(hi);
                 }
                 const u64 low = n.low_;
-                hud::check(low != 0);
+                HUD_CHECK(low != 0);
                 HD_ASSUME(low != 0);
                 return 63 - hud::bits::leading_zeros(low);
             };
@@ -1035,7 +1035,7 @@ namespace hud
 
         constexpr i128_portable i128_portable::operator/(i128_portable other) const noexcept
         {
-            hud::check(*this != i128_min || other != -1); // UB on two's complement.
+            HUD_CHECK(*this != i128_min || other != -1); // UB on two's complement.
 
             u128_portable quotient {0};
             u128_portable remainder {0};
@@ -1050,7 +1050,7 @@ namespace hud
 
         constexpr i128_portable i128_portable::operator%(i128_portable other) const noexcept
         {
-            hud::check(*this != i128_min || other != -1); // UB on two's complement.
+            HUD_CHECK(*this != i128_min || other != -1); // UB on two's complement.
 
             u128_portable quotient {0};
             u128_portable remainder {0};
@@ -1066,9 +1066,9 @@ namespace hud
         static constexpr void i128_from_f32(f32 value, i64 &high, u64 &low) noexcept
         {
             // Check value is not NaN or infinite
-            hud::check(hud::math::is_finite(value));
+            HUD_CHECK(hud::math::is_finite(value));
             // Ensure we fit in a i128 and value is between [-2^127, 2^127]
-            hud::check((std::numeric_limits<f32>::max_exponent <= 127) || ((value >= -hud::math::ldexp(f32 {1}, 127)) && value < hud::math::ldexp(f32 {1}, 127)));
+            HUD_CHECK((std::numeric_limits<f32>::max_exponent <= 127) || ((value >= -hud::math::ldexp(f32 {1}, 127)) && value < hud::math::ldexp(f32 {1}, 127)));
 
             // We must convert the absolute value and then negate as needed, because
             // floating point types are typically sign-magnitude. Otherwise, the
@@ -1082,9 +1082,9 @@ namespace hud
         static constexpr void i128_from_f64(f64 value, i64 &high, u64 &low) noexcept
         {
             // Check value is not NaN or infinite
-            hud::check(hud::math::is_finite(value));
+            HUD_CHECK(hud::math::is_finite(value));
             // Ensure we fit in a i128  // Ensure value is between [-2^127, 2^127]
-            hud::check((std::numeric_limits<f64>::max_exponent <= 127) || ((value >= -hud::math::ldexp(f64 {1}, 127)) && value < hud::math::ldexp(f64 {1}, 127)));
+            HUD_CHECK((std::numeric_limits<f64>::max_exponent <= 127) || ((value >= -hud::math::ldexp(f64 {1}, 127)) && value < hud::math::ldexp(f64 {1}, 127)));
 
             // We must convert the absolute value and then negate as needed, because
             // floating point types are typically sign-magnitude. Otherwise, the

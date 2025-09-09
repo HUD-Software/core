@@ -370,13 +370,17 @@ add_executable(${test_project_name} ${src})
 
 set_target_properties(${test_project_name}
     PROPERTIES
-        CXX_STANDARD 20
+        CXX_STANDARD 23
         CXX_STANDARD_REQUIRED YES
-        CXX_EXTENSIONS NO
+        CXX_EXTENSIONS OFF
 )
+# MSVC /constexpr:steps2147483647 /constexpr:depth32767
+# GCC Clang -fconstexpr-ops-limit=4294967295 -fconstexpr-steps=4294967295
+# Clang-cl -Xclang -fconstexpr-steps=4294967295
 if(MSVC)
-	target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 /arch:AVX2)
-	target_compile_definitions(${test_project_name} PRIVATE __SSE4_2__)
+	target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /bigobj /permissive- /EHsc /utf-8 /arch:AVX2 )
+	# Define them only weh compiling with 64 bits
+	target_compile_definitions(${test_project_name} PRIVATE __SSE__ __SSE2__ __SSSE3__ __AVX__ __AVX2__)
 elseif(EMSCRIPTEN)
 	# Uncomment to generate an HTML (JS must be commented)
 	# set_target_properties(${test_project_name} PROPERTIES SUFFIX ".html")
@@ -384,9 +388,9 @@ elseif(EMSCRIPTEN)
 	set_target_properties(${test_project_name} PROPERTIES SUFFIX ".js")
 
 	target_link_options(${test_project_name} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:-sASSERTIONS> "-sENVIRONMENT=[\"web\",\"node\"]" -sABORTING_MALLOC=0 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728)
-	target_compile_options( ${test_project_name} PRIVATE -msse4.2 -msimd128 -std=c++20 )
+	target_compile_options( ${test_project_name} PRIVATE -msse4.2 -msimd128)
 else()
-	target_compile_options( ${test_project_name} PRIVATE -msse4.2 -std=c++20)
+	target_compile_options( ${test_project_name} PRIVATE -msse4.2)
 endif()
 
 get_target_property(core_type ${lib_name} TYPE)

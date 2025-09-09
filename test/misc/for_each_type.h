@@ -4,39 +4,39 @@
 
 namespace hud_test
 {
+    namespace detail::for_each_type
+    {
+        template<typename T>
+        struct invoke
+        {
+            template<typename Functor, typename... Args>
+            static void call(Functor &&f, Args &&...args)
+            {
+                f.template operator()<T>(std::forward<Args>(args)...);
+            }
+        };
+
+        template<typename... Ts>
+        struct invoke<std::tuple<Ts...>>
+        {
+            template<typename Functor, typename... Args>
+            static void call(Functor &&f, Args &&...args)
+            {
+                (f.template operator()<Ts>(std::forward<Args>(args)...), ...);
+            }
+        };
+
+    } // namespace detail::for_each_type
+
     template<typename... Types>
-    struct for_each_type;
-
-    template<typename type_t, typename... Rest>
-    struct for_each_type<type_t, Rest...>
+    struct for_each_type
     {
         template<typename Functor, typename... Args>
-        void operator()(Functor functor, Args &&...args)
+        void operator()(Functor functor, Args &&...args) const
         {
-            functor.template operator()<type_t>(std::forward<Args>(args)...);
-            if constexpr (sizeof...(Rest) > 0)
-            {
-                for_each_type<Rest...>()(functor, std::forward<Args>(args)...);
-            }
+            (detail::for_each_type::invoke<Types>::call(functor, std::forward<Args>(args)...), ...);
         }
     };
-
-    template<typename... Types, typename... Rest>
-    struct for_each_type<std::tuple<Types...>, Rest...>
-    {
-        template<typename Functor, typename... Args>
-        void operator()(Functor functor, Args &&...args)
-        {
-            // Iterate over each type of the tuple
-            for_each_type<Types...>()(functor, std::forward<Args>(args)...);
-
-            if constexpr (sizeof...(Rest) > 0)
-            {
-                for_each_type<Rest...>()(functor, std::forward<Args>(args)...);
-            }
-        }
-    };
-
 } // namespace hud_test
 
 #endif // HD_INC_MISC_FOREACH_TYPE_H

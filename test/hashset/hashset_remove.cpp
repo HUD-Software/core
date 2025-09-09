@@ -79,14 +79,15 @@ GTEST_TEST(hashset, remove_non_trivial_type)
         };
     };
 
-    // This test add 128 value remove every y elements check the set,
+    // This test add values remove every y elements check the set,
     // then readd the removed elements and re check again the set by iterating over values
     const auto test_2 = [](usize y)
     {
+        constexpr usize count = 128;
         // Remove elements then add it again
         hashset_type set_1_x;
         bool ok_set_1_x = true;
-        for (usize x = 0; x < 128; x++)
+        for (usize x = 0; x < count; x++)
         {
             set_1_x.add(x);
             ok_set_1_x &= set_1_x.count() == (x + 1);
@@ -95,7 +96,7 @@ GTEST_TEST(hashset, remove_non_trivial_type)
         }
 
         // Check we really have all values
-        for (usize x = 0; x < 128; x++)
+        for (usize x = 0; x < count; x++)
         {
             const auto it = set_1_x.find(x);
             if (it != set_1_x.end())
@@ -106,18 +107,18 @@ GTEST_TEST(hashset, remove_non_trivial_type)
         }
 
         // Remove every element 2 elements
-        for (usize x = 0; x < 128; x += y)
+        for (usize x = 0; x < count; x += y)
         {
             set_1_x.remove(x);
             ok_set_1_x &= !set_1_x.contains(x);
         }
         // Add removed element
-        for (usize x = 0; x < 128; x += y)
+        for (usize x = 0; x < count; x += y)
         {
             set_1_x.add(x);
         }
         // Check we really have all values
-        for (usize x = 0; x < 128; x++)
+        for (usize x = 0; x < count; x++)
         {
             const auto it = set_1_x.find(x);
             if (it != set_1_x.end())
@@ -126,8 +127,8 @@ GTEST_TEST(hashset, remove_non_trivial_type)
                 ok_set_1_x &= (key == x);
             }
         }
-        ok_set_1_x &= set_1_x.count() == 128;
-        ok_set_1_x &= set_1_x.max_count() >= 128;
+        ok_set_1_x &= set_1_x.count() == count;
+        ok_set_1_x &= set_1_x.max_count() >= count;
         ok_set_1_x &= set_1_x.slack() >= 0;
 
         // Check we can still iterate
@@ -206,10 +207,11 @@ GTEST_TEST(hashset, remove_collided_key)
     // Key collided every odd number
     const auto test = [](usize y)
     {
+        constexpr usize count = 128;
         // Remove elements then add it again
         hashset_type set_1_x;
         bool ok_set_1_x = true;
-        for (usize x = 0; x < 64; x++)
+        for (usize x = 0; x < count; x++)
         {
             set_1_x.add(x);
             ok_set_1_x &= set_1_x.count() == (x + 1);
@@ -218,7 +220,7 @@ GTEST_TEST(hashset, remove_collided_key)
         }
 
         // Check we really have all values
-        for (usize x = 0; x < 64; x++)
+        for (usize x = 0; x < count; x++)
         {
             const auto it = set_1_x.find(x);
             if (it != set_1_x.end())
@@ -229,18 +231,18 @@ GTEST_TEST(hashset, remove_collided_key)
         }
 
         // Remove every element 2 elements
-        for (usize x = 0; x < 64; x += y)
+        for (usize x = 0; x < count; x += y)
         {
             set_1_x.remove(x);
             ok_set_1_x &= !set_1_x.contains(x);
         }
         // Add removed element
-        for (usize x = 0; x < 64; x += y)
+        for (usize x = 0; x < count; x += y)
         {
             set_1_x.add(x);
         }
         // Check we really have all values
-        for (usize x = 0; x < 64; x++)
+        for (usize x = 0; x < count; x++)
         {
             const auto it = set_1_x.find(x);
             if (it != set_1_x.end())
@@ -249,8 +251,8 @@ GTEST_TEST(hashset, remove_collided_key)
                 ok_set_1_x &= (key == x);
             }
         }
-        ok_set_1_x &= set_1_x.count() == 64;
-        ok_set_1_x &= set_1_x.max_count() >= 64;
+        ok_set_1_x &= set_1_x.count() == count;
+        ok_set_1_x &= set_1_x.max_count() >= count;
         ok_set_1_x &= set_1_x.slack() >= 0;
 
         // Check we can still iterate
