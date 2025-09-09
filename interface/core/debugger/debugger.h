@@ -8,6 +8,7 @@
     #include <stdlib.h> // abort
 #elif defined(HD_COMPILER_EMSCRIPTEN)
     #include "debugger_browser.h"
+    #include <stdlib.h> // abort
 #else
     #error Targeted OS not supported
 #endif
