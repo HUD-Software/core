@@ -17,12 +17,11 @@
 #include "../traits/conditional.h"
 #include "compressed_tuple.h"
 
+#if defined(HD_SSSE3)
+    #include <tmmintrin.h>
+#endif
 // TODO:
 // Move common to a common class that contains max_slot_count_, count_, control_ptr_, slot_ptr_ and free_slot_before_grow_
-// Use compressed_pair with allocator and the common object
-// Add hasher and equal object added in compressed_pair like  compressed_pair<allocator, compressed_pair<hasher, compressed_pair<equal, common>>>
-// Maybe create a compressed_tuple? ;)
-
 // Hashset
 // Difference with STL:
 // - Don't use is_transparent because we don't have the nessecity to keep compatibility with existing code.
@@ -367,6 +366,182 @@ namespace hud
         static constexpr control_type deleted_byte = 0b11111110;  // The slot is deleted (0xFE)
         static constexpr control_type sentinel_byte = 0b11111111; // The slot is a sentinel, A sentinel is a special caracter that mark the end of the control for iteration (0xFF)
 
+#if defined(HD_SSE2)
+        struct sse2_group
+        {
+            static constexpr usize SLOT_PER_GROUP = 16;
+
+            struct mask
+            {
+                constexpr mask(u16 mask_value) noexcept
+                    : mask_value_ {mask_value}
+                {
+                }
+
+                [[nodiscard]] constexpr operator bool() const noexcept
+                {
+                    return mask_value_ != 0;
+                }
+
+                [[nodiscard]] constexpr u32 operator*() const noexcept
+                {
+                    return first_non_null_index();
+                }
+
+                constexpr mask &operator++() noexcept
+                {
+                    mask_value_ &= mask_value_ - 1;
+                    return *this;
+                }
+
+                [[nodiscard]]
+                constexpr mask begin() const noexcept
+                {
+                    return *this;
+                }
+
+                [[nodiscard]]
+                constexpr mask end() const noexcept
+                {
+                    return mask(0);
+                };
+
+                [[nodiscard]]
+                friend constexpr bool operator==(const mask &a, const mask &b) noexcept
+                {
+                    return a.mask_value_ == b.mask_value_;
+                }
+
+                [[nodiscard]]
+                friend constexpr bool operator!=(const mask &a, const mask &b) noexcept
+                {
+                    return !(a == b);
+                }
+
+                /** Retrieves the index of the first non null byte set. 0 otherwise. */
+                [[nodiscard]] constexpr u32 first_non_null_index() const noexcept
+                {
+                    // Get number of trailing zero to get the insert offset of the byte
+                    return hud::bits::trailing_zeros(mask_value_);
+                }
+
+                [[nodiscard]]
+                constexpr operator u16() const noexcept
+                {
+                    return mask_value_;
+                }
+
+            protected:
+                u16 mask_value_;
+            };
+
+            struct empty_mask
+                : mask
+            {
+                using mask::mask;
+
+                [[nodiscard]] constexpr bool has_empty_slot() const noexcept
+                {
+                    return *this;
+                }
+
+                [[nodiscard]] constexpr u32 first_empty_index() const noexcept
+                {
+                    return first_non_null_index();
+                }
+
+                [[nodiscard]] constexpr u32 trailing_zeros() const noexcept
+                {
+                    return hud::bits::trailing_zeros(mask_value_);
+                }
+
+                [[nodiscard]] constexpr u32 leading_zeros() const noexcept
+                {
+                    return hud::bits::leading_zeros(mask_value_);
+                }
+            };
+
+            struct empty_or_deleted_mask
+                : mask
+            {
+                using mask::mask;
+
+                [[nodiscard]] constexpr bool has_empty_or_deleted_slot() const noexcept
+                {
+                    return *this;
+                }
+
+                [[nodiscard]] constexpr u32 first_empty_or_deleted_index() const noexcept
+                {
+                    return first_non_null_index();
+                }
+            };
+
+            struct full_mask
+                : mask
+            {
+                using mask::mask;
+
+                [[nodiscard]] constexpr bool has_full_slot() const noexcept
+                {
+                    return *this;
+                }
+
+                [[nodiscard]] constexpr u32 first_full_index() const noexcept
+                {
+                    return first_non_null_index();
+                }
+            };
+
+            /** Load a 16 bytes control into the group. */
+            constexpr sse2_group(const control_type *control) noexcept
+                : value_(hud::memory::unaligned_load128(control))
+            {
+            }
+
+            /**Retrieve a mask where H2 matching control byte have value 0x80 and non matching have value 0x00. */
+            mask match(u8 h2_hash) const noexcept
+            {
+                __m128i match = _mm_set1_epi8(static_cast<char>(h2_hash));
+                return mask(_mm_movemask_epi8(_mm_cmpeq_epi8(match, value_)));
+            }
+
+            /** Retrieve a mask where empty control bytes have value 0x80 and others have value 0x00. */
+            empty_mask mask_of_empty_slot() const noexcept
+            {
+    #if defined(HD_SSSE3)
+                return _mm_movemask_epi8(_mm_sign_epi8(value_, value_));
+    #else
+                __m128i match = _mm_set1_epi8(static_cast<char>(empty_byte));
+                return _mm_movemask_epi8(_mm_cmpeq_epi8(match, value_));
+    #endif
+            };
+
+            /** Retrieve a mask where empty and deleted control bytes have value 0x80 and others have value 0x00. */
+            empty_or_deleted_mask mask_of_empty_or_deleted_slot() const noexcept
+            {
+                __m128i special = _mm_set1_epi8(static_cast<char>(sentinel_byte));
+                return _mm_movemask_epi8(_mm_cmpgt_epi8(special, value_));
+            }
+
+            /** Retrieve a mask where full control bytes have value 0x80 and others have value 0x00. */
+            full_mask mask_of_full_slot() const noexcept
+            {
+                return _mm_movemask_epi8(value_) ^ 0xffff;
+            }
+
+            u32 count_leading_empty_or_deleted() const noexcept
+            {
+                auto special = _mm_set1_epi8(static_cast<char>(sentinel_byte));
+                u32 mask = _mm_movemask_epi8(_mm_cmpgt_epi8(special, value_)) + 1;
+                return hud::bits::trailing_zeros(mask);
+            }
+
+        private:
+            /** The 16 bytes value of the group. */
+            __m128i value_;
+        };
+#endif
         /** Portable group used to analyze a group. */
         struct portable_group
         {
@@ -598,17 +773,30 @@ namespace hud
                 // kDeleted. We lower all other bits and count number of trailing zeros.
                 constexpr uint64_t bits {0x0101010101010101ULL};
                 return static_cast<u32>(hud::bits::trailing_zeros((value_ | ~(value_ >> 7)) & bits) >> 3);
-                // return static_cast<u32>(countr_zero((ctrl | ~(ctrl >> 7)) & bits) >> 3);
-                // return 0;
             }
 
         private:
             /** The 8 bytes value of the group. */
             u64 value_;
         };
-
+#if defined(HD_SSE2)
+        /** Group type used to iterate over the control. */
+        using group_type = sse2_group;
+#else
         /** Group type used to iterate over the control. */
         using group_type = portable_group;
+#endif
+        constexpr usize SLOT_PER_GROUP() noexcept
+        {
+            if consteval
+            {
+                return portable_group::SLOT_PER_GROUP;
+            }
+            else
+            {
+                return group_type::SLOT_PER_GROUP;
+            }
+        }
 
         alignas(16) constexpr const control_type INIT_GROUP[32] {
             control_type {0}, // 0
@@ -647,11 +835,10 @@ namespace hud
 
         struct control
         {
-            static constexpr usize COUNT_CLONED_BYTE {group_type::SLOT_PER_GROUP - 1};
-
-            /** Set the control to deleted. */
+            /** Set the control to a value. */
             static constexpr void set(control_type *control_ptr, usize slot_index, control_type value, usize max_slot_count) noexcept
             {
+                constexpr usize COUNT_CLONED_BYTE {SLOT_PER_GROUP() - 1};
                 // Save the h2 in the slot and also in the cloned byte
                 control_ptr[slot_index] = value;
                 control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = value;
@@ -663,7 +850,14 @@ namespace hud
                 // skip all empty slot after the current one
                 while (control::is_byte_empty_or_deleted(*control_ptr))
                 {
-                    control_ptr += group_type {control_ptr}.count_leading_empty_or_deleted();
+                    if consteval
+                    {
+                        control_ptr += portable_group {control_ptr}.count_leading_empty_or_deleted();
+                    }
+                    else
+                    {
+                        control_ptr += group_type {control_ptr}.count_leading_empty_or_deleted();
+                    }
                 }
                 return control_ptr;
             }
@@ -718,7 +912,7 @@ namespace hud
             constexpr iterator(control_type *control_ptr) noexcept
                 : control_ptr_ {control_ptr}
             {
-                hud::check(control_ptr_ != nullptr);
+                HUD_CHECK(control_ptr_ != nullptr);
                 HD_ASSUME((control_ptr_ != nullptr));
             }
 
@@ -726,7 +920,7 @@ namespace hud
                 : control_ptr_ {control_ptr}
                 , slot_ptr_ {slot_ptr}
             {
-                hud::check(control_ptr_ != nullptr);
+                HUD_CHECK(control_ptr_ != nullptr);
                 HD_ASSUME(control_ptr_ != nullptr);
             }
 
@@ -740,21 +934,21 @@ namespace hud
             constexpr reference_type operator*() const noexcept
             {
                 // Ensure we are in a full control
-                hud::check(control::is_byte_full(*control_ptr_));
+                HUD_CHECK(control::is_byte_full(*control_ptr_));
                 return *static_cast<storage_type *>(slot_ptr_);
             }
 
             constexpr pointer_type operator->() const noexcept
             {
                 // Ensure we are in a full control
-                hud::check(control::is_byte_full(*control_ptr_));
+                HUD_CHECK(control::is_byte_full(*control_ptr_));
                 return slot_ptr_;
             }
 
             constexpr iterator &operator++() noexcept
             {
                 // Ensure we are in a full control
-                hud::check(control::is_byte_full(*control_ptr_));
+                HUD_CHECK(control::is_byte_full(*control_ptr_));
                 // Skip all emptry or deleted
                 control_type *full_or_sentinel {control::skip_empty_or_deleted(control_ptr_ + 1)};
                 slot_ptr_ += full_or_sentinel - control_ptr_;
@@ -1007,7 +1201,14 @@ namespace hud
             [[nodiscard]]
             constexpr iterator find(K &&key) noexcept
             {
-                return find_impl(forward_key(hud::forward<K>(key)));
+                if consteval
+                {
+                    return find_impl<portable_group>(forward_key(hud::forward<K>(key)));
+                }
+                else
+                {
+                    return find_impl<group_type>(forward_key(hud::forward<K>(key)));
+                }
             }
 
             constexpr void rehash(i32 count) noexcept
@@ -1231,18 +1432,21 @@ namespace hud
             }
 
         private:
-            template<typename K>
+            template<typename group_t, typename K>
             [[nodiscard]]
             constexpr iterator find_impl(K &&key) noexcept
             {
                 u64 hash {hasher()(hud::forward<K>(key))};
                 u64 h1(H1(hash));
-                hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
+                HUD_CHECK(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index(h1 & max_slot_count_);
+
                 while (true)
                 {
-                    group_type group {control_ptr_ + slot_index};
-                    group_type::mask group_mask_that_match_h2 {group.match(H2(hash))};
+
+                    const group_t group {control_ptr_ + slot_index};
+                    // group_type group {control_ptr_ + slot_index};
+                    const typename group_t::mask group_mask_that_match_h2 {group.match(H2(hash))};
                     for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
                     {
                         usize slot_index_that_match_h2 {slot_index + group_index_that_match_h2 & max_slot_count_};
@@ -1260,7 +1464,7 @@ namespace hud
                     }
 
                     // Advance to next group (Maybe a control iterator that iterate over groups can be better alternative)
-                    slot_index += group_type::SLOT_PER_GROUP;
+                    slot_index += group_t::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
             }
@@ -1280,22 +1484,35 @@ namespace hud
 
             constexpr bool should_be_mark_as_empty_if_deleted(usize index) const noexcept
             {
+                if consteval
+                {
+                    return should_be_mark_as_empty_if_deleted_impl<portable_group>(index);
+                }
+                else
+                {
+                    return should_be_mark_as_empty_if_deleted_impl<group_type>(index);
+                }
+            }
+
+            template<typename group_t>
+            constexpr bool should_be_mark_as_empty_if_deleted_impl(usize index) const noexcept
+            {
                 // If map fits entirely into a probing group.
-                if (max_slot_count_ <= group_type::SLOT_PER_GROUP)
+                if (max_slot_count_ <= group_t::SLOT_PER_GROUP)
                 {
                     return true;
                 }
 
                 // Mask of empty slot of the group after index
-                const group_type::empty_mask empty_after = group_type {control_ptr_ + index}.mask_of_empty_slot();
+                const typename group_t::empty_mask empty_after = group_t {control_ptr_ + index}.mask_of_empty_slot();
                 // Mask of empty slot of the group before index
-                const usize index_before = (index - group_type::SLOT_PER_GROUP) & max_slot_count_;
-                const group_type::empty_mask empty_before = group_type {control_ptr_ + index_before}.mask_of_empty_slot();
+                const usize index_before = (index - group_t::SLOT_PER_GROUP) & max_slot_count_;
+                const typename group_t::empty_mask empty_before = group_t {control_ptr_ + index_before}.mask_of_empty_slot();
                 // If both groups are not fully empty (i.e., contain at least one empty slot each),
                 // and the number of consecutive empty slots before and after the index
                 // doesn’t span the whole group (i.e., < SLOT_PER_GROUP),
                 // then a probing sequence might have crossed this position → must keep as 'deleted'.
-                return empty_before && empty_after && static_cast<usize>(empty_after.trailing_zeros() + empty_before.leading_zeros()) < group_type::SLOT_PER_GROUP;
+                return empty_before && empty_after && static_cast<usize>(empty_after.trailing_zeros() + empty_before.leading_zeros()) < group_t::SLOT_PER_GROUP;
             }
 
             constexpr void remove_iterator(iterator it) noexcept
@@ -1602,7 +1819,14 @@ namespace hud
             [[nodiscard]]
             constexpr hud::pair<iterator, bool> find_or_insert_no_construct(K &&key) noexcept
             {
-                return find_or_insert_no_construct_impl(forward_key(hud::forward<K>(key)));
+                if consteval
+                {
+                    return find_or_insert_no_construct_impl<portable_group>(forward_key(hud::forward<K>(key)));
+                }
+                else
+                {
+                    return find_or_insert_no_construct_impl<group_type>(forward_key(hud::forward<K>(key)));
+                }
             }
 
             /**
@@ -1610,18 +1834,18 @@ namespace hud
              * If the key is found, return the iterator
              * If not found insert the key but do not construct the value.
              */
-            template<typename K>
+            template<typename group_t, typename K>
             [[nodiscard]] constexpr hud::pair<iterator, bool> find_or_insert_no_construct_impl(K &&key) noexcept
             {
                 u64 hash {compute_hash(key)};
                 u64 h1(H1(hash));
-                hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
+                HUD_CHECK(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index(h1 & max_slot_count_);
                 while (true)
                 {
                     // Find the key if present, return iterator to it if not prepare for insertion
-                    group_type group {control_ptr_ + slot_index};
-                    group_type::mask group_mask_that_match_h2 {group.match(H2(hash))};
+                    const group_t group {control_ptr_ + slot_index};
+                    const typename group_t::mask group_mask_that_match_h2 {group.match(H2(hash))};
                     for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
                     {
                         usize slot_index_that_match_h2 {slot_index + group_index_that_match_h2 & max_slot_count_};
@@ -1636,14 +1860,14 @@ namespace hud
                     }
 
                     // Don't find the key
-                    group_type::empty_mask empty_mask_of_group {group.mask_of_empty_slot()};
+                    auto empty_mask_of_group {group.mask_of_empty_slot()};
                     if (empty_mask_of_group.has_empty_slot()) [[likely]]
                     {
                         return {insert_no_construct(h1, H2(hash)), true};
                     }
 
                     // Advance to next group (Maybe a control iterator taht iterate over groups can be better alternative)
-                    slot_index += group_type::SLOT_PER_GROUP;
+                    slot_index += group_t::SLOT_PER_GROUP;
                     slot_index &= max_slot_count_;
                 }
             }
@@ -1668,8 +1892,8 @@ namespace hud
 
             constexpr void resize(usize new_max_slot_count) noexcept
             {
-                // hud::check(new_max_slot_count > max_slot_count_ && "Grow need a bigger value");
-                hud::check(hud::bits::is_valid_power_of_two_mask(new_max_slot_count) && "Not a mask");
+                // HUD_CHECK(new_max_slot_count > max_slot_count_ && "Grow need a bigger value");
+                HUD_CHECK(hud::bits::is_valid_power_of_two_mask(new_max_slot_count) && "Not a mask");
 
                 // Create the buffer with control and slots
                 // Slots are aligned based on alignof(slot_type)
@@ -1752,12 +1976,25 @@ namespace hud
              */
             [[nodiscard]] static constexpr usize find_first_empty_or_deleted(control_type *control_ptr, u64 max_slot_count, u64 h1) noexcept
             {
-                hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count) && "Not a mask");
+                if consteval
+                {
+                    return find_first_empty_or_deleted_impl<portable_group>(control_ptr, max_slot_count, h1);
+                }
+                else
+                {
+                    return find_first_empty_or_deleted_impl<group_type>(control_ptr, max_slot_count, h1);
+                }
+            }
+
+            template<typename group_t>
+            [[nodiscard]] static constexpr usize find_first_empty_or_deleted_impl(control_type *control_ptr, u64 max_slot_count, u64 h1) noexcept
+            {
+                HUD_CHECK(hud::bits::is_valid_power_of_two_mask(max_slot_count) && "Not a mask");
                 usize slot_index(h1 & max_slot_count);
                 while (true)
                 {
-                    group_type group {control_ptr + slot_index};
-                    group_type::empty_or_deleted_mask group_mask_that_match_h2 {group.mask_of_empty_or_deleted_slot()};
+                    const group_t group {control_ptr + slot_index};
+                    const typename group_t::empty_or_deleted_mask group_mask_that_match_h2 {group.mask_of_empty_or_deleted_slot()};
                     if (group_mask_that_match_h2.has_empty_or_deleted_slot())
                     {
                         u32 free_index {group_mask_that_match_h2.first_empty_or_deleted_index()};
@@ -1765,7 +2002,7 @@ namespace hud
                         return slot_index_that_is_free_or_deleted;
                     }
 
-                    slot_index += group_type::SLOT_PER_GROUP;
+                    slot_index += group_t::SLOT_PER_GROUP;
                     slot_index &= max_slot_count;
                 }
             }
@@ -1773,19 +2010,32 @@ namespace hud
             [[nodiscard]]
             constexpr hud::pair<control_type *, slot_type *> find_first_full() const noexcept
             {
-                hud::check(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
+                if consteval
+                {
+                    return find_first_full_impl<portable_group>();
+                }
+                else
+                {
+                    return find_first_full_impl<group_type>();
+                }
+            }
+
+            template<typename group_t>
+            [[nodiscard]] constexpr hud::pair<control_type *, slot_type *> find_first_full_impl() const noexcept
+            {
+                HUD_CHECK(hud::bits::is_valid_power_of_two_mask(max_slot_count_) && "Not a mask");
                 usize slot_index {0};
                 while (slot_index < max_slot_count_)
                 {
-                    group_type group {control_ptr_ + slot_index};
-                    group_type::full_mask group_mask {group.mask_of_full_slot()};
+                    const group_t group {control_ptr_ + slot_index};
+                    const typename group_t::full_mask group_mask {group.mask_of_full_slot()};
                     if (group_mask.has_full_slot())
                     {
                         u32 first_full_index {group_mask.first_full_index()};
                         return {control_ptr_ + first_full_index, slot_ptr_ + first_full_index};
                     }
 
-                    slot_index += group_type::SLOT_PER_GROUP;
+                    slot_index += group_t::SLOT_PER_GROUP;
                 }
                 return {control_ptr_sentinel(), nullptr};
             }
@@ -1805,8 +2055,8 @@ namespace hud
                 // |         16          |      16−16/8            |            14            |
                 // |         32          |      32−32/8            |            28            |
                 // |         64          |      64−64/8            |            56            |
-                return group_type::SLOT_PER_GROUP == 8 && capacity == 7 ? 6 :
-                                                                          capacity - capacity / 8;
+                return SLOT_PER_GROUP() == 8 && capacity == 7 ? 6 :
+                                                                capacity - capacity / 8;
             }
 
             /**
@@ -1816,7 +2066,7 @@ namespace hud
             [[nodiscard]] constexpr usize min_capacity_for_count(usize count) const noexcept
             {
                 // `count*8/7`
-                if (group_type::SLOT_PER_GROUP == 8 && count == 7)
+                if (SLOT_PER_GROUP() == 8 && count == 7)
                 {
                     // x+(x-1)/7 does not work when x==7.
                     return 8;
@@ -1827,7 +2077,7 @@ namespace hud
             [[nodiscard]]
             constexpr control_type *control_ptr_sentinel() const noexcept
             {
-                hud::check(control::is_byte_sentinel(control_ptr_[max_slot_count_]));
+                HUD_CHECK(control::is_byte_sentinel(control_ptr_[max_slot_count_]));
                 return control_ptr_ + max_slot_count_;
             }
 
@@ -1835,7 +2085,7 @@ namespace hud
             {
                 // We cloned size of a group - 1 because we never reach the last cloned bytes
                 // Control size is the number of slot + sentinel + number of cloned bytes
-                return max_slot_count + 1 + control::COUNT_CLONED_BYTE;
+                return max_slot_count + 1 + SLOT_PER_GROUP();
             }
 
             constexpr usize allocate_control_and_slot(usize max_slot_count) noexcept
@@ -1852,7 +2102,7 @@ namespace hud
                 const usize control_size {control_size_for_max_count(max_slot_count)};
                 const usize slots_size {max_slot_count * sizeof(slot_type)};
 
-                if (hud::is_constant_evaluated())
+                if consteval
                 {
                     control_ptr_ = allocator_mut().template allocate<control_type>(control_size).data();
                     slot_ptr_ = allocator_mut().template allocate<slot_type>(slots_size).data();
@@ -1863,7 +2113,7 @@ namespace hud
                     const usize aligned_allocation_size {control_size + sizeof(slot_type) + slots_size};
                     control_ptr_ = allocator_mut().template allocate<control_type>(aligned_allocation_size).data();
                     slot_ptr_ = reinterpret_cast<slot_type *>(hud::memory::align_address(reinterpret_cast<const uptr>(control_ptr_ + control_size), sizeof(slot_type)));
-                    hud::check(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
+                    HUD_CHECK(hud::memory::is_pointer_aligned(slot_ptr_, alignof(slot_type)));
                 }
                 return control_size;
             }
@@ -1877,7 +2127,7 @@ namespace hud
 
                     // In a constant-evaluated context, bit_cast cannot be used with pointers
                     // and allocation is done in two separate allocation
-                    if (hud::is_constant_evaluated())
+                    if consteval
                     {
                         allocator_mut().template free<control_type>({control_ptr, control_size});
                         allocator_mut().template free<slot_type>({slot_ptr, slots_size});
@@ -1911,22 +2161,35 @@ namespace hud
                 }
             }
 
+            constexpr void iterate_over_full_slots(control_type *control_ptr, auto *slot_ptr, usize slot_count, usize max_slot_count, auto callback) noexcept
+            {
+                if consteval
+                {
+                    return iterate_over_full_slots_impl<portable_group>(control_ptr, slot_ptr, slot_count, max_slot_count, callback);
+                }
+                else
+                {
+                    return iterate_over_full_slots_impl<group_type>(control_ptr, slot_ptr, slot_count, max_slot_count, callback);
+                }
+            }
+
             /**
              * Iterate through full slot.
              * Caution : Do not erase value during iteration
              */
-            constexpr void iterate_over_full_slots(control_type *control_ptr, auto *slot_ptr, usize slot_count, usize max_slot_count, auto callback) noexcept
+            template<typename group_t>
+            constexpr void iterate_over_full_slots_impl(control_type *control_ptr, auto *slot_ptr, usize slot_count, usize max_slot_count, auto callback) noexcept
             {
                 // When max slot count is less than the probing group
                 // We have cloned control in the group
                 // In this case, we start probing at the sentinel instead of 0
-                if (max_slot_count < group_type::SLOT_PER_GROUP - 1)
+                if (max_slot_count < group_t::SLOT_PER_GROUP - 1)
                 {
                     // In the case of constant expression
                     // If the hashmap is empty, slot_ptr is nullptr, we don't want to decrement the pointer in the case
                     // In a non constant expression slot_ptr is located after control in the same memory layout,
                     // we can safely decrement as soon as we don't read the value
-                    group_type group {control_ptr + max_slot_count};
+                    const group_t group {control_ptr + max_slot_count};
 
                     // Iterate over cloned control bytes
                     for (u32 full_index : group.mask_of_full_slot())
@@ -1939,14 +2202,14 @@ namespace hud
                 {
                     while (slot_count != 0)
                     {
-                        group_type group {control_ptr};
+                        const group_t group {control_ptr};
                         for (u32 full_index : group.mask_of_full_slot())
                         {
                             callback(control_ptr + full_index, slot_ptr + full_index);
                             --slot_count;
                         }
-                        control_ptr += group_type::SLOT_PER_GROUP;
-                        slot_ptr += group_type::SLOT_PER_GROUP;
+                        control_ptr += group_t::SLOT_PER_GROUP;
+                        slot_ptr += group_t::SLOT_PER_GROUP;
                     }
                 }
             }
@@ -1993,25 +2256,19 @@ namespace hud
             /** The count of values in the hashmap. */
             usize count_ {0};
 
+            /**
+             * 0 - The allocator
+             * 1 - The hasher
+             * 2 - The key equal
+             * 3 -  Number of slot we should put into the table before a resizing rehash
+             */
             hud::compressed_tuple<allocator_type, hasher_type, key_equal_type, usize> compressed_ {hud::tag_init};
-
-            /** The allocator. */
-            // allocator_type allocator_;
-
-            /** The hasher function. */
-            // hasher_type hasher_;
-
-            /** The key equal function. */
-            // key_equal_type key_equal_;
 
             /** The control of the hashmap. Initialized to sentinel. */
             control_type *control_ptr_ {const_cast<control_type *>(&INIT_GROUP[16])};
 
             /** Pointer to the slot segment. */
             slot_type *slot_ptr_ {nullptr};
-
-            /** Number of slot we should put into the table before a resizing rehash. */
-            // usize free_slot_before_grow_ {0};
         };
 
     } // namespace details::hashset

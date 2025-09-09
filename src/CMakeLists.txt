@@ -222,18 +222,19 @@ add_library(${lib_name} STATIC ${interface} ${src})
 # Use C++ 20
 set_target_properties(${lib_name}
     PROPERTIES
-        CXX_STANDARD 20
+        CXX_STANDARD 23
         CXX_STANDARD_REQUIRED YES
-        CXX_EXTENSIONS NO
+        CXX_EXTENSIONS OFF
 )
 
 if(MSVC)
-	target_compile_options( ${lib_name} PRIVATE /Zc:__cplusplus /std:c++20 /bigobj /permissive- /EHsc /utf-8 /arch:AVX2)
-	target_compile_definitions(${lib_name} PRIVATE __SSE4_2__)
+	target_compile_options( ${lib_name} PRIVATE /Zc:__cplusplus /bigobj /permissive- /EHsc /utf-8 /arch:AVX2 )
+	# Define them only weh compiling with 64 bits
+	target_compile_definitions(${lib_name} PRIVATE __SSE__ __SSE2__ __SSSE3__ __AVX__ __AVX2__)
 elseif(EMSCRIPTEN)
-	target_compile_options( ${lib_name} PRIVATE -msse4.2 -msimd128 -std=c++20)
+	target_compile_options( ${lib_name} PRIVATE -msse4.2 -msimd128)
 else()
- 	target_compile_options( ${lib_name} PRIVATE -msse4.2 -std=c++20)
+ 	target_compile_options( ${lib_name} PRIVATE -msse4.2)
 endif()
 
 

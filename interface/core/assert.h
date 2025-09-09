@@ -13,7 +13,10 @@ namespace hud
      */
     static constexpr void check([[maybe_unused]] const bool condition) noexcept
     {
-        if (!hud::is_constant_evaluated())
+        if consteval
+        {
+        }
+        else
         {
             if constexpr (hud::compilation::is_assertion_enabled())
             {
@@ -24,7 +27,11 @@ namespace hud
             }
         }
     }
-
 } // namespace hud
 
+#if HUD_ASSERTION_ENABLED
+    #define HUD_CHECK(condition) hud::check(condition);
+#else
+    #define HUD_CHECK(condition)
+#endif
 #endif // HD_INC_CORE_ASSERT_H

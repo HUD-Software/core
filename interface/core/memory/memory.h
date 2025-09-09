@@ -37,6 +37,10 @@
 #include "../templates/move.h"
 #include "../templates/forward.h"
 
+#if defined(HD_SSE2)
+    #include <emmintrin.h>
+#endif
+
 namespace hud
 {
     struct memory
@@ -1104,6 +1108,22 @@ namespace hud
             return hud::bit_cast<u64>(result);
         }
 
+#if defined(HD_SSE2)
+        /** Load 128 bits value and return it. */
+        [[nodiscard]] static constexpr __m128i unaligned_load128(const i8 *buffer) noexcept
+        {
+            if (hud::is_constant_evaluated())
+            {
+                i8 result[sizeof(__m128i)];
+                copy_memory(result, buffer, sizeof(__m128i));
+                return hud::bit_cast<__m128i>(result);
+            }
+            else
+            {
+                return _mm_loadu_si128(reinterpret_cast<const __m128i *>(buffer));
+            }
+        }
+#endif
         /**
          * Call constructor of type.
          * @tparam type_t Type to construct

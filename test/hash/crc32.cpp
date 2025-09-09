@@ -37,7 +37,7 @@ GTEST_TEST(hash, crc32_lookup_table_is_correct)
     {
         for (u32 j = 0; j < 256; j++)
         {
-            hud::check(generated_crc32_lookup[i][j] == hud::hash_algorithm::crc32::CRC32_LOOKUP[i][j]);
+            HUD_CHECK(generated_crc32_lookup[i][j] == hud::hash_algorithm::crc32::CRC32_LOOKUP[i][j]);
         }
     }
     // Compare with the crc32 lookup table

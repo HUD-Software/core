@@ -10,9 +10,8 @@ GTEST_TEST(hashset, find_in_empty_hashset)
 GTEST_TEST(hashset, find_in_hashset_trivial_type)
 {
 
-    hud_test::for_each_value<std::make_integer_sequence<usize, 64>>()(
-        []<usize maxx>()
-        {
+    hud_test::for_each_value(std::make_integer_sequence<usize, 64>(), []<usize maxx>()
+                             {
             const auto test = [](usize max)
             {
                 using KeyType = usize;
@@ -60,16 +59,13 @@ GTEST_TEST(hashset, find_in_hashset_trivial_type)
             {
                 constexpr auto result = test(maxx);
                 hud_assert_true(result);
-            }
-        }
-    );
+            } });
 }
 
 GTEST_TEST(hashset, find_in_hashset_non_trivial_type)
 {
-    hud_test::for_each_value<std::make_integer_sequence<usize, 64>>()(
-        []<usize maxx>()
-        {
+    hud_test::for_each_value(std::make_integer_sequence<usize, 64>(), []<usize maxx>()
+                             {
             const auto test_1 = [](usize max)
             {
                 using KeyType = hud_test::non_bitwise_type;
@@ -158,7 +154,5 @@ GTEST_TEST(hashset, find_in_hashset_non_trivial_type)
                 hud_assert_true(result);
                 constexpr auto result_2 = test_2(maxx);
                 hud_assert_true(result_2);
-            }
-        }
-    );
+            } });
 }

@@ -12,9 +12,10 @@ GTEST_TEST(aligned_heap_allocator, allocate_zero_do_not_allocate)
 
 GTEST_TEST(aligned_heap_allocator, correctly_allocate_and_free_aligned_requested_amount_of_memory)
 {
-    hud_test::for_each_type<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>()([]<typename type_t>()
-                                                                                                        { hud_test::for_each_value<u32, 1, 2, 4, 8, 16, 32, 64, 128, 256, 1024>()([]<u32 alignement>()
-                                                                                                                                                                                  {
+    auto lambda_for_each_type = []<typename type_t>()
+    {
+        hud_test::for_each_value(std::integer_sequence<u32, 1, 2, 4, 8, 16, 32, 64, 128, 256, 1024> {}, []<u32 alignement>()
+                                 {
             for (u32 count = 1; count < hud::i8_max; count++) {
                 hud::aligned_heap_allocator<alignement> heap_allocator;
                 const auto buffer = heap_allocator.template allocate<type_t>(count);
@@ -37,5 +38,7 @@ GTEST_TEST(aligned_heap_allocator, correctly_allocate_and_free_aligned_requested
                 }
 
                 heap_allocator.free(buffer);
-            } }); });
+            } });
+    };
+    hud_test::for_each_type<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>()(lambda_for_each_type);
 }

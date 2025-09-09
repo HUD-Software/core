@@ -495,9 +495,9 @@ namespace hud
             constexpr u128_intrinsics(f32 value) noexcept
             {
                 // Check value is not NaN or infinite
-                hud::check(hud::math::is_finite(value));
+                HUD_CHECK(hud::math::is_finite(value));
                 // Ensure we are positive
-                hud::check(value > -1);
+                HUD_CHECK(value > -1);
                 intrinsic_value_ = static_cast<unsigned __int128>(value);
             }
 
@@ -505,11 +505,11 @@ namespace hud
             constexpr u128_intrinsics(f64 value) noexcept
             {
                 // Check value is not NaN or infinite
-                hud::check(hud::math::is_finite(value));
+                HUD_CHECK(hud::math::is_finite(value));
                 // Ensure we are positive
-                hud::check(value > -1);
+                HUD_CHECK(value > -1);
                 // Check value is lower than 2^128
-                hud::check(value < hud::math::ldexp(static_cast<f64>(1), 128));
+                HUD_CHECK(value < hud::math::ldexp(static_cast<f64>(1), 128));
                 intrinsic_value_ = static_cast<unsigned __int128>(value);
             }
 
