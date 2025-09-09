@@ -33,7 +33,7 @@ function(enable_sanitizer project_name lib_name)
 			# https://devblogs.microsoft.com/cppblog/asan-for-windows-x64-and-debug-build-support/
 			# https://learn.microsoft.com/en-us/cpp/sanitizers/asan-runtime?view=msvc-170
 		endif()
-	elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+	elseif( CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		message("Enable sanitizer")
 		# https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
 		set(SANTIZE_COMPILE_ARGS 
@@ -42,6 +42,25 @@ function(enable_sanitizer project_name lib_name)
 			-fsanitize=leak
 			-fsanitize=memory
 			-fsanitize=safe-stack
+			-fno-sanitize-recover=all
+			-fsanitize=float-divide-by-zero
+			-fsanitize=float-cast-overflow 
+			-fsanitize=alignment
+			$<$<CONFIG:Release>:-fno-omit-frame-pointer -g>
+			$<$<CONFIG:MinSizeRel>:-fno-omit-frame-pointer -g>
+			$<$<CONFIG:RelWithDebInfo>:-fno-omit-frame-pointer>
+		)
+		target_compile_options(${project_name} PRIVATE ${SANTIZE_COMPILE_ARGS})
+		target_link_options(${project_name} PRIVATE ${SANTIZE_COMPILE_ARGS})
+		target_compile_options(${lib_name} PRIVATE ${SANTIZE_COMPILE_ARGS})
+		target_link_options(${lib_name} PRIVATE ${SANTIZE_COMPILE_ARGS})
+	elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		message("Enable sanitizer")
+		# https://developers.redhat.com/blog/2021/05/05/memory-error-checking-in-c-and-c-comparing-sanitizers-and-valgrind
+		set(SANTIZE_COMPILE_ARGS 
+			-fsanitize=address 
+			-fsanitize=undefined 
+			-fsanitize=leak
 			-fno-sanitize-recover=all
 			-fsanitize=float-divide-by-zero
 			-fsanitize=float-cast-overflow 
