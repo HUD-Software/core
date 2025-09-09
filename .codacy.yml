@@ -3,6 +3,8 @@ engines:
   cppcheck:
     enabled: true
     language: c++
+    extra_args:
+      - -Iinterface
   duplication:
     enabled: true
     exclude_paths:
