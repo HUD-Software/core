@@ -39,7 +39,6 @@ function(enable_sanitizer project_name lib_name)
 		set(SANTIZE_COMPILE_ARGS 
 			-fsanitize=address 
 			-fsanitize=undefined 
-			-fsanitize=safe-stack
 			-fno-sanitize-recover=all
 			-fsanitize=float-divide-by-zero
 			-fsanitize=float-cast-overflow 
