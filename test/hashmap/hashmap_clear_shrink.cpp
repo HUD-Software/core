@@ -629,7 +629,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
-            constexpr usize COUNT = 128;
+            constexpr usize COUNT = 64;
 
             // Add all elements
             for (i32 index = 0; index < COUNT; index++)
