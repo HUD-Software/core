@@ -39,8 +39,6 @@ function(enable_sanitizer project_name lib_name)
 		set(SANTIZE_COMPILE_ARGS 
 			-fsanitize=address 
 			-fsanitize=undefined 
-			-fsanitize=leak
-			-fsanitize=memory
 			-fsanitize=safe-stack
 			-fno-sanitize-recover=all
 			-fsanitize=float-divide-by-zero
@@ -48,7 +46,7 @@ function(enable_sanitizer project_name lib_name)
 			-fsanitize=alignment
 			$<$<CONFIG:Release>:-fno-omit-frame-pointer -g>
 			$<$<CONFIG:MinSizeRel>:-fno-omit-frame-pointer -g>
-			$<$<CONFIG:RelWithDebInfo>:-fno-omit-frame-pointer>
+			$<$<CONFIG:RelWithDebInfo>:-fno-omit-frame-pointer -g>
 		)
 		target_compile_options(${project_name} PRIVATE ${SANTIZE_COMPILE_ARGS})
 		target_link_options(${project_name} PRIVATE ${SANTIZE_COMPILE_ARGS})
@@ -67,7 +65,7 @@ function(enable_sanitizer project_name lib_name)
 			-fsanitize=alignment
 			$<$<CONFIG:Release>:-fno-omit-frame-pointer -g>
 			$<$<CONFIG:MinSizeRel>:-fno-omit-frame-pointer -g>
-			$<$<CONFIG:RelWithDebInfo>:-fno-omit-frame-pointer>
+			$<$<CONFIG:RelWithDebInfo>:-fno-omit-frame-pointe -g>
 		)
 		target_compile_options(${project_name} PRIVATE ${SANTIZE_COMPILE_ARGS})
 		target_link_options(${project_name} PRIVATE ${SANTIZE_COMPILE_ARGS})
