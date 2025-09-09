@@ -39,10 +39,12 @@ function(enable_sanitizer project_name lib_name)
 		set(SANTIZE_COMPILE_ARGS 
 			-fsanitize=address 
 			-fsanitize=undefined 
+			-fsanitize=leak
+			-fsanitize=memory
+			-fsanitize=safe-stack
 			-fno-sanitize-recover=all
 			-fsanitize=float-divide-by-zero
 			-fsanitize=float-cast-overflow 
-			-fno-sanitize=null
 			-fsanitize=alignment
 			$<$<CONFIG:Release>:-fno-omit-frame-pointer -g>
 			$<$<CONFIG:MinSizeRel>:-fno-omit-frame-pointer -g>
