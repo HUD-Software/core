@@ -1,5 +1,5 @@
 #include <core/i128.h>
-#include <cmath> // std::isfinite, std::nextafter,std::ldexp
+#include <cmath> // std::nextafter,std::ldexp
 #include <core/math.h>
 
 GTEST_TEST(u128, assign_i8)
