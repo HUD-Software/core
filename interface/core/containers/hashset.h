@@ -1898,25 +1898,25 @@ namespace hud
             }
 
             /** Retrieves the allocator. */
-            [[nodiscard]] HD_FORCEINLINE constexpr const allocator_type &allocator() const noexcept
+            [[nodiscard]] constexpr const allocator_type &allocator() const noexcept
             {
                 return hud::get<0>(compressed_);
             }
 
             /** Returns the number of free slots before a rehash is needed. */
-            [[nodiscard]] HD_FORCEINLINE constexpr usize slack() const noexcept
+            [[nodiscard]] constexpr usize slack() const noexcept
             {
                 return free_slot_before_grow();
             }
 
             /** Checks whether the container is empty. */
-            [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
+            [[nodiscard]] constexpr bool is_empty() const noexcept
             {
                 return count_ == 0;
             }
 
             /** Returns the number of elements currently in the container. */
-            [[nodiscard]] HD_FORCEINLINE constexpr usize count() const noexcept
+            [[nodiscard]] constexpr usize count() const noexcept
             {
                 return count_;
             }
@@ -1929,7 +1929,7 @@ namespace hud
              * depends on the load factor, which is 7/8 by default. This means a resize
              * will occur when 7/8 of the slots are occupied.
              */
-            [[nodiscard]] HD_FORCEINLINE constexpr usize max_count() const noexcept
+            [[nodiscard]] constexpr usize max_count() const noexcept
             {
                 return max_slot_count_;
             }
@@ -3072,8 +3072,7 @@ namespace hud
              */
             [[nodiscard]] constexpr usize max_slot_before_grow(usize capacity) const noexcept
             {
-                return SLOT_PER_GROUP() == 8 && capacity == 7 ? 6 :
-                                                                capacity - capacity / 8;
+                return (SLOT_PER_GROUP() == 8 && capacity == 7) ? 6 : capacity - capacity / 8;
             }
 
             /**
@@ -3399,6 +3398,77 @@ namespace hud
 
     } // namespace details::hashset
 
+    /**
+     * A high-performance hash set similar to Abseil's flat_hash_set.
+     *
+     * Template parameters:
+     * --------------------
+     * - `element_t`  : The type of the element stored in the set.
+     * - `hasher_t`   : Type providing a 64-bit hash function for `element_t`. Default is `hud::hash_64<element_t>`.
+     * - `key_equal_t`: Type providing key equality comparisons. Default is `hud::equal<element_t>`.
+     * - `allocator_t`: Allocator type for memory management. Default is `hud::heap_allocator`.
+     *
+     * Features:
+     * ---------
+     * 1. Open-addressing hash set with control bytes to track empty, deleted, and full slots.
+     * 2. Supports constant-evaluated contexts (`consteval`) and runtime.
+     * 3. Supports heterogeneous lookup: you can find, insert, or remove elements using types
+     *    other than the stored `element_t` as long as `hasher_t` and `key_equal_t` are specialized
+     *    to handle the alternative type `K`.
+     * 4. Supports piecewise construction for complex keys. Piecewise construction allows in-place initialization of complex keys.
+     * 5. Automatic resizing according to a 7/8 load factor.
+     *
+     * Heterogeneous lookup with alternative key types `K`:
+     * -----------------------------------------------------
+     * You can hash and compare keys directly from their type `K`. To enable this for a user-defined type:
+     *  - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)`
+     *    to compute a 64-bit hash. You can also provide overloads for alternative key representations
+     *    (like an ID or a tuple) to avoid constructing the full key.
+     *  - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type
+     *    and the type `K` (or alternative key representations). Implement `operator()(const key_type&, const K&)`.
+     *
+     * Memory management and performance:
+     * ----------------------------------
+     * - `reserve(count)` allocates memory for at least `count` elements, avoiding unnecessary rehashes.
+     * - `clear()` destroys all elements without releasing memory.
+     * - `clear_shrink()` destroys all elements and frees memory.
+     * - `rehash(max_count)` resizes the underlying table; if `max_count` is less than current capacity, nothing happens.
+     * - `shrink_to_fit()` reduces the table to fit the current number of elements exactly.
+     * - `free_slot_before_grow()` returns the number of free slots before the next resizing.
+     *
+     * Iterators:
+     * ----------
+     * Supports forward iteration over elements:
+     * - `begin()` / `end()` for mutable access
+     * - `begin() const` / `end() const` for const access
+     *
+     * Example:
+     * ```cpp
+     * struct MyType { int id; };
+     *
+     * // Hasher specialization
+     * template<> struct hud::hash_64<MyType> {
+     *     constexpr u64 operator()(const MyType& v) const noexcept { return hud::hash_64<int>{}(v.id); }
+     *     constexpr u64 operator()(const int id) const noexcept { return hud::hash_64<int>{}(id); } // heterogeneous support
+     * };
+     *
+     * // Equality specialization
+     * template<> struct hud::equal<MyType> {
+     *     constexpr bool operator()(const MyType& lhs, const MyType& rhs) const noexcept { return lhs.id == rhs.id; }
+     *     constexpr bool operator()(const MyType& lhs, const int& rhs) const noexcept { return lhs.id == rhs; }
+     * };
+     *
+     * hud::hashset<MyType> set;
+     * set.add(MyType{42}); // insert using MyType
+     * set.add(56);          // insert using alternative key (int)
+     * bool has42 = set.contains(MyType{42});
+     * bool has56 = set.contains(56);
+     * ```
+     *
+     * Notes:
+     * ------
+     * - Piecewise construction allows in-place initialization of complex keys.
+     */
     template<
         typename element_t,
         typename hasher_t = hud::hash_64<element_t>,
@@ -3431,13 +3501,30 @@ namespace hud
         using super::super;
         using super::operator=;
 
+        /**
+         * Default constructor.
+         * Constructs an empty hashset with default-constructed allocator and other components.
+         */
         explicit constexpr hashset() noexcept = default;
 
+        /**
+         * Constructs an empty hashset using the provided allocator.
+         * @param allocator The allocator instance to use for internal memory management.
+         */
         constexpr explicit hashset(const allocator_type &allocator) noexcept
             : super {allocator}
         {
         }
 
+        /**
+         * Constructs a hashset and inserts elements from the given initializer list.
+         * Each element must be constructible into the internal storage type (`storage_type`).
+         * The hashset reserves memory for all elements beforehand to avoid unnecessary rehashing.
+         *
+         * @tparam u_element_t Type of elements in the initializer list.
+         * @param list The initializer list containing elements to insert.
+         * @param allocator Optional allocator instance (defaults to `allocator_type()`).
+         */
         template<typename u_element_t>
         requires(hud::is_constructible_v<storage_type, u_element_t>)
         constexpr hashset(std::initializer_list<u_element_t> list, const allocator_type &allocator = allocator_type()) noexcept
@@ -3451,14 +3538,15 @@ namespace hud
         }
 
         /**
-         * Constructor that initializes the hash map with a list of key-value pairs and additional capacity.
+         * Constructor that initializes the hash set with a list of keys and additional capacity.
+         *
+         * This constructor allows preallocating extra space beyond the initializer list size to reduce future reallocations.
+         *
          * @tparam u_key_t The type of the keys in the initializer list.
-         * @tparam u_value_t The type of the values in the initializer list.
-         * @param list The initializer list of key-value pairs.
-         * @param extra_element_count Additional capacity to reserve.
+         * @param list The initializer list of keys.
+         * @param extra_element_count Additional capacity to reserve beyond the list size.
          * @param allocator The allocator to use for memory management.
          */
-
         template<typename u_key_t = key_type>
         requires(hud::is_copy_constructible_v<key_type, u_key_t>)
         constexpr hashset(std::initializer_list<u_key_t> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
@@ -3474,8 +3562,13 @@ namespace hud
 
         /**
          * Insert a key in the hashset.
-         * @param key The key
-         * @return Iterator to the storage containing the `key`
+         *
+         * This function forwards the key to the underlying storage and constructs it in-place
+         * if necessary. If the key already exists, returns an iterator to the existing element.
+         *
+         * @tparam u_key_t The type of the key being inserted.
+         * @param key The key to insert.
+         * @return Iterator pointing to the storage containing the inserted `key`.
          */
         template<typename u_key_t = key_type>
         constexpr iterator add(u_key_t &&key) noexcept
@@ -3485,22 +3578,43 @@ namespace hud
         }
 
         /**
-         * Adds a new element to the container using piecewise construction of the key and value.
+         * Adds a new element to the hashset using piecewise construction of the key.
+         *
+         * Piecewise construction allows constructing complex keys directly in-place
+         * from a tuple of arguments, avoiding the need to first create a temporary key object.
          *
          * If an element with the given key already exists, returns an iterator to it.
-         * Otherwise, constructs a new element in-place using the provided key and value tuples.
+         * Otherwise, constructs a new element in-place using the provided key tuple.
          *
          * The key can be provided either as a fully constructed `key_type` or as a tuple of arguments
          * used to construct the key in-place. If the key tuple can't be used directly (e.g., it's not
          * hashable or comparable), it must be convertible into a valid `key_type`.
          *
-         * To enable custom key lookup using a tuple of arguments, you can specialize the `hud::equal<key_type>`
-         * and `hud::hash<key_type>` functors to support comparisons and hashes against a forwarding tuple
-         * (i.e., `hud::tuple<Args&&...>&&`).
+         * To enable custom key lookup using a tuple of arguments, you can specialize the
+         * `hud::equal<key_type>` and `hud::hash<key_type>` functors to support comparisons and
+         * hashes against a forwarding tuple (i.e., `hud::tuple<Args&&...>&&`).
          *
-         * @param key_tuple   Tuple of arguments used to identify or construct the key.
-         * @param value_tuple Tuple of arguments used to construct the associated value.
-         * @return An iterator to the existing or newly inserted element.
+         * Example:
+         * ```cpp
+         * struct MyType { int id; };
+         * template<> struct hud::equal<MyType> {
+         *      [[nodiscard]] constexpr bool operator()(const MyType &lhs, const MyType &rhs) const noexcept { return lhs.id == rhs.id; }
+         *      [[nodiscard]] constexpr bool operator()(const MyType &lhs, const i32 &rhs) const noexcept { return lhs.id == rhs; }
+         *      template<typename First, typename Second> requires hud::convertible_to<First, i32>
+         *      [[nodiscard]] constexpr bool operator()(const MyType &lhs, hud::tuple<First, Second> const &rhs) const noexcept { return lhs.id == hud::get<0>(rhs); }
+         * };
+         * template<> struct hud::hash_64<MyType> {
+         *      [[nodiscard]] constexpr u64 operator()(const MyType &v) const noexcept { return hud::hash_64<i32>{}(v.id); }
+         *      [[nodiscard]] constexpr u64 operator()(const i32 id) const noexcept { return hud::hash_64<i32> {}(id); }
+         *      template<typename First, typename Second> requires hud::convertible_to<First, i32>
+         *      [[nodiscard]] constexpr u64 operator()(hud::tuple<First, Second> const &rhs) const noexcept { return hud::hash_64<i32> {}(hud::get<0>(rhs)); }
+         * };
+         *
+         * hud::hashset<MyType> set;
+         * auto it = set.add(hud::tag_piecewise_construct, hud::tuple<int> {42});
+         * ```
+         * @param key_tuple Tuple of arguments used to identify or construct the key.
+         * @return Iterator to the existing or newly inserted element.
          */
         template<typename key_tuple_t>
         constexpr iterator add(hud::tag_piecewise_construct_t, key_tuple_t &&key_tuple) noexcept
@@ -3509,12 +3623,40 @@ namespace hud
         }
     };
 
+    /**
+     * Provides a `hud::tuple_size` specialization for `hashset_storage`.
+     * This allows `hashset_storage` to be treated as a tuple of size 1,
+     * primarily for structured bindings or tuple-like interface compatibility.
+     *
+     * Example:
+     * ```cpp
+     * hud::hashset<int> s;
+     * s.add(42);
+     * for (auto &elem : s) {
+     *     auto [key] = elem; // structured binding works because tuple_size = 1
+     *     hud::println(key);  // prints 42
+     * }
+     * ```
+     */
     template<typename key_t>
     struct tuple_size<details::hashset::hashset_storage<key_t>>
         : hud::integral_constant<usize, 1>
     {
     };
 
+    /**
+     * Provides a `hud::tuple_element` specialization for `hashset_storage`.
+     * Enables accessing the contained key type using `std::tuple_element`.
+     *
+     * @tparam idx_to_reach Index to access. Only 0 is valid.
+     * @tparam key_t The key type stored in the hashset_storage.
+     *
+     * Example:
+     * ```cpp
+     * using storage = details::hashset::hashset_storage<int>;
+     * using key_type = std::tuple_element<0, storage>::type; // key_type = const int
+     * ```
+     */
     template<usize idx_to_reach, typename key_t>
     struct tuple_element<idx_to_reach, details::hashset::hashset_storage<key_t>>
     {
@@ -3522,12 +3664,53 @@ namespace hud
         using type = const typename details::hashset::hashset_storage<key_t>::key_type;
     };
 
+    /**
+     * Swaps the contents of two hashsets.
+     *
+     * @tparam key_t The type of the keys.
+     * @tparam hasher_t The type of the hasher.
+     * @tparam key_equal_t The type of the key equality comparator.
+     * @tparam allocator_t The allocator type.
+     * @param first First hashset to swap.
+     * @param second Second hashset to swap.
+     *
+     * Example:
+     * ```cpp
+     * hud::hashset<int> a{{1,2,3}};
+     * hud::hashset<int> b{{4,5}};
+     * hud::swap(a, b); // a now has 4,5 ; b has 1,2,3
+     * ```
+     */
     template<typename key_t, typename hasher_t, typename key_equal_t, typename allocator_t>
     constexpr void swap(hashset<key_t, hasher_t, key_equal_t, allocator_t> &first, hashset<key_t, hasher_t, key_equal_t, allocator_t> &second) noexcept
     {
         first.swap(second);
     }
 
+    /**
+     * Compares two hashsets for equality.
+     *
+     * Two hashsets are considered equal if:
+     * 1. They contain the same number of elements.
+     * 2. Every element in the larger hashset exists in the smaller hashset.
+     *
+     * This comparison uses the key equality comparator of the hashsets.
+     *
+     * @tparam key_t The type of keys stored.
+     * @tparam hasher_t The hasher type.
+     * @tparam key_equal_t The key equality comparator type.
+     * @tparam allocator_t The allocator type.
+     * @param left First hashset.
+     * @param right Second hashset.
+     * @return `true` if the hashsets contain the same elements; `false` otherwise.
+     *
+     * Example:
+     * ```cpp
+     * hud::hashset<int> a{{1,2,3}};
+     * hud::hashset<int> b{{3,2,1}};
+     * bool are_equal = (a == b); // true
+     * ```
+     */
     template<typename key_t, typename hasher_t, typename key_equal_t, typename allocator_t>
     [[nodiscard]] constexpr bool operator==(const hashset<key_t, hasher_t, key_equal_t, allocator_t> &left, const hashset<key_t, hasher_t, key_equal_t, allocator_t> &right) noexcept
     {
@@ -3562,12 +3745,32 @@ namespace hud
 
 namespace std
 {
+    /**
+     * Specialization of std::tuple_size for hud::details::hashset::hashset_storage.
+     *
+     * Enables structured bindings with hashset_storage, allowing syntax like:
+     * ```cpp
+     * hud::details::hashset::hashset_storage<int> storage;
+     * auto [key] = storage; // Structured binding works
+     * ```
+     */
     template<typename key_t>
     struct tuple_size<hud::details::hashset::hashset_storage<key_t>>
         : hud::tuple_size<hud::details::hashset::hashset_storage<key_t>>
     {
     };
 
+    /**
+     * Specialization of std::tuple_element for hud::details::hashset::hashset_storage.
+     * Allows access to the key type by index in structured bindings.
+     *
+     * Example:
+     * ```cpp
+     * hud::details::hashset::hashset_storage<int> storage{1};
+     * using key_type = std::tuple_element<0, decltype(storage)>::type;
+     * static_assert(std::is_same_v<key_type, const int>);
+     * ```
+     */
     template<std::size_t idx_to_reach, typename key_t>
     struct tuple_element<idx_to_reach, hud::details::hashset::hashset_storage<key_t>>
         : hud::tuple_element<idx_to_reach, hud::details::hashset::hashset_storage<key_t>>
