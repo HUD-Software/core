@@ -21,10 +21,6 @@
     #include <tmmintrin.h>
 #endif
 
-// Difference with STL:
-// - Don't use is_transparent because we don't have the nessecity to keep compatibility with existing code.
-//   Comparaison and hasher is always transparent if the user provide a custom equal or hasher type.
-
 namespace hud
 {
     namespace details::hashset
@@ -1298,6 +1294,12 @@ namespace hud
          * lookup, and iteration over elements at compile-time or runtime.
          *
          * Uses open addressing with H1/H2 hash scheme and groups for SIMD-friendly probing.
+         *
+         * Difference with STL:
+         * --------------------
+         * - Does not use `is_transparent` because we don’t need to maintain compatibility
+         *   with existing code. Comparison and hasher are always treated as transparent
+         *   if the user provides a custom equality or hash type.
          *
          * @tparam storage_t Type of storage used for the elements.
          * @tparam hasher_t Type of the hash function.
