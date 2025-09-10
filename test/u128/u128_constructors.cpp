@@ -5,6 +5,8 @@ GTEST_TEST(u128, default_constructor)
 {
     u8 memory[sizeof(u128)];
     hud::memory::set_memory_safe(memory, 0xFF);
+    hud_assert_eq(memory[0], 0xFF);
+    hud_assert_eq(memory[sizeof(i128) - 1], 0xFF);
     u128 *v = new (memory) u128;
     hud_assert_ne(*v, 0);
 }
