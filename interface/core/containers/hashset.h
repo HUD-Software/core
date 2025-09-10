@@ -389,7 +389,6 @@ namespace hud
          *   - Portable ensures correctness and portability everywhere (constexpr,
          *     non-SSE2 CPUs, cross-platform builds).
          */
-
 #if defined(HD_SSE2)
 
         /**
@@ -833,6 +832,7 @@ namespace hud
 
             /**
              * Returns a mask where empty slots have their MSB (0x80) set and all other slots cleared (0x00).
+             *
              * Uses the known control byte patterns for empty, deleted, sentinel, and full slots
              * to generate the mask.
              */
@@ -866,6 +866,7 @@ namespace hud
 
             /**
              * Returns a mask where empty or deleted slots have their MSB (0x80) set and all other slots cleared (0x00).
+             *
              * Filters control bytes using MSB patterns to isolate only empty and deleted slots.
              */
             constexpr empty_or_deleted_mask mask_of_empty_or_deleted_slot() const noexcept
@@ -896,6 +897,7 @@ namespace hud
 
             /**
              * Returns a mask where full (occupied) slots have their MSB (0x80) set and all other slots cleared (0x00).
+             *
              * Filters control bytes using MSB patterns to isolate only full slots.
              */
             constexpr full_mask mask_of_full_slot() const noexcept
@@ -920,7 +922,9 @@ namespace hud
 
             /**
              * Counts the number of leading empty or deleted slots in the group.
+             *
              * Uses the MSB of each byte to determine which slots are empty or deleted.
+             *
              * Returns the number of consecutive empty/deleted slots starting from the first slot.
              */
             constexpr u32 count_leading_empty_or_deleted() const noexcept
@@ -1038,6 +1042,7 @@ namespace hud
          *
          * Each slot in the hashset is associated with a control byte that encodes
          * its state (empty, deleted, full, sentinel) and part of the hash (H2).
+         *
          * This struct provides constexpr-safe operations to read, write, and skip
          * over control bytes efficiently.
          */
@@ -1045,8 +1050,10 @@ namespace hud
         {
             /**
              * Set the control byte for a given slot and its cloned byte.
+             *
              * Each slot has a cloned byte at a fixed offset for easier SIMD/vectorized
              * access. This function writes the value both to the main slot and the cloned byte.
+             *
              * @param control_ptr Pointer to the start of the control array.
              * @param slot_index Index of the slot to set.
              * @param value The control value to write (H2, empty, deleted, etc.).
@@ -1062,8 +1069,10 @@ namespace hud
 
             /**
              * Skip all empty or deleted control bytes starting from `control_ptr`.
+             *
              * Uses the group abstraction (`portable_group` or `group_type`) to count
              * consecutive empty/deleted slots efficiently.
+             *
              * Works in constexpr contexts (`portable_group`) and runtime (`group_type`).
              * @param control_ptr Pointer to the start of the control array.
              * @return Pointer to the first control byte that is full or sentinel.
@@ -1143,6 +1152,7 @@ namespace hud
 
         /**
          * Iterator over elements in hashset_impl.
+         *
          * Iterates only over slots marked as full (occupied). Skips empty and deleted slots.
          * @tparam slot_t Type of slot stored in the hashset.
          * @tparam is_const Whether the iterator is a const iterator.
@@ -1218,6 +1228,7 @@ namespace hud
 
             /**
              * Pre-increment operator. Moves to the next full slot.
+             *
              * Skips empty and deleted slots automatically.
              * @return Reference to the incremented iterator.
              */
@@ -1281,10 +1292,13 @@ namespace hud
 
         /**
          * A hash set implementation.
+         *
          * This implementation is inspired by Abseil's flat hash set but additionally
          * supports usage in `constexpr` contexts. It provides insertion, deletion,
          * lookup, and iteration over elements at compile-time or runtime.
+         *
          * Uses open addressing with H1/H2 hash scheme and groups for SIMD-friendly probing.
+         *
          * @tparam storage_t Type of storage used for the elements.
          * @tparam hasher_t Type of the hash function.
          * @tparam key_equal_t Type of the equality comparator.
@@ -1322,7 +1336,7 @@ namespace hud
 
             /**
              * HashableAndComparableArgType is used to select the type to be used by a fonction depending of the hashable and comparable possiblity.
-             * If the type K est not hashable or comparable, the type is `key_type`, else the type is `K`
+             * If the type K est not hashable or comparable, the type is `key_type`, else the type is `K`.
              */
             template<typename K>
             static constexpr bool is_hashable_and_comparable_v = hud::conjunction_v<hud::is_hashable_64<key_type, K>, hud::is_comparable_with_equal<key_type, K>>;
@@ -1346,6 +1360,7 @@ namespace hud
 
             /**
              * Copy-constructs elements from another hashset_impl into this one.
+             *
              * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
              * @param other The other array to move
              */
@@ -1356,6 +1371,7 @@ namespace hud
 
             /**
              * Copy-constructs elements from another hashset_impl into this one.
+             *
              * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
@@ -1371,6 +1387,7 @@ namespace hud
 
             /**
              * Copy-constructs a hashset_impl from another hashset_impl using a specific allocator.
+             *
              * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
@@ -1390,6 +1407,7 @@ namespace hud
 
             /**
              * Copy-constructs elements from another hashset_impl with extra capacity.
+             *
              * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
@@ -1406,6 +1424,7 @@ namespace hud
 
             /**
              * Copy-constructs elements from another hashset_impl with extra capacity using a specific allocator.
+             *
              * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
@@ -1425,6 +1444,7 @@ namespace hud
 
             /**
              * Move-constructs a hashset_impl from another hashset_impl, taking ownership of its storage.
+             *
              * Depending on the type and context, it either takes ownership of the other set's memory
              * or constructs each slot individually using move semantics.
              * @tparam u_storage_t Storage type of the other hashset_impl.
@@ -1440,7 +1460,8 @@ namespace hud
             }
 
             /**
-             * Move-constructs a hashset_impl from another hashset_impl using a specific allocator, taking ownership of its storage
+             * Move-constructs a hashset_impl from another hashset_impl using a specific allocator, taking ownership of its storage.
+             *
              * Depending on the type and context, it either takes ownership of the other set's memory
              * or constructs each slot individually using move semantics.
              * @tparam u_storage_t Storage type of the other hashset_impl.
@@ -1459,9 +1480,11 @@ namespace hud
             }
 
             /**
-             * Move-constructs a hashset_impl from another hashset_impl with extra capacity, taking ownership of its storage
+             * Move-constructs a hashset_impl from another hashset_impl with extra capacity, taking ownership of its storage.
+             *
              * Depending on the type and context, it either takes ownership of the other set's memory
              * or constructs each slot individually using move semantics.
+             *
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
              * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
@@ -1475,7 +1498,8 @@ namespace hud
             }
 
             /**
-             * Move-constructs a hashset_impl from another hashset_impl with extra capacity using a specific allocator, taking ownership of its storage
+             * Move-constructs a hashset_impl from another hashset_impl with extra capacity using a specific allocator, taking ownership of its storage.
+             *
              * Depending on the type and context, it either takes ownership of the other set's memory
              * or constructs each slot individually using move semantics.
              * @tparam u_storage_t Storage type of the other hashset_impl.
@@ -1495,6 +1519,7 @@ namespace hud
 
             /**
              * Destroys the hashset_impl and releases all allocated resources.
+             *
              * Calls `clear_shrink()` to destroy all elements and free the underlying storage.
              */
             constexpr ~hashset_impl() noexcept
@@ -1504,7 +1529,9 @@ namespace hud
 
             /**
              * Copy assign another hashset_impl.
+             *
              * The copy assignement only grow allocation and never shrink allocation.
+             *
              * No new allocation is done if the hashset_impl contains enough memory to copy all elements, in other words we don't copy the capacity of the copied hashset_impl.
              * @param other The other hashset_impl to copy
              * @return *this
@@ -1521,8 +1548,11 @@ namespace hud
 
             /**
              * Copy assign another hashset_impl.
+             *
              * The copy assignement only grow allocation and never shrink allocation.
+             *
              * No new allocation is done if the hashset_impl contains enough memory to copy all elements, in other words we don't copy the capacity of the copied hashset_impl.
+             *
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
              * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
@@ -1540,8 +1570,10 @@ namespace hud
 
             /**
              * Move assign another hashset.
+             *
              * Never assume that the move assignement will keep the capacity of the moved hashset_impl.
-             * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
+             *
+             * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization.
              * @param other The other hashset_impl to move
              */
             constexpr hashset_impl &operator=(hashset_impl &&other) noexcept
@@ -1556,8 +1588,10 @@ namespace hud
 
             /**
              * Move assign another hashset.
+             *
              * Never assume that the move assignement will keep the capacity of the moved hashset_impl.
-             * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
+             *
+             * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization.
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
              * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
@@ -1574,7 +1608,9 @@ namespace hud
 
             /**
              * Ensures that the hashset has enough capacity to store at least `count` elements without reallocation.
+             *
              * If the requested capacity exceeds the current capacity, the hash table is resized.
+             *
              * This function pre-allocates memory and adjusts internal structures to accommodate future insertions efficiently, reducing the number of reallocations needed.
              * @param count Minimum number of elements the hashset should be able to store.
              */
@@ -1590,7 +1626,9 @@ namespace hud
             /**
              * Removes all elements from the hashset, calling the destructor of each element
              * if they are not trivially destructible, but retains the allocated memory for reuse.
+             *
              * Unlike `clear_shrink()`, this function does not free the underlying memory buffers.
+             *
              * This allows quick reuse of the same memory if the hashset is repopulated.
              */
             constexpr void clear() noexcept
@@ -1606,9 +1644,12 @@ namespace hud
 
             /**
              * Removes all elements from the hashset and releases all allocated memory.
+             *
              * This function calls the destructor of each element if they are not trivially destructible
              * and then frees the memory used for the control array and slot storage.
+             *
              * After this call, the hashset is reset to an empty state with no allocated capacity.
+             *
              * Use this when you want to completely clear the container and release its memory,
              * as opposed to `clear()`, which only resets the elements but keeps the allocated storage.
              */
@@ -1620,14 +1661,20 @@ namespace hud
 
             /**
              * Rebuilds (rehashes) the hash table with a specified capacity.
+             *
              * When `max_count` is greater than 0, this function ensures the table has enough capacity
              * for at least `max_count` elements. If the new capacity is larger than the current
              * capacity, or `max_count` is 0 but elements are present, the hash table is resized
              * and all elements are reinserted in the new storage.
+             *
              * This function never reduces the current capacity; it only increases it if necessary.
+             *
              * This function is useful for:
-             * - Shrinking the hash table back to zero when empty.
-             * - Pre-allocating or increasing capacity to avoid reallocation during inserts.
+             *
+             *  - Shrinking the hash table back to zero when empty.
+             *
+             *  - Pre-allocating or increasing capacity to avoid reallocation during inserts.
+             *
              * @param max_count The minimum number of elements the hash table should be able to hold.
              *                  If `max_count` is 0, the behavior depends on the current state of the container:
              *                      - If there is no allocated memory, nothing happens.
@@ -1670,11 +1717,15 @@ namespace hud
 
             /**
              * Finds an element with the given key in the hashset.
+             *
              * Important: constructing a `key_type` is not required to perform the search.
+             *
              * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *
              *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
              *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
              *     the full key.
+             *
              *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
              *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
              *
@@ -1704,11 +1755,15 @@ namespace hud
 
             /**
              * Finds an element by key.
+             *
              * Important: constructing a `key_type` is not required to perform the search.
+             *
              * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *
              *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
              *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
              *     the full key.
+             *
              *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
              *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
              *
@@ -1731,11 +1786,15 @@ namespace hud
 
             /**
              * Checks whether the specified key exists in the hash set.
+             *
              * Important: constructing a `key_type` is not required to perform the search.
+             *
              * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *
              *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
              *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
              *     the full key.
+             *
              *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
              *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
              *
@@ -1757,11 +1816,15 @@ namespace hud
 
             /**
              * Checks whether the specified key exists in the hash set.
+             *
              * Important: constructing a `key_type` is not required to perform the search.
+             *
              * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *
              *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
              *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
              *     the full key.
+             *
              *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
              *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
              *
@@ -1804,11 +1867,15 @@ namespace hud
 
             /**
              * Removes an element by key if it exists.
+             *
              * Important: constructing a `key_type` is not required to perform the search.
+             *
              * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *
              *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
              *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
              *     the full key.
+             *
              *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
              *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
              *
@@ -1856,6 +1923,7 @@ namespace hud
 
             /**
              * Returns the capacity currently allocated for the table.
+             *
              * Important: This represents the **raw capacity** (number of slots),
              * **not** the growth threshold. The threshold at which a rehash is triggered
              * depends on the load factor, which is 7/8 by default. This means a resize
@@ -1895,7 +1963,9 @@ namespace hud
         protected:
             /**
              * Finds or inserts a slot corresponding to the given key.
+             *
              * If the key is not found, a new slot is created by constructing it with the key followed by `args`.
+             *
              * @param key The key used to find or insert the slot.
              * @param args The arguments forwarded to the `slot_type` constructor after the key.
              * @return An iterator to the inserted or existing value.
@@ -1940,6 +2010,20 @@ namespace hud
                 return res.first;
             }
 
+            /**
+             * Forwards a key of type `K` appropriately for insertion or lookup in the hashset.
+             *
+             * If `K` is already hashable and comparable (supports the `hasher_type` and key_equal_type),
+             * it is perfectly forwarded as-is, avoiding unnecessary construction of a `key_type`.
+             * Otherwise, a `key_type` is constructed from the forwarded value `k`.
+             *
+             * This mechanism allows lookups or insertions using either the full `key_type` or
+             * some alternative type `K` that can be converted into a key.
+             *
+             * @tparam K Type of the key.
+             * @param k The key or key-like object to forward.
+             * @return Either a perfectly-forwarded `K` or a newly constructed `key_type`.
+             */
             template<typename K>
             [[nodiscard]] constexpr decltype(auto) forward_key(K &&k) noexcept
             {
@@ -1953,6 +2037,21 @@ namespace hud
                 }
             }
 
+            /**
+             * Forwards a key represented as a tuple of arguments.
+             *
+             * If the tuple type itself is hashable and comparable (supports the `hasher_type` and key_equal_type), it is perfectly forwarded.
+             * Otherwise, a `key_type` is constructed from the elements of the tuple.
+             *
+             * This allows lookups or insertions using multiple arguments (tuple) that can
+             * collectively construct a `key_type`. Static assertions ensure that either the
+             * tuple itself or its elements can be used to construct `key_type`.
+             *
+             * @tparam Args Types of the elements of the tuple.
+             * @param tuple The tuple of key arguments to forward.
+             * @return Either a perfectly-forwarded tuple (if hashable/comparable) or a
+             *         newly constructed `key_type` from the tuple elements.
+             */
             template<typename... Args>
             [[nodiscard]] constexpr decltype(auto) forward_key(hud::tuple<Args...> &&tuple) noexcept
             {
@@ -1980,12 +2079,19 @@ namespace hud
         private:
             /**
              * Searches for a key in the hashset using a given group type.
+             *
              * Implements the probing logic of the hashset:
+             *
              *  - Computes the hash of the key and splits it into H1 and H2 components.
+             *
              *  - Starts from the slot determined by H1 and iterates over groups of slots.
+             *
              *  - Within each group, checks which slots match H2 and then compares keys using `key_equal()`.
+             *
              *  - Returns an iterator pointing to the matching slot if found.
+             *
              *  - If an empty slot is encountered during probing, the key is not present, and returns the end iterator.
+             *
              * @tparam group_t Type representing a group of slots/controls in the hashset.
              * @tparam K Type of the key to search for.
              * @param key The key to search for.
@@ -2026,6 +2132,20 @@ namespace hud
                 }
             }
 
+            /**
+             * Computes the 64-bit hash of a key.
+             *
+             * If the key type `K` is directly hashable with the hashset's `key_type` (supports the `hasher_type`), it is
+             * forwarded to the hasher as-is. Otherwise, a temporary `key_type` is constructed
+             * from `K` and hashed.
+             *
+             * This allows lookups or insertions using alternative representations of the key
+             * without needing to construct a full `key_type` unless necessary.
+             *
+             * @tparam K Type of the key.
+             * @param key The key or key-like object to hash.
+             * @return The 64-bit hash of the key.
+             */
             template<typename K>
             [[nodiscard]] constexpr u64 compute_hash(K &&key) noexcept
             {
@@ -2039,6 +2159,17 @@ namespace hud
                 }
             }
 
+            /**
+             * Determines whether a deleted slot at the given index should be marked as empty.
+             *
+             * This is a wrapper that dispatches to the group-specific implementation.
+             *
+             * See `should_be_mark_as_empty_if_deleted_impl` for detailed behavior.
+             *
+             * @param index The index of the slot to check.
+             * @return True if the deleted slot can be treated as empty; false if it must remain marked as deleted.
+             */
+            [[nodiscard]]
             constexpr bool should_be_mark_as_empty_if_deleted(usize index) const noexcept
             {
                 if consteval
@@ -2051,7 +2182,39 @@ namespace hud
                 }
             }
 
+            /**
+             * Implementation detail of `should_be_mark_as_empty_if_deleted`.
+             *
+             * This function decides whether a deleted slot can safely be treated as empty based on the probing
+             * groups before and after the slot. In open-addressing hash tables, deleted slots cannot always
+             * be treated as empty because a probing sequence may have crossed them.
+             *
+             * The logic:
+             *
+             * - If the hash table fits entirely into a single group (max_slot_count_ <= SLOT_PER_GROUP),
+             *   any deleted slot can be emptied.
+             *
+             * - Otherwise:
+             *
+             *   1. Inspect the group containing the slot (`empty_after`) for empty slots.
+             *
+             *   2. Inspect the group immediately preceding the slot (`empty_before`) for empty slots.
+             *
+             *   3. If both groups have at least one empty slot and the total consecutive empty slots
+             *      surrounding the deleted slot do not cover a full group (i.e., < SLOT_PER_GROUP),
+             *      the slot might be part of a probing sequence → it must remain marked as deleted.
+             *
+             *   4. Otherwise, it can be safely marked as empty.
+             *
+             * This preserves correctness of linear/quadratic probing while allowing some deleted slots
+             * to be reused as empty for improved memory efficiency.
+             *
+             * @tparam group_t The probing group type.
+             * @param index The slot index to check.
+             * @return True if the deleted slot can be treated as empty; false if it must remain deleted.
+             */
             template<typename group_t>
+            [[nodiscard]]
             constexpr bool should_be_mark_as_empty_if_deleted_impl(usize index) const noexcept
             {
                 // If map fits entirely into a probing group.
@@ -2072,10 +2235,26 @@ namespace hud
                 return empty_before && empty_after && static_cast<usize>(empty_after.trailing_zeros() + empty_before.leading_zeros()) < group_t::SLOT_PER_GROUP;
             }
 
+            /**
+             * Removes the element at the given iterator position.
+             *
+             * This function performs two main actions:
+             *
+             * 1. Calls the destructor of the element pointed to by the iterator.
+             *
+             * 2. Updates the control byte of the corresponding slot to either `empty` or `deleted`:
+             *    - If the slot is not part of any ongoing probing sequence (checked via
+             *      `should_be_mark_as_empty_if_deleted`), it can be marked as `empty` and
+             *      `free_slot_before_grow_compressed()` is incremented.
+             *    - If the slot is part of a probing sequence, it must be marked as `deleted` to
+             *      preserve the correctness of lookups. In this case, a flag is set in
+             *      `free_slot_before_grow_compressed()` to indicate that deleted slots exist.
+             *
+             * Finally, the element count (`count_`) is decremented.
+             * @param it Iterator pointing to the element to remove.
+             */
             constexpr void remove_iterator(iterator it) noexcept
             {
-                // Destroy the slot then mark the contral as empty if 'it' in not in probing sequence,
-                // else mark the control as deleted to not break the probing sequence
                 const usize index = it.control_ptr_ - control_ptr_;
                 hud::memory::destroy_object(it.slot_ptr_);
                 if (should_be_mark_as_empty_if_deleted(index))
@@ -2093,7 +2272,9 @@ namespace hud
 
             /**
              * Copy-constructs elements from another hashset_impl into this one.
+             *
              * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
+             *
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
              * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
@@ -2154,8 +2335,10 @@ namespace hud
 
             /**
              * Move-constructs elements from another hashset_impl into this one.
+             *
              * Depending on the type and context, it either takes ownership of the other set's memory
              * or constructs each slot individually using move semantics.
+             *
              * @tparam u_storage_t Storage type of the other hashset_impl.
              * @tparam u_hasher_t Hash function type of the other hashset_impl.
              * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
@@ -2216,6 +2399,44 @@ namespace hud
                 }
             }
 
+            /**
+             * Copy-assigns elements from another hashset_impl into this one.
+             *
+             * This function performs a deep copy of `other` into `*this`, handling memory
+             * allocation, slot construction, and allocator propagation depending on the
+             * current state and type traits.
+             *
+             * Steps performed:
+             * 1. Destroy all current slots in this container.
+             * 2. Determine the requested memory based on `other.count_` (number of elements),
+             *    not the maximum slot count.
+             * 3. If the current allocation can hold `other.count_` elements:
+             *    - Reset the control bytes to `empty` with a sentinel at the end.
+             *    - Optionally copy the allocator if `copy_when_container_copy_assigned` is true
+             *      or if the allocators differ.
+             *    - Update `count_` and recompute `free_slot_before_grow_compressed()`.
+             * 4. If current allocation is insufficient:
+             *    - Free the existing control and slot arrays.
+             *    - Optionally copy the allocator as above.
+             *    - Update `count_` and compute a new `max_slot_count_`.
+             *    - Allocate new control and slot arrays and initialize control to `empty` with sentinel.
+             * 5. Finally, if `other` contains elements, iterate over its slots:
+             *    - Compute the hash for each element.
+             *    - Find the appropriate H1/H2 slot index in the current table.
+             *    - Set the control byte and construct the slot in place.
+             *
+             * Notes:
+             * - The function ensures that memory and probing sequences are consistent
+             *   after the copy.
+             * - Slots are copied individually; no assumption of trivially copyable slots
+             *   is made here.
+             *
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to copy from.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr void copy_assign(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
             {
@@ -2287,6 +2508,51 @@ namespace hud
                 }
             }
 
+            /**
+             * Move-assigns elements from another hashset_impl into this one.
+             *
+             * This function transfers the contents of `other` into `*this`, handling memory
+             * allocation, slot construction/destruction, and allocator propagation depending
+             * on the type traits and evaluation context.
+             *
+             * Steps performed:
+             * 1. Destroy all current slots in this container.
+             * 2. Check if we are in a constant-evaluated context or if the slot type is not
+             *    bitwise move constructible:
+             *    - If true, we cannot just swap buffers; we handle two scenarios:
+             *      a) Current allocation can hold all elements of `other`:
+             *         - Reset control bytes to empty with sentinel.
+             *         - Move the allocator if required by traits.
+             *         - Update `count_` and recompute `free_slot_before_grow_compressed()`.
+             *      b) Current allocation is insufficient:
+             *         - Free existing buffers.
+             *         - Move the allocator if required.
+             *         - Update `count_` and compute a new `max_slot_count_`.
+             *         - Allocate new control and slot arrays.
+             *         - Set control bytes to empty with sentinel.
+             *    - Move each element individually from `other` into the newly allocated or existing buffer:
+             *      - Compute the hash for each element.
+             *      - Find the appropriate H1/H2 slot index.
+             *      - Set the control byte and construct the slot in place using move construction.
+             *    - Reset `other`'s control and slot pointers to empty/default state.
+             * 3. If not in constant-evaluated context and slot type is bitwise moveable:
+             *    - Simply free any existing buffers of `*this`.
+             *    - Move allocator if required.
+             *    - Transfer ownership of `other`'s buffers and members directly to `*this`.
+             *    - Reset `other` to a default empty state (count_ = 0, max_slot_count_ = 0, pointers null or pointing to INIT_GROUP).
+             *
+             * Notes:
+             * - This function avoids unnecessary element construction/destruction when the slot type
+             *   is trivially moveable and not in constant evaluation.
+             * - The probing sequence and control bytes remain consistent after the move.
+             * - After the move, `other` is left in a valid but empty state.
+             *
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to move from.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr void move_assign(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
             {
@@ -2388,9 +2654,29 @@ namespace hud
             }
 
             /**
-             * Find the key and add the H2 hash in the control
-             * If the key is found, return the iterator and false
-             * If not found insert the key but do not construct the value, retrun the iterator and true
+             * Finds a key or prepares a slot for insertion without constructing the value.
+             *
+             * This function redirects to the group-specific implementation `find_or_insert_no_construct_impl`.
+             * The group type used depends on whether we are in a constant-evaluated context.
+             *
+             * See `find_or_insert_no_construct_impl` for detailed behavior.
+             *
+             * Important: You can hash and compare the key directly from its type `K` without constructing a `key_type`.
+             * To do this for a user-defined type:
+             *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)`
+             *     to compute a 64-bit hash. You can also provide overloads for alternative key representations
+             *     (like an ID or a tuple) to avoid constructing the full key.
+             *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type
+             *     and the type `K` (or alternative key representations). Implement `operator()(const key_type&, const K&)`.
+             *   - If these specializations are not provided, a temporary `key_type` will be constructed from `K`.
+             *
+             * This allows lookups or insertions using alternative representations of the key without needing to construct a full `key_type` unless necessary.
+             *
+             * @tparam K Type of the key to find or insert.
+             * @param key The key to find or prepare for insertion.
+             * @return A pair of iterator and bool:
+             *         - iterator: points to the existing element if found, or to the prepared slot if not found.
+             *         - bool: true if insertion is required, false if key was found.
              */
             template<typename K>
             [[nodiscard]]
@@ -2407,9 +2693,32 @@ namespace hud
             }
 
             /**
-             * Find the key and add the H2 hash in the control
-             * If the key is found, return the iterator
-             * If not found insert the key but do not construct the value.
+             * Finds a key or prepares a slot for insertion without constructing the value.
+             *
+             * This function performs the actual probing and insertion logic using the group type `group_t`:
+             *  - Computes H1/H2 hashes of the key.
+             *  - Iterates over groups to find a matching key using `key_equal`.
+             *  - If found, returns an iterator to the existing slot and `false`.
+             *  - If not found, finds the first empty slot in the probing sequence, updates control bytes,
+             *    and returns an iterator to the slot along with `true`.
+             *
+             * Important: You can hash and compare the key directly from its type `K` without constructing a `key_type`.
+             * To do this for a user-defined type:
+             *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)`
+             *     to compute a 64-bit hash. You can also provide overloads for alternative key representations
+             *     (like an ID or a tuple) to avoid constructing the full key.
+             *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type
+             *     and the type `K` (or alternative key representations). Implement `operator()(const key_type&, const K&)`.
+             *   - If these specializations are not provided, a temporary `key_type` will be constructed from `K`.
+             *
+             * This allows lookups or insertions using alternative representations of the key without needing to construct a full `key_type` unless necessary.
+             *
+             * @tparam group_t The control group type used for probing.
+             * @tparam K Type of the key to find or insert.
+             * @param key The key to find or prepare for insertion.
+             * @return A pair of iterator and bool:
+             *         - iterator: points to the existing element if found, or to the prepared slot if not found.
+             *         - bool: true if insertion is required, false if key was found.
              */
             template<typename group_t, typename K>
             [[nodiscard]] constexpr hud::pair<iterator, bool> find_or_insert_no_construct_impl(K &&key) noexcept
@@ -2449,7 +2758,20 @@ namespace hud
                 }
             }
 
-            /** Insert a slot index associated with the given h2 hash. */
+            /**
+             * Inserts a new slot associated with the given H2 hash without constructing the value.
+             *
+             * This function ensures there is space available (by checking the free slots) and updates
+             * the control bytes to reflect the insertion.
+             *
+             * Important: This function does **not** construct the value in the slot. It only reserves the slot
+             * and updates the hash control. Use it in conjunction with `find_or_insert_no_construct`.
+             *
+             * @param h1 The H1 hash of the key used to determine the slot index.
+             * @param h2 The H2 hash of the key to store in the control array.
+             * @return An iterator to the newly prepared slot.
+             *
+             */
             [[nodiscard]] constexpr iterator insert_no_construct(u64 h1, u8 h2) noexcept
             {
                 // If we reach the load factor grow the table and retrieves the new slot, else use the given slot
@@ -2467,6 +2789,24 @@ namespace hud
                 return iterator {control_ptr_ + slot_index, slot_ptr_ + slot_index}; // slot_index;
             }
 
+            /**
+             * Resizes the hashset to a new maximum number of slots.
+             *
+             * This function allocates new control and slot buffers, repositions existing elements
+             * according to the new table size, and updates internal counters. It handles both runtime
+             * and constant-evaluated contexts.
+             *
+             * Details of the resize operation:
+             *  - Allocates a new buffer for controls and aligned slots.
+             *  - Sets all control bytes to empty and appends a sentinel at the end.
+             *  - If elements exist, moves or copies each slot into the new buffer while recomputing H1/H2.
+             *  - Frees the old buffers after relocation.
+             *
+             * This is the core function that ensures the hashset maintains the load factor and can accommodate
+             * insertions efficiently.
+             *
+             * @param new_max_slot_count The new maximum number of slots (must be a power-of-2 minus 1 mask).
+             */
             constexpr void resize(usize new_max_slot_count) noexcept
             {
                 // HUD_CHECK(new_max_slot_count > max_slot_count_ && "Grow need a bigger value");
@@ -2519,26 +2859,53 @@ namespace hud
                 }
             }
 
+            /**
+             * Returns the number of slots available before a rehash is triggered.
+             *
+             * The value is computed from the internal free slot counter and removes the sign bit
+             * that represents the presence of deleted slots. This represents the actual number of
+             * free slots usable for insertion before the hashset needs to grow.
+             */
             [[nodiscard]] constexpr usize free_slot_before_grow() const noexcept
             {
                 // Remove the sign bit that represent if the map contains deleted slots
                 return free_slot_before_grow_compressed() & ((~usize {}) >> 1);
             }
 
-            /** Retrieves the next capacity after a grow. */
+            /**
+             * Computes the next capacity for the hashset when growing.
+             *
+             * This function doubles the current max slot count and adds one to ensure the
+             * new capacity remains a power-of-two-minus-one mask (0, 1, 3, 7, 15, 31, ...).
+             *
+             * @return The new max slot count after grow.
+             */
             [[nodiscard]] constexpr usize next_capacity() const noexcept
             {
                 // Value are always power of two mask 0,1,3,7,15,31,63, etc...
                 return max_slot_count_ * 2 + 1;
             }
 
-            /** Retrieves a correct max slot count that is applicable. */
+            /**
+             * Returns a normalized maximum slot count that is a valid mask for the hashset.
+             *
+             * The normalization ensures the value is a power-of-two-minus-one mask, suitable
+             * for internal indexing and hashing.
+             *
+             * @param max_slot_count The requested max slot count.
+             * @return The normalized max slot count that can be safely used by the hashset.
+             */
             [[nodiscard]] constexpr usize normalize_max_count(usize max_slot_count) const noexcept
             {
                 return max_slot_count ? ~usize {} >> hud::bits::leading_zeros(max_slot_count) : 0;
             }
 
-            /** Compute the size of the allocation needed for the given slot count. */
+            /**
+             * Computes the total allocation size needed for the current max slot count.
+             * This includes the control bytes (aligned appropriately) and the slots themselves.
+             * The size accounts for alignment of the control array to the slot type size.
+             * @return The total number of bytes to allocate for control + slots.
+             */
             [[nodiscard]] constexpr usize current_allocation_size() const noexcept
             {
                 const usize control_size {control_size_for_max_count(max_slot_count_)};
@@ -2546,10 +2913,21 @@ namespace hud
                 return aligned_control_size + max_slot_count_ * sizeof(slot_type);
             }
 
-            /** Find the first empty or deleted slot for the given h1.
-             * WARNING: This function works only if there is free or deleted slot available
-             * @param h1 The H1 hash
-             * @return The first empty or deleted slot that can be used for h1 hash
+            /**
+             * Finds the first empty or deleted slot for the given H1 hash.
+             *
+             * This function redirects to the appropriate implementation depending on the context:
+             * - `portable_group` for constant-evaluated contexts.
+             * - `group_type` for runtime contexts.
+             *
+             * See `find_first_empty_or_deleted_impl` for detailed behavior.
+             *
+             * WARNING: This function assumes that there is at least one free or deleted slot available.
+             *
+             * @param control_ptr Pointer to the control array.
+             * @param max_slot_count Maximum number of slots in the table (must be a power-of-two-minus-one mask).
+             * @param h1 The H1 hash of the key.
+             * @return The index of the first empty or deleted slot that can be used for this H1 hash.
              */
             [[nodiscard]] static constexpr usize find_first_empty_or_deleted(control_type *control_ptr, u64 max_slot_count, u64 h1) noexcept
             {
@@ -2563,6 +2941,20 @@ namespace hud
                 }
             }
 
+            /**
+             * Implementation of `find_first_empty_or_deleted` for a specific group type.
+             *
+             * Iterates over groups of slots starting from `h1 & max_slot_count` and searches for
+             * a slot that is either empty or marked as deleted. Once found, the function returns
+             * the exact slot index within the hash table.
+             *
+             * @tparam group_t The group type (e.g., portable_group or group_type) that provides
+             *                 efficient bitmask operations for empty/deleted slots.
+             * @param control_ptr Pointer to the control array.
+             * @param max_slot_count Maximum number of slots in the table (must be a power-of-two-minus-one mask).
+             * @param h1 The H1 hash of the key.
+             * @return The index of the first empty or deleted slot that can be used for this H1 hash.
+             */
             template<typename group_t>
             [[nodiscard]] static constexpr usize find_first_empty_or_deleted_impl(control_type *control_ptr, u64 max_slot_count, u64 h1) noexcept
             {
@@ -2584,6 +2976,21 @@ namespace hud
                 }
             }
 
+            /**
+             * Finds the first occupied (full) slot in the hashset.
+             *
+             * This function redirects to `find_first_full_impl` for the actual implementation:
+             * - `portable_group` for constant-evaluated contexts.
+             * - `group_type` for runtime contexts.
+             *
+             * See `find_first_full_impl` for detailed behavior.
+             *
+             * @return A pair of pointers:
+             *   - `control_type*` pointing to the control byte of the first occupied slot.
+             *   - `slot_type*` pointing to the corresponding slot.
+             *
+             * If no slot is occupied, the returned pointers will point past the end (sentinel).
+             */
             [[nodiscard]]
             constexpr hud::pair<control_type *, slot_type *> find_first_full() const noexcept
             {
@@ -2597,6 +3004,31 @@ namespace hud
                 }
             }
 
+            /**
+             * Find the first occupied (full) slot in the hashset.
+             *
+             * The algorithm works as follows:
+             * 1. Start scanning from the beginning of the control array (`control_ptr_`).
+             * 2. For each probing group of `SLOT_PER_GROUP` slots:
+             *    - Compute a mask of slots that are full (`group.mask_of_full_slot()`).
+             *    - If the mask contains any full slot:
+             *        - Find the first index of a full slot within the group.
+             *        - Compute the absolute index within the control/slot arrays.
+             *        - Return a pair of pointers to:
+             *            - The control byte of the first occupied slot.
+             *            - The corresponding slot object.
+             * 3. If no full slots are found after scanning all groups, return a sentinel pointer
+             *    indicating the end of the hashset (`control_ptr_sentinel()` for control, `nullptr` for slot).
+             *
+             * Special notes:
+             * - This function assumes `max_slot_count_` is a power-of-two mask.
+             * - It handles both compile-time (`portable_group`) and runtime (`group_type`) contexts.
+             *
+             * @tparam group_t The group type used for vectorized probing.
+             * @return A `hud::pair` containing:
+             *   - `control_type*` pointer to the control byte of the first full slot (or sentinel if none found).
+             *   - `slot_type*` pointer to the corresponding slot (or nullptr if none found).
+             */
             template<typename group_t>
             [[nodiscard]] constexpr hud::pair<control_type *, slot_type *> find_first_full_impl() const noexcept
             {
@@ -2618,27 +3050,43 @@ namespace hud
             }
 
             /**
-             * Compute the maximum number of slots we should put into the table before a resizing rehash.
-             * Subtract the returned value with the number of slots `count()` to obtains the number of slots we can currently use before a resizing rehash.
+             * Compute the maximum number of slots we should put into the table before triggering a resize/rehash.
+             *
+             * The returned value represents the number of slots that can be occupied before hitting the
+             * load factor threshold. To compute the number of slots still available, subtract `count()`.
+             *
+             * The load factor used is 7/8, meaning the table will resize when 7/8 of the slots are occupied.
+             *
+             * Special case:
+             * - When `SLOT_PER_GROUP() == 8` and `capacity == 7`, the formula `capacity - capacity / 8` would return 7,
+             *   which would exceed the maximum allowed. In this case, the function returns 6.
+             *
+             * Example:
+             * | Capacity | capacity - capacity / 8 | Result (max slots before grow) |
+             * |----------|------------------------|-------------------------------|
+             * | 7        | -                      | 6                             |
+             * | 8        | 8 - 8/8 = 7            | 7                             |
+             * | 16       | 16 - 16/8 = 14         | 14                            |
+             * | 32       | 32 - 32/8 = 28         | 28                            |
+             * | 64       | 64 - 64/8 = 56         | 56                            |
              */
             [[nodiscard]] constexpr usize max_slot_before_grow(usize capacity) const noexcept
             {
-                // Current load factor is 7/8, this means we can resize when 7/8 slots are occupied
-                // A special case appear when group are 8 bytes width and `capacity` is 7 : 7−7/8=7, in this case, we return 6
-                //
-                // | Capacity (capacity) | capacity - capacity / 8 | result (max_growth_left) |
-                // |  7 (special case)   |            -            |             6            |
-                // |          8          |       8−8/8             |             7            |
-                // |         16          |      16−16/8            |            14            |
-                // |         32          |      32−32/8            |            28            |
-                // |         64          |      64−64/8            |            56            |
                 return SLOT_PER_GROUP() == 8 && capacity == 7 ? 6 :
                                                                 capacity - capacity / 8;
             }
 
             /**
-             * Compute the minimum capacity needed for the given `count` element that respect the load factor.
-             * The capacity can be invalid, you should call
+             * Compute the minimum capacity needed to store `count` elements while respecting the load factor.
+             *
+             * This ensures that the table is not overfilled based on the 7/8 load factor.
+             *
+             * Special case:
+             * - When `SLOT_PER_GROUP() == 8` and `count == 7`, the formula `(count + (count-1)/7)` would not work correctly,
+             *   so the function explicitly returns 8.
+             *
+             * @param count Number of elements to store
+             * @return Minimum capacity that ensures the table can hold `count` elements without resizing immediately.
              */
             [[nodiscard]] constexpr usize min_capacity_for_count(usize count) const noexcept
             {
@@ -2651,6 +3099,14 @@ namespace hud
                 return count + static_cast<usize>((static_cast<i64>(count) - 1) / 7);
             }
 
+            /**
+             * Retrieve a pointer to the sentinel control byte, which represents the end of the control array.
+             *
+             * This pointer is used as a sentinel when iterating over the hashset or when probing for slots.
+             * The sentinel is guaranteed to be valid and should not be dereferenced for slot access.
+             *
+             * @return Pointer to the sentinel control byte at `control_ptr_ + max_slot_count_`.
+             */
             [[nodiscard]]
             constexpr control_type *control_ptr_sentinel() const noexcept
             {
@@ -2658,6 +3114,19 @@ namespace hud
                 return control_ptr_ + max_slot_count_;
             }
 
+            /**
+             * Compute the size of the control array needed for a given maximum number of slots.
+             *
+             * The control array includes:
+             * - One sentinel byte at the end.
+             * - Cloned bytes at the end to simplify group operations (SLOT_PER_GROUP() bytes).
+             *
+             * This ensures that group operations can safely read beyond the actual slots without special bounds checks.
+             *
+             * @param max_slot_count The maximum number of slots to allocate.
+             * @return The size of the control array in bytes.
+             */
+            [[nodiscard]]
             constexpr usize control_size_for_max_count(usize max_slot_count) const noexcept
             {
                 // We cloned size of a group - 1 because we never reach the last cloned bytes
@@ -2665,17 +3134,22 @@ namespace hud
                 return max_slot_count + 1 + SLOT_PER_GROUP();
             }
 
+            /**
+             * Allocate memory for both the control array and the slot array for a hashset.
+             *
+             * - `control_ptr_` points to the beginning of the control bytes.
+             * - `slot_ptr_` points to the first slot, aligned according to `alignof(slot_type)`.
+             *
+             * In a constant-evaluated context (`consteval`), control and slots are allocated separately.
+             * At runtime, they are allocated in a single contiguous block with proper alignment.
+             *
+             * @param max_slot_count The maximum number of slots to allocate.
+             * @return The size of the control array in bytes.
+             */
+            [[nodiscard]]
             constexpr usize allocate_control_and_slot(usize max_slot_count) noexcept
             {
-                /**
-                 *  Allocation layout is :
-                 *
-                 *  |      aligned_control_size      | slots_size |
-                 *  | control_size  |                |
-                 *  |  controls     |  slot padding  |    slots   |
-                 *  ^                                ^
-                 *  control_ptr_                      slot_ptr_
-                 */
+
                 const usize control_size {control_size_for_max_count(max_slot_count)};
                 const usize slots_size {max_slot_count * sizeof(slot_type)};
 
@@ -2687,6 +3161,14 @@ namespace hud
                 else
                 {
                     // Allocate control, slot, and slot size to satisfy slot_ptr_ alignment requirements
+                    //
+                    // Allocation layout is :
+                    //
+                    // |      aligned_allocation_size   | slots_size |
+                    // | control_size  | slot padding   | slots_size |
+                    // ^                                ^
+                    // control_ptr_                     slot_ptr_
+                    //
                     const usize aligned_allocation_size {control_size + sizeof(slot_type) + slots_size};
                     control_ptr_ = allocator_mut().template allocate<control_type>(aligned_allocation_size).data();
                     slot_ptr_ = reinterpret_cast<slot_type *>(hud::memory::align_address(reinterpret_cast<const uptr>(control_ptr_ + control_size), sizeof(slot_type)));
@@ -2695,6 +3177,16 @@ namespace hud
                 return control_size;
             }
 
+            /**
+             * Free memory previously allocated for the control and slot arrays.
+             *
+             * In a constant-evaluated context (`consteval`), control and slot arrays are freed separately.
+             * At runtime, the single contiguous allocation is freed using the total aligned size.
+             *
+             * @param control_ptr Pointer to the control array to free.
+             * @param slot_ptr Pointer to the slot array to free.
+             * @param max_slot_count The maximum number of slots that were allocated.
+             */
             constexpr void free_control_and_slot(control_type *control_ptr, slot_type *slot_ptr, usize max_slot_count) noexcept
             {
                 if (max_slot_count > 0)
@@ -2718,8 +3210,14 @@ namespace hud
             }
 
             /**
-             * Resets the hashset control and slot arrays.
-             * Frees the memory used by controls and slots, then resets internal state to default.
+             * Resets the hashset by freeing its control and slot arrays and resetting internal state.
+             *
+             * - Frees the memory used by the control and slot arrays using `free_control_and_slot`.
+             * - Resets the internal pointers and counters to their default values:
+             *     - `control_ptr_` points to the static `INIT_GROUP` sentinel.
+             *     - `slot_ptr_` is set to nullptr by the allocator during next allocation.
+             *     - `max_slot_count_` and `count_` are set to 0.
+             *     - `free_slot_before_grow_compressed()` is reset to 0.
              */
             constexpr void reset_control_and_slot() noexcept
             {
@@ -2732,8 +3230,10 @@ namespace hud
 
             /**
              * Destroys all slots in the hashset.
-             * For non-trivially destructible slot types, calls the destructor for each element.
-             * Trivial types are ignored for efficiency.
+             *
+             * - For non-trivially destructible slot types, calls the destructor of each occupied slot.
+             * - Trivially destructible types are ignored to optimize performance.
+             * - Iterates over all slots using `iterate_over_full_slots` and destroys elements individually.
              */
             constexpr void destroy_all_slots() noexcept
             {
@@ -2747,6 +3247,23 @@ namespace hud
                 }
             }
 
+            /**
+             * Iterate over all occupied (full) slots in the hashset and call a callback for each.
+             *
+             * This function automatically dispatches to the appropriate implementation depending on the context:
+             * - `portable_group` for constant-evaluated contexts.
+             * - `group_type` for runtime contexts.
+             *
+             * See `iterate_over_full_slots_impl` for detailed behavior.
+             *
+             * @param control_ptr Pointer to the control array.
+             * @param slot_ptr Pointer to the slot array.
+             * @param slot_count Number of occupied slots to iterate over.
+             * @param max_slot_count Maximum number of slots in the hashset.
+             * @param callback Callable invoked for each full slot, receiving `control_type*` and `slot_type*`.
+             *
+             * @note Do not erase or modify the container structure inside the callback; doing so may invalidate iteration.
+             */
             constexpr void iterate_over_full_slots(control_type *control_ptr, auto *slot_ptr, usize slot_count, usize max_slot_count, auto callback) noexcept
             {
                 if consteval
@@ -2760,8 +3277,18 @@ namespace hud
             }
 
             /**
-             * Iterate through full slot.
-             * Caution : Do not erase value during iteration
+             * Iterate over all occupied (full) slots in the hashset and call a callback for each.
+             *
+             * Handles the following cases:
+             * - When `max_slot_count` is smaller than the probing group size, it iterates over the cloned control bytes.
+             * - Otherwise, it iterates sequentially over each group of slots and invokes the callback for each full slot.
+             *
+             * @tparam group_t The group type to use (portable_group or group_type).
+             * @param control_ptr Pointer to the control array.
+             * @param slot_ptr Pointer to the slot array.
+             * @param slot_count Number of full slots to process.
+             * @param max_slot_count Maximum number of slots in the hashset.
+             * @param callback Callable invoked for each full slot, receiving `control_type*` and `slot_type*`.
              */
             template<typename group_t>
             constexpr void iterate_over_full_slots_impl(control_type *control_ptr, auto *slot_ptr, usize slot_count, usize max_slot_count, auto callback) noexcept
@@ -2800,36 +3327,49 @@ namespace hud
                 }
             }
 
+            /**
+             * Retrieves the free slot count before the next grow (including the sign bit representing deleted slots).
+             * This is used internally to track available slots and determine when a rehash or resize is necessary.
+             */
             [[nodiscard]] constexpr usize &free_slot_before_grow_compressed() noexcept
             {
                 return hud::get<3>(compressed_);
             }
 
+            /**
+             * Retrieves the free slot count before the next grow (including the sign bit representing deleted slots).
+             * This is used internally to track available slots and determine when a rehash or resize is necessary.
+             */
             [[nodiscard]] constexpr const usize &free_slot_before_grow_compressed() const noexcept
             {
                 return hud::get<3>(compressed_);
             }
 
+            /** Retrieves non const allocator used by the hashset. */
             [[nodiscard]] constexpr allocator_type &allocator_mut() noexcept
             {
                 return hud::get<0>(compressed_);
             }
 
+            /**Retrieves the hasher used by the hashset. */
             [[nodiscard]] constexpr hasher_type &hasher() noexcept
             {
                 return hud::get<1>(compressed_);
             }
 
+            /**Retrieves the hasher used by the hashset. */
             [[nodiscard]] constexpr const hasher_type &hasher() const noexcept
             {
                 return hud::get<1>(compressed_);
             }
 
+            /**Retrieves the key equality comparator used by the hashset. */
             [[nodiscard]] constexpr key_equal_type &key_equal() noexcept
             {
                 return hud::get<2>(compressed_);
             }
 
+            /**Retrieves the key equality comparator used by the hashset. */
             [[nodiscard]] constexpr const key_equal_type &key_equal() const noexcept
             {
                 return hud::get<2>(compressed_);
