@@ -3,8 +3,10 @@
 
 GTEST_TEST(u128, default_constructor)
 {
-    u128 v;
-    hud_assert_ne(v, 0);
+    u8 memory[sizeof(u128)];
+    hud::memory::set_memory_safe(memory, 0xFF);
+    u128 *v = new (memory) u128;
+    hud_assert_ne(*v, 0);
 }
 
 GTEST_TEST(u128, constructor_init)
