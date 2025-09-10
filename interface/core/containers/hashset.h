@@ -3466,10 +3466,6 @@ namespace hud
      * bool has42 = set.contains(MyType{42});
      * bool has56 = set.contains(56);
      * ```
-     *
-     * Notes:
-     * ------
-     * - Piecewise construction allows in-place initialization of complex keys.
      */
     template<
         typename element_t,
@@ -3636,7 +3632,6 @@ namespace hud
      * s.add(42);
      * for (auto &elem : s) {
      *     auto [key] = elem; // structured binding works because tuple_size = 1
-     *     hud::println(key);  // prints 42
      * }
      * ```
      */
@@ -3648,15 +3643,15 @@ namespace hud
 
     /**
      * Provides a `hud::tuple_element` specialization for `hashset_storage`.
-     * Enables accessing the contained key type using `std::tuple_element`.
+     * Enables accessing the contained key type using `hud::tuple_element`.
      *
      * @tparam idx_to_reach Index to access. Only 0 is valid.
      * @tparam key_t The key type stored in the hashset_storage.
      *
      * Example:
      * ```cpp
-     * using storage = details::hashset::hashset_storage<int>;
-     * using key_type = std::tuple_element<0, storage>::type; // key_type = const int
+     * using storage = hashset<int>::storage_type;
+     * using key_type = hud::tuple_element<0, storage>::type; // key_type = const int
      * ```
      */
     template<usize idx_to_reach, typename key_t>
@@ -3752,7 +3747,7 @@ namespace std
      *
      * Enables structured bindings with hashset_storage, allowing syntax like:
      * ```cpp
-     * hud::details::hashset::hashset_storage<int> storage;
+     * hashset<int>::storage_type storage;
      * auto [key] = storage; // Structured binding works
      * ```
      */
@@ -3768,7 +3763,7 @@ namespace std
      *
      * Example:
      * ```cpp
-     * hud::details::hashset::hashset_storage<int> storage{1};
+     * hashset<int>::storage_type storage{1};
      * using key_type = std::tuple_element<0, decltype(storage)>::type;
      * static_assert(std::is_same_v<key_type, const int>);
      * ```

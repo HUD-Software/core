@@ -8,12 +8,20 @@ namespace hud
     {
         /**
          * Key-value storage for the hash map, offering controlled access with specific constraints:
-         * - Keys are immutable to ensure consistent and reliable hash calculations.
-         * - Values are mutable, allowing for updates and modifications.
-         * - The storage is copyable but not movable to maintain the integrity and consistency of the keys.
          *
-         * @tparam key_t   The type of the key
-         * @tparam value_t The type of the value
+         * - Keys are immutable to ensure consistent and reliable hash calculations.
+         *   Once a key is stored, it cannot be modified, guaranteeing that its hash value
+         *   and placement in the hash map remain valid.
+         *
+         * - Values are mutable, allowing updates and modifications while keeping the key
+         *   constant. This ensures that value updates do not invalidate hash map invariants.
+         *
+         * - The storage is copyable but not freely movable to maintain the integrity and
+         *   consistency of keys and values. Move operations are carefully controlled and
+         *   only allowed through the `slot` wrapper.
+         *
+         * @tparam key_t   The type of the key.
+         * @tparam value_t The type of the value.
          */
         template<typename key_t, typename value_t>
         class hashmap_storage
@@ -25,28 +33,29 @@ namespace hud
             using value_type = value_t;
 
         protected:
+            /** Internal pair type holding key and value. */
             using pair_type = hud::pair<key_type, value_type>;
 
         public:
-            /** Retrieves non mutable reference to the key. */
+            /** Retrieves non-mutable reference to the key. */
             [[nodiscard]] constexpr const key_type &key() noexcept
             {
                 return hud::get<0>(element_);
             }
 
-            /** Retrieves non mutable reference to the key. */
+            /** Retrieves non-mutable reference to the key. */
             [[nodiscard]] constexpr const key_type &key() const noexcept
             {
                 return hud::get<0>(element_);
             }
 
-            /** Retrieves mutable reference to the key. */
+            /** Retrieves mutable reference to the value. */
             [[nodiscard]] constexpr value_type &value() noexcept
             {
                 return hud::get<1>(element_);
             }
 
-            /** Retrieves non mutable reference to the value. */
+            /** Retrieves non-mutable reference to the value. */
             [[nodiscard]] constexpr const value_type &value() const noexcept
             {
                 return hud::get<1>(element_);
@@ -54,7 +63,8 @@ namespace hud
 
             /**
              * Retrieves a reference to the element at the specified index from a non-const hashmap_storage object.
-             * @tparam idx_to_reach The index of the element to retrieve.
+             * This function allows tuple-like access (structured binding) to the key/value pair.
+             * @tparam idx_to_reach The index of the element to retrieve (0 = key, 1 = value).
              * @param s The hashmap_storage object.
              * @return A reference to the element at the specified index.
              */
@@ -66,7 +76,8 @@ namespace hud
 
             /**
              * Retrieves a const reference to the element at the specified index from a const hashmap_storage object.
-             * @tparam idx_to_reach The index of the element to retrieve.
+             * This function allows tuple-like access (structured binding) to the key/value pair.
+             * @tparam idx_to_reach The index of the element to retrieve (0 = key, 1 = value).
              * @param s The const hashmap_storage object.
              * @return A const reference to the element at the specified index.
              */
@@ -77,10 +88,11 @@ namespace hud
             }
 
             /**
-             * Retrieves a reference to the element at the specified index from a hashmap_storage object.
-             * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The hashmap_storage object.
-             * @return A reference to the element at the specified index.
+             * Retrieves a reference to the element at the specified index from a non-const rvalue hashmap_storage object.
+             * This function allows tuple-like access (structured binding) to the key/value pair and enables moving the element.
+             * @tparam idx_to_reach The index of the element to retrieve (0 = key, 1 = value).
+             * @param s The hashmap_storage rvalue object.
+             * @return A reference to the element at the specified index, which can be moved.
              */
             template<usize idx_to_reach>
             [[nodiscard]] friend constexpr decltype(auto) get(hashmap_storage &&s) noexcept
@@ -89,9 +101,10 @@ namespace hud
             }
 
             /**
-             * Retrieves a const reference to the element at the specified index from a const hashmap_storage object.
-             * @tparam idx_to_reach The index of the element to retrieve.
-             * @param s The const hashmap_storage object.
+             * Retrieves a const reference to the element at the specified index from a const rvalue hashmap_storage object.
+             * This function allows tuple-like access (structured binding) to the key/value pair.
+             * @tparam idx_to_reach The index of the element to retrieve (0 = key, 1 = value).
+             * @param s The const hashmap_storage rvalue object.
              * @return A const reference to the element at the specified index.
              */
             template<usize idx_to_reach>
@@ -101,17 +114,18 @@ namespace hud
             }
 
             /**
-             * Copy constructor.
-             * Does not accept throwable copy constructible components.
-             * @param other Another pair object.
+             * Copy constructor from the same type.
+             * Only enabled if the underlying pair is nothrow copy constructible.
+             * @param other The hashmap_storage to copy from.
              */
             constexpr explicit(!(hud::is_convertible_v<const pair_type &, pair_type>)) hashmap_storage(const hashmap_storage &other) noexcept
             requires(hud::is_nothrow_copy_constructible_v<pair_type>)
             = default;
 
             /**
-             * Copy constructor for different key and value types.
-             * @tparam u_key_t Type of the key in the other hashmap_storage.
+             * Copy constructor from a hashmap_storage with different key/value types.
+             * Only enabled if pair_type is nothrow copy constructible from the other pair type.
+             * @tparam u_key_t   Type of the key in the other hashmap_storage.
              * @tparam u_value_t Type of the value in the other hashmap_storage.
              * @param other The other hashmap_storage object to copy from.
              */
@@ -125,7 +139,8 @@ namespace hud
             }
 
             /**
-             * Constructor that initializes the hashmap_storage with a key and a default value.
+             * Constructor from a key only by copying the key.
+             * Initializes the key from a const reference, value is default-constructed.
              * @tparam u_key_t Type of the key.
              * @param key The key to initialize with.
              */
@@ -138,7 +153,8 @@ namespace hud
             }
 
             /**
-             * Constructor that initializes the hashmap_storage with a key and a default value.
+             * Constructor from a key only by moving the key.
+             * Initializes the key using perfect forwarding, value is default-constructed.
              * @tparam u_key_t Type of the key.
              * @param key The key to initialize with.
              */
@@ -151,10 +167,11 @@ namespace hud
             }
 
             /**
-             * Constructor that initializes the hashmap_storage with a key and a value.
-             * @tparam u_key_t Type of the key.
+             * Constructor from key and value by copying the key and the value.
+             * Both key and value are copied from provided arguments.
+             * @tparam u_key_t   Type of the key.
              * @tparam u_value_t Type of the value.
-             * @param key The key to initialize with.
+             * @param key   The key to initialize with.
              * @param value The value to initialize with.
              */
             template<typename u_key_t, typename u_value_t>
@@ -166,10 +183,11 @@ namespace hud
             }
 
             /**
-             * Constructor that initializes the hashmap_storage with a key and a value.
-             * @tparam u_key_t Type of the key.
+             * Constructor from key and value by moving the key and the value.
+             * Both key and value are constructed in-place using perfect forwarding.
+             * @tparam u_key_t   Type of the key.
              * @tparam u_value_t Type of the value.
-             * @param key The key to initialize with.
+             * @param key   The key to initialize with.
              * @param value The value to initialize with.
              */
             template<typename u_key_t, typename u_value_t>
@@ -181,11 +199,12 @@ namespace hud
             }
 
             /**
-             * Constructor that initializes the hashmap_storage with a key and a value.
-             * @tparam u_key_t Type of the key.
-             * @tparam u_value_t Type of the value.
-             * @param key The key to initialize with.
-             * @param value The value to initialize with.
+             * Piecewise constructor from tuples for key and value.
+             * Allows in-place construction of complex keys and values.
+             * @tparam key_tuple_t   Tuple type containing key constructor arguments.
+             * @tparam value_tuple_t Tuple type containing value constructor arguments.
+             * @param key_tuple   Tuple to construct the key.
+             * @param value_tuple Tuple to construct the value.
              */
             template<typename key_tuple_t, typename value_tuple_t>
             requires(hud::is_constructible_v<pair_type, hud::tag_piecewise_construct_t, key_tuple_t, value_tuple_t>)
@@ -195,9 +214,10 @@ namespace hud
             }
 
             /**
-             * Copy assign.
-             * Does not accept throwable copy constructible components.
-             * @param other Another pair object.
+             * Copy assignment operator.
+             * Only enabled if pair_type is nothrow copy assignable.
+             * @param other Another hashmap_storage to copy from.
+             * @return Reference to *this.
              */
             constexpr hashmap_storage &operator=(const hashmap_storage &other) noexcept
             requires(hud::is_nothrow_copy_assignable_v<pair_type>)
@@ -206,27 +226,39 @@ namespace hud
         protected:
             /**
              * Move constructor.
-             * Does not accept throwable copy constructible components.
-             * @param other Another hashmap_storage object to move from.
+             * Moves the content of another hashmap_storage into this one.
+             * Only enabled if `pair_type` is nothrow move constructible.
+             * Protected to prevent the user from moving out the key, which would break the container's invariants.
+             * Only the `slot` struct can move the storage safely.
+             *
+             * @param other Another hashmap_storage to move from.
              */
             constexpr hashmap_storage(hashmap_storage &&other) noexcept
             requires(hud::is_nothrow_move_constructible_v<pair_type>)
             = default;
 
             /**
-             * Move assign.
-             * Does not accept throwable move constructible components.
-             * @param other Another pair object.
+             * Move assignment operator.
+             * Moves the content of another hashmap_storage into this one.
+             * Only enabled if `pair_type` is nothrow move assignable.
+             * Assigning a moved-out storage by the user could break container invariants, hence protected.
+             *
+             * @param other Another hashmap_storage to move from.
+             * @return Reference to *this after move assignment.
              */
             constexpr hashmap_storage &operator=(hashmap_storage &&other) noexcept
             requires(hud::is_nothrow_move_assignable_v<pair_type>)
             = default;
 
             /**
-             * Move constructor for different key and value types.
-             * @tparam u_key_t Type of the key in the other hashmap_storage.
-             * @tparam u_value_t Type of the value in the other hashmap_storage.
-             * @param other The other hashmap_storage object to move from.
+             * Move constructor from a hashmap_storage with potentially different key and value types.
+             * Only enabled if `pair_type` is move constructible from `hud::pair<u_key_t, u_value_t>`.
+             * Copies the key/value pair from `other` using move semantics.
+             * Protected to maintain immutability of keys and container correctness.
+             *
+             * @tparam u_key_t   Key type in the other hashmap_storage.
+             * @tparam u_value_t Value type in the other hashmap_storage.
+             * @param other Another hashmap_storage to move from.
              */
             template<typename u_key_t, typename u_value_t>
             requires(hud::is_move_constructible_v<pair_type, hud::pair<u_key_t, u_value_t>>)
@@ -252,25 +284,95 @@ namespace hud
 
     } // namespace details::hashmap
 
-    /** The default allocator type for hash maps. */
-    using hashmap_default_allocator = hud::heap_allocator;
-
     /**
-     * A hash map class that provides key-value storage with customizable hashing, equality comparison, and memory allocation.
-     * This class is an implementation inspired by bseil flat_hash_set, leveraging efficient hash set operations.
+     * A high-performance hash map similar to Abseil's flat_hash_map.
      *
-     * @tparam key_t The type of the keys in the hash map.
-     * @tparam value_t The type of the values in the hash map.
-     * @tparam hasher_t The type of the hash function to use (default is `hashmap_default_hasher`).
-     * @tparam key_equal_t The type of the equality comparator to use (default is `hashmap_default_key_equal`).
-     * @tparam allocator_t The type of the allocator to use (default is `hashmap_default_allocator`).
+     * Template parameters:
+     * --------------------
+     * - `key_t`       : The type of the keys stored in the map.
+     * - `value_t`     : The type of the values associated with keys.
+     * - `hasher_t`    : Type providing a 64-bit hash function for `key_t`. Default is `hud::hash_64<key_t>`.
+     * - `key_equal_t` : Type providing key equality comparisons. Default is `hud::equal<key_t>`.
+     * - `allocator_t` : Allocator type for memory management. Default is `hud::heap_allocator`.
+     *
+     * Features:
+     * ---------
+     * 1. Open-addressing hash map with control bytes to track empty, deleted, and full slots.
+     * 2. Supports constant-evaluated contexts (`consteval`) and runtime.
+     * 3. Supports heterogeneous lookup: you can find, insert, or remove elements using types
+     *    other than the stored `key_t` as long as `hasher_t` and `key_equal_t` are specialized
+     *    to handle the alternative type `K`.
+     * 4. Supports piecewise construction for keys and values. Piecewise construction allows in-place
+     *    initialization of complex keys or values.
+     * 5. Automatic resizing according to a 7/8 load factor.
+     * 6. Keys are immutable to maintain consistent hash behavior.
+     * 7. Values are mutable, allowing updates after insertion.
+     *
+     * Heterogeneous lookup with alternative key types `K`:
+     * -----------------------------------------------------
+     * You can hash and compare keys directly from their type `K`. To enable this for a user-defined type:
+     *  - Specialize the map's `hasher_t` for your type `K` by implementing `operator()(const K&)`
+     *    to compute a 64-bit hash. You can also provide overloads for alternative key representations
+     *    (like an ID or a tuple) to avoid constructing the full key.
+     *  - Specialize the map's `key_equal_t` to provide comparisons between the stored key type
+     *    and the type `K` (or alternative key representations). Implement `operator()(const key_t&, const K&)`.
+     *
+     * Memory management and performance:
+     * ----------------------------------
+     * - `reserve(count)` allocates memory for at least `count` elements, avoiding unnecessary rehashes.
+     * - `clear()` destroys all elements without releasing memory.
+     * - `clear_shrink()` destroys all elements and frees memory.
+     * - `rehash(max_count)` resizes the underlying table; if `max_count` is less than current capacity, nothing happens.
+     * - `shrink_to_fit()` reduces the table to fit the current number of elements exactly.
+     * - `free_slot_before_grow()` returns the number of free slots before the next resizing.
+     *
+     * Iterators:
+     * ----------
+     * Supports forward iteration over elements (key/value pairs):
+     * - `begin()` / `end()` for mutable access
+     * - `begin() const` / `end() const` for const access
+     *
+     * Structured bindings:
+     * --------------------
+     * You can use structured bindings to access key/value pairs:
+     * ```cpp
+     * hashmap<int, std::string> m;
+     * m.add(42, "Hello");
+     * for (auto &[key, value] : m) {
+     *     // key is immutable, value is mutable
+     *     value += " World";
+     * }
+     * ```
+     *
+     * Example:
+     * ```cpp
+     * struct MyType { int id; };
+     *
+     * // Hasher specialization
+     * template<> struct hud::hash_64<MyType> {
+     *     constexpr u64 operator()(const MyType& v) const noexcept { return hud::hash_64<int>{}(v.id); }
+     *     constexpr u64 operator()(const int id) const noexcept { return hud::hash_64<int>{}(id); } // heterogeneous support
+     * };
+     *
+     * // Equality specialization
+     * template<> struct hud::equal<MyType> {
+     *     constexpr bool operator()(const MyType& lhs, const MyType& rhs) const noexcept { return lhs.id == rhs.id; }
+     *     constexpr bool operator()(const MyType& lhs, const int& rhs) const noexcept { return lhs.id == rhs; }
+     * };
+     *
+     * hashmap<MyType, std::string> map;
+     * map.add(MyType{42}, "Hello"); // insert using MyType key
+     * map.add(56, "World");         // insert using alternative key (int)
+     * bool has42 = map.contains(MyType{42});
+     * bool has56 = map.contains(56);
+     * ```
      */
     template<
         typename key_t,
         typename value_t,
         typename hasher_t = hud::hash_64<key_t>,
         typename key_equal_t = hud::equal<key_t>,
-        typename allocator_t = hashmap_default_allocator>
+        typename allocator_t = hud::heap_allocator>
     class hashmap
         : public details::hashset::hashset_impl<details::hashmap::hashmap_storage<key_t, value_t>, hasher_t, key_equal_t, allocator_t>
     {
@@ -302,15 +404,22 @@ namespace hud
         using super::super;
         using super::operator=;
 
-        /** Default constructor. */
+        /**
+         * Default constructor.
+         * Constructs an empty hashmap with default-constructed allocator and other components.
+         */
         explicit constexpr hashmap() noexcept = default;
 
         /**
          * Constructor that initializes the hash map with a list of key-value pairs.
-         * @tparam u_key_t The type of the keys in the initializer list.
-         * @tparam u_value_t The type of the values in the initializer list.
-         * @param list The initializer list of key-value pairs.
-         * @param allocator The allocator to use for memory management.
+         *
+         * Copies all key-value pairs from the initializer list into the map.
+         * Ensures that both key and value types are copy-constructible.
+         *
+         * @tparam u_key_t   Type of keys in the initializer list (default is `key_t`).
+         * @tparam u_value_t Type of values in the initializer list (default is `value_t`).
+         * @param list       The initializer list of key-value pairs.
+         * @param allocator  Allocator to use for memory management (default-constructed if not provided).
          */
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         requires(hud::is_copy_constructible_v<key_t, u_key_t> && hud::is_copy_constructible_v<value_t, u_value_t>)
@@ -327,14 +436,17 @@ namespace hud
         }
 
         /**
-         * Constructor that initializes the hash map with a list of key-value pairs and additional capacity.
-         * @tparam u_key_t The type of the keys in the initializer list.
-         * @tparam u_value_t The type of the values in the initializer list.
-         * @param list The initializer list of key-value pairs.
-         * @param extra_element_count Additional capacity to reserve.
-         * @param allocator The allocator to use for memory management.
+         * Constructor that initializes the hash map with a list of key-value pairs and reserves extra capacity.
+         *
+         * Copies all key-value pairs from the initializer list and pre-allocates additional slots
+         * to minimize rehashing when adding more elements.
+         *
+         * @tparam u_key_t   Type of keys in the initializer list (default is `key_t`).
+         * @tparam u_value_t Type of values in the initializer list (default is `value_t`).
+         * @param list               The initializer list of key-value pairs.
+         * @param extra_element_count Extra number of elements to reserve space for.
+         * @param allocator          Allocator to use for memory management (default-constructed if not provided).
          */
-
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         requires(hud::is_copy_constructible_v<key_t, u_key_t> && hud::is_copy_constructible_v<value_t, u_value_t>)
         constexpr hashmap(std::initializer_list<hud::pair<u_key_t, u_value_t>> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
@@ -350,11 +462,14 @@ namespace hud
         }
 
         /**
-         * Insert a key-value pair into the hash map.
-         * @tparam u_key_t The type of the key to insert.
-         * @tparam u_value_t The type of the value to insert.
-         * @param pair The key-value pair to insert.
-         * @return An iterator to the inserted value.
+         * Insert a key-value pair into the hash map by coping keys and values.
+         *
+         * Simply forwards to the `add(key, value)` function.
+         *
+         * @tparam u_key_t   Type of the key to insert (default is `key_t`).
+         * @tparam u_value_t Type of the value to insert (default is `value_t`).
+         * @param pair       The key-value pair to insert.
+         * @return Iterator pointing to the inserted or existing element.
          */
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(const hud::pair<u_key_t, u_value_t> &pair) noexcept
@@ -363,11 +478,14 @@ namespace hud
         }
 
         /**
-         * Insert a key-value pair into the hash map (rvalue reference version).
-         * @tparam u_key_t The type of the key to insert.
-         * @tparam u_value_t The type of the value to insert.
-         * @param pair The key-value pair to insert.
-         * @return An iterator to the inserted value.
+         * Insert a key-value pair into the hash map by forwarding pair first and pair second.
+         *
+         * Moves the key and value into the map to avoid unnecessary copies.
+         *
+         * @tparam u_key_t   Type of the key to insert (default is `key_t`).
+         * @tparam u_value_t Type of the value to insert (default is `value_t`).
+         * @param pair       The key-value pair to insert (rvalue).
+         * @return Iterator pointing to the inserted or existing element.
          */
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(hud::pair<u_key_t, u_value_t> &&pair) noexcept
@@ -376,10 +494,16 @@ namespace hud
         }
 
         /**
-         * Insert a key in the hashset.
-         * @param key The key associated with the `value`
-         * @param args List of arguments pass to `value_type` constructor after the `key` itself
-         * @return Iterator to the `value`
+         * Insert a key-value pair into the hash map with perfect forwarding.
+         *
+         * Constructs the key and value in-place using the provided arguments.
+         * The key is immutable after insertion; the value remains mutable.
+         *
+         * @tparam u_key_t   Type of the key to insert (deduced from arguments).
+         * @tparam u_value_t Type of the value to insert (deduced from arguments).
+         * @param key        The key to insert.
+         * @param value      The value to insert.
+         * @return Iterator pointing to the inserted or existing element.
          */
         template<typename u_key_t = key_t, typename u_value_t = value_t>
         constexpr iterator add(u_key_t &&key, u_value_t &&value) noexcept
@@ -412,6 +536,16 @@ namespace hud
             return super::add_impl(hud::tag_piecewise_construct, hud::forward<key_tuple_t>(key_tuple), hud::forward<value_tuple_t>(value_tuple));
         }
 
+        /**
+         * Access or insert a value by key.
+         *
+         * If the key exists, returns a reference to the existing value.
+         * Otherwise, inserts a default-constructed value and returns a reference to it.
+         *
+         * @tparam KeyArgs  Arguments used to construct or find the key.
+         * @param args      Arguments to forward to the key constructor or lookup.
+         * @return Reference to the value associated with the key.
+         */
         template<typename KeyArgs>
         constexpr value_type &operator[](KeyArgs &&args) noexcept
         {
@@ -421,13 +555,20 @@ namespace hud
     };
 
     /**
-     * Specialization of `hud::tuple_size` for `details::hashmap::hashmap_storage`.
-     * Defines the size of the tuple as 2, representing a key-value pair.
+     * Provides a `hud::tuple_size` specialization for `hashmap_storage`.
+     * This allows `hashmap_storage` to be treated as a tuple of size 2,
+     * representing a key-value pair, primarily for structured bindings
+     * or tuple-like interface compatibility.
      *
-     * @tparam key_t The type of the key.
+     * Example:
+     * ```cpp
+     * hashmap<int, hud::string>::storage_type storage{1, "one"};
+     * auto [key, value] = storage; // structured binding works
+     * ```
+     *
+     * @tparam key_t   The type of the key.
      * @tparam value_t The type of the value.
      */
-
     template<typename key_t, typename value_t>
     struct tuple_size<details::hashmap::hashmap_storage<key_t, value_t>>
         : hud::integral_constant<usize, 2>
@@ -449,12 +590,58 @@ namespace hud
         using type = hud::conditional_t<idx_to_reach == 0, const typename details::hashmap::hashmap_storage<key_t, value_t>::key_type, typename details::hashmap::hashmap_storage<key_t, value_t>::value_type>;
     };
 
+    /**
+     * Swaps the contents of two hashmaps.
+     *
+     * Exchanges all key-value pairs and internal data between `first` and `second`.
+     *
+     * @tparam key_t       The type of the keys.
+     * @tparam value_t     The type of the values.
+     * @tparam hasher_t    The type of the hasher.
+     * @tparam key_equal_t The type of the key equality comparator.
+     * @tparam allocator_t The allocator type.
+     * @param first  First hashmap to swap.
+     * @param second Second hashmap to swap.
+     *
+     * Example:
+     * ```cpp
+     * hud::hashmap<int, std::string> a{{ {1,"one"}, {2,"two"} }};
+     * hud::hashmap<int, std::string> b{{ {3,"three"} }};
+     * hud::swap(a, b); // a now has key 3 ; b has keys 1 and 2
+     * ```
+     */
     template<typename key_t, typename value_t, typename hasher_t, typename key_equal_t, typename allocator_t>
     constexpr void swap(hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> &first, hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> &second) noexcept
     {
         first.swap(second);
     }
 
+    /**
+     * Compares two hashmaps for equality.
+     *
+     * Two hashmaps are considered equal if:
+     * 1. They contain the same number of elements.
+     * 2. Each key-value pair in one hashmap exists in the other hashmap with an equal value.
+     *
+     * The comparison is optimized by iterating over the hashmap with the larger capacity
+     * and looking up elements in the smaller hashmap.
+     *
+     * @tparam key_t       The type of keys stored.
+     * @tparam value_t     The type of values stored.
+     * @tparam hasher_t    The type of the hasher.
+     * @tparam key_equal_t The type of the key equality comparator.
+     * @tparam allocator_t The allocator type.
+     * @param left  First hashmap.
+     * @param right Second hashmap.
+     * @return `true` if both hashmaps contain the same key-value pairs; `false` otherwise.
+     *
+     * Example:
+     * ```cpp
+     * hud::hashmap<int, std::string> a{{ {1,"one"}, {2,"two"} }};
+     * hud::hashmap<int, std::string> b{{ {2,"two"}, {1,"one"} }};
+     * bool are_equal = (a == b); // true
+     * ```
+     */
     template<typename key_t, typename value_t, typename hasher_t, typename key_equal_t, typename allocator_t>
     [[nodiscard]] constexpr bool operator==(const hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> &left, const hashmap<key_t, value_t, hasher_t, key_equal_t, allocator_t> &right) noexcept
     {
@@ -491,10 +678,16 @@ namespace std
 {
     /**
      * Specialization of `std::tuple_size` for `hud::details::hashmap::hashmap_storage`.
-     * This specialization defines the size of the tuple as 2, representing a key-value pair.
-     * It inherits from `hud::tuple_size` to leverage its implementation.
      *
-     * @tparam key_t The type of the key.
+     * Enables structured bindings with `hashmap_storage`, allowing syntax like:
+     * ```cpp
+     * hashmap<int, hud::string>::storage_type storage;
+     * auto [key, value] = storage; // Structured binding works, key = storage.key(), value = storage.value()
+     * ```
+     *
+     * The tuple size is defined as 2, representing the key-value pair stored in the hashmap.
+     *
+     * @tparam key_t   The type of the key.
      * @tparam value_t The type of the value.
      */
     template<typename key_t, typename value_t>
@@ -505,12 +698,21 @@ namespace std
 
     /**
      * Specialization of `std::tuple_element` for `hud::details::hashmap::hashmap_storage`.
-     * This specialization provides access to the types of the elements in the tuple (key or value).
-     * It inherits from `hud::tuple_element` to leverage its implementation.
      *
-     * @tparam idx_to_reach The index of the element to access (0 for key, 1 for value).
-     * @tparam key_t The type of the key.
-     * @tparam value_t The type of the value.
+     * Allows access to the types of the elements in structured bindings or tuple-like access:
+     * - index 0 corresponds to the key type (`key_type`).
+     * - index 1 corresponds to the value type (`value_type`).
+     *
+     * Example:
+     * ```cpp
+     * hashmap<int, hud::string>::storage_type storage{1, "one"};
+     * using key_type   = std::tuple_element<0, decltype(storage)>::type; // int
+     * using value_type = std::tuple_element<1, decltype(storage)>::type; // hud::string
+     * ```
+     *
+     * @tparam idx_to_reach The index of the element to access (0 = key, 1 = value).
+     * @tparam key_t       The type of the key.
+     * @tparam value_t     The type of the value.
      */
     template<std::size_t idx_to_reach, typename key_t, typename value_t>
     struct tuple_element<idx_to_reach, hud::details::hashmap::hashmap_storage<key_t, value_t>>
