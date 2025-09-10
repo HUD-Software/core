@@ -20,9 +20,7 @@
 #if defined(HD_SSSE3)
     #include <tmmintrin.h>
 #endif
-// TODO:
-// Move common to a common class that contains max_slot_count_, count_, control_ptr_, slot_ptr_ and free_slot_before_grow_
-// Hashset
+
 // Difference with STL:
 // - Don't use is_transparent because we don't have the nessecity to keep compatibility with existing code.
 //   Comparaison and hasher is always transparent if the user provide a custom equal or hasher type.
@@ -34,9 +32,12 @@ namespace hud
 
         /**
          * A slot struct that inherits from a given storage type.
-         * This struct provides controlled construction and copying mechanisms.
+         * This struct provides controlled construction and copy/move semantics.
+         * A slot can be moved even if the underlying storage cannot.
+         * To enable this, the move constructor and move assignment operator
+         * of `storage_t` must be protected.
          *
-         * @tparam storage_t The type of storage this slot will manage.
+         * @tparam storage_t The type of storage managed by this slot.
          */
         template<typename storage_t>
         struct slot
@@ -340,8 +341,6 @@ namespace hud
             key_type element_;
         };
 
-        using default_allocator = hud::heap_allocator;
-
         /** Retrives the H1 (57 first bit) of a hash. */
         [[nodiscard]]
         static constexpr u64 H1(u64 hash) noexcept
@@ -366,65 +365,116 @@ namespace hud
         static constexpr control_type deleted_byte = 0b11111110;  // The slot is deleted (0xFE)
         static constexpr control_type sentinel_byte = 0b11111111; // The slot is a sentinel, A sentinel is a special caracter that mark the end of the control for iteration (0xFF)
 
+        /**
+         * A "Group" is a small fixed-size array of control bytes used internally
+         * by hashset_impl to efficiently manage slots. Each byte in the group
+         * encodes the state of a corresponding slot (empty, deleted, or occupied)
+         * and part of the hash of the key stored in that slot.
+         *
+         * This design enables:
+         *   - Fast probing: Checking multiple slot states in a single vectorized
+         *     operation.
+         *   - Compact metadata: Only one byte per slot is used for control info.
+         *
+         * Implementation details:
+         *   - hashset_impl provides two implementations of Groups:
+         *       1. Portable: Works on all platforms without special CPU instructions.
+         *       2. SSE2: Uses SIMD instructions (SSE2) for faster parallel comparisons
+         *          of control bytes.
+         *   - In constexpr contexts, the portable implementation is always used,
+         *     because constexpr execution cannot use runtime SIMD instructions.
+         *
+         * Why both implementations:
+         *   - SSE2 gives a performance boost on supported CPUs in non-constexpr code.
+         *   - Portable ensures correctness and portability everywhere (constexpr,
+         *     non-SSE2 CPUs, cross-platform builds).
+         */
+
 #if defined(HD_SSE2)
+
+        /**
+         * SSE2-optimized Group for hashset_impl.
+         *
+         * A Group is a small fixed-size array of control bytes used internally
+         * to efficiently manage slots. Each byte encodes the state of a slot
+         * (empty, deleted, or occupied) and part of the hash of the stored key.
+         *
+         * This SSE2 version uses SIMD instructions to check multiple slot states
+         * in parallel for faster probing. In constexpr contexts, the portable
+         * implementation is always used instead.
+         */
         struct sse2_group
         {
+            /** Number of slots per Group when using SSE2. */
             static constexpr usize SLOT_PER_GROUP = 16;
 
+            /**
+             * A mask representing active slots within the Group.
+             * Supports iteration, indexing, and utility functions.
+             */
             struct mask
             {
+                /** Construct the mask. */
                 constexpr mask(u16 mask_value) noexcept
                     : mask_value_ {mask_value}
                 {
                 }
 
+                /** True if any slot is active (bit set). */
                 [[nodiscard]] constexpr operator bool() const noexcept
                 {
                     return mask_value_ != 0;
                 }
 
+                /** Returns the index of the first active slot. */
                 [[nodiscard]] constexpr u32 operator*() const noexcept
                 {
                     return first_non_null_index();
                 }
 
+                /** Advances the mask by removing the least significant set bit. */
                 constexpr mask &operator++() noexcept
                 {
                     mask_value_ &= mask_value_ - 1;
                     return *this;
                 }
 
+                /** Begin iterator for range-based for loops. */
                 [[nodiscard]]
                 constexpr mask begin() const noexcept
                 {
                     return *this;
                 }
 
+                /** End iterator (empty mask) for range-based for loops. */
                 [[nodiscard]]
                 constexpr mask end() const noexcept
                 {
                     return mask(0);
                 };
 
+                /** Equality comparison. */
                 [[nodiscard]]
                 friend constexpr bool operator==(const mask &a, const mask &b) noexcept
                 {
                     return a.mask_value_ == b.mask_value_;
                 }
 
+                /** Inequality comparison. */
                 [[nodiscard]]
                 friend constexpr bool operator!=(const mask &a, const mask &b) noexcept
                 {
                     return !(a == b);
                 }
 
-                /** Retrieves the index of the first non null byte set. 0 otherwise. */
+                /** Index of the first active slot (least significant set bit). */
                 [[nodiscard]] constexpr u32 first_non_null_index() const noexcept
                 {
                     // Get number of trailing zero to get the insert offset of the byte
                     return hud::bits::trailing_zeros(mask_value_);
                 }
 
+                /** Convert mask to underlying 16-bit value. */
                 [[nodiscard]]
                 constexpr operator u16() const noexcept
                 {
@@ -432,81 +482,117 @@ namespace hud
                 }
 
             protected:
+                /**
+                 * The underlying 16-bit bitmask representing active slots within a Group.
+                 * Each bit corresponds to a slot:
+                 *   - 1 indicates the slot is active/matches the condition of the mask.
+                 *   - 0 indicates the slot is inactive.
+                 *
+                 * This value is manipulated by mask operators (++, *, bool conversion)
+                 * to iterate over active slots efficiently.
+                 */
                 u16 mask_value_;
             };
 
+            /** Mask specialized for empty slots. */
             struct empty_mask
                 : mask
             {
                 using mask::mask;
 
+                /** True if there is any empty slot. */
                 [[nodiscard]] constexpr bool has_empty_slot() const noexcept
                 {
                     return *this;
                 }
 
+                /** Index of the first empty slot. */
                 [[nodiscard]] constexpr u32 first_empty_index() const noexcept
                 {
                     return first_non_null_index();
                 }
 
+                /** Count trailing zeros in the mask. */
                 [[nodiscard]] constexpr u32 trailing_zeros() const noexcept
                 {
                     return hud::bits::trailing_zeros(mask_value_);
                 }
 
+                /** Count leading zeros in the mask. */
                 [[nodiscard]] constexpr u32 leading_zeros() const noexcept
                 {
                     return hud::bits::leading_zeros(mask_value_);
                 }
             };
 
+            /** Mask specialized for empty or deleted slots. */
             struct empty_or_deleted_mask
                 : mask
             {
                 using mask::mask;
 
+                /** True if there is any empty or deleted slot. */
                 [[nodiscard]] constexpr bool has_empty_or_deleted_slot() const noexcept
                 {
                     return *this;
                 }
 
+                /** Index of the first empty or deleted slot. */
                 [[nodiscard]] constexpr u32 first_empty_or_deleted_index() const noexcept
                 {
                     return first_non_null_index();
                 }
             };
 
+            /** Mask specialized for full (occupied) slots. */
             struct full_mask
                 : mask
             {
                 using mask::mask;
 
+                /** True if there is any occupied slot. */
                 [[nodiscard]] constexpr bool has_full_slot() const noexcept
                 {
                     return *this;
                 }
 
+                /** Index of the first occupied slot. */
                 [[nodiscard]] constexpr u32 first_full_index() const noexcept
                 {
                     return first_non_null_index();
                 }
             };
 
-            /** Load a 16 bytes control into the group. */
+            /**
+             * Load a 16-byte control array into the group.
+             * @param control Pointer to the control bytes.
+             */
             constexpr sse2_group(const control_type *control) noexcept
                 : value_(hud::memory::unaligned_load128(control))
             {
             }
 
-            /**Retrieve a mask where H2 matching control byte have value 0x80 and non matching have value 0x00. */
+            /**
+             * Returns a mask where bits corresponding to slots matching the given h2_hash are set to 1,
+             * and all other bits are cleared to 0.
+             * Each bit in the returned mask corresponds to a slot in the group.
+             *
+             * @param h2_hash The hash fragment to match.
+             */
             mask match(u8 h2_hash) const noexcept
             {
                 __m128i match = _mm_set1_epi8(static_cast<char>(h2_hash));
                 return mask(_mm_movemask_epi8(_mm_cmpeq_epi8(match, value_)));
             }
 
-            /** Retrieve a mask where empty control bytes have value 0x80 and others have value 0x00. */
+            /**
+             * Returns a mask representing empty slots in the group.
+             * Each bit in the mask corresponds to a slot:
+             *   - 1 if the slot is empty
+             *   - 0 if the slot is not empty
+             *
+             * Converts the 16 control bytes into a compact 16-bit bitmask for iteration.
+             */
             empty_mask mask_of_empty_slot() const noexcept
             {
     #if defined(HD_SSSE3)
@@ -517,19 +603,33 @@ namespace hud
     #endif
             };
 
-            /** Retrieve a mask where empty and deleted control bytes have value 0x80 and others have value 0x00. */
+            /**
+             * Returns a mask representing empty or deleted slots in the group.
+             * Each bit in the mask corresponds to a slot:
+             *   - 1 if the slot is empty or deleted
+             *   - 0 if the slot is full
+             */
             empty_or_deleted_mask mask_of_empty_or_deleted_slot() const noexcept
             {
                 __m128i special = _mm_set1_epi8(static_cast<char>(sentinel_byte));
                 return _mm_movemask_epi8(_mm_cmpgt_epi8(special, value_));
             }
 
-            /** Retrieve a mask where full control bytes have value 0x80 and others have value 0x00. */
+            /**
+             * Returns a mask representing full (occupied) slots in the group.
+             * Each bit in the mask corresponds to a slot:
+             *   - 1 if the slot is full
+             *   - 0 if the slot is empty or deleted
+             */
             full_mask mask_of_full_slot() const noexcept
             {
                 return _mm_movemask_epi8(value_) ^ 0xffff;
             }
 
+            /**
+             * Counts the number of leading empty or deleted slots in the group.
+             * Returns the number of consecutive empty/deleted slots starting from the first slot.
+             */
             u32 count_leading_empty_or_deleted() const noexcept
             {
                 auto special = _mm_set1_epi8(static_cast<char>(sentinel_byte));
@@ -538,73 +638,90 @@ namespace hud
             }
 
         private:
-            /** The 16 bytes value of the group. */
+            /** The 16-byte value representing the group of slots. */
             __m128i value_;
         };
 #endif
-        /** Portable group used to analyze a group. */
+
         struct portable_group
         {
+            /** Number of slots per Group in the portable implementation. */
             static constexpr usize SLOT_PER_GROUP = 8;
 
+            /**
+             * A mask representing active slots in the portable group.
+             * Each byte in `mask_value_` represents a slot:
+             *   - 1 in the bitmask indicates the slot matches the condition (active).
+             *   - 0 indicates it does not match.
+             * Used for iteration and slot state queries.
+             */
             struct mask
             {
+                /** Construct the mask. */
                 constexpr mask(u64 mask_value) noexcept
                     : mask_value_ {mask_value}
                 {
                 }
 
+                /** True if at least one slot matches (bit set). */
                 [[nodiscard]] constexpr operator bool() const noexcept
                 {
                     return mask_value_ != 0;
                 }
 
+                /** Returns the index of the first matching slot. */
                 [[nodiscard]] constexpr u32 operator*() const noexcept
                 {
                     return first_non_null_index();
                 }
 
+                /** Advances the mask to the next active slot. */
                 constexpr mask &operator++() noexcept
                 {
                     // Erase the last byte set to 0x80 by subtracting 1
                     // This will gives us 0x7F, applying AND 0x80 on it gives 0x00
-                    // After that using first_non_null_byte()-> will gives us the next 0x80 set or 0 is non
+                    // After that using first_non_null_byte()-> will gives us the next 0x80 set or 0 if not
                     mask_value_ &= 0x8080808080808080UL;
                     mask_value_ &= mask_value_ - 1;
                     return *this;
                 }
 
+                /** Begin iterator for range-based loops. */
                 [[nodiscard]]
                 constexpr mask begin() const noexcept
                 {
                     return *this;
                 }
 
+                /** End iterator (empty mask). */
                 [[nodiscard]]
                 constexpr mask end() const noexcept
                 {
                     return mask(0);
                 };
 
-                /** Retrieves the index of the first non null byte set. 0 otherwise. */
+                /** Index of the first active byte (slot) in the mask. 0 otherwise. */
                 [[nodiscard]] constexpr u32 first_non_null_index() const noexcept
                 {
                     // Get number of trailing zero and divide it by 8 (>>3) to get the insert offset of the byte
                     return hud::bits::trailing_zeros(mask_value_) >> 3;
                 }
 
+                /** Equality comparison. */
                 [[nodiscard]]
                 friend constexpr bool operator==(const mask &a, const mask &b) noexcept
                 {
                     return a.mask_value_ == b.mask_value_;
                 }
 
+                /** Inequality comparison. */
                 [[nodiscard]]
                 friend constexpr bool operator!=(const mask &a, const mask &b) noexcept
                 {
                     return !(a == b);
                 }
 
+                /** Convert mask to underlying 64-bit value. */
                 [[nodiscard]]
                 constexpr operator u64() const noexcept
                 {
@@ -612,6 +729,7 @@ namespace hud
                 }
 
             protected:
+                /** Underlying 64-bit bitmask representing active slots. */
                 u64 mask_value_;
             };
 
@@ -620,23 +738,29 @@ namespace hud
             {
                 using mask::mask;
 
+                /** True if any empty slot exists. */
                 [[nodiscard]] constexpr bool has_empty_slot() const noexcept
                 {
                     return *this;
                 }
 
+                /** Index of the first empty slot. */
                 [[nodiscard]] constexpr u32 first_empty_index() const noexcept
                 {
                     return first_non_null_index();
                 }
 
+                /** Trailing zeros in the mask. */
                 [[nodiscard]] constexpr u32 trailing_zeros() const noexcept
                 {
+                    // We divide by 8 to get the slot index instead of bit index
                     return hud::bits::trailing_zeros(mask_value_) >> 3;
                 }
 
+                /** Leading zeros in the mask. */
                 [[nodiscard]] constexpr u32 leading_zeros() const noexcept
                 {
+                    // We divide by 8 to get the slot index instead of bit index
                     return hud::bits::leading_zeros(mask_value_) >> 3;
                 }
             };
@@ -646,11 +770,13 @@ namespace hud
             {
                 using mask::mask;
 
+                /** True if any empty or deleted slot exists. */
                 [[nodiscard]] constexpr bool has_empty_or_deleted_slot() const noexcept
                 {
                     return *this;
                 }
 
+                /** Index of the first empty or deleted slot. */
                 [[nodiscard]] constexpr u32 first_empty_or_deleted_index() const noexcept
                 {
                     return first_non_null_index();
@@ -662,27 +788,42 @@ namespace hud
             {
                 using mask::mask;
 
+                /** True if any slot is full (occupied). */
                 [[nodiscard]] constexpr bool has_full_slot() const noexcept
                 {
                     return *this;
                 }
 
+                /** Index of the first full slot. */
                 [[nodiscard]] constexpr u32 first_full_index() const noexcept
                 {
                     return first_non_null_index();
                 }
             };
 
-            /** Load a 8 bytes control into the group. */
+            /** Load 8 bytes of control values into the group. */
             constexpr portable_group(const control_type *control) noexcept
                 : value_ {hud::memory::unaligned_load64(control)}
 
             {
             }
 
-            /**Retrieve a mask where H2 matching control byte have value 0x80 and non matching have value 0x00. */
+            /**
+             * Returns a mask where slots whose control byte matches the given h2_hash
+             * have their MSB (0x80) set, and all other slots are cleared (0x00).
+             *
+             * Each byte in `value_` represents a slot:
+             *   - If the byte equals `h2_hash`, the corresponding bit in the mask is set (0x80).
+             *   - Otherwise, it is cleared (0x00).
+             *
+             * This uses a bit-hack to compare all 8 bytes in parallel and generate
+             * a compact 64-bit mask for iteration.
+             *
+             * @param h2_hash The hash fragment to match against each slot's control byte.
+             */
             constexpr mask match(u8 h2_hash) const noexcept
             {
+                // Bit-hack to detect bytes equal to h2_hash
                 // Mix of  From http://graphics.stanford.edu/~seander/bithacks.html#ZeroInWord
                 // And http://graphics.stanford.edu/~seander/bithacks.html#ValueInWord
                 constexpr u64 lsbs {0x0101010101010101ULL};
@@ -690,7 +831,11 @@ namespace hud
                 return mask {(x - lsbs) & ~x & 0x8080808080808080ULL};
             }
 
-            /** Retrieve a mask where empty control bytes have value 0x80 and others have value 0x00. */
+            /**
+             * Returns a mask where empty slots have their MSB (0x80) set and all other slots cleared (0x00).
+             * Uses the known control byte patterns for empty, deleted, sentinel, and full slots
+             * to generate the mask.
+             */
             constexpr empty_mask mask_of_empty_slot() const noexcept
             {
                 // controls are
@@ -719,7 +864,10 @@ namespace hud
                 return (value_ & ~(value_ << 6)) & 0x8080808080808080UL;
             }
 
-            /** Retrieve a mask where empty and deleted control bytes have value 0x80 and others have value 0x00. */
+            /**
+             * Returns a mask where empty or deleted slots have their MSB (0x80) set and all other slots cleared (0x00).
+             * Filters control bytes using MSB patterns to isolate only empty and deleted slots.
+             */
             constexpr empty_or_deleted_mask mask_of_empty_or_deleted_slot() const noexcept
             {
                 // controls are
@@ -746,7 +894,10 @@ namespace hud
                 return (value_ & ~(value_ << 7)) & 0x8080808080808080UL;
             }
 
-            /** Retrieve a mask where full control bytes have value 0x80 and others have value 0x00. */
+            /**
+             * Returns a mask where full (occupied) slots have their MSB (0x80) set and all other slots cleared (0x00).
+             * Filters control bytes using MSB patterns to isolate only full slots.
+             */
             constexpr full_mask mask_of_full_slot() const noexcept
             {
                 // controls are
@@ -767,6 +918,11 @@ namespace hud
                 return (value_ ^ 0x8080808080808080UL) & 0x8080808080808080UL;
             }
 
+            /**
+             * Counts the number of leading empty or deleted slots in the group.
+             * Uses the MSB of each byte to determine which slots are empty or deleted.
+             * Returns the number of consecutive empty/deleted slots starting from the first slot.
+             */
             constexpr u32 count_leading_empty_or_deleted() const noexcept
             {
                 // ctrl | ~(ctrl >> 7) will have the lowest bit set to zero for kEmpty and
@@ -779,13 +935,38 @@ namespace hud
             /** The 8 bytes value of the group. */
             u64 value_;
         };
+
 #if defined(HD_SSE2)
-        /** Group type used to iterate over the control. */
+        /**
+         * Type of group used to iterate over the control bytes in a hashset_impl.
+         *
+         * - On SSE2-enabled platforms, `sse2_group` is used to leverage SIMD instructions
+         *   for faster parallel comparisons of control bytes.
+         */
         using group_type = sse2_group;
 #else
-        /** Group type used to iterate over the control. */
+        /**
+         * Type of group used to iterate over the control bytes in a hashset_impl.
+         *
+         * - On platforms without SSE2 (or in constexpr contexts), `portable_group` is used.
+         *   It provides a fully portable implementation that works on all CPUs.
+         */
         using group_type = portable_group;
 #endif
+
+        /**
+         * Returns the number of slots per group.
+         *
+         * - In `consteval` (compile-time) contexts, always returns the value from
+         *   `portable_group`, because SIMD instructions cannot be used in constexpr.
+         * - In runtime contexts, returns the value from `group_type`, which may be
+         *   `sse2_group` on SSE2-enabled platforms for faster iteration, or
+         *   `portable_group` otherwise.
+         *
+         * This allows code to generically query the group size while remaining
+         * constexpr-friendly and platform-optimized.
+         */
+        [[nodiscard]]
         constexpr usize SLOT_PER_GROUP() noexcept
         {
             if consteval
@@ -798,6 +979,25 @@ namespace hud
             }
         }
 
+        /**
+         * Initial control bytes for a newly created group in hashset_impl.
+         *
+         * - Aligned to 16 bytes for potential SIMD access (SSE2).
+         * - Each entry is a `control_type` representing the state of a slot:
+         *     - `0` (first 16 entries) : reserved / unused padding
+         *     - `sentinel_byte` (index 16) : marks the "end" of the valid slots
+         *     - `empty_byte` (indices 17–31) : indicates empty slots ready for insertion
+         *
+         * This array provides a known initial state for all groups, allowing the
+         * hashset to safely iterate and insert elements without undefined behavior.
+         *
+         * Layout explanation:
+         *   - The first 16 zeros are for padding or alignment (optional depending on implementation).
+         *   - The sentinel marks the position beyond the last valid slot.
+         *   - Remaining bytes are empty slots that can accept new elements.
+         *
+         * Using `alignas(16)` ensures proper alignment for SSE2 vectorized operations.
+         */
         alignas(16) constexpr const control_type INIT_GROUP[32] {
             control_type {0}, // 0
             control_type {0},
@@ -833,9 +1033,25 @@ namespace hud
             empty_byte, // 31
         };
 
+        /**
+         * Utility structure to manipulate control bytes in hashset_impl.
+         *
+         * Each slot in the hashset is associated with a control byte that encodes
+         * its state (empty, deleted, full, sentinel) and part of the hash (H2).
+         * This struct provides constexpr-safe operations to read, write, and skip
+         * over control bytes efficiently.
+         */
         struct control
         {
-            /** Set the control to a value. */
+            /**
+             * Set the control byte for a given slot and its cloned byte.
+             * Each slot has a cloned byte at a fixed offset for easier SIMD/vectorized
+             * access. This function writes the value both to the main slot and the cloned byte.
+             * @param control_ptr Pointer to the start of the control array.
+             * @param slot_index Index of the slot to set.
+             * @param value The control value to write (H2, empty, deleted, etc.).
+             * @param max_slot_count Maximum number of slots in the control array (used for wrapping the cloned byte position).
+             */
             static constexpr void set(control_type *control_ptr, usize slot_index, control_type value, usize max_slot_count) noexcept
             {
                 constexpr usize COUNT_CLONED_BYTE {SLOT_PER_GROUP() - 1};
@@ -844,7 +1060,14 @@ namespace hud
                 control_ptr[((slot_index - COUNT_CLONED_BYTE) & max_slot_count) + (COUNT_CLONED_BYTE & max_slot_count)] = value;
             }
 
-            /** Skip all empty or deleted control. */
+            /**
+             * Skip all empty or deleted control bytes starting from `control_ptr`.
+             * Uses the group abstraction (`portable_group` or `group_type`) to count
+             * consecutive empty/deleted slots efficiently.
+             * Works in constexpr contexts (`portable_group`) and runtime (`group_type`).
+             * @param control_ptr Pointer to the start of the control array.
+             * @return Pointer to the first control byte that is full or sentinel.
+             */
             static constexpr control_type *skip_empty_or_deleted(control_type *control_ptr) noexcept
             {
                 // skip all empty slot after the current one
@@ -862,35 +1085,55 @@ namespace hud
                 return control_ptr;
             }
 
-            /** Check if the control byte is empty. */
+            /**
+             * Check if a control byte represents an empty slot.
+             * @param byte_value The control byte to check.
+             * @return True if the byte represents an empty slot, false otherwise.
+             */
             [[nodiscard]]
             static constexpr bool is_byte_empty(control_type byte_value) noexcept
             {
                 return byte_value == empty_byte;
             }
 
-            /** Check if the control byte is deleted. */
+            /**
+             * Check if a control byte represents a deleted slot.
+             * @param byte_value The control byte to check.
+             * @return True if the byte represents a deleted slot, false otherwise.
+             */
             [[nodiscard]]
             static constexpr bool is_byte_deleted(control_type byte_value) noexcept
             {
                 return byte_value == deleted_byte;
             }
 
-            /** Check if the control byte is empty or deleted. */
+            /**
+             * Check if a control byte represents a deleted slot.
+             * @param byte_value The control byte to check.
+             * @return True if the byte represents a deleted slot, false otherwise.
+             */
             [[nodiscard]]
             static constexpr bool is_byte_empty_or_deleted(control_type byte_value) noexcept
             {
                 return byte_value < sentinel_byte;
             }
 
-            /** Check if the control byte is full. */
+            /**
+             * Check if a control byte represents a full (occupied) slot.
+             * @param byte_value The control byte to check.
+             * @return True if the byte represents a full slot, false otherwise.
+             */
             [[nodiscard]]
             static constexpr bool is_byte_full(control_type byte_value) noexcept
             {
                 return byte_value >= 0;
             }
 
-            /** Check if the control byte is deleted. */
+            /**
+             * Check if a control byte is a sentinel (special marker).
+             * @param byte_value The control byte to check.
+             * @return True if the byte is a sentinel, false otherwise.
+             */
             [[nodiscard]]
             static constexpr bool is_byte_sentinel(control_type byte_value) noexcept
             {
@@ -898,7 +1141,12 @@ namespace hud
             }
         };
 
-        /** The hashmap iterator_impl that iterate over elements. */
+        /**
+         * Iterator over elements in hashset_impl.
+         * Iterates only over slots marked as full (occupied). Skips empty and deleted slots.
+         * @tparam slot_t Type of slot stored in the hashset.
+         * @tparam is_const Whether the iterator is a const iterator.
+         */
         template<typename slot_t, bool is_const>
         class iterator
         {
@@ -909,6 +1157,10 @@ namespace hud
             using reference_type = hud::add_lvalue_reference_t<storage_type>;
 
         public:
+            /**
+             * Constructs an iterator starting at a control pointer.
+             * @param control_ptr Pointer to the control byte to start iterating from.
+             */
             constexpr iterator(control_type *control_ptr) noexcept
                 : control_ptr_ {control_ptr}
             {
@@ -916,6 +1168,11 @@ namespace hud
                 HD_ASSUME((control_ptr_ != nullptr));
             }
 
+            /**
+             * Constructs an iterator starting at a control and slot pointer.
+             * @param control_ptr Pointer to the control byte.
+             * @param slot_ptr Pointer to the corresponding slot.
+             */
             constexpr iterator(control_type *control_ptr, slot_type *slot_ptr) noexcept
                 : control_ptr_ {control_ptr}
                 , slot_ptr_ {slot_ptr}
@@ -924,13 +1181,22 @@ namespace hud
                 HD_ASSUME(control_ptr_ != nullptr);
             }
 
-            /** Create a constant iterator from a non constant iterator. */
+            /**
+             * Construct a const iterator from a non-const iterator.
+             * @tparam u_slot_t Slot type of the non-const iterator.
+             * @param it Non-const iterator to convert from.
+             */
             template<typename u_slot_t>
             constexpr iterator(iterator<u_slot_t, false> &&it) noexcept
                 : iterator {hud::forward<iterator<u_slot_t, false>>(it).control_ptr_, hud::forward<iterator<u_slot_t, false>>(it).slot_ptr_}
             {
             }
 
+            /**
+             * Dereference the iterator to access the element.
+             * @return Reference to the element at the current slot.
+             * @note Only valid if the control byte at the current position is full.
+             */
             constexpr reference_type operator*() const noexcept
             {
                 // Ensure we are in a full control
@@ -938,6 +1204,11 @@ namespace hud
                 return *static_cast<storage_type *>(slot_ptr_);
             }
 
+            /**
+             * Member access operator for the current element.
+             * @return Pointer to the element at the current slot.
+             * @note Only valid if the control byte at the current position is full.
+             */
             constexpr pointer_type operator->() const noexcept
             {
                 // Ensure we are in a full control
@@ -945,6 +1216,11 @@ namespace hud
                 return slot_ptr_;
             }
 
+            /**
+             * Pre-increment operator. Moves to the next full slot.
+             * Skips empty and deleted slots automatically.
+             * @return Reference to the incremented iterator.
+             */
             constexpr iterator &operator++() noexcept
             {
                 // Ensure we are in a full control
@@ -956,6 +1232,10 @@ namespace hud
                 return *this;
             }
 
+            /**
+             * Post-increment operator. Moves to the next full slot.
+             * @return Copy of the iterator before increment.
+             */
             constexpr iterator operator++(int) noexcept
             {
                 auto tmp {*this};
@@ -963,13 +1243,21 @@ namespace hud
                 return tmp;
             }
 
-            /** Checks if 2 iterator are equal. */
+            /**
+             * Equality comparison.
+             * @param other Another iterator to compare with.
+             * @return True if both iterators point to the same control position.
+             */
             [[nodiscard]] constexpr bool operator==(const iterator &other) const noexcept
             {
                 return control_ptr_ == other.control_ptr_;
             }
 
-            /** Checks if 2 iterator are not equals. */
+            /**
+             * Inequality comparison.
+             * @param other Another iterator to compare with.
+             * @return True if iterators point to different control positions.
+             */
             [[nodiscard]] constexpr bool operator!=(const iterator &other) const noexcept
             {
                 return control_ptr_ != other.control_ptr_;
@@ -985,12 +1273,23 @@ namespace hud
                 typename allocator_t>
             friend class hashset_impl;
 
-            // The control to iterate over
+            /** Pointer to the current control byte being iterated. */
             control_type *control_ptr_;
-            // The current slot we are iterating. Keep uninitialized.
+            /** Pointer to the current slot corresponding to control_ptr_. */
             slot_type *slot_ptr_;
         };
 
+        /**
+         * A hash set implementation.
+         * This implementation is inspired by Abseil's flat hash set but additionally
+         * supports usage in `constexpr` contexts. It provides insertion, deletion,
+         * lookup, and iteration over elements at compile-time or runtime.
+         * Uses open addressing with H1/H2 hash scheme and groups for SIMD-friendly probing.
+         * @tparam storage_t Type of storage used for the elements.
+         * @tparam hasher_t Type of the hash function.
+         * @tparam key_equal_t Type of the equality comparator.
+         * @tparam allocator_t Type of the allocator.
+         */
         template<
             typename storage_t,
             typename hasher_t,
@@ -1028,29 +1327,58 @@ namespace hud
             template<typename K>
             static constexpr bool is_hashable_and_comparable_v = hud::conjunction_v<hud::is_hashable_64<key_type, K>, hud::is_comparable_with_equal<key_type, K>>;
 
+            /** Friend with other hashset_impl of other types. */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
-            friend class hashset_impl; // Friend with other hashset_impl of other types
+            friend class hashset_impl;
 
         public:
             /**  Default constructor. */
             explicit constexpr hashset_impl() noexcept = default;
 
+            /**
+             * Constructs a hashset_impl with a given allocator.
+             * @param allocator Allocator to use.
+             */
             constexpr explicit hashset_impl(const allocator_type &allocator) noexcept
                 : compressed_(hud::tag_piecewise_construct, hud::forward_as_tuple(allocator), hud::forward_as_tuple(), hud::forward_as_tuple(), hud::forward_as_tuple())
             {
             }
 
+            /**
+             * Copy-constructs elements from another hashset_impl into this one.
+             * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
+             * @param other The other array to move
+             */
             constexpr explicit hashset_impl(const hashset_impl &other) noexcept
                 : hashset_impl(other, other.allocator())
             {
             }
 
+            /**
+             * Copy-constructs elements from another hashset_impl into this one.
+             * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other array to move
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
                 : hashset_impl(other, other.allocator())
             {
             }
 
+            /**
+             * Copy-constructs a hashset_impl from another hashset_impl using a specific allocator.
+             * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to copy from.
+             * @param allocator The allocator to use for this hashset_impl.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, const allocator_type &allocator) noexcept
                 : max_slot_count_ {other.max_count()}
@@ -1060,12 +1388,32 @@ namespace hud
                 copy_construct(other);
             }
 
+            /**
+             * Copy-constructs elements from another hashset_impl with extra capacity.
+             * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to copy from.
+             * @param extra_max_count Optional extra slots to allocate beyond other.max_count().
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count) noexcept
                 : hashset_impl {other, extra_max_count, other.allocator()}
             {
             }
 
+            /**
+             * Copy-constructs elements from another hashset_impl with extra capacity using a specific allocator.
+             * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to copy from.
+             * @param extra_max_count Optional extra slots to allocate beyond other.max_count().
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
@@ -1075,12 +1423,32 @@ namespace hud
                 copy_construct(other, extra_max_count);
             }
 
+            /**
+             * Move-constructs a hashset_impl from another hashset_impl, taking ownership of its storage.
+             * Depending on the type and context, it either takes ownership of the other set's memory
+             * or constructs each slot individually using move semantics.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to move from.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
                 : hashset_impl(hud::move(other), other.allocator())
             {
             }
 
+            /**
+             * Move-constructs a hashset_impl from another hashset_impl using a specific allocator, taking ownership of its storage
+             * Depending on the type and context, it either takes ownership of the other set's memory
+             * or constructs each slot individually using move semantics.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to move from.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, const allocator_type &allocator) noexcept
                 : max_slot_count_ {other.max_count()}
@@ -1090,12 +1458,32 @@ namespace hud
                 move_construct(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other));
             }
 
+            /**
+             * Move-constructs a hashset_impl from another hashset_impl with extra capacity, taking ownership of its storage
+             * Depending on the type and context, it either takes ownership of the other set's memory
+             * or constructs each slot individually using move semantics.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to move from.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count) noexcept
                 : hashset_impl {hud::move(other), extra_max_count, other.allocator()}
             {
             }
 
+            /**
+             * Move-constructs a hashset_impl from another hashset_impl with extra capacity using a specific allocator, taking ownership of its storage
+             * Depending on the type and context, it either takes ownership of the other set's memory
+             * or constructs each slot individually using move semantics.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to move from.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr explicit hashset_impl(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count, const allocator_type &allocator) noexcept
                 : max_slot_count_ {normalize_max_count(other.max_count() + extra_max_count)}
@@ -1105,6 +1493,10 @@ namespace hud
                 move_construct(hud::forward<hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>>(other), extra_max_count);
             }
 
+            /**
+             * Destroys the hashset_impl and releases all allocated resources.
+             * Calls `clear_shrink()` to destroy all elements and free the underlying storage.
+             */
             constexpr ~hashset_impl() noexcept
             {
                 clear_shrink();
@@ -1196,7 +1588,26 @@ namespace hud
                 reset_control_and_slot();
             }
 
-            /** Find a key and return an iterator to the value. */
+            /**
+             * Finds an element with the given key in the hashset.
+             * Important: constructing a `slot_type` (the actual key object) is not required to perform the search.
+             * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *   - Specialize the hashset's `hasher_t` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
+             *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
+             *     the full key.
+             *   - Specialize the hashset's `key_equal_t` to provide comparisons between the stored key type and the type `K` (or
+             *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
+             *
+             * If `hasher_t` and `key_equal_t` are not specialized for `K`, a temporary `slot_type` key will be constructed
+             * in order to compute the hash and perform the comparison, which may be expensive..
+             *
+             * This design allows `find(key)` to search for a key without constructing a full key object, which is especially
+             * useful for types that are expensive to constructs.
+             *
+             * @tparam K Type of the key to search for.
+             * @param key The key to search for.
+             * @return An iterator pointing to the found element, or the end iterator if not found.
+             */
             template<typename K>
             [[nodiscard]]
             constexpr iterator find(K &&key) noexcept
@@ -1432,6 +1843,19 @@ namespace hud
             }
 
         private:
+            /**
+             * Searches for a key in the hashset using a given group type.
+             * Implements the probing logic of the hashset:
+             *  - Computes the hash of the key and splits it into H1 and H2 components.
+             *  - Starts from the slot determined by H1 and iterates over groups of slots.
+             *  - Within each group, checks which slots match H2 and then compares keys using `key_equal()`.
+             *  - Returns an iterator pointing to the matching slot if found.
+             *  - If an empty slot is encountered during probing, the key is not present, and returns the end iterator.
+             * @tparam group_t Type representing a group of slots/controls in the hashset.
+             * @tparam K Type of the key to search for.
+             * @param key The key to search for.
+             * @return An iterator pointing to the found slot, or the end iterator if not found.
+             */
             template<typename group_t, typename K>
             [[nodiscard]]
             constexpr iterator find_impl(K &&key) noexcept
@@ -1443,9 +1867,7 @@ namespace hud
 
                 while (true)
                 {
-
                     const group_t group {control_ptr_ + slot_index};
-                    // group_type group {control_ptr_ + slot_index};
                     const typename group_t::mask group_mask_that_match_h2 {group.match(H2(hash))};
                     for (u32 group_index_that_match_h2 : group_mask_that_match_h2)
                     {
@@ -1534,9 +1956,20 @@ namespace hud
                 count_--;
             }
 
+            /**
+             * Copy-constructs elements from another hashset_impl into this one.
+             * Depending on the type and context, it either performs a bitwise copy of controls and slots or constructs each slot individually.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to copy from.
+             * @param extra_max_count Optional extra slots to allocate beyond `other.max_count()`.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr void copy_construct(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other, usize extra_max_count = 0) noexcept
             {
+                // If `max_slot_count_` is zero, it returns immediately (nothing to copy).
                 if (max_slot_count_ == 0)
                     return;
 
@@ -1545,11 +1978,15 @@ namespace hud
                 // To satisfy the compiler, allocate controls and slots in two separate allocations
                 usize control_size {allocate_control_and_slot(max_slot_count_)};
 
-                // If constant evaluated context or when slot_type is not bitwise move constructible or when we allocate more memory than the copied set
-                // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
-                // In a non constant evaluated context
-                // If type is trivially move constructible, just memcpy control and slot
-                // else do like grow_capacity
+                // If `extra_max_count > 0`, `hud::is_constant_evaluated()`, or `slot_type` is not bitwise copy-constructible:
+                //        - Initializes controls to empty with sentinel.
+                //        - Iterates over `other` slots and constructs each slot individually.
+                //        - Computes the hash for each slot and finds the appropriate H1/H2 index.
+                //        - Sets control byte and constructs slot in place.
+                //  Else (trivial types in runtime context):
+                //        - Uses `fast_move_or_copy_construct_object_array_then_destroy` to copy
+                //          the control array.
+                //        - If there are elements, copies the slot array directly.
                 if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_copy_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
                 {
                     // Set control to empty ending with sentinel
@@ -1559,17 +1996,12 @@ namespace hud
                     // Nothing to copy, stop here
                     if (other.count() != 0)
                     {
-                        // Move slots to newly allocated buffer
                         auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                         {
-                            // Compute the hash
                             u64 hash {hasher()(slot_ptr->key())};
-                            // Find H1 slot index
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                            // Save h2 in control h1 index
                             control::set(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                            // Copy slot
                             hud::memory::construct_object_at(slot_ptr_ + slot_index, *slot_ptr);
                         };
                         iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, other.count_, other.max_slot_count_, insert_slot_by_copy);
@@ -1585,9 +2017,21 @@ namespace hud
                 }
             }
 
+            /**
+             * Move-constructs elements from another hashset_impl into this one.
+             * Depending on the type and context, it either takes ownership of the other set's memory
+             * or constructs each slot individually using move semantics.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to move from.
+             * @param extra_max_count Optional extra slots to allocate beyond `other.max_count()`.
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             constexpr void move_construct(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other, usize extra_max_count = 0) noexcept
             {
+                // Nothing to move if max_slot_count_ is zero
                 if (max_slot_count_ == 0)
                     return;
 
@@ -1596,11 +2040,13 @@ namespace hud
                 // To satisfy the compiler, allocate controls and slots in two separate allocations
                 usize control_size {allocate_control_and_slot(max_slot_count_)};
 
-                // If constant evaluated context or when slot_type is not bitwise move constructible or when we allocate more memory than the copied set
-                // loop through all slot and construct them regardless of the trivially constructible ( Maybe only for control_ptr_ ) like like grow_capacity
-                // In a non constant evaluated context
-                // If type is trivially move constructible, just take ownership of control and slot
-                // else do like grow_capacity
+                // If `extra_max_count > 0`, constant-evaluated context, or slot_type is not bitwise move-constructible:
+                //      - Initialize control array to empty + sentinel.
+                //      - Iterate over `other` slots, move-construct each slot individually.
+                //      - Compute hash for each slot and find H1/H2 index.
+                //      - Set control byte and move-construct slot in place.
+                // Else (trivial types in runtime context):
+                //      - Take ownership of the other set's control and slot arrays.
                 if (extra_max_count > 0 || hud::is_constant_evaluated() || !hud::is_bitwise_move_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
                 {
                     // Set control to empty ending with sentinel
@@ -1610,17 +2056,12 @@ namespace hud
                     // Nothing to copy, stop here
                     if (other.count() != 0)
                     {
-                        // Move slots to newly allocated buffer
                         auto insert_slot_by_copy = [this](control_type *control_ptr, auto *slot_ptr)
                         {
-                            // Compute the hash
                             u64 hash {hasher()(slot_ptr->key())};
-                            // Find H1 slot index
                             u64 h1 {H1(hash)};
                             usize slot_index {find_first_empty_or_deleted(control_ptr_, max_slot_count_, h1)};
-                            // Save h2 in control h1 index
                             control::set(control_ptr_, slot_index, H2(hash), max_slot_count_);
-                            // Copy slot
                             hud::memory::construct_object_at(slot_ptr_ + slot_index, hud::move(*slot_ptr));
                         };
                         iterate_over_full_slots(other.control_ptr_, other.slot_ptr_, other.count_, other.max_slot_count_, insert_slot_by_copy);
@@ -1629,6 +2070,7 @@ namespace hud
                 }
                 else
                 {
+                    // Take ownership of other set's memory (fast path for trivial types)
                     control_ptr_ = other.control_ptr_;
                     other.control_ptr_ = const_cast<control_type *>(&INIT_GROUP[16]);
                     slot_ptr_ = reinterpret_cast<slot_type *>(other.slot_ptr_);
@@ -2140,6 +2582,10 @@ namespace hud
                 }
             }
 
+            /**
+             * Resets the hashset control and slot arrays.
+             * Frees the memory used by controls and slots, then resets internal state to default.
+             */
             constexpr void reset_control_and_slot() noexcept
             {
                 free_control_and_slot(control_ptr_, slot_ptr_, max_slot_count_);
@@ -2149,9 +2595,14 @@ namespace hud
                 free_slot_before_grow_compressed() = 0;
             }
 
+            /**
+             * Destroys all slots in the hashset.
+             * For non-trivially destructible slot types, calls the destructor for each element.
+             * Trivial types are ignored for efficiency.
+             */
             constexpr void destroy_all_slots() noexcept
             {
-                if (!hud::is_trivially_destructible_v<slot_type>)
+                if constexpr (!hud::is_trivially_destructible_v<slot_type>)
                 {
                     auto destroy_slot = [](control_type *control_ptr, slot_type *slot_ptr)
                     {
@@ -2273,13 +2724,11 @@ namespace hud
 
     } // namespace details::hashset
 
-    using hashset_default_allocator = details::hashset::default_allocator;
-
     template<
         typename element_t,
         typename hasher_t = hud::hash_64<element_t>,
         typename key_equal_t = hud::equal<element_t>,
-        typename allocator_t = hashset_default_allocator>
+        typename allocator_t = hud::heap_allocator>
     class hashset
         : public details::hashset::hashset_impl<details::hashset::hashset_storage<element_t>, hasher_t, key_equal_t, allocator_t>
     {
