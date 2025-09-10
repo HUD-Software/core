@@ -1519,6 +1519,17 @@ namespace hud
                 return *this;
             }
 
+            /**
+             * Copy assign another hashset_impl.
+             * The copy assignement only grow allocation and never shrink allocation.
+             * No new allocation is done if the hashset_impl contains enough memory to copy all elements, in other words we don't copy the capacity of the copied hashset_impl.
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to copy
+             * @return *this
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             requires(hud::is_copy_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
             constexpr hashset_impl &operator=(const hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &other) noexcept
@@ -1543,6 +1554,16 @@ namespace hud
                 return *this;
             }
 
+            /**
+             * Move assign another hashset.
+             * Never assume that the move assignement will keep the capacity of the moved hashset_impl.
+             * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
+             * @tparam u_storage_t Storage type of the other hashset_impl.
+             * @tparam u_hasher_t Hash function type of the other hashset_impl.
+             * @tparam u_key_equal_t Key equality comparator of the other hashset_impl.
+             * @tparam u_allocator_t Allocator type of the other hashset_impl.
+             * @param other The other hashset_impl to move
+             */
             template<typename u_storage_t, typename u_hasher_t, typename u_key_equal_t, typename u_allocator_t>
             requires(hud::is_move_constructible_v<slot_type, typename hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t>::slot_type>)
             constexpr hashset_impl &operator=(hashset_impl<u_storage_t, u_hasher_t, u_key_equal_t, u_allocator_t> &&other) noexcept
@@ -1551,7 +1572,12 @@ namespace hud
                 return *this;
             }
 
-            /** Reserve memory for at least `count` element and regenerates the hash table if needed. */
+            /**
+             * Ensures that the hashset has enough capacity to store at least `count` elements without reallocation.
+             * If the requested capacity exceeds the current capacity, the hash table is resized.
+             * This function pre-allocates memory and adjusts internal structures to accommodate future insertions efficiently, reducing the number of reallocations needed.
+             * @param count Minimum number of elements the hashset should be able to store.
+             */
             constexpr void reserve(usize count) noexcept
             {
                 const usize max_count = normalize_max_count(min_capacity_for_count(count));
@@ -1562,9 +1588,10 @@ namespace hud
             }
 
             /**
-             * Remove all elements.
-             * Calls the destructor of each element if they are not trivially destructible,
-             * but does not release the allocated memory.
+             * Removes all elements from the hashset, calling the destructor of each element
+             * if they are not trivially destructible, but retains the allocated memory for reuse.
+             * Unlike `clear_shrink()`, this function does not free the underlying memory buffers.
+             * This allows quick reuse of the same memory if the hashset is repopulated.
              */
             constexpr void clear() noexcept
             {
@@ -1578,9 +1605,12 @@ namespace hud
             }
 
             /**
-             * Remove all elements.
-             * Calls the destructor of each element if they are not trivially destructible,
-             * and then releases the allocated memory.
+             * Removes all elements from the hashset and releases all allocated memory.
+             * This function calls the destructor of each element if they are not trivially destructible
+             * and then frees the memory used for the control array and slot storage.
+             * After this call, the hashset is reset to an empty state with no allocated capacity.
+             * Use this when you want to completely clear the container and release its memory,
+             * as opposed to `clear()`, which only resets the elements but keeps the allocated storage.
              */
             constexpr void clear_shrink() noexcept
             {
@@ -1589,16 +1619,66 @@ namespace hud
             }
 
             /**
+             * Rebuilds (rehashes) the hash table with a specified capacity.
+             * When `max_count` is greater than 0, this function ensures the table has enough capacity
+             * for at least `max_count` elements. If the new capacity is larger than the current
+             * capacity, or `max_count` is 0 but elements are present, the hash table is resized
+             * and all elements are reinserted in the new storage.
+             * This function never reduces the current capacity; it only increases it if necessary.
+             * This function is useful for:
+             * - Shrinking the hash table back to zero when empty.
+             * - Pre-allocating or increasing capacity to avoid reallocation during inserts.
+             * @param max_count The minimum number of elements the hash table should be able to hold.
+             *                  If `max_count` is 0, the behavior depends on the current state of the container:
+             *                      - If there is no allocated memory, nothing happens.
+             *                      - If memory is allocated but the table is empty, all memory is released and the internal state is reset.
+             */
+            constexpr void rehash(i32 max_count) noexcept
+            {
+                // If we request 0
+                // and :
+                // - we have no allocation done, just return
+                // - we have allocation but no element, free allocation and reset internal state
+                if (max_count == 0)
+                {
+                    if (max_slot_count_ == 0)
+                        return;
+                    if (is_empty())
+                    {
+                        reset_control_and_slot();
+                        return;
+                    }
+                }
+
+                // We request 0 or more and we have allocation and elements
+                // bitor is a faster way of doing `max` here. We will round up to the next
+                // power-of-2-minus-1, so bitor is good enough.
+                usize norm_max_count = normalize_max_count(max_count | min_capacity_for_count(count_));
+                if (max_count == 0 || norm_max_count > max_slot_count_)
+                    resize(norm_max_count);
+            }
+
+            /**
+             * Reduces the capacity of the hash set to fit its current number of elements.
+             * Calls `rehash(0)` to potentially release unused memory if the container is empty
+             * or to shrink the allocation to the minimal required size.
+             */
+            constexpr void shrink_to_fit() noexcept
+            {
+                rehash(0);
+            }
+
+            /**
              * Finds an element with the given key in the hashset.
-             * Important: constructing a `slot_type` (the actual key object) is not required to perform the search.
+             * Important: constructing a `key_type` is not required to perform the search.
              * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
-             *   - Specialize the hashset's `hasher_t` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
+             *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
              *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
              *     the full key.
-             *   - Specialize the hashset's `key_equal_t` to provide comparisons between the stored key type and the type `K` (or
+             *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
              *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
              *
-             * If `hasher_t` and `key_equal_t` are not specialized for `K`, a temporary `slot_type` key will be constructed
+             * If `hasher_type` and `key_equal_type` are not specialized for `K`, a temporary `key_type` key will be constructed
              * in order to compute the hash and perform the comparison, which may be expensive..
              *
              * This design allows `find(key)` to search for a key without constructing a full key object, which is especially
@@ -1622,36 +1702,26 @@ namespace hud
                 }
             }
 
-            constexpr void rehash(i32 count) noexcept
-            {
-                // If we request 0
-                // and :
-                // - we have no allocation done, just return
-                // - we have allocation but no element, free allocation and reset internal state
-                if (count == 0)
-                {
-                    if (max_slot_count_ == 0)
-                        return;
-                    if (is_empty())
-                    {
-                        reset_control_and_slot();
-                        return;
-                    }
-                }
-
-                // We request 0 or more and we have allocation and elements
-                // bitor is a faster way of doing `max` here. We will round up to the next
-                // power-of-2-minus-1, so bitor is good enough.
-                usize max_count = normalize_max_count(count | min_capacity_for_count(count_));
-                if (count == 0 || max_count > max_slot_count_)
-                    resize(max_count);
-            }
-
-            constexpr void shrink_to_fit() noexcept
-            {
-                rehash(0);
-            }
-
+            /**
+             * Finds an element by key.
+             * Important: constructing a `key_type` is not required to perform the search.
+             * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
+             *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
+             *     the full key.
+             *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
+             *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
+             *
+             * If `hasher_type` and `key_equal_type` are not specialized for `K`, a temporary `key_type` key will be constructed
+             * in order to compute the hash and perform the comparison, which may be expensive..
+             *
+             * This design allows `find(key)` to search for a key without constructing a full key object, which is especially
+             * useful for types that are expensive to constructs.
+             *
+             * @tparam K Type of the key to search for.
+             * @param key The key to search for.
+             * @return An iterator pointing to the found element, or the end iterator if not found.
+             */
             template<typename K>
             [[nodiscard]]
             constexpr const_iterator find(K &&key) const noexcept
@@ -1659,6 +1729,25 @@ namespace hud
                 return const_cast<hashset_impl *>(this)->find(hud::forward<K>(key));
             }
 
+            /**
+             * Checks whether the specified key exists in the hash set.
+             * Important: constructing a `key_type` is not required to perform the search.
+             * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
+             *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
+             *     the full key.
+             *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
+             *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
+             *
+             * If `hasher_type` and `key_equal_type` are not specialized for `K`, a temporary `key_type` key will be constructed
+             * in order to compute the hash and perform the comparison, which may be expensive..
+             *
+             * This design allows `contains(key)` to search for a key without constructing a full key object, which is especially
+             * useful for types that are expensive to constructs.
+             * @tparam K Type of the key to search for.
+             * @param key The key to search for.
+             * @return `true` if the key is found, `false` otherwise.
+             */
             template<typename K>
             [[nodiscard]]
             constexpr bool contains(K &&key) noexcept
@@ -1666,6 +1755,25 @@ namespace hud
                 return find(hud::forward<K>(key)) != end();
             }
 
+            /**
+             * Checks whether the specified key exists in the hash set.
+             * Important: constructing a `key_type` is not required to perform the search.
+             * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
+             *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
+             *     the full key.
+             *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
+             *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
+             *
+             * If `hasher_type` and `key_equal_type` are not specialized for `K`, a temporary `key_type` key will be constructed
+             * in order to compute the hash and perform the comparison, which may be expensive..
+             *
+             * This design allows `contains(key)` to search for a key without constructing a full key object, which is especially
+             * useful for types that are expensive to constructs.
+             * @tparam K Type of the key to search for.
+             * @param key The key to search for.
+             * @return `true` if the key is found, `false` otherwise.
+             */
             template<typename K>
             [[nodiscard]]
             constexpr bool contains(K &&key) const noexcept
@@ -1673,6 +1781,10 @@ namespace hud
                 return const_cast<hashset_impl *>(this)->contains(hud::forward<K>(key));
             }
 
+            /**
+             * Swaps the contents of this hash set with another one.
+             * Allocator is swapped only if allowed by allocator_traits.
+             */
             constexpr void swap(hashset_impl &other) noexcept
             requires(hud::is_swappable_v<slot_type>)
             {
@@ -1690,6 +1802,24 @@ namespace hud
                 hud::swap(other.free_slot_before_grow_compressed(), free_slot_before_grow_compressed());
             }
 
+            /**
+             * Removes an element by key if it exists.
+             * Important: constructing a `key_type` is not required to perform the search.
+             * You can hash and compare the key directly from its type `K`. To do this for a user-defined type:
+             *   - Specialize the hashset's `hasher_type` for your type `K` by implementing `operator()(const K&)` to compute a 64-bit hash.
+             *     You can also provide overloads for alternative key representations (like an ID or a tuple) to avoid constructing
+             *     the full key.
+             *   - Specialize the hashset's `key_equal_type` to provide comparisons between the stored key type and the type `K` (or
+             *     alternative key representations). Implement `operator()(const key_type&, const K&)` for this purpose.
+             *
+             * If `hasher_type` and `key_equal_type` are not specialized for `K`, a temporary `key_type` key will be constructed
+             * in order to compute the hash and perform the comparison, which may be expensive..
+             *
+             * This design allows `remove(key)` to search for a key without constructing a full key object, which is especially
+             * useful for types that are expensive to constructs.
+             * @tparam K Type of the key to search for.
+             * @param key The key to search for.
+             */
             template<typename K>
             constexpr void remove(K &&key) noexcept
             {
@@ -1706,52 +1836,57 @@ namespace hud
                 return hud::get<0>(compressed_);
             }
 
-            /** Return the slack in number of elements. */
+            /** Returns the number of free slots before a rehash is needed. */
             [[nodiscard]] HD_FORCEINLINE constexpr usize slack() const noexcept
             {
                 return free_slot_before_grow();
             }
 
-            /** Checks whether the array is empty of not. */
+            /** Checks whether the container is empty. */
             [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
             {
                 return count_ == 0;
             }
 
-            /** Retreives number of elements in the array. */
+            /** Returns the number of elements currently in the container. */
             [[nodiscard]] HD_FORCEINLINE constexpr usize count() const noexcept
             {
                 return count_;
             }
 
-            /** Retreives maximum number of elements the array can contains. */
+            /**
+             * Returns the capacity currently allocated for the table.
+             * Important: This represents the **raw capacity** (number of slots),
+             * **not** the growth threshold. The threshold at which a rehash is triggered
+             * depends on the load factor, which is 7/8 by default. This means a resize
+             * will occur when 7/8 of the slots are occupied.
+             */
             [[nodiscard]] HD_FORCEINLINE constexpr usize max_count() const noexcept
             {
                 return max_slot_count_;
             }
 
-            /** Retrieves an iterator to the end of the array. */
-            [[nodiscard]] constexpr iterator
-            begin() noexcept
+            /** Returns an iterator to the first element in the container. */
+            [[nodiscard]] constexpr iterator begin() noexcept
             {
                 auto [control_ptr, slot_ptr] = find_first_full();
                 return iterator {control_ptr, slot_ptr};
             }
 
-            /** Retrieves an iterator to the end of the array. */
+            /** Returns an const_iterator to the first element in the container. */
             [[nodiscard]] constexpr const_iterator begin() const noexcept
             {
                 auto [control_ptr, slot_ptr] = find_first_full();
                 return const_iterator {control_ptr, slot_ptr};
             }
 
-            /** Retrieves an iterator to the end of the array. */
+            /** Returns an iterator to the first element in the container. */
             [[nodiscard]] constexpr iterator end() noexcept
             {
                 return iterator {control_ptr_sentinel()};
             }
 
-            /** Retrieves an iterator to the end of the array. */
+            /** Returns an const_iterator to the first element in the container. */
             [[nodiscard]] constexpr const_iterator end() const noexcept
             {
                 return const_iterator {control_ptr_sentinel()};
