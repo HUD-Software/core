@@ -8,6 +8,7 @@ GTEST_TEST(u128, default_constructor)
     hud_assert_eq(memory[0], 0xFF);
     hud_assert_eq(memory[sizeof(i128) - 1], 0xFF);
     u128 *v = new (memory) u128;
+    // MSVC zero initialize because u128 have defaulted default constructor
 #if defined(HD_COMPILER_MSVC)
     hud_assert_eq(*v, 0);
 #else
