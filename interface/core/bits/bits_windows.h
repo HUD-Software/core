@@ -17,7 +17,7 @@ namespace hud::windows
          */
         static constexpr u32 reverse_bytes(const u32 value) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 u32 tmp = ((value << 8) & 0xFF00FF00) | ((value >> 8) & 0xFF00FF);
                 return (tmp << 16) | (tmp >> 16);
@@ -36,7 +36,7 @@ namespace hud::windows
          */
         static constexpr u64 reverse_bytes(const u64 value) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 u64 tmp = value;
                 tmp = ((tmp & 0x00000000FFFFFFFFull) << 32) | ((tmp & 0xFFFFFFFF00000000ull) >> 32);
@@ -58,7 +58,7 @@ namespace hud::windows
          */
         static constexpr u32 rotate_left(const u32 value, const u32 shift) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 if (shift == 0)
                 {
@@ -80,7 +80,7 @@ namespace hud::windows
          */
         static constexpr u64 rotate_left(const u64 value, const u32 shift) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 if (shift == 0)
                 {
@@ -102,7 +102,7 @@ namespace hud::windows
          */
         static constexpr u32 rotate_right(const u32 value, const u32 shift) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 if (shift == 0)
                 {
@@ -124,7 +124,7 @@ namespace hud::windows
         */
         static constexpr u64 rotate_right(const u64 value, const u32 shift) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 if (shift == 0)
                 {
@@ -162,14 +162,19 @@ namespace hud::windows
 #else
             if (value == 0)
                 return 32;
-            if (hud::is_constant_evaluated())
-                return hud::common::bits::leading_zeros(value);
-            u32 result = 0;
-            if (_BitScanReverse((unsigned long *)&result, value))
+            if consteval
             {
-                return 31 - result;
+                return hud::common::bits::leading_zeros(value);
             }
-            return 32;
+            else
+            {
+                u32 result = 0;
+                if (_BitScanReverse((unsigned long *)&result, value))
+                {
+                    return 31 - result;
+                }
+                return 32;
+            }
 #endif
         }
 
@@ -181,27 +186,32 @@ namespace hud::windows
 #else
             if (value == 0)
                 return 64;
-            if (hud::is_constant_evaluated())
+            if consteval
+            {
                 return hud::common::bits::leading_zeros(value);
+            }
+            else
+            {
     #if defined(HD_TARGET_X64)
-            u32 result = 0;
-            if (_BitScanReverse64((unsigned long *)&result, value))
-            {
-                return 63 - result;
-            }
-            return 64;
+                u32 result = 0;
+                if (_BitScanReverse64((unsigned long *)&result, value))
+                {
+                    return 63 - result;
+                }
+                return 64;
     #else
-            u32 result = 0;
-            if ((value >> 32) && _BitScanReverse((unsigned long *)&result, static_cast<u32>(value >> 32)))
-            {
-                return 31 - result;
-            }
-            if (_BitScanReverse((unsigned long *)&result, static_cast<u32>(value)))
-            {
-                return 63 - result;
-            }
-            return 64;
+                u32 result = 0;
+                if ((value >> 32) && _BitScanReverse((unsigned long *)&result, static_cast<u32>(value >> 32)))
+                {
+                    return 31 - result;
+                }
+                if (_BitScanReverse((unsigned long *)&result, static_cast<u32>(value)))
+                {
+                    return 63 - result;
+                }
+                return 64;
     #endif
+            }
 #endif
         }
 
@@ -222,11 +232,16 @@ namespace hud::windows
 #else
             if (value == 0)
                 return 32;
-            if (hud::is_constant_evaluated())
+            if consteval
+            {
                 return hud::common::bits::trailing_zeros(value);
-            u32 result = 0;
-            _BitScanForward((unsigned long *)&result, value);
-            return result;
+            }
+            else
+            {
+                u32 result = 0;
+                _BitScanForward((unsigned long *)&result, value);
+                return result;
+            }
 #endif
         }
 
@@ -237,22 +252,27 @@ namespace hud::windows
 #else
             if (value == 0)
                 return 64;
-            if (hud::is_constant_evaluated())
-                return hud::common::bits::trailing_zeros(value);
-    #if defined(HD_TARGET_X64)
-            u64 result = 0;
-            _BitScanForward64((unsigned long *)&result, value);
-            return result;
-    #else
-            u32 result = 0;
-            if (static_cast<u32>(value) == 0)
+            if consteval
             {
-                _BitScanForward((unsigned long *)&result, static_cast<u32>(value >> 32));
-                return result + 32;
+                return hud::common::bits::trailing_zeros(value);
             }
-            _BitScanForward((unsigned long *)&result, static_cast<u32>(value));
-            return result;
+            else
+            {
+    #if defined(HD_TARGET_X64)
+                u64 result = 0;
+                _BitScanForward64((unsigned long *)&result, value);
+                return result;
+    #else
+                u32 result = 0;
+                if (static_cast<u32>(value) == 0)
+                {
+                    _BitScanForward((unsigned long *)&result, static_cast<u32>(value >> 32));
+                    return result + 32;
+                }
+                _BitScanForward((unsigned long *)&result, static_cast<u32>(value));
+                return result;
     #endif
+            }
 #endif
         }
     };

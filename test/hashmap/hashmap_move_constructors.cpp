@@ -243,7 +243,7 @@ GTEST_TEST(hashmap, move_construct_bitwise_copy_constructible_same_type_same_all
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -414,7 +414,7 @@ GTEST_TEST(hashmap, move_construct_bitwise_copy_constructible_same_type_same_all
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -781,7 +781,7 @@ GTEST_TEST(hashmap, move_construct_bitwise_copy_constructible_same_type_differen
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -952,7 +952,7 @@ GTEST_TEST(hashmap, move_construct_bitwise_copy_constructible_same_type_differen
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -1322,7 +1322,7 @@ GTEST_TEST(hashmap, move_construct_bitwise_copy_constructible_different_type_sam
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -1493,7 +1493,7 @@ GTEST_TEST(hashmap, move_construct_bitwise_copy_constructible_different_type_sam
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -1864,7 +1864,7 @@ GTEST_TEST(hashmap, move_construct_bitwise_copy_constructible_different_type_dif
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -2035,7 +2035,7 @@ GTEST_TEST(hashmap, move_construct_bitwise_copy_constructible_different_type_dif
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -2402,7 +2402,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_move_constructible_same_type_same
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -2573,7 +2573,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_move_constructible_same_type_same
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -2941,7 +2941,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_move_constructible_same_type_diff
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -3112,7 +3112,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_move_constructible_same_type_diff
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -3483,7 +3483,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_move_constructible_different_type
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -3654,7 +3654,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_move_constructible_different_type
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -4026,7 +4026,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_move_constructible_different_type
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -4197,7 +4197,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_move_constructible_different_type
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -4565,7 +4565,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_copy_constructible_same_type_same
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -4736,7 +4736,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_copy_constructible_same_type_same
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -5106,7 +5106,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_copy_constructible_same_type_diff
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -5277,7 +5277,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_copy_constructible_same_type_diff
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -5650,7 +5650,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_copy_constructible_different_type
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -5821,7 +5821,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_copy_constructible_different_type
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -6195,7 +6195,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_copy_constructible_different_type
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -6366,7 +6366,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_copy_constructible_different_type
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -6733,7 +6733,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_same_type_same_allocator)
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -6904,7 +6904,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_same_type_same_allocator)
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -7272,7 +7272,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_same_type_different_allocator)
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -7443,7 +7443,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_same_type_different_allocator)
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -7814,7 +7814,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_different_type_same_allocator)
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -7985,7 +7985,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_different_type_same_allocator)
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -8357,7 +8357,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_different_type_different_allocato
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -8528,7 +8528,7 @@ GTEST_TEST(hashmap, move_construct_non_bitwise_different_type_different_allocato
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }

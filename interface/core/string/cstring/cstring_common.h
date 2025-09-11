@@ -424,7 +424,7 @@ namespace hud::common
          */
         static constexpr bool equals(const ansichar *string_0, const ansichar *string_1) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 if (!string_0 || !string_1)
                     return false;
@@ -451,7 +451,7 @@ namespace hud::common
          */
         static constexpr bool equals(const wchar *string_0, const wchar *string_1) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 if (!string_0 || !string_1)
                     return false;
@@ -501,7 +501,7 @@ namespace hud::common
          */
         [[nodiscard]] static constexpr usize length(const ansichar *string) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 // LCOV_EXCL_START
                 usize string_length = 0;
@@ -526,7 +526,7 @@ namespace hud::common
          */
         [[nodiscard]] static constexpr usize length(const wchar *string) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 // LCOV_EXCL_START
                 usize string_length = 0;

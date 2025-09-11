@@ -16,14 +16,17 @@
     #define __STDC_WANT_LIB_EXT1__ 1 // Enable bounds-checked functions ( ISO C Safe Array Functions : memcpy_s, strcpy_s, snwprintf_s, etc... )
 
     #if HD_HAS_BUILTIN_UNREACHABLE
-        #define HD_ASSUME(cond)                    \
-            do                                     \
-            {                                      \
-                if (!hud::is_constant_evaluated()) \
-                {                                  \
-                    if (!(cond))                   \
-                        __builtin_unreachable();   \
-                }                                  \
+        #define HD_ASSUME(cond)                  \
+            do                                   \
+            {                                    \
+                if consteval                     \
+                {                                \
+                }                                \
+                else                             \
+                {                                \
+                    if (!(cond))                 \
+                        __builtin_unreachable(); \
+                }                                \
             } while (false)
     #else
         #define HD_ASSUME(cond)                     \

@@ -27,7 +27,7 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 
             // Construct only in constant_evaluated
             // Constant evaluation do not allowed to access non initialized memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 hud::memory::construct_array_at(array.data(), array.data() + 2, hud::i32_max);
             }
@@ -110,7 +110,7 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 
             // Construct only in constant_evaluated
             // Constant evaluation do not allowed to access non initialized memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 hud::memory::construct_array_at(array.data(), array.data() + 2, hud::i32_max);
             }

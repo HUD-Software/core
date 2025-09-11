@@ -661,7 +661,7 @@ namespace hud
             constexpr u128_portable operator*(u128_portable other) const noexcept
             {
     #if defined(HD_COMPILER_MSVC) && defined(HD_TARGET_X64)
-                if (hud::is_constant_evaluated())
+                if consteval
                 {
                     u64 a32 = low_ >> 32;
                     u64 a00 = low_ & 0xffffffff;

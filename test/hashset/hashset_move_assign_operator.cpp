@@ -63,7 +63,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_same_type_
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -74,7 +74,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_same_type_
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -230,7 +230,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_same_type_
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -241,7 +241,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_same_type_
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -705,7 +705,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_same_type_
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -716,7 +716,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_same_type_
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -873,7 +873,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_same_type_
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -884,7 +884,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_same_type_
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -1349,7 +1349,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_different_
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -1360,7 +1360,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_different_
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -1516,7 +1516,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_different_
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -1527,7 +1527,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_different_
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -1992,7 +1992,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_different_
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -2003,7 +2003,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_different_
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -2160,7 +2160,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_different_
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -2171,7 +2171,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_bitwise_move_constructible_different_
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -2643,7 +2643,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_same_t
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -2654,7 +2654,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_same_t
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -2820,7 +2820,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_same_t
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -2831,7 +2831,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_same_t
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -3304,7 +3304,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_same_t
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -3315,7 +3315,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_same_t
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -3482,7 +3482,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_same_t
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -3493,7 +3493,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_same_t
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -3967,7 +3967,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_differ
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -3978,7 +3978,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_differ
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -4144,7 +4144,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_differ
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -4155,7 +4155,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_differ
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -4630,7 +4630,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_differ
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -4641,7 +4641,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_differ
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -4808,7 +4808,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_differ
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -4819,7 +4819,7 @@ GTEST_TEST(hashset, move_assign_hashset_of_non_bitwise_move_constructible_differ
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -5322,7 +5322,7 @@ GTEST_TEST(hashset, move_assign_hashset_same_allocator_call_destructor_of_elemen
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -5333,7 +5333,7 @@ GTEST_TEST(hashset, move_assign_hashset_same_allocator_call_destructor_of_elemen
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -5577,7 +5577,7 @@ GTEST_TEST(hashset, move_assign_hashset_same_allocator_call_destructor_of_elemen
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -5588,7 +5588,7 @@ GTEST_TEST(hashset, move_assign_hashset_same_allocator_call_destructor_of_elemen
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -6276,7 +6276,7 @@ GTEST_TEST(hashset, move_assign_hashset_different_allocator_call_destructor_of_e
             if (assigned_should_grow)
                 expected_allocation_count++;
 
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -6287,7 +6287,7 @@ GTEST_TEST(hashset, move_assign_hashset_different_allocator_call_destructor_of_e
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -6530,7 +6530,7 @@ GTEST_TEST(hashset, move_assign_hashset_different_allocator_call_destructor_of_e
                 expected_allocation_count++;
             if (assigned_should_grow)
                 expected_allocation_count++;
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
@@ -6541,7 +6541,7 @@ GTEST_TEST(hashset, move_assign_hashset_different_allocator_call_destructor_of_e
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -7185,14 +7185,14 @@ GTEST_TEST(array, move_assign_hashset_of_bitwise_move_assignable_to_self)
             }
 
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -7284,14 +7284,14 @@ GTEST_TEST(array, move_assign_hashset_of_bitwise_move_assignable_to_self)
             }
 
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -7453,14 +7453,14 @@ GTEST_TEST(array, move_assign_hashset_of_non_bitwise_move_assignable_to_self)
             }
 
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }
@@ -7577,14 +7577,14 @@ GTEST_TEST(array, move_assign_hashset_of_non_bitwise_move_assignable_to_self)
             }
 
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 expected_free_count *= 2;
             }

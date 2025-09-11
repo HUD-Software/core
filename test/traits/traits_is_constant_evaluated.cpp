@@ -4,7 +4,7 @@ namespace hud_test
 {
     constexpr bool evaluate()
     {
-        if (hud::is_constant_evaluated())
+        if consteval
         {
             return true;
         }

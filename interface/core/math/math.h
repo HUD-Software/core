@@ -338,7 +338,7 @@ namespace hud
         requires(hud::is_floating_point_v<type_t>)
         {
             // Implementation from boost https://live.boost.org/doc/libs/1_85_0/boost/math/ccmath/ldexp.hpp
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 return math::abs(value) == type_t {0.f} ? value :
                        !math::is_finite(value)          ? value :
@@ -359,13 +359,16 @@ namespace hud
                     return value;
                 }();
             }
-            else if (hud::is_same_v<type_t, f32>)
-            {
-                return ::ldexpf(value, exp);
-            }
             else
             {
-                return ::ldexpl(value, exp);
+                if (hud::is_same_v<type_t, f32>)
+                {
+                    return ::ldexpf(value, exp);
+                }
+                else
+                {
+                    return ::ldexpl(value, exp);
+                }
             }
         }
     }; // namespace math

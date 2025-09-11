@@ -173,7 +173,7 @@ namespace hud
         [[nodiscard]] static constexpr type_t *allocate_array(const usize count) noexcept
         {
             const usize allocation_size = count * sizeof(type_t);
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 // Usage of std::allocator.allocate is allowed in constexpr dynamic allocation.
@@ -227,7 +227,7 @@ namespace hud
         template<typename type_t>
         static constexpr type_t *allocate_align(const usize count, const u32 alignment) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 return allocate_array<type_t>(count);
@@ -273,7 +273,7 @@ namespace hud
         template<typename type_t>
         static constexpr void free_array(type_t *alloc, const usize count) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 if (alloc != nullptr)
@@ -305,7 +305,7 @@ namespace hud
         template<typename type_t>
         static constexpr void free_align(type_t *pointer, const usize count) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 free_array(pointer, count);
@@ -425,7 +425,7 @@ namespace hud
         static constexpr type_t *copy_memory(type_t *destination, const type_t *source, const usize size) noexcept
         {
             static_assert(hud::is_bitwise_copy_constructible_v<type_t> && hud::is_bitwise_copy_assignable_v<type_t>, "copy_memory should be called only on type that is bitwise copy constructible and assignable");
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size; ++position)
@@ -477,7 +477,7 @@ namespace hud
          */
         static constexpr u8 *set_memory(u8 *destination, const usize size, const u8 value) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size; ++position)
@@ -519,7 +519,7 @@ namespace hud
         requires(hud::is_integral_v<type_t>)
         static constexpr type_t *set_memory(type_t *destination, const usize size, const u8 value) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size / sizeof(type_t); position++)
@@ -586,7 +586,7 @@ namespace hud
          */
         static constexpr u8 *set_memory_safe(u8 *destination, const usize size, const u8 value) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size; position++)
@@ -632,7 +632,7 @@ namespace hud
         requires(hud::is_integral_v<type_t>)
         static constexpr type_t *set_memory_safe(type_t *destination, const usize size, const u8 value) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size / sizeof(type_t); position++)
@@ -700,7 +700,7 @@ namespace hud
         requires(hud::is_pointer_v<type_t>)
         static HD_FORCEINLINE constexpr type_t *set_memory_zero(type_t *destination, const usize size) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size / sizeof(type_t); position++)
@@ -771,7 +771,7 @@ namespace hud
         requires(hud::is_integral_v<type_t>)
         static HD_FORCEINLINE constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size / sizeof(type_t); position++)
@@ -800,7 +800,7 @@ namespace hud
         requires(hud::is_pointer_v<type_t>)
         static HD_FORCEINLINE constexpr type_t *set_memory_zero_safe(type_t *destination, const usize size) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 for (usize position = 0; position < size / sizeof(type_t); position++)
@@ -857,7 +857,7 @@ namespace hud
         static constexpr HD_FORCEINLINE void *move_memory(u8 *destination, const u8 *source, const usize size) noexcept
         {
 
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 u8 *dest = destination;
@@ -920,7 +920,7 @@ namespace hud
          */
         [[nodiscard]] static HD_FORCEINLINE constexpr i32 compare_memory(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 const u8 *lhs = buffer1;
@@ -1112,7 +1112,7 @@ namespace hud
         /** Load 128 bits value and return it. */
         [[nodiscard]] static constexpr __m128i unaligned_load128(const i8 *buffer) noexcept
         {
-            if (hud::is_constant_evaluated())
+            if consteval
             {
                 i8 result[sizeof(__m128i)];
                 copy_memory(result, buffer, sizeof(__m128i));

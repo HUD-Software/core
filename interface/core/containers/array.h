@@ -256,7 +256,7 @@ namespace hud
         {
             // We moving an array of bitwise movable constructible type where type_t != u_type_t We can't use reinterpret_cast to still the pointer
             // in constant evaluation. So we allocate a new allocation, move elements then free the moved allocation.
-            if (hud::is_constant_evaluated())
+            if consteval
             // LCOV_EXCL_START
             {
                 allocation_() = allocator_().template allocate<type_t>(other.max_count());
@@ -1171,20 +1171,24 @@ namespace hud
             // If we don't need to reallocate
             else
             {
-                if (hud::is_constant_evaluated())
+                if consteval
                 // LCOV_EXCL_START
                 {
                     copy_assign_or_copy_construct_no_reallocation(source, source_count);
                 }
                 // LCOV_EXCL_STOP
-                else if (!hud::is_bitwise_copy_assignable_v<type_t, u_type_t>)
+                else
                 {
-                    copy_assign_or_copy_construct_no_reallocation(source, source_count);
+                    if (!hud::is_bitwise_copy_assignable_v<type_t, u_type_t>)
+                    {
+                        copy_assign_or_copy_construct_no_reallocation(source, source_count);
+                    }
+                    else if (source_count > 0u)
+                    {
+                        hud::memory::copy_assign_object_array(data(), source, source_count);
+                    }
                 }
-                else if (source_count > 0u)
-                {
-                    hud::memory::copy_assign_object_array(data(), source, source_count);
-                }
+
                 end_ptr = allocation_().data_at(source_count);
             }
         }
