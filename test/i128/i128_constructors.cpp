@@ -8,7 +8,11 @@ GTEST_TEST(i128, default_constructor)
     hud_assert_eq(memory[0], 0xFF);
     hud_assert_eq(memory[sizeof(i128) - 1], 0xFF);
     i128 *v = new (memory) i128;
+#if defined(HD_COMPILER_MSVC)
+    hud_assert_eq(*v, 0);
+#else
     hud_assert_ne(*v, 0);
+#endif
 }
 
 GTEST_TEST(i128, constructor_init)
