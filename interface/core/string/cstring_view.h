@@ -5,7 +5,7 @@
 namespace hud
 {
     /**
-     * A view of a C-compatible, null-terminated string with no null-terminated bytes in the middle.
+     * An immutable view of a C-compatible, null-terminated string with no null-terminated bytes in the middle.
      */
     struct cstring_view
     {
@@ -37,6 +37,12 @@ namespace hud
         }
 
         [[nodiscard]]
+        constexpr bool is_empty() const noexcept
+        {
+            return len_ == 0;
+        }
+
+        [[nodiscard]]
         constexpr bool is_ascii() const noexcept
         {
             usize i {0};
@@ -64,9 +70,63 @@ namespace hud
             return true;
         }
 
+        [[nodiscard]]
+        constexpr bool equals(const cstring_view &v) const noexcept
+        {
+            if (len_ != v.len_) {
+                return false;
+            }
+            usize i {0};
+#if HD_SSE2
+            if consteval {
+            }
+            else {
+                // DO SSE2 comparison of 16 bytes if we have 16 bytes
+                for (; i + 16 <= len_; i += 16) {
+                    __m128i chunk_this = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));
+                    __m128i chunk_v = _mm_loadu_si128(reinterpret_cast<const __m128i *>(v.ptr_ + i));
+                    if (_mm_movemask_epi8(_mm_cmpeq_epi8(chunk_this, chunk_v)) != 0xFFFF)
+                        return false;
+                }
+            }
+#endif
+            for (; i < len_; ++i) {
+                if (ptr_[i] != v.ptr_[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        [[nodiscard]]
+        constexpr bool equals_partial(const cstring_view &v, const usize n) const noexcept
+        {
+            usize len_to_compare = (n < len_) ? n : len_;
+            len_to_compare = (len_to_compare > v.len_) ? v.len_ : len_to_compare;
+            usize i {0};
+#if HD_SSE2
+            if consteval {
+            }
+            else {
+                // DO SSE2 comparison of 16 bytes if we have 16 bytes
+                for (; i + 16 <= len_to_compare; i += 16) {
+                    __m128i chunk_this = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));
+                    __m128i chunk_v = _mm_loadu_si128(reinterpret_cast<const __m128i *>(v.ptr_ + i));
+                    if (_mm_movemask_epi8(_mm_cmpeq_epi8(chunk_this, chunk_v)) != 0xFFFF)
+                        return false;
+                }
+            }
+#endif
+            for (; i < len_to_compare; ++i) {
+                if (ptr_[i] != v.ptr_[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
     private:
         const ansichar *ptr_;
-
         usize len_;
     };
 

@@ -13,50 +13,42 @@ namespace hud_test
     }
 } // namespace hud_test
 
-GTEST_TEST(cstring, is_pure_ansi)
+GTEST_TEST(cstring, is_pure_ascii)
 {
-    hud_assert_false(hud::cstring::is_pure_ansi((ansichar *)nullptr));
-    hud_assert_false(hud::cstring::is_pure_ansi((wchar *)nullptr));
+    hud_assert_false(hud::cstring::is_pure_ascii((ansichar *)nullptr));
+    hud_assert_false(hud::cstring::is_pure_ascii((wchar *)nullptr));
 
-    for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
-    {
+    for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
         ansichar text[2] = {cur, '\0'};
-        hud_assert_true(hud::cstring::is_pure_ansi(text));
+        hud_assert_true(hud::cstring::is_pure_ascii(text));
     }
-    for (wchar cur = 0; cur < hud::wchar_max; cur++)
-    {
+    for (wchar cur = 0; cur < hud::wchar_max; cur++) {
         wchar text[2] = {cur, L'\0'};
-        if (hud::character::is_pure_ansi(cur))
-        {
-            hud_assert_true(hud::cstring::is_pure_ansi(text));
+        if (hud::character::is_pure_ascii(cur)) {
+            hud_assert_true(hud::cstring::is_pure_ascii(text));
         }
-        else
-        {
-            hud_assert_false(hud::cstring::is_pure_ansi(text));
+        else {
+            hud_assert_false(hud::cstring::is_pure_ascii(text));
         }
     }
 }
 
-GTEST_TEST(cstring, is_pure_ansi_safe)
+GTEST_TEST(cstring, is_pure_ascii_safe)
 {
-    hud_assert_false(hud::cstring::is_pure_ansi_safe((ansichar *)nullptr, 1));
-    hud_assert_false(hud::cstring::is_pure_ansi_safe((wchar *)nullptr, 1));
+    hud_assert_false(hud::cstring::is_pure_ascii_safe((ansichar *)nullptr, 1));
+    hud_assert_false(hud::cstring::is_pure_ascii_safe((wchar *)nullptr, 1));
 
-    for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
-    {
+    for (ansichar cur = 0; cur < hud::ansichar_max; cur++) {
         const ansichar text[2] = {cur, '\0'};
-        hud_assert_true(hud::cstring::is_pure_ansi_safe(text, 1));
+        hud_assert_true(hud::cstring::is_pure_ascii_safe(text, 1));
     }
-    for (wchar cur = 0; cur < hud::wchar_max; cur++)
-    {
+    for (wchar cur = 0; cur < hud::wchar_max; cur++) {
         const wchar text[2] = {cur, L'\0'};
-        if (hud::character::is_pure_ansi(cur))
-        {
-            hud_assert_true(hud::cstring::is_pure_ansi_safe(text, 1));
+        if (hud::character::is_pure_ascii(cur)) {
+            hud_assert_true(hud::cstring::is_pure_ascii_safe(text, 1));
         }
-        else
-        {
-            hud_assert_false(hud::cstring::is_pure_ansi_safe(text, 1));
+        else {
+            hud_assert_false(hud::cstring::is_pure_ascii_safe(text, 1));
         }
     }
 }
@@ -918,8 +910,7 @@ GTEST_TEST(cstring, to_lowercase_partial_safe)
 
 GTEST_TEST(cstring, equals)
 {
-    const auto test = []()
-    {
+    const auto test = []() {
         return std::tuple {
             hud::cstring::equals("abc", "abc"),   // 0
             hud::cstring::equals("aBc", "abc"),   // 1

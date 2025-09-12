@@ -10,13 +10,13 @@ namespace hud
         static constexpr wchar WIDE_NULL_CHARACTER = L'\0';
 
         /** Check whether the character is a pure ansi character. */
-        static HD_FORCEINLINE constexpr bool is_pure_ansi(const ansichar character) noexcept
+        static HD_FORCEINLINE constexpr bool is_pure_ascii(const ansichar character) noexcept
         {
             return (character & 0x80) == 0;
         }
 
         /** Check whether the character is a pure ansi character. */
-        static HD_FORCEINLINE constexpr bool is_pure_ansi(const wchar character) noexcept
+        static HD_FORCEINLINE constexpr bool is_pure_ascii(const wchar character) noexcept
         {
             return (character & ~0x7F) == 0;
         }

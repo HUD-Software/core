@@ -2,7 +2,7 @@
 #define HD_INC_CORE_STRING_CSTRING_H
 #include "../character.h"
 
-// For is_pure_ansi check : https://quick-bench.com/q/P_adhBeQdvHLTBB8EZCtLyrPRsM
+// For is_pure_ascii check : https://quick-bench.com/q/P_adhBeQdvHLTBB8EZCtLyrPRsM
 namespace hud
 {
 
@@ -28,14 +28,14 @@ namespace hud
          * @param string The null-terminated string
          * @return Always return true
          */
-        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ansi(const ansichar *string) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ascii(const ansichar *string) noexcept
         {
             if (string == nullptr) {
                 return false;
             }
 
             while (!character::is_null(*string)) {
-                if (!character::is_pure_ansi(*string)) {
+                if (!character::is_pure_ascii(*string)) {
                     return false;
                 }
                 string++;
@@ -48,14 +48,14 @@ namespace hud
          * @param string The null-terminated string
          * @return true if the string contains only ansichar, false otherwise
          */
-        [[nodiscard]] static bool is_pure_ansi(const wchar *string) noexcept
+        [[nodiscard]] static bool is_pure_ascii(const wchar *string) noexcept
         {
             if (string == nullptr) {
                 return false;
             }
 
             while (!character::is_null(*string)) {
-                if (!character::is_pure_ansi(*string)) {
+                if (!character::is_pure_ascii(*string)) {
                     return false;
                 }
                 string++;
@@ -70,7 +70,7 @@ namespace hud
          * @return true if the string contains only ansichar and reach null-terminator character or the string_size character.
          *         false if the string contains non ansichar character
          */
-        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ansi_safe(const ansichar *string, usize string_size) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ascii_safe(const ansichar *string, usize string_size) noexcept
         {
             return string != nullptr;
         }
@@ -82,7 +82,7 @@ namespace hud
          * @return true if the string contains only ansichar and reach null-terminator character or the string_size character.
          *         false if the string contains non ansichar character
          */
-        [[nodiscard]] static bool is_pure_ansi_safe(const wchar *string, usize string_size) noexcept
+        [[nodiscard]] static bool is_pure_ascii_safe(const wchar *string, usize string_size) noexcept
         {
             if (string == nullptr) {
                 return false;
@@ -93,7 +93,7 @@ namespace hud
                 if (character::is_null(cur)) {
                     return true;
                 }
-                if (!character::is_pure_ansi(cur)) {
+                if (!character::is_pure_ascii(cur)) {
                     return false;
                 }
                 string++;
@@ -849,9 +849,9 @@ namespace hud
             const bool max_length_is_zero = max_length == 0;
             const bool max_length_is_greater_than_RSIZE_MAX_STR = max_length > RSIZE_MAX_STR;
             if constexpr (hud::compilation::is_assertion_enabled()) {
-                hud::debugger::break_here_if(string_is_nullptr);
-                hud::debugger::break_here_if(max_length_is_zero);
-                hud::debugger::break_here_if(max_length_is_greater_than_RSIZE_MAX_STR);
+                // hud::debugger::break_here_if(string_is_nullptr);
+                // hud::debugger::break_here_if(max_length_is_zero);
+                // hud::debugger::break_here_if(max_length_is_greater_than_RSIZE_MAX_STR);
             }
             // We do not add the max_length_is_greater_than_RSIZE_MAX_STR to condition,
             // the value will be clamped to RSIZE_MAX_STR
