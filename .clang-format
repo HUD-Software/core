@@ -40,7 +40,19 @@ FixNamespaceComments: true
 
 UseTab: Never
 TabWidth: 4
-BreakBeforeBraces: Allman
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterControlStatement: false
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterClass: true
+  AfterUnion: true
+  BeforeCatch: false
+  BeforeElse: true
+  IndentBraces: false
+
 IndentCaseLabels: true
 ColumnLimit: 0
 AccessModifierOffset: -4
@@ -60,7 +72,7 @@ PointerAlignment: Right
 ReferenceAlignment: Right
 RequiresClausePosition: OwnLine
 # RequiresExpressionIndentation: OuterScope  # clang-format 16
-SeparateDefinitionBlocks: Always
+SeparateDefinitionBlocks: Leave
 SortIncludes: Never
 SpaceAfterTemplateKeyword: false
 SpaceAroundPointerQualifiers: Default

@@ -40,10 +40,8 @@ set( interface
 	../interface/core/math/math.h
 	../interface/core/memory/memory.h
 	../interface/core/os_windows/windows_api.h
-	../interface/core/string/cstring/cstring_common.h
-	../interface/core/string/cstring/cstring_linux.h
-	../interface/core/string/cstring/cstring_windows.h
-	../interface/core/string/cstring/cstring.h
+	../interface/core/string/cstring.h
+	../interface/core/string/cstring_view.h
 	../interface/core/templates/bit_cast.h
 	../interface/core/templates/declval.h
 	../interface/core/templates/default_deleter.h

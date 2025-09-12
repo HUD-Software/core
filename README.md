@@ -35,7 +35,7 @@ It provides low-level C++ features that are close to the C++ STL implementation:
 - **Containers:** array (std::vector), pair, tuple, optional, shared_pointer, unique_pointer, etc.
 - **Debugging features:** conditional break, debugger attached checker, call stacks, etc.
 - **Memory:** dynamic allocations, slicing, constexpr allocations/constructions/destructions, etc.
-- **Strings:** UTF-8 strings, ANSI strings, platform-specific strings, etc.
+- **Strings:** UTF-8 strings, ASCII strings, platform-specific strings, etc.
 
 **Core** follows the STL interface but permits making changes and additions to the STL specification to improve productivity, limit bugs, and enhance performance. It focuses on code quality, robustness, and performance.
 

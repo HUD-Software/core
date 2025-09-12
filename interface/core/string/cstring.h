@@ -1,37 +1,41 @@
-#ifndef HD_INC_CORE_STRING_CSTRING_CSTRING_COMMON_H
-#define HD_INC_CORE_STRING_CSTRING_CSTRING_COMMON_H
-#include "../../character.h"
-#include "../../assert.h"
-#include "../../traits/is_one_of_types.h"
-#include <string.h> // strcpy, strcmp, etc...
-#include <wchar.h>  // wcscpy, wcscat, etc...
-#include <cstdio>   // vsnprintf
-#include <cstdarg>  // va_list
+#ifndef HD_INC_CORE_STRING_CSTRING_H
+#define HD_INC_CORE_STRING_CSTRING_H
+#include "../character.h"
 
-namespace hud::common
+// For is_pure_ansi check : https://quick-bench.com/q/P_adhBeQdvHLTBB8EZCtLyrPRsM
+namespace hud
 {
+
     struct cstring
     {
+        // RSIZE_MAX_STR defines the maximum allowed size for strings or buffers
+        // handled by our code.
+        //
+        // We limit it to 4 KB (4 * 1024 bytes) to prevent:
+        // 1. Buffer overflows.
+        // 2. Excessive allocations or copies that could stress memory.
+        //
+        // This constant is mainly used to check string lengths in safe copy/move
+        // or construction operations, ensuring all operations stay within a
+        // reasonable and safe limit.
+        //
+        // Declared constexpr so it is known at compile-time and static to limit
+        // its scope to this file or class.
         static constexpr u32 RSIZE_MAX_STR {4UL << 10}; // 4KB
-
-        // static constexpr u64 RSIZE_MAX {hud::usize_max >> 1}; // Largest acceptable size for bounds-checked functions
 
         /**
          * Test whether null-terminated string contains only pure ansi characters.
          * @param string The null-terminated string
          * @return Always return true
          */
-        static HD_FORCEINLINE bool is_pure_ansi(const ansichar *string) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ansi(const ansichar *string) noexcept
         {
-            if (string == nullptr)
-            {
+            if (string == nullptr) {
                 return false;
             }
 
-            while (!character::is_null(*string))
-            {
-                if (!character::is_pure_ansi(*string))
-                {
+            while (!character::is_null(*string)) {
+                if (!character::is_pure_ansi(*string)) {
                     return false;
                 }
                 string++;
@@ -44,17 +48,14 @@ namespace hud::common
          * @param string The null-terminated string
          * @return true if the string contains only ansichar, false otherwise
          */
-        static bool is_pure_ansi(const wchar *string) noexcept
+        [[nodiscard]] static bool is_pure_ansi(const wchar *string) noexcept
         {
-            if (string == nullptr)
-            {
+            if (string == nullptr) {
                 return false;
             }
 
-            while (!character::is_null(*string))
-            {
-                if (!character::is_pure_ansi(*string))
-                {
+            while (!character::is_null(*string)) {
+                if (!character::is_pure_ansi(*string)) {
                     return false;
                 }
                 string++;
@@ -69,7 +70,7 @@ namespace hud::common
          * @return true if the string contains only ansichar and reach null-terminator character or the string_size character.
          *         false if the string contains non ansichar character
          */
-        static HD_FORCEINLINE bool is_pure_ansi_safe(const ansichar *string, usize string_size) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ansi_safe(const ansichar *string, usize string_size) noexcept
         {
             return string != nullptr;
         }
@@ -81,22 +82,18 @@ namespace hud::common
          * @return true if the string contains only ansichar and reach null-terminator character or the string_size character.
          *         false if the string contains non ansichar character
          */
-        static bool is_pure_ansi_safe(const wchar *string, usize string_size) noexcept
+        [[nodiscard]] static bool is_pure_ansi_safe(const wchar *string, usize string_size) noexcept
         {
-            if (string == nullptr)
-            {
+            if (string == nullptr) {
                 return false;
             }
 
-            while (string_size-- > 0)
-            {
+            while (string_size-- > 0) {
                 wchar cur = *string;
-                if (character::is_null(cur))
-                {
+                if (character::is_null(cur)) {
                     return true;
                 }
-                if (!character::is_pure_ansi(cur))
-                {
+                if (!character::is_pure_ansi(cur)) {
                     return false;
                 }
                 string++;
@@ -109,7 +106,7 @@ namespace hud::common
          * @param string The null-terminated string
          * @return true if the string is null or empty, false otherwise
          */
-        static HD_FORCEINLINE bool is_null_or_empty(const ansichar *const string) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_null_or_empty(const ansichar *const string) noexcept
         {
             return (string == nullptr) || character::is_null(*string);
         }
@@ -119,7 +116,7 @@ namespace hud::common
          * @param string The null-terminated string
          * @return true if the string is null or empty, false otherwise
          */
-        static HD_FORCEINLINE bool is_null_or_empty(const wchar *const string) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_null_or_empty(const wchar *const string) noexcept
         {
             return (string == nullptr) || character::is_null(*string);
         }
@@ -237,8 +234,7 @@ namespace hud::common
         static type_t *to_uppercase(type_t *string) noexcept
         {
             type_t *ptr = string;
-            while (!character::is_null(*ptr))
-            {
+            while (!character::is_null(*ptr)) {
                 type_t *cur = ptr++;
                 *cur = character::to_uppercase(*cur);
             }
@@ -255,16 +251,13 @@ namespace hud::common
         requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
         static bool to_uppercase_safe(type_t *string, usize string_size) noexcept
         {
-            if (string == nullptr)
-            {
+            if (string == nullptr) {
                 return false;
             }
 
-            while (string_size-- > 0)
-            {
+            while (string_size-- > 0) {
                 type_t *cur = string++;
-                if (character::is_null(*cur))
-                {
+                if (character::is_null(*cur)) {
                     return false;
                 }
                 *cur = character::to_uppercase(*cur);
@@ -283,8 +276,7 @@ namespace hud::common
         static type_t *to_uppercase_partial(type_t *string, usize count) noexcept
         {
             type_t *ptr = string;
-            while (count-- > 0)
-            {
+            while (count-- > 0) {
                 *ptr = character::to_uppercase(*ptr);
                 ptr++;
             }
@@ -302,17 +294,14 @@ namespace hud::common
         requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
         static bool to_uppercase_partial_safe(type_t *string, usize string_size, usize count) noexcept
         {
-            if (string == nullptr || string_size < count)
-            {
+            if (string == nullptr || string_size < count) {
                 return false;
             }
 
             const usize not_capatilized_count = string_size - count;
-            while (string_size-- > not_capatilized_count)
-            {
+            while (string_size-- > not_capatilized_count) {
                 type_t *cur = string++;
-                if (character::is_null(*cur))
-                {
+                if (character::is_null(*cur)) {
                     return false;
                 }
                 *cur = character::to_uppercase(*cur);
@@ -331,8 +320,7 @@ namespace hud::common
         static HD_FORCEINLINE type_t *to_lowercase(type_t *string) noexcept
         {
             type_t *ptr = string;
-            while (!character::is_null(*ptr))
-            {
+            while (!character::is_null(*ptr)) {
                 *ptr = character::to_lowercase(*ptr);
                 ptr++;
             }
@@ -349,16 +337,13 @@ namespace hud::common
         requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
         static bool to_lowercase_safe(type_t *string, usize string_size) noexcept
         {
-            if (string == nullptr)
-            {
+            if (string == nullptr) {
                 return false;
             }
 
             type_t *ptr = string;
-            while (string_size-- > 0)
-            {
-                if (character::is_null(*ptr))
-                {
+            while (string_size-- > 0) {
+                if (character::is_null(*ptr)) {
                     return false;
                 }
                 *ptr = character::to_lowercase(*ptr);
@@ -378,8 +363,7 @@ namespace hud::common
         static type_t *to_lowercase_partial(type_t *string, usize count) noexcept
         {
             type_t *ptr = string;
-            while (count-- > 0)
-            {
+            while (count-- > 0) {
                 *ptr = character::to_lowercase(*ptr);
                 ptr++;
             }
@@ -397,17 +381,14 @@ namespace hud::common
         requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
         static bool to_lowercase_partial_safe(type_t *string, usize string_size, usize count) noexcept
         {
-            if (string == nullptr || string_size < count)
-            {
+            if (string == nullptr || string_size < count) {
                 return false;
             }
 
             const usize not_minimized_count = string_size - count;
-            while (string_size-- > not_minimized_count)
-            {
+            while (string_size-- > not_minimized_count) {
                 type_t *cur = string++;
-                if (character::is_null(*cur))
-                {
+                if (character::is_null(*cur)) {
                     return false;
                 }
                 *cur = character::to_lowercase(*cur);
@@ -422,14 +403,12 @@ namespace hud::common
          * @param string_1 Null-terminated string
          * @return true if equal, false otherwise
          */
-        static constexpr bool equals(const ansichar *string_0, const ansichar *string_1) noexcept
+        [[nodiscard]] static constexpr bool equals(const ansichar *string_0, const ansichar *string_1) noexcept
         {
-            if consteval
-            {
+            if consteval {
                 if (!string_0 || !string_1)
                     return false;
-                while (*string_0 && *string_1)
-                {
+                while (*string_0 && *string_1) {
                     if (*string_0 != *string_1)
                         return false;
                     ++string_0;
@@ -437,8 +416,7 @@ namespace hud::common
                 }
                 return *string_0 == *string_1;
             }
-            else
-            {
+            else {
                 return strcmp(string_0, string_1) == 0;
             }
         }
@@ -449,14 +427,12 @@ namespace hud::common
          * @param string_1 Null-terminated string
          * @return 1 if equal, 0 otherwise
          */
-        static constexpr bool equals(const wchar *string_0, const wchar *string_1) noexcept
+        [[nodiscard]] static constexpr bool equals(const wchar *string_0, const wchar *string_1) noexcept
         {
-            if consteval
-            {
+            if consteval {
                 if (!string_0 || !string_1)
                     return false;
-                while (*string_0 && *string_1)
-                {
+                while (*string_0 && *string_1) {
                     if (*string_0 != *string_1)
                         return false;
                     ++string_0;
@@ -464,8 +440,7 @@ namespace hud::common
                 }
                 return *string_0 == *string_1;
             }
-            else
-            {
+            else {
                 return wcscmp(string_0, string_1) == 0;
             }
         }
@@ -477,7 +452,7 @@ namespace hud::common
          * @param count Number of character to compare
          * @return true if equal, false otherwise
          */
-        static HD_FORCEINLINE bool equals_partial(const ansichar *string_0, const ansichar *string_1, const usize count) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool equals_partial(const ansichar *string_0, const ansichar *string_1, const usize count) noexcept
         {
             return strncmp(string_0, string_1, count) == 0;
         }
@@ -489,7 +464,7 @@ namespace hud::common
          * @param count Number of character to compare
          * @return true if equal, false otherwise
          */
-        static HD_FORCEINLINE bool equals_partial(const wchar *string_0, const wchar *string_1, const usize count) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool equals_partial(const wchar *string_0, const wchar *string_1, const usize count) noexcept
         {
             return wcsncmp(string_0, string_1, count) == 0;
         }
@@ -501,20 +476,17 @@ namespace hud::common
          */
         [[nodiscard]] static constexpr usize length(const ansichar *string) noexcept
         {
-            if consteval
-            {
+            if consteval {
                 // LCOV_EXCL_START
                 usize string_length = 0;
-                while (*string != '\0')
-                {
+                while (*string != '\0') {
                     string_length++;
                     string++;
                 }
                 return string_length;
                 // LCOV_EXCL_STOP
             }
-            else
-            {
+            else {
                 return strlen(string);
             }
         }
@@ -526,20 +498,17 @@ namespace hud::common
          */
         [[nodiscard]] static constexpr usize length(const wchar *string) noexcept
         {
-            if consteval
-            {
+            if consteval {
                 // LCOV_EXCL_START
                 usize string_length = 0;
-                while (*string != '\0')
-                {
+                while (*string != '\0') {
                     string_length++;
                     string++;
                 }
                 return string_length;
                 // LCOV_EXCL_STOP
             }
-            else
-            {
+            else {
                 return wcslen(string);
             }
         }
@@ -550,7 +519,7 @@ namespace hud::common
          * @param string_to_find The string to find
          * @return Pointer to the first occurrence of string in another string, nullptr if not found
          */
-        static HD_FORCEINLINE const ansichar *find_string(const ansichar *const string, const ansichar *const string_to_find) noexcept
+        [[nodiscard]] static HD_FORCEINLINE const ansichar *find_string(const ansichar *const string, const ansichar *const string_to_find) noexcept
         {
             return strstr(string, string_to_find);
         }
@@ -561,7 +530,7 @@ namespace hud::common
          * @param string_to_find The string to find
          * @return Pointer to the first occurrence of string in another string, nullptr if not found
          */
-        static HD_FORCEINLINE const wchar *find_string(const wchar *const string, const wchar *const string_to_find) noexcept
+        [[nodiscard]] static HD_FORCEINLINE const wchar *find_string(const wchar *const string, const wchar *const string_to_find) noexcept
         {
             return wcsstr(string, string_to_find);
         }
@@ -572,7 +541,7 @@ namespace hud::common
          * @param character_to_find The string to find
          * @return Pointer to the first occurrence of the character in the string, nullptr if not found
          */
-        static HD_FORCEINLINE const ansichar *find_character(const ansichar *const string, const ansichar character_to_find) noexcept
+        [[nodiscard]] static HD_FORCEINLINE const ansichar *find_character(const ansichar *const string, const ansichar character_to_find) noexcept
         {
             return strchr(string, character_to_find);
         }
@@ -583,7 +552,7 @@ namespace hud::common
          * @param character_to_find The string to find
          * @return Pointer to the first occurrence of the character in the string, nullptr if not found
          */
-        static HD_FORCEINLINE const wchar *find_character(const wchar *const string, const wchar character_to_find) noexcept
+        [[nodiscard]] static HD_FORCEINLINE const wchar *find_character(const wchar *const string, const wchar character_to_find) noexcept
         {
             return wcschr(string, character_to_find);
         }
@@ -601,6 +570,242 @@ namespace hud::common
             return vsnprintf(buffer, buffer_size, format, args);
         }
 
+        /**
+         * Copy ansi string and assert the given parameters.
+         * @param destination The destination ansichar buffer
+         * @param destination_size Size of destination buffer in bytes, including the null-terminator character
+         * @param source Null-terminated ansichar to copy
+         * @return true if copy success, false if an error occured
+         */
+        static HD_FORCEINLINE bool copy_safe(ansichar *destination, const usize destination_size, const ansichar *source) noexcept
+        {
+            check_params(destination, destination_size, source, length(source) + 1);
+#if defined(HD_HOST_WINDOWS)
+            return strcpy_s(destination, destination_size, source) == 0;
+#else
+            strncpy(destination, source, length(source) + 1);
+            return true;
+#endif
+        }
+
+        /**
+         * Copy wide string and assert the given parameters.
+         * @param destination The destination string buffer
+         * @param destination_size Size of destination buffer in bytes, including the null-terminator character
+         * @param source Null-terminated string to copy
+         * @return true if copy success, false if an error occured
+         */
+        static HD_FORCEINLINE bool copy_safe(wchar *destination, const usize destination_size, const wchar *source) noexcept
+        {
+            check_params(destination, destination_size, source, length(source) + 1);
+#if defined(HD_HOST_WINDOWS)
+            return wcscpy_s(destination, destination_size, source) == 0;
+#else
+            wcsncpy(destination, source, length(source) + 1);
+            return true;
+#endif
+        }
+
+        /**
+         * Copy characters from ansi string and assert the given parameters.
+         * Contrary to the unsafe version if source has more character than count the null character is appended in the destination buffer.
+         * @param destination The destination ansichar buffer
+         * @param destination_size Size of destination buffer in bytes, including the null-terminator character
+         * @param source Null-terminated ansichar to copy
+         * @param count Number of character to copy
+         * @return true if copy success, false if an error occured
+         */
+        static HD_FORCEINLINE bool copy_partial_safe(ansichar *destination, const usize destination_size, const ansichar *source, const usize count) noexcept
+        {
+            check_params(destination, destination_size, source, length(source) + 1);
+#if defined(HD_HOST_WINDOWS)
+            return strncpy_s(destination, destination_size, source, count) == 0;
+#else
+            check(count <= length(source));
+            strncpy(destination, source, count);
+            destination[count] = character::ANSI_NULL_CHARACTER;
+            return true;
+#endif
+        }
+
+        /**
+         * Copy characters from wide string and assert the given parameters.
+         * Contrary to the unsafe version if source has more character than count the null character is appended in the destination buffer.
+         * @param destination The destination string buffer
+         * @param destination_size Size of destination buffer in bytes, including the null-terminator character
+         * @param source Null-terminated string to copy
+         * @param count Number of character to copy
+         * @return true if copy success, false if an error occured
+         */
+        static HD_FORCEINLINE bool copy_partial_safe(wchar *destination, const usize destination_size, const wchar *source, const usize count) noexcept
+        {
+            check_params(destination, destination_size, source, length(source) + 1);
+#if defined(HD_HOST_WINDOWS)
+            return wcsncpy_s(destination, destination_size, source, count) == 0;
+#else
+            check(destination_size >= count);
+            wcsncpy(destination, source, count);
+            destination[count] = character::WIDE_NULL_CHARACTER;
+            return true;
+#endif
+        }
+
+        /**
+         * Appends a ansi string to another ansi string and assert the given parameters.
+         * @param destination The destination string buffer
+         * @param destination_size Size of destination buffer in bytes
+         * @param source Null-terminated string to append
+         * @return true if appends success, false if an error occured
+         */
+        static HD_FORCEINLINE bool append_safe(ansichar *destination, const usize destination_size, const ansichar *source) noexcept
+        {
+            check_params(destination, destination_size, source, length(source) + 1);
+#if defined(HD_HOST_WINDOWS)
+            return strcat_s(destination, destination_size, source) == 0;
+#else
+            strcat(destination, source);
+            return true;
+#endif
+        }
+
+        /**
+         * Appends a wide string to another wide string and check the given parameters.
+         * @param destination The destination string buffer
+         * @param destination_size Size of destination buffer in bytes
+         * @param source Null-terminated string to append
+         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
+         */
+        static HD_FORCEINLINE bool append_safe(wchar *destination, const usize destination_size, const wchar *source) noexcept
+        {
+            check_params(destination, destination_size, source, length(source) + 1);
+#if defined(HD_HOST_WINDOWS)
+            return wcscat_s(destination, destination_size, source) == 0;
+#else
+            wcscat(destination, source);
+            return true;
+#endif
+        }
+
+        /**
+         * Appends a ansi string to another ansi string and assert the given parameters.
+         * @param destination The destination string buffer
+         * @param destination_size Size of destination buffer in bytes
+         * @param source Null-terminated string to append
+         * @param count Number of character to append
+         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
+         */
+        static HD_FORCEINLINE bool append_partial_safe(ansichar *destination, const usize destination_size, const ansichar *source, const usize count) noexcept
+        {
+            check_params(destination, destination_size, source, length(destination) + 1 + count);
+#if defined(HD_HOST_WINDOWS)
+            return strncat_s(destination, destination_size, source, count) == 0;
+#else
+            strncat(destination, source, count);
+            return true;
+#endif
+        }
+
+        /**
+         * Appends a wide string to another wide string and assert the given parameters.
+         * @param destination The destination string buffer
+         * @param destination_size Size of destination buffer in bytes
+         * @param source Null-terminated string to append
+         * @param count Number of character to append
+         * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
+         */
+        [[nodiscard]] static HD_FORCEINLINE bool append_partial_safe(wchar *destination, const usize destination_size, const wchar *source, const usize count) noexcept
+        {
+            check_params(destination, destination_size, source, length(destination) + 1 + count);
+#if defined(HD_HOST_WINDOWS)
+            return wcsncat_s(destination, destination_size, source, count) == 0;
+#else
+            wcsncat(destination, source, count);
+            return true;
+#endif
+        }
+
+        /**
+         * Retrieve the length of a ansi string and check the given parameters.
+         * @param string Null-terminated string
+         * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
+         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
+         */
+        [[nodiscard]] static constexpr HD_FORCEINLINE usize length_safe(const ansichar *string, const usize max_length) noexcept
+        {
+            if consteval {
+                // LCOV_EXCL_START
+                usize string_length = 0;
+                while (*string != '\0' || string_length > max_length) {
+                    string_length++;
+                    string++;
+                }
+                return string_length;
+                // LCOV_EXCL_STOP
+            }
+            else {
+                return is_safe_length_parameters_valid(string, max_length) ? strnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
+            }
+        }
+
+        /**
+         * Retrieve the length of a wide string and check the given parameters.
+         * @param string Null-terminated string
+         * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
+         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
+         */
+        [[nodiscard]] static constexpr usize length_safe(const wchar *string, const usize max_length) noexcept
+        {
+            if consteval {
+                // LCOV_EXCL_START
+                usize string_length = 0;
+                while (*string != '\0' || string_length > max_length) {
+                    string_length++;
+                    string++;
+                }
+                return string_length;
+                // LCOV_EXCL_STOP
+            }
+            else {
+                return is_safe_length_parameters_valid(string, max_length) ? wcsnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
+            }
+        }
+
+        /**
+         * Write a formatted wchar to a wchar buffer (like printf does).
+         * @param buffer The wchar buffer receiving the formatted string
+         * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
+         * @param format The wchar containing the format of the string
+         * @param args Depending of the format, list of arguments
+         * @return Number of character written, -1 if an error occurred.
+         */
+        static HD_FORCEINLINE i32 format_vargs(wchar *buffer, u32 buffer_size, const wchar *format, va_list args) noexcept
+        {
+#if defined(HD_HOST_WINDOWS)
+            return _vsnwprintf(buffer, buffer_size, format, args);
+#else
+            return vswprintf(buffer, buffer_size, format, args);
+#endif
+        }
+
+        /**
+         * Write a formatted string to a string buffer (like printf does).
+         * @param buffer The string buffer receiving the formatted string
+         * @param buffer_size The maximum number of character to store in buffer, null-terminator character included
+         * @param format The string containing the format of the string
+         * @param args Depending of the format, list of arguments
+         * @return Number of character written, -1 if an error occurred.
+         */
+        template<typename type_t>
+        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        static i32 format(type_t *buffer, u32 buffer_size, const type_t *format, ...) noexcept
+        {
+            va_list args;
+            va_start(args, format);
+            i32 count = format_vargs(buffer, buffer_size, format, args);
+            va_end(args);
+            return count;
+        }
+
     protected:
         /**
          * Checks that destination and source pointer are not null
@@ -612,8 +817,8 @@ namespace hud::common
         requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
         static HD_FORCEINLINE void check_not_null(type_t *destination, const type_t *source) noexcept
         {
-            check(destination != nullptr);
-            check(source != nullptr);
+            HUD_CHECK(destination != nullptr);
+            HUD_CHECK(source != nullptr);
         }
 
         /**
@@ -629,10 +834,31 @@ namespace hud::common
         static HD_FORCEINLINE void check_params(type_t *destination, const usize destination_size, const type_t *source, const usize source_size) noexcept
         {
             check_not_null(destination, source);
-            check(destination_size >= source_size);
+            HUD_CHECK(destination_size >= source_size);
+        }
+
+        /**
+         * Check that parameters given to safe_length are valid
+         * @param string Null-terminated string
+         * @param max_length Maximum number of character to count
+         * @return True if parameters are valid, false otherwise
+         */
+        static bool is_safe_length_parameters_valid(const void *string, const usize max_length)
+        {
+            const bool string_is_nullptr = string == nullptr;
+            const bool max_length_is_zero = max_length == 0;
+            const bool max_length_is_greater_than_RSIZE_MAX_STR = max_length > RSIZE_MAX_STR;
+            if constexpr (hud::compilation::is_assertion_enabled()) {
+                hud::debugger::break_here_if(string_is_nullptr);
+                hud::debugger::break_here_if(max_length_is_zero);
+                hud::debugger::break_here_if(max_length_is_greater_than_RSIZE_MAX_STR);
+            }
+            // We do not add the max_length_is_greater_than_RSIZE_MAX_STR to condition,
+            // the value will be clamped to RSIZE_MAX_STR
+            return !string_is_nullptr && !max_length_is_zero;
         }
     };
 
-} // namespace hud::common
+} // namespace hud
 
-#endif // HD_INC_CORE_STRING_CSTRING_CSTRING_COMMON_H
+#endif // HD_INC_CORE_STRING_CSTRING_H
