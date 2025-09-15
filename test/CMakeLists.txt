@@ -68,7 +68,8 @@ set( src
 	compressed_tuple/compressed_tuple_misc.cpp
 	compressed_tuple/compressed_tuple_size.cpp
 	compressed_tuple/compressed_tuple_swap.cpp
-	cstring_view/cstring_view.cpp
+	string/cstring_view.cpp
+	string/wstring_view.cpp
 	hash/city_hash.cpp
 	hash/crc32.cpp
 	hash/hash_32.cpp

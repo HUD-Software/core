@@ -1,19 +1,22 @@
-#ifndef HD_INC_CORE_STRING_CSTRING_VIEW_H
-#define HD_INC_CORE_STRING_CSTRING_VIEW_H
+#ifndef HD_INC_CORE_STRING_CWSTRING_VIEW_H
+#define HD_INC_CORE_STRING_CWSTRING_VIEW_H
 #include "cstring.h"
 
 namespace hud
 {
     /**
-     * An immutable view of a C-compatible, null-terminated string with no null-terminated bytes in the middle.
+     * An immutable view of a C-style null-terminated wide string (`wchar_t`),
+     * with no null characters in the middle. This is similar to a lightweight
+     * wrapper around `const wchar_t*` that provides utility functions without
+     * owning the underlying string.
      */
-    struct cstring_view
+    struct wstring_view
     {
         /**
-         * Constructs a cstring_view from a C-style string pointer.
+         * Constructs a wstring_view from a C-style string pointer.
          * @param str Pointer to a null-terminated string. Must not be null.
          */
-        constexpr cstring_view(const ansichar *str) noexcept
+        constexpr wstring_view(const wchar *str) noexcept
             : ptr_(str)
         {
             HUD_CHECK(ptr_ != nullptr && "Invalid null pointer");
@@ -34,7 +37,7 @@ namespace hud
          * @return A pointer to the string's first character (null-terminated).
          */
         [[nodiscard]]
-        constexpr const ansichar *data() const noexcept
+        constexpr const wchar *data() const noexcept
         {
             return ptr_;
         }
@@ -62,17 +65,30 @@ namespace hud
             if consteval {
             }
             else {
-                // Mask 16 bytes of 0x80 with the ansichars
-                const __m128i mask = _mm_set1_epi8(char(0x80));
-                for (; i + 16 <= length(); i += 16) {
-                    __m128i chunk = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));
-                    if (_mm_movemask_epi8(_mm_and_si128(chunk, mask)) != 0)
-                        return false;
+                static_assert((sizeof(wchar) == 2 || sizeof(wchar) == 4) && "wchar must be 2 or 4 bytes");
+                if constexpr (sizeof(wchar) == 2) // UTF-16 / Windows
+                {
+                    // Mask 8 bytes of 0xFF80 with the ansichars
+                    const __m128i mask = _mm_set1_epi16(0xFF80);
+                    for (; i + 8 <= length(); i += 8) {
+                        __m128i chunk = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));
+                        if (!_mm_test_all_zeros(_mm_and_si128(chunk, mask), _mm_and_si128(chunk, mask)))
+                            return false;
+                    }
+                }
+                else if constexpr (sizeof(wchar) == 4) // UTF-32 / Linux
+                {
+                    const __m128i mask = _mm_set1_epi32(0xFFFFFF80);
+                    for (; i + 4 <= length(); i += 4) { // 4 wchar_t dans 128 bits
+                        __m128i chunk = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));
+                        if (!_mm_test_all_zeros(_mm_and_si128(chunk, mask), _mm_and_si128(chunk, mask)))
+                            return false;
+                    }
                 }
             }
 #endif
             // Do the rest 1 byte at a time
-            const ansichar *p = ptr_ + i;
+            const wchar *p = ptr_ + i;
             while (*p != '\0') {
                 if (!character::is_pure_ascii(*p)) {
                     return false;
@@ -84,24 +100,24 @@ namespace hud
 
         /**
          * Checks if this string is equal to another string.
-         * @param v Another cstring_view to compare with.
+         * @param v Another wstring_view to compare with.
          * @return true if both strings are identical, false otherwise.
          */
 
         [[nodiscard]]
-        constexpr bool equals(const cstring_view &v) const noexcept
+        constexpr bool equals(const wstring_view &v) const noexcept
         {
             return hud::cstring::equals(ptr_, v.ptr_);
         }
 
         /**
          * Checks if the first n characters of this string match those of another string.
-         * @param v Another cstring_view to compare with.
+         * @param v Another wstring_view to compare with.
          * @param n Number of characters to compare.
          * @return true if the first n characters match, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool equals_partial(const cstring_view &v, const usize n) const noexcept
+        constexpr bool equals_partial(const wstring_view &v, const usize n) const noexcept
         {
             return hud::cstring::equals_partial(ptr_, v.ptr_, n);
         }
@@ -112,9 +128,9 @@ namespace hud
          * @return Index of the first occurrence, or -1 if not found.
          */
         [[nodiscard]]
-        constexpr isize find_first(const cstring_view &to_find) const noexcept
+        constexpr isize find_first(const wstring_view &to_find) const noexcept
         {
-            const ansichar *result = hud::cstring::find_string(ptr_, to_find.ptr_);
+            const wchar *result = hud::cstring::find_string(ptr_, to_find.ptr_);
             return result == nullptr ? -1 : result - ptr_;
         }
 
@@ -124,9 +140,9 @@ namespace hud
          * @return Index of the first occurrence, or -1 if not found.
          */
         [[nodiscard]]
-        constexpr isize find_first_character(const ansichar character_to_find) const noexcept
+        constexpr isize find_first_character(const wchar character_to_find) const noexcept
         {
-            const ansichar *result = hud::cstring::find_character(ptr_, character_to_find);
+            const wchar *result = hud::cstring::find_character(ptr_, character_to_find);
             return result == nullptr ? -1 : result - ptr_;
         }
 
@@ -136,7 +152,7 @@ namespace hud
          * @return A const reference to the character at position i.
          */
         [[nodiscard]]
-        constexpr const ansichar &operator[](const usize i) const noexcept
+        constexpr const wchar &operator[](const usize i) const noexcept
         {
             return ptr_[i];
         }
@@ -146,7 +162,7 @@ namespace hud
          * @return true if the substring is found, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool contains(const cstring_view &to_find) const noexcept
+        constexpr bool contains(const wstring_view &to_find) const noexcept
         {
             return hud::cstring::find_string(ptr_, to_find.ptr_) != nullptr;
         }
@@ -156,16 +172,16 @@ namespace hud
          * @return true if the character is found, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool contains(const ansichar character_to_find) const noexcept
+        constexpr bool contains(const wchar character_to_find) const noexcept
         {
             return hud::cstring::find_character(ptr_, character_to_find) != nullptr;
         }
 
     private:
-        /**Pointer to the null-terminated C-style string. */
-        const ansichar *ptr_;
+        /** Pointer to the null-terminated C-style string. */
+        const wchar *ptr_;
     };
 
 } // namespace hud
 
-#endif // HD_INC_CORE_STRING_CSTRING_VIEW_H
+#endif // HD_INC_CORE_STRING_CWSTRING_VIEW_H

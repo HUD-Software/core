@@ -452,9 +452,26 @@ namespace hud
          * @param count Number of character to compare
          * @return true if equal, false otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE bool equals_partial(const ansichar *string_0, const ansichar *string_1, const usize count) noexcept
+        [[nodiscard]] static constexpr bool equals_partial(const ansichar *string_0, const ansichar *string_1, const usize count) noexcept
         {
-            return strncmp(string_0, string_1, count) == 0;
+            if consteval {
+                size_t i = 0;
+                while (i < count) {
+                    ansichar c0 = string_0[i];
+                    ansichar c1 = string_1[i];
+                    if (c0 != c1) {
+                        return (c0 - c1) == 0;
+                    }
+                    if (c0 == '\0') {
+                        return true;
+                    }
+                    i++;
+                }
+                return true;
+            }
+            else {
+                return strncmp(string_0, string_1, count) == 0;
+            }
         }
 
         /**
@@ -464,9 +481,26 @@ namespace hud
          * @param count Number of character to compare
          * @return true if equal, false otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE bool equals_partial(const wchar *string_0, const wchar *string_1, const usize count) noexcept
+        [[nodiscard]] static constexpr bool equals_partial(const wchar *string_0, const wchar *string_1, const usize count) noexcept
         {
-            return wcsncmp(string_0, string_1, count) == 0;
+            if consteval {
+                size_t i = 0;
+                while (i < count) {
+                    wchar c0 = string_0[i];
+                    wchar c1 = string_1[i];
+                    if (c0 != c1) {
+                        return (c0 - c1) == 0;
+                    }
+                    if (c0 == L'\0') {
+                        return true;
+                    }
+                    i++;
+                }
+                return true;
+            }
+            else {
+                return wcsncmp(string_0, string_1, count) == 0;
+            }
         }
 
         /**
@@ -519,9 +553,27 @@ namespace hud
          * @param string_to_find The string to find
          * @return Pointer to the first occurrence of string in another string, nullptr if not found
          */
-        [[nodiscard]] static HD_FORCEINLINE const ansichar *find_string(const ansichar *const string, const ansichar *const string_to_find) noexcept
+        [[nodiscard]] static constexpr const ansichar *find_string(const ansichar *string, const ansichar *const string_to_find) noexcept
         {
-            return strstr(string, string_to_find);
+            if consteval {
+                if (!*string_to_find)
+                    return string;
+                for (; *string; ++string) {
+                    const ansichar *h = string;
+                    const ansichar *n = string_to_find;
+                    while (*n && *h && *h == *n) {
+                        ++h;
+                        ++n;
+                    }
+
+                    if (!*n)
+                        return string;
+                }
+                return nullptr;
+            }
+            else {
+                return strstr(string, string_to_find);
+            }
         }
 
         /**
@@ -530,9 +582,27 @@ namespace hud
          * @param string_to_find The string to find
          * @return Pointer to the first occurrence of string in another string, nullptr if not found
          */
-        [[nodiscard]] static HD_FORCEINLINE const wchar *find_string(const wchar *const string, const wchar *const string_to_find) noexcept
+        [[nodiscard]] static constexpr const wchar *find_string(const wchar *string, const wchar *const string_to_find) noexcept
         {
-            return wcsstr(string, string_to_find);
+            if consteval {
+                if (!*string_to_find)
+                    return string;
+                for (; *string; ++string) {
+                    const wchar *h = string;
+                    const wchar *n = string_to_find;
+                    while (*n && *h && *h == *n) {
+                        ++h;
+                        ++n;
+                    }
+
+                    if (!*n)
+                        return string;
+                }
+                return nullptr;
+            }
+            else {
+                return wcsstr(string, string_to_find);
+            }
         }
 
         /**
@@ -541,9 +611,19 @@ namespace hud
          * @param character_to_find The string to find
          * @return Pointer to the first occurrence of the character in the string, nullptr if not found
          */
-        [[nodiscard]] static HD_FORCEINLINE const ansichar *find_character(const ansichar *const string, const ansichar character_to_find) noexcept
+        [[nodiscard]] static constexpr const ansichar *find_character(const ansichar *string, const ansichar character_to_find) noexcept
         {
-            return strchr(string, character_to_find);
+            if consteval {
+                while (*string != '\0') {
+                    if (*string == character_to_find)
+                        return string;
+                    string++;
+                }
+                return nullptr;
+            }
+            else {
+                return strchr(string, character_to_find);
+            }
         }
 
         /**
@@ -552,9 +632,19 @@ namespace hud
          * @param character_to_find The string to find
          * @return Pointer to the first occurrence of the character in the string, nullptr if not found
          */
-        [[nodiscard]] static HD_FORCEINLINE const wchar *find_character(const wchar *const string, const wchar character_to_find) noexcept
+        [[nodiscard]] static constexpr const wchar *find_character(const wchar *string, const wchar character_to_find) noexcept
         {
-            return wcschr(string, character_to_find);
+            if consteval {
+                while (*string != '\0') {
+                    if (*string == character_to_find)
+                        return string;
+                    string++;
+                }
+                return nullptr;
+            }
+            else {
+                return wcschr(string, character_to_find);
+            }
         }
 
         /**
