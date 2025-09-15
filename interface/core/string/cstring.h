@@ -1,7 +1,7 @@
 #ifndef HD_INC_CORE_STRING_CSTRING_H
 #define HD_INC_CORE_STRING_CSTRING_H
 #include "../character.h"
-
+#include <stdarg.h> // va_start, va_end
 // For is_pure_ascii check : https://quick-bench.com/q/P_adhBeQdvHLTBB8EZCtLyrPRsM
 namespace hud
 {
