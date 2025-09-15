@@ -72,7 +72,10 @@ namespace hud
                     const __m128i mask = _mm_set1_epi16(0xFF80);
                     for (; i + 8 <= length(); i += 8) {
                         __m128i chunk = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));
-                        if (!_mm_test_all_zeros(_mm_and_si128(chunk, mask), _mm_and_si128(chunk, mask)))
+                        __m128i tmp = _mm_and_si128(chunk, mask);
+                        __m128i zero = _mm_setzero_si128();
+                        __m128i cmp = _mm_cmpeq_epi32(tmp, zero);
+                        if (_mm_movemask_epi8(cmp) != 0xFFFF)
                             return false;
                     }
                 }
@@ -81,7 +84,10 @@ namespace hud
                     const __m128i mask = _mm_set1_epi32(0xFFFFFF80);
                     for (; i + 4 <= length(); i += 4) { // 4 wchar_t dans 128 bits
                         __m128i chunk = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));
-                        if (!_mm_test_all_zeros(_mm_and_si128(chunk, mask), _mm_and_si128(chunk, mask)))
+                        __m128i tmp = _mm_and_si128(chunk, mask);
+                        __m128i zero = _mm_setzero_si128();
+                        __m128i cmp = _mm_cmpeq_epi32(tmp, zero);
+                        if (_mm_movemask_epi8(cmp) != 0xFFFF)
                             return false;
                     }
                 }
