@@ -4,34 +4,34 @@ set( src
 	allocator/aligned_heap_allocator.cpp
 	allocator/allocation.cpp
 	allocator/heap_allocator.cpp
-	array/array_add.cpp
-	array/array_assign_copy.cpp
-	array/array_add_no_construct.cpp
-	array/array_add_to_ref.cpp
-	array/array_assignment.cpp
-	array/array_clear_shrink.cpp
-	array/array_clear.cpp
-	array/array_comparison.cpp
-	array/array_constructors.cpp
-	array/array_copy_assign_operator.cpp
-	array/array_copy_constructors.cpp
-	array/array_destructor.cpp
-	array/array_emplace_at.cpp
-	array/array_emplace_at_to_ref.cpp
-	array/array_emplace_back.cpp
-	array/array_emplace_back_to_ref.cpp
-	array/array_iteration.cpp
-	array/array_misc.cpp
-	array/array_move_assign_operator.cpp
-	array/array_move_assign.cpp
-	array/array_move_constructors.cpp
-	array/array_remove_at.cpp
-	array/array_reserve.cpp
-	array/array_resize.cpp
-	array/array_find.cpp
-	array/array_contains.cpp
-	array/array_shrink_to_fit.cpp
-	array/array_swap.cpp
+	vector/vector_add.cpp
+	vector/vector_assign_copy.cpp
+	vector/vector_add_no_construct.cpp
+	vector/vector_add_to_ref.cpp
+	vector/vector_assignment.cpp
+	vector/vector_clear_shrink.cpp
+	vector/vector_clear.cpp
+	vector/vector_comparison.cpp
+	vector/vector_constructors.cpp
+	vector/vector_copy_assign_operator.cpp
+	vector/vector_copy_constructors.cpp
+	vector/vector_destructor.cpp
+	vector/vector_emplace_at.cpp
+	vector/vector_emplace_at_to_ref.cpp
+	vector/vector_emplace_back.cpp
+	vector/vector_emplace_back_to_ref.cpp
+	vector/vector_iteration.cpp
+	vector/vector_misc.cpp
+	vector/vector_move_assign_operator.cpp
+	vector/vector_move_assign.cpp
+	vector/vector_move_constructors.cpp
+	vector/vector_remove_at.cpp
+	vector/vector_reserve.cpp
+	vector/vector_resize.cpp
+	vector/vector_find.cpp
+	vector/vector_contains.cpp
+	vector/vector_shrink_to_fit.cpp
+	vector/vector_swap.cpp
 	atomic/atomic_add.cpp
 	atomic/atomic_assign.cpp
 	atomic/atomic_cast.cpp

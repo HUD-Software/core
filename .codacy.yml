@@ -8,12 +8,12 @@ engines:
   duplication:
     enabled: true
     exclude_paths:
-    - "test/**"
-    - "src/core/containers/unique_pointer.h" # False positive only
-    - "src/core/containers/array.h" # False positive only
-    - "src/core/atomics.h" # False positive only
-    - "src/core/os_windows/atomics_intel.h" # False positive only
-    - "src/core/os_linux/atomics.h" # False positive only
-    - "src/core/containers/optional.h" # False positive only
-    - "src/core/containers/pair.h" # False positive only
-    - "src/core/containers/tuple.h" # False positive only
+      - "test/**"
+      - "src/core/containers/unique_pointer.h" # False positive only
+      - "src/core/containers/vector.h" # False positive only
+      - "src/core/atomics.h" # False positive only
+      - "src/core/os_windows/atomics_intel.h" # False positive only
+      - "src/core/os_linux/atomics.h" # False positive only
+      - "src/core/containers/optional.h" # False positive only
+      - "src/core/containers/pair.h" # False positive only
+      - "src/core/containers/tuple.h" # False positive only

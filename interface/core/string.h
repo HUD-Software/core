@@ -1,6 +1,6 @@
 #ifndef HUD_INC_OSLAYER_STRING_H
 #define HUD_INC_OSLAYER_STRING_H
-#include "array.h"
+#include "vector.h"
 
 namespace hud
 {
@@ -27,7 +27,7 @@ namespace hud
 
     /**
     string representation
-    Internally it's just an array of bytes.
+    Internally it's just an vector of bytes.
     */
     class string
     {
@@ -39,7 +39,7 @@ namespace hud
         explicit constexpr string() noexcept = default;
 
     private:
-        array<u8> bytes_array; // array of bytes representing the string
+        vector<u8> bytes_array; // vector of bytes representing the string
     };
 } // namespace hud
 

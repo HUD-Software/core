@@ -1,30 +1,27 @@
-#include <core/containers/array.h>
+#include <core/containers/vector.h>
 #include "../misc/allocator_watcher.h"
 
-GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_same_allocator)
+GTEST_TEST(vector, copy_construct_bitwise_copy_constructible_same_type_same_allocator)
 {
-    /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = i32;
 
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
-    using CopiedType = hud::array<type, AllocatorType>;
+    using CopiedType = hud::vector<type, AllocatorType>;
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType> copy(copied);
+            // Copy the vector
+            hud::vector<type, AllocatorType> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (copy[index] != static_cast<type>(index))
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (copy[index] != static_cast<type>(index)) {
                     all_values_copied = false;
                     break;
                 }
@@ -58,7 +55,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_same_alloc
             // Ensure the copy data is not the same memory of the copied data
             hud_assert_true(std::get<4>(result));
 
-            // Ensure we are allocating twice time (1 for each copy of array)
+            // Ensure we are allocating twice time (1 for each copy of vector)
             hud_assert_eq(std::get<5>(result), 2u);
             hud_assert_eq(std::get<6>(result), 0u);
         }
@@ -80,19 +77,16 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_same_alloc
             hud_assert_eq(std::get<6>(result), 0u);
         }
 
-        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType> copy(copied, AllocatorType {});
+            // Copy the vector
+            hud::vector<type, AllocatorType> copy(copied, AllocatorType {});
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (copy[index] != static_cast<type>(index))
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (copy[index] != static_cast<type>(index)) {
                     all_values_copied = false;
                     break;
                 }
@@ -151,16 +145,15 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_same_alloc
 
     // With extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test with default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<type, AllocatorType> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -230,8 +223,8 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_same_alloc
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType> copy(copied, extra, AllocatorType {});
+                        // Copy the vector
+                        hud::vector<type, AllocatorType> copy(copied, extra, AllocatorType {});
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -297,31 +290,28 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_same_alloc
     }
 }
 
-GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_allocator)
+GTEST_TEST(vector, copy_construct_bitwise_copy_constructible_same_type_different_allocator)
 {
-    /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = i32;
 
     static_assert(hud::is_bitwise_copy_constructible_v<type>);
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
     using AllocatorType2 = hud_test::allocator_watcher_2<alignof(type)>;
-    using CopiedType = hud::array<type, AllocatorType>;
+    using CopiedType = hud::vector<type, AllocatorType>;
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType2> copy(copied);
+            // Copy the vector
+            hud::vector<type, AllocatorType2> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (copy[index] != static_cast<type>(index))
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (copy[index] != static_cast<type>(index)) {
                     all_values_copied = false;
                     break;
                 }
@@ -355,7 +345,7 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_
             // Ensure the copy data is not the same memory of the copied data
             hud_assert_true(std::get<4>(result));
 
-            // Ensure we are allocating twice time (1 for each copy of array)
+            // Ensure we are allocating twice time (1 for each copy of vector)
             hud_assert_eq(std::get<5>(result), 1u);
             hud_assert_eq(std::get<6>(result), 0u);
         }
@@ -377,19 +367,16 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_
             hud_assert_eq(std::get<6>(result), 0u);
         }
 
-        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType2> copy(copied, AllocatorType2());
+            // Copy the vector
+            hud::vector<type, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (copy[index] != static_cast<type>(index))
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (copy[index] != static_cast<type>(index)) {
                     all_values_copied = false;
                     break;
                 }
@@ -448,16 +435,15 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test with default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<type, AllocatorType2> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -527,8 +513,8 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2());
+                        // Copy the vector
+                        hud::vector<type, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -594,9 +580,9 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_same_type_different_
     }
 }
 
-GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_same_allocator)
+GTEST_TEST(vector, copy_construct_bitwise_copy_constructible_different_type_same_allocator)
 {
-    /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = i32;
     using Type2 = u32;
 
@@ -608,19 +594,16 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_same_
 
     // Test with default allocator no extra
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType> copy(copied);
+            // Copy the vector
+            hud::vector<Type2, AllocatorType> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (copy[index] != static_cast<Type2>(index))
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (copy[index] != static_cast<Type2>(index)) {
                     all_values_copied = false;
                     break;
                 }
@@ -679,19 +662,16 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_same_
 
     // Test with allocator no extra
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType> copy(copied, AllocatorType {});
+            // Copy the vector
+            hud::vector<Type2, AllocatorType> copy(copied, AllocatorType {});
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (copy[index] != static_cast<Type2>(index))
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (copy[index] != static_cast<Type2>(index)) {
                     all_values_copied = false;
                     break;
                 }
@@ -750,16 +730,15 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_same_
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test with default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -827,10 +806,10 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_same_
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType> copy(copied, extra, AllocatorType {});
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType> copy(copied, extra, AllocatorType {});
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -896,9 +875,9 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_same_
     }
 }
 
-GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_different_allocator)
+GTEST_TEST(vector, copy_construct_bitwise_copy_constructible_different_type_different_allocator)
 {
-    /** The array we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copy for test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = i32;
     using Type2 = u32;
 
@@ -912,19 +891,16 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_diffe
 
     // Test with default allocator no extra
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied);
+            // Copy the vector
+            hud::vector<Type2, AllocatorType2> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (copy[index] != static_cast<Type2>(index))
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (copy[index] != static_cast<Type2>(index)) {
                     all_values_copied = false;
                     break;
                 }
@@ -983,19 +959,16 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_diffe
 
     // Test with allocator no extra
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2());
+            // Copy the vector
+            hud::vector<Type2, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (copy[index] != static_cast<Type2>(index))
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (copy[index] != static_cast<Type2>(index)) {
                     all_values_copied = false;
                     break;
                 }
@@ -1054,16 +1027,15 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_diffe
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test with default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType2> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -1131,10 +1103,10 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_diffe
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -1200,33 +1172,30 @@ GTEST_TEST(array, copy_construct_bitwise_copy_constructible_different_type_diffe
     }
 }
 
-GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_same_allocator)
+GTEST_TEST(vector, copy_construct_non_bitwise_copy_constructible_same_type_same_allocator)
 {
 
-    /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::non_bitwise_copy_constructible_type;
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
-    using CopiedType = const hud::array<hud_test::non_bitwise_copy_constructible_type, AllocatorType>;
+    using CopiedType = const hud::vector<hud_test::non_bitwise_copy_constructible_type, AllocatorType>;
 
     // Test default allocator
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType> copy(copied);
+            // Copy the vector
+            hud::vector<type, AllocatorType> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -1285,19 +1254,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_same_a
 
     // Test with allocator
     {
-        auto test_wtih_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_wtih_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType> copy(copied, AllocatorType {});
+            // Copy the vector
+            hud::vector<type, AllocatorType> copy(copied, AllocatorType {});
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -1356,16 +1322,15 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_same_a
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<type, AllocatorType> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -1435,8 +1400,8 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_same_a
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType> copy(copied, extra, AllocatorType {});
+                        // Copy the vector
+                        hud::vector<type, AllocatorType> copy(copied, extra, AllocatorType {});
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -1502,10 +1467,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_same_a
     }
 }
 
-GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_different_allocator)
+GTEST_TEST(vector, copy_construct_non_bitwise_copy_constructible_same_type_different_allocator)
 {
 
-    /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::non_bitwise_copy_constructible_type;
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
     using AllocatorType2 = hud_test::allocator_watcher_2<alignof(type)>;
@@ -1514,23 +1479,20 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_differ
     static_assert(!std::is_same_v<AllocatorType, AllocatorType2>);
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
-    using CopiedType = const hud::array<hud_test::non_bitwise_copy_constructible_type, AllocatorType>;
+    using CopiedType = const hud::vector<hud_test::non_bitwise_copy_constructible_type, AllocatorType>;
 
     // Test default allocator
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType2> copy(copied);
+            // Copy the vector
+            hud::vector<type, AllocatorType2> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -1589,19 +1551,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_differ
 
     // Test with allocator
     {
-        auto test_wtih_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_wtih_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType2> copy(copied, AllocatorType2());
+            // Copy the vector
+            hud::vector<type, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -1660,16 +1619,15 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_differ
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<type, AllocatorType2> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -1739,8 +1697,8 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_differ
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2());
+                        // Copy the vector
+                        hud::vector<type, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -1806,10 +1764,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_same_type_differ
     }
 }
 
-GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_same_allocator)
+GTEST_TEST(vector, copy_construct_non_bitwise_copy_constructible_different_type_same_allocator)
 {
 
-    /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = hud_test::non_bitwise_copy_constructible_type;
     using Type2 = hud_test::non_bitwise_copy_constructible_type2;
     using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
@@ -1820,19 +1778,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_s
 
     // Test default allocator
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType> copy(copied);
+            // Copy the vector
+            hud::vector<Type2, AllocatorType> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -1891,19 +1846,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_s
 
     // Test with allocator
     {
-        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType> copy(copied, AllocatorType {});
+            // Copy the vector
+            hud::vector<Type2, AllocatorType> copy(copied, AllocatorType {});
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -1962,16 +1914,15 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_s
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2039,10 +1990,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_s
                 {
                     auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType> copy(copied, extra, AllocatorType {});
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType> copy(copied, extra, AllocatorType {});
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2108,10 +2059,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_s
     }
 }
 
-GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_different_allocator)
+GTEST_TEST(vector, copy_construct_non_bitwise_copy_constructible_different_type_different_allocator)
 {
 
-    /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = hud_test::non_bitwise_copy_constructible_type;
     using Type2 = hud_test::non_bitwise_copy_constructible_type2;
     using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
@@ -2124,19 +2075,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_d
 
     // Test default allocator
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied);
+            // Copy the vector
+            hud::vector<Type2, AllocatorType2> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -2195,19 +2143,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_d
 
     // Test with allocator
     {
-        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2());
+            // Copy the vector
+            hud::vector<Type2, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -2266,16 +2211,15 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_d
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType2> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2343,10 +2287,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_d
                 {
                     auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2412,33 +2356,30 @@ GTEST_TEST(array, copy_construct_non_bitwise_copy_constructible_different_type_d
     }
 }
 
-GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_same_allocator)
+GTEST_TEST(vector, copy_construct_non_bitwise_constructible_same_type_same_allocator)
 {
 
-    /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::non_bitwise_type;
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
 
     // Ensure we test with different allocator
     static_assert(!hud::is_bitwise_move_constructible_v<type>);
 
-    using CopiedType = const hud::array<type, AllocatorType>;
+    using CopiedType = const hud::vector<type, AllocatorType>;
 
     // Test default allocator
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType> copy(copied);
+            // Copy the vector
+            hud::vector<type, AllocatorType> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -2497,19 +2438,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_same_alloca
 
     // Test with allocator
     {
-        auto test_wtih_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_wtih_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType> copy(copied, AllocatorType {});
+            // Copy the vector
+            hud::vector<type, AllocatorType> copy(copied, AllocatorType {});
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -2568,16 +2506,15 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_same_alloca
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<type, AllocatorType> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2647,8 +2584,8 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_same_alloca
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType> copy(copied, extra, AllocatorType {});
+                        // Copy the vector
+                        hud::vector<type, AllocatorType> copy(copied, extra, AllocatorType {});
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2714,10 +2651,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_same_alloca
     }
 }
 
-GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_different_allocator)
+GTEST_TEST(vector, copy_construct_non_bitwise_constructible_same_type_different_allocator)
 {
 
-    /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using type = hud_test::non_bitwise_type;
     using AllocatorType = hud_test::allocator_watcher<alignof(type)>;
     using AllocatorType2 = hud_test::allocator_watcher_2<alignof(type)>;
@@ -2726,23 +2663,20 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_different_a
     static_assert(!std::is_same_v<AllocatorType, AllocatorType2>);
     static_assert(!hud::is_bitwise_copy_constructible_v<type>);
 
-    using CopiedType = const hud::array<type, AllocatorType>;
+    using CopiedType = const hud::vector<type, AllocatorType>;
 
     // Test default allocator
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType2> copy(copied);
+            // Copy the vector
+            hud::vector<type, AllocatorType2> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -2801,19 +2735,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_different_a
 
     // Test with allocator
     {
-        auto test_wtih_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
+        auto test_wtih_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
             const CopiedType copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<type, AllocatorType2> copy(copied, AllocatorType2());
+            // Copy the vector
+            hud::vector<type, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -2872,16 +2803,15 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_different_a
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<type, AllocatorType2> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -2951,8 +2881,8 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_different_a
                     {
                         const CopiedType copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<type, AllocatorType2> copy(copied, extra, AllocatorType2());
+                        // Copy the vector
+                        hud::vector<type, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -3018,10 +2948,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_same_type_different_a
     }
 }
 
-GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_same_allocator)
+GTEST_TEST(vector, copy_construct_non_bitwise_constructible_different_type_same_allocator)
 {
 
-    /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = hud_test::non_bitwise_type;
     using Type2 = hud_test::non_bitwise_type2;
     using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
@@ -3032,19 +2962,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_same_a
 
     // Test default allocator
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType> copy(copied);
+            // Copy the vector
+            hud::vector<Type2, AllocatorType> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -3103,19 +3030,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_same_a
 
     // Test with allocator
     {
-        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType> copy(copied, AllocatorType {});
+            // Copy the vector
+            hud::vector<Type2, AllocatorType> copy(copied, AllocatorType {});
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -3174,16 +3098,15 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_same_a
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -3251,10 +3174,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_same_a
                 {
                     auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType> copy(copied, extra, AllocatorType {});
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType> copy(copied, extra, AllocatorType {});
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -3320,10 +3243,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_same_a
     }
 }
 
-GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_different_allocator)
+GTEST_TEST(vector, copy_construct_non_bitwise_constructible_different_type_different_allocator)
 {
 
-    /** The array we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
+    /** The vector we copyfor test, we allocate also extra memory to test if we really copy the count(), not the max_count() elements */
     using Type1 = hud_test::non_bitwise_type;
     using Type2 = hud_test::non_bitwise_type2;
     using AllocatorType = hud_test::allocator_watcher<alignof(Type1)>;
@@ -3336,19 +3259,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_differ
 
     // Test default allocator
     {
-        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied);
+            // Copy the vector
+            hud::vector<Type2, AllocatorType2> copy(copied);
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -3407,19 +3327,16 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_differ
 
     // Test with allocator
     {
-        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
-        {
-            const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+        auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra) {
+            const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-            // Copy the array
-            hud::array<Type2, AllocatorType2> copy(copied, AllocatorType2());
+            // Copy the vector
+            hud::vector<Type2, AllocatorType2> copy(copied, AllocatorType2());
 
             // Ensure we copy all datas in order
             bool all_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
-                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u)
-                {
+            for (usize index = 0; index < initializer.size(); index++) {
+                if (static_cast<usize>(copy[index].id()) != index || copy[index].copy_constructor_count() != 1u) {
                     all_values_copied = false;
                     break;
                 }
@@ -3478,16 +3395,15 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_differ
 
     // Test with extra
     {
-        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>()
-                                 {
+        hud_test::for_each_value(std::make_integer_sequence<usize, 5>(), []<usize extra>() {
                 // Test default allocator
                 {
                     auto test_default_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra);
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType2> copy(copied, extra);
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;
@@ -3555,10 +3471,10 @@ GTEST_TEST(array, copy_construct_non_bitwise_constructible_different_type_differ
                 {
                     auto test_with_allocator = [](std::initializer_list<i32> initializer, usize copied_extra)
                     {
-                        const hud::array<Type1, AllocatorType> copied(initializer, copied_extra);
+                        const hud::vector<Type1, AllocatorType> copied(initializer, copied_extra);
 
-                        // Copy the array
-                        hud::array<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
+                        // Copy the vector
+                        hud::vector<Type2, AllocatorType2> copy(copied, extra, AllocatorType2());
 
                         // Ensure we copy all datas in order
                         bool all_values_copied = true;

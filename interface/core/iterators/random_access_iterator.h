@@ -28,7 +28,7 @@ namespace hud
 
     /**
      * Forward declaration of random access iterator on container
-     * Specialize for differente random accessible container types like array, c style array etc...
+     * Specialize for differente random accessible container types like vector, c style array etc...
      */
     template<typename type_t>
     requires(hud::is_pointer_v<type_t> || hud::is_bounded_array_v<type_t>)

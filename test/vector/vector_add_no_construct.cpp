@@ -1,46 +1,44 @@
-#include <core/containers/array.h>
+#include <core/containers/vector.h>
 #include "../misc/allocator_watcher.h"
 #include <core/memory.h>
 
-GTEST_TEST(array, add_no_construct_do_not_call_constructor)
+GTEST_TEST(vector, add_no_construct_do_not_call_constructor)
 {
     using type = hud_test::NonDefaultConstructibleType;
-    using array_type = hud::array<type, hud_test::allocator_watcher<alignof(type)>>;
+    using array_type = hud::vector<type, hud_test::allocator_watcher<alignof(type)>>;
     static_assert(!hud::is_constructible_v<type>);
 
     // test with reallocation
     {
-        const auto test = []()
-        {
-            array_type array;
+        const auto test = []() {
+            array_type vector;
 
             // Insert one element without constructing it
-            const usize index_0 = array.add_no_construct(2);
+            const usize index_0 = vector.add_no_construct(2);
             const auto result_0 = std::tuple {
                 index_0,
-                array.data() != nullptr,
-                array.count(),
-                array.max_count(),
-                array.allocator().allocation_count(),
-                array.allocator().free_count()
+                vector.data() != nullptr,
+                vector.count(),
+                vector.max_count(),
+                vector.allocator().allocation_count(),
+                vector.allocator().free_count()
             };
 
             // Construct only in constant_evaluated
             // Constant evaluation do not allowed to access non initialized memory
-            if consteval
-            {
-                hud::memory::construct_array_at(array.data(), array.data() + 2, hud::i32_max);
+            if consteval {
+                hud::memory::construct_array_at(vector.data(), vector.data() + 2, hud::i32_max);
             }
 
             // Insert one element without constructing it
-            const usize index_1 = array.add_no_construct(3);
+            const usize index_1 = vector.add_no_construct(3);
             const auto result_1 = std::tuple {
                 index_1,
-                array.data() != nullptr,
-                array.count(),
-                array.max_count(),
-                array.allocator().allocation_count(),
-                array.allocator().free_count()
+                vector.data() != nullptr,
+                vector.count(),
+                vector.max_count(),
+                vector.allocator().allocation_count(),
+                vector.allocator().free_count()
             };
 
             return std::tuple {
@@ -92,38 +90,36 @@ GTEST_TEST(array, add_no_construct_do_not_call_constructor)
 
     // test without reallocation
     {
-        const auto test = []()
-        {
-            array_type array;
-            array.reserve(5);
+        const auto test = []() {
+            array_type vector;
+            vector.reserve(5);
 
             // Insert one element without constructing it
-            const usize index_0 = array.add_no_construct(2);
+            const usize index_0 = vector.add_no_construct(2);
             const auto result_0 = std::tuple {
                 index_0,
-                array.data() != nullptr,
-                array.count(),
-                array.max_count(),
-                array.allocator().allocation_count(),
-                array.allocator().free_count()
+                vector.data() != nullptr,
+                vector.count(),
+                vector.max_count(),
+                vector.allocator().allocation_count(),
+                vector.allocator().free_count()
             };
 
             // Construct only in constant_evaluated
             // Constant evaluation do not allowed to access non initialized memory
-            if consteval
-            {
-                hud::memory::construct_array_at(array.data(), array.data() + 2, hud::i32_max);
+            if consteval {
+                hud::memory::construct_array_at(vector.data(), vector.data() + 2, hud::i32_max);
             }
 
             // Insert one element without constructing it
-            const usize index_1 = array.add_no_construct(3);
+            const usize index_1 = vector.add_no_construct(3);
             const auto result_1 = std::tuple {
                 index_1,
-                array.data() != nullptr,
-                array.count(),
-                array.max_count(),
-                array.allocator().allocation_count(),
-                array.allocator().free_count()
+                vector.data() != nullptr,
+                vector.count(),
+                vector.max_count(),
+                vector.allocator().allocation_count(),
+                vector.allocator().free_count()
             };
 
             return std::tuple {

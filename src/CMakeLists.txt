@@ -22,7 +22,7 @@ set( interface
 	../interface/core/bits/bits.h
 	../interface/core/character/character.h
 	../interface/core/containers/aligned_buffer.h
-	../interface/core/containers/array.h
+	../interface/core/containers/vector.h
 	../interface/core/containers/compressed_pair.h
 	../interface/core/containers/compressed_tuple.h
 	../interface/core/containers/hashmap.h

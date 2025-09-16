@@ -28,8 +28,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -40,22 +39,18 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -64,28 +59,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (assigned_allocate && assigned_should_grow)
-            {
+            if (assigned_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -204,8 +194,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -216,22 +205,18 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -240,28 +225,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0 || extra_assigned > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (assigned_allocate && assigned_should_grow)
-            {
+            if (assigned_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -687,8 +667,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -700,22 +679,18 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -725,24 +700,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = elements_to_assign.size() > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -861,8 +832,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -874,22 +844,18 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -898,24 +864,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = elements_to_assign.size() > 0 || extra_to_assign > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -1345,8 +1307,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hash_64<key_type_2>, hud::equal<key_type_2>, AllocatorType>;
@@ -1357,22 +1318,18 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(static_cast<key_type>(init_elem->first));
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != static_cast<key_type>(init_elem->first))
-                {
+                if (it->key() != static_cast<key_type>(init_elem->first)) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != static_cast<key_type>(init_elem->second))
-                {
+                if (it->value() != static_cast<key_type>(init_elem->second)) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1382,28 +1339,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (assigned_allocate && assigned_should_grow)
-            {
+            if (assigned_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -1522,8 +1474,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hash_64<key_type_2>, hud::equal<key_type_2>, AllocatorType>;
@@ -1534,22 +1485,18 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(static_cast<key_type>(init_elem->first));
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != static_cast<key_type>(init_elem->first))
-                {
+                if (it->key() != static_cast<key_type>(init_elem->first)) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != static_cast<key_type>(init_elem->second))
-                {
+                if (it->value() != static_cast<key_type>(init_elem->second)) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1558,28 +1505,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0 || extra_assigned > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (assigned_allocate && assigned_should_grow)
-            {
+            if (assigned_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -2009,8 +1951,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -2022,22 +1963,18 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(static_cast<key_type>(init_elem->first));
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != static_cast<key_type>(init_elem->first))
-                {
+                if (it->key() != static_cast<key_type>(init_elem->first)) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != static_cast<key_type>(init_elem->second))
-                {
+                if (it->value() != static_cast<key_type>(init_elem->second)) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2046,24 +1983,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = elements_to_assign.size() > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -2182,8 +2115,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -2195,22 +2127,18 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(static_cast<key_type>(init_elem->first));
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != static_cast<key_type>(init_elem->first))
-                {
+                if (it->key() != static_cast<key_type>(init_elem->first)) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != static_cast<key_type>(init_elem->second))
-                {
+                if (it->value() != static_cast<key_type>(init_elem->second)) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2219,24 +2147,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = elements_to_assign.size() > 0 || extra_to_assign > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -2662,8 +2586,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -2674,32 +2597,26 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 2)
-                {
+                if (it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value().copy_constructor_count() != 2)
-                {
+                if (it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2708,28 +2625,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (assigned_allocate && assigned_should_grow)
-            {
+            if (assigned_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -2848,8 +2760,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -2860,32 +2771,26 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 2)
-                {
+                if (it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value().copy_constructor_count() != 2)
-                {
+                if (it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2894,28 +2799,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0 || extra_assigned > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (assigned_allocate && assigned_should_grow)
-            {
+            if (assigned_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -3341,8 +3241,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -3354,32 +3253,26 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 2)
-                {
+                if (it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value().copy_constructor_count() != 2)
-                {
+                if (it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3389,24 +3282,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = elements_to_assign.size() > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -3525,8 +3414,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -3538,32 +3426,26 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 2)
-                {
+                if (it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value().copy_constructor_count() != 2)
-                {
+                if (it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3572,24 +3454,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = elements_to_assign.size() > 0 || extra_to_assign > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -4019,8 +3897,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hash_64<key_type>, hud::equal<key_type_2>, AllocatorType>;
@@ -4031,32 +3908,26 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(static_cast<key_type>(init_elem->first));
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 2)
-                {
+                if (it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value().copy_constructor_count() != 2)
-                {
+                if (it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4066,28 +3937,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (assigned_allocate && assigned_should_grow)
-            {
+            if (assigned_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -4206,8 +4072,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hash_64<key_type>, hud::equal<key_type_2>, AllocatorType>;
@@ -4218,32 +4083,26 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(static_cast<key_type>(init_elem->first));
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 2)
-                {
+                if (it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value().copy_constructor_count() != 2)
-                {
+                if (it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4252,28 +4111,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0 || extra_assigned > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (assigned_allocate && assigned_should_grow)
-            {
+            if (assigned_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -4703,8 +4557,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -4716,32 +4569,26 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(static_cast<key_type>(init_elem->first));
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 2)
-                {
+                if (it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value().copy_constructor_count() != 2)
-                {
+                if (it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4750,24 +4597,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = elements_to_assign.size() > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -4886,8 +4729,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -4899,32 +4741,26 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_to_assign.size(); index++)
-            {
+            for (usize index = 0; index < elements_to_assign.size(); index++) {
                 const auto &init_elem = (elements_to_assign.begin() + index);
                 const auto it = assigned.find(static_cast<key_type>(init_elem->first));
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 2)
-                {
+                if (it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value().copy_constructor_count() != 2)
-                {
+                if (it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4933,24 +4769,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = elements_to_assign.size() > 0 || extra_to_assign > 0;
             bool assigned_should_grow = elements_in_assigned.size() < elements_to_assign.size();
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -5373,13 +5205,11 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
     // Test without extra
     {
-        const auto test = [](const usize count_in_assigned, const usize count_to_assigned)
-        {
+        const auto test = [](const usize count_in_assigned, const usize count_to_assigned) {
             i32 *dtor_assigned_key_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
 
-            if (count_in_assigned > 0)
-            {
+            if (count_in_assigned > 0) {
                 dtor_assigned_key_counter = hud::memory::allocate_array<i32>(count_in_assigned);
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
                 dtor_assigned_value_counter = hud::memory::allocate_array<i32>(count_in_assigned);
@@ -5390,8 +5220,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
             i32 *dtor_to_assigned_key_counter = nullptr;
             i32 *dtor_to_assigned_value_counter = nullptr;
-            if (count_to_assigned > 0)
-            {
+            if (count_to_assigned > 0) {
                 dtor_to_assigned_key_counter = hud::memory::allocate_array<i32>(count_to_assigned);
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
                 dtor_to_assigned_value_counter = hud::memory::allocate_array<i32>(count_to_assigned);
@@ -5405,25 +5234,21 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned;
             assigned.reserve(count_in_assigned);
-            for (i32 i = 0; i < count_in_assigned; i++)
-            {
+            for (i32 i = 0; i < count_in_assigned; i++) {
                 assigned.add({i, dtor_assigned_key_counter + i}, {i, dtor_assigned_value_counter + i});
             }
 
             ToAssignType to_assign;
             to_assign.reserve(count_to_assigned);
-            for (i32 i = 0; i < count_to_assigned; i++)
-            {
+            for (i32 i = 0; i < count_to_assigned; i++) {
                 to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
             }
             // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
-            if (count_in_assigned > 0)
-            {
+            if (count_in_assigned > 0) {
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
                 hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
             }
-            if (count_to_assigned > 0)
-            {
+            if (count_to_assigned > 0) {
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
             }
@@ -5431,15 +5256,12 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
             // Ensure we destroy all elements that is in assigned
             bool all_destructors_are_called = true;
-            for (usize index = 0; index < count_in_assigned; index++)
-            {
-                if (dtor_assigned_key_counter[index] != 1u)
-                {
+            for (usize index = 0; index < count_in_assigned; index++) {
+                if (dtor_assigned_key_counter[index] != 1u) {
                     all_destructors_are_called = false;
                     break;
                 }
-                if (dtor_assigned_value_counter[index] != 1u)
-                {
+                if (dtor_assigned_value_counter[index] != 1u) {
                     all_destructors_are_called = false;
                     break;
                 }
@@ -5447,15 +5269,12 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
             // Ensure we don't destroy elements in to_assign
             bool to_assign_destructors_are_not_called = true;
-            for (usize index = 0; index < count_to_assigned; index++)
-            {
-                if (dtor_to_assigned_key_counter[index] != 0u)
-                {
+            for (usize index = 0; index < count_to_assigned; index++) {
+                if (dtor_to_assigned_key_counter[index] != 0u) {
                     to_assign_destructors_are_not_called = false;
                     break;
                 }
-                if (dtor_to_assigned_value_counter[index] != 0u)
-                {
+                if (dtor_to_assigned_value_counter[index] != 0u) {
                     to_assign_destructors_are_not_called = false;
                     break;
                 }
@@ -5463,28 +5282,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
             u32 expected_allocation_count = 0;
             bool in_assign_allocate = count_in_assigned > 0;
             bool assigned_should_grow = count_in_assigned < count_to_assigned;
-            if (in_assign_allocate)
-            {
+            if (in_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (in_assign_allocate && assigned_should_grow)
-            {
+            if (in_assign_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
 
@@ -5647,13 +5461,11 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
     // Test with extra
     {
-        const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned)
-        {
+        const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned) {
             i32 *dtor_assigned_key_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
 
-            if (count_in_assigned > 0)
-            {
+            if (count_in_assigned > 0) {
                 dtor_assigned_key_counter = hud::memory::allocate_array<i32>(count_in_assigned);
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
                 dtor_assigned_value_counter = hud::memory::allocate_array<i32>(count_in_assigned);
@@ -5664,8 +5476,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
             i32 *dtor_to_assigned_key_counter = nullptr;
             i32 *dtor_to_assigned_value_counter = nullptr;
-            if (count_to_assigned > 0)
-            {
+            if (count_to_assigned > 0) {
                 dtor_to_assigned_key_counter = hud::memory::allocate_array<i32>(count_to_assigned);
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
                 dtor_to_assigned_value_counter = hud::memory::allocate_array<i32>(count_to_assigned);
@@ -5679,25 +5490,21 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned;
             assigned.reserve(count_in_assigned + extra_in_assigned);
-            for (i32 i = 0; i < count_in_assigned; i++)
-            {
+            for (i32 i = 0; i < count_in_assigned; i++) {
                 assigned.add({i, dtor_assigned_key_counter + i}, {i, dtor_assigned_value_counter + i});
             }
 
             ToAssignType to_assign;
             to_assign.reserve(count_to_assigned + extra_to_assigned);
-            for (i32 i = 0; i < count_to_assigned; i++)
-            {
+            for (i32 i = 0; i < count_to_assigned; i++) {
                 to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
             }
             // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
-            if (count_in_assigned > 0)
-            {
+            if (count_in_assigned > 0) {
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
                 hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
             }
-            if (count_to_assigned > 0)
-            {
+            if (count_to_assigned > 0) {
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
             }
@@ -5706,15 +5513,12 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
             // Ensure we destroy all elements that is in assigned
             bool all_destructors_are_called = true;
-            for (usize index = 0; index < count_in_assigned; index++)
-            {
-                if (dtor_assigned_key_counter[index] != 1u)
-                {
+            for (usize index = 0; index < count_in_assigned; index++) {
+                if (dtor_assigned_key_counter[index] != 1u) {
                     all_destructors_are_called = false;
                     break;
                 }
-                if (dtor_assigned_value_counter[index] != 1u)
-                {
+                if (dtor_assigned_value_counter[index] != 1u) {
                     all_destructors_are_called = false;
                     break;
                 }
@@ -5722,15 +5526,12 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
             // Ensure we don't destroy elements in to_assign
             bool to_assign_destructors_are_not_called = true;
-            for (usize index = 0; index < count_to_assigned; index++)
-            {
-                if (dtor_to_assigned_key_counter[index] != 0u)
-                {
+            for (usize index = 0; index < count_to_assigned; index++) {
+                if (dtor_to_assigned_key_counter[index] != 0u) {
                     to_assign_destructors_are_not_called = false;
                     break;
                 }
-                if (dtor_to_assigned_value_counter[index] != 0u)
-                {
+                if (dtor_to_assigned_value_counter[index] != 0u) {
                     to_assign_destructors_are_not_called = false;
                     break;
                 }
@@ -5738,28 +5539,23 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
             u32 expected_allocation_count = 0;
             bool in_assign_allocate = count_in_assigned > 0 || extra_in_assigned > 0;
             bool assigned_should_grow = count_in_assigned + extra_in_assigned < count_to_assigned;
-            if (in_assign_allocate)
-            {
+            if (in_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
-            if (in_assign_allocate && assigned_should_grow)
-            {
+            if (in_assign_allocate && assigned_should_grow) {
                 expected_free_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
 
@@ -6368,13 +6164,11 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
     // Test without extra
     {
-        const auto test = [](const usize count_in_assigned, const usize count_to_assigned)
-        {
+        const auto test = [](const usize count_in_assigned, const usize count_to_assigned) {
             i32 *dtor_assigned_key_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
 
-            if (count_in_assigned > 0)
-            {
+            if (count_in_assigned > 0) {
                 dtor_assigned_key_counter = hud::memory::allocate_array<i32>(count_in_assigned);
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
                 dtor_assigned_value_counter = hud::memory::allocate_array<i32>(count_in_assigned);
@@ -6385,8 +6179,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
             i32 *dtor_to_assigned_key_counter = nullptr;
             i32 *dtor_to_assigned_value_counter = nullptr;
-            if (count_to_assigned > 0)
-            {
+            if (count_to_assigned > 0) {
                 dtor_to_assigned_key_counter = hud::memory::allocate_array<i32>(count_to_assigned);
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
                 dtor_to_assigned_value_counter = hud::memory::allocate_array<i32>(count_to_assigned);
@@ -6401,25 +6194,21 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType2>;
             AssignedType assigned;
             assigned.reserve(count_in_assigned);
-            for (i32 i = 0; i < count_in_assigned; i++)
-            {
+            for (i32 i = 0; i < count_in_assigned; i++) {
                 assigned.add({i, dtor_assigned_key_counter + i}, {i, dtor_assigned_value_counter + i});
             }
 
             ToAssignType to_assign;
             to_assign.reserve(count_to_assigned);
-            for (i32 i = 0; i < count_to_assigned; i++)
-            {
+            for (i32 i = 0; i < count_to_assigned; i++) {
                 to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
             }
             // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
-            if (count_in_assigned > 0)
-            {
+            if (count_in_assigned > 0) {
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
                 hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
             }
-            if (count_to_assigned > 0)
-            {
+            if (count_to_assigned > 0) {
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
             }
@@ -6428,15 +6217,12 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
             // Ensure we destroy all elements that is in assigned
             bool all_destructors_are_called = true;
-            for (usize index = 0; index < count_in_assigned; index++)
-            {
-                if (dtor_assigned_key_counter[index] != 1u)
-                {
+            for (usize index = 0; index < count_in_assigned; index++) {
+                if (dtor_assigned_key_counter[index] != 1u) {
                     all_destructors_are_called = false;
                     break;
                 }
-                if (dtor_assigned_value_counter[index] != 1u)
-                {
+                if (dtor_assigned_value_counter[index] != 1u) {
                     all_destructors_are_called = false;
                     break;
                 }
@@ -6444,15 +6230,12 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
             // Ensure we don't destroy elements in to_assign
             bool to_assign_destructors_are_not_called = true;
-            for (usize index = 0; index < count_to_assigned; index++)
-            {
-                if (dtor_to_assigned_key_counter[index] != 0u)
-                {
+            for (usize index = 0; index < count_to_assigned; index++) {
+                if (dtor_to_assigned_key_counter[index] != 0u) {
                     to_assign_destructors_are_not_called = false;
                     break;
                 }
-                if (dtor_to_assigned_value_counter[index] != 0u)
-                {
+                if (dtor_to_assigned_value_counter[index] != 0u) {
                     to_assign_destructors_are_not_called = false;
                     break;
                 }
@@ -6461,24 +6244,20 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = count_to_assigned > 0;
             bool assigned_should_grow = count_in_assigned < count_to_assigned;
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
 
@@ -6641,13 +6420,11 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
     // Test with extra
     {
-        const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned)
-        {
+        const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned) {
             i32 *dtor_assigned_key_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
 
-            if (count_in_assigned > 0)
-            {
+            if (count_in_assigned > 0) {
                 dtor_assigned_key_counter = hud::memory::allocate_array<i32>(count_in_assigned);
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
                 dtor_assigned_value_counter = hud::memory::allocate_array<i32>(count_in_assigned);
@@ -6658,8 +6435,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
             i32 *dtor_to_assigned_key_counter = nullptr;
             i32 *dtor_to_assigned_value_counter = nullptr;
-            if (count_to_assigned > 0)
-            {
+            if (count_to_assigned > 0) {
                 dtor_to_assigned_key_counter = hud::memory::allocate_array<i32>(count_to_assigned);
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
                 dtor_to_assigned_value_counter = hud::memory::allocate_array<i32>(count_to_assigned);
@@ -6674,25 +6450,21 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType2>;
             AssignedType assigned;
             assigned.reserve(count_in_assigned + extra_in_assigned);
-            for (i32 i = 0; i < count_in_assigned; i++)
-            {
+            for (i32 i = 0; i < count_in_assigned; i++) {
                 assigned.add({i, dtor_assigned_key_counter + i}, {i, dtor_assigned_value_counter + i});
             }
 
             ToAssignType to_assign;
             to_assign.reserve(count_to_assigned + extra_to_assigned);
-            for (i32 i = 0; i < count_to_assigned; i++)
-            {
+            for (i32 i = 0; i < count_to_assigned; i++) {
                 to_assign.add({i, dtor_to_assigned_key_counter + i}, {i, dtor_to_assigned_value_counter + i});
             }
             // Set all destructor to zero, to not count destruction that appears during add of temporary key and value type
-            if (count_in_assigned > 0)
-            {
+            if (count_in_assigned > 0) {
                 hud::memory::set_memory_zero_safe(dtor_assigned_key_counter, count_in_assigned * sizeof(i32));
                 hud::memory::set_memory_zero_safe(dtor_assigned_value_counter, count_in_assigned * sizeof(i32));
             }
-            if (count_to_assigned > 0)
-            {
+            if (count_to_assigned > 0) {
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_key_counter, count_to_assigned * sizeof(i32));
                 hud::memory::set_memory_zero_safe(dtor_to_assigned_value_counter, count_to_assigned * sizeof(i32));
             }
@@ -6701,15 +6473,12 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
             // Ensure we destroy all elements that is in assigned
             bool all_destructors_are_called = true;
-            for (usize index = 0; index < count_in_assigned; index++)
-            {
-                if (dtor_assigned_key_counter[index] != 1u)
-                {
+            for (usize index = 0; index < count_in_assigned; index++) {
+                if (dtor_assigned_key_counter[index] != 1u) {
                     all_destructors_are_called = false;
                     break;
                 }
-                if (dtor_assigned_value_counter[index] != 1u)
-                {
+                if (dtor_assigned_value_counter[index] != 1u) {
                     all_destructors_are_called = false;
                     break;
                 }
@@ -6717,15 +6486,12 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
             // Ensure we don't destroy elements in to_assign
             bool to_assign_destructors_are_not_called = true;
-            for (usize index = 0; index < count_to_assigned; index++)
-            {
-                if (dtor_to_assigned_key_counter[index] != 0u)
-                {
+            for (usize index = 0; index < count_to_assigned; index++) {
+                if (dtor_to_assigned_key_counter[index] != 0u) {
                     to_assign_destructors_are_not_called = false;
                     break;
                 }
-                if (dtor_to_assigned_value_counter[index] != 0u)
-                {
+                if (dtor_to_assigned_value_counter[index] != 0u) {
                     to_assign_destructors_are_not_called = false;
                     break;
                 }
@@ -6735,23 +6501,19 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
             u32 expected_allocation_count = 0;
             bool to_assign_allocate = count_to_assigned > 0 || extra_to_assigned > 0;
             bool assigned_should_grow = (count_in_assigned + extra_in_assigned) < count_to_assigned;
-            if (to_assign_allocate)
-            {
+            if (to_assign_allocate) {
                 expected_allocation_count++;
             }
-            if (assigned_should_grow)
-            {
+            if (assigned_should_grow) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
 
@@ -7353,7 +7115,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
     }
 }
 
-GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
+GTEST_TEST(vector, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
 {
     using key_type = i32;
     using value_type = u64;
@@ -7363,8 +7125,7 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned);
@@ -7373,22 +7134,18 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_in_assigned.size(); index++)
-            {
+            for (usize index = 0; index < elements_in_assigned.size(); index++) {
                 const auto &init_elem = (elements_in_assigned.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -7396,21 +7153,18 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
             // Allocation count
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0;
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
 
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -7468,8 +7222,7 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned, extra_assigned);
@@ -7478,22 +7231,18 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_in_assigned.size(); index++)
-            {
+            for (usize index = 0; index < elements_in_assigned.size(); index++) {
                 const auto &init_elem = (elements_in_assigned.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -7501,21 +7250,18 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
             // Allocation count
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0 || extra_assigned > 0;
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
 
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -7609,7 +7355,7 @@ GTEST_TEST(array, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
     }
 }
 
-GTEST_TEST(array, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
+GTEST_TEST(vector, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
 {
     using key_type = hud_test::non_bitwise_type;
     using value_type = hud_test::non_bitwise_type;
@@ -7619,8 +7365,7 @@ GTEST_TEST(array, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned);
@@ -7629,47 +7374,38 @@ GTEST_TEST(array, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_in_assigned.size(); index++)
-            {
+            for (usize index = 0; index < elements_in_assigned.size(); index++) {
                 const auto &init_elem = (elements_in_assigned.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().constructor_count() != 1)
-                {
+                if (it->key().constructor_count() != 1) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 1)
-                {
+                if (it->key().copy_constructor_count() != 1) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_assign_count() != 0)
-                {
+                if (it->key().copy_assign_count() != 0) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().move_constructor_count() != 0)
-                {
+                if (it->key().move_constructor_count() != 0) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().move_assign_count() != 0)
-                {
+                if (it->key().move_assign_count() != 0) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -7677,21 +7413,18 @@ GTEST_TEST(array, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
             // Allocation count
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0;
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
 
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {
@@ -7748,8 +7481,7 @@ GTEST_TEST(array, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned)
-        {
+        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned, extra_assigned);
@@ -7758,47 +7490,38 @@ GTEST_TEST(array, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < elements_in_assigned.size(); index++)
-            {
+            for (usize index = 0; index < elements_in_assigned.size(); index++) {
                 const auto &init_elem = (elements_in_assigned.begin() + index);
                 const auto it = assigned.find(init_elem->first);
-                if (it == assigned.end())
-                {
+                if (it == assigned.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().constructor_count() != 1)
-                {
+                if (it->key().constructor_count() != 1) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_constructor_count() != 1)
-                {
+                if (it->key().copy_constructor_count() != 1) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().copy_assign_count() != 0)
-                {
+                if (it->key().copy_assign_count() != 0) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().move_constructor_count() != 0)
-                {
+                if (it->key().move_constructor_count() != 0) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key().move_assign_count() != 0)
-                {
+                if (it->key().move_assign_count() != 0) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -7806,21 +7529,18 @@ GTEST_TEST(array, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
             // Allocation count
             u32 expected_allocation_count = 0;
             bool assigned_allocate = elements_in_assigned.size() > 0 || extra_assigned > 0;
-            if (assigned_allocate)
-            {
+            if (assigned_allocate) {
                 expected_allocation_count++;
             }
 
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
             u32 expected_free_count = 0;
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_free_count *= 2;
             }
             return std::tuple {

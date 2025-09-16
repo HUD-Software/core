@@ -1,5 +1,5 @@
-#ifndef HD_INC_CORE_ARRAY_H
-#define HD_INC_CORE_ARRAY_H
+#ifndef HD_INC_CORE_VECTOR_H
+#define HD_INC_CORE_VECTOR_H
 #include "../minimal.h"
 #include "../allocators/aligned_heap_allocator.h"
 #include "../allocators/allocator_traits.h"
@@ -32,18 +32,18 @@ namespace hud
 {
 
     /**
-     * array is a fast and memory efficient sequence of elements of the same type.
-     * array is dynamically resizable and is responsible for the ownership of all elements it contains.
+     * vector is a fast and memory efficient sequence of elements of the same type.
+     * vector is dynamically resizable and is responsible for the ownership of all elements it contains.
      * Elements are in a contiguous in memory in a well-define order.
      * @tparam type_t The element type
      * @tparam allocator_t The allocator to use.
      */
     template<typename type_t, typename allocator_t = hud::aligned_heap_allocator<alignof(type_t)>>
-    class array
+    class vector
     {
 
     public:
-        /** the type contained in the array. */
+        /** the type contained in the vector. */
         using value_type = type_t;
 
         /** The type of the allocator used. */
@@ -52,14 +52,14 @@ namespace hud
         /** The type of allocation done by the allocator. */
         using memory_allocation_type = typename allocator_type::template memory_allocation_type<type_t>;
 
-        /** Mutable array iterator type. */
+        /** Mutable vector iterator type. */
         using iterator = random_access_iterator<type_t *>;
 
-        /** Constant array iterator type. */
+        /** Constant vector iterator type. */
         using const_iterator = random_access_iterator<const type_t *>;
 
         /**  Default constructor. */
-        explicit constexpr array() noexcept = default;
+        explicit constexpr vector() noexcept = default;
 
         /**
          * Copy construct from a raw buffer of continuous elements of type u_type_t.
@@ -70,7 +70,7 @@ namespace hud
          */
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-        constexpr explicit array(const u_type_t *first, const usize element_number, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr explicit vector(const u_type_t *first, const usize element_number, const allocator_type &allocator = allocator_type()) noexcept
             : compressed_allocator_(allocator)
         {
             allocation_() = allocator_().template allocate<type_t>(element_number);
@@ -88,7 +88,7 @@ namespace hud
          */
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-        constexpr explicit array(const u_type_t *first, const usize element_number, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr explicit vector(const u_type_t *first, const usize element_number, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
             : compressed_allocator_(allocator)
         {
             allocation_() = allocator_().template allocate<type_t>(element_number + extra_element_count);
@@ -104,12 +104,12 @@ namespace hud
          */
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-        constexpr array(std::initializer_list<u_type_t> list, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr vector(std::initializer_list<u_type_t> list, const allocator_type &allocator = allocator_type()) noexcept
             : compressed_allocator_(allocator)
         {
             allocation_() = allocator_().template allocate<type_t>(list.size());
             end_ptr = data_at(list.size());
-            // Be sure that the implementation is std::intilizer_list is a continuous array of memory
+            // Be sure that the implementation is std::intilizer_list is a continuous vector of memory
             // else it will fail at compile time if begin() is not a pointer
             hud::memory::copy_construct_array(data(), list.begin(), list.size());
         }
@@ -123,21 +123,21 @@ namespace hud
          */
         template<typename u_type_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-        constexpr array(std::initializer_list<u_type_t> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr vector(std::initializer_list<u_type_t> list, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
             : compressed_allocator_(allocator)
         {
             allocation_() = allocator_().template allocate<type_t>(list.size() + extra_element_count);
             end_ptr = data_at(list.size());
-            // Be sure that the implementation is std::intilizer_list is a continuous array of memory
+            // Be sure that the implementation is std::intilizer_list is a continuous vector of memory
             // else it will fail at compile time if begin() is not a pointer
             hud::memory::copy_construct_array(data(), list.begin(), list.size());
         }
 
         /**
-         * Copy construct from another array.
-         * @param other The other array to copy
+         * Copy construct from another vector.
+         * @param other The other vector to copy
          */
-        constexpr explicit array(const array &other) noexcept
+        constexpr explicit vector(const vector &other) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
             : compressed_allocator_(other.allocator())
 
@@ -148,11 +148,11 @@ namespace hud
         }
 
         /**
-         * Copy construct from another array.
-         * @param other The other array to copy
+         * Copy construct from another vector.
+         * @param other The other vector to copy
          * @param allocator The allocator instance to use. Copy the allocator.
          */
-        constexpr explicit array(const array &other, const allocator_type &allocator) noexcept
+        constexpr explicit vector(const vector &other, const allocator_type &allocator) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
             : compressed_allocator_(allocator)
 
@@ -163,12 +163,12 @@ namespace hud
         }
 
         /**
-         * Copy construct from another array.
-         * @param other The other array to copy
+         * Copy construct from another vector.
+         * @param other The other vector to copy
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          */
 
-        constexpr explicit array(const array &other, const usize extra_element_count) noexcept
+        constexpr explicit vector(const vector &other, const usize extra_element_count) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
             : compressed_allocator_(other.allocator())
         {
@@ -178,13 +178,13 @@ namespace hud
         }
 
         /**
-         * Copy construct from another array.
-         * @param other The other array to copy
+         * Copy construct from another vector.
+         * @param other The other vector to copy
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator The allocator instance to use.
          */
 
-        constexpr explicit array(const array &other, const usize extra_element_count, const allocator_type &allocator) noexcept
+        constexpr explicit vector(const vector &other, const usize extra_element_count, const allocator_type &allocator) noexcept
         requires(hud::is_copy_constructible_v<type_t>)
             : compressed_allocator_(allocator)
         {
@@ -194,15 +194,15 @@ namespace hud
         }
 
         /**
-         * Copy construct from another array<u_type_t, u_allocator_t>.
-         * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The alloctor type of the other array
-         * @param other The other array to copy
+         * Copy construct from another vector<u_type_t, u_allocator_t>.
+         * @tparam u_type_t The element type of the other vector
+         * @tparam u_allocator_t The alloctor type of the other vector
+         * @param other The other vector to copy
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-        constexpr explicit array(const array<u_type_t, u_allocator_t> &other, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr explicit vector(const vector<u_type_t, u_allocator_t> &other, const allocator_type &allocator = allocator_type()) noexcept
             : compressed_allocator_(allocator)
         {
             allocation_() = allocator_().template allocate<type_t>(other.max_count());
@@ -211,16 +211,16 @@ namespace hud
         }
 
         /**
-         * Copy construct from another array<u_type_t, u_allocator_t>.
-         * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The alloctor type of the other array
-         * @param other The other array to copy
+         * Copy construct from another vector<u_type_t, u_allocator_t>.
+         * @tparam u_type_t The element type of the other vector
+         * @tparam u_allocator_t The alloctor type of the other vector
+         * @param other The other vector to copy
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_copy_constructible_v<type_t, u_type_t>)
-        constexpr explicit array(const array<u_type_t, u_allocator_t> &other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr explicit vector(const vector<u_type_t, u_allocator_t> &other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
             : compressed_allocator_(allocator)
         {
             allocation_() = allocator_().template allocate<type_t>(other.max_count() + extra_element_count);
@@ -229,11 +229,11 @@ namespace hud
         }
 
         /**
-         * Move construct from another array with the same allocator.
+         * Move construct from another vector with the same allocator.
          * If type_t is bitwise movable, the allocator is moved and the internal allocation is just stoled.
-         * @param other The other array to move
+         * @param other The other vector to move
          */
-        constexpr explicit array(array &&other) noexcept
+        constexpr explicit vector(vector &&other) noexcept
         requires(hud::is_bitwise_move_constructible_v<type_t>)
             : compressed_allocator_(hud::move(other.compressed_allocator_))
             , end_ptr(other.end_ptr)
@@ -242,19 +242,19 @@ namespace hud
         }
 
         /**
-         * Move construct from another array<u_type_t> with the same allocator.
+         * Move construct from another vector<u_type_t> with the same allocator.
          * If u_type_t is bitwise movable to type_t, the allocator is moved and the internal allocation is just stoled only if non constant evaluated.
          * Tecnically this will requires a reinterpret_cast but this type of cast is not allowed in constant evaluated.
-         * In a constant evaluated expression we move the allocator, allocate a new allocation and move or copy all elements, then the moved array is freed.
-         * @tparam u_type_t The element type of the other array
-         * @param other The other array to move
+         * In a constant evaluated expression we move the allocator, allocate a new allocation and move or copy all elements, then the moved vector is freed.
+         * @tparam u_type_t The element type of the other vector
+         * @param other The other vector to move
          */
         template<typename u_type_t>
-        constexpr explicit array(array<u_type_t, allocator_t> &&other) noexcept
+        constexpr explicit vector(vector<u_type_t, allocator_t> &&other) noexcept
         requires(hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
             : compressed_allocator_(hud::move(other.allocator_()))
         {
-            // We moving an array of bitwise movable constructible type where type_t != u_type_t We can't use reinterpret_cast to still the pointer
+            // We moving an vector of bitwise movable constructible type where type_t != u_type_t We can't use reinterpret_cast to still the pointer
             // in constant evaluation. So we allocate a new allocation, move elements then free the moved allocation.
             if consteval
             // LCOV_EXCL_START
@@ -265,8 +265,7 @@ namespace hud
                 other.free_to_null();
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 allocation_() = other.allocation_().template reinterpret_cast_to<type_t>();
                 end_ptr = data_at(other.count());
                 other.leak();
@@ -274,55 +273,51 @@ namespace hud
         }
 
         /**
-         * Move construct from another array<u_type_t, u_allocator_t>.
+         * Move construct from another vector<u_type_t, u_allocator_t>.
          * If u_type_t is bitwise movable to type_t, the allocator is just moved, else the type_t's move constructor is called for each element.
-         * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The alloctor type of the other array
-         * @param other The other array to move
+         * @tparam u_type_t The element type of the other vector
+         * @tparam u_allocator_t The alloctor type of the other vector
+         * @param other The other vector to move
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
         template<typename u_type_t, typename u_allocator_t>
-        constexpr explicit array(array<u_type_t, u_allocator_t> &&other, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr explicit vector(vector<u_type_t, u_allocator_t> &&other, const allocator_type &allocator = allocator_type()) noexcept
             : compressed_allocator_(allocator)
         {
             allocation_() = allocator_().template allocate<type_t>(other.max_count());
             end_ptr = data_at(other.count());
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
             // This optimization works only if allocator do not share the same memory allocation, this case is not used in the engine
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
-            {
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>) {
                 hud::memory::copy_memory(data(), other.data(), byte_count());
             }
-            else
-            {
+            else {
                 hud::memory::move_or_copy_construct_array(data(), other.data(), count());
             }
             other.free_to_null();
         }
 
         /**
-         * Move construct from another array<u_type_t, u_allocator_t>.
+         * Move construct from another vector<u_type_t, u_allocator_t>.
          * If u_type_t is bitwise movable to type_t, the allocator is just moved, else it call the type_t's move constructor is called for each element.
-         * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The alloctor type of the other array
-         * @param other The other array to move
+         * @tparam u_type_t The element type of the other vector
+         * @tparam u_allocator_t The alloctor type of the other vector
+         * @param other The other vector to move
          * @param extra_element_count Number of extra element memory to allocate. Extra allocation is not construct
          * @param allocator (Optional) The allocator instance to use. Copy the allocator.
          */
         template<typename u_type_t, typename u_allocator_t>
-        constexpr explicit array(array<u_type_t, u_allocator_t> &&other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
+        constexpr explicit vector(vector<u_type_t, u_allocator_t> &&other, const usize extra_element_count, const allocator_type &allocator = allocator_type()) noexcept
             : compressed_allocator_(allocator)
         {
             allocation_() = allocator_().template allocate<type_t>(other.max_count() + extra_element_count);
             end_ptr = data_at(other.count());
             // If we have different type of allocator and the type is bitwise move constructible it faster to copy instead of moving
             // This optimization works only if allocator do not share the same memory buffer, this case is not used in the engine
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
-            {
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && hud::is_bitwise_move_constructible_v<type_t, u_type_t>) {
                 hud::memory::copy_memory(data(), other.data(), byte_count());
             }
-            else
-            {
+            else {
                 hud::memory::move_or_copy_construct_array(data(), other.data(), count());
             }
             other.free_to_null();
@@ -330,9 +325,9 @@ namespace hud
 
         /**
          * Destructor.
-         * Call all the destructor of each element in the array if not trivially destructible, then free the allocated memory.
+         * Call all the destructor of each element in the vector if not trivially destructible, then free the allocated memory.
          */
-        constexpr ~array() noexcept
+        constexpr ~vector() noexcept
         {
             hud::memory::destroy_object_array(data(), count());
             allocator_().free(allocation_());
@@ -345,7 +340,7 @@ namespace hud
          * @return *this
          */
         template<typename u_type_t>
-        constexpr array &operator=(std::initializer_list<u_type_t> list) noexcept
+        constexpr vector &operator=(std::initializer_list<u_type_t> list) noexcept
         requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         {
             assign(list);
@@ -353,13 +348,13 @@ namespace hud
         }
 
         /**
-         * Copy assign another array.
+         * Copy assign another vector.
          * The copy assignement only grow allocation and never shrink allocation.
-         * No new allocation is done if the array contains enough memory to copy all elements, in other words we don't copy the capacity of the copied array.
-         * @param other The other array to copy
+         * No new allocation is done if the vector contains enough memory to copy all elements, in other words we don't copy the capacity of the copied vector.
+         * @param other The other vector to copy
          * @return *this
          */
-        constexpr array &operator=(const array &other) noexcept
+        constexpr vector &operator=(const vector &other) noexcept
         requires(hud::is_copy_assignable_v<type_t>)
         {
             assign(other);
@@ -367,17 +362,17 @@ namespace hud
         }
 
         /**
-         * Copy assign another array.
+         * Copy assign another vector.
          * The copy assignement only grow allocation and never shrink allocation.
-         * No new allocation is done if the array contains enough memory to copy all elements, in other words we don't copy the capacity of the copied array.
-         * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The alloctor type of the other array
-         * @param other The other array to copy
+         * No new allocation is done if the vector contains enough memory to copy all elements, in other words we don't copy the capacity of the copied vector.
+         * @tparam u_type_t The element type of the other vector
+         * @tparam u_allocator_t The alloctor type of the other vector
+         * @param other The other vector to copy
          * @return *this
          */
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_copy_assignable_v<type_t, u_type_t>)
-        constexpr array &operator=(const array<u_type_t, u_allocator_t> &other) noexcept
+        constexpr vector &operator=(const vector<u_type_t, u_allocator_t> &other) noexcept
         {
             assign(other);
             return *this;
@@ -393,25 +388,23 @@ namespace hud
         constexpr void assign(std::initializer_list<u_type_t> list, const usize min_slack = 0) noexcept
         requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         {
-            // Be sure that the implementation is std::intilizer_list is a continuous array of memory
+            // Be sure that the implementation is std::intilizer_list is a continuous vector of memory
             // else it will fail at compile time if begin() is not a pointer
             copy_assign(list.begin(), list.size(), min_slack);
         }
 
         /**
-         * Copy assign another array. Optionally add a min_slack to allocate in the resulting copy.
+         * Copy assign another vector. Optionally add a min_slack to allocate in the resulting copy.
          * The copy assignement only grow allocation and never shrink allocation.
-         * No new allocation is done if the array contains enough memory to copy all elements, in other words we don't copy the capacity of the copied array.
-         * @param other The other array to copy
+         * No new allocation is done if the vector contains enough memory to copy all elements, in other words we don't copy the capacity of the copied vector.
+         * @param other The other vector to copy
          * @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
-        constexpr void assign(const array &other, const usize min_slack = 0) noexcept
+        constexpr void assign(const vector &other, const usize min_slack = 0) noexcept
         requires(hud::is_copy_assignable_v<type_t>)
         {
-            if (this != &other) [[likely]]
-            {
-                if constexpr (hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value)
-                {
+            if (this != &other) [[likely]] {
+                if constexpr (hud::allocator_traits<allocator_t>::copy_when_container_copy_assigned::value) {
                     allocator_() = other.allocator_();
                 }
                 copy_assign(other.data(), other.count(), min_slack);
@@ -419,26 +412,26 @@ namespace hud
         }
 
         /**
-         * Copy assign another array. Optionally add a min_slack to allocate in the resulting copy.
+         * Copy assign another vector. Optionally add a min_slack to allocate in the resulting copy.
          * The copy assignement only grow allocation and never shrink allocation.
-         * No new allocation is done if the array contains enough memory to copy all elements, in other words we don't copy the capacity of the copied array.
-         * @param other The other array to copy
+         * No new allocation is done if the vector contains enough memory to copy all elements, in other words we don't copy the capacity of the copied vector.
+         * @param other The other vector to copy
          * @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_copy_assignable_v<type_t, u_type_t>)
-        constexpr void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0) noexcept
+        constexpr void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0) noexcept
         {
             copy_assign(other.data(), other.count(), min_slack);
         }
 
         /**
-         * Move assign another array.
-         * Never assume that the move assignement will keep the capacity of the moved array.
+         * Move assign another vector.
+         * Never assume that the move assignement will keep the capacity of the moved vector.
          * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
-         * @param other The other array to move
+         * @param other The other vector to move
          */
-        constexpr array &operator=(array &&other) noexcept
+        constexpr vector &operator=(vector &&other) noexcept
         requires(hud::is_move_assignable_v<type_t>)
         {
             assign(hud::move(other));
@@ -446,53 +439,52 @@ namespace hud
         }
 
         /**
-         * Move assign another array<u_type_t, u_allocator_t>
-         * Never assume that the move assignement will keep the capacity of the moved array.
+         * Move assign another vector<u_type_t, u_allocator_t>
+         * Never assume that the move assignement will keep the capacity of the moved vector.
          * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
          * If u_type_t is bitwise movable to type_t, the allocator is just moved, else it call the type_t's move constructor is called for each element.
-         * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The alloctor type of the other array
-         * @param other The other array to move
+         * @tparam u_type_t The element type of the other vector
+         * @tparam u_allocator_t The alloctor type of the other vector
+         * @param other The other vector to move
          */
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_move_assignable_v<type_t, u_type_t>)
-        constexpr array &operator=(array<u_type_t, u_allocator_t> &&other) noexcept
+        constexpr vector &operator=(vector<u_type_t, u_allocator_t> &&other) noexcept
         {
-            assign(hud::forward<array<u_type_t, u_allocator_t>>(other));
+            assign(hud::forward<vector<u_type_t, u_allocator_t>>(other));
             return *this;
         }
 
         /**
-         * Move assign another array. Optionally add a min_slack to allocate in the resulting copy.
-         * Never assume that the move assignement will keep the capacity of the moved array.
+         * Move assign another vector. Optionally add a min_slack to allocate in the resulting copy.
+         * Never assume that the move assignement will keep the capacity of the moved vector.
          * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
-         * @param other The other array to move
+         * @param other The other vector to move
          * @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
-        constexpr void assign(array &&other, const usize min_slack = 0) noexcept
+        constexpr void assign(vector &&other, const usize min_slack = 0) noexcept
         requires(hud::is_move_assignable_v<type_t>)
         {
-            if (this != &other) [[likely]]
-            {
+            if (this != &other) [[likely]] {
                 move_assign(hud::move(other), min_slack);
             }
         }
 
         /**
-         * Move assign another array<u_type_t> with the same allocator. Optionally add a min_slack to allocate in the resulting copy.
-         * Never assume that the move assignement will keep the capacity of the moved array.
+         * Move assign another vector<u_type_t> with the same allocator. Optionally add a min_slack to allocate in the resulting copy.
+         * Never assume that the move assignement will keep the capacity of the moved vector.
          * Depending of the Type and the allocator the move operation can reallocate or not, this is by design and allow some move optimization
          * If u_type_t is bitwise movable to type_t, the allocator is just moved, else it call the type_t's move constructor is called for each element.
-         * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The alloctor type of the other array
-         * @param other The other array to move
+         * @tparam u_type_t The element type of the other vector
+         * @tparam u_allocator_t The alloctor type of the other vector
+         * @param other The other vector to move
          *  @param min_slack (Optional) Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
         template<typename u_type_t, typename u_allocator_t>
         requires(hud::is_move_assignable_v<type_t, u_type_t>)
-        constexpr void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0) noexcept
+        constexpr void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0) noexcept
         {
-            move_assign(hud::forward<array<u_type_t, u_allocator_t>>(other), min_slack);
+            move_assign(hud::forward<vector<u_type_t, u_allocator_t>>(other), min_slack);
         }
 
         /**
@@ -510,21 +502,18 @@ namespace hud
             const usize new_count = count() + 1u;
 
             // If we don't have enough place in allocated memory we need to reallocate.
-            if (new_count > max_count())
-            {
+            if (new_count > max_count()) {
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(new_count);
                 // Construct the element in-place
                 hud::memory::construct_object_at(new_allocation.data_at(old_count), hud::forward<args_t>(args)...);
                 // Relocate the element that are before the newly added element if any
-                if (old_count != 0u)
-                {
+                if (old_count != 0u) {
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), old_count);
                 }
                 // Free the allocation and replace it with the newly created
                 free_allocation_and_replace_it(hud::move(new_allocation), new_count);
             }
-            else
-            {
+            else {
                 hud::memory::construct_object_at(allocation_().data_at(old_count), hud::forward<args_t>(args)...);
                 end_ptr = allocation_().data_at(new_count);
             }
@@ -548,7 +537,7 @@ namespace hud
         }
 
         /**
-         * Emplace a new element at the given index of the array by calling the constructor in-place.
+         * Emplace a new element at the given index of the vector by calling the constructor in-place.
          * If the new count() is greater than max_count() then all iterators and references are invalidated, else only the iterator after the given index are invalidated.
          * @tparam args_t The type_t constructor arguments
          * @param idx The index of insertion
@@ -562,14 +551,12 @@ namespace hud
             const usize new_count = count() + 1u;
 
             // if we don't have enough place in allocated memory we need to reallocate.
-            if (new_count > max_count())
-            {
+            if (new_count > max_count()) {
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(new_count);
                 // Construct the element in-place
                 hud::memory::construct_object_at(new_allocation.data_at(idx), hud::forward<args_t>(args)...);
                 // Relocate elements if any
-                if (old_count > 0u)
-                {
+                if (old_count > 0u) {
                     // Relocate others before the emplaced element
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), idx);
                     // Relocate others after the emplaced element
@@ -578,8 +565,7 @@ namespace hud
                 // Free the allocation and replace it with the newly created
                 free_allocation_and_replace_it(hud::move(new_allocation), new_count);
             }
-            else
-            {
+            else {
                 // Relocate others after the emplaced element
                 type_t *emplace_ptr = allocation_().data_at(idx);
                 hud::memory::move_or_copy_construct_object_array_then_destroy_backward(emplace_ptr + 1, emplace_ptr, static_cast<usize>(end_ptr - emplace_ptr));
@@ -590,7 +576,7 @@ namespace hud
         }
 
         /**
-         * Emplace a new element at the given index of the array by calling the constructor in-place.
+         * Emplace a new element at the given index of the vector by calling the constructor in-place.
          * If the new count() is greater than max_count() then all iterators and references are invalidated, else only the iterator after the given index are invalidated.
          * @tparam args_t The type_t constructor arguments
          * @param index The index of insertion
@@ -650,7 +636,7 @@ namespace hud
         }
 
         /**
-         * Add number of elements at the end of the array and grow the allocation if needed but do not call any constructor or setting memory to zero.
+         * Add number of elements at the end of the vector and grow the allocation if needed but do not call any constructor or setting memory to zero.
          * If the new count() is greater than max_count() then all iterators and references are invalidated.
          * Use this with caution, elements constructor are not called but destructor will be called on elements that do not call their constructor, this can lead to UB or crash.
          * @param element_number Number of element to add
@@ -668,16 +654,14 @@ namespace hud
 
         /**
          * Resize the container allocation to fit the number of elements.
-         * If no elements is contained in the array then allocation is free, else allocation is shrink to fit the number of elements contains in the array.
+         * If no elements is contained in the vector then allocation is free, else allocation is shrink to fit the number of elements contains in the vector.
          */
         void shrink_to_fit() noexcept
         {
-            if (is_empty())
-            {
+            if (is_empty()) {
                 free_to_null();
             }
-            else if (end_ptr < allocation_().data_end())
-            {
+            else if (end_ptr < allocation_().data_end()) {
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(count());
                 hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), count());
                 free_allocation_and_replace_it(hud::move(new_allocation), count());
@@ -685,23 +669,21 @@ namespace hud
         }
 
         /**
-         * Remove number of elements in the array from a given index.
+         * Remove number of elements in the vector from a given index.
          * @param index The index to remove
          * @param count_to_remove (Optional) Count of elements to remove. Default is 1.
          */
         void remove_at(const usize index, const usize count_to_remove = 1) noexcept
         {
             check(index < count());
-            if (!is_empty())
-            {
+            if (!is_empty()) {
                 type_t *first_item_to_remove = data_at(index);
                 check(count_to_remove <= count()); // Remove more elements than possible
                 hud::memory::destroy_object_array(first_item_to_remove, count_to_remove);
                 const usize remains = count() - count_to_remove;
                 const usize count_to_relocate_after = remains - index;
 
-                if (count_to_relocate_after > 0)
-                {
+                if (count_to_relocate_after > 0) {
                     // We need to copy construct elements stored in removed elements memory
                     // We need to move assign elements stored after the elements that are copy constructed
                     type_t *first_items_to_relocate = first_item_to_remove + count_to_remove;
@@ -718,22 +700,20 @@ namespace hud
         }
 
         /**
-         * Remove number of elements in the array from a given index.
+         * Remove number of elements in the vector from a given index.
          * @param index The index to remove
          * @param count_to_remove (Optional) Count of elements to remove. Default is 1.
          */
         void remove_at_shrink(const usize index, const usize count_to_remove = 1) noexcept
         {
-            if (count() > 0)
-            {
+            if (count() > 0) {
                 check(index < count());
                 type_t *first_item_to_remove = data_at(index);
                 check(count_to_remove <= count()); // Remove more elements than possible
                 hud::memory::destroy_object_array(first_item_to_remove, count_to_remove);
                 const usize remains = count() - count_to_remove;
 
-                if (remains > 0)
-                {
+                if (remains > 0) {
                     memory_allocation_type new_allocation = allocator_().template allocate<type_t>(remains);
                     // Move or copy elements before the removed element then destroy moved or copied elements from the old allocation
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), index);
@@ -741,47 +721,42 @@ namespace hud
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data_at(index), allocation_().data_at(index + count_to_remove), remains - index);
                     free_allocation_and_replace_it(hud::move(new_allocation), remains);
                 }
-                else
-                {
+                else {
                     free_to_null();
                 }
             }
         }
 
         /**
-         * Resize the array to ensure it contains a number of elements.
+         * Resize the vector to ensure it contains a number of elements.
          * Call defaut constructor or set memory to zero depending if the type is trivially constructible or not.
-         * @param element_number Number of element the array must contains
+         * @param element_number Number of element the vector must contains
          */
         void resize(const usize element_number) noexcept
         {
             const isize diff = static_cast<const isize>(element_number - count());
             // If we grow the element count
-            if (diff > 0)
-            {
+            if (diff > 0) {
                 const usize old_count = add_no_construct(static_cast<usize>(diff));
                 type_t *first_added = data_at(old_count);
                 hud::memory::default_construct_array(first_added, first_added + static_cast<usize>(diff));
             }
-            else if (diff < 0)
-            {
+            else if (diff < 0) {
                 remove_at(element_number, static_cast<usize>(-diff));
             }
         }
 
         /**
-         * Reserve enough memory to ensure the array can contains a number of elements without reallocating.
+         * Reserve enough memory to ensure the vector can contains a number of elements without reallocating.
          * Only grow the allocation and relocate object if the number of elements requested is bigger than the current max number of elements.
          * Do nothing if the given element number is less or equal the maximum element count.
-         * @param element_number Number of element th array must be able to contains in memory
+         * @param element_number Number of element th vector must be able to contains in memory
          */
         constexpr void reserve(const usize element_number) noexcept
         {
-            if (element_number > max_count())
-            {
+            if (element_number > max_count()) {
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(element_number);
-                if (count() > 0u)
-                {
+                if (count() > 0u) {
                     hud::memory::fast_move_or_copy_construct_object_array_then_destroy(new_allocation.data(), data(), count());
                 }
                 free_allocation_and_replace_it(hud::move(new_allocation), count());
@@ -789,50 +764,48 @@ namespace hud
         }
 
         /**
-         * Remove all elements from the array.
-         * Call all the destructor of each element in the array if not trivially destructible but do not free the allocated memory.
+         * Remove all elements from the vector.
+         * Call all the destructor of each element in the vector if not trivially destructible but do not free the allocated memory.
          */
         HD_FORCEINLINE constexpr void clear() noexcept
         {
-            if (count() > 0)
-            {
+            if (count() > 0) {
                 hud::memory::destroy_object_array(data(), count());
                 end_ptr = data();
             }
         }
 
         /**
-         * Remove all elements from the array.
-         * Call all the destructor of each element in the array if not trivially destructible, then free the allocated memory.
+         * Remove all elements from the vector.
+         * Call all the destructor of each element in the vector if not trivially destructible, then free the allocated memory.
          */
         HD_FORCEINLINE void clear_shrink() noexcept
         {
-            if (count() > 0)
-            {
+            if (count() > 0) {
                 hud::memory::destroy_object_array(data(), count());
                 free_to_null();
             }
         }
 
-        /** Retreives number of elements in the array. */
+        /** Retreives number of elements in the vector. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize count() const noexcept
         {
             return static_cast<usize>(end_ptr - data());
         }
 
-        /** Retreives number of elements in the array in bytes. */
+        /** Retreives number of elements in the vector in bytes. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize byte_count() const noexcept
         {
             return count() * sizeof(type_t);
         }
 
-        /** Retreives maximum number of elements the array can contains. */
+        /** Retreives maximum number of elements the vector can contains. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize max_count() const noexcept
         {
             return allocation_().count();
         }
 
-        /** Retreives maximum number bytes the array can contains. */
+        /** Retreives maximum number bytes the vector can contains. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize max_byte_count() const noexcept
         {
             return allocation_().byte_count();
@@ -874,7 +847,7 @@ namespace hud
             return index < count();
         }
 
-        /** Checks whether the array is empty of not. */
+        /** Checks whether the vector is empty of not. */
         [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
         {
             return end_ptr == data();
@@ -929,7 +902,7 @@ namespace hud
 
         /**
          * Retrieves reference on the first element
-         * @param from_the_start The index to access from the start of the array
+         * @param from_the_start The index to access from the start of the vector
          * @return Reference on the first element
          */
         [[nodiscard]] HD_FORCEINLINE constexpr const type_t &first(usize from_the_start) const noexcept
@@ -940,7 +913,7 @@ namespace hud
 
         /**
          * Retrieves reference on the first element
-         * @param from_the_start The index to access from the start of the array
+         * @param from_the_start The index to access from the start of the vector
          * @return Reference on the first element
          */
         [[nodiscard]] HD_FORCEINLINE constexpr type_t &first(usize from_the_start) noexcept
@@ -965,7 +938,7 @@ namespace hud
 
         /**
          * Retrieves reference on the last element.
-         * @param from_the_end The index to access from the end of the array
+         * @param from_the_end The index to access from the end of the vector
          * @return Reference on the last element
          */
         [[nodiscard]] HD_FORCEINLINE constexpr const type_t &last(usize from_the_end) const noexcept
@@ -976,7 +949,7 @@ namespace hud
 
         /**
          * Retrieves reference on the last element.
-         * @param from_the_end The index to access from the end of the array
+         * @param from_the_end The index to access from the end of the vector
          * @return Reference on the last element
          */
         [[nodiscard]] HD_FORCEINLINE constexpr type_t &last(usize from_the_end) noexcept
@@ -986,26 +959,25 @@ namespace hud
         }
 
         /**
-         * Swap with another array.
-         * @param other The array to swap with
+         * Swap with another vector.
+         * @param other The vector to swap with
          */
-        constexpr void swap(array &other) noexcept
+        constexpr void swap(vector &other) noexcept
         {
-            static_assert(hud::is_nothrow_swappable_v<type_t>, "swap(array<type_t>&) is throwable. array is not designed to allow throwable swappable components");
+            static_assert(hud::is_nothrow_swappable_v<type_t>, "swap(vector<type_t>&) is throwable. vector is not designed to allow throwable swappable components");
             hud::swap(end_ptr, other.end_ptr);
-            if constexpr (hud::allocator_traits<allocator_type>::swap_when_container_swap::value)
-            {
+            if constexpr (hud::allocator_traits<allocator_type>::swap_when_container_swap::value) {
                 hud::swap(allocator_(), other.allocator_());
             }
             hud::swap(allocation_(), other.allocation_());
         }
 
         /**
-         * Find the fist index of a given element where the predicate array[index] == to_find is true.
+         * Find the fist index of a given element where the predicate vector[index] == to_find is true.
          * Given comparand must be comparable with type_t operator==.
          * @param compared_t The comparand type used to compare
          * @param to_find The element to find
-         * @return first index of the element where the predicate array[index] == element is true, hud::index_none otherwise
+         * @return first index of the element where the predicate vector[index] == element is true, hud::index_none otherwise
          */
         template<typename compared_t>
         requires(hud::is_comparable_with_equal_operator_v<type_t, compared_t>)
@@ -1014,10 +986,8 @@ namespace hud
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
 
-            for (const type_t *HD_RESTRICT cur = begin; cur != end; cur++)
-            {
-                if (*cur == to_find)
-                {
+            for (const type_t *HD_RESTRICT cur = begin; cur != end; cur++) {
+                if (*cur == to_find) {
                     return static_cast<usize>(cur - begin);
                 }
             }
@@ -1025,11 +995,11 @@ namespace hud
         }
 
         /**
-         * Find the last index of an element where the predicate array[index] == to_find is true.
+         * Find the last index of an element where the predicate vector[index] == to_find is true.
          * Given comparand must be comparable with type_t operator==.
          * @param compared_t The comparand type used to compare
          * @param to_find The element to find
-         * @return last index of the element where the predicate array[index] == element is true, hud::index_none otherwise
+         * @return last index of the element where the predicate vector[index] == element is true, hud::index_none otherwise
          */
         template<typename compared_t>
         requires(hud::is_comparable_with_equal_operator_v<type_t, compared_t>)
@@ -1038,11 +1008,9 @@ namespace hud
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
             const type_t *HD_RESTRICT cur = end;
-            while (cur != begin)
-            {
+            while (cur != begin) {
                 cur--;
-                if (*cur == to_find)
-                {
+                if (*cur == to_find) {
                     return static_cast<usize>(cur - begin);
                 }
             }
@@ -1061,10 +1029,8 @@ namespace hud
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
 
-            for (const type_t *HD_RESTRICT cur = begin; cur != end; cur++)
-            {
-                if (predicate(*cur))
-                {
+            for (const type_t *HD_RESTRICT cur = begin; cur != end; cur++) {
+                if (predicate(*cur)) {
                     return static_cast<usize>(cur - begin);
                 }
             }
@@ -1083,11 +1049,9 @@ namespace hud
             const type_t *HD_RESTRICT begin = data();
             const type_t *HD_RESTRICT end = end_ptr;
             const type_t *HD_RESTRICT cur = end;
-            while (cur != begin)
-            {
+            while (cur != begin) {
                 cur--;
-                if (predicate(*cur))
-                {
+                if (predicate(*cur)) {
                     return static_cast<usize>(cur - begin);
                 }
             }
@@ -1095,10 +1059,10 @@ namespace hud
         }
 
         /**
-         * Checks whether an element is contained in the array or not.
+         * Checks whether an element is contained in the vector or not.
          * @param compared_t The comparand type used to compare
          * @param to_find The element to find
-         * @return true if the element is contained in the array, false otherwise
+         * @return true if the element is contained in the vector, false otherwise
          */
         template<typename compared_t>
         requires(hud::is_comparable_with_equal_operator_v<type_t, compared_t>)
@@ -1108,10 +1072,10 @@ namespace hud
         }
 
         /**
-         * Checks whether an element match the user-defined predicate is contained in the array or not.
+         * Checks whether an element match the user-defined predicate is contained in the vector or not.
          * @tparam unary_t The Unary predicate to use
          * @param predicate The predicate to use
-         * @return true if an element match the user-defined predicate is contained in the array, false otherwise
+         * @return true if an element match the user-defined predicate is contained in the vector, false otherwise
          */
         template<typename unary_t>
         [[nodiscard]] bool contains_by_predicate(const unary_t predicate) const
@@ -1119,25 +1083,25 @@ namespace hud
             return find_first_index_by_predicate(predicate) != hud::index_none;
         }
 
-        /** Retrieves an iterator to the beginning of the array. */
+        /** Retrieves an iterator to the beginning of the vector. */
         [[nodiscard]] HD_FORCEINLINE constexpr iterator begin() noexcept
         {
             return iterator(data());
         }
 
-        /** Retrieves an iterator to the beginning of the array. */
+        /** Retrieves an iterator to the beginning of the vector. */
         [[nodiscard]] HD_FORCEINLINE constexpr const_iterator begin() const noexcept
         {
             return const_iterator(data());
         }
 
-        /** Retrieves an iterator to the end of the array. */
+        /** Retrieves an iterator to the end of the vector. */
         [[nodiscard]] HD_FORCEINLINE constexpr iterator end() noexcept
         {
             return iterator(end_ptr);
         }
 
-        /** Retrieves an iterator to the end of the array. */
+        /** Retrieves an iterator to the end of the vector. */
         [[nodiscard]] HD_FORCEINLINE constexpr const_iterator end() const noexcept
         {
             return const_iterator(end_ptr);
@@ -1145,8 +1109,8 @@ namespace hud
 
     private:
         /**
-         * Copy assign a source_count elements from the source of data to the array. Optionally add a min_slack to allocate in the resulting copy.
-         * @tparam u_type_t The element type of the other array
+         * Copy assign a source_count elements from the source of data to the vector. Optionally add a min_slack to allocate in the resulting copy.
+         * @tparam u_type_t The element type of the other vector
          * @param source The source of data to copy
          * @param source_count Element count in the source to copy
          * @param min_slack Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
@@ -1158,8 +1122,7 @@ namespace hud
             // If we need to reallocate, we destroy all elements before reallocating the allocation
             // Then we copy construct all elements of source in the allocation
             const usize max_count_requested = source_count + min_slack;
-            if (max_count_requested > max_count())
-            {
+            if (max_count_requested > max_count()) {
                 // Destroy existing
                 hud::memory::destroy_object_array(data(), count());
                 // Allocate a new allocation and copy construct source into it
@@ -1169,22 +1132,18 @@ namespace hud
                 free_allocation_and_replace_it(hud::move(new_allocation), source_count);
             }
             // If we don't need to reallocate
-            else
-            {
+            else {
                 if consteval
                 // LCOV_EXCL_START
                 {
                     copy_assign_or_copy_construct_no_reallocation(source, source_count);
                 }
                 // LCOV_EXCL_STOP
-                else
-                {
-                    if (!hud::is_bitwise_copy_assignable_v<type_t, u_type_t>)
-                    {
+                else {
+                    if (!hud::is_bitwise_copy_assignable_v<type_t, u_type_t>) {
                         copy_assign_or_copy_construct_no_reallocation(source, source_count);
                     }
-                    else if (source_count > 0u)
-                    {
+                    else if (source_count > 0u) {
                         hud::memory::copy_assign_object_array(data(), source, source_count);
                     }
                 }
@@ -1194,10 +1153,10 @@ namespace hud
         }
 
         /**
-         * Copy assign a source_count elements from the source of data to the array.
+         * Copy assign a source_count elements from the source of data to the vector.
          * Call assign for already existing elements or copy constructor for non existing elements.
          * This method supposed source_count <= max_count() because it does not reallocate the buffer.
-         * @tparam u_type_t The element type of the other array
+         * @tparam u_type_t The element type of the other vector
          * @param source The source of data to copy
          * @param source_count Element count in the source to copy
          */
@@ -1209,42 +1168,38 @@ namespace hud
             const isize extra_to_construct = source_count - count();
             // We assign all elements that are already in the allocation,
             // Then we copy construct all remaining elements at the end of the assigned elements
-            if (extra_to_construct > 0)
-            {
+            if (extra_to_construct > 0) {
                 hud::memory::copy_assign_object_array(data(), source, count());
                 hud::memory::copy_construct_array(data_at(count()), source + count(), static_cast<usize>(extra_to_construct));
             }
             // If we assign less or equal count of elements than the current element count
             // we copy assign all new elements of the source in the allocation, then we destroy the remaining elements
-            else
-            {
+            else {
                 hud::memory::copy_assign_object_array(data(), source, source_count);
                 hud::memory::destroy_object_array(data() + source_count, static_cast<usize>(-extra_to_construct));
             }
         }
 
         /**
-         * Move-assigns another array if the array type and allocator are the same. Optionally add a min_slack to allocate in the resulting copy.
+         * Move-assigns another vector if the vector type and allocator are the same. Optionally add a min_slack to allocate in the resulting copy.
          * If type_t is bitwise movable, ownership of the internal allocation is transferred to this by stealing the pointer.
          * If type_t is not bitwise movable to type_t, or if allocators are different, the pointer is not stolen.
          * In such cases, the move constructor of type_t is called for each element.
-         * @param other The other array to move
+         * @param other The other vector to move
          * @param min_slack Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
         template<typename u_type_t>
-        constexpr void move_assign(array<u_type_t, allocator_t> &&other, const usize min_slack = 0) noexcept
+        constexpr void move_assign(vector<u_type_t, allocator_t> &&other, const usize min_slack = 0) noexcept
         {
             // Move the allocator. This will do nothing if hud::allocator_traits<allocator_t>::move_when_container_move_assigned is hud::false_type
-            if constexpr (hud::allocator_traits<allocator_t>::move_when_container_move_assigned::value)
-            {
+            if constexpr (hud::allocator_traits<allocator_t>::move_when_container_move_assigned::value) {
                 allocator_() = std::move(other.allocator_());
             }
 
             // If type_t is bitwise move assignable allocation is just moved.
             // This optimization is not possible in a constant evaluated context due to the use of reinterpret_cast.
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_assignable_v<type_t, u_type_t> && other.slack() >= min_slack)
-            {
-                // Take ownership of the allocation and release ownership of the moved array
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_assignable_v<type_t, u_type_t> && other.slack() >= min_slack) {
+                // Take ownership of the allocation and release ownership of the moved vector
                 hud::memory::destroy_object_array(data(), count());
                 allocator_().free(allocation_());
                 allocation_() = other.allocation_().template reinterpret_cast_to<type_t>();
@@ -1254,13 +1209,11 @@ namespace hud
                 other.leak();
             }
             // If type_t is not bitwise move assignable we should process each elements and allocation
-            else
-            {
+            else {
                 // If we need to reallocate, we destroy all elements before reallocating the allocation
                 // Then we copy construct all elements of source in the allocation
                 const usize max_count_requested = other.count() + min_slack;
-                if (max_count_requested > max_count())
-                {
+                if (max_count_requested > max_count()) {
                     // Delete existing elements
                     hud::memory::destroy_object_array(data(), count());
                     memory_allocation_type new_allocation = allocator_().template allocate<type_t>(max_count_requested);
@@ -1268,22 +1221,18 @@ namespace hud
                     free_allocation_and_replace_it(hud::move(new_allocation), other.count());
                 }
                 // If we don't need to reallocate
-                else
-                {
+                else {
                     // We assign all elements that are already in the allocation,
                     // Then we copy construct all remaining elements at the end of the assigned elements
-                    if (other.count() > count())
-                    {
+                    if (other.count() > count()) {
                         const auto to_assign_end = other.data() + count();
                         hud::memory::move_or_copy_assign_object_array(data(), other.data(), to_assign_end);
                         hud::memory::move_or_copy_construct_array(data() + count(), to_assign_end, other.count() - count());
                     }
                     // If we assign less or equal count of elements than the current element count
                     // we copy assign all new elements of the source in the allocation, then we destroy the remaining elements
-                    else if (data())
-                    {
-                        if (other.data())
-                        {
+                    else if (data()) {
+                        if (other.data()) {
                             hud::memory::move_or_copy_assign_object_array(data(), other.data(), other.end_ptr);
                         }
                         hud::memory::destroy_object_array(data() + other.count(), count() - other.count());
@@ -1297,24 +1246,23 @@ namespace hud
         }
 
         /**
-         * Move assign another array if the array is not the same type. Optionally add a min_slack to allocate in the resulting copy.
+         * Move assign another vector if the vector is not the same type. Optionally add a min_slack to allocate in the resulting copy.
          * If u_type_t is bitwise movable to type_t and the allocator are the same, the internal allocation ownership is given to this by stealing the pointer
          * If u_type_t is not bitwise movable to type_t or allocators are differents, it do not still the pointer and call the type_t's move constructor is called for each element.
-         * @tparam u_type_t The element type of the other array
-         * @tparam u_allocator_t The allocator type of the other array
-         * @param other The other array to move
+         * @tparam u_type_t The element type of the other vector
+         * @tparam u_allocator_t The allocator type of the other vector
+         * @param other The other vector to move
          * @param min_slack Minimum slack elements to allocate in the resulting copy. Extra allocation is not constructed.
          */
         template<typename u_type_t, typename u_allocator_t>
-        constexpr void move_assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0) noexcept
+        constexpr void move_assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0) noexcept
         {
             // Move the allocator.
             allocator_() = std::move(other.allocator_());
 
             // If we need to reallocate, we destroy all elements before reallocating the allocation
             // Then we copy construct all elements of source in the allocation
-            if (other.count() + min_slack > max_count())
-            {
+            if (other.count() + min_slack > max_count()) {
                 // Delete existing elements
                 hud::memory::destroy_object_array(data(), count());
                 memory_allocation_type new_allocation = allocator_().template allocate<type_t>(other.count() + min_slack);
@@ -1322,23 +1270,19 @@ namespace hud
                 free_allocation_and_replace_it(hud::move(new_allocation), other.count());
             }
             // If we don't need to reallocate
-            else
-            {
+            else {
                 // We assign all elements that are already in the allocation,
                 // Then we copy construct all remaining elements at the end of the assigned elements
-                if (other.count() > count())
-                {
+                if (other.count() > count()) {
                     const auto to_assign_end = other.data() + count();
                     hud::memory::move_or_copy_assign_object_array(data(), other.data(), to_assign_end);
                     hud::memory::move_or_copy_construct_array(data() + count(), to_assign_end, other.count() - count());
                 }
                 // If we assign less or equal count of elements than the current element count
                 // we copy assign all new elements of the source in the allocation, then we destroy the remaining elements
-                // We intentionally do not free the memory. We let the user call shrink_to_fit if he want to free memory after assigning an empty array.
-                else if (data())
-                {
-                    if (other.data())
-                    {
+                // We intentionally do not free the memory. We let the user call shrink_to_fit if he want to free memory after assigning an empty vector.
+                else if (data()) {
+                    if (other.data()) {
                         hud::memory::move_or_copy_assign_object_array(data(), other.data(), other.end_ptr);
                     }
                     hud::memory::destroy_object_array(data() + other.count(), count() - other.count());
@@ -1414,7 +1358,7 @@ namespace hud
 
     private:
         template<typename u_type_t, typename u_allocator_t>
-        friend class array; // Friend with other array of other types
+        friend class vector; // Friend with other vector of other types
 
     private:
         /** The type of the allocator used. */
@@ -1425,37 +1369,36 @@ namespace hud
     };
 
     /**
-     * Swap first array with the second array.
+     * Swap first vector with the second vector.
      * Same as first.swap(second).
      * @tparam type_t The element type
-     * @tparam allocator_t The allocator type of both array
-     * @param first The first array to swap
-     * @param second The second array to swap
+     * @tparam allocator_t The allocator type of both vector
+     * @param first The first vector to swap
+     * @param second The second vector to swap
      */
     template<typename type_t, typename allocator_t>
-    HD_FORCEINLINE void swap(array<type_t, allocator_t> &first, array<type_t, allocator_t> &second) noexcept
+    HD_FORCEINLINE void swap(vector<type_t, allocator_t> &first, vector<type_t, allocator_t> &second) noexcept
     {
         first.swap(second);
     }
 
     /**
-     * Checks whether right and left array are equal.
-     * array are equal if both contains same number of elements and all values are equal.
+     * Checks whether right and left vector are equal.
+     * vector are equal if both contains same number of elements and all values are equal.
      * Value types must be comparable with operator==() if types are not bitwise comparable with equal operator.
-     * @tparam left_t Value type of the left array
-     * @tparam left_allocator_t The allocator type of the left array
-     * @tparam right_t Value type of the right array
-     * @tparam right_allocator_t The allocator type of the right array
-     * @param left The left array to compare
-     * @param right The right array to compare
+     * @tparam left_t Value type of the left vector
+     * @tparam left_allocator_t The allocator type of the left vector
+     * @tparam right_t Value type of the right vector
+     * @tparam right_allocator_t The allocator type of the right vector
+     * @param left The left vector to compare
+     * @param right The right vector to compare
      * @param true if right and left Arrays are equal, false otherwise
      */
     template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator==(const vector<left_t, left_allocator_t> &left, const vector<right_t, right_allocator_t> &right) noexcept
     {
         // Arrays are not equal if the counts of elements differ
-        if (left.count() != right.count())
-        {
+        if (left.count() != right.count()) {
             return false;
         }
 
@@ -1463,8 +1406,7 @@ namespace hud
         // We consider that left and right are both nullptr or not, but ignore the case left is nullptr and right is not and viceversa.
 
         // If left and right are not nullptr, compare them
-        if (left.data() != nullptr && right.data() != nullptr)
-        {
+        if (left.data() != nullptr && right.data() != nullptr) {
             return hud::memory::is_object_array_equal(left.data(), right.data(), left.count());
         }
 
@@ -1474,23 +1416,22 @@ namespace hud
     }
 
     /**
-     * Checks whether right and left array are not equals.
-     * array are equal if they do not contains the same number of elements or at least one element is not equal in both array.
+     * Checks whether right and left vector are not equals.
+     * vector are equal if they do not contains the same number of elements or at least one element is not equal in both vector.
      * Value types must be comparable with operator!=() if types are not bitwise comparable with not equal operator.
-     * @tparam left_t Value type of the left array
-     * @tparam left_allocator_t The allocator type of the left array
-     * @tparam right_t Value type of the right array
-     * @tparam right_allocator_t The allocator type of the right array
-     * @param left The left array to compare
-     * @param right The right array to compare
+     * @tparam left_t Value type of the left vector
+     * @tparam left_allocator_t The allocator type of the left vector
+     * @tparam right_t Value type of the right vector
+     * @tparam right_allocator_t The allocator type of the right vector
+     * @param left The left vector to compare
+     * @param right The right vector to compare
      * @param true if right and left Arrays are not equals, false otherwise
      */
     template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator!=(const vector<left_t, left_allocator_t> &left, const vector<right_t, right_allocator_t> &right) noexcept
     {
         // Arrays are not equal if the counts of elements differ
-        if (left.count() != right.count())
-        {
+        if (left.count() != right.count()) {
             return true;
         }
 
@@ -1498,8 +1439,7 @@ namespace hud
         // We consider that left and right are both nullptr or not, but ignore the case left is nullptr and right is not and viceversa.
 
         // If left and right are not nullptr, compare them
-        if (left.data() != nullptr && right.data() != nullptr)
-        {
+        if (left.data() != nullptr && right.data() != nullptr) {
             return hud::memory::is_object_array_not_equal(left.data(), right.data(), left.count());
         }
 
@@ -1509,85 +1449,85 @@ namespace hud
     }
 
     /**
-     * Checks whether right is less than left array.
+     * Checks whether right is less than left vector.
      * An right is less than left if :
      *     - right don't contains a value while left do, or,
      *     - both contains a value and right value is less than left value.
      * Value types must be comparable with operator<() if types are not bitwise comparable with less operator.
-     * @tparam left_t Value type of the left array
-     * @tparam left_allocator_t The allocator type of the left array
-     * @tparam right_t Value type of the right array
-     * @tparam right_allocator_t The allocator type of the right array
-     * @param left The left array to compare
-     * @param right The right array to compare
-     * @param true if right is less than left array, false otherwise
+     * @tparam left_t Value type of the left vector
+     * @tparam left_allocator_t The allocator type of the left vector
+     * @tparam right_t Value type of the right vector
+     * @tparam right_allocator_t The allocator type of the right vector
+     * @param left The left vector to compare
+     * @param right The right vector to compare
+     * @param true if right is less than left vector, false otherwise
      */
     template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator<(const vector<left_t, left_allocator_t> &left, const vector<right_t, right_allocator_t> &right) noexcept
     {
         return lexicographical_compare(left.data(), left.data() + left.count(), right.data(), right.data() + right.count());
     }
 
     /**
-     * Checks whether right is greater than left array.
+     * Checks whether right is greater than left vector.
      * An right is greater than left if :
      *     - right don't contains a value while left do, or,
      *     - both contains a value and right value is greater than left value.
      * Value types must be comparable with operator<() if types are not bitwise comparable with less operator.
-     * @tparam left_t Value type of the left array
-     * @tparam left_allocator_t The allocator type of the left array
-     * @tparam right_t Value type of the right array
-     * @tparam right_allocator_t The allocator type of the right array
-     * @param left The left array to compare
-     * @param right The right array to compare
-     * @param true if right is greater than left array, false otherwise
+     * @tparam left_t Value type of the left vector
+     * @tparam left_allocator_t The allocator type of the left vector
+     * @tparam right_t Value type of the right vector
+     * @tparam right_allocator_t The allocator type of the right vector
+     * @param left The left vector to compare
+     * @param right The right vector to compare
+     * @param true if right is greater than left vector, false otherwise
      */
     template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator>(const vector<left_t, left_allocator_t> &left, const vector<right_t, right_allocator_t> &right) noexcept
     {
         return right < left;
     }
 
     /**
-     * Checks whether right is less or equal left array.
+     * Checks whether right is less or equal left vector.
      * An right is less or equal left if :
      *     - right don't contains a value while left do, or,
      *     - both contains a value and right value is less or equal left value.
      * Value types must be comparable with operator<() if types are not bitwise comparable with less operator.
-     * @tparam left_t Value type of the left array
-     * @tparam left_allocator_t The allocator type of the left array
-     * @tparam right_t Value type of the right array
-     * @tparam right_allocator_t The allocator type of the right array
-     * @param left The left array to compare
-     * @param right The right array to compare
-     * @param true if right is less or equal left array, false otherwise
+     * @tparam left_t Value type of the left vector
+     * @tparam left_allocator_t The allocator type of the left vector
+     * @tparam right_t Value type of the right vector
+     * @tparam right_allocator_t The allocator type of the right vector
+     * @param left The left vector to compare
+     * @param right The right vector to compare
+     * @param true if right is less or equal left vector, false otherwise
      */
     template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator<=(const vector<left_t, left_allocator_t> &left, const vector<right_t, right_allocator_t> &right) noexcept
     {
         return !(right < left);
     }
 
     /**
-     * Checks whether right is greater or equal left array.
+     * Checks whether right is greater or equal left vector.
      * An right is greater or equal left if :
      *     - right don't contains a value while left do, or,
      *     - both contains a value and right value is greater or equal left value.
      * Value types must be comparable with operator<() if types are not bitwise comparable with less operator.
-     * @tparam left_t Value type of the left array
-     * @tparam left_allocator_t The allocator type of the left array
-     * @tparam right_t Value type of the right array
-     * @tparam right_allocator_t The allocator type of the right array
-     * @param left The left array to compare
-     * @param right The right array to compare
-     * @param true if right is greater or equal left array, false otherwise
+     * @tparam left_t Value type of the left vector
+     * @tparam left_allocator_t The allocator type of the left vector
+     * @tparam right_t Value type of the right vector
+     * @tparam right_allocator_t The allocator type of the right vector
+     * @param left The left vector to compare
+     * @param right The right vector to compare
+     * @param true if right is greater or equal left vector, false otherwise
      */
     template<typename left_t, typename left_allocator_t, typename right_t, typename right_allocator_t>
-    [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(const array<left_t, left_allocator_t> &left, const array<right_t, right_allocator_t> &right) noexcept
+    [[nodiscard]] HD_FORCEINLINE constexpr bool operator>=(const vector<left_t, left_allocator_t> &left, const vector<right_t, right_allocator_t> &right) noexcept
     {
         return !(left < right);
     }
 
 } // namespace hud
 
-#endif // HD_INC_CORE_ARRAY_H
+#endif // HD_INC_CORE_VECTOR_H

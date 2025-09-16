@@ -1,9 +1,9 @@
-#include <core/containers/array.h>
+#include <core/containers/vector.h>
 #include "../misc/allocator_watcher.h"
 #include "../misc/leak_guard.h"
 
-// void assign(array &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_allocator_no_min_slack)
+// void assign(vector &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_bitwise_move_assignable_same_type_same_allocator_no_min_slack)
 {
     using type = i32;
 
@@ -11,20 +11,17 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(hud::move(to_assign));
 
             // Ensures we move all values correctly
             [[maybe_unused]] bool all_values_are_moved = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_moved = false;
                     break;
                 }
@@ -214,20 +211,17 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(hud::move(to_assign));
 
             // Ensures we move all values correctly
             [[maybe_unused]] bool all_values_are_moved = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_moved = false;
                     break;
                 }
@@ -892,8 +886,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
     }
 }
 
-// void assign(array &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_allocator_with_min_slack)
+// void assign(vector &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_bitwise_move_assignable_same_type_same_allocator_with_min_slack)
 {
 
     using type = i32;
@@ -902,21 +896,18 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign) {
             constexpr const usize min_slack = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(hud::move(to_assign), min_slack);
 
             // Ensures we move all values correctly
             [[maybe_unused]] bool all_values_are_moved = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_moved = false;
                     break;
                 }
@@ -1106,21 +1097,18 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize min_slack = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(hud::move(to_assign), min_slack);
 
             // Ensures we move all values correctly
             [[maybe_unused]] bool all_values_are_moved = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_moved = false;
                     break;
                 }
@@ -1785,8 +1773,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_same_al
     }
 }
 
-// void move_assign(array<u_type_t, allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_different_allocator_no_min_slack)
+// void move_assign(vector<u_type_t, allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_bitwise_move_assignable_same_type_different_allocator_no_min_slack)
 {
 
     using type = i32;
@@ -1795,20 +1783,17 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(hud::move(to_assign));
 
             // Ensures we move all values correctly
             [[maybe_unused]] bool all_values_are_moved = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_moved = false;
                     break;
                 }
@@ -1999,20 +1984,17 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
     // Test with extra
     {
 
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(hud::move(to_assign));
 
             // Ensures we move all values correctly
             [[maybe_unused]] bool all_values_are_moved = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_moved = false;
                     break;
                 }
@@ -2679,8 +2661,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
     }
 }
 
-// void move_assign(array<u_type_t, allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_different_allocator_with_min_slack)
+// void move_assign(vector<u_type_t, allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_bitwise_move_assignable_same_type_different_allocator_with_min_slack)
 {
 
     using type = i32;
@@ -2689,21 +2671,18 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign) {
             constexpr const usize min_slack = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(hud::move(to_assign), min_slack);
 
             // Ensures we move all values correctly
             [[maybe_unused]] bool all_values_are_moved = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_moved = false;
                     break;
                 }
@@ -2894,21 +2873,18 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
     // Test with extra
     {
 
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize min_slack = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(hud::move(to_assign), min_slack);
 
             // Ensures we move all values correctly
             [[maybe_unused]] bool all_values_are_moved = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_moved = false;
                     break;
                 }
@@ -3575,8 +3551,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_same_type_differe
     }
 }
 
-// void move_assign(array<u_type_t, allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_same_allocator_no_min_slack)
+// void move_assign(vector<u_type_t, allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_bitwise_move_assignable_different_type_same_allocator_no_min_slack)
 {
     using type1 = i32;
     using type2 = u32;
@@ -3584,16 +3560,14 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
     static_assert(!std::is_same_v<type1, type2>);
     static_assert(hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept
-    {
-        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept {
+        hud::vector<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::vector<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -3601,20 +3575,17 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
             previous_free_count = assigned.allocator().free_count();
         }
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
@@ -3627,40 +3598,35 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
         hud_assert_eq(assigned.max_count(), elements_to_assign.size() + extra_to_assign);
 
         // Ensures we move all values correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
+        for (usize index = 0; index < assigned.count(); index++) {
             hud_assert_eq(assigned[index], static_cast<type1>(*(elements_to_assign.begin() + index)));
         }
 
-        // Allocation is not supposed to be done, the type is bitwise movable, the array should just take the allocation buffer ( move the pointer to the allocation )
-        // assigned array should free the buffer if he have one
+        // Allocation is not supposed to be done, the type is bitwise movable, the vector should just take the allocation buffer ( move the pointer to the allocation )
+        // assigned vector should free the buffer if he have one
         // Ensure we really stole the buffer and do not allocate
         hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
-        if ((elements_in_assigned.size() + extra) != 0)
-        {
+        if ((elements_in_assigned.size() + extra) != 0) {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
 
         // Ensure we really stole the buffer by just moving the pointer
         hud_assert_eq(reinterpret_cast<const uptr>(assigned.data()), to_assigned_buffer_address);
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
 
-        // Ensure the moved array was not freed and only one allocation was done ( at initilisation of the array )
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure the moved vector was not freed and only one allocation was done ( at initilisation of the vector )
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
         }
         hud_assert_eq(to_assign.allocator().free_count(), 0u);
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
             test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
@@ -3672,8 +3638,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
     }
 }
 
-// void move_assign(array<u_type_t, allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_same_allocator_with_min_slack)
+// void move_assign(vector<u_type_t, allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_bitwise_move_assignable_different_type_same_allocator_with_min_slack)
 {
     using type1 = i32;
     using type2 = u32;
@@ -3681,18 +3647,16 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
     static_assert(!std::is_same_v<type1, type2>);
     static_assert(hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept
-    {
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept {
         constexpr const usize min_slack = 1;
-        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::vector<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
 
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -3700,24 +3664,21 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
             previous_free_count = assigned.allocator().free_count();
         }
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
-        /****** void assign(array &&other, const usize min_slack = 0) */
+        /****** void assign(vector &&other, const usize min_slack = 0) */
         assigned.assign(hud::move(to_assign), min_slack);
 
         // We should have the same count as element to assign
@@ -3727,8 +3688,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
         hud_assert_ge(assigned.max_count(), elements_to_assign.size() + hud::max(extra_to_assign, min_slack));
 
         // Ensure elements are all copied correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
+        for (usize index = 0; index < assigned.count(); index++) {
             hud_assert_eq(assigned[index], static_cast<type1>(*(elements_to_assign.begin() + index)));
         }
 
@@ -3737,59 +3697,48 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
         // and if the size of the element in assigned buffer with the extra slack is not big enough to contains the element to assign + min_slack
         bool should_reallocate = false;
         bool is_allocation_stolen = extra_to_assign >= min_slack;
-        if (!is_allocation_stolen)
-        {
+        if (!is_allocation_stolen) {
             should_reallocate = elements_to_assign.size() + hud::max(extra_to_assign, min_slack) > elements_in_assigned.size() + extra;
         }
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
         }
 
         // We free the buffer in assigned element if we have elements and if we reallocate the buffer or we stole it
-        if (elements_in_assigned.size() + extra > 0 && (should_reallocate || is_allocation_stolen))
-        {
+        if (elements_in_assigned.size() + extra > 0 && (should_reallocate || is_allocation_stolen)) {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count);
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
-        // Ensure we don't do extra allocation in the assigned array
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we don't do extra allocation in the assigned vector
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
         }
-        // Ensure we freed the buffer in the assigned array except if we stole the buffer
-        if ((elements_to_assign.size() + extra_to_assign) > 0 && !is_allocation_stolen)
-        {
+        // Ensure we freed the buffer in the assigned vector except if we stole the buffer
+        if ((elements_to_assign.size() + extra_to_assign) > 0 && !is_allocation_stolen) {
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
 
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
     /** Run tests. */
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
             test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
@@ -3801,8 +3750,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_sa
     }
 }
 
-// void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_different_allocator_no_min_slack)
+// void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_bitwise_move_assignable_different_type_different_allocator_no_min_slack)
 {
     using type1 = i32;
     using type2 = u32;
@@ -3810,16 +3759,14 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
     static_assert(!std::is_same_v<type1, type2>);
     static_assert(hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept
-    {
-        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept {
+        hud::vector<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::vector<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -3827,20 +3774,17 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
             previous_free_count = assigned.allocator().free_count();
         }
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
@@ -3849,63 +3793,52 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
         // Number of element should be equal to the number of element in the std::initializer_list
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
-        // max_count must grown only if we don't have enough memory in assigned array
-        if (elements_to_assign.size() > (elements_in_assigned.size() + extra))
-        {
+        // max_count must grown only if we don't have enough memory in assigned vector
+        if (elements_to_assign.size() > (elements_in_assigned.size() + extra)) {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size());
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
 
         // Ensures we move all values correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
+        for (usize index = 0; index < assigned.count(); index++) {
             hud_assert_eq(assigned[index], static_cast<type1>(*(elements_to_assign.begin() + index)));
         }
 
         // If we have elements to assign, a new allocation should be done
-        if (elements_to_assign.size() > (elements_in_assigned.size() + extra))
-        {
+        if (elements_to_assign.size() > (elements_in_assigned.size() + extra)) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
         }
 
         // If we already have allocated data and the allocation size can't fit the assigned data, a free should be done
-        if ((elements_in_assigned.size() + extra) > 0 && (elements_in_assigned.size() + extra) < elements_to_assign.size())
-        {
+        if ((elements_in_assigned.size() + extra) > 0 && (elements_in_assigned.size() + extra) < elements_to_assign.size()) {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count);
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
 
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
             test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
@@ -3917,8 +3850,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
     }
 }
 
-// void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_different_allocator_with_min_slack)
+// void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_bitwise_move_assignable_different_type_different_allocator_with_min_slack)
 {
     using type1 = i32;
     using type2 = u32;
@@ -3926,19 +3859,17 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
     static_assert(!std::is_same_v<type1, type2>);
     static_assert(hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept
-    {
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) noexcept {
         constexpr const usize min_slack = 1;
 
-        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::vector<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
 
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -3946,24 +3877,21 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
             previous_free_count = assigned.allocator().free_count();
         }
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
-        /****** void assign(array &&other, const usize min_slack = 0) */
+        /****** void assign(vector &&other, const usize min_slack = 0) */
         assigned.assign(hud::move(to_assign), min_slack);
 
         // We should have the same count as element to assign
@@ -3973,8 +3901,7 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
         hud_assert_ge(assigned.max_count(), elements_to_assign.size() + min_slack);
 
         // Ensure elements are all copied correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
+        for (usize index = 0; index < assigned.count(); index++) {
             hud_assert_eq(assigned[index], static_cast<type1>(*(elements_to_assign.begin() + index)));
         }
 
@@ -3982,54 +3909,44 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
         // A reallocation is done only if the allocation can't be stolen ( Don't meet the min_slack requirements )
         // and if the size of the element in assigned buffer with the extra slack is not big enough to contains the element to assign + min_slack
         bool should_reallocate = elements_to_assign.size() + min_slack > elements_in_assigned.size() + extra;
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
         }
 
         // We free the buffer in assigned element if we have elements and if we reallocate the buffer or we stole it
-        if (elements_in_assigned.size() + extra > 0 && should_reallocate)
-        {
+        if (elements_in_assigned.size() + extra > 0 && should_reallocate) {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count);
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
-        // Ensure we don't do extra allocation in the assigned array
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we don't do extra allocation in the assigned vector
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
         }
-        // Ensure we freed the buffer in the assigned array except if we stole the buffer
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we freed the buffer in the assigned vector except if we stole the buffer
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
 
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
             test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
@@ -4041,41 +3958,36 @@ GTEST_TEST(array, move_assign_array_of_bitwise_move_assignable_different_type_di
     }
 }
 
-// void assign(array &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_same_allocator_no_min_slack)
+// void assign(vector &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_move_assignable_same_type_same_allocator_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_move_assignable_type;
     static_assert(!hud::is_bitwise_move_assignable_v<type>);
 
-    auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_to_assign) {
         // Ensure that all counters are set to 0
-        for (const type &element : elements_in_assigned)
-        {
+        for (const type &element : elements_in_assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const type &element : elements_to_assign)
-        {
+        for (const type &element : elements_to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
-        hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
+        hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const type &element : assigned)
-        {
+        for (const type &element : assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const type &element : to_assign)
-        {
+        for (const type &element : to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4084,8 +3996,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -4094,20 +4005,17 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
         }
 
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
@@ -4117,40 +4025,33 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we keep all allocated memory from the move pointer
-        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
-        {
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size()) {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size());
         }
 
         // Ensures we move all values correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
+        for (usize index = 0; index < assigned.count(); index++) {
             hud_assert_eq(assigned[index].id(), (elements_to_assign.begin() + index)->id());
         }
 
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
-            if (previous_allocation_count > 0)
-            {
+            if (previous_allocation_count > 0) {
                 hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
 
         // Ensures we move all values correctly
-        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // If the a reallocation was done ( We must an vector with a bigger capacity )
         // All elements are destroyed and the move constructor of all elements is called instead of move assignement
-        if (should_reallocate)
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        if (should_reallocate) {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
@@ -4160,19 +4061,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
         }
         // If not reallocation was done, all element in current count should call move assign,
         // else all elements assign after the count of elements before the assignement should be move construct
-        else
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        else {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type &element = assigned[index];
-                if (index < elements_in_assigned.size())
-                {
+                if (index < elements_in_assigned.size()) {
                     hud_assert_eq(element.move_assign_count(), 1u);
                     hud_assert_eq(element.move_constructor_count(), 0u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(element.move_assign_count(), 0u);
                     hud_assert_eq(element.move_constructor_count(), 1u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4180,28 +4077,24 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
             }
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
 
-        // Ensure the moved array was freed and only one allocation was done ( at initilisation of the array )
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure the moved vector was freed and only one allocation was done ( at initilisation of the vector )
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
             test_assign({type {10}, type {20}}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
@@ -4213,43 +4106,38 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
     }
 }
 
-// void assign(array &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_same_allocator_with_min_slack)
+// void assign(vector &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_move_assignable_same_type_same_allocator_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_move_assignable_type;
     static_assert(!hud::is_bitwise_move_assignable_v<type>);
 
-    auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_to_assign) {
         constexpr const usize min_slack = 1;
 
         // Ensure that all counters are set to 0
-        for (const type &element : elements_in_assigned)
-        {
+        for (const type &element : elements_in_assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const type &element : elements_to_assign)
-        {
+        for (const type &element : elements_to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
-        hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
+        hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const type &element : assigned)
-        {
+        for (const type &element : assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const type &element : to_assign)
-        {
+        for (const type &element : to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4259,8 +4147,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
         u32 previous_free_count = 0;
 
         // if we have elements to copy, then 1 allocation should be dones
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -4268,24 +4155,21 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
             previous_free_count = assigned.allocator().free_count();
         }
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
-        /****** void assign(array &&other, const usize min_slack = 0) */
+        /****** void assign(vector &&other, const usize min_slack = 0) */
         assigned.assign(hud::move(to_assign), min_slack);
 
         // We should have the same count as element to assign
@@ -4295,13 +4179,11 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
         hud_assert_ge(assigned.max_count(), elements_to_assign.size() + min_slack);
 
         // Ensure elements are all copied correctly
-        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // If the a reallocation was done ( We must an vector with a bigger capacity )
         // All elements are destroyed and the move constructor of all elements is called instead of move assignement
         bool should_reallocate = elements_to_assign.size() + min_slack > elements_in_assigned.size() + extra;
-        if (should_reallocate)
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        if (should_reallocate) {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
@@ -4311,19 +4193,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
         }
         // If not reallocation was done, all element in current count should call move assign,
         // else all elements assign after the count of elements before the assignement should be move construct
-        else
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        else {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type &element = assigned[index];
-                if (index < elements_in_assigned.size())
-                {
+                if (index < elements_in_assigned.size()) {
                     hud_assert_eq(element.move_assign_count(), 1u);
                     hud_assert_eq(element.move_constructor_count(), 0u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(element.move_assign_count(), 0u);
                     hud_assert_eq(element.move_constructor_count(), 1u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4334,54 +4212,44 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
         // As we move bitwise movable type we can just stole the pointer buffer
         // A reallocation is done only if the allocation can't be stolen ( Don't meet the min_slack requirements )
         // and if the size of the element in assigned buffer with the extra slack is not big enough to contains the element to assign + min_slack
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
         }
 
         // We free the buffer in assigned element if we have elements and if we reallocate the buffer or we stole it
-        if (elements_in_assigned.size() + extra > 0 && should_reallocate)
-        {
+        if (elements_in_assigned.size() + extra > 0 && should_reallocate) {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count);
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
-        // Ensure we don't do extra allocation in the assigned array
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we don't do extra allocation in the assigned vector
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
         }
-        // Ensure we freed the buffer in the assigned array except if we stole the buffer
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we freed the buffer in the assigned vector except if we stole the buffer
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
 
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
             test_assign({type {10}, type {20}}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
@@ -4393,41 +4261,36 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_sam
     }
 }
 
-// void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_different_allocator_no_min_slack)
+// void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_move_assignable_same_type_different_allocator_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_move_assignable_type;
     static_assert(!hud::is_bitwise_move_assignable_v<type>);
 
-    auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_to_assign) {
         // Ensure that all counters are set to 0
-        for (const type &element : elements_in_assigned)
-        {
+        for (const type &element : elements_in_assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const type &element : elements_to_assign)
-        {
+        for (const type &element : elements_to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
-        hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
+        hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const type &element : assigned)
-        {
+        for (const type &element : assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const type &element : to_assign)
-        {
+        for (const type &element : to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4436,8 +4299,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -4446,20 +4308,17 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
         }
 
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
@@ -4469,40 +4328,33 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we keep all allocated memory from the move pointer
-        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
-        {
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size()) {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size());
         }
 
         // Ensures we move all values correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
+        for (usize index = 0; index < assigned.count(); index++) {
             hud_assert_eq(assigned[index].id(), (elements_to_assign.begin() + index)->id());
         }
 
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
-            if (previous_allocation_count > 0)
-            {
+            if (previous_allocation_count > 0) {
                 hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
 
         // Ensures we move all values correctly
-        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // If the a reallocation was done ( We must an vector with a bigger capacity )
         // All elements are destroyed and the move constructor of all elements is called instead of move assignement
-        if (should_reallocate)
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        if (should_reallocate) {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
@@ -4512,19 +4364,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
         }
         // If not reallocation was done, all element in current count should call move assign,
         // else all elements assign after the count of elements before the assignement should be move construct
-        else
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        else {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type &element = assigned[index];
-                if (index < elements_in_assigned.size())
-                {
+                if (index < elements_in_assigned.size()) {
                     hud_assert_eq(element.move_assign_count(), 1u);
                     hud_assert_eq(element.move_constructor_count(), 0u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(element.move_assign_count(), 0u);
                     hud_assert_eq(element.move_constructor_count(), 1u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4532,28 +4380,24 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
             }
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
 
-        // Ensure the moved array was freed and only one allocation was done ( at initilisation of the array )
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure the moved vector was freed and only one allocation was done ( at initilisation of the vector )
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
             test_assign({type {10}, type {20}}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
@@ -4565,43 +4409,38 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
     }
 }
 
-// void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_different_allocator_with_min_slack)
+// void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_move_assignable_same_type_different_allocator_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_move_assignable_type;
     static_assert(!hud::is_bitwise_move_assignable_v<type>);
 
-    auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<type> elements_in_assigned, usize extra, std::initializer_list<type> elements_to_assign, usize extra_to_assign) {
         constexpr const usize min_slack = 1;
 
         // Ensure that all counters are set to 0
-        for (const type &element : elements_in_assigned)
-        {
+        for (const type &element : elements_in_assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const type &element : elements_to_assign)
-        {
+        for (const type &element : elements_to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
-        hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra);
+        hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const type &element : assigned)
-        {
+        for (const type &element : assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const type &element : to_assign)
-        {
+        for (const type &element : to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4611,8 +4450,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
         u32 previous_free_count = 0;
 
         // if we have elements to copy, then 1 allocation should be dones
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -4620,24 +4458,21 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
             previous_free_count = assigned.allocator().free_count();
         }
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
-        /****** void assign(array &&other, const usize min_slack = 0) */
+        /****** void assign(vector &&other, const usize min_slack = 0) */
         assigned.assign(hud::move(to_assign), min_slack);
 
         // We should have the same count as element to assign
@@ -4647,13 +4482,11 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
         hud_assert_ge(assigned.max_count(), elements_to_assign.size() + min_slack);
 
         // Ensure elements are all copied correctly
-        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // If the a reallocation was done ( We must an vector with a bigger capacity )
         // All elements are destroyed and the move constructor of all elements is called instead of move assignement
         bool should_reallocate = elements_to_assign.size() + min_slack > elements_in_assigned.size() + extra;
-        if (should_reallocate)
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        if (should_reallocate) {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
@@ -4663,19 +4496,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
         }
         // If not reallocation was done, all element in current count should call move assign,
         // else all elements assign after the count of elements before the assignement should be move construct
-        else
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        else {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type &element = assigned[index];
-                if (index < elements_in_assigned.size())
-                {
+                if (index < elements_in_assigned.size()) {
                     hud_assert_eq(element.move_assign_count(), 1u);
                     hud_assert_eq(element.move_constructor_count(), 0u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(element.move_assign_count(), 0u);
                     hud_assert_eq(element.move_constructor_count(), 1u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4686,54 +4515,44 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
         // As we move bitwise movable type we can just stole the pointer buffer
         // A reallocation is done only if the allocation can't be stolen ( Don't meet the min_slack requirements )
         // and if the size of the element in assigned buffer with the extra slack is not big enough to contains the element to assign + min_slack
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
         }
 
         // We free the buffer in assigned element if we have elements and if we reallocate the buffer or we stole it
-        if (elements_in_assigned.size() + extra > 0 && should_reallocate)
-        {
+        if (elements_in_assigned.size() + extra > 0 && should_reallocate) {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count);
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
-        // Ensure we don't do extra allocation in the assigned array
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we don't do extra allocation in the assigned vector
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
         }
-        // Ensure we freed the buffer in the assigned array except if we stole the buffer
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we freed the buffer in the assigned vector except if we stole the buffer
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
 
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
             test_assign({type {10}, type {20}}, extra, {type {0}, type {1}, type {2}, type {3}}, extra2);
@@ -4745,8 +4564,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_same_type_dif
     }
 }
 
-// void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type_same_allocator_no_min_slack)
+// void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_move_assignable_different_type_same_allocator_no_min_slack)
 {
 
     using type1 = hud_test::non_bitwise_move_assignable_type2;
@@ -4755,34 +4574,29 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     static_assert(!std::is_same_v<type1, type2>);
     static_assert(!hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) {
         // Ensure that all counters are set to 0
-        for (const type1 &element : elements_in_assigned)
-        {
+        for (const type1 &element : elements_in_assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const type2 &element : elements_to_assign)
-        {
+        for (const type2 &element : elements_to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::vector<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const type1 &element : assigned)
-        {
+        for (const type1 &element : assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const type2 &element : to_assign)
-        {
+        for (const type2 &element : to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4791,8 +4605,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -4801,20 +4614,17 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         }
 
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
@@ -4824,40 +4634,33 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we keep all allocated memory from the move pointer
-        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
-        {
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size()) {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size());
         }
 
         // Ensures we move all values correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
+        for (usize index = 0; index < assigned.count(); index++) {
             hud_assert_eq(assigned[index].id(), (elements_to_assign.begin() + index)->id());
         }
 
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
-            if (previous_allocation_count > 0)
-            {
+            if (previous_allocation_count > 0) {
                 hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
 
         // Ensures we move all values correctly
-        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // If the a reallocation was done ( We must an vector with a bigger capacity )
         // All elements are destroyed and the move constructor of all elements is called instead of move assignement
-        if (should_reallocate)
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        if (should_reallocate) {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type1 &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
@@ -4867,19 +4670,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         }
         // If not reallocation was done, all element in current count should call move assign,
         // else all elements assign after the count of elements before the assignement should be move construct
-        else
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        else {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type1 &element = assigned[index];
-                if (index < elements_in_assigned.size())
-                {
+                if (index < elements_in_assigned.size()) {
                     hud_assert_eq(element.move_assign_count(), 1u);
                     hud_assert_eq(element.move_constructor_count(), 0u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(element.move_assign_count(), 0u);
                     hud_assert_eq(element.move_constructor_count(), 1u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4887,28 +4686,24 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
             }
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
 
-        // Ensure the moved array was freed and only one allocation was done ( at initilisation of the array )
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure the moved vector was freed and only one allocation was done ( at initilisation of the vector )
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
             test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
@@ -4920,8 +4715,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     }
 }
 
-// void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type_same_allocator_with_min_slack)
+// void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_move_assignable_different_type_same_allocator_with_min_slack)
 {
 
     using type1 = hud_test::non_bitwise_move_assignable_type2;
@@ -4930,35 +4725,30 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     static_assert(!std::is_same_v<type1, type2>);
     static_assert(!hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) {
         constexpr const usize min_slack = 1;
         // Ensure that all counters are set to 0
-        for (const type1 &element : elements_in_assigned)
-        {
+        for (const type1 &element : elements_in_assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const type2 &element : elements_to_assign)
-        {
+        for (const type2 &element : elements_to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::vector<type2, hud_test::allocator_watcher<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const type1 &element : assigned)
-        {
+        for (const type1 &element : assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const type2 &element : to_assign)
-        {
+        for (const type2 &element : to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -4968,8 +4758,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         u32 previous_free_count = 0;
 
         // if we have elements to copy, then 1 allocation should be dones
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -4977,24 +4766,21 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
             previous_free_count = assigned.allocator().free_count();
         }
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
-        /****** void assign(array &&other, const usize min_slack = 0) */
+        /****** void assign(vector &&other, const usize min_slack = 0) */
         assigned.assign(hud::move(to_assign), min_slack);
 
         // We should have the same count as element to assign
@@ -5004,13 +4790,11 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         hud_assert_ge(assigned.max_count(), elements_to_assign.size() + min_slack);
 
         // Ensure elements are all copied correctly
-        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // If the a reallocation was done ( We must an vector with a bigger capacity )
         // All elements are destroyed and the move constructor of all elements is called instead of move assignement
         bool should_reallocate = elements_to_assign.size() + min_slack > elements_in_assigned.size() + extra;
-        if (should_reallocate)
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        if (should_reallocate) {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type1 &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
@@ -5020,19 +4804,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         }
         // If not reallocation was done, all element in current count should call move assign,
         // else all elements assign after the count of elements before the assignement should be move construct
-        else
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        else {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type2 &element = assigned[index];
-                if (index < elements_in_assigned.size())
-                {
+                if (index < elements_in_assigned.size()) {
                     hud_assert_eq(element.move_assign_count(), 1u);
                     hud_assert_eq(element.move_constructor_count(), 0u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(element.move_assign_count(), 0u);
                     hud_assert_eq(element.move_constructor_count(), 1u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -5043,54 +4823,44 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         // As we move bitwise movable type we can just stole the pointer buffer
         // A reallocation is done only if the allocation can't be stolen ( Don't meet the min_slack requirements )
         // and if the size of the element in assigned buffer with the extra slack is not big enough to contains the element to assign + min_slack
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
         }
 
         // We free the buffer in assigned element if we have elements and if we reallocate the buffer or we stole it
-        if (elements_in_assigned.size() + extra > 0 && should_reallocate)
-        {
+        if (elements_in_assigned.size() + extra > 0 && should_reallocate) {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count);
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
-        // Ensure we don't do extra allocation in the assigned array
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we don't do extra allocation in the assigned vector
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
         }
-        // Ensure we freed the buffer in the assigned array except if we stole the buffer
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we freed the buffer in the assigned vector except if we stole the buffer
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
 
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
             test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
@@ -5102,8 +4872,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     }
 }
 
-// void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type_different_allocator_no_min_slack)
+// void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_move_assignable_different_type_different_allocator_no_min_slack)
 {
 
     using type1 = hud_test::non_bitwise_move_assignable_type2;
@@ -5112,34 +4882,29 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     static_assert(!std::is_same_v<type1, type2>);
     static_assert(!hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) {
         // Ensure that all counters are set to 0
-        for (const type1 &element : elements_in_assigned)
-        {
+        for (const type1 &element : elements_in_assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const type2 &element : elements_to_assign)
-        {
+        for (const type2 &element : elements_to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::vector<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const type1 &element : assigned)
-        {
+        for (const type1 &element : assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const type2 &element : to_assign)
-        {
+        for (const type2 &element : to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -5148,8 +4913,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -5158,20 +4922,17 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         }
 
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
@@ -5181,40 +4942,33 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we keep all allocated memory from the move pointer
-        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
-        {
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size()) {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size());
         }
 
         // Ensures we move all values correctly
-        for (usize index = 0; index < assigned.count(); index++)
-        {
+        for (usize index = 0; index < assigned.count(); index++) {
             hud_assert_eq(assigned[index].id(), (elements_to_assign.begin() + index)->id());
         }
 
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
-            if (previous_allocation_count > 0)
-            {
+            if (previous_allocation_count > 0) {
                 hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
 
         // Ensures we move all values correctly
-        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // If the a reallocation was done ( We must an vector with a bigger capacity )
         // All elements are destroyed and the move constructor of all elements is called instead of move assignement
-        if (should_reallocate)
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        if (should_reallocate) {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type1 &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
@@ -5224,19 +4978,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         }
         // If not reallocation was done, all element in current count should call move assign,
         // else all elements assign after the count of elements before the assignement should be move construct
-        else
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        else {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type1 &element = assigned[index];
-                if (index < elements_in_assigned.size())
-                {
+                if (index < elements_in_assigned.size()) {
                     hud_assert_eq(element.move_assign_count(), 1u);
                     hud_assert_eq(element.move_constructor_count(), 0u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(element.move_assign_count(), 0u);
                     hud_assert_eq(element.move_constructor_count(), 1u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -5244,28 +4994,24 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
             }
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
 
-        // Ensure the moved array was freed and only one allocation was done ( at initilisation of the array )
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure the moved vector was freed and only one allocation was done ( at initilisation of the vector )
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
             test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
@@ -5277,8 +5023,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     }
 }
 
-// void assign(array<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_type_different_allocator_with_min_slack)
+// void assign(vector<u_type_t, u_allocator_t> &&other, const usize min_slack = 0)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_move_assignable_different_type_different_allocator_with_min_slack)
 {
 
     using type1 = hud_test::non_bitwise_move_assignable_type2;
@@ -5287,36 +5033,31 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     static_assert(!std::is_same_v<type1, type2>);
     static_assert(!hud::is_bitwise_copy_assignable_v<type2, type1>);
 
-    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<type1> elements_in_assigned, usize extra, std::initializer_list<type2> elements_to_assign, usize extra_to_assign) {
         constexpr const usize min_slack = 1;
 
         // Ensure that all counters are set to 0
-        for (const type1 &element : elements_in_assigned)
-        {
+        for (const type1 &element : elements_in_assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
-        for (const type2 &element : elements_to_assign)
-        {
+        for (const type2 &element : elements_to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 0u);
         }
 
-        hud::array<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
-        hud::array<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
+        hud::vector<type1, hud_test::allocator_watcher<alignof(type1)>> assigned(elements_in_assigned, extra);
+        hud::vector<type2, hud_test::allocator_watcher_2<alignof(type2)>> to_assign(elements_to_assign, extra_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const type1 &element : assigned)
-        {
+        for (const type1 &element : assigned) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
         }
-        for (const type2 &element : to_assign)
-        {
+        for (const type2 &element : to_assign) {
             hud_assert_eq(element.move_assign_count(), 0u);
             hud_assert_eq(element.move_constructor_count(), 0u);
             hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -5326,8 +5067,7 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         u32 previous_free_count = 0;
 
         // if we have elements to copy, then 1 allocation should be dones
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -5335,24 +5075,21 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
             previous_free_count = assigned.allocator().free_count();
         }
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
         hud_assert_eq(assigned.max_count(), static_cast<usize>(elements_in_assigned.size() + extra));
         const uptr assigned_buffer_address = reinterpret_cast<const uptr>(assigned.data());
         const uptr to_assigned_buffer_address = reinterpret_cast<const uptr>(to_assign.data());
-        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0)
-        {
+        if (assigned_buffer_address != 0 && to_assigned_buffer_address != 0) {
             hud_assert_ne(assigned_buffer_address, to_assigned_buffer_address);
         }
 
-        /****** void assign(array &&other, const usize min_slack = 0) */
+        /****** void assign(vector &&other, const usize min_slack = 0) */
         assigned.assign(hud::move(to_assign), min_slack);
 
         // We should have the same count as element to assign
@@ -5362,13 +5099,11 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         hud_assert_ge(assigned.max_count(), elements_to_assign.size() + min_slack);
 
         // Ensure elements are all copied correctly
-        // If the a reallocation was done ( We must an array with a bigger capacity )
+        // If the a reallocation was done ( We must an vector with a bigger capacity )
         // All elements are destroyed and the move constructor of all elements is called instead of move assignement
         bool should_reallocate = elements_to_assign.size() + min_slack > elements_in_assigned.size() + extra;
-        if (should_reallocate)
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        if (should_reallocate) {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type1 &element = assigned[index];
                 hud_assert_eq(element.id(), (elements_to_assign.begin() + index)->id());
                 hud_assert_eq(element.move_assign_count(), 0u);
@@ -5378,19 +5113,15 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         }
         // If not reallocation was done, all element in current count should call move assign,
         // else all elements assign after the count of elements before the assignement should be move construct
-        else
-        {
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+        else {
+            for (usize index = 0; index < assigned.count(); index++) {
                 const type2 &element = assigned[index];
-                if (index < elements_in_assigned.size())
-                {
+                if (index < elements_in_assigned.size()) {
                     hud_assert_eq(element.move_assign_count(), 1u);
                     hud_assert_eq(element.move_constructor_count(), 0u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(element.move_assign_count(), 0u);
                     hud_assert_eq(element.move_constructor_count(), 1u);
                     hud_assert_eq(element.copy_constructor_count(), 1u);
@@ -5401,54 +5132,44 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
         // As we move bitwise movable type we can just stole the pointer buffer
         // A reallocation is done only if the allocation can't be stolen ( Don't meet the min_slack requirements )
         // and if the size of the element in assigned buffer with the extra slack is not big enough to contains the element to assign + min_slack
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count);
         }
 
         // We free the buffer in assigned element if we have elements and if we reallocate the buffer or we stole it
-        if (elements_in_assigned.size() + extra > 0 && should_reallocate)
-        {
+        if (elements_in_assigned.size() + extra > 0 && should_reallocate) {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.allocator().free_count(), previous_free_count);
         }
 
-        // Ensure that the moved array is set to empty
+        // Ensure that the moved vector is set to empty
         hud_assert_eq(to_assign.count(), 0u);
         hud_assert_eq(to_assign.max_count(), 0u);
         hud_assert_eq(to_assign.data(), nullptr);
-        // Ensure we don't do extra allocation in the assigned array
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we don't do extra allocation in the assigned vector
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().allocation_count(), 1u);
         }
-        else
-        {
+        else {
             hud_assert_eq(to_assign.allocator().allocation_count(), 0u);
         }
-        // Ensure we freed the buffer in the assigned array except if we stole the buffer
-        if ((elements_to_assign.size() + extra_to_assign) > 0)
-        {
+        // Ensure we freed the buffer in the assigned vector except if we stole the buffer
+        if ((elements_to_assign.size() + extra_to_assign) > 0) {
             hud_assert_eq(to_assign.allocator().free_count(), 1u);
         }
-        else
-        {
+        else {
 
             hud_assert_eq(to_assign.allocator().free_count(), 0u);
         }
     };
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
-        for (usize extra2 = 0; extra2 < 5; extra2++)
-        {
+    for (usize extra = 0; extra < 5; extra++) {
+        for (usize extra2 = 0; extra2 < 5; extra2++) {
             test_assign({}, extra, {}, extra2);
             test_assign({}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
             test_assign({type1 {10}, type1 {20}}, extra, {type2 {0}, type2 {1}, type2 {2}, type2 {3}}, extra2);
@@ -5460,30 +5181,26 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_move_assignable_different_typ
     }
 }
 
-// array &operator=(array &&other)
-GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_no_min_slack)
+// vector &operator=(vector &&other)
+GTEST_TEST(vector, move_assign_array_same_allocator_call_destructor_of_elements_no_min_slack)
 {
 
-    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign) {
         // Ensure that all destructors is not called
-        for (i32 *destructor_counter : elements_in_assigned)
-        {
+        for (i32 *destructor_counter : elements_in_assigned) {
             hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
-        for (i32 *destructor_counter : elements_to_assign)
-        {
+        for (i32 *destructor_counter : elements_to_assign) {
             hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
 
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
+        hud::vector<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
+        hud::vector<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
-        {
+        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned) {
             hud_assert_ne(element.ptr(), nullptr);
             hud_assert_eq(*element.ptr(), 0);
         }
@@ -5491,8 +5208,7 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_n
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // If we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -5501,12 +5217,10 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_n
         }
 
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
@@ -5515,13 +5229,11 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_n
         assigned.assign(hud::move(to_assign));
 
         // Allocation should never be released if already done
-        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty array
-        if ((elements_in_assigned.size() + extra) == 0 && elements_to_assign.size() == 0)
-        {
+        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty vector
+        if ((elements_in_assigned.size() + extra) == 0 && elements_to_assign.size() == 0) {
             hud_assert_eq(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_ne(assigned.data(), nullptr);
         }
 
@@ -5529,22 +5241,18 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_n
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we do no reallocate for less memory
-        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
-        {
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size()) {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size());
         }
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
-            if (previous_allocation_count > 0)
-            {
+            if (previous_allocation_count > 0) {
                 hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
@@ -5552,32 +5260,25 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_n
         // Ensure we called destructors
         // If the a reallocation was done,
         // All elements are destroyed
-        if (should_reallocate)
-        {
-            for (const i32 *element : elements_in_assigned)
-            {
+        if (should_reallocate) {
+            for (const i32 *element : elements_in_assigned) {
                 hud_assert_eq(*element, 1);
             }
         }
         // If no reallocation was done, all elements in current count should not be destroyed
-        else
-        {
-            for (usize index = 0; index < elements_in_assigned.size(); index++)
-            {
-                if (index < elements_to_assign.size())
-                {
+        else {
+            for (usize index = 0; index < elements_in_assigned.size(); index++) {
+                if (index < elements_to_assign.size()) {
                     hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 0);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 1);
                 }
             }
         }
 
         // Ensure the copied elements are not destroyed
-        for (usize index = 0; index < elements_to_assign.size(); index++)
-        {
+        for (usize index = 0; index < elements_to_assign.size(); index++) {
             hud_assert_eq(*(*(elements_to_assign.begin() + index)), 0);
         }
     };
@@ -5585,8 +5286,7 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_n
     i32 assigned[5];
     i32 to_assign[5];
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
+    for (usize extra = 0; extra < 5; extra++) {
         test_assign({}, extra, {});
         test_assign({}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
         test_assign({&assigned[0], &assigned[1]}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
@@ -5597,31 +5297,27 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_n
     }
 }
 
-// array &operator=(array &&other)
-GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_with_min_slack)
+// vector &operator=(vector &&other)
+GTEST_TEST(vector, move_assign_array_same_allocator_call_destructor_of_elements_with_min_slack)
 {
 
-    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign) {
         constexpr const usize min_slack = 1;
         // Ensure that all destructors is not called
-        for (i32 *destructor_counter : elements_in_assigned)
-        {
+        for (i32 *destructor_counter : elements_in_assigned) {
             hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
-        for (i32 *destructor_counter : elements_to_assign)
-        {
+        for (i32 *destructor_counter : elements_to_assign) {
             hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
 
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
+        hud::vector<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
+        hud::vector<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
-        {
+        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned) {
             hud_assert_ne(element.ptr(), nullptr);
             hud_assert_eq(*element.ptr(), 0);
         }
@@ -5629,8 +5325,7 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_w
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // If we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -5639,12 +5334,10 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_w
         }
 
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
@@ -5653,13 +5346,11 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_w
         assigned.assign(hud::move(to_assign), min_slack);
 
         // Allocation should never be released if already done
-        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty array
-        if ((elements_in_assigned.size() + extra) == 0 && (elements_to_assign.size() + min_slack) == 0)
-        {
+        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty vector
+        if ((elements_in_assigned.size() + extra) == 0 && (elements_to_assign.size() + min_slack) == 0) {
             hud_assert_eq(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_ne(assigned.data(), nullptr);
         }
 
@@ -5667,22 +5358,18 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_w
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we do no reallocate for less memory
-        if (elements_in_assigned.size() + extra >= elements_to_assign.size() + min_slack)
-        {
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size() + min_slack) {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size() + min_slack);
         }
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
         const bool should_reallocate = (elements_to_assign.size() + min_slack) > (elements_in_assigned.size() + extra);
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
-            if (previous_allocation_count > 0)
-            {
+            if (previous_allocation_count > 0) {
                 hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
@@ -5690,32 +5377,25 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_w
         // Ensure we called destructors
         // If the a reallocation was done,
         // All elements are destroyed
-        if (should_reallocate)
-        {
-            for (const i32 *element : elements_in_assigned)
-            {
+        if (should_reallocate) {
+            for (const i32 *element : elements_in_assigned) {
                 hud_assert_eq(*element, 1);
             }
         }
         // If no reallocation was done, all elements in current count should not be destroyed
-        else
-        {
-            for (usize index = 0; index < elements_in_assigned.size(); index++)
-            {
-                if (index < elements_to_assign.size())
-                {
+        else {
+            for (usize index = 0; index < elements_in_assigned.size(); index++) {
+                if (index < elements_to_assign.size()) {
                     hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 0);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 1);
                 }
             }
         }
 
         // Ensure the copied elements are not destroyed
-        for (usize index = 0; index < elements_to_assign.size(); index++)
-        {
+        for (usize index = 0; index < elements_to_assign.size(); index++) {
             hud_assert_eq(*(*(elements_to_assign.begin() + index)), 0);
         }
     };
@@ -5723,8 +5403,7 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_w
     i32 assigned[5];
     i32 to_assign[5];
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
+    for (usize extra = 0; extra < 5; extra++) {
         test_assign({}, extra, {});
         test_assign({}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
         test_assign({&assigned[0], &assigned[1]}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
@@ -5735,30 +5414,26 @@ GTEST_TEST(array, move_assign_array_same_allocator_call_destructor_of_elements_w
     }
 }
 
-// array &operator=(array<u_type_t, u_allocator_t> &&other)
-GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_elements_no_min_slack)
+// vector &operator=(vector<u_type_t, u_allocator_t> &&other)
+GTEST_TEST(vector, move_assign_array_different_allocator_call_destructor_of_elements_no_min_slack)
 {
 
-    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign) {
         // Ensure that all destructors is not called
-        for (i32 *destructor_counter : elements_in_assigned)
-        {
+        for (i32 *destructor_counter : elements_in_assigned) {
             hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
-        for (i32 *destructor_counter : elements_to_assign)
-        {
+        for (i32 *destructor_counter : elements_to_assign) {
             hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
 
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
+        hud::vector<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
+        hud::vector<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
-        {
+        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned) {
             hud_assert_ne(element.ptr(), nullptr);
             hud_assert_eq(*element.ptr(), 0);
         }
@@ -5766,8 +5441,7 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -5776,12 +5450,10 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         }
 
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
@@ -5790,13 +5462,11 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         assigned.assign(hud::move(to_assign));
 
         // Allocation should never be released if already done
-        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty array
-        if ((elements_in_assigned.size() + extra) == 0 && elements_to_assign.size() == 0)
-        {
+        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty vector
+        if ((elements_in_assigned.size() + extra) == 0 && elements_to_assign.size() == 0) {
             hud_assert_eq(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_ne(assigned.data(), nullptr);
         }
 
@@ -5804,22 +5474,18 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we do no reallocate for less memory
-        if (elements_in_assigned.size() + extra >= elements_to_assign.size())
-        {
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size()) {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size());
         }
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
         const bool should_reallocate = elements_to_assign.size() > (elements_in_assigned.size() + extra);
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
-            if (previous_allocation_count > 0)
-            {
+            if (previous_allocation_count > 0) {
                 hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
@@ -5827,32 +5493,25 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         // Ensure we called destructors
         // If the a reallocation was done,
         // All elements are destroyed
-        if (should_reallocate)
-        {
-            for (const i32 *element : elements_in_assigned)
-            {
+        if (should_reallocate) {
+            for (const i32 *element : elements_in_assigned) {
                 hud_assert_eq(*element, 1);
             }
         }
         // If no reallocation was done, all elements in current count should not be destroyed
-        else
-        {
-            for (usize index = 0; index < elements_in_assigned.size(); index++)
-            {
-                if (index < elements_to_assign.size())
-                {
+        else {
+            for (usize index = 0; index < elements_in_assigned.size(); index++) {
+                if (index < elements_to_assign.size()) {
                     hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 0);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 1);
                 }
             }
         }
 
         // Ensure the copied elements are not destroyed
-        for (usize index = 0; index < elements_to_assign.size(); index++)
-        {
+        for (usize index = 0; index < elements_to_assign.size(); index++) {
             hud_assert_eq(*(*(elements_to_assign.begin() + index)), 0);
         }
     };
@@ -5860,8 +5519,7 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
     i32 assigned[5];
     i32 to_assign[5];
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
+    for (usize extra = 0; extra < 5; extra++) {
         test_assign({}, extra, {});
         test_assign({}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
         test_assign({&assigned[0], &assigned[1]}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
@@ -5872,31 +5530,27 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
     }
 }
 
-// array &operator=(array<u_type_t, u_allocator_t> &&other)
-GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_elements_with_min_slack)
+// vector &operator=(vector<u_type_t, u_allocator_t> &&other)
+GTEST_TEST(vector, move_assign_array_different_allocator_call_destructor_of_elements_with_min_slack)
 {
 
-    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign)
-    {
+    auto test_assign = [](std::initializer_list<i32 *> &&elements_in_assigned, usize extra, std::initializer_list<i32 *> elements_to_assign) {
         constexpr const usize min_slack = 1;
         // Ensure that all destructors is not called
-        for (i32 *destructor_counter : elements_in_assigned)
-        {
+        for (i32 *destructor_counter : elements_in_assigned) {
             hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
-        for (i32 *destructor_counter : elements_to_assign)
-        {
+        for (i32 *destructor_counter : elements_to_assign) {
             hud_assert_ne(destructor_counter, nullptr);
             *destructor_counter = 0;
         }
 
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
-        hud::array<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
+        hud::vector<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> assigned(elements_in_assigned, extra);
+        hud::vector<hud_test::SetBoolToTrueWhenDestroyed, hud_test::allocator_watcher_2<alignof(hud_test::SetBoolToTrueWhenDestroyed)>> to_assign(elements_to_assign);
 
         // Ensure assigned copy constructor is set to 1
-        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned)
-        {
+        for (const hud_test::SetBoolToTrueWhenDestroyed &element : assigned) {
             hud_assert_ne(element.ptr(), nullptr);
             hud_assert_eq(*element.ptr(), 0);
         }
@@ -5904,8 +5558,7 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         u32 previous_allocation_count = 0;
         u32 previous_free_count = 0;
         // if we have elements to copy, then 1 allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             // Ensure we are allocating only one time
             hud_assert_eq(assigned.allocator().allocation_count(), 1u);
             hud_assert_eq(assigned.allocator().free_count(), 0u);
@@ -5914,12 +5567,10 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         }
 
         // If we have elements inside allocation should be done
-        if ((elements_in_assigned.size() + extra) > 0)
-        {
+        if ((elements_in_assigned.size() + extra) > 0) {
             hud_assert_ne(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.data(), nullptr);
         }
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_in_assigned.size()));
@@ -5928,13 +5579,11 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         assigned.assign(hud::move(to_assign), min_slack);
 
         // Allocation should never be released if already done
-        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty array
-        if ((elements_in_assigned.size() + extra) == 0 && (elements_to_assign.size() + min_slack) == 0)
-        {
+        // The only case we have no allocation at all is when assigning empty std::initializer_list to empty vector
+        if ((elements_in_assigned.size() + extra) == 0 && (elements_to_assign.size() + min_slack) == 0) {
             hud_assert_eq(assigned.data(), nullptr);
         }
-        else
-        {
+        else {
             hud_assert_ne(assigned.data(), nullptr);
         }
 
@@ -5942,22 +5591,18 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         hud_assert_eq(assigned.count(), static_cast<usize>(elements_to_assign.size()));
 
         // Ensure we do no reallocate for less memory
-        if (elements_in_assigned.size() + extra >= elements_to_assign.size() + min_slack)
-        {
+        if (elements_in_assigned.size() + extra >= elements_to_assign.size() + min_slack) {
             hud_assert_eq(assigned.max_count(), elements_in_assigned.size() + extra);
         }
-        else
-        {
+        else {
             hud_assert_eq(assigned.max_count(), elements_to_assign.size() + min_slack);
         }
 
         // Allocation is supposed to reallocate if we assign more elements than was allocated
         const bool should_reallocate = elements_to_assign.size() + min_slack > (elements_in_assigned.size() + extra);
-        if (should_reallocate)
-        {
+        if (should_reallocate) {
             hud_assert_eq(assigned.allocator().allocation_count(), previous_allocation_count + 1);
-            if (previous_allocation_count > 0)
-            {
+            if (previous_allocation_count > 0) {
                 hud_assert_eq(assigned.allocator().free_count(), previous_free_count + 1);
             }
         }
@@ -5965,32 +5610,25 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
         // Ensure we called destructors
         // If the a reallocation was done,
         // All elements are destroyed
-        if (should_reallocate)
-        {
-            for (const i32 *element : elements_in_assigned)
-            {
+        if (should_reallocate) {
+            for (const i32 *element : elements_in_assigned) {
                 hud_assert_eq(*element, 1);
             }
         }
         // If no reallocation was done, all elements in current count should not be destroyed
-        else
-        {
-            for (usize index = 0; index < elements_in_assigned.size(); index++)
-            {
-                if (index < elements_to_assign.size())
-                {
+        else {
+            for (usize index = 0; index < elements_in_assigned.size(); index++) {
+                if (index < elements_to_assign.size()) {
                     hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 0);
                 }
-                else
-                {
+                else {
                     hud_assert_eq(*(*(elements_in_assigned.begin() + index)), 1);
                 }
             }
         }
 
         // Ensure the copied elements are not destroyed
-        for (usize index = 0; index < elements_to_assign.size(); index++)
-        {
+        for (usize index = 0; index < elements_to_assign.size(); index++) {
             hud_assert_eq(*(*(elements_to_assign.begin() + index)), 0);
         }
     };
@@ -5998,8 +5636,7 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
     i32 assigned[5];
     i32 to_assign[5];
 
-    for (usize extra = 0; extra < 5; extra++)
-    {
+    for (usize extra = 0; extra < 5; extra++) {
         test_assign({}, extra, {});
         test_assign({}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
         test_assign({&assigned[0], &assigned[1]}, extra, {&to_assign[0], &to_assign[1], &to_assign[2], &to_assign[3]});
@@ -6010,8 +5647,8 @@ GTEST_TEST(array, move_assign_array_different_allocator_call_destructor_of_eleme
     }
 }
 
-// array &operator=(array &&other)
-GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self_no_min_slack)
+// vector &operator=(vector &&other)
+GTEST_TEST(vector, move_assign_array_of_bitwise_copy_assignable_to_self_no_min_slack)
 {
 
     using type = i32;
@@ -6020,9 +5657,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self_no_min_sl
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
+        const auto test = [](std::initializer_list<type> elements_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
 
             const type *data_before = arr.data();
             arr.assign(hud::move(arr));
@@ -6081,9 +5717,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self_no_min_sl
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
 
             const type *data_before = arr.data();
             arr.assign(hud::move(arr));
@@ -6173,8 +5808,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self_no_min_sl
     }
 }
 
-// array &operator=(array &&other)
-GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self_with_min_slack)
+// vector &operator=(vector &&other)
+GTEST_TEST(vector, move_assign_array_of_bitwise_copy_assignable_to_self_with_min_slack)
 {
 
     using type = i32;
@@ -6183,9 +5818,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self_with_min_
     constexpr const usize min_slack = 1;
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
+        const auto test = [](std::initializer_list<type> elements_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
 
             const type *data_before = arr.data();
             arr.assign(hud::move(arr), min_slack);
@@ -6244,9 +5878,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self_with_min_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
 
             const type *data_before = arr.data();
             arr.assign(hud::move(arr), min_slack);
@@ -6336,8 +5969,8 @@ GTEST_TEST(array, move_assign_array_of_bitwise_copy_assignable_to_self_with_min_
     }
 }
 
-// array &operator=(array &&other)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self_no_min_slack)
+// vector &operator=(vector &&other)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_copy_assignable_to_self_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_move_assignable_type;
@@ -6345,23 +5978,20 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self_no_mi
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
             const type *data_before = arr.data();
             arr.assign(hud::move(arr));
 
             // Ensures we copy all values correctly
             bool no_move_or_assign_are_called = true;
-            for (usize index = 0; index < arr.count(); index++)
-            {
+            for (usize index = 0; index < arr.count(); index++) {
 
                 // Ensure we correctly call copy constructors
                 // We do not reallocate
                 // For element that are already here, we call operator=
                 // LCOV_EXCL_START
-                if (arr[index].copy_assign_count() != 0u && arr[index].move_assign_count() != 0u)
-                {
+                if (arr[index].copy_assign_count() != 0u && arr[index].move_assign_count() != 0u) {
                     no_move_or_assign_are_called = false;
                     break;
                 }
@@ -6427,22 +6057,19 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self_no_mi
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
             const type *data_before = arr.data();
             arr.assign(hud::move(arr));
 
             // Ensures we copy all values correctly
             bool no_move_or_assign_are_called = true;
-            for (usize index = 0; index < arr.count(); index++)
-            {
+            for (usize index = 0; index < arr.count(); index++) {
                 // Ensure we correctly call copy constructors
                 // We do not reallocate
                 // For element that are already here, we call operator=
                 // LCOV_EXCL_START
-                if (arr[index].copy_assign_count() != 0u && arr[index].move_assign_count() != 0u)
-                {
+                if (arr[index].copy_assign_count() != 0u && arr[index].move_assign_count() != 0u) {
                     no_move_or_assign_are_called = false;
                     break;
                 }
@@ -6543,8 +6170,8 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self_no_mi
     }
 }
 
-// array &operator=(array &&other)
-GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self_with_min_slack)
+// vector &operator=(vector &&other)
+GTEST_TEST(vector, move_assign_array_of_non_bitwise_copy_assignable_to_self_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_move_assignable_type;
@@ -6552,23 +6179,20 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self_with_
     constexpr const usize min_slack = 1;
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
             const type *data_before = arr.data();
             arr.assign(hud::move(arr), min_slack);
 
             // Ensures we copy all values correctly
             bool no_move_or_assign_are_called = true;
-            for (usize index = 0; index < arr.count(); index++)
-            {
+            for (usize index = 0; index < arr.count(); index++) {
 
                 // Ensure we correctly call copy constructors
                 // We do not reallocate
                 // For element that are already here, we call operator=
                 // LCOV_EXCL_START
-                if (arr[index].copy_assign_count() != 0u && arr[index].move_assign_count() != 0u)
-                {
+                if (arr[index].copy_assign_count() != 0u && arr[index].move_assign_count() != 0u) {
                     no_move_or_assign_are_called = false;
                     break;
                 }
@@ -6634,22 +6258,19 @@ GTEST_TEST(array, move_assign_array_of_non_bitwise_copy_assignable_to_self_with_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
             const type *data_before = arr.data();
             arr.assign(hud::move(arr), min_slack);
 
             // Ensures we copy all values correctly
             bool no_move_or_assign_are_called = true;
-            for (usize index = 0; index < arr.count(); index++)
-            {
+            for (usize index = 0; index < arr.count(); index++) {
                 // Ensure we correctly call copy constructors
                 // We do not reallocate
                 // For element that are already here, we call operator=
                 // LCOV_EXCL_START
-                if (arr[index].copy_assign_count() != 0u && arr[index].move_assign_count() != 0u)
-                {
+                if (arr[index].copy_assign_count() != 0u && arr[index].move_assign_count() != 0u) {
                     no_move_or_assign_are_called = false;
                     break;
                 }

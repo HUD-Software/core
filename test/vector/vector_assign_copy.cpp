@@ -1,9 +1,9 @@
-#include <core/containers/array.h>
+#include <core/containers/vector.h>
 #include "../misc/allocator_watcher.h"
 #include "../misc/leak_guard.h"
 
-// void assign(const array &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator_no_min_slack)
+// void assign(const vector &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator_no_min_slack)
 {
 
     using type = i32;
@@ -12,20 +12,17 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -150,20 +147,17 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -585,8 +579,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
     }
 }
 
-// void assign(const array &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator_with_min_slack)
+// void assign(const vector &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_same_type_same_allocator_with_min_slack)
 {
     using type = i32;
 
@@ -594,21 +588,18 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -733,21 +724,18 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -1169,8 +1157,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_same_al
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator_no_min_slack)
 {
     using type = i32;
 
@@ -1178,20 +1166,17 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -1316,20 +1301,17 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -1751,8 +1733,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_same_type_different_allocator_with_min_slack)
 {
     using type = i32;
 
@@ -1760,21 +1742,18 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, std::initializer_list<type> elements_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -1899,22 +1878,19 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned, std::initializer_list<type> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize extra_assign = 1;
 
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -2336,8 +2312,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_same_type_differe
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator_no_min_slack)
 {
 
     using source_type = i32;
@@ -2348,20 +2324,17 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
-        {
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign) {
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -2486,20 +2459,17 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -2921,8 +2891,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_different_type_same_allocator_with_min_slack)
 {
 
     using source_type = i32;
@@ -2933,21 +2903,18 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign);
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -3072,21 +3039,18 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -3508,8 +3472,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_sa
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator_no_min_slack)
 {
 
     using source_type = i32;
@@ -3520,20 +3484,17 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
-        {
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign) {
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -3658,20 +3619,17 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -4093,8 +4051,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_different_type_different_allocator_with_min_slack)
 {
 
     using source_type = i32;
@@ -4105,21 +4063,18 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, std::initializer_list<source_type> elements_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign);
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -4244,21 +4199,18 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<destination_type> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<source_type> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
             // Ensures we copy all values correctly
             [[maybe_unused]] bool all_values_are_copied = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
-                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index)))
-                {
+                if (assigned[index] != static_cast<destination_type>(*(elements_to_assign.begin() + index))) {
                     all_values_are_copied = false;
                     break;
                 }
@@ -4680,8 +4632,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_different_type_di
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -4689,10 +4641,9 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign);
 
@@ -4700,43 +4651,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if (elements_in_assigned.size() < elements_to_assign.size())
-                {
+                if (elements_in_assigned.size() < elements_to_assign.size()) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -4902,10 +4844,9 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign);
 
@@ -4913,43 +4854,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if ((elements_in_assigned.size() + extra_in_assigned) < elements_to_assign.size())
-                {
+                if ((elements_in_assigned.size() + extra_in_assigned) < elements_to_assign.size()) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -5520,8 +5452,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_same_type_same_allocator_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -5529,11 +5461,10 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
@@ -5541,43 +5472,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if (elements_in_assigned.size() < (elements_to_assign.size() + extra_assign))
-                {
+                if (elements_in_assigned.size() < (elements_to_assign.size() + extra_assign)) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -5743,11 +5665,10 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
@@ -5755,43 +5676,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if ((elements_in_assigned.size() + extra_in_assigned) < (elements_to_assign.size() + extra_assign))
-                {
+                if ((elements_in_assigned.size() + extra_in_assigned) < (elements_to_assign.size() + extra_assign)) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -6362,8 +6274,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_sam
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -6371,10 +6283,9 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign);
 
@@ -6382,43 +6293,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if (elements_in_assigned.size() < elements_to_assign.size())
-                {
+                if (elements_in_assigned.size() < elements_to_assign.size()) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -6584,10 +6486,9 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign);
 
@@ -6595,43 +6496,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if ((elements_in_assigned.size() + extra_in_assigned) < elements_to_assign.size())
-                {
+                if ((elements_in_assigned.size() + extra_in_assigned) < elements_to_assign.size()) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -7202,8 +7094,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_same_type_different_allocator_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -7211,11 +7103,10 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
@@ -7223,43 +7114,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if (elements_in_assigned.size() < (elements_to_assign.size() + extra_assign))
-                {
+                if (elements_in_assigned.size() < (elements_to_assign.size() + extra_assign)) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -7425,11 +7307,10 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher_2<alignof(type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
@@ -7437,43 +7318,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if ((elements_in_assigned.size() + extra_in_assigned) < (elements_to_assign.size() + extra_assign))
-                {
+                if ((elements_in_assigned.size() + extra_in_assigned) < (elements_to_assign.size() + extra_assign)) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -8044,8 +7916,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_same_type_dif
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator_no_min_slack)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -8056,10 +7928,9 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign)
-        {
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign);
 
@@ -8067,43 +7938,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if (elements_in_assigned.size() < elements_to_assign.size())
-                {
+                if (elements_in_assigned.size() < elements_to_assign.size()) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -8269,10 +8131,9 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign);
 
@@ -8280,43 +8141,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if ((elements_in_assigned.size() + extra_in_assigned) < elements_to_assign.size())
-                {
+                if ((elements_in_assigned.size() + extra_in_assigned) < elements_to_assign.size()) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -8887,8 +8739,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_different_type_same_allocator_with_min_slack)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -8899,11 +8751,10 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign);
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
@@ -8911,43 +8762,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if (elements_in_assigned.size() < (elements_to_assign.size() + extra_assign))
-                {
+                if (elements_in_assigned.size() < (elements_to_assign.size() + extra_assign)) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -9113,11 +8955,10 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
@@ -9125,43 +8966,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if ((elements_in_assigned.size() + extra_in_assigned) < (elements_to_assign.size() + extra_assign))
-                {
+                if ((elements_in_assigned.size() + extra_in_assigned) < (elements_to_assign.size() + extra_assign)) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -9732,8 +9564,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator_no_min_slack)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -9744,10 +9576,9 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign)
-        {
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign);
 
@@ -9755,43 +9586,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if (elements_in_assigned.size() < elements_to_assign.size())
-                {
+                if (elements_in_assigned.size() < elements_to_assign.size()) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -9957,10 +9779,9 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign)
-        {
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign);
 
@@ -9968,43 +9789,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if ((elements_in_assigned.size() + extra_in_assigned) < elements_to_assign.size())
-                {
+                if ((elements_in_assigned.size() + extra_in_assigned) < elements_to_assign.size()) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -10575,8 +10387,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_different_type_different_allocator_with_min_slack)
 {
 
     using destination_type = hud_test::non_bitwise_copy_assignable_type_2;
@@ -10587,11 +10399,10 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, std::initializer_list<i32> elements_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign);
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
@@ -10599,43 +10410,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if (elements_in_assigned.size() < (elements_to_assign.size() + extra_assign))
-                {
+                if (elements_in_assigned.size() < (elements_to_assign.size() + extra_assign)) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -10801,11 +10603,10 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned, std::initializer_list<i32> elements_to_assign, const usize extra_to_assign) {
             constexpr const usize extra_assign = 1;
-            hud::array<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
-            hud::array<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
+            hud::vector<destination_type, hud_test::allocator_watcher<alignof(destination_type)>> assigned(elements_in_assigned, extra_in_assigned);
+            hud::vector<source_type, hud_test::allocator_watcher_2<alignof(source_type)>> to_assign(elements_to_assign, extra_to_assign);
 
             assigned.assign(to_assign, extra_assign);
 
@@ -10813,43 +10614,34 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
             bool all_values_are_copied = true;
             bool all_copy_constructors_are_called = true;
             bool all_copy_assign_are_called = true;
-            for (usize index = 0; index < assigned.count(); index++)
-            {
+            for (usize index = 0; index < assigned.count(); index++) {
                 // LCOV_EXCL_START
                 // Ensure we correctly copied the value
-                if (assigned[index].id() != *(elements_to_assign.begin() + index))
-                {
+                if (assigned[index].id() != *(elements_to_assign.begin() + index)) {
                     all_values_are_copied = false;
                     break;
                 }
 
                 // Ensure we correctly call copy constructors
-                if ((elements_in_assigned.size() + extra_in_assigned) < (elements_to_assign.size() + extra_assign))
-                {
+                if ((elements_in_assigned.size() + extra_in_assigned) < (elements_to_assign.size() + extra_assign)) {
                     // If we assign more element, we should have reallocate
-                    if (assigned[index].copy_constructor_count() != 1u)
-                    {
+                    if (assigned[index].copy_constructor_count() != 1u) {
                         all_copy_constructors_are_called = false;
                         break;
                     }
                 }
-                else
-                {
+                else {
                     // We do not reallocate
-                    if (index < elements_in_assigned.size())
-                    {
+                    if (index < elements_in_assigned.size()) {
                         // For element that are already here, we call operator=
-                        if (assigned[index].copy_assign_count() != 1u)
-                        {
+                        if (assigned[index].copy_assign_count() != 1u) {
                             all_copy_assign_are_called = false;
                             break;
                         }
                     }
-                    else
-                    {
+                    else {
                         // For new elements we call copy constructors
-                        if (assigned[index].copy_constructor_count() != 1u)
-                        {
+                        if (assigned[index].copy_constructor_count() != 1u) {
                             all_copy_constructors_are_called = false;
                             break;
                         }
@@ -11420,8 +11212,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_different_typ
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_to_self_no_min_slack)
 {
 
     using type = i32;
@@ -11430,9 +11222,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_no_min_sl
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
+        const auto test = [](std::initializer_list<type> elements_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
 
             const type *data_before = arr.data();
             arr.assign(arr);
@@ -11491,9 +11282,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_no_min_sl
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
 
             const type *data_before = arr.data();
             arr.assign(arr);
@@ -11583,8 +11373,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_no_min_sl
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_bitwise_copy_assignable_to_self_with_min_slack)
 {
     using type = i32;
 
@@ -11592,10 +11382,9 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_with_min_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
 
             const type *data_before = arr.data();
             arr.assign(arr, extra_assign);
@@ -11654,10 +11443,9 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_with_min_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned)
-        {
+        const auto test = [](std::initializer_list<type> elements_in_assigned, const usize extra_in_assigned) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
 
             const type *data_before = arr.data();
             arr.assign(arr, extra_assign);
@@ -11747,8 +11535,8 @@ GTEST_TEST(array, copy_assign_array_of_bitwise_copy_assignable_to_self_with_min_
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_no_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_to_self_no_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -11756,23 +11544,20 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_no_mi
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
             const type *data_before = arr.data();
             arr.assign(arr);
 
             // Ensures we copy all values correctly
             bool no_copy_assign_are_called = true;
-            for (usize index = 0; index < arr.count(); index++)
-            {
+            for (usize index = 0; index < arr.count(); index++) {
 
                 // Ensure we correctly call copy constructors
                 // We do not reallocate
                 // For element that are already here, we call operator=
                 // LCOV_EXCL_START
-                if (arr[index].copy_assign_count() != 0u)
-                {
+                if (arr[index].copy_assign_count() != 0u) {
                     no_copy_assign_are_called = false;
                     break;
                 }
@@ -11838,22 +11623,19 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_no_mi
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned)
-        {
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned) {
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
             const type *data_before = arr.data();
             arr.assign(arr);
 
             // Ensures we copy all values correctly
             bool no_copy_assign_are_called = true;
-            for (usize index = 0; index < arr.count(); index++)
-            {
+            for (usize index = 0; index < arr.count(); index++) {
                 // Ensure we correctly call copy constructors
                 // We do not reallocate
                 // For element that are already here, we call operator=
                 // LCOV_EXCL_START
-                if (arr[index].copy_assign_count() != 0u)
-                {
+                if (arr[index].copy_assign_count() != 0u) {
                     no_copy_assign_are_called = false;
                     break;
                 }
@@ -11954,8 +11736,8 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_no_mi
     }
 }
 
-// void assign(const array<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
-GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_with_min_slack)
+// void assign(const vector<u_type_t, u_allocator_t> &other, const usize min_slack = 0)
+GTEST_TEST(vector, copy_assign_array_of_non_bitwise_copy_assignable_to_self_with_min_slack)
 {
 
     using type = hud_test::non_bitwise_copy_assignable_type;
@@ -11963,24 +11745,21 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_with_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned);
             const type *data_before = arr.data();
             arr.assign(arr, extra_assign);
 
             // Ensures we copy all values correctly
             bool no_copy_assign_are_called = true;
-            for (usize index = 0; index < arr.count(); index++)
-            {
+            for (usize index = 0; index < arr.count(); index++) {
 
                 // Ensure we correctly call copy constructors
                 // We do not reallocate
                 // For element that are already here, we call operator=
                 // LCOV_EXCL_START
-                if (arr[index].copy_assign_count() != 0u)
-                {
+                if (arr[index].copy_assign_count() != 0u) {
                     no_copy_assign_are_called = false;
                     break;
                 }
@@ -12046,23 +11825,20 @@ GTEST_TEST(array, copy_assign_array_of_non_bitwise_copy_assignable_to_self_with_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned)
-        {
+        const auto test = [](std::initializer_list<i32> &&elements_in_assigned, const usize extra_in_assigned) {
             constexpr const usize extra_assign = 1;
-            hud::array<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
+            hud::vector<type, hud_test::allocator_watcher<alignof(type)>> arr(elements_in_assigned, extra_in_assigned);
             const type *data_before = arr.data();
             arr.assign(arr, extra_assign);
 
             // Ensures we copy all values correctly
             bool no_copy_assign_are_called = true;
-            for (usize index = 0; index < arr.count(); index++)
-            {
+            for (usize index = 0; index < arr.count(); index++) {
                 // Ensure we correctly call copy constructors
                 // We do not reallocate
                 // For element that are already here, we call operator=
                 // LCOV_EXCL_START
-                if (arr[index].copy_assign_count() != 0u)
-                {
+                if (arr[index].copy_assign_count() != 0u) {
                     no_copy_assign_are_called = false;
                     break;
                 }

@@ -1,10 +1,10 @@
-#include <core/containers/array.h>
+#include <core/containers/vector.h>
 
-GTEST_TEST(array, iterators)
+GTEST_TEST(vector, iterators)
 {
     // Non const Array
     {
-        hud::array<i32> arr({10, 20, 30, 40});
+        hud::vector<i32> arr({10, 20, 30, 40});
         hud_assert_ne(arr.data(), nullptr);
         hud_assert_eq(arr.count(), 4u);
         hud_assert_eq(arr.max_count(), 4u);
@@ -24,7 +24,7 @@ GTEST_TEST(array, iterators)
 
     // Const Array
     {
-        const hud::array<i32> arr_const({10, 20, 30, 40});
+        const hud::vector<i32> arr_const({10, 20, 30, 40});
         hud_assert_ne(arr_const.data(), nullptr);
         hud_assert_eq(arr_const.count(), 4u);
         hud_assert_eq(arr_const.max_count(), 4u);
@@ -43,11 +43,11 @@ GTEST_TEST(array, iterators)
     }
 }
 
-GTEST_TEST(array, range_for_loop)
+GTEST_TEST(vector, range_for_loop)
 {
     // Non const Array
     {
-        hud::array<i32> arr({10, 20, 30, 40});
+        hud::vector<i32> arr({10, 20, 30, 40});
         hud_assert_ne(arr.data(), nullptr);
         hud_assert_eq(arr.count(), 4u);
         hud_assert_eq(arr.max_count(), 4u);
@@ -60,8 +60,7 @@ GTEST_TEST(array, range_for_loop)
         usize index = 0;
         // constexpr Iterator begin() noexcept
         // constexpr Iterator end() noexcept
-        for (auto &value : arr)
-        {
+        for (auto &value : arr) {
             result[index++] = value;
         }
         hud_assert_eq(result[0], arr[0]);
@@ -72,7 +71,7 @@ GTEST_TEST(array, range_for_loop)
 
     // Const Array
     {
-        const hud::array<i32> arr({10, 20, 30, 40});
+        const hud::vector<i32> arr({10, 20, 30, 40});
         hud_assert_ne(arr.data(), nullptr);
         hud_assert_eq(arr.count(), 4u);
         hud_assert_eq(arr.max_count(), 4u);
@@ -85,8 +84,7 @@ GTEST_TEST(array, range_for_loop)
         usize index = 0;
         // constexpr Iterator begin() noexcept
         // constexpr Iterator end() noexcept
-        for (auto &value : arr)
-        {
+        for (auto &value : arr) {
             result[index++] = value;
         }
         hud_assert_eq(result[0], arr[0]);

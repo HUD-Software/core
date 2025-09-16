@@ -1,4 +1,4 @@
-#include <core/containers/array.h>
+#include <core/containers/vector.h>
 
 namespace hud_test
 {
@@ -94,7 +94,7 @@ namespace hud
     };
 } // namespace hud
 
-GTEST_TEST(array, equal_operator)
+GTEST_TEST(vector, equal_operator)
 {
     /**
     *
@@ -126,22 +126,22 @@ GTEST_TEST(array, equal_operator)
     using c = hud_test::c;
     using d = hud_test::d;
 
-    hud::array<i32> col_0;
-    hud::array<i32> row_0;
-    hud::array<i32> col_1({1});
-    hud::array<i32> row_1({1});
-    hud::array<i32> col_2({1, 2});
-    hud::array<i32> row_2({1, 2});
-    hud::array<i32> col_3({1, 3});
-    hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c {1}, c {2}});
-    hud::array<c> row_4({c {1}, c {2}});
-    hud::array<c> col_5({c {1}, c {3}});
-    hud::array<c> row_5({c {1}, c {3}});
-    hud::array<d> col_6({d {1}, d {2}});
-    hud::array<d> row_6({d {1}, d {2}});
-    hud::array<d> col_7({d {1}, d {3}});
-    hud::array<d> row_7({d {1}, d {3}});
+    hud::vector<i32> col_0;
+    hud::vector<i32> row_0;
+    hud::vector<i32> col_1({1});
+    hud::vector<i32> row_1({1});
+    hud::vector<i32> col_2({1, 2});
+    hud::vector<i32> row_2({1, 2});
+    hud::vector<i32> col_3({1, 3});
+    hud::vector<i32> row_3({1, 3});
+    hud::vector<c> col_4({c {1}, c {2}});
+    hud::vector<c> row_4({c {1}, c {2}});
+    hud::vector<c> col_5({c {1}, c {3}});
+    hud::vector<c> row_5({c {1}, c {3}});
+    hud::vector<d> col_6({d {1}, d {2}});
+    hud::vector<d> row_6({d {1}, d {2}});
+    hud::vector<d> col_7({d {1}, d {3}});
+    hud::vector<d> row_7({d {1}, d {3}});
 
     // Verify the truth table
     hud_assert_true(col_0 == row_0);
@@ -217,7 +217,7 @@ GTEST_TEST(array, equal_operator)
     hud_assert_true(col_7 == row_7);
 }
 
-GTEST_TEST(array, not_equal_operator)
+GTEST_TEST(vector, not_equal_operator)
 {
     /**
     *
@@ -249,22 +249,22 @@ GTEST_TEST(array, not_equal_operator)
     using c = hud_test::c;
     using d = hud_test::d;
 
-    hud::array<i32> col_0;
-    hud::array<i32> row_0;
-    hud::array<i32> col_1({1});
-    hud::array<i32> row_1({1});
-    hud::array<i32> col_2({1, 2});
-    hud::array<i32> row_2({1, 2});
-    hud::array<i32> col_3({1, 3});
-    hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c {1}, c {2}});
-    hud::array<c> row_4({c {1}, c {2}});
-    hud::array<c> col_5({c {1}, c {3}});
-    hud::array<c> row_5({c {1}, c {3}});
-    hud::array<d> col_6({d {1}, d {2}});
-    hud::array<d> row_6({d {1}, d {2}});
-    hud::array<d> col_7({d {1}, d {3}});
-    hud::array<d> row_7({d {1}, d {3}});
+    hud::vector<i32> col_0;
+    hud::vector<i32> row_0;
+    hud::vector<i32> col_1({1});
+    hud::vector<i32> row_1({1});
+    hud::vector<i32> col_2({1, 2});
+    hud::vector<i32> row_2({1, 2});
+    hud::vector<i32> col_3({1, 3});
+    hud::vector<i32> row_3({1, 3});
+    hud::vector<c> col_4({c {1}, c {2}});
+    hud::vector<c> row_4({c {1}, c {2}});
+    hud::vector<c> col_5({c {1}, c {3}});
+    hud::vector<c> row_5({c {1}, c {3}});
+    hud::vector<d> col_6({d {1}, d {2}});
+    hud::vector<d> row_6({d {1}, d {2}});
+    hud::vector<d> col_7({d {1}, d {3}});
+    hud::vector<d> row_7({d {1}, d {3}});
 
     // Verify the truth table
     hud_assert_false(col_0 != row_0);
@@ -340,7 +340,7 @@ GTEST_TEST(array, not_equal_operator)
     hud_assert_false(col_7 != row_7);
 }
 
-GTEST_TEST(array, less_operator)
+GTEST_TEST(vector, less_operator)
 {
     /**
         Testing by resolving the following truth table
@@ -375,26 +375,26 @@ GTEST_TEST(array, less_operator)
     using c = hud_test::c;
     using d = hud_test::d;
 
-    hud::array<i32> col_0;
-    hud::array<i32> row_0;
-    hud::array<i32> col_1({1});
-    hud::array<i32> row_1({1});
-    hud::array<i32> col_2({1, 2});
-    hud::array<i32> row_2({1, 2});
-    hud::array<i32> col_3({1, 3});
-    hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c {1}, c {2}});
-    hud::array<c> row_4({c {1}, c {2}});
-    hud::array<c> col_5({c {1}, c {3}});
-    hud::array<c> row_5({c {1}, c {3}});
-    hud::array<d> col_6({d {1}, d {2}});
-    hud::array<d> row_6({d {1}, d {2}});
-    hud::array<d> col_7({d {1}, d {3}});
-    hud::array<d> row_7({d {1}, d {3}});
-    hud::array<u8> col_8({u8(1)});
-    hud::array<u8> row_8({u8(1)});
-    hud::array<u8> col_9({u8(1), u8(2)});
-    hud::array<u8> row_9({u8(1), u8(2)});
+    hud::vector<i32> col_0;
+    hud::vector<i32> row_0;
+    hud::vector<i32> col_1({1});
+    hud::vector<i32> row_1({1});
+    hud::vector<i32> col_2({1, 2});
+    hud::vector<i32> row_2({1, 2});
+    hud::vector<i32> col_3({1, 3});
+    hud::vector<i32> row_3({1, 3});
+    hud::vector<c> col_4({c {1}, c {2}});
+    hud::vector<c> row_4({c {1}, c {2}});
+    hud::vector<c> col_5({c {1}, c {3}});
+    hud::vector<c> row_5({c {1}, c {3}});
+    hud::vector<d> col_6({d {1}, d {2}});
+    hud::vector<d> row_6({d {1}, d {2}});
+    hud::vector<d> col_7({d {1}, d {3}});
+    hud::vector<d> row_7({d {1}, d {3}});
+    hud::vector<u8> col_8({u8(1)});
+    hud::vector<u8> row_8({u8(1)});
+    hud::vector<u8> col_9({u8(1), u8(2)});
+    hud::vector<u8> row_9({u8(1), u8(2)});
 
     // Verify the truth table
     hud_assert_false(col_0 < row_0);
@@ -508,7 +508,7 @@ GTEST_TEST(array, less_operator)
     hud_assert_false(col_9 < row_9);
 }
 
-GTEST_TEST(array, greater_operator)
+GTEST_TEST(vector, greater_operator)
 {
     /**
         Testing by resolving the following truth table
@@ -543,26 +543,26 @@ GTEST_TEST(array, greater_operator)
     using c = hud_test::c;
     using d = hud_test::d;
 
-    hud::array<i32> col_0;
-    hud::array<i32> row_0;
-    hud::array<i32> col_1({1});
-    hud::array<i32> row_1({1});
-    hud::array<i32> col_2({1, 2});
-    hud::array<i32> row_2({1, 2});
-    hud::array<i32> col_3({1, 3});
-    hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c {1}, c {2}});
-    hud::array<c> row_4({c {1}, c {2}});
-    hud::array<c> col_5({c {1}, c {3}});
-    hud::array<c> row_5({c {1}, c {3}});
-    hud::array<d> col_6({d {1}, d {2}});
-    hud::array<d> row_6({d {1}, d {2}});
-    hud::array<d> col_7({d {1}, d {3}});
-    hud::array<d> row_7({d {1}, d {3}});
-    hud::array<u8> col_8({u8(1)});
-    hud::array<u8> row_8({u8(1)});
-    hud::array<u8> col_9({u8(1), u8(2)});
-    hud::array<u8> row_9({u8(1), u8(2)});
+    hud::vector<i32> col_0;
+    hud::vector<i32> row_0;
+    hud::vector<i32> col_1({1});
+    hud::vector<i32> row_1({1});
+    hud::vector<i32> col_2({1, 2});
+    hud::vector<i32> row_2({1, 2});
+    hud::vector<i32> col_3({1, 3});
+    hud::vector<i32> row_3({1, 3});
+    hud::vector<c> col_4({c {1}, c {2}});
+    hud::vector<c> row_4({c {1}, c {2}});
+    hud::vector<c> col_5({c {1}, c {3}});
+    hud::vector<c> row_5({c {1}, c {3}});
+    hud::vector<d> col_6({d {1}, d {2}});
+    hud::vector<d> row_6({d {1}, d {2}});
+    hud::vector<d> col_7({d {1}, d {3}});
+    hud::vector<d> row_7({d {1}, d {3}});
+    hud::vector<u8> col_8({u8(1)});
+    hud::vector<u8> row_8({u8(1)});
+    hud::vector<u8> col_9({u8(1), u8(2)});
+    hud::vector<u8> row_9({u8(1), u8(2)});
 
     // Verify the truth table
     hud_assert_false(col_0 > row_0);
@@ -676,7 +676,7 @@ GTEST_TEST(array, greater_operator)
     hud_assert_false(col_9 > row_9);
 }
 
-GTEST_TEST(array, less_equal_operator)
+GTEST_TEST(vector, less_equal_operator)
 {
     /**
         Testing by resolving the following truth table
@@ -711,26 +711,26 @@ GTEST_TEST(array, less_equal_operator)
     using c = hud_test::c;
     using d = hud_test::d;
 
-    hud::array<i32> col_0;
-    hud::array<i32> row_0;
-    hud::array<i32> col_1({1});
-    hud::array<i32> row_1({1});
-    hud::array<i32> col_2({1, 2});
-    hud::array<i32> row_2({1, 2});
-    hud::array<i32> col_3({1, 3});
-    hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c {1}, c {2}});
-    hud::array<c> row_4({c {1}, c {2}});
-    hud::array<c> col_5({c {1}, c {3}});
-    hud::array<c> row_5({c {1}, c {3}});
-    hud::array<d> col_6({d {1}, d {2}});
-    hud::array<d> row_6({d {1}, d {2}});
-    hud::array<d> col_7({d {1}, d {3}});
-    hud::array<d> row_7({d {1}, d {3}});
-    hud::array<u8> col_8({u8(1)});
-    hud::array<u8> row_8({u8(1)});
-    hud::array<u8> col_9({u8(1), u8(2)});
-    hud::array<u8> row_9({u8(1), u8(2)});
+    hud::vector<i32> col_0;
+    hud::vector<i32> row_0;
+    hud::vector<i32> col_1({1});
+    hud::vector<i32> row_1({1});
+    hud::vector<i32> col_2({1, 2});
+    hud::vector<i32> row_2({1, 2});
+    hud::vector<i32> col_3({1, 3});
+    hud::vector<i32> row_3({1, 3});
+    hud::vector<c> col_4({c {1}, c {2}});
+    hud::vector<c> row_4({c {1}, c {2}});
+    hud::vector<c> col_5({c {1}, c {3}});
+    hud::vector<c> row_5({c {1}, c {3}});
+    hud::vector<d> col_6({d {1}, d {2}});
+    hud::vector<d> row_6({d {1}, d {2}});
+    hud::vector<d> col_7({d {1}, d {3}});
+    hud::vector<d> row_7({d {1}, d {3}});
+    hud::vector<u8> col_8({u8(1)});
+    hud::vector<u8> row_8({u8(1)});
+    hud::vector<u8> col_9({u8(1), u8(2)});
+    hud::vector<u8> row_9({u8(1), u8(2)});
 
     // Verify the truth table
     hud_assert_true(col_0 <= row_0);
@@ -844,7 +844,7 @@ GTEST_TEST(array, less_equal_operator)
     hud_assert_true(col_9 <= row_9);
 }
 
-GTEST_TEST(array, greater_equal_operator)
+GTEST_TEST(vector, greater_equal_operator)
 {
     /**
         Testing by resolving the following truth table
@@ -879,26 +879,26 @@ GTEST_TEST(array, greater_equal_operator)
     using c = hud_test::c;
     using d = hud_test::d;
 
-    hud::array<i32> col_0;
-    hud::array<i32> row_0;
-    hud::array<i32> col_1({1});
-    hud::array<i32> row_1({1});
-    hud::array<i32> col_2({1, 2});
-    hud::array<i32> row_2({1, 2});
-    hud::array<i32> col_3({1, 3});
-    hud::array<i32> row_3({1, 3});
-    hud::array<c> col_4({c {1}, c {2}});
-    hud::array<c> row_4({c {1}, c {2}});
-    hud::array<c> col_5({c {1}, c {3}});
-    hud::array<c> row_5({c {1}, c {3}});
-    hud::array<d> col_6({d {1}, d {2}});
-    hud::array<d> row_6({d {1}, d {2}});
-    hud::array<d> col_7({d {1}, d {3}});
-    hud::array<d> row_7({d {1}, d {3}});
-    hud::array<u8> col_8({u8(1)});
-    hud::array<u8> row_8({u8(1)});
-    hud::array<u8> col_9({u8(1), u8(2)});
-    hud::array<u8> row_9({u8(1), u8(2)});
+    hud::vector<i32> col_0;
+    hud::vector<i32> row_0;
+    hud::vector<i32> col_1({1});
+    hud::vector<i32> row_1({1});
+    hud::vector<i32> col_2({1, 2});
+    hud::vector<i32> row_2({1, 2});
+    hud::vector<i32> col_3({1, 3});
+    hud::vector<i32> row_3({1, 3});
+    hud::vector<c> col_4({c {1}, c {2}});
+    hud::vector<c> row_4({c {1}, c {2}});
+    hud::vector<c> col_5({c {1}, c {3}});
+    hud::vector<c> row_5({c {1}, c {3}});
+    hud::vector<d> col_6({d {1}, d {2}});
+    hud::vector<d> row_6({d {1}, d {2}});
+    hud::vector<d> col_7({d {1}, d {3}});
+    hud::vector<d> row_7({d {1}, d {3}});
+    hud::vector<u8> col_8({u8(1)});
+    hud::vector<u8> row_8({u8(1)});
+    hud::vector<u8> col_9({u8(1), u8(2)});
+    hud::vector<u8> row_9({u8(1), u8(2)});
 
     // Verify the truth table
     hud_assert_true(col_0 >= row_0);
