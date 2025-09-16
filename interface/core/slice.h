@@ -54,8 +54,7 @@ namespace hud
         /** Move assign the slice. */
         HD_FORCEINLINE constexpr slice &operator=(slice &&other) noexcept
         {
-            if (this != &other)
-            {
+            if (this != &other) {
                 begin_ptr = other.begin_ptr;
                 other.begin_ptr = nullptr;
                 count_element = other.count_element;
@@ -188,9 +187,9 @@ namespace hud
         }
 
     private:
-        /** Pointer to the first element */
+        /** Pointer to the first element. */
         type_t *begin_ptr = nullptr;
-        /** Count of elements */
+        /** Count of elements. */
         usize count_element = 0u;
     };
 

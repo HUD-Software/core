@@ -250,7 +250,17 @@ namespace hud
          * @return A slice representing all characters of this string.
          */
         [[nodiscard]]
-        constexpr hud::slice<char_type> slice() const noexcept
+        constexpr const hud::slice<char_type> as_slice() const noexcept
+        {
+            return hud::slice<char_type> {ptr_, length()};
+        }
+
+        /**
+         * Returns a slice view of the string.
+         * @return A slice representing all characters of this string.
+         */
+        [[nodiscard]]
+        constexpr hud::slice<char_type> as_slice() noexcept
         {
             return hud::slice<char_type> {ptr_, length()};
         }

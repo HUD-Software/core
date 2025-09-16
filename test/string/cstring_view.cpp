@@ -563,3 +563,45 @@ GTEST_TEST(cstring_view, to_lowercase_partial)
     v.to_lowercase_partial(2);
     hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
 }
+
+GTEST_TEST(cstring_view, slice)
+{
+    hud::cstring_view const_v {"ABC"};
+    auto const_s = const_v.as_slice();
+    auto const_begin = const_s.begin();
+    hud_assert_true(*const_begin == 'A');
+    const_begin++;
+    hud_assert_true(*const_begin == 'B');
+    const_begin++;
+    hud_assert_true(*const_begin == 'C');
+    const_begin++;
+    hud_assert_true(const_begin == const_s.end());
+
+    ansichar txt[] = "ABC";
+    hud::cstring_view v {txt};
+    auto s = v.as_slice();
+    auto begin = s.begin();
+    hud_assert_true(*begin == 'A');
+    begin++;
+    hud_assert_true(*begin == 'B');
+    begin++;
+    hud_assert_true(*begin == 'C');
+    begin++;
+    hud_assert_true(begin == s.end());
+
+    auto const_s_1 = v.as_slice().sub_slice(0, 2);
+    auto const_begin_1 = const_s_1.begin();
+    hud_assert_true(*const_begin_1 == 'A');
+    const_begin_1++;
+    hud_assert_true(*const_begin_1 == 'B');
+    const_begin_1++;
+    hud_assert_true(const_begin_1 == const_s_1.end());
+
+    s = v.as_slice().sub_slice(0, 2);
+    begin = s.begin();
+    hud_assert_true(*begin == 'A');
+    begin++;
+    hud_assert_true(*begin == 'B');
+    begin++;
+    hud_assert_true(begin == s.end());
+}
