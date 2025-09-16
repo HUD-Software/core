@@ -29,7 +29,7 @@ GTEST_TEST(traits, is_scalar)
     hud_assert_true((hud::is_scalar_v<uptr>));
     hud_assert_true((hud::is_scalar_v<isize>));
     hud_assert_true((hud::is_scalar_v<usize>));
-    hud_assert_true((hud::is_scalar_v<ansichar>));
+    hud_assert_true((hud::is_scalar_v<char8>));
     hud_assert_true((hud::is_scalar_v<wchar>));
     hud_assert_true((hud::is_scalar_v<hud_test::a *>));
     hud_assert_true((hud::is_scalar_v<decltype(&hud_test::a::fn)>));

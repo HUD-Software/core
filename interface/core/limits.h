@@ -28,7 +28,7 @@ namespace hud
     hud_limits_for(u64);
     hud_limits_for(f32);
     hud_limits_for(f64);
-    hud_limits_for(ansichar);
+    hud_limits_for(char8);
     hud_limits_for(wchar);
     hud_limits_for(char16);
     hud_limits_for(char32);

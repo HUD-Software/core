@@ -19,7 +19,7 @@ namespace hud::common
         using i64 = int64_t; // 64 bits signed integer
 
         // characteracter common types
-        using ansichar = char;   // 8 bits character
+        using char8 = char;      // 8 bits character
         using wchar = wchar_t;   // Platform dependent size bits wide character
         using char16 = char16_t; // 16 bits character type
         using char32 = char32_t; // 32 bits character type
@@ -83,9 +83,9 @@ namespace hud::common
         static inline constexpr i64 i64_min = (i64 {-9223372036854775807} - 1);
         static inline constexpr i64 i64_min_positive = 0;
 
-        static inline constexpr ansichar ansichar_max = i8_max;
-        static inline constexpr ansichar ansichar_min = i8_min;
-        static inline constexpr ansichar ansichar_min_positive = i8_min_positive;
+        static inline constexpr char8 char8_max = i8_max;
+        static inline constexpr char8 char8_min = i8_min;
+        static inline constexpr char8 char8_min_positive = i8_min_positive;
         static inline constexpr char16 char16_max = u16_max;
         static inline constexpr char16 char16_min = u16_min;
         static inline constexpr char16 char16_min_positive = u16_min_positive;

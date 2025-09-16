@@ -49,7 +49,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<i8, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i8, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i8, u64>));
-    hud_assert_true((hud::is_bitwise_move_assignable_v<i8, ansichar>));
+    hud_assert_true((hud::is_bitwise_move_assignable_v<i8, char8>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i8, wchar>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i8, char16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i8, char32>));
@@ -67,7 +67,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<u8, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u8, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u8, u64>));
-    hud_assert_true((hud::is_bitwise_move_assignable_v<u8, ansichar>));
+    hud_assert_true((hud::is_bitwise_move_assignable_v<u8, char8>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u8, wchar>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u8, char16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u8, char32>));
@@ -85,7 +85,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_true((hud::is_bitwise_move_assignable_v<i16, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i16, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i16, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<i16, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<i16, char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_move_assignable_v<i16, wchar>));
 #else
@@ -107,7 +107,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_true((hud::is_bitwise_move_assignable_v<u16, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u16, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u16, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<u16, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<u16, char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_move_assignable_v<u16, wchar>));
 #else
@@ -129,7 +129,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<i32, u16>));
     hud_assert_true((hud::is_bitwise_move_assignable_v<i32, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i32, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<i32, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<i32, char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_bitwise_move_assignable_v<i32, wchar>));
 #else
@@ -156,7 +156,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<u32, u16>));
     hud_assert_true((hud::is_bitwise_move_assignable_v<u32, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u32, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<u32, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<u32, char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_bitwise_move_assignable_v<u32, wchar>));
 #else
@@ -183,7 +183,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<i64, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i64, u32>));
     hud_assert_true((hud::is_bitwise_move_assignable_v<i64, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<i64, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<i64, char8>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i64, wchar>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i64, char16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<i64, char32>));
@@ -206,7 +206,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<u64, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u64, u32>));
     hud_assert_true((hud::is_bitwise_move_assignable_v<u64, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<u64, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<u64, char8>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u64, wchar>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u64, char16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<u64, char32>));
@@ -220,23 +220,23 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_true((hud::is_bitwise_move_assignable_v<u64, uptr>));
 #endif
 
-    // ansichar
-    hud_assert_true((hud::is_bitwise_move_assignable_v<ansichar, i8>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, i16>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, i32>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, i64>));
-    hud_assert_true((hud::is_bitwise_move_assignable_v<ansichar, u8>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, u16>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, u32>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, u64>));
-    hud_assert_true((hud::is_bitwise_move_assignable_v<ansichar, ansichar>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, wchar>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, char16>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, char32>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, f32>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, f64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, iptr>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<ansichar, uptr>));
+    // char8
+    hud_assert_true((hud::is_bitwise_move_assignable_v<char8, i8>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, i16>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, i32>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, i64>));
+    hud_assert_true((hud::is_bitwise_move_assignable_v<char8, u8>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, u16>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, u32>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, u64>));
+    hud_assert_true((hud::is_bitwise_move_assignable_v<char8, char8>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, wchar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, char16>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, char32>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, f32>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, f64>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, iptr>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char8, uptr>));
 
     // wchar
     hud_assert_false((hud::is_bitwise_move_assignable_v<wchar, i8>));
@@ -257,7 +257,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_true((hud::is_bitwise_move_assignable_v<wchar, u32>));
 #endif
     hud_assert_false((hud::is_bitwise_move_assignable_v<wchar, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<wchar, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<wchar, char8>));
     hud_assert_true((hud::is_bitwise_move_assignable_v<wchar, wchar>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_move_assignable_v<wchar, char16>));
@@ -268,20 +268,16 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
 #endif
     hud_assert_false((hud::is_bitwise_move_assignable_v<wchar, f32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<wchar, f64>));
-    if (sizeof(wchar) == sizeof(iptr))
-    {
+    if (sizeof(wchar) == sizeof(iptr)) {
         hud_assert_true((hud::is_bitwise_move_assignable_v<wchar, iptr>));
     }
-    else
-    {
+    else {
         hud_assert_false((hud::is_bitwise_move_assignable_v<wchar, iptr>));
     }
-    if (sizeof(wchar) == sizeof(uptr))
-    {
+    if (sizeof(wchar) == sizeof(uptr)) {
         hud_assert_true((hud::is_bitwise_move_assignable_v<wchar, uptr>));
     }
-    else
-    {
+    else {
         hud_assert_false((hud::is_bitwise_move_assignable_v<wchar, uptr>));
     }
 
@@ -294,7 +290,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_true((hud::is_bitwise_move_assignable_v<char16, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<char16, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<char16, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<char16, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char16, char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_move_assignable_v<char16, wchar>));
 #else
@@ -316,7 +312,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<char32, u16>));
     hud_assert_true((hud::is_bitwise_move_assignable_v<char32, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<char32, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<char32, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<char32, char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_bitwise_move_assignable_v<char32, wchar>));
 #else
@@ -342,7 +338,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<f32, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f32, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f32, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<f32, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<f32, char8>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f32, wchar>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f32, char16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f32, char32>));
@@ -360,7 +356,7 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<f64, u16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f64, u32>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f64, u64>));
-    hud_assert_false((hud::is_bitwise_move_assignable_v<f64, ansichar>));
+    hud_assert_false((hud::is_bitwise_move_assignable_v<f64, char8>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f64, wchar>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f64, char16>));
     hud_assert_false((hud::is_bitwise_move_assignable_v<f64, char32>));
@@ -388,13 +384,11 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<iptr, u32>));
     hud_assert_true((hud::is_bitwise_move_assignable_v<iptr, u64>));
 #endif
-    hud_assert_false((hud::is_bitwise_move_assignable_v<iptr, ansichar>));
-    if (sizeof(wchar) == sizeof(iptr))
-    {
+    hud_assert_false((hud::is_bitwise_move_assignable_v<iptr, char8>));
+    if (sizeof(wchar) == sizeof(iptr)) {
         hud_assert_true((hud::is_bitwise_move_assignable_v<iptr, wchar>));
     }
-    else
-    {
+    else {
         hud_assert_false((hud::is_bitwise_move_assignable_v<iptr, wchar>));
     }
     hud_assert_false((hud::is_bitwise_move_assignable_v<iptr, char16>));
@@ -427,13 +421,11 @@ GTEST_TEST(traits, is_bitwise_move_assignable)
     hud_assert_false((hud::is_bitwise_move_assignable_v<uptr, u32>));
     hud_assert_true((hud::is_bitwise_move_assignable_v<uptr, u64>));
 #endif
-    hud_assert_false((hud::is_bitwise_move_assignable_v<uptr, ansichar>));
-    if (sizeof(wchar) == sizeof(uptr))
-    {
+    hud_assert_false((hud::is_bitwise_move_assignable_v<uptr, char8>));
+    if (sizeof(wchar) == sizeof(uptr)) {
         hud_assert_true((hud::is_bitwise_move_assignable_v<uptr, wchar>));
     }
-    else
-    {
+    else {
         hud_assert_false((hud::is_bitwise_move_assignable_v<uptr, wchar>));
     }
     hud_assert_false((hud::is_bitwise_move_assignable_v<uptr, char16>));

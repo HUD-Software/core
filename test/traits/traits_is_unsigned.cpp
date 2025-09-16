@@ -28,7 +28,7 @@ GTEST_TEST(traits, is_unsigned)
     hud_assert_true((hud::is_unsigned_v<usize>));
     hud_assert_true((hud::is_unsigned_v<char16>));
     hud_assert_true((hud::is_unsigned_v<char32>));
-    hud_assert_false((hud::is_unsigned_v<ansichar>));
+    hud_assert_false((hud::is_unsigned_v<char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_unsigned_v<wchar>));
 #else // HD_HOST_LINUX

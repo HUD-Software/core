@@ -3,7 +3,7 @@
 GTEST_TEST(cstring_view, constructors)
 {
     auto test = []() {
-        const ansichar *ptr = "hello world hello world hello world";
+        const char8 *ptr = "hello world hello world hello world";
         hud::cstring_view v(ptr);
         return std::tuple {
             v.length() == hud::cstring::length(ptr), // 0
@@ -29,25 +29,25 @@ GTEST_TEST(cstring_view, constructors)
 
 GTEST_TEST(cstring_view, inner_type)
 {
-    static_assert(hud::is_same_v<hud::cstring_view<const ansichar>::char_type, const ansichar>);
-    static_assert(hud::is_same_v<hud::cstring_view<ansichar>::char_type, ansichar>);
+    static_assert(hud::is_same_v<hud::cstring_view<const char8>::char_type, const char8>);
+    static_assert(hud::is_same_v<hud::cstring_view<char8>::char_type, char8>);
 
     hud::cstring_view v {"Hello world"};
-    static_assert(hud::is_same_v<decltype(v)::char_type, const ansichar>);
+    static_assert(hud::is_same_v<decltype(v)::char_type, const char8>);
 
-    ansichar ptr[] = "Hello world";
+    char8 ptr[] = "Hello world";
     hud::cstring_view v1 {ptr};
-    static_assert(hud::is_same_v<decltype(v1)::char_type, ansichar>);
+    static_assert(hud::is_same_v<decltype(v1)::char_type, char8>);
 }
 
 GTEST_TEST(cstring_view, is_ascii)
 {
     auto test = []() {
-        const ansichar *ptr = "hello world hello world hello world";
+        const char8 *ptr = "hello world hello world hello world";
         hud::cstring_view v(ptr);
-        const ansichar *ptr_2 = "hello world\x80 hello world hello world";
+        const char8 *ptr_2 = "hello world\x80 hello world hello world";
         hud::cstring_view v2(ptr_2);
-        const ansichar *ptr_3 = "hello world\x85 hello world hello world";
+        const char8 *ptr_3 = "hello world\x85 hello world hello world";
         hud::cstring_view v3(ptr_3);
 
         return std::tuple {
@@ -77,24 +77,24 @@ GTEST_TEST(cstring_view, is_ascii)
 GTEST_TEST(cstring_view, equals)
 {
     auto test = []() {
-        ansichar ptr[] = "hello world hello world hello world";
-        ansichar ptr2[] = "hello world hello world2 hello world";
-        ansichar ptr3[] = "hello world hello world hello world";
-        ansichar ptr4[] = "hello world hello world hello";
+        char8 ptr[] = "hello world hello world hello world";
+        char8 ptr2[] = "hello world hello world2 hello world";
+        char8 ptr3[] = "hello world hello world hello world";
+        char8 ptr4[] = "hello world hello world hello";
         hud::cstring_view v(ptr);
         hud::cstring_view v2(ptr2);
         hud::cstring_view v3(ptr3);
         hud::cstring_view v4(ptr4);
 
         return std::tuple {
-            static_cast<ansichar *>(ptr) != static_cast<ansichar *>(ptr2),  // 0
-            static_cast<ansichar *>(ptr2) != static_cast<ansichar *>(ptr3), // 1
-            v.equals(v),                                                    // 2
-            !v.equals(v2),                                                  // 3
-            v.equals(v3),                                                   // 4
-            !v2.equals(v3),                                                 // 5
-            !v4.equals(v),                                                  // 6
-            !v.equals(v4),                                                  // 7
+            static_cast<char8 *>(ptr) != static_cast<char8 *>(ptr2),  // 0
+            static_cast<char8 *>(ptr2) != static_cast<char8 *>(ptr3), // 1
+            v.equals(v),                                              // 2
+            !v.equals(v2),                                            // 3
+            v.equals(v3),                                             // 4
+            !v2.equals(v3),                                           // 5
+            !v4.equals(v),                                            // 6
+            !v.equals(v4),                                            // 7
         };
     };
 
@@ -128,10 +128,10 @@ GTEST_TEST(cstring_view, equals)
 GTEST_TEST(cstring_view, equals_partial)
 {
     auto test = []() {
-        ansichar ptr[] = "hello world hello world hello world";
-        ansichar ptr2[] = "hello world hello world2 hello world";
-        ansichar ptr3[] = "hello world hello world hello world";
-        ansichar ptr4[] = "hello world hello world hello";
+        char8 ptr[] = "hello world hello world hello world";
+        char8 ptr2[] = "hello world hello world2 hello world";
+        char8 ptr3[] = "hello world hello world hello world";
+        char8 ptr4[] = "hello world hello world hello";
         hud::cstring_view v(ptr);
         hud::cstring_view v2(ptr2);
         hud::cstring_view v3(ptr3);
@@ -255,8 +255,8 @@ GTEST_TEST(cstring_view, equals_partial)
 GTEST_TEST(cstring_view, find_first)
 {
     auto test = []() {
-        ansichar ptr[] = "abcdefghijklmnopqrstuvwxyz";
-        ansichar ptr2[] = "123456789abcdefghijklmnopqrstuvwxyz123456789_";
+        char8 ptr[] = "abcdefghijklmnopqrstuvwxyz";
+        char8 ptr2[] = "123456789abcdefghijklmnopqrstuvwxyz123456789_";
         hud::cstring_view v(ptr);
         hud::cstring_view v2(ptr2);
 
@@ -325,8 +325,8 @@ GTEST_TEST(cstring_view, find_first)
 GTEST_TEST(cstring_view, find_first_character)
 {
     auto test = []() {
-        ansichar ptr[] = "abcdefghijklmnopqrstuvwxyz";
-        ansichar ptr2[] = "123456789abcdefghijklmnopqrstuvwxyz123456789_";
+        char8 ptr[] = "abcdefghijklmnopqrstuvwxyz";
+        char8 ptr2[] = "123456789abcdefghijklmnopqrstuvwxyz123456789_";
         hud::cstring_view v(ptr);
         hud::cstring_view v2(ptr2);
 
@@ -395,8 +395,8 @@ GTEST_TEST(cstring_view, find_first_character)
 GTEST_TEST(cstring_view, contains_string)
 {
     auto test = []() {
-        ansichar ptr[] = "abcdefghijklmnopqrstuvwxyz";
-        ansichar ptr2[] = "123456789abcdefghijklmnopqrstuvwxyz123456789_";
+        char8 ptr[] = "abcdefghijklmnopqrstuvwxyz";
+        char8 ptr2[] = "123456789abcdefghijklmnopqrstuvwxyz123456789_";
         hud::cstring_view v(ptr);
         hud::cstring_view v2(ptr2);
 
@@ -465,8 +465,8 @@ GTEST_TEST(cstring_view, contains_string)
 GTEST_TEST(cstring_view, contains_character)
 {
     auto test = []() {
-        ansichar ptr[] = "abcdefghijklmnopqrstuvwxyz";
-        ansichar ptr2[] = "123456789abcdefghijklmnopqrstuvwxyz123456789_";
+        char8 ptr[] = "abcdefghijklmnopqrstuvwxyz";
+        char8 ptr2[] = "123456789abcdefghijklmnopqrstuvwxyz123456789_";
         hud::cstring_view v(ptr);
         hud::cstring_view v2(ptr2);
 
@@ -534,7 +534,7 @@ GTEST_TEST(cstring_view, contains_character)
 
 GTEST_TEST(cstring_view, to_uppercase)
 {
-    ansichar txt[] = "abc123,;:!";
+    char8 txt[] = "abc123,;:!";
     hud::cstring_view v(txt);
     v.to_uppercase();
     hud_assert_true(v[0] == 'A' && v[1] == 'B' && v[2] == 'C' && v[3] == '1' && v[4] == '2' && v[5] == '3' && v[6] == ',' && v[7] == ';' && v[8] == ':' && v[9] == '!' && v[10] == '\0');
@@ -542,7 +542,7 @@ GTEST_TEST(cstring_view, to_uppercase)
 
 GTEST_TEST(cstring_view, to_uppercase_partial)
 {
-    ansichar txt[] = "abc123,;:!";
+    char8 txt[] = "abc123,;:!";
     hud::cstring_view v(txt);
     v.to_uppercase_partial(2);
     hud_assert_true(v[0] == 'A' && v[1] == 'B' && v[2] == 'c' && v[3] == '1' && v[4] == '2' && v[5] == '3' && v[6] == ',' && v[7] == ';' && v[8] == ':' && v[9] == '!' && v[10] == '\0');
@@ -550,7 +550,7 @@ GTEST_TEST(cstring_view, to_uppercase_partial)
 
 GTEST_TEST(cstring_view, to_lowercase)
 {
-    ansichar txt[] = "ABC123,;:!";
+    char8 txt[] = "ABC123,;:!";
     hud::cstring_view v(txt);
     v.to_lowercase();
     hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -558,7 +558,7 @@ GTEST_TEST(cstring_view, to_lowercase)
 
 GTEST_TEST(cstring_view, to_lowercase_partial)
 {
-    ansichar txt[] = "ABC123,;:!";
+    char8 txt[] = "ABC123,;:!";
     hud::cstring_view v(txt);
     v.to_lowercase_partial(2);
     hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
@@ -577,7 +577,7 @@ GTEST_TEST(cstring_view, slice)
     const_begin++;
     hud_assert_true(const_begin == const_s.end());
 
-    ansichar txt[] = "ABC";
+    char8 txt[] = "ABC";
     hud::cstring_view v {txt};
     auto s = v.as_slice();
     auto begin = s.begin();

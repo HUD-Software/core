@@ -13,7 +13,7 @@ namespace hud_test
     enum class e7 : u16;
     enum class e8 : u32;
     enum class e9 : u64;
-    enum class e10 : ansichar;
+    enum class e10 : char8;
     enum class e11 : wchar;
     enum class e12 : char16;
     enum class e13 : char32;
@@ -30,7 +30,7 @@ namespace hud_test
     enum class e7c : const u16;
     enum class e8c : const u32;
     enum class e9c : const u64;
-    enum class e10c : const ansichar;
+    enum class e10c : const char8;
     enum class e11c : const wchar;
     enum class e12c : const char16;
     enum class e13c : const char32;
@@ -47,7 +47,7 @@ namespace hud_test
     enum class e7v : volatile u16;
     enum class e8v : volatile u32;
     enum class e9v : volatile u64;
-    enum class e10v : volatile ansichar;
+    enum class e10v : volatile char8;
     enum class e11v : volatile wchar;
     enum class e12v : volatile char16;
     enum class e13v : volatile char32;
@@ -64,7 +64,7 @@ namespace hud_test
     enum class e7cv : const volatile u16;
     enum class e8cv : const volatile u32;
     enum class e9cv : const volatile u64;
-    enum class e10cv : const volatile ansichar;
+    enum class e10cv : const volatile char8;
     enum class e11cv : const volatile wchar;
     enum class e12cv : const volatile char16;
     enum class e13cv : const volatile char32;
@@ -90,7 +90,7 @@ GTEST_TEST(traits, underlying_type)
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e7>, u16>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e8>, u32>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e9>, u64>));
-    hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e10>, ansichar>));
+    hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e10>, char8>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e11>, wchar>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e12>, char16>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e13>, char32>));
@@ -107,7 +107,7 @@ GTEST_TEST(traits, underlying_type)
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e7c>, u16>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e8c>, u32>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e9c>, u64>));
-    hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e10c>, ansichar>));
+    hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e10c>, char8>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e11c>, wchar>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e12c>, char16>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e13c>, char32>));
@@ -124,7 +124,7 @@ GTEST_TEST(traits, underlying_type)
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e7v>, u16>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e8v>, u32>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e9v>, u64>));
-    hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e10v>, ansichar>));
+    hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e10v>, char8>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e11v>, wchar>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e12v>, char16>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e13v>, char32>));
@@ -141,7 +141,7 @@ GTEST_TEST(traits, underlying_type)
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e7cv>, u16>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e8cv>, u32>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e9cv>, u64>));
-    hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e10cv>, ansichar>));
+    hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e10cv>, char8>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e11cv>, wchar>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e12cv>, char16>));
     hud_assert_true((hud::is_same_v<hud::underlying_type_t<hud_test::e13cv>, char32>));

@@ -43,8 +43,7 @@ GTEST_TEST(tuple, make_tuple)
 
 GTEST_TEST(tuple, get)
 {
-    const auto test = []()
-    {
+    const auto test = []() {
         auto tuple = hud::make_tuple(12, 15.0f, L'w');
         return std::tuple {
             hud::get<0>(tuple) == 12,
@@ -82,7 +81,7 @@ GTEST_TEST(tuple, get)
 GTEST_TEST(tuple, tuple_cat)
 {
     using tuple_type1 = hud::tuple<i32, f32>;
-    using tuple_type2 = hud::tuple<ansichar, wchar, char16, hud_test::non_bitwise_type>;
+    using tuple_type2 = hud::tuple<char8, wchar, char16, hud_test::non_bitwise_type>;
     using tuple_type3 = hud::tuple<u64, f64, hud_test::non_bitwise_type>;
 
     using CatType = decltype(hud::tuple_cat(tuple_type1 {}, tuple_type2 {}, tuple_type3 {}));
@@ -102,7 +101,7 @@ GTEST_TEST(tuple, tuple_cat)
     hud_assert_eq(hud::tuple_size_v<CatType>, hud::tuple_size_v<tuple_type1> + hud::tuple_size_v<tuple_type2> + hud::tuple_size_v<tuple_type3>);
     hud_assert_true((hud::is_same_v<decltype(hud::get<0>(tuple)), i32 &>));
     hud_assert_true((hud::is_same_v<decltype(hud::get<1>(tuple)), f32 &>));
-    hud_assert_true((hud::is_same_v<decltype(hud::get<2>(tuple)), ansichar &>));
+    hud_assert_true((hud::is_same_v<decltype(hud::get<2>(tuple)), char8 &>));
     hud_assert_true((hud::is_same_v<decltype(hud::get<3>(tuple)), wchar &>));
     hud_assert_true((hud::is_same_v<decltype(hud::get<4>(tuple)), char16 &>));
     hud_assert_true((hud::is_same_v<decltype(hud::get<5>(tuple)), hud_test::non_bitwise_type &>));
@@ -143,8 +142,7 @@ GTEST_TEST(tuple, structure_binding_by_copy)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         auto [first_cpy, second_cpy, third_cpy] = tuple;
         first_cpy = type {321, nullptr};
@@ -224,8 +222,7 @@ GTEST_TEST(tuple, structure_binding_rvalue)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         auto &[first_ref, second_ref, third_ref] = tuple;
         first_ref = type {321, nullptr};
@@ -305,8 +302,7 @@ GTEST_TEST(tuple, structure_binding_const_rvalue)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         const auto &[first_ref, second_ref, third_ref] = tuple;
         return std::tuple {
@@ -384,8 +380,7 @@ GTEST_TEST(tuple, structure_binding_lvalue)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         auto &[first_ref, second_ref, third_ref] = tuple;
         first_ref = type {321, nullptr};
@@ -465,8 +460,7 @@ GTEST_TEST(tuple, structure_binding_const_tuple_lvalue)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         const auto tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         auto &[first_ref, second_ref, third_ref] = tuple;
         // Not possible, tuple is const

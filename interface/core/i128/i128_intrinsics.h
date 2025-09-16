@@ -170,10 +170,10 @@ namespace hud
                 return intrinsic_value_;
             }
 
-            /** Cast to ansichar. */
-            [[nodiscard]] explicit constexpr operator ansichar() const noexcept
+            /** Cast to char8. */
+            [[nodiscard]] explicit constexpr operator char8() const noexcept
             {
-                return static_cast<ansichar>(intrinsic_value_);
+                return static_cast<char8>(intrinsic_value_);
             }
 
             /** Cast to wchar. */
@@ -579,10 +579,10 @@ namespace hud
                 return intrinsic_value_;
             }
 
-            /** Cast to ansichar. */
-            [[nodiscard]] explicit constexpr operator ansichar() const noexcept
+            /** Cast to char8. */
+            [[nodiscard]] explicit constexpr operator char8() const noexcept
             {
-                return static_cast<ansichar>(intrinsic_value_);
+                return static_cast<char8>(intrinsic_value_);
             }
 
             /** Cast to wchar. */

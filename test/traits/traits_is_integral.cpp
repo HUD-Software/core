@@ -16,7 +16,7 @@ GTEST_TEST(traits, is_integral)
 
     hud_assert_true((hud::is_integral_v<bool>));
     hud_assert_true((hud::is_integral_v<char>));
-    hud_assert_true((hud::is_integral_v<ansichar>));
+    hud_assert_true((hud::is_integral_v<char8>));
     hud_assert_true((hud::is_integral_v<char16_t>));
     hud_assert_true((hud::is_integral_v<char32_t>));
     hud_assert_true((hud::is_integral_v<char16_t>));
@@ -47,7 +47,7 @@ GTEST_TEST(traits, is_integral)
 
     hud_assert_true((hud::is_integral_v<const bool>));
     hud_assert_true((hud::is_integral_v<const char>));
-    hud_assert_true((hud::is_integral_v<const ansichar>));
+    hud_assert_true((hud::is_integral_v<const char8>));
     hud_assert_true((hud::is_integral_v<const char16_t>));
     hud_assert_true((hud::is_integral_v<const char32_t>));
     hud_assert_true((hud::is_integral_v<const char16_t>));
@@ -78,7 +78,7 @@ GTEST_TEST(traits, is_integral)
 
     hud_assert_true((hud::is_integral_v<const volatile bool>));
     hud_assert_true((hud::is_integral_v<const volatile char>));
-    hud_assert_true((hud::is_integral_v<const volatile ansichar>));
+    hud_assert_true((hud::is_integral_v<const volatile char8>));
     hud_assert_true((hud::is_integral_v<const volatile char16_t>));
     hud_assert_true((hud::is_integral_v<const volatile char32_t>));
     hud_assert_true((hud::is_integral_v<const volatile char16_t>));
@@ -109,7 +109,7 @@ GTEST_TEST(traits, is_integral)
 
     hud_assert_true((hud::is_integral_v<volatile bool>));
     hud_assert_true((hud::is_integral_v<volatile char>));
-    hud_assert_true((hud::is_integral_v<volatile ansichar>));
+    hud_assert_true((hud::is_integral_v<volatile char8>));
     hud_assert_true((hud::is_integral_v<volatile char16_t>));
     hud_assert_true((hud::is_integral_v<volatile char32_t>));
     hud_assert_true((hud::is_integral_v<volatile char16_t>));

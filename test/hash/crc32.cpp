@@ -2,27 +2,24 @@
 #include <slice_by_8/crc.h> // Intel Slice-by-8
 #include <core/cstring.h>
 
-static constexpr const ansichar *txt = "abcdefghijklmnopqrstuvwxyz";
-static constexpr const ansichar *txt_unaligned = " abcdefghijklmnopqrstuvwxyz";
-static constexpr const ansichar *txt_test = "123456789";
+static constexpr const char8 *txt = "abcdefghijklmnopqrstuvwxyz";
+static constexpr const char8 *txt_unaligned = " abcdefghijklmnopqrstuvwxyz";
+static constexpr const char8 *txt_test = "123456789";
 
 GTEST_TEST(hash, crc32_lookup_table_is_correct)
 {
     // Generate the Crc32 Lookup table with the correct polynomial
     u32 generated_crc32_lookup[8][256] = {};
 
-    for (unsigned int i = 0; i <= 0xFF; i++)
-    {
+    for (unsigned int i = 0; i <= 0xFF; i++) {
         u32 crc = i;
-        for (unsigned int j = 0; j < 8; j++)
-        {
+        for (unsigned int j = 0; j < 8; j++) {
             crc = (crc >> 1) ^ ((crc & 1) * hud::hash_algorithm::crc32::REFLECTED_POLYNOMIAL);
         }
         generated_crc32_lookup[0][i] = crc;
     }
 
-    for (unsigned int i = 0; i <= 0xFF; i++)
-    {
+    for (unsigned int i = 0; i <= 0xFF; i++) {
         generated_crc32_lookup[1][i] = (generated_crc32_lookup[0][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[0][i] & 0xFF];
         generated_crc32_lookup[2][i] = (generated_crc32_lookup[1][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[1][i] & 0xFF];
         generated_crc32_lookup[3][i] = (generated_crc32_lookup[2][i] >> 8) ^ generated_crc32_lookup[0][generated_crc32_lookup[2][i] & 0xFF];
@@ -33,10 +30,8 @@ GTEST_TEST(hash, crc32_lookup_table_is_correct)
     }
 
     // Assert that all values in the lookup table are corrects
-    for (u32 i = 0; i < 8; i++)
-    {
-        for (u32 j = 0; j < 256; j++)
-        {
+    for (u32 i = 0; i < 8; i++) {
+        for (u32 j = 0; j < 256; j++) {
             HUD_CHECK(generated_crc32_lookup[i][j] == hud::hash_algorithm::crc32::CRC32_LOOKUP[i][j]);
         }
     }
@@ -76,10 +71,8 @@ static u32 multmodp(u32 a, u32 b)
 
     m = (u32)1 << 31;
     p = 0;
-    for (;;)
-    {
-        if (a & m)
-        {
+    for (;;) {
+        if (a & m) {
             p ^= b;
             if ((a & (m - 1)) == 0)
                 break;
@@ -97,8 +90,7 @@ GTEST_TEST(hash, crc32_lookup_x2ntable_is_correct)
 
     u32 x2n_table[32];
     x2n_table[0] = p;
-    for (u32 n = 1; n < 32; n++)
-    {
+    for (u32 n = 1; n < 32; n++) {
         x2n_table[n] = p = multmodp(p, p);
     }
     // Compare with the crc32 x2n_table

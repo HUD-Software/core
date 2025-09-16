@@ -21,8 +21,8 @@ GTEST_TEST(math, limits)
     hud_assert_eq(hud::limits<i64>::max, std::numeric_limits<i64>::max());
     hud_assert_eq(hud::limits<i64>::min, std::numeric_limits<i64>::min());
 
-    hud_assert_eq(hud::limits<ansichar>::max, std::numeric_limits<ansichar>::max());
-    hud_assert_eq(hud::limits<ansichar>::min, std::numeric_limits<ansichar>::min());
+    hud_assert_eq(hud::limits<char8>::max, std::numeric_limits<char8>::max());
+    hud_assert_eq(hud::limits<char8>::min, std::numeric_limits<char8>::min());
 
     hud_assert_eq(hud::limits<wchar>::max, std::numeric_limits<wchar>::max());
     hud_assert_eq(hud::limits<wchar>::min, std::numeric_limits<wchar>::min());

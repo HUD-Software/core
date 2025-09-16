@@ -5,7 +5,7 @@
 namespace hud
 {
     /**
-     * An immutable view of a C-style, null-terminated string (`ansichar`).
+     * An immutable view of a C-style, null-terminated string (`char8`).
      * This view does not own the underlying string and does not allow modification
      * of its length. It provides utility functions for querying and accessing
      * the string content.
@@ -16,7 +16,7 @@ namespace hud
         /** Type of the underlying character. */
         using char_type = char_t;
 
-        static_assert(hud::is_same_v<hud::remove_cv_t<char_type>, ansichar>);
+        static_assert(hud::is_same_v<hud::remove_cv_t<char_type>, char8>);
 
         /**
          * Constructs a cstring_view from a C-style string pointer.
@@ -71,7 +71,7 @@ namespace hud
             if consteval {
             }
             else {
-                // Mask 16 bytes of 0x80 with the ansichars
+                // Mask 16 bytes of 0x80 with the char8s
                 const __m128i mask = _mm_set1_epi8(char(0x80));
                 for (; i + 16 <= length(); i += 16) {
                     __m128i chunk = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));
@@ -81,7 +81,7 @@ namespace hud
             }
 #endif
             // Do the rest 1 byte at a time
-            const ansichar *p = ptr_ + i;
+            const char8 *p = ptr_ + i;
             while (*p != '\0') {
                 if (!character::is_pure_ascii(*p)) {
                     return false;
@@ -122,9 +122,9 @@ namespace hud
          * @return Index of the first occurrence, or -1 if not found.
          */
         [[nodiscard]]
-        constexpr isize find_first(const ansichar *to_find_ptr) const noexcept
+        constexpr isize find_first(const char8 *to_find_ptr) const noexcept
         {
-            const ansichar *result = hud::cstring::find_string(ptr_, to_find_ptr);
+            const char8 *result = hud::cstring::find_string(ptr_, to_find_ptr);
             return result == nullptr ? -1 : result - ptr_;
         }
 
@@ -158,7 +158,7 @@ namespace hud
          * @return true if the substring is found, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool contains(const ansichar *to_find_str) const noexcept
+        constexpr bool contains(const char8 *to_find_str) const noexcept
         {
             return hud::cstring::find_string(ptr_, to_find_str) != nullptr;
         }
@@ -181,7 +181,7 @@ namespace hud
          * @return true if the character is found, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool contains(const ansichar character_to_find) const noexcept
+        constexpr bool contains(const char8 character_to_find) const noexcept
         {
             return hud::cstring::find_character(ptr_, character_to_find) != nullptr;
         }

@@ -30,7 +30,7 @@ namespace hud_test
     enum class v : u16;
     enum class w : u32;
     enum class x : u64;
-    enum class y : ansichar;
+    enum class y : char8;
     enum class z : wchar;
     enum class a_1 : char16;
     enum class b_1 : char32;
@@ -95,7 +95,7 @@ GTEST_TEST(traits, make_unsigned)
     hud_assert_true((hud::is_same_v<hud::make_unsigned_t<u16>, u16>));
     hud_assert_true((hud::is_same_v<hud::make_unsigned_t<u32>, u32>));
     hud_assert_true((hud::is_same_v<hud::make_unsigned_t<u64>, u64>));
-    hud_assert_true((hud::is_same_v<hud::make_unsigned_t<ansichar>, u8>));
+    hud_assert_true((hud::is_same_v<hud::make_unsigned_t<char8>, u8>));
     hud_assert_true((hud::is_same_v<hud::make_unsigned_t<wchar>, hud::conditional_t<sizeof(wchar) == 2, u16, u32>>));
     hud_assert_true((hud::is_same_v<hud::make_unsigned_t<char16>, u16>));
     hud_assert_true((hud::is_same_v<hud::make_unsigned_t<char32>, u32>));

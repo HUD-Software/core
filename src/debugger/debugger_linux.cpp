@@ -18,17 +18,16 @@ namespace hud::linux
         // LCOV_EXCL_STOP
 
         constexpr usize BUFFER_BYTES_COUNT = 256;
-        ansichar buffer[BUFFER_BYTES_COUNT];
+        char8 buffer[BUFFER_BYTES_COUNT];
         isize read_count = read(file_descriptor, buffer, BUFFER_BYTES_COUNT);
         // LCOV_EXCL_START
-        if (read_count == -1)
-        {
+        if (read_count == -1) {
             return false;
         }
         // LCOV_EXCL_STOP
         buffer[read_count - 1] = '\0';
-        constexpr ansichar TRACERPID[] = "TracerPid:\t";
-        ansichar *found = strstr(buffer, TRACERPID);
+        constexpr char8 TRACERPID[] = "TracerPid:\t";
+        char8 *found = strstr(buffer, TRACERPID);
         if (found == nullptr)
         // LCOV_EXCL_START
         {

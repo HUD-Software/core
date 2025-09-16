@@ -124,13 +124,11 @@ namespace hud
          */
         [[nodiscard]] static void *allocate(const usize size) noexcept
         {
-            if (size == 0) [[unlikely]]
-            {
+            if (size == 0) [[unlikely]] {
                 return nullptr;
             }
             void *unaligned_pointer = ::malloc(size);
-            if (unaligned_pointer != nullptr) [[unlikely]]
-            {
+            if (unaligned_pointer != nullptr) [[unlikely]] {
                 // assert(false);// OOM
             }
             return unaligned_pointer;
@@ -145,13 +143,11 @@ namespace hud
          */
         [[nodiscard]] static void *allocate(const usize size, const usize extra) noexcept
         {
-            if (size == 0) [[unlikely]]
-            {
+            if (size == 0) [[unlikely]] {
                 return nullptr;
             }
             void *unaligned_pointer = ::malloc(size + extra);
-            if (unaligned_pointer != nullptr) [[unlikely]]
-            {
+            if (unaligned_pointer != nullptr) [[unlikely]] {
                 // assert(false);// OOM
             }
             return unaligned_pointer;
@@ -192,8 +188,7 @@ namespace hud
         [[nodiscard]] static HD_FORCEINLINE void *allocate_zero(const usize size) noexcept
         {
             void *buffer = allocate(size);
-            if (buffer != nullptr) [[likely]]
-            {
+            if (buffer != nullptr) [[likely]] {
                 set_memory_zero(buffer, size);
             }
             return buffer;
@@ -208,8 +203,7 @@ namespace hud
         [[nodiscard]] static void *allocate_align(const usize size, const u32 alignment) noexcept
         {
             void *unaligned_pointer = allocate(size, alignment + ALIGNED_MALLOC_HEADER_SIZE);
-            if (unaligned_pointer) [[likely]]
-            {
+            if (unaligned_pointer) [[likely]] {
                 return align_pointer(unaligned_pointer, size, alignment);
             }
             return nullptr;
@@ -245,8 +239,7 @@ namespace hud
         [[nodiscard]] static HD_FORCEINLINE void *allocate_align_zero(const usize size, const u32 alignment) noexcept
         {
             void *buffer = allocate_align(size, alignment);
-            if (buffer != nullptr) [[likely]]
-            {
+            if (buffer != nullptr) [[likely]] {
                 set_memory_zero(buffer, size);
             }
             return buffer;
@@ -276,16 +269,14 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                if (alloc != nullptr)
-                {
+                if (alloc != nullptr) {
                     // Usage of std::allocator.deallocate is allowed in constexpr dynamic allocation.
                     // The allocation should be freed after std::allocator<type_t>().allocate in the same constexpr expression
                     std::allocator<type_t>().deallocate(alloc, count);
                 }
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 free(reinterpret_cast<void *>(alloc));
             }
         }
@@ -311,8 +302,7 @@ namespace hud
                 free_array(pointer, count);
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 free_align(reinterpret_cast<const void *>(pointer));
             }
         }
@@ -320,8 +310,7 @@ namespace hud
         /** Free aligned memory block allocated with allocate_align */
         static HD_FORCEINLINE void free_align(const void *pointer) noexcept
         {
-            if (pointer != nullptr)
-            {
+            if (pointer != nullptr) {
                 free(get_unaligned_pointer(pointer));
             }
         }
@@ -337,13 +326,11 @@ namespace hud
          */
         [[nodiscard]] static HD_FORCEINLINE void *reallocate(void *pointer, const usize size) noexcept
         {
-            if (size == 0)
-            {
+            if (size == 0) {
                 free(pointer);
                 return nullptr;
             }
-            else
-            {
+            else {
                 return ::realloc(pointer, size);
             }
         }
@@ -360,11 +347,9 @@ namespace hud
          */
         [[nodiscard]] static void *reallocate_align(void *pointer, const usize size, const u32 alignment) noexcept
         {
-            if (pointer && size)
-            {
+            if (pointer && size) {
                 usize old_size = *((usize *)((const uptr)pointer - sizeof(void *) - sizeof(uptr))); // Read the size of the allocation
-                if (size == old_size)
-                {
+                if (size == old_size) {
                     return pointer;
                 }
                 usize size_to_copy = size < old_size ? size : old_size;
@@ -375,12 +360,10 @@ namespace hud
                 free_align(pointer);
                 return aligned_pointer;
             }
-            else if (!pointer)
-            {
+            else if (!pointer) {
                 return allocate_align(size, alignment);
             }
-            else
-            {
+            else {
                 free_align(pointer);
                 return nullptr;
             }
@@ -400,8 +383,7 @@ namespace hud
             check(source != nullptr);
 
             // The behavior is undefined if the objects overlap
-            if (!hud::compilation::is_compilation_mode(hud::compilation_mode::release) && size > 0) [[likely]]
-            {
+            if (!hud::compilation::is_compilation_mode(hud::compilation_mode::release) && size > 0) [[likely]] {
                 check(destination != source);
                 const volatile uptr dest_addr = reinterpret_cast<uptr>(destination);
                 const volatile uptr src_addr = reinterpret_cast<uptr>(source);
@@ -428,15 +410,13 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size; ++position)
-                {
+                for (usize position = 0; position < size; ++position) {
                     destination[position] = source[position];
                 }
                 return destination;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return static_cast<type_t *>(copy_memory(static_cast<void *>(destination), static_cast<const void *>(source), size));
             }
         }
@@ -480,15 +460,13 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size; ++position)
-                {
+                for (usize position = 0; position < size; ++position) {
                     destination[position] = value;
                 }
                 return destination;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return static_cast<u8 *>(set_memory(static_cast<void *>(destination), size, value));
             }
         }
@@ -522,15 +500,13 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size / sizeof(type_t); position++)
-                {
+                for (usize position = 0; position < size / sizeof(type_t); position++) {
                     std::construct_at(destination + position, value);
                 }
                 return destination;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return static_cast<type_t *>(set_memory(static_cast<void *>(destination), size, value));
             }
         }
@@ -589,15 +565,13 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size; position++)
-                {
+                for (usize position = 0; position < size; position++) {
                     destination[position] = value;
                 }
                 return destination;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return static_cast<u8 *>(set_memory_safe(static_cast<void *>(destination), size, value));
             }
         }
@@ -635,15 +609,13 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size / sizeof(type_t); position++)
-                {
+                for (usize position = 0; position < size / sizeof(type_t); position++) {
                     std::construct_at(destination + position, value);
                 }
                 return destination;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return static_cast<type_t *>(set_memory_safe(static_cast<void *>(destination), size, value));
             }
         }
@@ -703,15 +675,13 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size / sizeof(type_t); position++)
-                {
+                for (usize position = 0; position < size / sizeof(type_t); position++) {
                     std::construct_at(destination + position, nullptr);
                 }
                 return destination;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return static_cast<type_t *>(set_memory_zero(static_cast<void *>(destination), size));
             }
         }
@@ -774,15 +744,13 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size / sizeof(type_t); position++)
-                {
+                for (usize position = 0; position < size / sizeof(type_t); position++) {
                     std::construct_at(destination + position, 0);
                 }
                 return destination;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return static_cast<type_t *>(set_memory_safe(destination, size, 0));
             }
         }
@@ -803,15 +771,13 @@ namespace hud
             if consteval
             // LCOV_EXCL_START
             {
-                for (usize position = 0; position < size / sizeof(type_t); position++)
-                {
+                for (usize position = 0; position < size / sizeof(type_t); position++) {
                     std::construct_at(destination + position, nullptr);
                 }
                 return destination;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return static_cast<type_t *>(set_memory_safe(destination, size, 0));
             }
         }
@@ -861,21 +827,18 @@ namespace hud
             // LCOV_EXCL_START
             {
                 u8 *dest = destination;
-                if (size == 0)
-                {
+                if (size == 0) {
                     return destination;
                 }
                 u8 *tmp = hud::memory::allocate_array<u8>(size);
                 // copy src to tmp
-                for (usize position = 0; position < size; position++)
-                {
+                for (usize position = 0; position < size; position++) {
                     std::construct_at(tmp + position, *source);
                     source++;
                 }
 
                 // copy tmp to destination
-                for (usize position = 0; position < size; position++)
-                {
+                for (usize position = 0; position < size; position++) {
                     *destination = tmp[position];
                     destination++;
                 }
@@ -884,8 +847,7 @@ namespace hud
                 return dest;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return move_memory(static_cast<void *>(destination), static_cast<const void *>(source), size);
             }
         }
@@ -925,11 +887,9 @@ namespace hud
             {
                 const u8 *lhs = buffer1;
                 const u8 *rhs = buffer2;
-                for (usize position = 0; position < size; position++)
-                {
+                for (usize position = 0; position < size; position++) {
                     i32 diff = *lhs - *rhs;
-                    if (diff)
-                    {
+                    if (diff) {
                         return diff;
                     }
                     lhs++;
@@ -938,8 +898,7 @@ namespace hud
                 return 0;
             }
             // LCOV_EXCL_STOP
-            else
-            {
+            else {
                 return compare_memory(static_cast<const void *>(buffer1), static_cast<const void *>(buffer2), size);
             }
         }
@@ -1077,17 +1036,17 @@ namespace hud
         }
 
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
-        [[nodiscard]] static constexpr u32 unaligned_load32(const ansichar *buffer) noexcept
+        [[nodiscard]] static constexpr u32 unaligned_load32(const char8 *buffer) noexcept
         {
-            ansichar result[sizeof(u32)];
+            char8 result[sizeof(u32)];
             copy_memory(result, buffer, sizeof(u32));
             return hud::bit_cast<u32>(result);
         }
 
         /** Performs a load of 32 bits into an aligned memory from a unaligned memory */
-        [[nodiscard]] static constexpr u64 unaligned_load64(const ansichar *buffer) noexcept
+        [[nodiscard]] static constexpr u64 unaligned_load64(const char8 *buffer) noexcept
         {
-            ansichar result[sizeof(u64)];
+            char8 result[sizeof(u64)];
             copy_memory(result, buffer, sizeof(u64));
             return hud::bit_cast<u64>(result);
         }
@@ -1112,14 +1071,12 @@ namespace hud
         /** Load 128 bits value and return it. */
         [[nodiscard]] static constexpr __m128i unaligned_load128(const i8 *buffer) noexcept
         {
-            if consteval
-            {
+            if consteval {
                 i8 result[sizeof(__m128i)];
                 copy_memory(result, buffer, sizeof(__m128i));
                 return hud::bit_cast<__m128i>(result);
             }
-            else
-            {
+            else {
                 return _mm_loadu_si128(reinterpret_cast<const __m128i *>(buffer));
             }
         }
@@ -1180,8 +1137,7 @@ namespace hud
         static constexpr void construct_array_at(type_t *HD_RESTRICT begin, const type_t *HD_RESTRICT const end, args_t &&...args) noexcept
         {
             static_assert(hud::is_nothrow_constructible_v<type_t, args_t...>, "type_t constructor is throwable.hud::memory::construct_array_at is not designed to allow throwable constructible type");
-            while (begin < end)
-            {
+            while (begin < end) {
                 hud::memory::construct_object_at<type_t, args_t...>(begin++, hud::forward<args_t>(args)...);
             }
         }
@@ -1210,12 +1166,10 @@ namespace hud
         static constexpr void default_construct_array(type_t *HD_RESTRICT begin, type_t *HD_RESTRICT end) noexcept
         {
             static_assert(hud::is_nothrow_default_constructible_v<type_t>, "type_t default constructor is throwable.hud::memory::default_construct is not designed to allow throwable default constructible type");
-            if (!hud::is_constant_evaluated() && hud::is_trivially_default_constructible_v<type_t>)
-            {
+            if (!hud::is_constant_evaluated() && hud::is_trivially_default_constructible_v<type_t>) {
                 hud::memory::set_memory_zero(begin, (end - begin) * sizeof(type_t));
             }
-            else
-            {
+            else {
                 hud::memory::construct_array_at<type_t>(begin, end);
             }
         }
@@ -1229,8 +1183,7 @@ namespace hud
         requires(is_destructible_v<type_t> && !hud::is_pointer_v<type_t>)
         static constexpr void destroy_object(type_t *obj) noexcept
         {
-            if constexpr (!hud::is_trivially_destructible_v<type_t>)
-            {
+            if constexpr (!hud::is_trivially_destructible_v<type_t>) {
                 static_assert(hud::is_nothrow_destructible_v<type_t>, "type_t destructor is throwable.hud::memory::destroy_object is not designed to allow throwable destructible type");
                 obj->~type_t();
             }
@@ -1247,10 +1200,8 @@ namespace hud
         requires(is_destructible_v<type_t>)
         static constexpr void destroy_object_array([[maybe_unused]] type_t *address, [[maybe_unused]] usize count) noexcept
         {
-            if constexpr (!hud::is_trivially_destructible_v<type_t>)
-            {
-                while (count)
-                {
+            if constexpr (!hud::is_trivially_destructible_v<type_t>) {
+                while (count) {
                     hud::memory::destroy_object<type_t>(address);
                     address++;
                     count--;
@@ -1272,14 +1223,11 @@ namespace hud
         static constexpr void copy_construct_array(type_t *destination, const u_type_t *source, usize count) noexcept
         {
             static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) copy constructor is throwable.hud::memory::copy_construct_array is not designed to allow throwable copy constructible type");
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && count > 0u)
-            {
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t> && count > 0u) {
                 hud::memory::copy_memory(destination, source, count * sizeof(type_t));
             }
-            else
-            {
-                while (count)
-                {
+            else {
+                while (count) {
                     hud::memory::construct_object_at<type_t, u_type_t>(destination, *source);
                     destination++;
                     source++;
@@ -1302,23 +1250,18 @@ namespace hud
         requires(hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>)
         static constexpr void move_or_copy_construct_array(type_t *destination, u_type_t *source, usize count) noexcept
         {
-            if constexpr (hud::is_move_constructible_v<type_t, u_type_t>)
-            {
+            if constexpr (hud::is_move_constructible_v<type_t, u_type_t>) {
                 static_assert(hud::is_nothrow_move_constructible_v<type_t, u_type_t>, "type_t(const u_type_t&) constructor is throwable.hud::memory::construct_object_at is not designed to allow throwable constructible type");
             }
-            if constexpr (hud::is_copy_constructible_v<type_t, u_type_t>)
-            {
+            if constexpr (hud::is_copy_constructible_v<type_t, u_type_t>) {
                 static_assert(hud::is_nothrow_copy_constructible_v<type_t, u_type_t>, "type_t(u_type_t&&) constructor is throwable.hud::memory::construct_object_at is not designed to allow throwable constructible type");
             }
 
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t> && count > 0u)
-            {
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t> && count > 0u) {
                 hud::memory::move_memory(destination, source, count * sizeof(type_t));
             }
-            else
-            {
-                while (count)
-                {
+            else {
+                while (count) {
                     hud::memory::construct_object_at<type_t, u_type_t>(destination, hud::move(*source));
                     destination++;
                     source++;
@@ -1339,14 +1282,11 @@ namespace hud
         requires(hud::is_copy_assignable_v<type_t, u_type_t>)
         static constexpr void copy_assign_object_array(type_t *destination, const u_type_t *source, usize count) noexcept
         {
-            if (hud::is_bitwise_copy_assignable_v<type_t, u_type_t> && !hud::is_constant_evaluated())
-            {
+            if (hud::is_bitwise_copy_assignable_v<type_t, u_type_t> && !hud::is_constant_evaluated()) {
                 hud::memory::copy_memory(destination, source, count * sizeof(type_t));
             }
-            else
-            {
-                while (count)
-                {
+            else {
+                while (count) {
                     static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable.hud::memory::copy_assign is not designed to allow throwable copy assignable type");
                     *destination = *source;
                     destination++;
@@ -1369,23 +1309,18 @@ namespace hud
         requires(hud::is_move_assignable_v<type_t, u_type_t> || hud::is_copy_assignable_v<type_t, u_type_t>)
         static constexpr void move_or_copy_assign_object_array(type_t *destination, u_type_t *source, u_type_t const *const HD_RESTRICT end_source) noexcept
         {
-            if constexpr (hud::is_move_assignable_v<type_t, u_type_t>)
-            {
+            if constexpr (hud::is_move_assignable_v<type_t, u_type_t>) {
                 static_assert(hud::is_nothrow_move_assignable_v<type_t, u_type_t>, "type_t operator=(u_type_t&&) move assign is throwable. hud::memory::move_or_copy_assign_object_array is not designed to allow throwable move assignable type");
             }
-            if constexpr (hud::is_copy_assignable_v<type_t, u_type_t>)
-            {
+            if constexpr (hud::is_copy_assignable_v<type_t, u_type_t>) {
                 static_assert(hud::is_nothrow_copy_assignable_v<type_t, u_type_t>, "type_t operator=(const u_type_t&) copy assign is throwable. hud::memory::move_or_copy_assign_object_array is not designed to allow throwable copy assignable type");
             }
 
-            if (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && hud::is_same_size_v<type_t, u_type_t> && !hud::is_constant_evaluated())
-            {
+            if (hud::is_bitwise_move_assignable_v<type_t, u_type_t> && hud::is_same_size_v<type_t, u_type_t> && !hud::is_constant_evaluated()) {
                 hud::memory::move_memory(destination, source, (end_source - source) * sizeof(type_t));
             }
-            else
-            {
-                while (source < end_source)
-                {
+            else {
+                while (source < end_source) {
                     *destination = hud::move(*source);
                     destination++;
                     source++;
@@ -1428,12 +1363,10 @@ namespace hud
         {
             // If the source is bitwise copyable and bitwise movable to destination then we make a copy instead of a move semantic
             // This performs better that using move semantic that we do a memory move instead
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t>)
-            {
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_copy_constructible_v<type_t, u_type_t>) {
                 hud::memory::copy_memory(destination, source, count * sizeof(type_t));
             }
-            else
-            {
+            else {
                 hud::memory::move_or_copy_construct_array<type_t, u_type_t>(destination, source, count);
             }
             hud::memory::destroy_object_array<u_type_t>(source, count);
@@ -1455,17 +1388,14 @@ namespace hud
         requires((hud::is_move_constructible_v<type_t, u_type_t> || hud::is_copy_constructible_v<type_t, u_type_t>) && is_destructible_v<u_type_t>)
         static constexpr void move_or_copy_construct_object_array_then_destroy_backward(type_t *destination, u_type_t *source, const usize count) noexcept
         {
-            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t>)
-            {
+            if (!hud::is_constant_evaluated() && hud::is_bitwise_move_constructible_v<type_t, u_type_t>) {
                 hud::memory::move_memory(destination, source, count * sizeof(u_type_t));
                 hud::memory::destroy_object_array<u_type_t>(source, count);
             }
-            else
-            {
+            else {
                 type_t *last_destination = destination + count;
                 u_type_t *last_source = source + count;
-                while (last_source > source)
-                {
+                while (last_source > source) {
                     last_destination--;
                     last_source--;
                     hud::memory::move_or_copy_construct_object_then_destroy<type_t, u_type_t>(last_destination, hud::move(*last_source));
@@ -1500,18 +1430,14 @@ namespace hud
         template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool is_object_array_equal(const lhs_t *left, const rhs_t *right, usize count) noexcept
         {
-            if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>)
-            {
+            if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>) {
                 return hud::memory::is_memory_compare_equal(left, right, count * sizeof(lhs_t));
             }
-            else
-            {
+            else {
                 static_assert(hud::is_comparable_with_equal_operator_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
 
-                while (count)
-                {
-                    if (!hud::memory::is_object_equal<lhs_t, rhs_t>(left, right))
-                    {
+                while (count) {
+                    if (!hud::memory::is_object_equal<lhs_t, rhs_t>(left, right)) {
                         return false;
                     }
                     left++;
@@ -1549,18 +1475,14 @@ namespace hud
         template<typename lhs_t, typename rhs_t>
         static HD_FORCEINLINE bool is_object_array_not_equal(const lhs_t *left, const rhs_t *right, usize count) noexcept
         {
-            if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>)
-            {
+            if constexpr (hud::is_bitwise_comparable_v<lhs_t, rhs_t> && hud::is_same_size_v<lhs_t, rhs_t>) {
                 return !hud::memory::is_memory_compare_equal(left, right, count * sizeof(lhs_t));
             }
-            else
-            {
+            else {
                 static_assert(hud::is_comparable_with_not_equal_operator_v<lhs_t, rhs_t>, "Types lhs_t and rhs_t are not comparable");
 
-                while (count)
-                {
-                    if (hud::memory::is_object_not_equal<lhs_t, rhs_t>(left, right))
-                    {
+                while (count) {
+                    if (hud::memory::is_object_not_equal<lhs_t, rhs_t>(left, right)) {
                         return true;
                     }
                     left++;

@@ -87,7 +87,7 @@ GTEST_TEST(traits, is_trivially_swappable)
     hud_assert_true((hud::is_trivially_swappable_v<f64>));
     hud_assert_true((hud::is_trivially_swappable_v<isize>));
     hud_assert_true((hud::is_trivially_swappable_v<usize>));
-    hud_assert_true((hud::is_trivially_swappable_v<ansichar>));
+    hud_assert_true((hud::is_trivially_swappable_v<char8>));
     hud_assert_true((hud::is_trivially_swappable_v<wchar>));
     hud_assert_true((hud::is_trivially_swappable_v<char16>));
     hud_assert_true((hud::is_trivially_swappable_v<char32>));
@@ -108,7 +108,7 @@ GTEST_TEST(traits, is_trivially_swappable)
     hud_assert_true((hud::is_trivially_swappable_v<f64 *>));
     hud_assert_true((hud::is_trivially_swappable_v<isize *>));
     hud_assert_true((hud::is_trivially_swappable_v<usize *>));
-    hud_assert_true((hud::is_trivially_swappable_v<ansichar *>));
+    hud_assert_true((hud::is_trivially_swappable_v<char8 *>));
     hud_assert_true((hud::is_trivially_swappable_v<wchar *>));
     hud_assert_true((hud::is_trivially_swappable_v<char16 *>));
     hud_assert_true((hud::is_trivially_swappable_v<char32 *>));

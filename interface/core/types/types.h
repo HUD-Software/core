@@ -31,10 +31,10 @@ namespace hud
     using i64 = types::i64; // 64 bits signed integer
 
     // characteracter common types
-    using ansichar = types::ansichar; // 8 bits character
-    using wchar = types::wchar;       // Platform dependent size bits wide character
-    using char16 = types::char16;     // 16 bits character type
-    using char32 = types::char32;     // 32 bits character type
+    using char8 = types::char8;   // 8 bits character
+    using wchar = types::wchar;   // Platform dependent size bits wide character
+    using char16 = types::char16; // 16 bits character type
+    using char32 = types::char32; // 32 bits character type
 
     // Floating point types
     using f32 = types::f32; // 32 bits f32 (IEEE 754)
@@ -108,12 +108,12 @@ namespace hud
     static inline constexpr i64 i64_min = types::i64_min;
     // Lowest positive i64 value.
     static inline constexpr i64 i64_min_positive = types::i64_min_positive;
-    // Highest positive ansichar value.
-    static inline constexpr ansichar ansichar_max = types::ansichar_max;
-    // Lowest negative ansichar value.
-    static inline constexpr ansichar ansichar_min = types::ansichar_min;
-    // Lowest positive ansichar value.
-    static inline constexpr ansichar ansichar_min_positive = types::ansichar_min_positive;
+    // Highest positive char8 value.
+    static inline constexpr char8 char8_max = types::char8_max;
+    // Lowest negative char8 value.
+    static inline constexpr char8 char8_min = types::char8_min;
+    // Lowest positive char8 value.
+    static inline constexpr char8 char8_min_positive = types::char8_min_positive;
     // Highest positive wchar value.
     static inline constexpr wchar wchar_max = types::wchar_max;
     // Lowest negative wchar value.
@@ -185,7 +185,7 @@ static_assert(sizeof(hud::u8) == 1, "sizeof(hud::u8) != 1 byte");
 static_assert(sizeof(hud::u16) == 2, "sizeof(hud::u16) != 2 bytes");
 static_assert(sizeof(hud::u32) == 4, "sizeof(hud::u32) != 4 bytes");
 static_assert(sizeof(hud::u64) == 8, "sizeof(hud::u64) != 8 bytes");
-static_assert(sizeof(hud::ansichar) == 1, "sizeof(hud::ansichar) != 1 byte");
+static_assert(sizeof(hud::char8) == 1, "sizeof(hud::char8) != 1 byte");
 #if defined(HD_HOST_WINDOWS)
 static_assert(sizeof(hud::wchar) == 2, "sizeof(hud::wchar) != 2 bytes");
 #else
@@ -219,7 +219,7 @@ static_assert(!is_signed(hud::u8) && is_unsigned(hud::u8), "hud::u8 is signed");
 static_assert(!is_signed(hud::u16) && is_unsigned(hud::u16), "hud::u16 is signed");
 static_assert(!is_signed(hud::u32) && is_unsigned(hud::u32), "hud::u32 is signed");
 static_assert(!is_signed(hud::u64) && is_unsigned(hud::u64), "hud::u64 is signed");
-static_assert(is_signed(hud::ansichar) && !is_unsigned(hud::ansichar), "hud::ansichar is not signed");
+static_assert(is_signed(hud::char8) && !is_unsigned(hud::char8), "hud::char8 is not signed");
 #if defined(HD_HOST_WINDOWS)
 static_assert(!is_signed(hud::wchar) && is_unsigned(hud::wchar), "hud::wchar is unsigned");
 #else
@@ -252,8 +252,8 @@ static_assert(hud::i32_min == (-2147483648), "i32_min != (-2147483647 - 1)");
 static_assert(hud::i64_max == 9223372036854775807, "i64_max != 9223372036854775807");
 static_assert(hud::i64_min == (-9223372036854775807 - 1), "i64_min != (-9223372036854775807 - 1)");
 
-static_assert(hud::ansichar_max == 127, "ansichar_max != 127");
-static_assert(hud::ansichar_min == (-127 - 1), "ansichar_min != (-127 - 1)");
+static_assert(hud::char8_max == 127, "char8_max != 127");
+static_assert(hud::char8_min == (-127 - 1), "char8_min != (-127 - 1)");
 
 #if defined(HD_HOST_WINDOWS)
 static_assert(hud::wchar_max == 0xFFFF, "wchar_max != 0xFFFF");
@@ -305,10 +305,10 @@ using i32 = hud::i32; // 32 bits signed integer
 using i64 = hud::i64; // 64 bits signed integer
 
 // characteracter common types
-using ansichar = hud::ansichar; // 8 bits character
-using wchar = hud::wchar;       // Platform dependent size bits wide character
-using char16 = hud::char16;     // 16 bits character type
-using char32 = hud::char32;     // 32 bits character type
+using char8 = hud::char8;   // 8 bits character
+using wchar = hud::wchar;   // Platform dependent size bits wide character
+using char16 = hud::char16; // 16 bits character type
+using char32 = hud::char32; // 32 bits character type
 
 // Floating point types
 using f32 = hud::f32; // 32 bits f32 (IEEE 754)

@@ -31,7 +31,7 @@ GTEST_TEST(traits, is_signed)
     hud_assert_false((hud::is_signed_v<usize>));
     hud_assert_false((hud::is_signed_v<char16>));
     hud_assert_false((hud::is_signed_v<char32>));
-    hud_assert_true((hud::is_signed_v<ansichar>));
+    hud_assert_true((hud::is_signed_v<char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_signed_v<wchar>));
 #else // HD_HOST_LINUX
@@ -58,7 +58,7 @@ GTEST_TEST(traits, is_signed)
     hud_assert_false((hud::is_signed_v<const usize>));
     hud_assert_false((hud::is_signed_v<const char16>));
     hud_assert_false((hud::is_signed_v<const char32>));
-    hud_assert_true((hud::is_signed_v<const ansichar>));
+    hud_assert_true((hud::is_signed_v<const char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_signed_v<const wchar>));
 #else // HD_HOST_LINUX
@@ -85,7 +85,7 @@ GTEST_TEST(traits, is_signed)
     hud_assert_false((hud::is_signed_v<volatile usize>));
     hud_assert_false((hud::is_signed_v<volatile char16>));
     hud_assert_false((hud::is_signed_v<volatile char32>));
-    hud_assert_true((hud::is_signed_v<volatile ansichar>));
+    hud_assert_true((hud::is_signed_v<volatile char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_signed_v<volatile wchar>));
 #else // HD_HOST_LINUX
@@ -112,7 +112,7 @@ GTEST_TEST(traits, is_signed)
     hud_assert_false((hud::is_signed_v<const volatile usize>));
     hud_assert_false((hud::is_signed_v<const volatile char16>));
     hud_assert_false((hud::is_signed_v<const volatile char32>));
-    hud_assert_true((hud::is_signed_v<const volatile ansichar>));
+    hud_assert_true((hud::is_signed_v<const volatile char8>));
 #if defined(HD_HOST_WINDOWS)
     hud_assert_false((hud::is_signed_v<const volatile wchar>));
 #else // HD_HOST_LINUX

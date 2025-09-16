@@ -74,7 +74,7 @@ namespace hud
                 static_assert((sizeof(wchar) == 2 || sizeof(wchar) == 4) && "wchar must be 2 or 4 bytes");
                 if constexpr (sizeof(wchar) == 2) // UTF-16 / Windows
                 {
-                    // Mask 8 bytes of 0xFF80 with the ansichars
+                    // Mask 8 bytes of 0xFF80 with the char8s
                     const __m128i mask = _mm_set1_epi16(0xFF80);
                     for (; i + 8 <= length(); i += 8) {
                         __m128i chunk = _mm_loadu_si128(reinterpret_cast<const __m128i *>(ptr_ + i));

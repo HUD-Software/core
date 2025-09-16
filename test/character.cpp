@@ -1,29 +1,29 @@
 #include <core/character.h>
 
-static constexpr ansichar digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+static constexpr char8 digits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 static constexpr wchar wide_digits[] = {L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9'};
-static constexpr ansichar low_letter[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+static constexpr char8 low_letter[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 static constexpr wchar wide_low_letter[] = {L'a', L'b', L'c', L'd', L'e', L'f', L'g', L'h', L'i', L'j', L'k', L'l', L'm', L'n', L'o', L'p', L'q', L'r', L's', L't', L'u', L'v', L'w', L'x', L'y', L'z'};
-static constexpr ansichar higher_letter[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+static constexpr char8 higher_letter[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 static constexpr wchar wide_higher_letter[] = {L'A', L'B', L'C', L'D', L'E', L'F', L'G', L'H', L'I', L'J', L'K', L'L', L'M', L'N', L'O', L'P', L'Q', L'R', L'S', L'T', L'U', L'V', L'W', L'X', L'Y', L'Z'};
-static constexpr ansichar hexa[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F'};
+static constexpr char8 hexa[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'A', 'B', 'C', 'D', 'E', 'F'};
 static constexpr wchar wide_hexa[] = {L'0', L'1', L'2', L'3', L'4', L'5', L'6', L'7', L'8', L'9', L'a', L'b', L'c', L'd', L'e', L'f', L'A', L'B', L'C', L'D', L'E', L'F'};
-static constexpr ansichar space_and_tab[] = {' ', '\t'};
+static constexpr char8 space_and_tab[] = {' ', '\t'};
 static constexpr wchar wide_space_and_tab[] = {L' ', L'\t'};
-static constexpr ansichar control[] = {'\x0', '\x1', '\x2', '\x3', '\x4', '\x5', '\x6', '\x7', '\x8', '\x9', '\xA', '\xB', '\xC', '\xD', '\xE', '\xF', '\x7F', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x1A', '\x1B', '\x1C', '\x1D', '\x1E', '\x1F'};
+static constexpr char8 control[] = {'\x0', '\x1', '\x2', '\x3', '\x4', '\x5', '\x6', '\x7', '\x8', '\x9', '\xA', '\xB', '\xC', '\xD', '\xE', '\xF', '\x7F', '\x10', '\x11', '\x12', '\x13', '\x14', '\x15', '\x16', '\x17', '\x18', '\x19', '\x1A', '\x1B', '\x1C', '\x1D', '\x1E', '\x1F'};
 static constexpr wchar wide_control[] = {L'\x0', L'\x1', L'\x2', L'\x3', L'\x4', L'\x5', L'\x6', L'\x7', L'\x8', L'\x9', L'\xA', L'\xB', L'\xC', L'\xD', L'\xE', L'\xF', L'\x7F', L'\x10', L'\x11', L'\x12', L'\x13', L'\x14', L'\x15', L'\x16', L'\x17', L'\x18', L'\x19', L'\x1A', L'\x1B', L'\x1C', L'\x1D', L'\x1E', L'\x1F'};
-static constexpr ansichar punc[] = {'!', '\"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'};
-static constexpr ansichar wide_punc[] = {L'!', L'\"', L'#', L'$', L'%', L'&', L'\'', L'(', L')', L'*', L'+', L',', L'-', L'.', L'/', L':', L';', L'<', L'=', L'>', L'?', L'@', L'[', L'\\', L']', L'^', L'_', L'`', L'{', L'|', L'}', L'~'};
+static constexpr char8 punc[] = {'!', '\"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'};
+static constexpr char8 wide_punc[] = {L'!', L'\"', L'#', L'$', L'%', L'&', L'\'', L'(', L')', L'*', L'+', L',', L'-', L'.', L'/', L':', L';', L'<', L'=', L'>', L'?', L'@', L'[', L'\\', L']', L'^', L'_', L'`', L'{', L'|', L'}', L'~'};
 
 GTEST_TEST(character, is_pure_ascii)
 {
-    // for (ansichar cur = 0; cur < hud::ansichar_max; cur++)
+    // for (char8 cur = 0; cur < hud::char8_max; cur++)
     // {
     //     hud_assert_true(hud::character::is_pure_ascii(cur));
     // }
     // for (wchar cur = 0; cur < hud::wchar_max; cur++)
     // {
-    //     if (cur <= hud::ansichar_max)
+    //     if (cur <= hud::char8_max)
     //     {
     //         hud_assert_true(hud::character::is_pure_ascii(cur));
     //     }
@@ -269,7 +269,7 @@ GTEST_TEST(character, is_digit)
 
 GTEST_TEST(character, is_hexa)
 {
-    static constexpr ansichar no_hexa[] = {'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+    static constexpr char8 no_hexa[] = {'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     static constexpr wchar wide_no_hexa[] = {L'G', L'H', L'I', L'J', L'K', L'L', L'M', L'N', L'O', L'P', L'Q', L'R', L'S', L'T', L'U', L'V', L'W', L'X', L'Y', L'Z'};
 
     for (const auto &hexa : hexa) {
@@ -403,7 +403,7 @@ GTEST_TEST(character, is_control)
 
 GTEST_TEST(character, is_space)
 {
-    static constexpr ansichar Space[] = {' ', '\x20', '\x09', '\xA', '\xB', '\xC', '\xD'};
+    static constexpr char8 Space[] = {' ', '\x20', '\x09', '\xA', '\xB', '\xC', '\xD'};
     static constexpr wchar WideSpace[] = {L' ', L'\x20', L'\x09', L'\xA', L'\xB', L'\xC', L'\xD'};
 
     for (const auto &no_space : digits) {

@@ -93,31 +93,28 @@ GTEST_TEST(hash_64, hash_of_floating_point_are_usable_in_constexpr)
 
 GTEST_TEST(hash_64, hash_can_hash_c_string)
 {
-    static constexpr const ansichar txt[] = "abcdefghijklmnopqrstuvwxyz";
-    hud_assert_eq(hud::hash_64<const ansichar *> {}(txt, hud::cstring::length(txt)), 0x5EAD741CE7AC31BDu);
+    static constexpr const char8 txt[] = "abcdefghijklmnopqrstuvwxyz";
+    hud_assert_eq(hud::hash_64<const char8 *> {}(txt, hud::cstring::length(txt)), 0x5EAD741CE7AC31BDu);
 
     static constexpr const wchar *wtxt = L"abcdefghijklmnopqrstuvwxyz";
-    if constexpr (sizeof(wchar) == 2)
-    {
+    if constexpr (sizeof(wchar) == 2) {
         hud_assert_eq(hud::hash_64<const wchar *> {}(wtxt, hud::cstring::length(wtxt)), 0xE66EDE359E692EBBu);
     }
-    else if constexpr (sizeof(wchar) == 4)
-    {
+    else if constexpr (sizeof(wchar) == 4) {
         hud_assert_eq(hud::hash_64<const wchar *> {}(wtxt, hud::cstring::length(wtxt)), 0xF09AD8D8223EE63Bu);
     }
-    else
-    {
+    else {
         FAIL();
     }
 }
 
 GTEST_TEST(hash_64, hash_can_hash_c_string_are_usable_in_constexpr)
 {
-    static constexpr const ansichar txt[] = "abcdefghijklmnopqrstuvwxyz";
-    constexpr u64 hash_a = hud::hash_64<const ansichar *> {}(txt, hud::cstring::length(txt));
+    static constexpr const char8 txt[] = "abcdefghijklmnopqrstuvwxyz";
+    constexpr u64 hash_a = hud::hash_64<const char8 *> {}(txt, hud::cstring::length(txt));
     hud_assert_eq(hash_a, 0x5EAD741CE7AC31BDu);
 
-    // Not Possible, wchar* cannot be cast to ansichar at compile time
+    // Not Possible, wchar* cannot be cast to char8 at compile time
     //
     // static constexpr const wchar *wtxt = L"abcdefghijklmnopqrstuvwxyz";
     // if constexpr (sizeof(wchar) == 2)
@@ -190,13 +187,13 @@ GTEST_TEST(hash_64, hasher64)
     hud::hasher_64 hasher;
     hud_assert_eq(hasher("key", len).result(), 0xCEAAB8E77B74C2E7u);
 #if defined(HD_TARGET_32_BITS)
-    hud_assert_eq(hasher((const ansichar *)&len, static_cast<usize>(sizeof(len))).result(), 0x60A95A74371605F2u);
+    hud_assert_eq(hasher((const char8 *)&len, static_cast<usize>(sizeof(len))).result(), 0x60A95A74371605F2u);
 #else // HD_TARGET_64_BITS
-    hud_assert_eq(hasher((const ansichar *)&len, static_cast<usize>(sizeof(len))).result(), 0x746D68F6EB969EB7u);
+    hud_assert_eq(hasher((const char8 *)&len, static_cast<usize>(sizeof(len))).result(), 0x746D68F6EB969EB7u);
 #endif
 
     // Test that hasher can be called redundancy
-    u64 value = hud::hasher_64 {}("key", len).hash((const ansichar *)&len, static_cast<usize>(sizeof(len))).result();
+    u64 value = hud::hasher_64 {}("key", len).hash((const char8 *)&len, static_cast<usize>(sizeof(len))).result();
 #if defined(HD_TARGET_32_BITS)
     hud_assert_eq(value, 0x60A95A74371605F2u);
 #else // HD_TARGET_64_BITS

@@ -126,14 +126,12 @@ namespace hud::hash_algorithm
          * @param buffer The possibly unaligned memory
          * @return The 32 bits aligned memory
          */
-        [[nodiscard]] static constexpr u32 fetch_32(const ansichar *buffer) noexcept
+        [[nodiscard]] static constexpr u32 fetch_32(const char8 *buffer) noexcept
         {
-            if constexpr (compilation::is_endianness(endianness::big))
-            {
+            if constexpr (compilation::is_endianness(endianness::big)) {
                 return hud::bits::reverse_bytes(hud::memory::unaligned_load32(buffer)); // LCOV_EXCL_LINE
             }
-            else
-            {
+            else {
                 return hud::memory::unaligned_load32(buffer);
             }
         }
@@ -143,14 +141,12 @@ namespace hud::hash_algorithm
          * @param buffer The possibly unaligned memory
          * @return The 32 bits aligned memory
          */
-        [[nodiscard]] static constexpr u64 fetch_64(const ansichar *buffer) noexcept
+        [[nodiscard]] static constexpr u64 fetch_64(const char8 *buffer) noexcept
         {
-            if constexpr (compilation::is_endianness(endianness::big))
-            {
+            if constexpr (compilation::is_endianness(endianness::big)) {
                 return hud::bits::reverse_bytes(hud::memory::unaligned_load64(buffer)); // LCOV_EXCL_LINE
             }
-            else
-            {
+            else {
                 return hud::memory::unaligned_load64(buffer);
             }
         }
@@ -161,12 +157,11 @@ namespace hud::hash_algorithm
          * @param length The length of the key
          * @return The hash of the key
          */
-        [[nodiscard]] static constexpr u32 hash_32_len_0_to_4(const ansichar *key, usize length) noexcept
+        [[nodiscard]] static constexpr u32 hash_32_len_0_to_4(const char8 *key, usize length) noexcept
         {
             u32 b = 0;
             u32 c = 9;
-            for (usize i = 0; i < length; i++)
-            {
+            for (usize i = 0; i < length; i++) {
                 u8 v = static_cast<u8>(key[i]);
                 b = b * C1 + v;
                 c ^= b;
@@ -182,7 +177,7 @@ namespace hud::hash_algorithm
          * @param length The length of the key
          * @return The hash of the key
          */
-        [[nodiscard]] static constexpr u32 hash_32_len_5_to_12(const ansichar *key, usize length) noexcept
+        [[nodiscard]] static constexpr u32 hash_32_len_5_to_12(const char8 *key, usize length) noexcept
         {
             u32 a = static_cast<u32>(length), b = static_cast<u32>(length) * 5, c = 9, d = b;
             a += fetch_32(key);
@@ -199,7 +194,7 @@ namespace hud::hash_algorithm
          * @param length The length of the key
          * @return The hash of the key
          */
-        [[nodiscard]] static constexpr u32 hash_32_len_13_to_24(const ansichar *key, usize length) noexcept
+        [[nodiscard]] static constexpr u32 hash_32_len_13_to_24(const char8 *key, usize length) noexcept
         {
             u32 a = fetch_32(key - 4 + (length >> 1));
             u32 b = fetch_32(key + 4);
@@ -238,10 +233,9 @@ namespace hud::hash_algorithm
          * @param length The length of the key
          * @return The hash of the key
          */
-        [[nodiscard]] static constexpr u64 hash_64_len_0_to_16(const ansichar *key, usize length) noexcept
+        [[nodiscard]] static constexpr u64 hash_64_len_0_to_16(const char8 *key, usize length) noexcept
         {
-            if (length >= 8)
-            {
+            if (length >= 8) {
                 u64 mul = K2 + length * 2;
                 u64 a = fetch_64(key) + K2;
                 u64 b = fetch_64(key + length - 8);
@@ -249,14 +243,12 @@ namespace hud::hash_algorithm
                 u64 d = (hud::bits::rotate_right(a, 25) + b) * mul;
                 return hash_64_len_16(c, d, mul);
             }
-            if (length >= 4)
-            {
+            if (length >= 4) {
                 u64 mul = K2 + length * 2;
                 u64 a = fetch_32(key);
                 return hash_64_len_16(length + (a << 3), fetch_32(key + length - 4), mul);
             }
-            if (length > 0)
-            {
+            if (length > 0) {
                 u8 a = static_cast<u8>(key[0]);
                 u8 b = static_cast<u8>(key[length >> 1]);
                 u8 c = static_cast<u8>(key[length - 1]);
@@ -273,7 +265,7 @@ namespace hud::hash_algorithm
          * @param length The length of the key
          * @return The hash of the key
          */
-        [[nodiscard]] static constexpr u64 hash_64_len_17_to_32(const ansichar *key, usize length) noexcept
+        [[nodiscard]] static constexpr u64 hash_64_len_17_to_32(const char8 *key, usize length) noexcept
         {
             u64 mul = K2 + length * 2;
             u64 a = fetch_64(key) * K1;
@@ -289,7 +281,7 @@ namespace hud::hash_algorithm
          * @param length The length of the key
          * @return The hash of the key
          */
-        [[nodiscard]] static constexpr u64 hash_64_len_33_to_64(const ansichar *key, usize len) noexcept
+        [[nodiscard]] static constexpr u64 hash_64_len_33_to_64(const char8 *key, usize len) noexcept
         {
             u64 mul = K2 + len * 2;
             u64 a = fetch_64(key) * K2;
@@ -369,7 +361,7 @@ namespace hud::hash_algorithm
          * @param b 8 bytes
          * @return 128 bits hash of 48 bytes
          */
-        [[nodiscard]] static constexpr u128 weak_hash_len_32_with_seeds(const ansichar *key, u64 a, u64 b) noexcept
+        [[nodiscard]] static constexpr u128 weak_hash_len_32_with_seeds(const char8 *key, u64 a, u64 b) noexcept
         {
             return weak_hash_len_32_with_seeds(fetch_64(key), fetch_64(key + 8), fetch_64(key + 16), fetch_64(key + 24), a, b);
         }
@@ -407,10 +399,9 @@ namespace hud::hash_algorithm
          * @param length Length of the key in bytes
          * @return The 32 bits hash of the key
          */
-        [[nodiscard]] static constexpr u32 hash_32(const ansichar *buffer, usize length) noexcept
+        [[nodiscard]] static constexpr u32 hash_32(const char8 *buffer, usize length) noexcept
         {
-            if (length <= 24)
-            {
+            if (length <= 24) {
                 return length <= 12 ? (length <= 4 ? details::hash_32_len_0_to_4(buffer, length) : details::hash_32_len_5_to_12(buffer, length)) : details::hash_32_len_13_to_24(buffer, length);
             }
 
@@ -437,8 +428,7 @@ namespace hud::hash_algorithm
             f = hud::bits::rotate_right(f, 19);
             f = f * 5 + 0xe6546b64;
             usize iters = (length - 1) / 20;
-            do
-            {
+            do {
                 u32 a0_ = hud::bits::rotate_right(details::fetch_32(buffer) * details::C1, 17) * details::C2;
                 u32 a1_ = details::fetch_32(buffer + 4);
                 u32 a2_ = hud::bits::rotate_right(details::fetch_32(buffer + 8) * details::C1, 17) * details::C2;
@@ -484,21 +474,17 @@ namespace hud::hash_algorithm
          * @param length Length of the key in bytes
          * @return The 64 bits hash of the buffer
          */
-        [[nodiscard]] static constexpr u64 hash_64(const ansichar *buffer, usize length) noexcept
+        [[nodiscard]] static constexpr u64 hash_64(const char8 *buffer, usize length) noexcept
         {
-            if (length <= 32)
-            {
-                if (length <= 16)
-                {
+            if (length <= 32) {
+                if (length <= 16) {
                     return details::hash_64_len_0_to_16(buffer, length);
                 }
-                else
-                {
+                else {
                     return details::hash_64_len_17_to_32(buffer, length);
                 }
             }
-            else if (length <= 64)
-            {
+            else if (length <= 64) {
                 return details::hash_64_len_33_to_64(buffer, length);
             }
 
@@ -513,8 +499,7 @@ namespace hud::hash_algorithm
 
             // Decrease len to the nearest multiple of 64, and operate on 64-byte chunks.
             length = (length - 1) & ~static_cast<usize>(63);
-            do
-            {
+            do {
                 x = hud::bits::rotate_right(x + y + v.low() + details::fetch_64(buffer + 8), 37) * details::K1;
                 y = hud::bits::rotate_right(y + v.high() + details::fetch_64(buffer + 48), 42) * details::K1;
                 x ^= w.high();

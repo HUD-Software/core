@@ -147,27 +147,27 @@ namespace hud
         }
     };
 
-    /** Retrieves the 32 bits hash of a ansichar null-terminated string. */
+    /** Retrieves the 32 bits hash of a char8 null-terminated string. */
     template<>
-    struct hash_32<ansichar *, usize>
+    struct hash_32<char8 *, usize>
     {
-        [[nodiscard]] constexpr u32 operator()(const ansichar *value, usize length) const
+        [[nodiscard]] constexpr u32 operator()(const char8 *value, usize length) const
         {
             return hud::hash_algorithm::city_hash::hash_32(value, length);
         }
     };
 
     template<>
-    struct hash_32<ansichar *>
+    struct hash_32<char8 *>
     {
-        [[nodiscard]] constexpr u32 operator()(const ansichar *value, usize length) const
+        [[nodiscard]] constexpr u32 operator()(const char8 *value, usize length) const
         {
-            return hud::hash_32<ansichar *, usize> {}(value, length);
+            return hud::hash_32<char8 *, usize> {}(value, length);
         }
 
-        [[nodiscard]] constexpr u32 operator()(const ansichar *value) const
+        [[nodiscard]] constexpr u32 operator()(const char8 *value) const
         {
-            return hud::hash_32<ansichar *, usize> {}(value, cstring::length(value));
+            return hud::hash_32<char8 *, usize> {}(value, cstring::length(value));
         }
     };
 
@@ -177,7 +177,7 @@ namespace hud
     {
         [[nodiscard]] inline u32 operator()(const wchar *value, usize length) const
         {
-            return hud::hash_algorithm::city_hash::hash_32(reinterpret_cast<const ansichar *>(value), length * sizeof(wchar));
+            return hud::hash_algorithm::city_hash::hash_32(reinterpret_cast<const char8 *>(value), length * sizeof(wchar));
         }
     };
 
@@ -197,12 +197,10 @@ namespace hud
         [[nodiscard]] inline u32 operator()(const void *const pointer) const
         {
             const uptr ptr = reinterpret_cast<uptr>(pointer);
-            if constexpr (sizeof(uptr) == 4)
-            {
+            if constexpr (sizeof(uptr) == 4) {
                 return hash_32<u32> {}(static_cast<u32>(ptr));
             }
-            else if constexpr (sizeof(uptr) == 8)
-            {
+            else if constexpr (sizeof(uptr) == 8) {
                 return hash_32<u64> {}(static_cast<u32>(ptr >> 4)); // 4 lowest bits in 64 bits are likely zero, ignore them
             }
         }
@@ -349,27 +347,27 @@ namespace hud
         }
     };
 
-    /** Retrieves the 64 bits hash of a ansichar null-terminated string. */
+    /** Retrieves the 64 bits hash of a char8 null-terminated string. */
     template<>
-    struct hash_64<ansichar *, usize>
+    struct hash_64<char8 *, usize>
     {
-        [[nodiscard]] constexpr u64 operator()(const ansichar *value, usize length) const
+        [[nodiscard]] constexpr u64 operator()(const char8 *value, usize length) const
         {
             return hud::hash_algorithm::city_hash::hash_64(value, length);
         }
     };
 
     template<>
-    struct hash_64<ansichar *>
+    struct hash_64<char8 *>
     {
-        [[nodiscard]] constexpr u64 operator()(const ansichar *value, usize length) const
+        [[nodiscard]] constexpr u64 operator()(const char8 *value, usize length) const
         {
-            return hud::hash_64<ansichar *, usize> {}(value, length);
+            return hud::hash_64<char8 *, usize> {}(value, length);
         }
 
-        [[nodiscard]] constexpr u64 operator()(const ansichar *value) const
+        [[nodiscard]] constexpr u64 operator()(const char8 *value) const
         {
-            return hud::hash_64<ansichar *, usize> {}(value, cstring::length(value));
+            return hud::hash_64<char8 *, usize> {}(value, cstring::length(value));
         }
     };
 
@@ -379,7 +377,7 @@ namespace hud
     {
         [[nodiscard]] inline u64 operator()(const wchar *value, usize length) const
         {
-            return hud::hash_64<ansichar *, usize> {}(reinterpret_cast<const ansichar *>(value), length * sizeof(wchar));
+            return hud::hash_64<char8 *, usize> {}(reinterpret_cast<const char8 *>(value), length * sizeof(wchar));
         }
     };
 
@@ -399,12 +397,10 @@ namespace hud
         [[nodiscard]] inline u64 operator()(const void *const pointer) const
         {
             const uptr ptr = reinterpret_cast<uptr>(pointer);
-            if constexpr (sizeof(uptr) == 4)
-            {
+            if constexpr (sizeof(uptr) == 4) {
                 return hud::hash_64<u32> {}(static_cast<u32>(ptr));
             }
-            else if constexpr (sizeof(uptr) == 8)
-            {
+            else if constexpr (sizeof(uptr) == 8) {
                 return hud::hash_64<u64> {}(static_cast<u64>(ptr >> 4)); // 4 lowest bits in 64 bits are likely zero, ignore them
             }
         }
@@ -426,7 +422,7 @@ namespace hud
      * A 32 bit hasher class used for hashing an arbitrary stream of bytes
      * Instances of `hasher_32` usually represent state that is changed while hashing data.
      * `hasher_32` provides a fairly basic interface for retrieving the generated hash.
-     * `hasher_32` used all functions in `hud` namespace like `hud::hash_32(const u32 value)`, `hud::hash_32(const ansichar *const value)` or `hud::combine_32(u64 a, u64 b)`.
+     * `hasher_32` used all functions in `hud` namespace like `hud::hash_32(const u32 value)`, `hud::hash_32(const char8 *const value)` or `hud::combine_32(u64 a, u64 b)`.
      *  If you want to hash a user defined type, add your `hud::hash_my_type(my_type& t)` function and just call `hasher_32::operator()`
      */
     class hasher_32
@@ -467,7 +463,7 @@ namespace hud
      * A 64 bit hasher class used for hashing an arbitrary stream of bytes
      * Instances of `hasher_64` usually represent state that is changed while hashing data.
      * `hasher_64` provides a fairly basic interface for retrieving the generated hash.
-     * `hasher_64` used all functions in `hud` namespace like `hud::hash_64(const u32 value)`, `hud::hash_64(const ansichar *const value)` or `hud::combine_64(u64 a, u64 b)`.
+     * `hasher_64` used all functions in `hud` namespace like `hud::hash_64(const u32 value)`, `hud::hash_64(const char8 *const value)` or `hud::combine_64(u64 a, u64 b)`.
      *  If you want to hash a user defined type, add your `hud::hash_my_type(my_type& t)` function and just call `hasher_64::operator()`
      */
     struct hasher_64

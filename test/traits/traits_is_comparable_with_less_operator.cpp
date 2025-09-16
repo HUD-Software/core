@@ -48,7 +48,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<i8, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i8, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i8, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<i8, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<i8, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i8, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i8, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i8, char32>));
@@ -66,7 +66,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<u8, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u8, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u8, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<u8, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<u8, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u8, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u8, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u8, char32>));
@@ -84,7 +84,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<i16, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i16, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i16, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<i16, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<i16, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i16, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i16, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i16, char32>));
@@ -102,7 +102,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<u16, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u16, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u16, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<u16, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<u16, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u16, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u16, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u16, char32>));
@@ -120,7 +120,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<i32, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i32, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i32, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<i32, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<i32, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i32, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i32, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i32, char32>));
@@ -138,7 +138,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<u32, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u32, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u32, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<u32, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<u32, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u32, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u32, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u32, char32>));
@@ -156,7 +156,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<i64, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i64, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i64, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<i64, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<i64, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i64, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i64, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<i64, char32>));
@@ -174,7 +174,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<u64, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u64, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u64, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<u64, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<u64, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u64, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u64, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<u64, char32>));
@@ -192,7 +192,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<iptr, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<iptr, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<iptr, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<iptr, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<iptr, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<iptr, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<iptr, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<iptr, char32>));
@@ -210,7 +210,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<uptr, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<uptr, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<uptr, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<uptr, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<uptr, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<uptr, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<uptr, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<uptr, char32>));
@@ -228,7 +228,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<f32, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f32, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f32, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<f32, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<f32, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f32, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f32, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f32, char32>));
@@ -246,28 +246,28 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<f64, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f64, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f64, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<f64, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<f64, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f64, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f64, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<f64, char32>));
 
-    // ansichar
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, i8>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, i16>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, i32>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, i64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, iptr>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, u8>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, u16>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, u32>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, u64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, uptr>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, f32>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, ansichar>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, wchar>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, char16>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<ansichar, char32>));
+    // char8
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, i8>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, i16>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, i32>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, i64>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, iptr>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, u8>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, u16>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, u32>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, u64>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, uptr>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, f32>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, f64>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, char8>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, wchar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, char16>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char8, char32>));
 
     // wchar
     hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, i8>));
@@ -282,7 +282,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<wchar, char32>));
@@ -300,7 +300,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<char16, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char16, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char16, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<char16, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char16, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char16, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char16, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char16, char32>));
@@ -318,7 +318,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<char32, uptr>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char32, f32>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char32, f64>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<char32, ansichar>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<char32, char8>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char32, wchar>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char32, char16>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<char32, char32>));
@@ -370,7 +370,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_false((hud::is_comparable_with_less_operator_v<void *, uptr>));
     hud_assert_false((hud::is_comparable_with_less_operator_v<void *, f32>));
     hud_assert_false((hud::is_comparable_with_less_operator_v<void *, f64>));
-    hud_assert_false((hud::is_comparable_with_less_operator_v<void *, ansichar>));
+    hud_assert_false((hud::is_comparable_with_less_operator_v<void *, char8>));
     hud_assert_false((hud::is_comparable_with_less_operator_v<void *, wchar>));
     hud_assert_false((hud::is_comparable_with_less_operator_v<void *, char16>));
     hud_assert_false((hud::is_comparable_with_less_operator_v<void *, char32>));
@@ -391,7 +391,7 @@ GTEST_TEST(traits, is_comparable_with_less_operator)
     hud_assert_true((hud::is_comparable_with_less_operator_v<void *, uptr *>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<void *, f32 *>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<void *, f64 *>));
-    hud_assert_true((hud::is_comparable_with_less_operator_v<void *, ansichar *>));
+    hud_assert_true((hud::is_comparable_with_less_operator_v<void *, char8 *>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<void *, wchar *>));
     hud_assert_true((hud::is_comparable_with_less_operator_v<void *, char16 *>));
 }

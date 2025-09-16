@@ -90,8 +90,7 @@ GTEST_TEST(compressed_tuple, make_tuple)
 
 GTEST_TEST(compressed_tuple, get)
 {
-    const auto test = []()
-    {
+    const auto test = []() {
         auto compressed_tuple = hud::make_compressed_tuple(12, 15.0f, L'w');
         return std::tuple {
             hud::get<0>(compressed_tuple) == 12,
@@ -129,7 +128,7 @@ GTEST_TEST(compressed_tuple, get)
 GTEST_TEST(compressed_tuple, tuple_cat)
 {
     using tuple_type1 = hud::compressed_tuple<i32, f32>;
-    using tuple_type2 = hud::compressed_tuple<ansichar, wchar, char16, hud_test::non_bitwise_type>;
+    using tuple_type2 = hud::compressed_tuple<char8, wchar, char16, hud_test::non_bitwise_type>;
     using tuple_type3 = hud::compressed_tuple<u64, f64, hud_test::non_bitwise_type>;
 
     using CatType = decltype(hud::tuple_cat(tuple_type1 {}, tuple_type2 {}, tuple_type3 {}));
@@ -149,7 +148,7 @@ GTEST_TEST(compressed_tuple, tuple_cat)
     hud_assert_eq(hud::tuple_size_v<CatType>, hud::tuple_size_v<tuple_type1> + hud::tuple_size_v<tuple_type2> + hud::tuple_size_v<tuple_type3>);
     hud_assert_true((hud::is_same_v<decltype(hud::get<0>(compressed_tuple)), i32 &>));
     hud_assert_true((hud::is_same_v<decltype(hud::get<1>(compressed_tuple)), f32 &>));
-    hud_assert_true((hud::is_same_v<decltype(hud::get<2>(compressed_tuple)), ansichar &>));
+    hud_assert_true((hud::is_same_v<decltype(hud::get<2>(compressed_tuple)), char8 &>));
     hud_assert_true((hud::is_same_v<decltype(hud::get<3>(compressed_tuple)), wchar &>));
     hud_assert_true((hud::is_same_v<decltype(hud::get<4>(compressed_tuple)), char16 &>));
     hud_assert_true((hud::is_same_v<decltype(hud::get<5>(compressed_tuple)), hud_test::non_bitwise_type &>));
@@ -190,8 +189,7 @@ GTEST_TEST(compressed_tuple, structure_binding_by_copy)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         auto compressed_tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         auto [first_cpy, second_cpy, third_cpy] = compressed_tuple;
         first_cpy = type {321, nullptr};
@@ -271,8 +269,7 @@ GTEST_TEST(compressed_tuple, structure_binding_rvalue)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         auto compressed_tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         auto &[first_ref, second_ref, third_ref] = compressed_tuple;
         first_ref = type {321, nullptr};
@@ -352,8 +349,7 @@ GTEST_TEST(compressed_tuple, structure_binding_const_rvalue)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         auto compressed_tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         const auto &[first_ref, second_ref, third_ref] = compressed_tuple;
         return std::tuple {
@@ -431,8 +427,7 @@ GTEST_TEST(compressed_tuple, structure_binding_lvalue)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         auto compressed_tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         auto &[first_ref, second_ref, third_ref] = compressed_tuple;
         first_ref = type {321, nullptr};
@@ -512,8 +507,7 @@ GTEST_TEST(compressed_tuple, structure_binding_const_tuple_lvalue)
     static_assert(hud::is_constructible_v<type, type &&>);
     static_assert(!hud::is_trivially_constructible_v<type, type &&>);
 
-    const auto test = [](type &&t1, type &&t2, type &&t3)
-    {
+    const auto test = [](type &&t1, type &&t2, type &&t3) {
         const auto compressed_tuple = hud::make_tuple(hud::move(t1), hud::move(t2), hud::move(t3));
         auto &[first_ref, second_ref, third_ref] = compressed_tuple;
         // Not possible, compressed_tuple is const

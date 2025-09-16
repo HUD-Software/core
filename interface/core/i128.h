@@ -61,8 +61,8 @@ namespace hud
         using i128_impl::operator i64;
         /** Cast to u64. */
         using i128_impl::operator u64;
-        /** Cast to ansichar. */
-        using i128_impl::operator ansichar;
+        /** Cast to char8. */
+        using i128_impl::operator char8;
         /** Cast to wchar. */
         using i128_impl::operator wchar;
         /** Cast to char16. */
@@ -123,8 +123,8 @@ namespace hud
         using u128_impl::operator i64;
         /** Cast to u64. */
         using u128_impl::operator u64;
-        /** Cast to ansichar. */
-        using u128_impl::operator ansichar;
+        /** Cast to char8. */
+        using u128_impl::operator char8;
         /** Cast to wchar. */
         using u128_impl::operator wchar;
         /** Cast to char16. */

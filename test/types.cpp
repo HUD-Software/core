@@ -13,14 +13,12 @@ GTEST_TEST(types, size)
     hud_assert_eq(sizeof(u16), 2u);
     hud_assert_eq(sizeof(u32), 4u);
     hud_assert_eq(sizeof(u64), 8u);
-    hud_assert_eq(sizeof(ansichar), 1u);
+    hud_assert_eq(sizeof(char8), 1u);
 
-    if constexpr (hud::compilation::is_host(hud::host::windows))
-    {
+    if constexpr (hud::compilation::is_host(hud::host::windows)) {
         hud_assert_eq(sizeof(wchar), 2u);
     }
-    else
-    {
+    else {
         hud_assert_eq(sizeof(wchar), 4u);
     }
     hud_assert_eq(sizeof(char16), 2u);
@@ -29,15 +27,13 @@ GTEST_TEST(types, size)
     hud_assert_eq(sizeof(f32), 4u);
     hud_assert_eq(sizeof(f64), 8u);
 
-    if constexpr (hud::compilation::is_targeting_64bits())
-    {
+    if constexpr (hud::compilation::is_targeting_64bits()) {
         hud_assert_eq(sizeof(iptr), 8u);
         hud_assert_eq(sizeof(uptr), 8u);
         hud_assert_eq(sizeof(isize), 8u);
         hud_assert_eq(sizeof(usize), 8u);
     }
-    else
-    {
+    else {
         hud_assert_eq(sizeof(iptr), 4u);
         hud_assert_eq(sizeof(uptr), 4u);
         hud_assert_eq(sizeof(isize), 4u);
@@ -56,7 +52,7 @@ GTEST_TEST(types, signed_unsigned)
     hud_assert_true(hud::is_unsigned_v<u16>);
     hud_assert_true(hud::is_unsigned_v<u32>);
     hud_assert_true(hud::is_unsigned_v<u64>);
-    hud_assert_true(hud::is_signed_v<ansichar>);
+    hud_assert_true(hud::is_signed_v<char8>);
 #if defined(HD_HOST_WINDOWS)
     hud_assert_true(hud::is_unsigned_v<wchar>);
 #else // HD_HOST_LINUX
@@ -92,8 +88,8 @@ GTEST_TEST(types, limits)
     hud_assert_eq(hud::i64_max, std::numeric_limits<i64>::max());
     hud_assert_eq(hud::i64_min, std::numeric_limits<i64>::min());
 
-    hud_assert_eq(hud::ansichar_max, std::numeric_limits<ansichar>::max());
-    hud_assert_eq(hud::ansichar_min, std::numeric_limits<ansichar>::min());
+    hud_assert_eq(hud::char8_max, std::numeric_limits<char8>::max());
+    hud_assert_eq(hud::char8_min, std::numeric_limits<char8>::min());
 
     hud_assert_eq(hud::wchar_max, std::numeric_limits<wchar>::max());
     hud_assert_eq(hud::wchar_min, std::numeric_limits<wchar>::min());

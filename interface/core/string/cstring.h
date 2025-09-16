@@ -28,7 +28,7 @@ namespace hud
          * @param string The null-terminated string
          * @return Always return true
          */
-        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ascii(const ansichar *string) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ascii(const char8 *string) noexcept
         {
             if (string == nullptr) {
                 return false;
@@ -46,7 +46,7 @@ namespace hud
         /**
          * Test whether wide null-terminated string contains only pure ansi characters.
          * @param string The null-terminated string
-         * @return true if the string contains only ansichar, false otherwise
+         * @return true if the string contains only char8, false otherwise
          */
         [[nodiscard]] static bool is_pure_ascii(const wchar *string) noexcept
         {
@@ -67,10 +67,10 @@ namespace hud
          * Test whether wide null-terminated string contains only pure ansi characters, checking string_size is not bigger than length of the string.
          * @param string The null-terminated string
          * @param string_size Size of the string in characters to test
-         * @return true if the string contains only ansichar and reach null-terminator character or the string_size character.
-         *         false if the string contains non ansichar character
+         * @return true if the string contains only char8 and reach null-terminator character or the string_size character.
+         *         false if the string contains non char8 character
          */
-        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ascii_safe(const ansichar *string, usize string_size) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ascii_safe(const char8 *string, usize string_size) noexcept
         {
             return string != nullptr;
         }
@@ -79,8 +79,8 @@ namespace hud
          * Test whether wide null-terminated string contains only pure ansi characters, checking string_size is not bigger than length of the string.
          * @param string The null-terminated string
          * @param string_size Size of the string in characters to test
-         * @return true if the string contains only ansichar and reach null-terminator character or the string_size character.
-         *         false if the string contains non ansichar character
+         * @return true if the string contains only char8 and reach null-terminator character or the string_size character.
+         *         false if the string contains non char8 character
          */
         [[nodiscard]] static bool is_pure_ascii_safe(const wchar *string, usize string_size) noexcept
         {
@@ -106,7 +106,7 @@ namespace hud
          * @param string The null-terminated string
          * @return true if the string is null or empty, false otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE bool is_null_or_empty(const ansichar *const string) noexcept
+        [[nodiscard]] static HD_FORCEINLINE bool is_null_or_empty(const char8 *const string) noexcept
         {
             return (string == nullptr) || character::is_null(*string);
         }
@@ -123,11 +123,11 @@ namespace hud
 
         /**
          * Copy ansi string.
-         * @param destination The destination ansichar buffer
-         * @param source Null-terminated ansichar to copy
+         * @param destination The destination char8 buffer
+         * @param source Null-terminated char8 to copy
          * @return destination pointer
          */
-        static HD_FORCEINLINE ansichar *copy(ansichar *destination, const ansichar *source) noexcept
+        static HD_FORCEINLINE char8 *copy(char8 *destination, const char8 *source) noexcept
         {
             check_not_null(destination, source);
             return strcpy(destination, source);
@@ -149,12 +149,12 @@ namespace hud
          * Copy characters from ansi string.
          * Caution should be take when source has more character than count, in this case no null character is append in the destination buffer.
          * To append a null character use copy_partial_safe instead.
-         * @param destination The destination ansichar buffer
-         * @param source Null-terminated ansichar to copy
+         * @param destination The destination char8 buffer
+         * @param source Null-terminated char8 to copy
          * @param count Number of character to copy
          * @return Destination pointer
          */
-        static HD_FORCEINLINE ansichar *copy_partial(ansichar *destination, const ansichar *source, const usize count) noexcept
+        static HD_FORCEINLINE char8 *copy_partial(char8 *destination, const char8 *source, const usize count) noexcept
         {
             check_not_null(destination, source);
             return strncpy(destination, source, count);
@@ -177,11 +177,11 @@ namespace hud
 
         /**
          * Appends a ansi string to another ansi string.
-         * @param destination The destination ansichar buffer
-         * @param source Null-terminated ansichar to append
+         * @param destination The destination char8 buffer
+         * @param source Null-terminated char8 to append
          * @return destination pointer
          */
-        static HD_FORCEINLINE ansichar *append(ansichar *destination, const ansichar *source) noexcept
+        static HD_FORCEINLINE char8 *append(char8 *destination, const char8 *source) noexcept
         {
             check_not_null(destination, source);
             return strcat(destination, source);
@@ -201,12 +201,12 @@ namespace hud
 
         /**
          * Appends a part of an ansi string to another ansi string.
-         * @param destination The destination ansichar buffer
-         * @param source Null-terminated ansichar to append
+         * @param destination The destination char8 buffer
+         * @param source Null-terminated char8 to append
          * @param count Number of character to append
          * @return destination pointer
          */
-        static HD_FORCEINLINE ansichar *append_partial(ansichar *destination, const ansichar *source, const usize count) noexcept
+        static HD_FORCEINLINE char8 *append_partial(char8 *destination, const char8 *source, const usize count) noexcept
         {
             check_not_null(destination, source);
             return strncat(destination, source, count);
@@ -230,7 +230,7 @@ namespace hud
          * @return string pointer
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static type_t *to_uppercase(type_t *string) noexcept
         {
             type_t *ptr = string;
@@ -248,7 +248,7 @@ namespace hud
          * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static bool to_uppercase_safe(type_t *string, usize string_size) noexcept
         {
             if (string == nullptr) {
@@ -272,7 +272,7 @@ namespace hud
          * @return string pointer
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static type_t *to_uppercase_partial(type_t *string, usize count) noexcept
         {
             type_t *ptr = string;
@@ -291,7 +291,7 @@ namespace hud
          * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static bool to_uppercase_partial_safe(type_t *string, usize string_size, usize count) noexcept
         {
             if (string == nullptr || string_size < count) {
@@ -316,7 +316,7 @@ namespace hud
          * @return string pointer
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static HD_FORCEINLINE type_t *to_lowercase(type_t *string) noexcept
         {
             type_t *ptr = string;
@@ -334,7 +334,7 @@ namespace hud
          * @return true if minimization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static bool to_lowercase_safe(type_t *string, usize string_size) noexcept
         {
             if (string == nullptr) {
@@ -359,7 +359,7 @@ namespace hud
          * @return string pointer
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static type_t *to_lowercase_partial(type_t *string, usize count) noexcept
         {
             type_t *ptr = string;
@@ -378,7 +378,7 @@ namespace hud
          * @return true if capitalization success, false if an error occured (string is nullptr or null-terminated is reach before string_size characters)
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static bool to_lowercase_partial_safe(type_t *string, usize string_size, usize count) noexcept
         {
             if (string == nullptr || string_size < count) {
@@ -403,7 +403,7 @@ namespace hud
          * @param string_1 Null-terminated string
          * @return true if equal, false otherwise
          */
-        [[nodiscard]] static constexpr bool equals(const ansichar *string_0, const ansichar *string_1) noexcept
+        [[nodiscard]] static constexpr bool equals(const char8 *string_0, const char8 *string_1) noexcept
         {
             if consteval {
                 if (!string_0 || !string_1)
@@ -452,13 +452,13 @@ namespace hud
          * @param count Number of character to compare
          * @return true if equal, false otherwise
          */
-        [[nodiscard]] static constexpr bool equals_partial(const ansichar *string_0, const ansichar *string_1, const usize count) noexcept
+        [[nodiscard]] static constexpr bool equals_partial(const char8 *string_0, const char8 *string_1, const usize count) noexcept
         {
             if consteval {
                 size_t i = 0;
                 while (i < count) {
-                    ansichar c0 = string_0[i];
-                    ansichar c1 = string_1[i];
+                    char8 c0 = string_0[i];
+                    char8 c1 = string_1[i];
                     if (c0 != c1) {
                         return (c0 - c1) == 0;
                     }
@@ -508,7 +508,7 @@ namespace hud
          * @param string Null-terminated string
          * @return Length of the string
          */
-        [[nodiscard]] static constexpr usize length(const ansichar *string) noexcept
+        [[nodiscard]] static constexpr usize length(const char8 *string) noexcept
         {
             if consteval {
                 // LCOV_EXCL_START
@@ -553,14 +553,14 @@ namespace hud
          * @param string_to_find The string to find
          * @return Pointer to the first occurrence of string in another string, nullptr if not found
          */
-        [[nodiscard]] static constexpr const ansichar *find_string(const ansichar *string, const ansichar *const string_to_find) noexcept
+        [[nodiscard]] static constexpr const char8 *find_string(const char8 *string, const char8 *const string_to_find) noexcept
         {
             if consteval {
                 if (!*string_to_find)
                     return string;
                 for (; *string; ++string) {
-                    const ansichar *h = string;
-                    const ansichar *n = string_to_find;
+                    const char8 *h = string;
+                    const char8 *n = string_to_find;
                     while (*n && *h && *h == *n) {
                         ++h;
                         ++n;
@@ -611,7 +611,7 @@ namespace hud
          * @param character_to_find The string to find
          * @return Pointer to the first occurrence of the character in the string, nullptr if not found
          */
-        [[nodiscard]] static constexpr const ansichar *find_character(const ansichar *string, const ansichar character_to_find) noexcept
+        [[nodiscard]] static constexpr const char8 *find_character(const char8 *string, const char8 character_to_find) noexcept
         {
             if consteval {
                 while (*string != '\0') {
@@ -648,26 +648,26 @@ namespace hud
         }
 
         /**
-         * Write a formatted ansichar to a ansichar buffer (like printf does).
-         * @param buffer The ansichar buffer receiving the formatted string
+         * Write a formatted char8 to a char8 buffer (like printf does).
+         * @param buffer The char8 buffer receiving the formatted string
          * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
-         * @param format The ansichar containing the format of the string
+         * @param format The char8 containing the format of the string
          * @param args Depending of the format, list of arguments
          * @return Number of character written, -1 if an error occurred.
          */
-        static HD_FORCEINLINE i32 format_vargs(ansichar *buffer, u32 buffer_size, const ansichar *format, va_list args) noexcept
+        static HD_FORCEINLINE i32 format_vargs(char8 *buffer, u32 buffer_size, const char8 *format, va_list args) noexcept
         {
             return vsnprintf(buffer, buffer_size, format, args);
         }
 
         /**
          * Copy ansi string and assert the given parameters.
-         * @param destination The destination ansichar buffer
+         * @param destination The destination char8 buffer
          * @param destination_size Size of destination buffer in bytes, including the null-terminator character
-         * @param source Null-terminated ansichar to copy
+         * @param source Null-terminated char8 to copy
          * @return true if copy success, false if an error occured
          */
-        static HD_FORCEINLINE bool copy_safe(ansichar *destination, const usize destination_size, const ansichar *source) noexcept
+        static HD_FORCEINLINE bool copy_safe(char8 *destination, const usize destination_size, const char8 *source) noexcept
         {
             check_params(destination, destination_size, source, length(source) + 1);
 #if defined(HD_HOST_WINDOWS)
@@ -699,13 +699,13 @@ namespace hud
         /**
          * Copy characters from ansi string and assert the given parameters.
          * Contrary to the unsafe version if source has more character than count the null character is appended in the destination buffer.
-         * @param destination The destination ansichar buffer
+         * @param destination The destination char8 buffer
          * @param destination_size Size of destination buffer in bytes, including the null-terminator character
-         * @param source Null-terminated ansichar to copy
+         * @param source Null-terminated char8 to copy
          * @param count Number of character to copy
          * @return true if copy success, false if an error occured
          */
-        static HD_FORCEINLINE bool copy_partial_safe(ansichar *destination, const usize destination_size, const ansichar *source, const usize count) noexcept
+        static HD_FORCEINLINE bool copy_partial_safe(char8 *destination, const usize destination_size, const char8 *source, const usize count) noexcept
         {
             check_params(destination, destination_size, source, length(source) + 1);
 #if defined(HD_HOST_WINDOWS)
@@ -747,7 +747,7 @@ namespace hud
          * @param source Null-terminated string to append
          * @return true if appends success, false if an error occured
          */
-        static HD_FORCEINLINE bool append_safe(ansichar *destination, const usize destination_size, const ansichar *source) noexcept
+        static HD_FORCEINLINE bool append_safe(char8 *destination, const usize destination_size, const char8 *source) noexcept
         {
             check_params(destination, destination_size, source, length(source) + 1);
 #if defined(HD_HOST_WINDOWS)
@@ -784,7 +784,7 @@ namespace hud
          * @param count Number of character to append
          * @return true if appends success, false if an error occured (destination_size is too small or destination or source is nullptr)
          */
-        static HD_FORCEINLINE bool append_partial_safe(ansichar *destination, const usize destination_size, const ansichar *source, const usize count) noexcept
+        static HD_FORCEINLINE bool append_partial_safe(char8 *destination, const usize destination_size, const char8 *source, const usize count) noexcept
         {
             check_params(destination, destination_size, source, length(destination) + 1 + count);
 #if defined(HD_HOST_WINDOWS)
@@ -820,7 +820,7 @@ namespace hud
          * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
          * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
          */
-        [[nodiscard]] static constexpr HD_FORCEINLINE usize length_safe(const ansichar *string, const usize max_length) noexcept
+        [[nodiscard]] static constexpr HD_FORCEINLINE usize length_safe(const char8 *string, const usize max_length) noexcept
         {
             if consteval {
                 // LCOV_EXCL_START
@@ -886,7 +886,7 @@ namespace hud
          * @return Number of character written, -1 if an error occurred.
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static i32 format(type_t *buffer, u32 buffer_size, const type_t *format, ...) noexcept
         {
             va_list args;
@@ -899,12 +899,12 @@ namespace hud
     protected:
         /**
          * Checks that destination and source pointer are not null
-         * @tparam type_t Only ansichar or wchar
+         * @tparam type_t Only char8 or wchar
          * @param destination The destination pointer
          * @param source The source pointer
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static HD_FORCEINLINE void check_not_null(type_t *destination, const type_t *source) noexcept
         {
             HUD_CHECK(destination != nullptr);
@@ -913,14 +913,14 @@ namespace hud
 
         /**
          * Checks that destination and source pointer are not null, and checks that destination_size is large enough to receive source_size
-         * @tparam type_t Only ansichar or wchar
+         * @tparam type_t Only char8 or wchar
          * @param destination The destination pointer
          * @param destination_size The size in bytes of the buffer pointed by destination
          * @param source The source pointer
          * @param source_size The size in bytes of the buffer pointed by source
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, ansichar, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
         static HD_FORCEINLINE void check_params(type_t *destination, const usize destination_size, const type_t *source, const usize source_size) noexcept
         {
             check_not_null(destination, source);

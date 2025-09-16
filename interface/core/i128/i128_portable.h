@@ -149,10 +149,10 @@ namespace hud
                 return static_cast<u64>(low_);
             }
 
-            /** Cast to ansichar. */
-            [[nodiscard]] explicit constexpr operator ansichar() const noexcept
+            /** Cast to char8. */
+            [[nodiscard]] explicit constexpr operator char8() const noexcept
             {
-                return static_cast<ansichar>(static_cast<i64>(*this));
+                return static_cast<char8>(static_cast<i64>(*this));
             }
 
             /** Cast to wchar. */
@@ -397,13 +397,11 @@ namespace hud
             HUD_CHECK(hud::math::is_finite(value));
             // Ensure we are positive
             HUD_CHECK(value > -1);
-            if (value >= hud::math::ldexp(static_cast<f32>(1), 64))
-            {
+            if (value >= hud::math::ldexp(static_cast<f32>(1), 64)) {
                 high = static_cast<u64>(hud::math::ldexp(value, -64));
                 low = static_cast<u64>(value - hud::math::ldexp(static_cast<f32>(high), 64));
             }
-            else
-            {
+            else {
                 high = 0;
                 low = static_cast<u64>(value);
             }
@@ -419,13 +417,11 @@ namespace hud
             HUD_CHECK(value < hud::math::ldexp(static_cast<f64>(1), 128));
 
             // If value is greater than value*(2^64)
-            if (value >= hud::math::ldexp(static_cast<f64>(1), 64))
-            {
+            if (value >= hud::math::ldexp(static_cast<f64>(1), 64)) {
                 high = static_cast<u64>(hud::math::ldexp(value, -64));
                 low = static_cast<u64>(value - hud::math::ldexp(static_cast<f64>(high), 64));
             }
-            else
-            {
+            else {
                 high = 0;
                 low = static_cast<u64>(value);
             }
@@ -557,10 +553,10 @@ namespace hud
                 return low_;
             }
 
-            /** Cast to ansichar. */
-            [[nodiscard]] explicit constexpr operator ansichar() const noexcept
+            /** Cast to char8. */
+            [[nodiscard]] explicit constexpr operator char8() const noexcept
             {
-                return static_cast<ansichar>(low_);
+                return static_cast<char8>(low_);
             }
 
             /** Cast to wchar. */
@@ -661,8 +657,7 @@ namespace hud
             constexpr u128_portable operator*(u128_portable other) const noexcept
             {
     #if defined(HD_COMPILER_MSVC) && defined(HD_TARGET_X64)
-                if consteval
-                {
+                if consteval {
                     u64 a32 = low_ >> 32;
                     u64 a00 = low_ & 0xffffffff;
                     u64 b32 = other.low_ >> 32;
@@ -672,8 +667,7 @@ namespace hud
                     result += u128_portable(a00 * b32) << 32;
                     return result;
                 }
-                else
-                {
+                else {
                     u64 carry;
                     u64 low = _umul128(low_, other.low_, &carry);
                     return u128_portable(low_ * other.high_ + high_ * other.low_ + carry, low);
@@ -908,27 +902,22 @@ namespace hud
         {
             // i64 shifts of >= 63 are undefined, so we need some special-casing.
             HUD_CHECK(amount >= 0 && amount < 127);
-            if (amount <= 0)
-            {
+            if (amount <= 0) {
                 return *this;
             }
-            else if (amount < 63)
-            {
+            else if (amount < 63) {
                 return i128_portable {
                     (high_ << amount) | static_cast<i64>(low_ >> (64 - amount)),
                     low_ << amount
                 };
             }
-            else if (amount == 63)
-            {
+            else if (amount == 63) {
                 return i128_portable {((high_ << 32) << 31) | static_cast<i64>(low_ >> 1), (low_ << 32) << 31};
             }
-            else if (amount == 127)
-            {
+            else if (amount == 127) {
                 return i128_portable {static_cast<i64>(low_ << 63), 0};
             }
-            else if (amount > 127)
-            {
+            else if (amount > 127) {
                 return i128_portable {0, 0};
             }
 
@@ -940,27 +929,22 @@ namespace hud
         {
             // i64 shifts of >= 63 are undefined, so we need some special-casing.
             HUD_CHECK(amount >= 0 && amount < 127);
-            if (amount <= 0)
-            {
+            if (amount <= 0) {
                 return *this;
             }
-            else if (amount < 63)
-            {
+            else if (amount < 63) {
                 return i128_portable {
                     high_ >> amount,
                     low_ >> amount | static_cast<u64>(high_) << (64 - amount)
                 };
             }
-            else if (amount == 63)
-            {
+            else if (amount == 63) {
                 return i128_portable((high_ >> 32) >> 31, static_cast<u64>(high_ << 1) | (low_ >> 32) >> 31);
             }
-            else if (amount >= 127)
-            {
+            else if (amount >= 127) {
                 return i128_portable((high_ >> 32) >> 31, static_cast<u64>((high_ >> 32) >> 31));
             }
-            else
-            {
+            else {
                 // amount >= 64 && amount < 127
                 return i128_portable(
                     (high_ >> 32) >> 31,
@@ -976,15 +960,13 @@ namespace hud
         {
             HUD_CHECK(divisor != 0);
 
-            if (divisor > dividend)
-            {
+            if (divisor > dividend) {
                 *quotient_ret = 0;
                 *remainder_ret = dividend;
                 return;
             }
 
-            if (divisor == dividend)
-            {
+            if (divisor == dividend) {
                 *quotient_ret = 1;
                 *remainder_ret = 0;
                 return;
@@ -998,10 +980,8 @@ namespace hud
             // For example:
             // Given: 5 (decimal) == 101 (binary)
             // Returns: 2
-            const auto fls128 = [](u128_portable n)
-            {
-                if (u64 hi = n.high_)
-                {
+            const auto fls128 = [](u128_portable n) {
+                if (u64 hi = n.high_) {
                     HUD_CHECK(hi != 0);
                     HD_ASSUME(hi != 0);
                     return 127 - hud::bits::leading_zeros(hi);
@@ -1018,11 +998,9 @@ namespace hud
 
             // Uses shift-subtract algorithm to divide dividend by denominator. The
             // remainder will be left in dividend.
-            for (i32 i = 0; i <= shift; ++i)
-            {
+            for (i32 i = 0; i <= shift; ++i) {
                 quotient <<= 1;
-                if (dividend >= denominator)
-                {
+                if (dividend >= denominator) {
                     dividend -= denominator;
                     quotient |= 1;
                 }

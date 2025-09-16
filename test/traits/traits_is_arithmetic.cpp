@@ -22,7 +22,7 @@ GTEST_TEST(traits, is_arithmetic)
     hud_assert_true(hud::is_arithmetic_v<u16>);
     hud_assert_true(hud::is_arithmetic_v<u32>);
     hud_assert_true(hud::is_arithmetic_v<u64>);
-    hud_assert_true(hud::is_arithmetic_v<ansichar>);
+    hud_assert_true(hud::is_arithmetic_v<char8>);
     hud_assert_true(hud::is_arithmetic_v<wchar>);
     hud_assert_true(hud::is_arithmetic_v<char16>);
     hud_assert_true(hud::is_arithmetic_v<char32>);
