@@ -6,9 +6,9 @@ namespace hud
 {
 
     /**
-    ASCII slice for the string class
-    */
-    struct ascii_slice
+     * ASCII slice for the string class
+     */
+    struct cstring_slice
     {
 
     public:

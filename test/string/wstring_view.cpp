@@ -27,6 +27,19 @@ GTEST_TEST(wstring_view, constructors)
     }
 }
 
+GTEST_TEST(wstring_view, inner_type)
+{
+    static_assert(hud::is_same_v<hud::wstring_view<const wchar>::char_type, const wchar>);
+    static_assert(hud::is_same_v<hud::wstring_view<wchar>::char_type, wchar>);
+
+    hud::wstring_view v {L"Hello world"};
+    static_assert(hud::is_same_v<decltype(v)::char_type, const wchar>);
+
+    wchar ptr[] = L"Hello world";
+    hud::wstring_view v1 {ptr};
+    static_assert(hud::is_same_v<decltype(v1)::char_type, wchar>);
+}
+
 GTEST_TEST(wstring_view, is_ascii)
 {
     auto test = []() {
@@ -517,4 +530,36 @@ GTEST_TEST(wstring_view, contains_character)
         hud_assert_true(std::get<10>(result));
         hud_assert_true(std::get<11>(result));
     }
+}
+
+GTEST_TEST(wstring_view, to_uppercase)
+{
+    wchar wide_txt[] = L"abc123,;:!";
+    hud::wstring_view w(wide_txt);
+    w.to_uppercase();
+    hud_assert_true(w[0] == L'A' && w[1] == L'B' && w[2] == L'C' && w[3] == L'1' && w[4] == L'2' && w[5] == L'3' && w[6] == L',' && w[7] == L';' && w[8] == L':' && w[9] == L'!' && w[10] == L'\0');
+}
+
+GTEST_TEST(wstring_view, to_uppercase_partial)
+{
+    wchar txt[] = L"abc123,;:!";
+    hud::wstring_view v(txt);
+    v.to_uppercase_partial(2);
+    hud_assert_true(v[0] == L'A' && v[1] == L'B' && v[2] == L'c' && v[3] == L'1' && v[4] == L'2' && v[5] == L'3' && v[6] == L',' && v[7] == L';' && v[8] == L':' && v[9] == L'!' && v[10] == L'\0');
+}
+
+GTEST_TEST(wstring_view, to_lowercase)
+{
+    wchar txt[] = L"ABC123,;:!";
+    hud::wstring_view v(txt);
+    v.to_lowercase();
+    hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'c' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == '\0');
+}
+
+GTEST_TEST(wstring_view, to_lowercase_partial)
+{
+    wchar txt[] = L"ABC123,;:!";
+    hud::wstring_view v(txt);
+    v.to_lowercase_partial(2);
+    hud_assert_true(txt[0] == L'a' && txt[1] == L'b' && txt[2] == L'C' && txt[3] == L'1' && txt[4] == L'2' && txt[5] == L'3' && txt[6] == L',' && txt[7] == L';' && txt[8] == L':' && txt[9] == L'!' && txt[10] == '\0');
 }

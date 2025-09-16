@@ -1,19 +1,28 @@
 #ifndef HD_INC_CORE_STRING_CSTRING_VIEW_H
 #define HD_INC_CORE_STRING_CSTRING_VIEW_H
 #include "cstring.h"
-
+#include "../slice.h"
 namespace hud
 {
     /**
-     * An immutable view of a C-compatible, null-terminated string with no null-terminated bytes in the middle.
+     * An immutable view of a C-style, null-terminated string (`ansichar`).
+     * This view does not own the underlying string and does not allow modification
+     * of its length. It provides utility functions for querying and accessing
+     * the string content.
      */
+    template<typename char_t>
     struct cstring_view
     {
+        /** Type of the underlying character. */
+        using char_type = char_t;
+
+        static_assert(hud::is_same_v<hud::remove_cv_t<char_type>, ansichar>);
+
         /**
          * Constructs a cstring_view from a C-style string pointer.
          * @param str Pointer to a null-terminated string. Must not be null.
          */
-        constexpr cstring_view(const ansichar *str) noexcept
+        constexpr cstring_view(char_type *str) noexcept
             : ptr_(str)
         {
             HUD_CHECK(ptr_ != nullptr && "Invalid null pointer");
@@ -34,7 +43,7 @@ namespace hud
          * @return A pointer to the string's first character (null-terminated).
          */
         [[nodiscard]]
-        constexpr const ansichar *data() const noexcept
+        constexpr char_type *data() const noexcept
         {
             return ptr_;
         }
@@ -83,39 +92,52 @@ namespace hud
         }
 
         /**
-         * Checks if this string is equal to another string.
-         * @param v Another cstring_view to compare with.
+         * Checks if this string is equal to another cstring_view.
+         * @param v Another cstring_view to compare.
          * @return true if both strings are identical, false otherwise.
          */
-
+        template<typename uchar_t>
         [[nodiscard]]
-        constexpr bool equals(const cstring_view &v) const noexcept
+        constexpr bool equals(const cstring_view<uchar_t> &v) const noexcept
         {
             return hud::cstring::equals(ptr_, v.ptr_);
         }
 
         /**
-         * Checks if the first n characters of this string match those of another string.
-         * @param v Another cstring_view to compare with.
+         * Checks if the first n characters of this string match another cstring_view.
+         * @param v Another cstring_view to compare.
          * @param n Number of characters to compare.
          * @return true if the first n characters match, false otherwise.
          */
+        template<typename uchar_t>
         [[nodiscard]]
-        constexpr bool equals_partial(const cstring_view &v, const usize n) const noexcept
+        constexpr bool equals_partial(const cstring_view<uchar_t> &v, const usize n) const noexcept
         {
             return hud::cstring::equals_partial(ptr_, v.ptr_, n);
         }
 
         /**
-         * Finds the first occurrence of a substring.
-         * @param to_find The substring to search for.
+         * Finds the first occurrence of a substring given as a C-style string.
+         * @param to_find_ptr Pointer to a null-terminated string to search for.
          * @return Index of the first occurrence, or -1 if not found.
          */
         [[nodiscard]]
-        constexpr isize find_first(const cstring_view &to_find) const noexcept
+        constexpr isize find_first(const ansichar *to_find_ptr) const noexcept
         {
-            const ansichar *result = hud::cstring::find_string(ptr_, to_find.ptr_);
+            const ansichar *result = hud::cstring::find_string(ptr_, to_find_ptr);
             return result == nullptr ? -1 : result - ptr_;
+        }
+
+        /**
+         * Finds the first occurrence of a substring given as another cstring_view.
+         * @param to_find Substring to search for.
+         * @return Index of the first occurrence, or -1 if not found.
+         */
+        template<typename uchar_t>
+        [[nodiscard]]
+        constexpr isize find_first(const cstring_view<uchar_t> &to_find) const noexcept
+        {
+            return find_first(to_find.data());
         }
 
         /**
@@ -124,32 +146,35 @@ namespace hud
          * @return Index of the first occurrence, or -1 if not found.
          */
         [[nodiscard]]
-        constexpr isize find_first_character(const ansichar character_to_find) const noexcept
+        constexpr isize find_first_character(char_type character_to_find) const noexcept
         {
-            const ansichar *result = hud::cstring::find_character(ptr_, character_to_find);
+            const char_type *result = hud::cstring::find_character(ptr_, character_to_find);
             return result == nullptr ? -1 : result - ptr_;
         }
 
         /**
-         * Provides read-only access to a character at a given index.
-         * @param i Index of the character to access.
-         * @return A const reference to the character at position i.
-         */
-        [[nodiscard]]
-        constexpr const ansichar &operator[](const usize i) const noexcept
-        {
-            return ptr_[i];
-        }
-        /**
-         * Checks if this string contains a given substring.
-         * @param to_find The substring to search for.
+         * Checks if this string contains a given substring (C-style string).
+         * @param to_find_str Substring to search for.
          * @return true if the substring is found, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool contains(const cstring_view &to_find) const noexcept
+        constexpr bool contains(const ansichar *to_find_str) const noexcept
         {
-            return hud::cstring::find_string(ptr_, to_find.ptr_) != nullptr;
+            return hud::cstring::find_string(ptr_, to_find_str) != nullptr;
         }
+
+        /**
+         * Checks if this string contains a given substring (cstring_view).
+         * @param to_find Substring to search for.
+         * @return true if the substring is found, false otherwise.
+         */
+        template<typename uchar_t>
+        [[nodiscard]]
+        constexpr bool contains(const cstring_view<uchar_t> &to_find) const noexcept
+        {
+            return contains(to_find.data());
+        }
+
         /**
          * Checks if this string contains a given character.
          * @param character_to_find The character to search for.
@@ -161,9 +186,70 @@ namespace hud
             return hud::cstring::find_character(ptr_, character_to_find) != nullptr;
         }
 
+        /**
+         * Convert string to uppercase.
+         * @param string The string buffer to capitalize
+         * @return string pointer
+         */
+        constexpr void to_uppercase() noexcept
+        {
+            hud::cstring::to_uppercase(ptr_);
+        }
+
+        /**
+         * Convert string to uppercase.
+         * @param string The string buffer to capitalize
+         * @param count Number of character to capitalize
+         * @return string pointer
+         */
+        constexpr void to_uppercase_partial(usize count) noexcept
+        {
+            hud::cstring::to_uppercase_partial(ptr_, count);
+        }
+
+        /**
+         * Convert string to lowercase.
+         * @param string The string buffer to minimize
+         * @return string pointer
+         */
+        constexpr void to_lowercase() noexcept
+        {
+            hud::cstring::to_lowercase(ptr_);
+        }
+
+        /**
+         * Convert string to lowercase.
+         * @param string The string buffer to minimize
+         * @return string pointer
+         */
+        constexpr void to_lowercase_partial(usize count) noexcept
+        {
+            hud::cstring::to_lowercase_partial(ptr_, count);
+        }
+
+        /**
+         * Returns a slice view of the string.
+         * @return A slice representing all characters of this string.
+         */
+        [[nodiscard]]
+        constexpr hud::slice<char_type> slice() const noexcept
+        {
+            return hud::slice<char_type> {ptr_, length()};
+        }
+        /**
+         * Provides read-only access to a character at a given index.
+         * @param i Index of the character to access.
+         * @return A const reference to the character at position i.
+         */
+        [[nodiscard]]
+        constexpr char_type &operator[](const usize i) const noexcept
+        {
+            return ptr_[i];
+        }
+
     private:
         /**Pointer to the null-terminated C-style string. */
-        const ansichar *ptr_;
+        char_type *ptr_;
     };
 
 } // namespace hud

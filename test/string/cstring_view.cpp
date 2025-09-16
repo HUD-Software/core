@@ -27,6 +27,19 @@ GTEST_TEST(cstring_view, constructors)
     }
 }
 
+GTEST_TEST(cstring_view, inner_type)
+{
+    static_assert(hud::is_same_v<hud::cstring_view<const ansichar>::char_type, const ansichar>);
+    static_assert(hud::is_same_v<hud::cstring_view<ansichar>::char_type, ansichar>);
+
+    hud::cstring_view v {"Hello world"};
+    static_assert(hud::is_same_v<decltype(v)::char_type, const ansichar>);
+
+    ansichar ptr[] = "Hello world";
+    hud::cstring_view v1 {ptr};
+    static_assert(hud::is_same_v<decltype(v1)::char_type, ansichar>);
+}
+
 GTEST_TEST(cstring_view, is_ascii)
 {
     auto test = []() {
@@ -517,4 +530,36 @@ GTEST_TEST(cstring_view, contains_character)
         hud_assert_true(std::get<10>(result));
         hud_assert_true(std::get<11>(result));
     }
+}
+
+GTEST_TEST(cstring_view, to_uppercase)
+{
+    ansichar txt[] = "abc123,;:!";
+    hud::cstring_view v(txt);
+    v.to_uppercase();
+    hud_assert_true(v[0] == 'A' && v[1] == 'B' && v[2] == 'C' && v[3] == '1' && v[4] == '2' && v[5] == '3' && v[6] == ',' && v[7] == ';' && v[8] == ':' && v[9] == '!' && v[10] == '\0');
+}
+
+GTEST_TEST(cstring_view, to_uppercase_partial)
+{
+    ansichar txt[] = "abc123,;:!";
+    hud::cstring_view v(txt);
+    v.to_uppercase_partial(2);
+    hud_assert_true(v[0] == 'A' && v[1] == 'B' && v[2] == 'c' && v[3] == '1' && v[4] == '2' && v[5] == '3' && v[6] == ',' && v[7] == ';' && v[8] == ':' && v[9] == '!' && v[10] == '\0');
+}
+
+GTEST_TEST(cstring_view, to_lowercase)
+{
+    ansichar txt[] = "ABC123,;:!";
+    hud::cstring_view v(txt);
+    v.to_lowercase();
+    hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'c' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+}
+
+GTEST_TEST(cstring_view, to_lowercase_partial)
+{
+    ansichar txt[] = "ABC123,;:!";
+    hud::cstring_view v(txt);
+    v.to_lowercase_partial(2);
+    hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
 }
