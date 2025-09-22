@@ -258,7 +258,8 @@ namespace hud
             return ptr_[i];
         }
 
-    private:
+    [[nodiscard]]
+    constexpr bool is_valid_c private :
         /**Pointer to the null-terminated C-style string. */
         char_type *ptr_;
     };
