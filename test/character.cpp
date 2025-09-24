@@ -15,21 +15,21 @@ static constexpr wchar wide_control[] = {L'\x0', L'\x1', L'\x2', L'\x3', L'\x4',
 static constexpr char8 punc[] = {'!', '\"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~'};
 static constexpr char8 wide_punc[] = {L'!', L'\"', L'#', L'$', L'%', L'&', L'\'', L'(', L')', L'*', L'+', L',', L'-', L'.', L'/', L':', L';', L'<', L'=', L'>', L'?', L'@', L'[', L'\\', L']', L'^', L'_', L'`', L'{', L'|', L'}', L'~'};
 
-GTEST_TEST(character, is_pure_ascii)
+GTEST_TEST(character, is_ascii)
 {
     // for (char8 cur = 0; cur < hud::char8_max; cur++)
     // {
-    //     hud_assert_true(hud::character::is_pure_ascii(cur));
+    //     hud_assert_true(hud::character::is_ascii(cur));
     // }
     // for (wchar cur = 0; cur < hud::wchar_max; cur++)
     // {
     //     if (cur <= hud::char8_max)
     //     {
-    //         hud_assert_true(hud::character::is_pure_ascii(cur));
+    //         hud_assert_true(hud::character::is_ascii(cur));
     //     }
     //     else
     //     {
-    //         hud_assert_false(hud::character::is_pure_ascii(cur));
+    //         hud_assert_false(hud::character::is_ascii(cur));
     //     }
     // }
 }

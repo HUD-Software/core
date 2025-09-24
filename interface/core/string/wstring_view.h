@@ -102,7 +102,7 @@ namespace hud
             // Do the rest 1 byte at a time
             const wchar *p = ptr_ + i;
             while (*p != '\0') {
-                if (!character::is_pure_ascii(*p)) {
+                if (!character::is_ascii(*p)) {
                     return false;
                 }
                 p++;

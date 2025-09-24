@@ -1,8 +1,9 @@
 #ifndef HD_INC_CORE_STRING_CSTRING_H
 #define HD_INC_CORE_STRING_CSTRING_H
 #include "../character.h"
+#include "../memory.h"
 #include <stdarg.h> // va_start, va_end
-// For is_pure_ascii check : https://quick-bench.com/q/P_adhBeQdvHLTBB8EZCtLyrPRsM
+// For is_ascii check : https://quick-bench.com/q/P_adhBeQdvHLTBB8EZCtLyrPRsM
 namespace hud
 {
 
@@ -28,14 +29,14 @@ namespace hud
          * @param string The null-terminated string
          * @return Always return true
          */
-        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ascii(const char8 *string) noexcept
+        [[nodiscard]] static constexpr bool is_ascii(const char8 *string) noexcept
         {
             if (string == nullptr) {
                 return false;
             }
 
             while (!character::is_null(*string)) {
-                if (!character::is_pure_ascii(*string)) {
+                if (!character::is_ascii(*string)) {
                     return false;
                 }
                 string++;
@@ -48,14 +49,128 @@ namespace hud
          * @param string The null-terminated string
          * @return true if the string contains only char8, false otherwise
          */
-        [[nodiscard]] static bool is_pure_ascii(const wchar *string) noexcept
+        [[nodiscard]] static constexpr bool is_ascii(const wchar *string) noexcept
         {
             if (string == nullptr) {
                 return false;
             }
 
             while (!character::is_null(*string)) {
-                if (!character::is_pure_ascii(*string)) {
+                if (!character::is_ascii(*string)) {
+                    return false;
+                }
+                string++;
+            }
+            return true;
+        }
+
+        [[nodiscard]] static constexpr bool is_valid_utf8(const char8 *string, usize byte_count) noexcept
+        {
+            u64 pos = 0;
+            u32 code_point = 0;
+            while (pos < byte_count) {
+                // check of the next 16 bytes are ascii.
+                u64 next_pos = pos + 16;
+                if (next_pos <= byte_count) { // if it is safe to read 16 more bytes, check that they are ascii
+                    u64 v1 = hud::memory::unaligned_load64(string + pos);
+                    // std::memcpy(&v1, string + pos, sizeof(u64));
+                    u64 v2 = hud::memory::unaligned_load64(string + pos + sizeof(u64));
+                    // std::memcpy(&v2, string + pos + sizeof(u64), sizeof(u64));
+                    u64 v {v1 | v2};
+                    if ((v & 0x8080808080808080) == 0) {
+                        pos = next_pos;
+                        continue;
+                    }
+                }
+                unsigned char byte = string[pos];
+
+                while (byte < 0b10000000) {
+                    if (++pos == byte_count) {
+                        return true;
+                    }
+                    byte = string[pos];
+                }
+
+                if ((byte & 0b11100000) == 0b11000000) {
+                    next_pos = pos + 2;
+                    if (next_pos > byte_count) {
+                        return false;
+                    }
+                    if ((string[pos + 1] & 0b11000000) != 0b10000000) {
+                        return false;
+                    }
+                    // range check
+                    code_point = (byte & 0b00011111) << 6 | (string[pos + 1] & 0b00111111);
+                    if ((code_point < 0x80) || (0x7ff < code_point)) {
+                        return false;
+                    }
+                }
+                else if ((byte & 0b11110000) == 0b11100000) {
+                    next_pos = pos + 3;
+                    if (next_pos > byte_count) {
+                        return false;
+                    }
+                    if ((string[pos + 1] & 0b11000000) != 0b10000000) {
+                        return false;
+                    }
+                    if ((string[pos + 2] & 0b11000000) != 0b10000000) {
+                        return false;
+                    }
+                    // range check
+                    code_point = (byte & 0b00001111) << 12 | (string[pos + 1] & 0b00111111) << 6 | (string[pos + 2] & 0b00111111);
+                    if ((code_point < 0x800) || (0xffff < code_point) || (0xd7ff < code_point && code_point < 0xe000)) {
+                        return false;
+                    }
+                }
+                else if ((byte & 0b11111000) == 0b11110000) { // 0b11110000
+                    next_pos = pos + 4;
+                    if (next_pos > byte_count) {
+                        return false;
+                    }
+                    if ((string[pos + 1] & 0b11000000) != 0b10000000) {
+                        return false;
+                    }
+                    if ((string[pos + 2] & 0b11000000) != 0b10000000) {
+                        return false;
+                    }
+                    if ((string[pos + 3] & 0b11000000) != 0b10000000) {
+                        return false;
+                    }
+                    // range check
+                    code_point =
+                        (byte & 0b00000111) << 18 | (string[pos + 1] & 0b00111111) << 12 | (string[pos + 2] & 0b00111111) << 6 | (string[pos + 3] & 0b00111111);
+                    if (code_point <= 0xffff || 0x10ffff < code_point) {
+                        return false;
+                    }
+                }
+                else {
+                    // we may have a continuation
+                    return false;
+                }
+                pos = next_pos;
+            }
+            return true;
+        }
+
+        /**
+         * Test whether wide null-terminated string contains only pure ansi characters, checking string_size is not bigger than length of the string.
+         * @param string The null-terminated string
+         * @param string_size Size of the string in characters to test
+         * @return true if the string contains only char8 and reach null-terminator character or the string_size character.
+         *         false if the string contains non char8 character
+         */
+        [[nodiscard]] static constexpr bool is_ascii_safe(const char8 *string, usize string_size) noexcept
+        {
+            if (string == nullptr) {
+                return false;
+            }
+
+            while (string_size-- > 0) {
+                char8 cur = *string;
+                if (character::is_null(cur)) {
+                    return true;
+                }
+                if (!character::is_ascii(cur)) {
                     return false;
                 }
                 string++;
@@ -70,19 +185,7 @@ namespace hud
          * @return true if the string contains only char8 and reach null-terminator character or the string_size character.
          *         false if the string contains non char8 character
          */
-        [[nodiscard]] static HD_FORCEINLINE bool is_pure_ascii_safe(const char8 *string, usize string_size) noexcept
-        {
-            return string != nullptr;
-        }
-
-        /**
-         * Test whether wide null-terminated string contains only pure ansi characters, checking string_size is not bigger than length of the string.
-         * @param string The null-terminated string
-         * @param string_size Size of the string in characters to test
-         * @return true if the string contains only char8 and reach null-terminator character or the string_size character.
-         *         false if the string contains non char8 character
-         */
-        [[nodiscard]] static bool is_pure_ascii_safe(const wchar *string, usize string_size) noexcept
+        [[nodiscard]] static constexpr bool is_ascii_safe(const wchar *string, usize string_size) noexcept
         {
             if (string == nullptr) {
                 return false;
@@ -93,7 +196,7 @@ namespace hud
                 if (character::is_null(cur)) {
                     return true;
                 }
-                if (!character::is_pure_ascii(cur)) {
+                if (!character::is_ascii(cur)) {
                     return false;
                 }
                 string++;

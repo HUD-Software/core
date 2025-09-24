@@ -3,6 +3,7 @@
 set( src
 	hash/crc32.cpp
 	debugger.cpp
+	string/cstring.cpp
 )
 
 set( interface

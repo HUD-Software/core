@@ -1,5 +1,6 @@
 #include <core/cstring.h>
-
+#include "string/lipsum/latin_lipsum.h"
+#include "string/lipsum/russian_lipsum.h"
 namespace hud_test
 {
     template<typename TCharType>
@@ -13,43 +14,120 @@ namespace hud_test
     }
 } // namespace hud_test
 
-GTEST_TEST(cstring, is_pure_ascii)
+GTEST_TEST(cstring, is_ascii)
 {
-    hud_assert_false(hud::cstring::is_pure_ascii((char8 *)nullptr));
-    hud_assert_false(hud::cstring::is_pure_ascii((wchar *)nullptr));
+    const auto test = []() {
+        if (hud::cstring::is_ascii((char8 *)nullptr)) {
+            return false;
+        }
+        if (hud::cstring::is_ascii((wchar *)nullptr)) {
+            return false;
+        }
+        for (char8 cur = 0; cur < hud::char8_max; cur++) {
+            char8 text[2] = {cur, '\0'};
+            if (!hud::cstring::is_ascii(text)) {
+                return false;
+            }
+        }
+        for (wchar cur = hud::wchar_max / 2; cur < hud::wchar_max; cur++) {
+            wchar text[2] = {cur, L'\0'};
+            if (hud::character::is_ascii(cur)) {
+                if (!hud::cstring::is_ascii(text)) {
+                    return false;
+                }
+            }
+            else {
+                if (hud::cstring::is_ascii(text)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
 
-    for (char8 cur = 0; cur < hud::char8_max; cur++) {
-        char8 text[2] = {cur, '\0'};
-        hud_assert_true(hud::cstring::is_pure_ascii(text));
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(result);
     }
-    for (wchar cur = 0; cur < hud::wchar_max; cur++) {
-        wchar text[2] = {cur, L'\0'};
-        if (hud::character::is_pure_ascii(cur)) {
-            hud_assert_true(hud::cstring::is_pure_ascii(text));
-        }
-        else {
-            hud_assert_false(hud::cstring::is_pure_ascii(text));
-        }
+
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(result);
     }
 }
 
-GTEST_TEST(cstring, is_pure_ascii_safe)
+GTEST_TEST(cstring, is_vaid_utf8)
 {
-    hud_assert_false(hud::cstring::is_pure_ascii_safe((char8 *)nullptr, 1));
-    hud_assert_false(hud::cstring::is_pure_ascii_safe((wchar *)nullptr, 1));
-
-    for (char8 cur = 0; cur < hud::char8_max; cur++) {
-        const char8 text[2] = {cur, '\0'};
-        hud_assert_true(hud::cstring::is_pure_ascii_safe(text, 1));
+    // Test with values from
+    // https://github.com/lemire/unicode_lipsum
+    const auto test_latin = []() {
+        // asm volatile("nop");
+        const char8 latin_lipsum[] = LATIN_LIPSUM;
+        return hud::cstring::is_valid_utf8(LATIN_LIPSUM, sizeof(latin_lipsum));
+    };
+    const auto test_russian = []() {
+        // asm volatile("nop");
+        const char8 russian_lipsum[] = RUSSIAN_LIPSUM;
+        return hud::cstring::is_valid_utf8(RUSSIAN_LIPSUM, sizeof(russian_lipsum));
+    };
+    // Non constant
+    {
+        const auto result_latin = test_latin();
+        hud_assert_true(result_latin);
+        const auto result_russian = test_russian();
+        hud_assert_true(result_russian);
     }
-    for (wchar cur = 0; cur < hud::wchar_max; cur++) {
-        const wchar text[2] = {cur, L'\0'};
-        if (hud::character::is_pure_ascii(cur)) {
-            hud_assert_true(hud::cstring::is_pure_ascii_safe(text, 1));
+
+    // Constant
+    {
+        constexpr auto result_latin = test_latin();
+        hud_assert_true(result_latin);
+        constexpr auto result_russian = test_russian();
+        hud_assert_true(result_russian);
+    }
+}
+
+GTEST_TEST(cstring, is_ascii_safe)
+{
+    const auto test = []() {
+        if (hud::cstring::is_ascii_safe((char8 *)nullptr, 1)) {
+            return false;
         }
-        else {
-            hud_assert_false(hud::cstring::is_pure_ascii_safe(text, 1));
+        if (hud::cstring::is_ascii_safe((wchar *)nullptr, 1)) {
+            return false;
         }
+        for (char8 cur = 0; cur < hud::char8_max; cur++) {
+            char8 text[2] = {cur, '\0'};
+            if (!hud::cstring::is_ascii_safe(text, 1)) {
+                return false;
+            }
+        }
+        for (wchar cur = hud::wchar_max / 2; cur < hud::wchar_max; cur++) {
+            wchar text[2] = {cur, L'\0'};
+            if (hud::character::is_ascii(cur)) {
+                if (!hud::cstring::is_ascii_safe(text, 1)) {
+                    return false;
+                }
+            }
+            else if (hud::cstring::is_ascii_safe(text, 1)) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(result);
+    }
+
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(result);
     }
 }
 
