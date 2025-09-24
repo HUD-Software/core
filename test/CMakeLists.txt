@@ -380,10 +380,10 @@ set_target_properties(${test_project_name}
 # GCC Clang -fconstexpr-ops-limit=4294967295 -fconstexpr-steps=4294967295
 # Clang-cl -Xclang -fconstexpr-steps=4294967295
 if(MSVC)
-
-	target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /bigobj /permissive- /EHsc /utf-8 /arch:AVX2 /constexpr:steps2147483647 /constexpr:depth32767)
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options( ${test_project_name} PRIVATE -Xclang -fconstexpr-steps=2147483647)
+		target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /bigobj /permissive- /EHsc /utf-8 /arch:AVX2 -Xclang -fconstexpr-steps=2147483647)
+	else()
+		target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /bigobj /permissive- /EHsc /utf-8 /arch:AVX2 /constexpr:steps2147483647 /constexpr:depth32767)
 	endif()
 	# Define them only weh compiling with 64 bits
 	target_compile_definitions(${test_project_name} PRIVATE __SSE__ __SSE2__ __SSSE3__ __AVX__ __AVX2__)
@@ -392,7 +392,6 @@ elseif(EMSCRIPTEN)
 	# set_target_properties(${test_project_name} PROPERTIES SUFFIX ".html")
 	# Uncomment to generate an JS file testable with NodeJS (HTML must be commented)
 	set_target_properties(${test_project_name} PROPERTIES SUFFIX ".js")
-
 	target_link_options(${test_project_name} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:-sASSERTIONS> "-sENVIRONMENT=[\"web\",\"node\"]" -sABORTING_MALLOC=0 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728)
 	target_compile_options( ${test_project_name} PRIVATE -msse4.2 -msimd128 -fconstexpr-ops-limit=2147483647 -fconstexpr-steps=2147483647)
 else()
