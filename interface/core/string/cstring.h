@@ -64,94 +64,132 @@ namespace hud
             return true;
         }
 
-        [[nodiscard]] static constexpr bool is_valid_utf8(const char8 *string, usize byte_count) noexcept
+        [[nodiscard]] static constexpr bool is_valid_utf8_generic(const char8 *string, usize byte_count) noexcept
         {
-            u64 pos = 0;
+            usize pos = 0;
             u32 code_point = 0;
             while (pos < byte_count) {
-                // check of the next 16 bytes are ascii.
-                u64 next_pos = pos + 16;
-                if (next_pos <= byte_count) { // if it is safe to read 16 more bytes, check that they are ascii
-                    u64 v1 = hud::memory::unaligned_load64(string + pos);
-                    // std::memcpy(&v1, string + pos, sizeof(u64));
-                    u64 v2 = hud::memory::unaligned_load64(string + pos + sizeof(u64));
-                    // std::memcpy(&v2, string + pos + sizeof(u64), sizeof(u64));
+                // Optimization step:
+                // If the next 16 bytes are guaranteed to be ASCII (all < 128),
+                // we can skip them all at once instead of checking byte by byte.
+                usize next_pos = pos + 16;
+                if (next_pos <= byte_count) {                                           // Make sure we don't read past the buffer
+                    u64 v1 = hud::memory::unaligned_load64(string + pos);               // load first 8 bytes
+                    u64 v2 = hud::memory::unaligned_load64(string + pos + sizeof(u64)); // load next 8 bytes
+                    // Bitwise OR combines both 8-byte blocks so we only need a single mask test below.
+                    // If any byte in v1 or v2 has its high bit set (>= 0x80, non-ASCII),
+                    // the result will also have that bit set. This lets us quickly check
+                    // if all 16 bytes are ASCII with one comparison instead of two.
                     u64 v {v1 | v2};
                     if ((v & 0x8080808080808080) == 0) {
-                        pos = next_pos;
+                        pos = next_pos; // all 16 bytes are ASCII → skip them at once
                         continue;
                     }
                 }
+
+                // Now process byte by byte
                 unsigned char byte = string[pos];
 
-                while (byte < 0b10000000) {
+                // Consume consecutive ASCII bytes.
+                // This inner loop skips multiple ASCII chars in a row efficiently.
+                while ((byte & 0x80) == 0) {
                     if (++pos == byte_count) {
                         return true;
                     }
                     byte = string[pos];
                 }
 
+                // Case: 2-byte sequence -> 110xxxxx 10xxxxxx
+                // If we catch leading byte 110xxxxx
                 if ((byte & 0b11100000) == 0b11000000) {
+
+                    // Jump to next supposed code point (after 110xxxxx 10xxxxxx)
+                    // If we go too far, then there is no continuous byte 10xxxxxx
                     next_pos = pos + 2;
                     if (next_pos > byte_count) {
                         return false;
                     }
+                    // Ensure 1st continuous byte is 10xxxxxx
                     if ((string[pos + 1] & 0b11000000) != 0b10000000) {
                         return false;
                     }
-                    // range check
+                    // Read the code point
                     code_point = (byte & 0b00011111) << 6 | (string[pos + 1] & 0b00111111);
+                    // Ensure code point is [0x80, 0x7FF] aka [U+0080, U+07FF]
                     if ((code_point < 0x80) || (0x7ff < code_point)) {
                         return false;
                     }
                 }
+                // Case: 3-byte sequence -> 1110xxxx 10xxxxxx 10xxxxxx
+                // If we catch leading byte 1110xxxx
                 else if ((byte & 0b11110000) == 0b11100000) {
+
+                    // Jump to next supposed code point (after 1110xxxx 10xxxxxx 10xxxxxx)
+                    // If we go too far, then there is no continuous bytes 10xxxxxx 10xxxxxx
                     next_pos = pos + 3;
                     if (next_pos > byte_count) {
                         return false;
                     }
+                    // Ensure 1st continuous byte is 10xxxxxx
                     if ((string[pos + 1] & 0b11000000) != 0b10000000) {
                         return false;
                     }
+                    // Ensure 2nd continuous byte is 10xxxxxx
                     if ((string[pos + 2] & 0b11000000) != 0b10000000) {
                         return false;
                     }
-                    // range check
+                    // Read the code point
                     code_point = (byte & 0b00001111) << 12 | (string[pos + 1] & 0b00111111) << 6 | (string[pos + 2] & 0b00111111);
+                    // Check code point valid value
+                    // - must not be overlong encoding (< 0x800 is invalid)
+                    // - must be [0x0800, 0xFFFF] aka [U+0800, U+FFFF]
+                    // - must not be in surrogate range [0xD800, 0xDFFF] aka [U+D800, U+DFFF]
                     if ((code_point < 0x800) || (0xffff < code_point) || (0xd7ff < code_point && code_point < 0xe000)) {
                         return false;
                     }
                 }
-                else if ((byte & 0b11111000) == 0b11110000) { // 0b11110000
+                // Case: 4-byte sequence -> 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+                // If we catch leading byte 11110xxx
+                else if ((byte & 0b11111000) == 0b11110000) {
+                    // Jump to next supposed code point (after 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx)
+                    // If we go too far, then there is no continuous bytes 10xxxxxx 10xxxxxx 10xxxxxx
                     next_pos = pos + 4;
                     if (next_pos > byte_count) {
                         return false;
                     }
+                    // Ensure 1st continuous byte is 10xxxxxx
                     if ((string[pos + 1] & 0b11000000) != 0b10000000) {
                         return false;
                     }
+                    // Ensure 2nd continuous byte is 10xxxxxx
                     if ((string[pos + 2] & 0b11000000) != 0b10000000) {
                         return false;
                     }
+                    // Ensure 3rd continuous byte is 10xxxxxx
                     if ((string[pos + 3] & 0b11000000) != 0b10000000) {
                         return false;
                     }
-                    // range check
-                    code_point =
-                        (byte & 0b00000111) << 18 | (string[pos + 1] & 0b00111111) << 12 | (string[pos + 2] & 0b00111111) << 6 | (string[pos + 3] & 0b00111111);
+                    // Read the code point
+                    code_point = (byte & 0b00000111) << 18 | (string[pos + 1] & 0b00111111) << 12 | (string[pos + 2] & 0b00111111) << 6 | (string[pos + 3] & 0b00111111);
+                    // Check code point valid value
+                    // - must be > 0xFFFF (otherwise it's overlong)
+                    // - must not exceed Unicode max (0x10FFFF)
                     if (code_point <= 0xffff || 0x10ffff < code_point) {
                         return false;
                     }
                 }
                 else {
-                    // we may have a continuation
+                    // Any other pattern is invalid:
+                    // e.g. a continuation byte without a proper leading byte
                     return false;
                 }
+                // Move to the next character after validating the current one
                 pos = next_pos;
             }
             return true;
         }
 
+        [[nodiscard]] static bool is_valid_utf8_sse() noexcept;
         /**
          * Test whether wide null-terminated string contains only pure ansi characters, checking string_size is not bigger than length of the string.
          * @param string The null-terminated string
