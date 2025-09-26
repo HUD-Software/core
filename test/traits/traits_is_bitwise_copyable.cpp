@@ -40,7 +40,7 @@ namespace hud_test
     };
 } // namespace hud_test
 
-GTEST_TEST(traits, is_bitwise_convertible)
+GTEST_TEST(traits, is_bitwise_copyable)
 {
     // i8
     hud_assert_true((hud::is_bitwise_copyable_v<i8, i8>));

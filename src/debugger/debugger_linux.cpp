@@ -1,3 +1,4 @@
+#if defined(HD_COMPILER_CLANG) || defined(HD_COMPILER_GCC)
 #include <core/debugger/debugger_linux.h>
 #include <fcntl.h>  // open
 #include <unistd.h> // read
@@ -37,3 +38,5 @@ namespace hud::linux
         return found[sizeof(TRACERPID) - 1] != '0';
     }
 } // namespace hud::linux
+
+#endif

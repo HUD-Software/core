@@ -59,7 +59,7 @@ AccessModifierOffset: -4
 NamespaceIndentation: All
 
 IndentCaseBlocks: true
-IndentPPDirectives: BeforeHash
+IndentPPDirectives: None
 IndentRequiresClause: false
 # InsertNewlineAtEOF: true # clang-format 16
 InsertTrailingCommas: Wrapped

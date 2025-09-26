@@ -16,8 +16,7 @@ namespace hud::linux
         static HD_FORCEINLINE void break_here() noexcept
         {
             // LCOV_EXCL_START ( We don't covert the code that break the debugger )
-            if (is_present())
-            {
+            if (is_present()) {
                 // With clang/gcc we can break the debugger on x86 by invoking int3
 #if defined(HD_TARGET_X86_FAMILY)
 

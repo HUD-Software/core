@@ -1,3 +1,4 @@
+#if defined(HD_COMPILER_EMSCRIPTEN)
 #include <core/debugger/debugger_browser.h>
 #include <emscripten.h>
 
@@ -7,13 +8,10 @@ namespace hud::browser
     {
         return EM_ASM_INT({
             // Vérifie si le débogueur est attaché via `debugger` statement ou console inspection
-            try
-            {
+            try {
                 debugger; // Provoque un arrêt si un débogueur est attaché
                 return 1; // Si `debugger` passe, un débogueur est présent
-            }
-            catch (e)
-            {
+            } catch (e) {
                 return 0; // Sinon, aucun débogueur
             }
         });
@@ -26,3 +24,4 @@ namespace hud::browser
         });
     }
 } // namespace hud::browser
+#endif

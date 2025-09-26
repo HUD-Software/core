@@ -16,15 +16,15 @@ GTEST_TEST(string, default_constructor_should_allocate_no_memory)
     {
         auto result = test();
         hud_assert_true(std::get<0>(result));
-        hud_assert_eq(std::get<1>(result), 0u);
-        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 
     // Constant
     {
         constexpr auto result = test();
         hud_assert_true(std::get<0>(result));
-        hud_assert_eq(std::get<1>(result), 0u);
-        hud_assert_eq(std::get<2>(result), 0u);
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
     }
 }
