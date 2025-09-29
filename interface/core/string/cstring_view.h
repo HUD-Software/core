@@ -2,6 +2,8 @@
 #define HD_INC_CORE_STRING_CSTRING_VIEW_H
 #include "cstring.h"
 #include "../slice.h"
+#include "unicode/utf8.h"
+
 namespace hud
 {
     /**
@@ -258,9 +260,23 @@ namespace hud
             return ptr_[i];
         }
 
+        /**
+         * Validates whether the cstring_view is well-formed UTF-8 according to the Unicode specification.
+         *
+         * This function checks each sequence of bytes (ASCII, 2-, 3-, or 4-byte sequences) and ensures
+         * the following rules are respected:
+         * - ASCII bytes (< 0x80) are accepted directly.
+         * - Multi-byte sequences must follow the correct pattern (10xxxxxx after a valid leading byte).
+         * - Overlong encodings are rejected.
+         * - Disallowed values (such as surrogates [U+D800, U+DFFF]) are rejected.
+         * - Code points above U+10FFFF are rejected.
+         *
+         * @return true if the input is valid UTF-8, false otherwise.
+         */
         [[nodiscard]]
         constexpr bool is_valid_utf8() const noexcept
         {
+            return hud::unicode::is_valid_utf8(as_slice());
         }
 
     private:

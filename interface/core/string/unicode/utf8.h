@@ -1,20 +1,45 @@
 #ifndef HD_INC_CORE_STRING_UNICODE_UTF8_H
 #define HD_INC_CORE_STRING_UNICODE_UTF8_H
+#include "../../slice.h"
+#include "../../traits/is_same.h"
+#include "../../traits/remove_cv.h"
 
 namespace hud::unicode
 {
-    [[nodiscard]] static constexpr bool is_valid_utf8_portable(const char8 *string, usize byte_count) noexcept
+    /**
+     * Validates whether a given byte sequence is well-formed UTF-8 according to the Unicode specification.
+     *
+     * This function checks each sequence of bytes (ASCII, 2-, 3-, or 4-byte sequences) and ensures
+     * the following rules are respected:
+     * - ASCII bytes (< 0x80) are accepted directly.
+     * - Multi-byte sequences must follow the correct pattern (10xxxxxx after a valid leading byte).
+     * - Overlong encodings are rejected.
+     * - Disallowed values (such as surrogates [U+D800, U+DFFF]) are rejected.
+     * - Code points above U+10FFFF are rejected.
+     *
+     * An optimization is applied to quickly skip blocks of 16 consecutive ASCII bytes in a single operation.
+     *
+     * @tparam char_t Expected character type (must be `char8` or equivalent).
+     * @param string UTF-8 byte sequence to validate.
+     * @return true if the input is valid UTF-8, false otherwise.
+     */
+    template<typename char_t>
+    requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
+    [[nodiscard]] static constexpr bool is_valid_utf8_portable(const hud::slice<char_t> string) noexcept
     {
         usize pos = 0;
         u32 code_point = 0;
+        usize byte_count = string.byte_count();
+        const char8 *str = string.data();
+
         while (pos < byte_count) {
             // Optimization step:
             // If the next 16 bytes are guaranteed to be ASCII (all < 128),
             // we can skip them all at once instead of checking byte by byte.
             usize next_pos = pos + 16;
-            if (next_pos <= byte_count) {                                           // Make sure we don't read past the buffer
-                u64 v1 = hud::memory::unaligned_load64(string + pos);               // load first 8 bytes
-                u64 v2 = hud::memory::unaligned_load64(string + pos + sizeof(u64)); // load next 8 bytes
+            if (next_pos <= byte_count) {                                        // Make sure we don't read past the buffer
+                u64 v1 = hud::memory::unaligned_load64(str + pos);               // load first 8 bytes
+                u64 v2 = hud::memory::unaligned_load64(str + pos + sizeof(u64)); // load next 8 bytes
                 // Bitwise OR combines both 8-byte blocks so we only need a single mask test below.
                 // If any byte in v1 or v2 has its high bit set (>= 0x80, non-ASCII),
                 // the result will also have that bit set. This lets us quickly check
@@ -27,7 +52,7 @@ namespace hud::unicode
             }
 
             // Now process byte by byte
-            unsigned char byte = string[pos];
+            unsigned char byte = str[pos];
 
             // Consume consecutive ASCII bytes.
             // This inner loop skips multiple ASCII chars in a row efficiently.
@@ -35,7 +60,7 @@ namespace hud::unicode
                 if (++pos == byte_count) {
                     return true;
                 }
-                byte = string[pos];
+                byte = str[pos];
             }
 
             // Case: 2-byte sequence -> 110xxxxx 10xxxxxx
@@ -49,11 +74,11 @@ namespace hud::unicode
                     return false;
                 }
                 // Ensure 1st continuous byte is 10xxxxxx
-                if ((string[pos + 1] & 0b11000000) != 0b10000000) {
+                if ((str[pos + 1] & 0b11000000) != 0b10000000) {
                     return false;
                 }
                 // Read the code point
-                code_point = (byte & 0b00011111) << 6 | (string[pos + 1] & 0b00111111);
+                code_point = (byte & 0b00011111) << 6 | (str[pos + 1] & 0b00111111);
                 // Ensure code point is [0x80, 0x7FF] aka [U+0080, U+07FF]
                 if ((code_point < 0x80) || (0x7ff < code_point)) {
                     return false;
@@ -70,15 +95,15 @@ namespace hud::unicode
                     return false;
                 }
                 // Ensure 1st continuous byte is 10xxxxxx
-                if ((string[pos + 1] & 0b11000000) != 0b10000000) {
+                if ((str[pos + 1] & 0b11000000) != 0b10000000) {
                     return false;
                 }
                 // Ensure 2nd continuous byte is 10xxxxxx
-                if ((string[pos + 2] & 0b11000000) != 0b10000000) {
+                if ((str[pos + 2] & 0b11000000) != 0b10000000) {
                     return false;
                 }
                 // Read the code point
-                code_point = (byte & 0b00001111) << 12 | (string[pos + 1] & 0b00111111) << 6 | (string[pos + 2] & 0b00111111);
+                code_point = (byte & 0b00001111) << 12 | (str[pos + 1] & 0b00111111) << 6 | (str[pos + 2] & 0b00111111);
                 // Check code point valid value
                 // - must not be overlong encoding (< 0x800 is invalid)
                 // - must be [0x0800, 0xFFFF] aka [U+0800, U+FFFF]
@@ -126,6 +151,30 @@ namespace hud::unicode
             pos = next_pos;
         }
         return true;
+    }
+
+    /**
+     * Validates whether a given byte sequence is well-formed UTF-8 according to the Unicode specification.
+     *
+     * This function checks each sequence of bytes (ASCII, 2-, 3-, or 4-byte sequences) and ensures
+     * the following rules are respected:
+     * - ASCII bytes (< 0x80) are accepted directly.
+     * - Multi-byte sequences must follow the correct pattern (10xxxxxx after a valid leading byte).
+     * - Overlong encodings are rejected.
+     * - Disallowed values (such as surrogates [U+D800, U+DFFF]) are rejected.
+     * - Code points above U+10FFFF are rejected.
+     *
+     * An optimization is applied to quickly skip blocks of 16 consecutive ASCII bytes in a single operation.
+     *
+     * @tparam char_t Expected character type (must be `char8` or equivalent).
+     * @param string UTF-8 byte sequence to validate.
+     * @return true if the input is valid UTF-8, false otherwise.
+     */
+    template<typename char_t>
+    requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
+    [[nodiscard]] static constexpr bool is_valid_utf8(const hud::slice<char_t> string) noexcept
+    {
+        return is_valid_utf8_portable(string);
     }
 } // namespace hud::unicode
 

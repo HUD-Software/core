@@ -31,6 +31,7 @@ endif()
 # Include Interface directory to inclusion path
 target_include_directories(${lib_name} PUBLIC ../interface)
 
+set_property(TARGET ${lib_name} PROPERTY VS_DEBUGGER_VISUALIZER ${CMAKE_SOURCE_DIR}/core.natvis)
 
 target_precompile_headers(${lib_name} PRIVATE precompiled.h)
 

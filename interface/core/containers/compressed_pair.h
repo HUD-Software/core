@@ -1285,12 +1285,10 @@ namespace hud
     [[nodiscard]] constexpr hud::tuple_element_t<element_index, compressed_pair<first_type, second_type>> &get(compressed_pair<first_type, second_type> &compressed_pair) noexcept
     {
         static_assert(element_index < 2, "compressed_pair index out of bounds");
-        if constexpr (element_index == 0)
-        {
+        if constexpr (element_index == 0) {
             return compressed_pair.first();
         }
-        else if constexpr (element_index == 1)
-        {
+        else if constexpr (element_index == 1) {
             return compressed_pair.second();
         }
     }
@@ -1307,12 +1305,10 @@ namespace hud
     [[nodiscard]] constexpr const hud::tuple_element_t<element_index, const compressed_pair<first_type, second_type>> &get(const compressed_pair<first_type, second_type> &compressed_pair) noexcept
     {
         static_assert(element_index < 2, "compressed_pair index out of bounds");
-        if constexpr (element_index == 0)
-        {
+        if constexpr (element_index == 0) {
             return compressed_pair.first();
         }
-        else if constexpr (element_index == 1)
-        {
+        else if constexpr (element_index == 1) {
             return compressed_pair.second();
         }
     }
@@ -1329,12 +1325,10 @@ namespace hud
     [[nodiscard]] constexpr hud::tuple_element_t<element_index, compressed_pair<first_type, second_type>> &&get(compressed_pair<first_type, second_type> &&compressed_pair) noexcept
     {
         static_assert(element_index < 2, "compressed_pair index out of bounds");
-        if constexpr (element_index == 0)
-        {
+        if constexpr (element_index == 0) {
             return hud::forward<first_type &&>(compressed_pair.first());
         }
-        else if constexpr (element_index == 1)
-        {
+        else if constexpr (element_index == 1) {
             return hud::forward<second_type &&>(compressed_pair.second());
         }
     }
@@ -1351,12 +1345,10 @@ namespace hud
     [[nodiscard]] constexpr const hud::tuple_element_t<element_index, compressed_pair<first_type, second_type>> &&get(const compressed_pair<first_type, second_type> &&compressed_pair) noexcept
     {
         static_assert(element_index < 2, "compressed_pair index out of bounds");
-        if constexpr (element_index == 0)
-        {
+        if constexpr (element_index == 0) {
             return hud::forward<const first_type &&>(compressed_pair.first());
         }
-        else if constexpr (element_index == 1)
-        {
+        else if constexpr (element_index == 1) {
             return hud::forward<const second_type &&>(compressed_pair.second());
         }
     }

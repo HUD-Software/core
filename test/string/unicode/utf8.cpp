@@ -1,4 +1,5 @@
 #include <core/string/unicode/utf8.h>
+#include <core/slice.h>
 #include "../lipsum/latin_lipsum.h"
 #include "../lipsum/russian_lipsum.h"
 #include "../lipsum/korean_lipsum.h"
@@ -14,49 +15,40 @@ GTEST_TEST(utf8, is_valid_utf8_portable)
     // Test with values from
     // https://github.com/lemire/unicode_lipsum
     const auto test_latin = []() {
-        // asm volatile("nop");
         const char8 latin_lipsum[] = LATIN_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(LATIN_LIPSUM, sizeof(latin_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {LATIN_LIPSUM, sizeof(latin_lipsum)});
     };
     const auto test_russian = []() {
-        // asm volatile("nop");
         const char8 russian_lipsum[] = RUSSIAN_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(RUSSIAN_LIPSUM, sizeof(russian_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {RUSSIAN_LIPSUM, sizeof(russian_lipsum)});
     };
     const auto test_korean = []() {
-        // asm volatile("nop");
         const char8 korean_lipsum[] = KOREAN_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(KOREAN_LIPSUM, sizeof(korean_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {KOREAN_LIPSUM, sizeof(korean_lipsum)});
     };
     const auto test_japanese = []() {
-        // asm volatile("nop");
         const char8 japanese_lipsum[] = JAPANESE_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(JAPANESE_LIPSUM, sizeof(japanese_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {JAPANESE_LIPSUM, sizeof(japanese_lipsum)});
     };
     const auto test_hindi = []() {
-        // asm volatile("nop");
         const char8 hindi_lipsum[] = HINDI_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(HINDI_LIPSUM, sizeof(hindi_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {HINDI_LIPSUM, sizeof(hindi_lipsum)});
     };
     const auto test_hebrew = []() {
-        // asm volatile("nop");
         const char8 hebrew_lipsum[] = HEBREW_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(HEBREW_LIPSUM, sizeof(hebrew_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {HEBREW_LIPSUM, sizeof(hebrew_lipsum)});
     };
     const auto test_emoji = []() {
-        // asm volatile("nop");
         const char8 emoji_lipsum[] = EMOJI_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(EMOJI_LIPSUM, sizeof(emoji_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {EMOJI_LIPSUM, sizeof(emoji_lipsum)});
     };
     const auto test_chinese = []() {
-        // asm volatile("nop");
         const char8 chinese_lipsum[] = CHINESE_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(CHINESE_LIPSUM, sizeof(chinese_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {CHINESE_LIPSUM, sizeof(chinese_lipsum)});
     };
     const auto test_arabic = []() {
-        // asm volatile("nop");
         const char8 arabic_lipsum[] = ARABIC_LIPSUM;
-        return hud::unicode::is_valid_utf8_portable(ARABIC_LIPSUM, sizeof(arabic_lipsum));
+        return hud::unicode::is_valid_utf8_portable(hud::slice {ARABIC_LIPSUM, sizeof(arabic_lipsum)});
     };
     // Non constant
     {

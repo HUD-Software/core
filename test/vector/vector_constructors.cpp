@@ -4,7 +4,7 @@
 GTEST_TEST(vector, default_constructor_should_allocate_no_memory)
 {
     auto test = []() -> std::tuple<bool, usize, usize> {
-        hud::vector<hud::u32> vector;
+        hud::vector<u32> vector;
         return {vector.data() == nullptr, vector.count(), vector.max_count()};
     };
 

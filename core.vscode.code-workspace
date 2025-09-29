@@ -25,7 +25,7 @@
         "testMate.cpp.test.executables": "target/**/*{test}*",
         "cmake.options.statusBarVisibility": "compact",
         "cmake.outputLogEncoding": "utf8",
-        "debug.showVariableTypes": true,
+        "debug.showVariableTypes": false,
         "rust-analyzer.checkOnSave": true,
         "dotnetAcquisitionExtension.enableTelemetry": false,
     },

@@ -29,6 +29,13 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "externalConsole": false,
+            "visualizerFile": "${workspaceFolder}/core.natvis",
+            "logging": {
+                "trace": true,
+                "moduleLoad": false,
+                "traceResponse": true,
+                "engineLogging": true
+            }
         },
     ],
 }

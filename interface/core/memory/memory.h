@@ -38,7 +38,7 @@
 #include "../templates/forward.h"
 
 #if defined(HD_SSE2)
-    #include <emmintrin.h>
+#include <emmintrin.h>
 #endif
 
 namespace hud
@@ -880,13 +880,15 @@ namespace hud
          *         - 0 if bytes in buffer1 and buffer2 are equal
          *         - Positive value if the first differing byte in buffer1 is greater than the corresponding byte in buffer2
          */
-        [[nodiscard]] static HD_FORCEINLINE constexpr i32 compare_memory(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
+        template<typename byte_t>
+        requires(sizeof(byte_t) == 1)
+        [[nodiscard]] static HD_FORCEINLINE constexpr i32 compare_memory(const byte_t *buffer1, const byte_t *buffer2, const usize size) noexcept
         {
             if consteval
             // LCOV_EXCL_START
             {
-                const u8 *lhs = buffer1;
-                const u8 *rhs = buffer2;
+                const byte_t *lhs = buffer1;
+                const byte_t *rhs = buffer2;
                 for (usize position = 0; position < size; position++) {
                     i32 diff = *lhs - *rhs;
                     if (diff) {
@@ -939,7 +941,9 @@ namespace hud
          * @param size Number of bytes to compare
          * @return true if both buffers are equal, false otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE constexpr bool is_memory_compare_equal(const u8 *buffer1, const u8 *buffer2, const usize size) noexcept
+        template<typename byte_t>
+        requires(sizeof(byte_t) == 1)
+        [[nodiscard]] static HD_FORCEINLINE constexpr bool is_memory_compare_equal(const byte_t *buffer1, const byte_t *buffer2, const usize size) noexcept
         {
             return compare_memory(buffer1, buffer2, size) == 0;
         }
