@@ -179,34 +179,128 @@ GTEST_TEST(compressed_pair, move_constructor_is_explicit_if_T1_or_T2_is_not_impl
 
 GTEST_TEST(compressed_pair, default_constructor_trivial)
 {
-
-    using Type1 = i32;
-    using Type2 = f32;
-    static_assert(hud::is_trivially_default_constructible_v<Type1>);
-    static_assert(hud::is_trivially_default_constructible_v<Type2>);
-    using TypePair = hud::compressed_pair<Type1, Type2>;
-
-    const auto test = []()
+    // Both non empty
     {
-        TypePair *pair = hud::memory::allocate_array<TypePair>(1);
-        hud::memory::construct_object_at(pair);
-        const auto result = std::tuple {pair->first(), pair->second()};
-        hud::memory::free_array(pair, 1);
-        return result;
-    };
+        using Type1 = i32;
+        using Type2 = f32;
+        static_assert(hud::is_trivially_default_constructible_v<Type1>);
+        static_assert(hud::is_trivially_default_constructible_v<Type2>);
+        using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    // Non constant
-    {
-        const auto result = test();
-        hud_assert_eq(std::get<0>(result), 0);
-        hud_assert_eq(std::get<1>(result), 0.0f);
+        const auto test = []() {
+            TypePair *pair = hud::memory::allocate_array<TypePair>(1);
+            hud::memory::construct_object_at(pair);
+            const auto result = std::tuple {pair->first(), pair->second()};
+            hud::memory::free_array(pair, 1);
+            return result;
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_eq(std::get<0>(result), 0);
+            hud_assert_eq(std::get<1>(result), 0.0f);
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_eq(std::get<0>(result), 0);
+            hud_assert_eq(std::get<1>(result), 0.0f);
+        }
     }
 
-    // Constant
+    // First empty
     {
-        constexpr auto result = test();
-        hud_assert_eq(std::get<0>(result), 0);
-        hud_assert_eq(std::get<1>(result), 0.0f);
+        using Type1 = implicit_type_empty;
+        using Type2 = f32;
+        static_assert(hud::is_trivially_default_constructible_v<Type1>);
+        static_assert(hud::is_trivially_default_constructible_v<Type2>);
+        using TypePair = hud::compressed_pair<Type1, Type2>;
+
+        const auto test = []() {
+            TypePair *pair = hud::memory::allocate_array<TypePair>(1);
+            hud::memory::construct_object_at(pair);
+            const auto result = std::tuple {pair->first(), pair->second()};
+            hud::memory::free_array(pair, 1);
+            return result;
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_eq(sizeof(std::get<0>(result)), 1);
+            hud_assert_eq(std::get<1>(result), 0.0f);
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_eq(sizeof(std::get<0>(result)), 1);
+            hud_assert_eq(std::get<1>(result), 0.0f);
+        }
+    }
+
+    // Second empty
+    {
+        using Type1 = i32;
+        using Type2 = implicit_type_empty;
+        static_assert(hud::is_trivially_default_constructible_v<Type1>);
+        static_assert(hud::is_trivially_default_constructible_v<Type2>);
+        using TypePair = hud::compressed_pair<Type1, Type2>;
+
+        const auto test = []() {
+            TypePair *pair = hud::memory::allocate_array<TypePair>(1);
+            hud::memory::construct_object_at(pair);
+            const auto result = std::tuple {pair->first(), pair->second()};
+            hud::memory::free_array(pair, 1);
+            return result;
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_eq(std::get<0>(result), 0);
+            hud_assert_eq(sizeof(std::get<1>(result)), 1);
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_eq(std::get<0>(result), 0);
+            hud_assert_eq(sizeof(std::get<1>(result)), 1);
+        }
+    }
+
+    // Both empty
+    {
+        using Type1 = implicit_type_empty;
+        using Type2 = implicit_type_empty;
+        static_assert(hud::is_trivially_default_constructible_v<Type1>);
+        static_assert(hud::is_trivially_default_constructible_v<Type2>);
+        using TypePair = hud::compressed_pair<Type1, Type2>;
+
+        const auto test = []() {
+            TypePair *pair = hud::memory::allocate_array<TypePair>(1);
+            hud::memory::construct_object_at(pair);
+            const auto result = std::tuple {pair->first(), pair->second()};
+            hud::memory::free_array(pair, 1);
+            return result;
+        };
+
+        // Non constant
+        {
+            const auto result = test();
+            hud_assert_eq(sizeof(std::get<0>(result)), 1);
+            hud_assert_eq(sizeof(std::get<1>(result)), 1);
+        }
+
+        // Constant
+        {
+            constexpr auto result = test();
+            hud_assert_eq(sizeof(std::get<0>(result)), 1);
+            hud_assert_eq(sizeof(std::get<1>(result)), 1);
+        }
     }
 }
 
@@ -219,8 +313,7 @@ GTEST_TEST(compressed_pair, default_constructor_non_trivial)
     static_assert(!hud::is_trivially_default_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = []()
-    {
+    const auto test = []() {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_object_at(pair);
         const auto result = std::tuple {
@@ -287,8 +380,7 @@ GTEST_TEST(compressed_pair, copy_constructor_trivial_type_same_type)
     static_assert(hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const Type1 &t1, const Type2 &t2)
-    {
+    const auto test = [](const Type1 &t1, const Type2 &t2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const TypePair other {t1, t2};
         hud::memory::construct_object_at(pair, other);
@@ -324,8 +416,7 @@ GTEST_TEST(compressed_pair, copy_constructor_non_trivial_type_same_type)
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const TypePair other {
             {id1, nullptr},
@@ -396,8 +487,7 @@ GTEST_TEST(compressed_pair, copy_constructor_non_trivial_copy_constructible_type
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const TypePair other {id1, id2};
         hud::memory::construct_object_at(pair, other);
@@ -442,8 +532,7 @@ GTEST_TEST(compressed_pair, copy_constructor_trivial_type_different_type)
     using TypePair = hud::compressed_pair<Type1, Type2>;
     using OtherTypePair = hud::compressed_pair<OtherType1, OtherType2>;
 
-    const auto test = [](const OtherType1 &t1, const OtherType2 &t2)
-    {
+    const auto test = [](const OtherType1 &t1, const OtherType2 &t2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const OtherTypePair other {t1, t2};
         hud::memory::construct_object_at(pair, other);
@@ -484,8 +573,7 @@ GTEST_TEST(compressed_pair, copy_constructor_non_trivial_type_different_type)
     using TypePair = hud::compressed_pair<Type1, Type2>;
     using OtherTypePair = hud::compressed_pair<OtherType1, OtherType2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const OtherTypePair other {id1, id2};
         hud::memory::construct_object_at(pair, other);
@@ -532,8 +620,7 @@ GTEST_TEST(compressed_pair, copy_constructor_non_trivial_copy_constructible_type
     using TypePair = hud::compressed_pair<Type1, Type2>;
     using OtherTypePair = hud::compressed_pair<OtherType1, OtherType2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const OtherTypePair other {id1, id2};
         hud::memory::construct_object_at(pair, other);
@@ -575,8 +662,7 @@ GTEST_TEST(compressed_pair, move_constructor_trivial_type_same_type)
     static_assert(hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const Type1 &t1, const Type2 &t2)
-    {
+    const auto test = [](const Type1 &t1, const Type2 &t2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         TypePair other {t1, t2};
         hud::memory::construct_object_at(pair, hud::move(other));
@@ -612,8 +698,7 @@ GTEST_TEST(compressed_pair, move_constructor_non_trivial_type_same_type)
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         TypePair other {
             {id1, nullptr},
@@ -684,8 +769,7 @@ GTEST_TEST(compressed_pair, move_constructor_non_trivial_copy_constructible_type
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         TypePair other {id1, id2};
         hud::memory::construct_object_at(pair, hud::move(other));
@@ -727,8 +811,7 @@ GTEST_TEST(compressed_pair, move_constructor_non_trivial_move_constructible_type
     static_assert(!hud::is_trivially_move_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         TypePair other {id1, id2};
         hud::memory::construct_object_at(pair, hud::move(other));
@@ -779,8 +862,7 @@ GTEST_TEST(compressed_pair, move_constructor_trivial_type_different_type)
     using TypePair = hud::compressed_pair<Type1, Type2>;
     using OtherTypePair = hud::compressed_pair<OtherType1, OtherType2>;
 
-    const auto test = [](const OtherType1 &t1, const OtherType2 &t2)
-    {
+    const auto test = [](const OtherType1 &t1, const OtherType2 &t2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         OtherTypePair other {t1, t2};
         hud::memory::construct_object_at(pair, hud::move(other));
@@ -821,8 +903,7 @@ GTEST_TEST(compressed_pair, move_constructor_non_trivial_copy_constructible_type
     using TypePair = hud::compressed_pair<Type1, Type2>;
     using OtherTypePair = hud::compressed_pair<OtherType1, OtherType2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         OtherTypePair other {id1, id2};
         hud::memory::construct_object_at(pair, hud::move(other));
@@ -869,8 +950,7 @@ GTEST_TEST(compressed_pair, move_constructor_non_trivial_move_constructible_type
     using TypePair = hud::compressed_pair<Type1, Type2>;
     using OtherTypePair = hud::compressed_pair<OtherType1, OtherType2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         OtherTypePair other {id1, id2};
         hud::memory::construct_object_at(pair, hud::move(other));
@@ -918,8 +998,7 @@ GTEST_TEST(compressed_pair, param_copy_constructor_trivial_type_same_type)
     static_assert(hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const Type1 &t1, const Type2 &t2)
-    {
+    const auto test = [](const Type1 &t1, const Type2 &t2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_object_at(pair, t1, t2);
         const auto result = std::tuple {
@@ -956,8 +1035,7 @@ GTEST_TEST(compressed_pair, param_copy_constructor_trivial_type_different_type)
     static_assert(hud::is_trivially_copy_constructible_v<Type2, OtherType2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const OtherType1 &t1, const OtherType2 &t2)
-    {
+    const auto test = [](const OtherType1 &t1, const OtherType2 &t2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_object_at(pair, t1, t2);
         const auto result = std::tuple {
@@ -992,8 +1070,7 @@ GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_type_same_type)
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const Type1 t1 {id1, nullptr};
         const Type2 t2 {id2, nullptr};
@@ -1062,8 +1139,7 @@ GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_copy_constructibl
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const Type1 t1 {id1};
         const Type2 t2 {id2};
@@ -1110,8 +1186,7 @@ GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_type_different_ty
     static_assert(!hud::is_trivially_copy_constructible_v<Type2, OtherType2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const OtherType1 t1 {id1};
         const OtherType2 t2 {id2};
@@ -1158,8 +1233,7 @@ GTEST_TEST(compressed_pair, param_copy_constructor_non_trivial_copy_constructibl
     static_assert(!hud::is_trivially_copy_constructible_v<Type2, OtherType2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         const OtherType1 t1 {id1};
         const OtherType2 t2 {id2};
@@ -1202,8 +1276,7 @@ GTEST_TEST(compressed_pair, param_move_constructor_trivial_type_same_type)
     static_assert(hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](Type1 &&t1, Type2 &&t2)
-    {
+    const auto test = [](Type1 &&t1, Type2 &&t2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_object_at(pair, hud::forward<Type1>(t1), hud::forward<Type2>(t2));
         const auto result = std::tuple {
@@ -1238,8 +1311,7 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_type_same_type)
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         Type1 t1 {id1, nullptr};
         Type2 t2 {id2, nullptr};
@@ -1307,8 +1379,7 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_copy_constructibl
     static_assert(!hud::is_trivially_copy_constructible_v<Type2>);
     static_assert(hud::is_same_v<Type1, Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         Type1 t1 {id1};
         Type2 t2 {id2};
@@ -1351,8 +1422,7 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_move_constructibl
     static_assert(!hud::is_trivially_move_constructible_v<Type2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         Type1 t1 {id1};
         Type2 t2 {id2};
@@ -1404,8 +1474,7 @@ GTEST_TEST(compressed_pair, param_move_constructor_trivial_type_different_type)
     static_assert(hud::is_trivially_copy_constructible_v<Type2, OtherType2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](OtherType1 &&t1, OtherType2 &&t2)
-    {
+    const auto test = [](OtherType1 &&t1, OtherType2 &&t2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         hud::memory::construct_object_at(pair, hud::forward<OtherType1>(t1), hud::forward<OtherType2>(t2));
         const auto result = std::tuple {
@@ -1444,8 +1513,7 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_type_different_ty
     static_assert(!hud::is_trivially_copy_constructible_v<Type2, OtherType2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         OtherType1 t1 {id1};
         OtherType2 t2 {id2};
@@ -1492,8 +1560,7 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_copy_constructibl
     static_assert(!hud::is_trivially_copy_constructible_v<Type2, OtherType2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         OtherType1 t1 {id1};
         OtherType2 t2 {id2};
@@ -1540,8 +1607,7 @@ GTEST_TEST(compressed_pair, param_move_constructor_non_trivial_move_constructibl
     static_assert(!hud::is_trivially_move_constructible_v<Type2, OtherType2>);
     using TypePair = hud::compressed_pair<Type1, Type2>;
 
-    const auto test = [](const i32 &id1, const i32 &id2)
-    {
+    const auto test = [](const i32 &id1, const i32 &id2) {
         TypePair *pair = hud::memory::allocate_array<TypePair>(1);
         OtherType1 t1 {id1};
         OtherType2 t2 {id2};

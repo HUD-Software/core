@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <!-- hud::memory_allocation<T> -->
+  <Type Name="hud::memory_allocation&lt;*&gt;">
+    <DisplayString>{{Size = { end_ptr - begin_ptr }}}</DisplayString>
+    <Expand>
+      <Item Name="Size">end_ptr - begin_ptr</Item>
+      <ArrayItems>
+        <Size> end_ptr - begin_ptr </Size>
+        <ValuePointer> begin_ptr </ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  <!-- hud::optional<T> -->
+  <Type Name="hud::optional&lt;*&gt;">
+    <DisplayString Condition="some == true">Value: {some_value}</DisplayString>
+    <DisplayString Condition="some == false">None</DisplayString>
+  </Type>
+
+  <!-- hud::compressed_pair<F,S> -->
+  <Type Name="hud::details::compressed_pair::compress_pair_impl&lt;*, *, 0,0&gt;">
+    <DisplayString>({this-&gt;type_1_}, {this-&gt;type_2_})</DisplayString>
+    <Expand>
+      <Item Name="first">type_1_</Item>
+      <Item Name="second">type_2_</Item>
+    </Expand>
+  </Type>
+  <Type Name="hud::details::compressed_pair::compress_pair_impl&lt;*, *, 1,0&gt;">
+    <DisplayString>({*($T1*)this}, {this-&gt;type_2_})</DisplayString>
+    <Expand>
+      <Item Name="first">($T1*)this</Item>
+      <Item Name="second">type_2_</Item>
+    </Expand>
+  </Type>
+  <Type Name="hud::details::compressed_pair::compress_pair_impl&lt;*, *, 0,1&gt;">
+    <DisplayString>({{this-&gt;type_1_}, *($T2*)this})</DisplayString>
+    <Expand>
+      <Item Name="first">type_1_</Item>
+      <Item Name="second">($T2*)this</Item>
+    </Expand>
+  </Type>
+  <Type Name="hud::details::compressed_pair::compress_pair_impl&lt;*, *, 1,1&gt;">
+    <DisplayString>({*($T1*)this}, *($T2*)this})</DisplayString>
+    <Expand>
+      <Item Name="first">($T1*)this</Item>
+      <Item Name="second">($T2*)this</Item>
+    </Expand>
+  </Type>
+  <!-- hud::vector<T> -->
+  <!-- <Type Name="hud::vector&lt;*&gt;">
+        <DisplayString>{{Size = { end_ptr - begin_ptr }}}</DisplayString>
+        <Expand>
+            <Item Name="Size">end_ptr - begin_ptr</Item>
+            <ArrayItems>
+                <Size> end_ptr - begin_ptr </Size>
+                <ValuePointer> begin_ptr </ValuePointer>
+            </ArrayItems>
+        </Expand>
+    </Type> -->
+</AutoVisualizer>
