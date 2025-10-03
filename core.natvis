@@ -11,10 +11,10 @@
       </ArrayItems>
     </Expand>
   </Type>
-  
+
   <!-- hud::optional<T> -->
   <Type Name="hud::optional&lt;*&gt;">
-    <DisplayString Condition="some == true">Value: {some_value}</DisplayString>
+    <DisplayString Condition="some == true">{some_value}</DisplayString>
     <DisplayString Condition="some == false">None</DisplayString>
   </Type>
 
@@ -47,16 +47,48 @@
       <Item Name="second">($T2*)this</Item>
     </Expand>
   </Type>
-  
+
   <!-- hud::vector<T> -->
   <Type Name="hud::vector&lt;*&gt;">
-    <DisplayString Condition ="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ == 0"> Size = {compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_}</DisplayString>
-    <DisplayString Condition ="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ > 0"> Size = {compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_}, Ptr = {compressed_allocator_.type_2_.begin_ptr_} </DisplayString>
+    <DisplayString
+      Condition="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ == 0">
+      Size = {compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_}</DisplayString>
+    <DisplayString
+      Condition="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ > 0">
+      Size = {compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_},
+      Ptr = {compressed_allocator_.type_2_.begin_ptr_} </DisplayString>
     <Expand>
-      <Item Condition="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ > 0" Name="Size">compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_</Item>
+      <Item
+        Condition="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ > 0"
+        Name="Size">compressed_allocator_.type_2_.end_ptr_ -
+        compressed_allocator_.type_2_.begin_ptr_</Item>
       <ArrayItems>
         <Size>compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_</Size>
         <ValuePointer>compressed_allocator_.type_2_.begin_ptr_</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+  
+  <!-- hud::string -->
+  <Type Name="hud::string">
+    <DisplayString
+      Condition="bytes_.compressed_allocator_.type_2_.end_ptr_ - bytes_.compressed_allocator_.type_2_.begin_ptr_ == 0">
+      Empty
+    </DisplayString>
+    <DisplayString
+      Condition="bytes_.compressed_allocator_.type_2_.end_ptr_ - bytes_.compressed_allocator_.type_2_.begin_ptr_ > 0">
+      {bytes_.compressed_allocator_.type_2_.begin_ptr_,s8}
+    </DisplayString>
+    <Expand>
+      <Item
+        Condition="bytes_.compressed_allocator_.type_2_.end_ptr_ - bytes_.compressed_allocator_.type_2_.begin_ptr_ > 0"
+        Name="Size">
+        bytes_.compressed_allocator_.type_2_.end_ptr_ -
+        bytes_.compressed_allocator_.type_2_.begin_ptr_
+      </Item>
+      <ArrayItems>
+        <Size>bytes_.compressed_allocator_.type_2_.end_ptr_ - bytes_.compressed_allocator_.type_2_.begin_ptr_</Size>
+        <ValuePointer>bytes_.compressed_allocator_.type_2_.begin_ptr_</ValuePointer>
       </ArrayItems>
     </Expand>
   </Type>

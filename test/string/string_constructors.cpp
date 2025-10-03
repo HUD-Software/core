@@ -36,7 +36,6 @@ GTEST_TEST(string, constructor_from_char8)
     auto test = []() {
         const char8 txt[] = "é&='\0/1234564789";
         hud::optional<hud::string> str_opt = hud::make_string(hud::slice {txt, sizeof(txt)});
-        auto str = *str_opt;
         return std::tuple {
             str_opt.has_value(),
             str_opt->byte_count() == sizeof(txt),

@@ -22,22 +22,22 @@ namespace hud
 
         [[nodiscard]] constexpr usize byte_count() const noexcept
         {
-            return data_.byte_count();
+            return bytes_.byte_count();
         }
         [[nodiscard]] constexpr usize max_byte_count() const noexcept
         {
-            return data_.max_count();
+            return bytes_.max_count();
         }
         [[nodiscard]] constexpr const char8 *bytes() const noexcept
         {
-            return data_.data();
+            return bytes_.data();
         }
 
     private:
         template<typename char_t>
         requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
         constexpr string(const hud::slice<char_t> slice) noexcept
-            : data_ {slice.data(), slice.count()}
+            : bytes_ {slice.data(), slice.count()}
         {
         }
 
@@ -46,7 +46,7 @@ namespace hud
         friend constexpr hud::optional<hud::string> make_string(const hud::slice<char_t> slice) noexcept;
 
     private:
-        hud::vector<char8> data_;
+        hud::vector<char8> bytes_;
     };
 
     template<typename char_t>
