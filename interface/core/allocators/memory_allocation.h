@@ -39,8 +39,8 @@ namespace hud
          * @param end The pointer one past the last element of the contiguous sequence
          */
         HD_FORCEINLINE constexpr memory_allocation(type_t *begin, type_t *end) noexcept
-            : begin_ptr(begin)
-            , end_ptr(end)
+            : begin_ptr_(begin)
+            , end_ptr_(end)
         {
         }
 
@@ -50,8 +50,8 @@ namespace hud
          * @param count The count of elements in the sequence
          */
         HD_FORCEINLINE constexpr memory_allocation(type_t *first, const usize count) noexcept
-            : begin_ptr(first)
-            , end_ptr(first + count)
+            : begin_ptr_(first)
+            , end_ptr_(first + count)
         {
         }
 
@@ -62,8 +62,8 @@ namespace hud
          */
         template<typename u_type_t>
         HD_FORCEINLINE constexpr memory_allocation(u_type_t *first, const usize count) noexcept
-            : begin_ptr(first)
-            , end_ptr(first + count)
+            : begin_ptr_(first)
+            , end_ptr_(first + count)
         {
         }
 
@@ -72,11 +72,11 @@ namespace hud
          * @param other The `memory_allocation` to be moved
          */
         HD_FORCEINLINE constexpr memory_allocation(memory_allocation &&other) noexcept
-            : begin_ptr(other.begin_ptr)
-            , end_ptr(other.end_ptr)
+            : begin_ptr_(other.begin_ptr_)
+            , end_ptr_(other.end_ptr_)
         {
-            other.begin_ptr = nullptr;
-            other.end_ptr = nullptr;
+            other.begin_ptr_ = nullptr;
+            other.end_ptr_ = nullptr;
         }
 
         /**
@@ -88,10 +88,10 @@ namespace hud
         {
             if (this != &other) [[likely]]
             {
-                begin_ptr = other.begin_ptr;
-                other.begin_ptr = nullptr;
-                end_ptr = other.end_ptr;
-                other.end_ptr = nullptr;
+                begin_ptr_ = other.begin_ptr_;
+                other.begin_ptr_ = nullptr;
+                end_ptr_ = other.end_ptr_;
+                other.end_ptr_ = nullptr;
             }
             return *this;
         }
@@ -102,8 +102,8 @@ namespace hud
          */
         HD_FORCEINLINE constexpr void leak() noexcept
         {
-            begin_ptr = nullptr;
-            end_ptr = nullptr;
+            begin_ptr_ = nullptr;
+            end_ptr_ = nullptr;
         }
 
         /**
@@ -120,19 +120,19 @@ namespace hud
         /** Checks if the `memory_allocation` is empty. */
         [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
         {
-            return begin_ptr == end_ptr;
+            return begin_ptr_ == end_ptr_;
         }
 
         /** Retrieves a pointer to the beginning of the sequence. */
         [[nodiscard]] HD_FORCEINLINE constexpr type_t *data() const noexcept
         {
-            return begin_ptr;
+            return begin_ptr_;
         }
 
         /** Retrieves a pointer to the end of the sequence. */
         [[nodiscard]] HD_FORCEINLINE constexpr type_t *data_end() const noexcept
         {
-            return end_ptr;
+            return end_ptr_;
         }
 
         /**
@@ -143,14 +143,14 @@ namespace hud
          */
         [[nodiscard]] constexpr type_t *data_at(const usize index) const noexcept
         {
-            check(begin_ptr + index <= end_ptr);
+            check(begin_ptr_ + index <= end_ptr_);
             return data() + index;
         }
 
         /** Retrieves the count of elements in the `memory_allocation`. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize count() const noexcept
         {
-            return static_cast<usize>(end_ptr - begin_ptr);
+            return static_cast<usize>(end_ptr_ - begin_ptr_);
         }
 
         /** Retrieves the count of bytes in the `memory_allocation`. */
@@ -162,7 +162,7 @@ namespace hud
         /** Checks whether `index` is in a valid range. */
         [[nodiscard]] HD_FORCEINLINE constexpr bool is_valid_index(const usize index) const noexcept
         {
-            return begin_ptr + index < end_ptr;
+            return begin_ptr_ + index < end_ptr_;
         }
 
         /**
@@ -176,7 +176,7 @@ namespace hud
         [[nodiscard]] memory_allocation<u_type_t> HD_FORCEINLINE reinterpret_cast_to() const noexcept
         {
             static_assert(alignof(u_type_t) == alignof(type_t), "Alignement requirement mismatch");
-            return memory_allocation<u_type_t> {reinterpret_cast<u_type_t *>(begin_ptr), reinterpret_cast<u_type_t *>(end_ptr)};
+            return memory_allocation<u_type_t> {reinterpret_cast<u_type_t *>(begin_ptr_), reinterpret_cast<u_type_t *>(end_ptr_)};
         }
 
         /**
@@ -195,19 +195,19 @@ namespace hud
         /** Convert the allocation to a slice. */
         [[nodiscard]] HD_FORCEINLINE constexpr slice<type_t> to_slice() const noexcept
         {
-            return slice(begin_ptr, count());
+            return slice(begin_ptr_, count());
         }
 
         /** Retrieves an iterator_type to the beginning of the slice. */
         [[nodiscard]] HD_FORCEINLINE constexpr iterator_type begin() const noexcept
         {
-            return iterator_type(begin_ptr);
+            return iterator_type(begin_ptr_);
         }
 
         /** Retrieves an iterator_type to the end of the slice. */
         [[nodiscard]] HD_FORCEINLINE constexpr iterator_type end() const noexcept
         {
-            return iterator_type(end_ptr);
+            return iterator_type(end_ptr_);
         }
 
     private:
@@ -216,9 +216,9 @@ namespace hud
 
     private:
         /** Pointer to the first element */
-        pointer_type HD_RESTRICT begin_ptr = nullptr;
+        pointer_type HD_RESTRICT begin_ptr_ = nullptr;
         /** Number of element */
-        pointer_type HD_RESTRICT end_ptr = nullptr;
+        pointer_type HD_RESTRICT end_ptr_ = nullptr;
     };
 
 } // namespace hud

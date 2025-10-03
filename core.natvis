@@ -2,15 +2,16 @@
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
   <!-- hud::memory_allocation<T> -->
   <Type Name="hud::memory_allocation&lt;*&gt;">
-    <DisplayString>{{Size = { end_ptr - begin_ptr }}}</DisplayString>
+    <DisplayString>Ptr = {begin_ptr_}</DisplayString>
     <Expand>
-      <Item Name="Size">end_ptr - begin_ptr</Item>
+      <Item Name="size">end_ptr_ - begin_ptr_</Item>
       <ArrayItems>
-        <Size> end_ptr - begin_ptr </Size>
-        <ValuePointer> begin_ptr </ValuePointer>
+        <Size> end_ptr_ - begin_ptr_ </Size>
+        <ValuePointer> begin_ptr_ </ValuePointer>
       </ArrayItems>
     </Expand>
   </Type>
+  
   <!-- hud::optional<T> -->
   <Type Name="hud::optional&lt;*&gt;">
     <DisplayString Condition="some == true">Value: {some_value}</DisplayString>
@@ -46,15 +47,17 @@
       <Item Name="second">($T2*)this</Item>
     </Expand>
   </Type>
+  
   <!-- hud::vector<T> -->
-  <!-- <Type Name="hud::vector&lt;*&gt;">
-        <DisplayString>{{Size = { end_ptr - begin_ptr }}}</DisplayString>
-        <Expand>
-            <Item Name="Size">end_ptr - begin_ptr</Item>
-            <ArrayItems>
-                <Size> end_ptr - begin_ptr </Size>
-                <ValuePointer> begin_ptr </ValuePointer>
-            </ArrayItems>
-        </Expand>
-    </Type> -->
+  <Type Name="hud::vector&lt;*&gt;">
+    <DisplayString Condition ="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ == 0"> Size = {compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_}</DisplayString>
+    <DisplayString Condition ="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ > 0"> Size = {compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_}, Ptr = {compressed_allocator_.type_2_.begin_ptr_} </DisplayString>
+    <Expand>
+      <Item Condition="compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_ > 0" Name="Size">compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_</Item>
+      <ArrayItems>
+        <Size>compressed_allocator_.type_2_.end_ptr_ - compressed_allocator_.type_2_.begin_ptr_</Size>
+        <ValuePointer>compressed_allocator_.type_2_.begin_ptr_</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
 </AutoVisualizer>
