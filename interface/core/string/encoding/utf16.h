@@ -1,8 +1,8 @@
-#ifndef HD_INC_CORE_STRING_UNICODE_UTF16_H
-#define HD_INC_CORE_STRING_UNICODE_UTF16_H
+#ifndef HD_INC_CORE_STRING_ENCODING_UTF16_H
+#define HD_INC_CORE_STRING_ENCODING_UTF16_H
 #include "../../slice.h"
 
-namespace hud::unicode
+namespace hud::encoding
 {
     /**
      * Validates whether a given sequence of 16-bit units is well-formed UTF-16 according to the Unicode specification.
@@ -75,6 +75,6 @@ namespace hud::unicode
     {
         return is_valid_utf16_portable(string);
     }
-} // namespace hud::unicode
+} // namespace hud::encoding
 
-#endif // HD_INC_CORE_STRING_UNICODE_UTF16_H
+#endif // HD_INC_CORE_STRING_ENCODING_UTF16_H

@@ -3,7 +3,8 @@
 #include "../character.h"
 #include "../memory.h"
 #include <stdarg.h> // va_start, va_end
-#include <string.h> // strncpy, wcsncpy, wcscat,
+#include <string.h> // strncpy, wcsncpy, wcscat
+
 // For is_ascii check : https://quick-bench.com/q/P_adhBeQdvHLTBB8EZCtLyrPRsM
 namespace hud
 {

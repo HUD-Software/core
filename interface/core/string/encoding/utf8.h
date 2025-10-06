@@ -1,10 +1,10 @@
-#ifndef HD_INC_CORE_STRING_UNICODE_UTF8_H
-#define HD_INC_CORE_STRING_UNICODE_UTF8_H
+#ifndef HD_INC_CORE_STRING_ENCODING_UTF8_H
+#define HD_INC_CORE_STRING_ENCODING_UTF8_H
 #include "../../slice.h"
 #include "../../traits/is_same.h"
 #include "../../traits/remove_cv.h"
 
-namespace hud::unicode
+namespace hud::encoding
 {
     /**
      * Validates whether a given byte sequence is well-formed UTF-8 according to the Unicode specification.
@@ -177,6 +177,6 @@ namespace hud::unicode
         return is_valid_utf8_portable(string);
     }
 
-} // namespace hud::unicode
+} // namespace hud::encoding
 
-#endif // HD_INC_CORE_STRING_UNICODE_UTF8_H
+#endif // HD_INC_CORE_STRING_ENCODING_UTF8_H

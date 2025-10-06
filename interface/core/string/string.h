@@ -2,7 +2,7 @@
 #define HD_INC_CORE_STRING_STRING_H
 #include "../containers/vector.h"
 #include "../containers/optional.h"
-#include "unicode/utf8.h"
+#include "encoding/utf8.h"
 #include "cstring_view.h"
 #include "../slice.h"
 
@@ -70,7 +70,7 @@ namespace hud
     requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
     constexpr hud::optional<hud::string> make_string(const hud::slice<char_t> slice) noexcept
     {
-        if (hud::unicode::is_valid_utf8(slice))
+        if (hud::encoding::is_valid_utf8(slice))
             return hud::string {slice};
         return hud::nullopt;
     }
