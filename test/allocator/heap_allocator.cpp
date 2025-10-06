@@ -2,8 +2,7 @@
 
 GTEST_TEST(heap_allocator, allocate_zero_do_not_allocate)
 {
-    hud_test::for_each_type<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>()([]<typename type_t>()
-                                                                                                        {
+    hud_test::for_each_type<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>()([]<typename type_t>() {
         hud::heap_allocator heap_allocator;
         const auto buffer = heap_allocator.template allocate<type_t>(0);
         hud_assert_eq(buffer.data(), nullptr);
@@ -13,11 +12,10 @@ GTEST_TEST(heap_allocator, allocate_zero_do_not_allocate)
 GTEST_TEST(heap_allocator, correctly_allocate_and_free_requested_amount_of_memory)
 {
 
-    hud_test::for_each_type<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>()([]<typename type_t>()
-                                                                                                        {
+    hud_test::for_each_type<i8, i16, i32, i64, u8, u16, u32, u64, f32, f64, uptr, iptr, usize, isize>()([]<typename type_t>() {
         for (u32 count = 1; count < hud::i8_max; count++) {
             hud::heap_allocator heap_allocator;
-            const auto buffer = heap_allocator.template allocate<type_t>(count);
+            auto buffer = heap_allocator.template allocate<type_t>(count);
             hud_assert_ne(buffer.data(), nullptr);
             hud_assert_eq(buffer.count(), count);
             hud_assert_eq(buffer.end() - buffer.begin(), isize(count));

@@ -189,8 +189,7 @@ GTEST_TEST(memory_allocation, sub_slice)
 
         // Additional test when iterating on the sub_slice
         usize idx = 0;
-        for (; idx < sub_slice.count(); idx++)
-        {
+        for (; idx < sub_slice.count(); idx++) {
             hud_assert_eq(&sub_slice[idx], &allocation[idx]);
         }
         hud_assert_eq(idx, 4u);
@@ -215,8 +214,7 @@ GTEST_TEST(memory_allocation, sub_slice)
 
         // Additional test when iterating on the sub_slice
         usize idx = 0;
-        for (; idx < sub_slice.count(); idx++)
-        {
+        for (; idx < sub_slice.count(); idx++) {
             hud_assert_eq(&sub_slice[idx], &allocation[idx]);
         }
         hud_assert_eq(idx, 2u);
@@ -232,35 +230,34 @@ GTEST_TEST(memory_allocation, sub_slice)
 
         // Additional test when iterating on the sub_slice
         usize idx = 0;
-        for (; idx < sub_slice.count(); idx++)
-        {
+        for (; idx < sub_slice.count(); idx++) {
             hud_assert_eq(&sub_slice[idx], &allocation[idx + allocation.count() / 2]);
         }
         hud_assert_eq(idx, 2u);
     }
 }
 
-GTEST_TEST(memory_allocation, to_slice)
+GTEST_TEST(memory_allocation, as_slice)
 {
-    // to_slice of empty allocation is empty slice
+    // as_slice of empty allocation is empty slice
     {
         hud::memory_allocation<i32> allocation(nullptr, nullptr);
         hud_assert_eq(allocation.data(), nullptr);
         hud_assert_eq(allocation.count(), 0u);
 
-        hud::slice<i32> slice(allocation.to_slice());
+        hud::slice<i32> slice(allocation.as_slice());
         hud_assert_eq(slice.data(), allocation.data());
         hud_assert_eq(slice.count(), allocation.count());
     }
 
-    // to_slice of non empty allocation is Slice over the whole allocation.
+    // as_slice of non empty allocation is Slice over the whole allocation.
     {
         i32 arr[4] = {10, 20, 30, 40};
         hud::memory_allocation<i32> allocation(arr, 4u);
         hud_assert_eq(allocation.data(), &arr[0]);
         hud_assert_eq(allocation.count(), 4u);
 
-        hud::slice<i32> slice(allocation.to_slice());
+        hud::slice<i32> slice(allocation.as_slice());
         hud_assert_eq(slice.data(), allocation.data());
         hud_assert_eq(slice.count(), allocation.count());
     }
@@ -319,8 +316,7 @@ GTEST_TEST(memory_allocation, range_for_loop)
     i32 index = 0;
     // constexpr Iterator begin() noexcept
     // constexpr Iterator end() noexcept
-    for (auto &value : slice)
-    {
+    for (auto &value : slice) {
         result[index++] = value;
     }
     hud_assert_eq(result[0], arr[0]);
@@ -334,8 +330,7 @@ GTEST_TEST(memory_allocation, range_for_loop)
 
     // constexpr ConstIterator begin() const noexcept
     // constexpr ConstIterator end() const noexcept
-    for (auto &value : slice_const)
-    {
+    for (auto &value : slice_const) {
         result[index++] = value;
     }
     hud_assert_eq(result[0], arr[0]);

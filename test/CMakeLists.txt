@@ -28,7 +28,7 @@ if(MSVC)
 		target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /bigobj /permissive- /EHsc /utf-8 /arch:AVX2 /constexpr:steps2147483647 /constexpr:depth32767)
 	endif()
 	# Define them only weh compiling with 64 bits
-	target_compile_definitions(${test_project_name} PRIVATE __SSE__ __SSE2__ __SSSE3__ __AVX__ __AVX2__)
+	target_compile_definitions(${lib_name} PRIVATE __SSE__ __SSE2__ __SSSE3__ __SSE4_1__ __SSE4_2__ __AVX__ __AVX2__)
 elseif(EMSCRIPTEN)
 	# Uncomment to generate an HTML (JS must be commented)
 	# set_target_properties(${test_project_name} PROPERTIES SUFFIX ".html")

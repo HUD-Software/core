@@ -86,8 +86,7 @@ namespace hud
          */
         HD_FORCEINLINE constexpr memory_allocation &operator=(memory_allocation &&other) noexcept
         {
-            if (this != &other) [[likely]]
-            {
+            if (this != &other) [[likely]] {
                 begin_ptr_ = other.begin_ptr_;
                 other.begin_ptr_ = nullptr;
                 end_ptr_ = other.end_ptr_;
@@ -128,9 +127,20 @@ namespace hud
         {
             return begin_ptr_;
         }
+        /** Retrieves a pointer to the beginning of the sequence. */
+        [[nodiscard]] HD_FORCEINLINE constexpr const type_t *data_const() const noexcept
+        {
+            return begin_ptr_;
+        }
 
         /** Retrieves a pointer to the end of the sequence. */
         [[nodiscard]] HD_FORCEINLINE constexpr type_t *data_end() const noexcept
+        {
+            return end_ptr_;
+        }
+
+        /** Retrieves a pointer to the end of the sequence. */
+        [[nodiscard]] HD_FORCEINLINE constexpr const type_t *data_end_const() const noexcept
         {
             return end_ptr_;
         }
@@ -193,21 +203,38 @@ namespace hud
         }
 
         /** Convert the allocation to a slice. */
-        [[nodiscard]] HD_FORCEINLINE constexpr slice<type_t> to_slice() const noexcept
+        [[nodiscard]] HD_FORCEINLINE constexpr slice<const type_t> as_slice() const noexcept
         {
-            return slice(begin_ptr_, count());
+            return slice(data_const(), count());
+        }
+        /** Convert the allocation to a slice. */
+        [[nodiscard]] HD_FORCEINLINE constexpr slice<type_t> as_slice() noexcept
+        {
+            return slice(data(), count());
         }
 
-        /** Retrieves an iterator_type to the beginning of the slice. */
-        [[nodiscard]] HD_FORCEINLINE constexpr iterator_type begin() const noexcept
+        /** Retrieves an iterator_type to the beginning of the allocation. */
+        [[nodiscard]] HD_FORCEINLINE constexpr iterator_type begin() noexcept
         {
             return iterator_type(begin_ptr_);
         }
 
-        /** Retrieves an iterator_type to the end of the slice. */
-        [[nodiscard]] HD_FORCEINLINE constexpr iterator_type end() const noexcept
+        /** Retrieves an const_iterator_type to the beginning of the allocation. */
+        [[nodiscard]] HD_FORCEINLINE constexpr const_iterator_type begin() const noexcept
+        {
+            return const_iterator_type(begin_ptr_);
+        }
+
+        /** Retrieves an iterator_type to the end of the allocation. */
+        [[nodiscard]] HD_FORCEINLINE constexpr iterator_type end() noexcept
         {
             return iterator_type(end_ptr_);
+        }
+
+        /** Retrieves an const_iterator_type to the end of the allocation. */
+        [[nodiscard]] HD_FORCEINLINE constexpr const_iterator_type end() const noexcept
+        {
+            return const_iterator_type(end_ptr_);
         }
 
     private:

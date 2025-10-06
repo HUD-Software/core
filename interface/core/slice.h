@@ -26,13 +26,13 @@ namespace hud
         constexpr slice() noexcept = default;
 
         /**
-         * Construct with user-defined begin_ptr and number of elements to sequence.
-         * @param first The begin_ptr to the first element of the contiguous sequence of elements
+         * Construct with user-defined begin_ptr_ and number of elements to sequence.
+         * @param first The begin_ptr_ to the first element of the contiguous sequence of elements
          * @param count The number of elements in the sequence
          */
         HD_FORCEINLINE constexpr slice(type_t *first, const usize count) noexcept
-            : begin_ptr(first)
-            , count_element(count)
+            : begin_ptr_(first)
+            , count_element_(count)
         {
         }
 
@@ -41,11 +41,11 @@ namespace hud
 
         /** Move construct the slice. */
         HD_FORCEINLINE constexpr slice(slice &&other) noexcept
-            : begin_ptr(other.begin_ptr)
-            , count_element(other.count_element)
+            : begin_ptr_(other.begin_ptr_)
+            , count_element_(other.count_element_)
         {
-            other.begin_ptr = nullptr;
-            other.count_element = 0u;
+            other.begin_ptr_ = nullptr;
+            other.count_element_ = 0u;
         }
 
         /** Copy assign the slice. */
@@ -55,10 +55,10 @@ namespace hud
         HD_FORCEINLINE constexpr slice &operator=(slice &&other) noexcept
         {
             if (this != &other) {
-                begin_ptr = other.begin_ptr;
-                other.begin_ptr = nullptr;
-                count_element = other.count_element;
-                other.count_element = 0u;
+                begin_ptr_ = other.begin_ptr_;
+                other.begin_ptr_ = nullptr;
+                count_element_ = other.count_element_;
+                other.count_element_ = 0u;
             }
             return *this;
         }
@@ -66,8 +66,8 @@ namespace hud
         /** Reset the slice to empty. */
         HD_FORCEINLINE constexpr void reset() noexcept
         {
-            begin_ptr = nullptr;
-            count_element = 0u;
+            begin_ptr_ = nullptr;
+            count_element_ = 0u;
         }
 
         /** Retrieves reference on the element at the given index. */
@@ -85,19 +85,19 @@ namespace hud
         /** Checks if the slice is empty or not. */
         [[nodiscard]] HD_FORCEINLINE constexpr bool is_empty() const noexcept
         {
-            return count_element == 0u;
+            return count_element_ == 0u;
         }
 
         /** Retrieves a pointer to the beginning of the sequence. */
         [[nodiscard]] HD_FORCEINLINE constexpr type_t *data() noexcept
         {
-            return begin_ptr;
+            return begin_ptr_;
         }
 
         /** Retrieves a pointer to the beginning of the sequence. */
         [[nodiscard]] HD_FORCEINLINE constexpr const type_t *data() const noexcept
         {
-            return begin_ptr;
+            return begin_ptr_;
         }
 
         /** Retrieves a pointer to the the sequence at the given index. */
@@ -116,7 +116,7 @@ namespace hud
         /** Retrieves the number of elements the slice refers to. */
         [[nodiscard]] HD_FORCEINLINE constexpr usize count() const noexcept
         {
-            return count_element;
+            return count_element_;
         }
 
         /** Retrieves the count of bytes the slice refers to. */
@@ -165,32 +165,32 @@ namespace hud
         /** Retrieves an iterator to the beginning of the slice. */
         [[nodiscard]] HD_FORCEINLINE constexpr iterator begin() noexcept
         {
-            return iterator(begin_ptr);
+            return iterator(begin_ptr_);
         }
 
         /** Retrieves an const_iterator to the beginning of the slice. */
         [[nodiscard]] HD_FORCEINLINE constexpr const_iterator begin() const noexcept
         {
-            return const_iterator(begin_ptr);
+            return const_iterator(begin_ptr_);
         }
 
         /** Retrieves an iterator to the end of the slice. */
         [[nodiscard]] HD_FORCEINLINE constexpr iterator end() noexcept
         {
-            return iterator(begin_ptr + count_element);
+            return iterator(begin_ptr_ + count_element_);
         }
 
         /** Retrieves an const_iterator to the end of the slice. */
         [[nodiscard]] HD_FORCEINLINE constexpr const_iterator end() const noexcept
         {
-            return const_iterator(begin_ptr + count_element);
+            return const_iterator(begin_ptr_ + count_element_);
         }
 
     private:
         /** Pointer to the first element. */
-        type_t *begin_ptr = nullptr;
+        type_t *begin_ptr_ = nullptr;
         /** Count of elements. */
-        usize count_element = 0u;
+        usize count_element_ = 0u;
     };
 
 } // namespace hud

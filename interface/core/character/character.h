@@ -5,32 +5,36 @@ namespace hud
 {
     struct character
     {
-
         static constexpr char8 ANSI_NULL_CHARACTER = '\0';
         static constexpr wchar WIDE_NULL_CHARACTER = L'\0';
+        static constexpr char16 CHAR16_NULL_CHARACTER = u'\0';
+        static constexpr char32 CHAR32_NULL_CHARACTER = U'\0';
 
         /** Check whether the character is a pure ansi character. */
-        static HD_FORCEINLINE constexpr bool is_ascii(const char8 character) noexcept
-        {
-            return (character & 0x80) == 0;
-        }
-
-        /** Check whether the character is a pure ansi character. */
-        static HD_FORCEINLINE constexpr bool is_ascii(const wchar character) noexcept
+        template<typename char_t>
+        requires(hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>)
+        static HD_FORCEINLINE constexpr bool is_ascii(const char_t character) noexcept
         {
             return (character & ~0x7F) == 0;
         }
 
         /** Check whether the character is a null character '\0'. */
-        static HD_FORCEINLINE constexpr bool is_null(const char8 character) noexcept
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        static HD_FORCEINLINE constexpr bool is_null(const char_t character) noexcept
         {
-            return character == '\0';
-        }
-
-        /** Check whether the character is a null character '\0'. */
-        static HD_FORCEINLINE constexpr bool is_null(const wchar character) noexcept
-        {
-            return character == L'\0';
+            if constexpr (std::is_same_v<char_t, char8>) {
+                return character == ANSI_NULL_CHARACTER;
+            }
+            else if constexpr (std::is_same_v<char_t, wchar>) {
+                return character == WIDE_NULL_CHARACTER;
+            }
+            else if constexpr (std::is_same_v<char_t, char16>) {
+                return character == CHAR16_NULL_CHARACTER;
+            }
+            else if constexpr (std::is_same_v<char_t, char32>) {
+                return character == CHAR32_NULL_CHARACTER;
+            }
         }
 
         /**

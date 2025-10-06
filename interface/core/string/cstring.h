@@ -3,12 +3,245 @@
 #include "../character.h"
 #include "../memory.h"
 #include <stdarg.h> // va_start, va_end
+#include <string.h> // strncpy, wcsncpy, wcscat,
 // For is_ascii check : https://quick-bench.com/q/P_adhBeQdvHLTBB8EZCtLyrPRsM
 namespace hud
 {
+    namespace details::cstring
+    {
+        /**
+         * Test whether null-terminated string contains only pure ascii characters.
+         * @param string The null-terminated string
+         * @return Always return true
+         */
+        template<typename char_t>
+        requires(hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr bool is_ascii_portable(const char_t *string) noexcept
+        {
+            if (string == nullptr) [[unlikely]] {
+                return false;
+            }
+
+            while (!character::is_null(*string)) {
+                if (!character::is_ascii(*string)) {
+                    return false;
+                }
+                string++;
+            }
+            return true;
+        }
+
+        /**
+         * Compare two strings with case sensitive comparison.
+         * @param string_0 Null-terminated string
+         * @param string_1 Null-terminated string
+         * @return true if equal, false otherwise
+         */
+        template<typename type_t>
+        requires(hud::is_one_of_types_v<type_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr bool equals_portable(const type_t *string_0, const type_t *string_1) noexcept
+        {
+            if (!string_0 || !string_1) [[unlikely]]
+                return false;
+            while (*string_0 && *string_1) {
+                if (*string_0 != *string_1)
+                    return false;
+                ++string_0;
+                ++string_1;
+            }
+            return *string_0 == *string_1;
+        }
+
+        /**
+         * Compare partially two strings with case sensitive comparison.
+         * @param string_0 Null-terminated string
+         * @param string_1 Null-terminated string
+         * @param count Number of character to compare
+         * @return true if equal, false otherwise
+         */
+        template<typename type_t>
+        requires(hud::is_one_of_types_v<type_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr bool equals_partial_portable(const type_t *string_0, const type_t *string_1, const usize count) noexcept
+        {
+            size_t i = 0;
+            while (i < count) {
+                char8 c0 = string_0[i];
+                char8 c1 = string_1[i];
+                if (c0 != c1) {
+                    return (c0 - c1) == 0;
+                }
+                if (c0 == '\0') {
+                    return true;
+                }
+                i++;
+            }
+            return true;
+        }
+
+        /**
+         * Retrieve the length of a string.
+         * @param string Null-terminated string
+         * @return Length of the string
+         */
+        template<typename type_t>
+        requires(hud::is_one_of_types_v<type_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr usize length_portable(const type_t *string) noexcept
+        {
+            usize string_length = 0;
+            while (*string != type_t {}) {
+                string_length++;
+                string++;
+            }
+            return string_length;
+        }
+
+        /**
+         * Find a string in another string.
+         * @param string The string to be scanned
+         * @param string_to_find The string to find
+         * @return Pointer to the first occurrence of string in another string, nullptr if not found
+         */
+        template<typename type_t>
+        requires(hud::is_one_of_types_v<type_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr const type_t *find_string_portable(const type_t *string, const type_t *const string_to_find) noexcept
+        {
+            if (!*string_to_find) [[unlikely]]
+                return string;
+            for (; *string; ++string) {
+                const type_t *h = string;
+                const type_t *n = string_to_find;
+                while (*n && *h && *h == *n) {
+                    ++h;
+                    ++n;
+                }
+                if (!*n)
+                    return string;
+            }
+            return nullptr;
+        }
+
+        /**
+         * Find a character in a string.
+         * @param string The string to be scanned
+         * @param character_to_find The string to find
+         * @return Pointer to the first occurrence of the character in the string, nullptr if not found
+         */
+        template<typename type_t>
+        requires(hud::is_one_of_types_v<type_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr const type_t *find_character_portable(const type_t *string, const type_t character_to_find) noexcept
+        {
+            while (*string != type_t {}) {
+                if (*string == character_to_find)
+                    return string;
+                string++;
+            }
+            return nullptr;
+        }
+        /**
+         * Retrieve the length of a string and check the given parameters.
+         * @param string Null-terminated string
+         * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
+         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
+         */
+        template<typename type_t>
+        requires(hud::is_one_of_types_v<type_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr usize length_safe_portable(const type_t *string, const usize max_length) noexcept
+        {
+            usize string_length = 0;
+            while (*string != type_t {} || string_length > max_length) {
+                string_length++;
+                string++;
+            }
+            return string_length;
+        }
+
+        /**
+         * Copy string.
+         * @param destination The destination char_t buffer
+         * @param source Null-terminated char_t to copy
+         * @return destination pointer
+         */
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        [[nodiscard]] static constexpr char_t *copy_portable(char_t *destination, const char_t *source) noexcept
+        {
+            char_t *dest = destination;
+            while ((*dest++ = *source++) != 0) {}
+            return destination;
+        }
+
+        /**
+         * Copy characters from string.
+         * Caution should be take when source has more character than count, in this case no null character is append in the destination buffer.
+         * To append a null character use copy_partial_safe instead.
+         * @param destination The destination char_t buffer
+         * @param source Null-terminated char_t to copy
+         * @param count Number of character to copy
+         * @return Destination pointer
+         */
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        static constexpr char_t *copy_partial_portable(char_t *destination, const char_t *source, const usize count) noexcept
+        {
+            char_t *dest = destination;
+            const char_t *src = source;
+            usize i = 0;
+            for (; i < count && *src != 0; ++i) {
+                dest[i] = src[i];
+            }
+            for (; i < count; ++i) {
+                dest[i] = 0;
+            }
+            return destination;
+        }
+
+        /**
+         * Appends a string to another string.
+         * @param destination The destination char_t buffer
+         * @param source Null-terminated char_t to append
+         * @return destination pointer
+         */
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        static constexpr char_t *append_portable(char_t *destination, const char_t *source) noexcept
+        {
+            char_t *dest = destination;
+            while (*dest)
+                ++dest;
+            const char_t *src = source;
+            while (*src) {
+                *dest++ = *src++;
+            }
+            *dest = 0;
+            return destination;
+        }
+
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        static constexpr char_t *append_partial_portable(char_t *destination, const char_t *source, const usize count) noexcept
+        {
+            char_t *dest = destination;
+            // Se placer à la fin de destination
+            while (*dest)
+                ++dest;
+
+            const char_t *src = source;
+            usize i = 0;
+            // Copier au plus 'count' caractères
+            for (; i < count && *src != 0; ++i) {
+                *dest++ = *src++;
+            }
+            // Null-terminer
+            *dest = 0;
+
+            return destination;
+        }
+
+    } // namespace details::cstring
 
     struct cstring
     {
+
         // RSIZE_MAX_STR defines the maximum allowed size for strings or buffers
         // handled by our code.
         //
@@ -25,86 +258,34 @@ namespace hud
         static constexpr u32 RSIZE_MAX_STR {4UL << 10}; // 4KB
 
         /**
-         * Test whether null-terminated string contains only pure ansi characters.
+         * Test whether null-terminated string contains only pure ascii characters.
          * @param string The null-terminated string
          * @return Always return true
          */
-        [[nodiscard]] static constexpr bool is_ascii(const char8 *string) noexcept
+        template<typename char_t>
+        requires(hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr bool is_ascii(const char_t *string) noexcept
         {
-            if (string == nullptr) {
-                return false;
-            }
-
-            while (!character::is_null(*string)) {
-                if (!character::is_ascii(*string)) {
-                    return false;
-                }
-                string++;
-            }
-            return true;
+            return hud::details::cstring::is_ascii_portable(string);
         }
 
         /**
-         * Test whether wide null-terminated string contains only pure ansi characters.
-         * @param string The null-terminated string
-         * @return true if the string contains only char8, false otherwise
-         */
-        [[nodiscard]] static constexpr bool is_ascii(const wchar *string) noexcept
-        {
-            if (string == nullptr) {
-                return false;
-            }
-
-            while (!character::is_null(*string)) {
-                if (!character::is_ascii(*string)) {
-                    return false;
-                }
-                string++;
-            }
-            return true;
-        }
-
-        /**
-         * Test whether wide null-terminated string contains only pure ansi characters, checking string_size is not bigger than length of the string.
+         * Test whether null-terminated string contains only pure ascii characters, checking string_size is not bigger than length of the string.
          * @param string The null-terminated string
          * @param string_size Size of the string in characters to test
-         * @return true if the string contains only char8 and reach null-terminator character or the string_size character.
-         *         false if the string contains non char8 character
+         * @return true if the string contains only ascii and reach null-terminator character or the string_size character.
+         *         false if the string contains non ascii character
          */
-        [[nodiscard]] static constexpr bool is_ascii_safe(const char8 *string, usize string_size) noexcept
+        template<typename char_t>
+        requires(hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static constexpr bool is_ascii_safe(const char_t *string, usize string_size) noexcept
         {
-            if (string == nullptr) {
+            if (string == nullptr) [[unlikely]] {
                 return false;
             }
 
             while (string_size-- > 0) {
-                char8 cur = *string;
-                if (character::is_null(cur)) {
-                    return true;
-                }
-                if (!character::is_ascii(cur)) {
-                    return false;
-                }
-                string++;
-            }
-            return true;
-        }
-
-        /**
-         * Test whether wide null-terminated string contains only pure ansi characters, checking string_size is not bigger than length of the string.
-         * @param string The null-terminated string
-         * @param string_size Size of the string in characters to test
-         * @return true if the string contains only char8 and reach null-terminator character or the string_size character.
-         *         false if the string contains non char8 character
-         */
-        [[nodiscard]] static constexpr bool is_ascii_safe(const wchar *string, usize string_size) noexcept
-        {
-            if (string == nullptr) {
-                return false;
-            }
-
-            while (string_size-- > 0) {
-                wchar cur = *string;
+                char_t cur = *string;
                 if (character::is_null(cur)) {
                     return true;
                 }
@@ -121,122 +302,144 @@ namespace hud
          * @param string The null-terminated string
          * @return true if the string is null or empty, false otherwise
          */
-        [[nodiscard]] static HD_FORCEINLINE bool is_null_or_empty(const char8 *const string) noexcept
+        template<typename char_t>
+        requires(hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>)
+        [[nodiscard]] static HD_FORCEINLINE bool is_null_or_empty(const char_t *const string) noexcept
         {
             return (string == nullptr) || character::is_null(*string);
         }
 
         /**
-         * Test if a wide null-terminated string is null or empty.
-         * @param string The null-terminated string
-         * @return true if the string is null or empty, false otherwise
-         */
-        [[nodiscard]] static HD_FORCEINLINE bool is_null_or_empty(const wchar *const string) noexcept
-        {
-            return (string == nullptr) || character::is_null(*string);
-        }
-
-        /**
-         * Copy ansi string.
-         * @param destination The destination char8 buffer
-         * @param source Null-terminated char8 to copy
+         * Copy string.
+         * @param destination The destination char_t buffer
+         * @param source Null-terminated char_t to copy
          * @return destination pointer
          */
-        static HD_FORCEINLINE char8 *copy(char8 *destination, const char8 *source) noexcept
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        [[nodiscard]] static constexpr char_t *copy(char_t *destination, const char_t *source) noexcept
         {
-            check_not_null(destination, source);
-            return strcpy(destination, source);
+            if consteval {
+                return hud::details::cstring::copy_portable(destination, source);
+            }
+            else {
+                check_not_null(destination, source);
+                if constexpr (hud::is_same_v<char_t, char8>) {
+                    return strcpy(destination, source);
+                }
+                else if constexpr (hud::is_same_v<char_t, wchar>) {
+                    return wcscpy(destination, source);
+                }
+                else if constexpr ((hud::is_same_v<char_t, char16> && sizeof(wchar) == 2) || // On Windows char16 and wchar is 2 bytes both
+                                   (hud::is_same_v<char_t, char32> && sizeof(wchar) == 4))   // On Linux, MacOS or EMSCRIPTEN char32 and wchar is 4 bytes both
+                {
+                    return wcscpy(reinterpret_cast<wchar *>(destination), reinterpret_cast<const wchar *>(source));
+                }
+                else {
+                    return hud::details::cstring::copy_portable(destination, source);
+                }
+            }
         }
 
         /**
-         * Copy wide string.
-         * @param destination The destination string buffer
-         * @param source Null-terminated string to copy
-         * @return destination pointer
-         */
-        static HD_FORCEINLINE wchar *copy(wchar *destination, const wchar *source) noexcept
-        {
-            check_not_null(destination, source);
-            return wcscpy(destination, source);
-        }
-
-        /**
-         * Copy characters from ansi string.
+         * Copy characters from string.
          * Caution should be take when source has more character than count, in this case no null character is append in the destination buffer.
          * To append a null character use copy_partial_safe instead.
-         * @param destination The destination char8 buffer
-         * @param source Null-terminated char8 to copy
+         * @param destination The destination char_t buffer
+         * @param source Null-terminated char_t to copy
          * @param count Number of character to copy
          * @return Destination pointer
          */
-        static HD_FORCEINLINE char8 *copy_partial(char8 *destination, const char8 *source, const usize count) noexcept
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        static HD_FORCEINLINE char_t *copy_partial(char_t *destination, const char_t *source, const usize count) noexcept
         {
-            check_not_null(destination, source);
-            return strncpy(destination, source, count);
+            if consteval {
+                return hud::details::cstring::copy_partial_portable(destination, source, count);
+            }
+            else {
+                check_not_null(destination, source);
+                if constexpr (hud::is_same_v<char_t, char8>) {
+                    return strncpy(destination, source, count);
+                }
+                else if constexpr (hud::is_same_v<char_t, wchar>) {
+                    return wcsncpy(destination, source, count);
+                }
+                else if constexpr ((hud::is_same_v<char_t, char16> && sizeof(wchar) == 2) || // On Windows char16 and wchar is 2 bytes both
+                                   (hud::is_same_v<char_t, char32> && sizeof(wchar) == 4))   // On Linux, MacOS or EMSCRIPTEN char32 and wchar is 4 bytes both
+                {
+                    return wcsncpy(reinterpret_cast<wchar *>(destination), reinterpret_cast<const wchar *>(source), count);
+                }
+                else {
+                    return hud::details::cstring::copy_partial_portable(destination, source, count);
+                }
+            }
         }
 
         /**
-         * Copy characters from wide string.
-         * Caution should be take when source has more character than count, in this case no null character is append in the destination buffer.
-         * To append a null character use copy_partial_safe instead.
-         * @param destination The destination string buffer
-         * @param source Null-terminated string to copy
-         * @param count Number of character to copy
+         * Appends a string to another string.
+         * @param destination The destination char_t buffer
+         * @param source Null-terminated char_t to append
          * @return destination pointer
          */
-        static HD_FORCEINLINE wchar *copy_partial(wchar *destination, const wchar *source, const usize count) noexcept
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        static HD_FORCEINLINE char_t *append(char_t *destination, const char_t *source) noexcept
         {
-            check_not_null(destination, source);
-            return wcsncpy(destination, source, count);
+            if consteval {
+                return hud::details::cstring::append_portable(destination, source);
+            }
+            else {
+                check_not_null(destination, source);
+
+                if constexpr (hud::is_same_v<char_t, char8>) {
+                    return strcat(destination, source);
+                }
+                else if constexpr (hud::is_same_v<char_t, wchar>) {
+                    return wcscat(destination, source);
+                }
+                else if constexpr ((hud::is_same_v<char_t, char16> && sizeof(wchar) == 2) || // On Windows char16 and wchar is 2 bytes both
+                                   (hud::is_same_v<char_t, char32> && sizeof(wchar) == 4))   // On Linux, MacOS or EMSCRIPTEN char32 and wchar is 4 bytes both
+                {
+                    return wcscat(reinterpret_cast<wchar *>(destination), reinterpret_cast<const wchar *>(source));
+                }
+                else {
+                    return hud::details::cstring::append_portable(destination, source);
+                }
+            }
         }
 
         /**
-         * Appends a ansi string to another ansi string.
-         * @param destination The destination char8 buffer
-         * @param source Null-terminated char8 to append
-         * @return destination pointer
-         */
-        static HD_FORCEINLINE char8 *append(char8 *destination, const char8 *source) noexcept
-        {
-            check_not_null(destination, source);
-            return strcat(destination, source);
-        }
-
-        /**
-         * Appends a wide string to another wide string.
-         * @param destination The destination string buffer
-         * @param source Null-terminated string to append
-         * @return destination pointer
-         */
-        static HD_FORCEINLINE wchar *append(wchar *destination, const wchar *source) noexcept
-        {
-            check_not_null(destination, source);
-            return wcscat(destination, source);
-        }
-
-        /**
-         * Appends a part of an ansi string to another ansi string.
-         * @param destination The destination char8 buffer
-         * @param source Null-terminated char8 to append
+         * Appends a part of an string to another ansi.
+         * @param destination The destination char_t buffer
+         * @param source Null-terminated char_t to append
          * @param count Number of character to append
          * @return destination pointer
          */
-        static HD_FORCEINLINE char8 *append_partial(char8 *destination, const char8 *source, const usize count) noexcept
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        static HD_FORCEINLINE char_t *append_partial(char_t *destination, const char_t *source, const usize count) noexcept
         {
-            check_not_null(destination, source);
-            return strncat(destination, source, count);
-        }
-
-        /**
-         * Appends a part of an wide string to another wide string.
-         * @param destination The destination wchar buffer
-         * @param source Null-terminated wchar to append
-         * @param count Number of character to append
-         * @return destination pointer
-         */
-        static HD_FORCEINLINE wchar *append_partial(wchar *destination, const wchar *source, const usize count) noexcept
-        {
-            return wcsncat(destination, source, count);
+            if consteval {
+                return hud::details::cstring::append_partial_portable(destination, source, count);
+            }
+            else {
+                check_not_null(destination, source);
+                if constexpr (hud::is_same_v<char_t, char8>) {
+                    return strncat(destination, source, count);
+                }
+                else if constexpr (hud::is_same_v<char_t, wchar>) {
+                    return wcsncat(destination, source, count);
+                }
+                else if constexpr ((hud::is_same_v<char_t, char16> && sizeof(wchar) == 2) || // On Windows char16 and wchar is 2 bytes both
+                                   (hud::is_same_v<char_t, char32> && sizeof(wchar) == 4))   // On Linux, MacOS or EMSCRIPTEN char32 and wchar is 4 bytes both
+                {
+                    return wcsncat(reinterpret_cast<wchar *>(destination), reinterpret_cast<const wchar *>(source), count);
+                }
+                else {
+                    return hud::details::cstring::append_partial_portable(destination, source, count);
+                }
+            }
         }
 
         /**
@@ -246,7 +449,7 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_one_of_types_v<type_t, char8, wchar>)
-        static type_t *to_uppercase(type_t *string) noexcept
+        static type_t *ascii_to_uppercase(type_t *string) noexcept
         {
             type_t *ptr = string;
             while (!character::is_null(*ptr)) {
@@ -264,9 +467,9 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_one_of_types_v<type_t, char8, wchar>)
-        static bool to_uppercase_safe(type_t *string, usize string_size) noexcept
+        static bool ascii_to_uppercase_safe(type_t *string, usize string_size) noexcept
         {
-            if (string == nullptr) {
+            if (string == nullptr) [[unlikely]] {
                 return false;
             }
 
@@ -288,7 +491,7 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_one_of_types_v<type_t, char8, wchar>)
-        static type_t *to_uppercase_partial(type_t *string, usize count) noexcept
+        static type_t *ascii_to_uppercase_partial(type_t *string, usize count) noexcept
         {
             type_t *ptr = string;
             while (count-- > 0) {
@@ -307,9 +510,9 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_one_of_types_v<type_t, char8, wchar>)
-        static bool to_uppercase_partial_safe(type_t *string, usize string_size, usize count) noexcept
+        static bool ascii_to_uppercase_partial_safe(type_t *string, usize string_size, usize count) noexcept
         {
-            if (string == nullptr || string_size < count) {
+            if (string == nullptr || string_size < count) [[unlikely]] {
                 return false;
             }
 
@@ -332,7 +535,7 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_one_of_types_v<type_t, char8, wchar>)
-        static HD_FORCEINLINE type_t *to_lowercase(type_t *string) noexcept
+        static HD_FORCEINLINE type_t *ascii_to_lowercase(type_t *string) noexcept
         {
             type_t *ptr = string;
             while (!character::is_null(*ptr)) {
@@ -350,9 +553,9 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_one_of_types_v<type_t, char8, wchar>)
-        static bool to_lowercase_safe(type_t *string, usize string_size) noexcept
+        static bool ascii_to_lowercase_safe(type_t *string, usize string_size) noexcept
         {
-            if (string == nullptr) {
+            if (string == nullptr) [[unlikely]] {
                 return false;
             }
 
@@ -375,7 +578,7 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_one_of_types_v<type_t, char8, wchar>)
-        static type_t *to_lowercase_partial(type_t *string, usize count) noexcept
+        static type_t *ascii_to_lowercase_partial(type_t *string, usize count) noexcept
         {
             type_t *ptr = string;
             while (count-- > 0) {
@@ -394,9 +597,9 @@ namespace hud
          */
         template<typename type_t>
         requires(hud::is_one_of_types_v<type_t, char8, wchar>)
-        static bool to_lowercase_partial_safe(type_t *string, usize string_size, usize count) noexcept
+        static bool ascii_to_lowercase_partial_safe(type_t *string, usize string_size, usize count) noexcept
         {
-            if (string == nullptr || string_size < count) {
+            if (string == nullptr || string_size < count) [[unlikely]] {
                 return false;
             }
 
@@ -421,15 +624,7 @@ namespace hud
         [[nodiscard]] static constexpr bool equals(const char8 *string_0, const char8 *string_1) noexcept
         {
             if consteval {
-                if (!string_0 || !string_1)
-                    return false;
-                while (*string_0 && *string_1) {
-                    if (*string_0 != *string_1)
-                        return false;
-                    ++string_0;
-                    ++string_1;
-                }
-                return *string_0 == *string_1;
+                return hud::details::cstring::equals_portable(string_0, string_1);
             }
             else {
                 return strcmp(string_0, string_1) == 0;
@@ -445,15 +640,7 @@ namespace hud
         [[nodiscard]] static constexpr bool equals(const wchar *string_0, const wchar *string_1) noexcept
         {
             if consteval {
-                if (!string_0 || !string_1)
-                    return false;
-                while (*string_0 && *string_1) {
-                    if (*string_0 != *string_1)
-                        return false;
-                    ++string_0;
-                    ++string_1;
-                }
-                return *string_0 == *string_1;
+                return hud::details::cstring::equals_portable(string_0, string_1);
             }
             else {
                 return wcscmp(string_0, string_1) == 0;
@@ -470,19 +657,7 @@ namespace hud
         [[nodiscard]] static constexpr bool equals_partial(const char8 *string_0, const char8 *string_1, const usize count) noexcept
         {
             if consteval {
-                size_t i = 0;
-                while (i < count) {
-                    char8 c0 = string_0[i];
-                    char8 c1 = string_1[i];
-                    if (c0 != c1) {
-                        return (c0 - c1) == 0;
-                    }
-                    if (c0 == '\0') {
-                        return true;
-                    }
-                    i++;
-                }
-                return true;
+                return hud::details::cstring::equals_partial_portable(string_0, string_1, count);
             }
             else {
                 return strncmp(string_0, string_1, count) == 0;
@@ -499,19 +674,7 @@ namespace hud
         [[nodiscard]] static constexpr bool equals_partial(const wchar *string_0, const wchar *string_1, const usize count) noexcept
         {
             if consteval {
-                size_t i = 0;
-                while (i < count) {
-                    wchar c0 = string_0[i];
-                    wchar c1 = string_1[i];
-                    if (c0 != c1) {
-                        return (c0 - c1) == 0;
-                    }
-                    if (c0 == L'\0') {
-                        return true;
-                    }
-                    i++;
-                }
-                return true;
+                return hud::details::cstring::equals_partial_portable(string_0, string_1, count);
             }
             else {
                 return wcsncmp(string_0, string_1, count) == 0;
@@ -519,46 +682,63 @@ namespace hud
         }
 
         /**
-         * Retrieve the length of a ansi string.
+         * Retrieve the length of a null terminated string.
          * @param string Null-terminated string
          * @return Length of the string
          */
-        [[nodiscard]] static constexpr usize length(const char8 *string) noexcept
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        [[nodiscard]] static constexpr usize length(const char_t *string) noexcept
         {
             if consteval {
-                // LCOV_EXCL_START
-                usize string_length = 0;
-                while (*string != '\0') {
-                    string_length++;
-                    string++;
-                }
-                return string_length;
-                // LCOV_EXCL_STOP
+                return hud::details::cstring::length_portable(string);
             }
             else {
-                return strlen(string);
+                if constexpr (hud::is_same_v<char_t, char8>) {
+                    return strlen(string);
+                }
+                else if constexpr (hud::is_same_v<char_t, wchar>) {
+                    return wcslen(string);
+                }
+                else if constexpr ((hud::is_same_v<char_t, char16> && sizeof(wchar) == 2) || // On Windows char16 and wchar is 2 bytes both
+                                   (hud::is_same_v<char_t, char32> && sizeof(wchar) == 4))   // On Linux, MacOS or EMSCRIPTEN char32 and wchar is 4 bytes both
+                {
+                    return wcslen(reinterpret_cast<wchar *>(string));
+                }
+                else {
+                    return hud::details::cstring::length_portable(string);
+                }
             }
         }
 
         /**
-         * Retrieve the length of a wide string.
+         * Retrieve the length of a null terminated string and check the given parameters.
          * @param string Null-terminated string
-         * @return Length of the string
+         * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
+         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
          */
-        [[nodiscard]] static constexpr usize length(const wchar *string) noexcept
+        template<typename char_t>
+        requires hud::is_one_of_types_v<char_t, char8, wchar, char16, char32>
+        [[nodiscard]] static constexpr usize length_safe(const char_t *string, const usize max_length) noexcept
         {
             if consteval {
-                // LCOV_EXCL_START
-                usize string_length = 0;
-                while (*string != '\0') {
-                    string_length++;
-                    string++;
-                }
-                return string_length;
-                // LCOV_EXCL_STOP
+                return hud::details::cstring::length_safe_portable(string, max_length);
             }
             else {
-                return wcslen(string);
+                if constexpr (hud::is_same_v<char_t, char8>) {
+                    return is_safe_length_parameters_valid(string, max_length) ? strnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
+                }
+                else if constexpr (hud::is_same_v<char_t, wchar>) {
+                    return is_safe_length_parameters_valid(string, max_length) ? wcsnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
+                }
+                else if constexpr ((hud::is_same_v<char_t, char16> && sizeof(wchar) == 2) || // On Windows char16 and wchar is 2 bytes both
+                                   (hud::is_same_v<char_t, char32> && sizeof(wchar) == 4))   // On Linux, MacOS or EMSCRIPTEN char32 and wchar is 4 bytes both
+                {
+                    return is_safe_length_parameters_valid(string, max_length) ? wcsnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
+                }
+                else {
+                    return hud::details::cstring::length_safe_portable(string, max_length);
+                }
             }
         }
 
@@ -571,20 +751,7 @@ namespace hud
         [[nodiscard]] static constexpr const char8 *find_string(const char8 *string, const char8 *const string_to_find) noexcept
         {
             if consteval {
-                if (!*string_to_find)
-                    return string;
-                for (; *string; ++string) {
-                    const char8 *h = string;
-                    const char8 *n = string_to_find;
-                    while (*n && *h && *h == *n) {
-                        ++h;
-                        ++n;
-                    }
-
-                    if (!*n)
-                        return string;
-                }
-                return nullptr;
+                return hud::details::cstring::find_string_portable(string, string_to_find);
             }
             else {
                 return strstr(string, string_to_find);
@@ -600,20 +767,7 @@ namespace hud
         [[nodiscard]] static constexpr const wchar *find_string(const wchar *string, const wchar *const string_to_find) noexcept
         {
             if consteval {
-                if (!*string_to_find)
-                    return string;
-                for (; *string; ++string) {
-                    const wchar *h = string;
-                    const wchar *n = string_to_find;
-                    while (*n && *h && *h == *n) {
-                        ++h;
-                        ++n;
-                    }
-
-                    if (!*n)
-                        return string;
-                }
-                return nullptr;
+                return hud::details::cstring::find_string_portable(string, string_to_find);
             }
             else {
                 return wcsstr(string, string_to_find);
@@ -629,12 +783,7 @@ namespace hud
         [[nodiscard]] static constexpr const char8 *find_character(const char8 *string, const char8 character_to_find) noexcept
         {
             if consteval {
-                while (*string != '\0') {
-                    if (*string == character_to_find)
-                        return string;
-                    string++;
-                }
-                return nullptr;
+                return hud::details::cstring::find_character_portable(string, character_to_find);
             }
             else {
                 return strchr(string, character_to_find);
@@ -650,29 +799,11 @@ namespace hud
         [[nodiscard]] static constexpr const wchar *find_character(const wchar *string, const wchar character_to_find) noexcept
         {
             if consteval {
-                while (*string != '\0') {
-                    if (*string == character_to_find)
-                        return string;
-                    string++;
-                }
-                return nullptr;
+                return hud::details::cstring::find_character_portable(string, character_to_find);
             }
             else {
                 return wcschr(string, character_to_find);
             }
-        }
-
-        /**
-         * Write a formatted char8 to a char8 buffer (like printf does).
-         * @param buffer The char8 buffer receiving the formatted string
-         * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
-         * @param format The char8 containing the format of the string
-         * @param args Depending of the format, list of arguments
-         * @return Number of character written, -1 if an error occurred.
-         */
-        static HD_FORCEINLINE i32 format_vargs(char8 *buffer, u32 buffer_size, const char8 *format, va_list args) noexcept
-        {
-            return vsnprintf(buffer, buffer_size, format, args);
         }
 
         /**
@@ -830,49 +961,16 @@ namespace hud
         }
 
         /**
-         * Retrieve the length of a ansi string and check the given parameters.
-         * @param string Null-terminated string
-         * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
-         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
+         * Write a formatted char8 to a char8 buffer (like printf does).
+         * @param buffer The char8 buffer receiving the formatted string
+         * @praam buffer_size The maximum number of character to store in buffer, null-terminator character included
+         * @param format The char8 containing the format of the string
+         * @param args Depending of the format, list of arguments
+         * @return Number of character written, -1 if an error occurred.
          */
-        [[nodiscard]] static constexpr HD_FORCEINLINE usize length_safe(const char8 *string, const usize max_length) noexcept
+        static HD_FORCEINLINE i32 format_vargs(char8 *buffer, u32 buffer_size, const char8 *format, va_list args) noexcept
         {
-            if consteval {
-                // LCOV_EXCL_START
-                usize string_length = 0;
-                while (*string != '\0' || string_length > max_length) {
-                    string_length++;
-                    string++;
-                }
-                return string_length;
-                // LCOV_EXCL_STOP
-            }
-            else {
-                return is_safe_length_parameters_valid(string, max_length) ? strnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
-            }
-        }
-
-        /**
-         * Retrieve the length of a wide string and check the given parameters.
-         * @param string Null-terminated string
-         * @param max_length Maximum number of character to count. Max limit is hud::cstring::RSIZE_MAX_STR
-         * @return Length of the string, 0 if string is null pointer, max_length if null-terminator character was not found
-         */
-        [[nodiscard]] static constexpr usize length_safe(const wchar *string, const usize max_length) noexcept
-        {
-            if consteval {
-                // LCOV_EXCL_START
-                usize string_length = 0;
-                while (*string != '\0' || string_length > max_length) {
-                    string_length++;
-                    string++;
-                }
-                return string_length;
-                // LCOV_EXCL_STOP
-            }
-            else {
-                return is_safe_length_parameters_valid(string, max_length) ? wcsnlen(string, max_length > RSIZE_MAX_STR ? RSIZE_MAX_STR : max_length) : 0u;
-            }
+            return vsnprintf(buffer, buffer_size, format, args);
         }
 
         /**
@@ -919,7 +1017,7 @@ namespace hud
          * @param source The source pointer
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar, char16, char32>)
         static HD_FORCEINLINE void check_not_null(type_t *destination, const type_t *source) noexcept
         {
             HUD_CHECK(destination != nullptr);
@@ -935,7 +1033,7 @@ namespace hud
          * @param source_size The size in bytes of the buffer pointed by source
          */
         template<typename type_t>
-        requires(hud::is_one_of_types_v<type_t, char8, wchar>)
+        requires(hud::is_one_of_types_v<type_t, char8, wchar, char16, char32>)
         static HD_FORCEINLINE void check_params(type_t *destination, const usize destination_size, const type_t *source, const usize source_size) noexcept
         {
             check_not_null(destination, source);

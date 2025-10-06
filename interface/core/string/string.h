@@ -4,6 +4,7 @@
 #include "../containers/optional.h"
 #include "unicode/utf8.h"
 #include "cstring_view.h"
+#include "../slice.h"
 
 constexpr const char8 *const check_utf8 = "é";
 static_assert(check_utf8[0] == char8(0xC3) && check_utf8[1] == char8(0xA9), "Compiler did not interpret source as UTF-8!");
@@ -33,6 +34,15 @@ namespace hud
             return bytes_.data();
         }
 
+        [[nodiscard]] constexpr hud::slice<const char8> as_bytes() const noexcept
+        {
+            return bytes_.as_slice();
+        }
+        [[nodiscard]] constexpr hud::slice<char8> as_bytes() noexcept
+        {
+            return bytes_.as_slice();
+        }
+
     private:
         template<typename char_t>
         requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
@@ -48,6 +58,13 @@ namespace hud
     private:
         hud::vector<char8> bytes_;
     };
+
+    template<typename char_t>
+    requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
+    constexpr hud::optional<hud::string> make_string(const char_t *ptr, usize len) noexcept
+    {
+        return make_string(hud::slice {ptr, len});
+    }
 
     template<typename char_t>
     requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)

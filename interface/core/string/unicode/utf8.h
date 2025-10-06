@@ -24,7 +24,7 @@ namespace hud::unicode
      * @return true if the input is valid UTF-8, false otherwise.
      */
     template<typename char_t>
-    requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
+    requires(sizeof(char_t) == 1)
     [[nodiscard]] static constexpr bool is_valid_utf8_portable(const hud::slice<char_t> string) noexcept
     {
         usize pos = 0;
@@ -171,11 +171,12 @@ namespace hud::unicode
      * @return true if the input is valid UTF-8, false otherwise.
      */
     template<typename char_t>
-    requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
+    requires(sizeof(char_t) == 1)
     [[nodiscard]] static constexpr bool is_valid_utf8(const hud::slice<char_t> string) noexcept
     {
         return is_valid_utf8_portable(string);
     }
+
 } // namespace hud::unicode
 
 #endif // HD_INC_CORE_STRING_UNICODE_UTF8_H

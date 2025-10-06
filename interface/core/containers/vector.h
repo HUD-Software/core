@@ -886,6 +886,38 @@ namespace hud
             return allocation_().sub_slice(first_index, count);
         }
 
+        /**
+         * Retrieves a sub-slice of the slice.
+         * @param first_index The index of the first element in the slice sequence
+         * @param count The number of elements the slice sequence must contains
+         * @return The sub-slice from data()+first_index over a sequence of count elements
+         */
+        [[nodiscard]] HD_FORCEINLINE constexpr slice<type_t> sub_slice(const usize first_index, const usize count) noexcept
+        {
+            return allocation_().sub_slice(first_index, count);
+        }
+
+        /**
+         * Retrieves a sub-slice of the slice.
+         * @param first_index The index of the first element in the slice sequence
+         * @param count The number of elements the slice sequence must contains
+         * @return The sub-slice from data()+first_index over a sequence of count elements
+         */
+        [[nodiscard]] HD_FORCEINLINE constexpr slice<const type_t> as_slice() const noexcept
+        {
+            return allocation_().as_slice();
+        }
+        /**
+         * Retrieves a sub-slice of the slice.
+         * @param first_index The index of the first element in the slice sequence
+         * @param count The number of elements the slice sequence must contains
+         * @return The sub-slice from data()+first_index over a sequence of count elements
+         */
+        [[nodiscard]] HD_FORCEINLINE constexpr slice<type_t> as_slice() noexcept
+        {
+            return allocation_().as_slice();
+        }
+
         /** Retrieves reference on the first element. */
         [[nodiscard]] HD_FORCEINLINE constexpr const type_t &first() const noexcept
         {

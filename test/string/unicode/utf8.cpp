@@ -53,7 +53,7 @@ GTEST_TEST(utf8, is_valid_utf8_portable)
     // Non constant
     {
         const auto result_latin = test_latin();
-        hud_assert_false(result_latin);
+        hud_assert_true(result_latin);
         const auto result_russian = test_russian();
         hud_assert_true(result_russian);
         const auto result_korean = test_korean();
