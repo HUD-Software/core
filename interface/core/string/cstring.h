@@ -704,7 +704,7 @@ namespace hud
                 else if constexpr ((hud::is_same_v<char_t, char16> && sizeof(wchar) == 2) || // On Windows char16 and wchar is 2 bytes both
                                    (hud::is_same_v<char_t, char32> && sizeof(wchar) == 4))   // On Linux, MacOS or EMSCRIPTEN char32 and wchar is 4 bytes both
                 {
-                    return wcslen(reinterpret_cast<wchar *>(string));
+                    return wcslen(reinterpret_cast<const wchar *>(string));
                 }
                 else {
                     return hud::details::cstring::length_portable(string);

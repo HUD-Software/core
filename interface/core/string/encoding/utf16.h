@@ -27,7 +27,7 @@ namespace hud::encoding
     {
         usize pos = 0;
         usize len = string.count();
-        char_t *ptr = string.begin_ptr();
+        char_t *ptr = string.data();
         while (pos < len) {
             char16 word = ptr[pos];
             if ((word & 0xF800) == 0xD800) {

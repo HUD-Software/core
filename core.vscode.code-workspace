@@ -32,8 +32,7 @@
     "extensions": {
         "recommendations": [
             "ms-vscode.cpptools-extension-pack",
-            "ryanluker.vscode-coverage-gutters",
-            "matepek.vscode-catch2-test-adapter"
+            "ryanluker.vscode-coverage-gutters"
         ]
     }
 }

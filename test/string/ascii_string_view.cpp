@@ -1,10 +1,10 @@
 #include <core/string/ascii_string_view.h>
 
-GTEST_TEST(ascii_string_view, constructors)
+GTEST_TEST(ascii_string_view, make_ascii_string_view_checked)
 {
     auto test = []() {
         const char8 *ptr = "hello world hello world hello world";
-        auto cstring_view_opt = hud::make_ascii_string_view(ptr);
+        auto cstring_view_opt = hud::make_ascii_string_view_checked(ptr);
         auto v = *cstring_view_opt;
         return std::tuple {
             v.length() == hud::cstring::length(ptr), // 0
@@ -41,6 +41,31 @@ GTEST_TEST(ascii_string_view, inner_type)
     static_assert(hud::is_same_v<decltype(v1)::char_type, char8>);
 }
 
+GTEST_TEST(ascii_string_view, length)
+{
+    hud::ascii_string_view v {"Hello world"};
+    hud_assert_true(v.length() == 11);
+
+    hud::ascii_string_view v2 {"Hello \0world"};
+    hud_assert_true(v2.length() == 6);
+}
+
+GTEST_TEST(ascii_string_view, data)
+{
+    const char8 *ptr = "Hello world";
+    hud::ascii_string_view v {ptr};
+    hud_assert_true(v.data() == ptr);
+}
+
+GTEST_TEST(ascii_string_view, is_empty)
+{
+    hud::ascii_string_view v {"Hello world"};
+    hud_assert_false(v.is_empty());
+
+    hud::ascii_string_view v_null {""};
+    hud_assert_true(v_null.is_empty());
+}
+
 GTEST_TEST(ascii_string_view, equals)
 {
     auto test = []() {
@@ -65,30 +90,20 @@ GTEST_TEST(ascii_string_view, equals)
         };
     };
 
-    // Non constant
+    // Non Constant
     {
-        const auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
+        auto result = test();
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 }
 
@@ -158,64 +173,20 @@ GTEST_TEST(ascii_string_view, equals_partial)
         };
     };
 
-    // Non constant
+    // Non Constant
     {
-        const auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
-        hud_assert_true(std::get<12>(result));
-        hud_assert_true(std::get<13>(result));
-        hud_assert_true(std::get<14>(result));
-        hud_assert_true(std::get<15>(result));
-        hud_assert_true(std::get<16>(result));
-        hud_assert_true(std::get<17>(result));
-        hud_assert_true(std::get<18>(result));
-        hud_assert_true(std::get<19>(result));
-        hud_assert_true(std::get<20>(result));
-        hud_assert_true(std::get<21>(result));
-        hud_assert_true(std::get<22>(result));
-        hud_assert_true(std::get<23>(result));
-        hud_assert_true(std::get<24>(result));
+        auto result = test();
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
-        hud_assert_true(std::get<12>(result));
-        hud_assert_true(std::get<13>(result));
-        hud_assert_true(std::get<14>(result));
-        hud_assert_true(std::get<15>(result));
-        hud_assert_true(std::get<16>(result));
-        hud_assert_true(std::get<17>(result));
-        hud_assert_true(std::get<18>(result));
-        hud_assert_true(std::get<19>(result));
-        hud_assert_true(std::get<20>(result));
-        hud_assert_true(std::get<21>(result));
-        hud_assert_true(std::get<22>(result));
-        hud_assert_true(std::get<23>(result));
-        hud_assert_true(std::get<24>(result));
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 }
 
@@ -239,6 +210,20 @@ GTEST_TEST(ascii_string_view, find_first)
         bool find_9 = v2.find_first("mnopqrstuvwxyz") == 21;
         bool find_10 = v2.find_first("_") == 44 && v2[44] == '_';
         bool find_11 = v2.find_first("123456789") == 0;
+
+        bool find_12 = v.find_first(hud::ascii_string_view {"abc"}) == 0;
+        bool find_13 = v.find_first(hud::ascii_string_view {"def"}) == 3;
+        bool find_14 = v.find_first(hud::ascii_string_view {"ghijkl"}) == 6;
+        bool find_15 = v.find_first(hud::ascii_string_view {"mnopqrstuvwxyz"}) == 12;
+        bool find_16 = v.find_first(hud::ascii_string_view {"_"}) == -1;
+        bool find_17 = v.find_first(hud::ascii_string_view {"123456789"}) == -1;
+        bool find_18 = v2.find_first(hud::ascii_string_view {"abc"}) == 9;
+        bool find_19 = v2.find_first(hud::ascii_string_view {"def"}) == 12;
+        bool find_20 = v2.find_first(hud::ascii_string_view {"ghijkl"}) == 15;
+        bool find_21 = v2.find_first(hud::ascii_string_view {"mnopqrstuvwxyz"}) == 21;
+        bool find_22 = v2.find_first(hud::ascii_string_view {"_"}) == 44 && v2[44] == '_';
+        bool find_23 = v2.find_first(hud::ascii_string_view {"123456789"}) == 0;
+
         return std::tuple {
             find_0,
             find_1,
@@ -252,40 +237,34 @@ GTEST_TEST(ascii_string_view, find_first)
             find_9,
             find_10,
             find_11,
+            find_12,
+            find_13,
+            find_14,
+            find_15,
+            find_16,
+            find_17,
+            find_18,
+            find_19,
+            find_20,
+            find_21,
+            find_22,
+            find_23,
         };
     };
-    // Non constant
+    // Non Constant
     {
-        const auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
+        auto result = test();
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 }
 
@@ -324,38 +303,20 @@ GTEST_TEST(ascii_string_view, find_first_character)
             find_11,
         };
     };
-    // Non constant
+    // Non Constant
     {
-        const auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
+        auto result = test();
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 }
 
@@ -379,6 +340,20 @@ GTEST_TEST(ascii_string_view, contains_string)
         bool find_9 = v2.contains("mnopqrstuvwxyz");
         bool find_10 = v2.contains("_");
         bool find_11 = v2.contains("123456789");
+
+        bool find_12 = v.contains(hud::ascii_string_view {"abc"});
+        bool find_13 = v.contains(hud::ascii_string_view {"def"});
+        bool find_14 = v.contains(hud::ascii_string_view {"ghijkl"});
+        bool find_15 = v.contains(hud::ascii_string_view {"mnopqrstuvwxyz"});
+        bool find_16 = !v.contains(hud::ascii_string_view {"_"});
+        bool find_17 = !v.contains(hud::ascii_string_view {"123456789"});
+        bool find_18 = v2.contains(hud::ascii_string_view {"abc"});
+        bool find_19 = v2.contains(hud::ascii_string_view {"def"});
+        bool find_20 = v2.contains(hud::ascii_string_view {"ghijkl"});
+        bool find_21 = v2.contains(hud::ascii_string_view {"mnopqrstuvwxyz"});
+        bool find_22 = v2.contains(hud::ascii_string_view {"_"});
+        bool find_23 = v2.contains(hud::ascii_string_view {"123456789"});
+
         return std::tuple {
             find_0,
             find_1,
@@ -392,40 +367,34 @@ GTEST_TEST(ascii_string_view, contains_string)
             find_9,
             find_10,
             find_11,
+            find_12,
+            find_13,
+            find_14,
+            find_15,
+            find_16,
+            find_17,
+            find_18,
+            find_19,
+            find_20,
+            find_21,
+            find_22,
+            find_23,
         };
     };
-    // Non constant
+    // Non Constant
     {
-        const auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
+        auto result = test();
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 }
 
@@ -464,38 +433,20 @@ GTEST_TEST(ascii_string_view, contains_character)
             find_11,
         };
     };
-    // Non constant
+    // Non Constant
     {
-        const auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
+        auto result = test();
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 
     // Constant
     {
         constexpr auto result = test();
-        hud_assert_true(std::get<0>(result));
-        hud_assert_true(std::get<1>(result));
-        hud_assert_true(std::get<2>(result));
-        hud_assert_true(std::get<3>(result));
-        hud_assert_true(std::get<4>(result));
-        hud_assert_true(std::get<5>(result));
-        hud_assert_true(std::get<6>(result));
-        hud_assert_true(std::get<7>(result));
-        hud_assert_true(std::get<8>(result));
-        hud_assert_true(std::get<9>(result));
-        hud_assert_true(std::get<10>(result));
-        hud_assert_true(std::get<11>(result));
+        hud_test::for_each_value(std::make_index_sequence<std::tuple_size_v<decltype(result)>>(), [&]<usize value>() {
+            hud_assert_true(std::get<value>(result));
+        });
     }
 }
 
@@ -529,6 +480,38 @@ GTEST_TEST(ascii_string_view, to_lowercase_partial)
     hud::ascii_string_view v(txt);
     v.to_lowercase_partial(2);
     hud_assert_true(txt[0] == 'a' && txt[1] == 'b' && txt[2] == 'C' && txt[3] == '1' && txt[4] == '2' && txt[5] == '3' && txt[6] == ',' && txt[7] == ';' && txt[8] == ':' && txt[9] == '!' && txt[10] == '\0');
+}
+
+GTEST_TEST(ascii_string_view, is_valid)
+{
+    auto test = []() {
+        const char8 *ptr = "hello world hello world hello world";
+        hud::ascii_string_view v(ptr);
+        const char8 *ptr_2 = "hello world\x80 hello world hello world";
+        hud::ascii_string_view v2(ptr_2);
+        const char8 *ptr_3 = "hello world\x85 hello world hello world";
+        hud::ascii_string_view v3(ptr_3);
+        return std::tuple {
+            v.is_valid(),   // 0
+            !v2.is_valid(), // 1
+            !v3.is_valid()  // 2
+        };
+    };
+    // Non constant
+    {
+        const auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+    }
+
+    // Constant
+    {
+        constexpr auto result = test();
+        hud_assert_true(std::get<0>(result));
+        hud_assert_true(std::get<1>(result));
+        hud_assert_true(std::get<2>(result));
+    }
 }
 
 GTEST_TEST(ascii_string_view, slice)

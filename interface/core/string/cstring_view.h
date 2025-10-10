@@ -6,9 +6,14 @@
 #include "encoding/utf16.h"
 #include "encoding/utf32.h"
 #include "encoding/ascii.h"
+#include "../containers/optional.h"
+#include "../traits/remove_pointer.h"
 
 namespace hud
 {
+    template<typename char_t, usize char_size = sizeof(char_t)>
+    struct cstring_view;
+
     /**
      * An immutable view of a C-style, null-terminated string.
      * This view does not own the underlying string and does not allow modification
@@ -16,7 +21,7 @@ namespace hud
      * the string content.
      */
     template<typename char_t>
-    struct cstring_view
+    struct cstring_view<char_t, 1>
     {
         /** Type of the underlying character. */
         using char_type = char_t;
@@ -25,7 +30,7 @@ namespace hud
          * Constructs a cstring_view from a C-style string pointer.
          * @param str Pointer to a null-terminated string. Must not be null.
          */
-        constexpr cstring_view(char_t *str) noexcept
+        constexpr cstring_view(char_type *str) noexcept
             : ptr_(str)
         {
             HUD_CHECK(ptr_ != nullptr && "Invalid null pointer");
@@ -46,7 +51,7 @@ namespace hud
          * @return A pointer to the string's first character (null-terminated).
          */
         [[nodiscard]]
-        constexpr char_t *data() const noexcept
+        constexpr char_type *data() const noexcept
         {
             return ptr_;
         }
@@ -67,7 +72,7 @@ namespace hud
          */
         [[nodiscard]]
         constexpr bool is_ascii() const noexcept
-        requires(sizeof(char_t) == 1)
+        requires(sizeof(char_type) == 1)
         {
             return hud::encoding::is_valid_ascii(as_slice());
         }
@@ -77,7 +82,7 @@ namespace hud
          * @return A slice representing all characters of this string.
          */
         [[nodiscard]]
-        constexpr const hud::slice<char_t> as_slice() const noexcept
+        constexpr const hud::slice<char_type> as_slice() const noexcept
         {
             return hud::slice {ptr_, length()};
         }
@@ -87,7 +92,7 @@ namespace hud
          * @return A slice representing all characters of this string.
          */
         [[nodiscard]]
-        constexpr hud::slice<char_t> as_slice() noexcept
+        constexpr hud::slice<char_type> as_slice() noexcept
         {
             return hud::slice {ptr_, length()};
         }
@@ -98,7 +103,7 @@ namespace hud
          * @return A const reference to the code unit at position i.
          */
         [[nodiscard]]
-        constexpr char_t &operator[](const usize i) const noexcept
+        constexpr char_type &operator[](const usize i) const noexcept
         {
             return ptr_[i];
         }
@@ -165,6 +170,33 @@ namespace hud
         /**Pointer to the null-terminated C-style string. */
         char_type *ptr_;
     };
+
+    template<typename char_t>
+    cstring_view(const char_t *) -> cstring_view<const char_t>;
+
+    template<typename char_t>
+    cstring_view(char_t *) -> cstring_view<char_t>;
+
+    /**
+     * Create a string view over a null-terminated ASCII string.
+     *
+     * This function checks that all characters in the given string are valid ASCII.
+     * If the string contains any non-ASCII character, it returns hud::nullopt.
+     *
+     * @tparam char_t  Type of characters in the string (must be hud::char8).
+     * @param ptr      Pointer to a null-terminated string.
+     * @return         hud::optional containing a hud::ascii_string_view if valid,
+     *                 hud::nullopt otherwise.
+     */
+    template<typename char_t>
+    requires(hud::is_same_v<hud::remove_cv_t<char_t>, char8>)
+    constexpr hud::optional<hud::cstring_view<char_t>> make_cstring_view_checked(char_t *ptr) noexcept
+    {
+        if (hud::encoding::is_valid_utf8(hud::slice {ptr, hud::cstring::length(ptr)})) {
+            return hud::cstring_view<char_t>(ptr);
+        }
+        return hud::nullopt;
+    }
 
 } // namespace hud
 
