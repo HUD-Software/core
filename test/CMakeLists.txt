@@ -42,7 +42,7 @@ else()
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 		target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -fconstexpr-ops-limit=2147483647  -fconstexpr-depth=2147483647)
 	# Clang
-	else(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+	elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 		target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -fconstexpr-steps=2147483647 -fconstexpr-depth=2147483647)
 	# Unkown
 	else()
