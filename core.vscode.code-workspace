@@ -28,6 +28,8 @@
         "debug.showVariableTypes": false,
         "rust-analyzer.checkOnSave": true,
         "dotnetAcquisitionExtension.enableTelemetry": false,
+        "cmake.ctest.allowParallelJobs": false,
+        "cmake.parallelJobs": 0,
     },
     "extensions": {
         "recommendations": [

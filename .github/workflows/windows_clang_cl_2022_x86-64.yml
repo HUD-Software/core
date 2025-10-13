@@ -17,7 +17,7 @@ jobs:
       - name: Generate visual Studio solution
         run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE "-DCMAKE_C_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang-cl.exe" "-DCMAKE_CXX_COMPILER:FILEPATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\Llvm\x64\bin\clang-cl.exe" -Btarget -G "Visual Studio 17 2022" -T ClangCL,host=x64 -A x64
       - name: Build
-        run: cmake.exe --build target --config Release
+        run: cmake.exe --build target --config Release --parallel
       - name: Test
         run: ctest --test-dir target -C Release -T test --output-on-failure -VV
       - name: Test Report

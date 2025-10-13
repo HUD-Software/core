@@ -2,7 +2,7 @@ name: CodeQL Analysis
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   quality-analysis:
@@ -25,7 +25,7 @@ jobs:
       - name: Generate visual Studio solution
         run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -Btarget -G "Visual Studio 17 2022" -T host=x64 -A x64
       - name: Build
-        run: cmake.exe --build target --config Debug
+        run: cmake.exe --build target --config Debug --parallel
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
         with:
