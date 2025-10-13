@@ -19,8 +19,9 @@ set_target_properties(${test_project_name}
         CXX_EXTENSIONS OFF
 )
 # MSVC /constexpr:steps2147483647 /constexpr:depth32767
-# GCC Clang -fconstexpr-ops-limit=4294967295 -fconstexpr-steps=4294967295
-# Clang-cl -Xclang -fconstexpr-steps=4294967295
+# GCC -fconstexpr-ops-limit=2147483647  -fconstexpr-depth=2147483647
+# ClANG -fconstexpr-steps=2147483647 -fconstexpr-depth=2147483647
+# Clang-cl -Xclang -fconstexpr-steps=2147483647
 if(MSVC)
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		target_compile_options( ${test_project_name} PRIVATE /Zc:__cplusplus /bigobj /permissive- /EHsc /utf-8 /arch:AVX2 -Xclang -fconstexpr-steps=2147483647)
@@ -37,7 +38,16 @@ elseif(EMSCRIPTEN)
 	target_link_options(${test_project_name} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:-sASSERTIONS> "-sENVIRONMENT=[\"web\",\"node\"]" -sABORTING_MALLOC=0 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728)
 	target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -msimd128 -fconstexpr-ops-limit=2147483647 -fconstexpr-steps=2147483647)
 else()
-	target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -fconstexpr-ops-limit=2147483647 -fconstexpr-steps=2147483647)
+	# GCC
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+		target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -fconstexpr-ops-limit=2147483647  -fconstexpr-depth=2147483647)
+	# Clang
+	else(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+		target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -fconstexpr-steps=2147483647 -fconstexpr-depth=2147483647)
+	# Unkown
+	else()
+		message(FATAL_ERROR "Unkown compiler")
+	endif()
 endif()
 
 get_target_property(core_type ${lib_name} TYPE)
