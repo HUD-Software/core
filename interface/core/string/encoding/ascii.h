@@ -1,7 +1,7 @@
 #ifndef HD_INC_CORE_STRING_ENCODING_ASCII_H
 #define HD_INC_CORE_STRING_ENCODING_ASCII_H
 #include "../../slice.h"
-
+#include "../../simd.h"
 namespace hud::encoding
 {
     /**

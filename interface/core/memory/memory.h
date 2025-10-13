@@ -36,10 +36,7 @@
 #include "../traits/is_comparable_with_not_equal_operator.h"
 #include "../templates/move.h"
 #include "../templates/forward.h"
-
-#if defined(HD_SSE2)
-#include <emmintrin.h>
-#endif
+#include "../simd.h"
 
 namespace hud
 {
