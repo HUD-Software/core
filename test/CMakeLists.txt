@@ -36,14 +36,14 @@ elseif(EMSCRIPTEN)
 	# Uncomment to generate an JS file testable with NodeJS (HTML must be commented)
 	set_target_properties(${test_project_name} PROPERTIES SUFFIX ".js")
 	target_link_options(${test_project_name} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:-sASSERTIONS> "-sENVIRONMENT=[\"web\",\"node\"]" -sABORTING_MALLOC=0 -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=134217728)
-	target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -msimd128 -fconstexpr-ops-limit=2147483647 -fconstexpr-steps=2147483647)
+	target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8  -msse4.2 -msimd128 -fconstexpr-ops-limit=2147483647 -fconstexpr-steps=2147483647)
 else()
 	# GCC
 	if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-		target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -fconstexpr-ops-limit=2147483647  -fconstexpr-depth=2147483647)
+		target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 -msse4.2 -fconstexpr-ops-limit=2147483647  -fconstexpr-depth=2147483647)
 	# Clang
 	elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-		target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 main.cpp -msse4.2 -fconstexpr-steps=2147483647 -fconstexpr-depth=2147483647)
+		target_compile_options( ${test_project_name} PRIVATE -finput-charset=UTF-8 -fexec-charset=UTF-8 -msse4.2 -fconstexpr-steps=2147483647 -fconstexpr-depth=2147483647)
 	# Unkown
 	else()
 		message(FATAL_ERROR "Unkown compiler")
