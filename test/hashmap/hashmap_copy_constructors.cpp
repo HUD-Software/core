@@ -28,8 +28,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -37,22 +36,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -69,14 +64,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -102,8 +97,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -111,22 +105,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -143,14 +133,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -179,8 +169,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -188,22 +177,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -214,18 +199,15 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -240,56 +222,56 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -356,8 +338,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -365,22 +346,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -389,13 +366,11 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
             u32 expected_allocation_count = 0;
 
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -410,56 +385,56 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_same_all
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -545,8 +520,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -554,22 +528,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -586,14 +556,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -619,8 +589,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -628,22 +597,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -660,14 +625,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -696,8 +661,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -705,22 +669,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -731,18 +691,15 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -757,56 +714,56 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -873,8 +830,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -882,22 +838,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -906,13 +858,11 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
             u32 expected_allocation_count = 0;
 
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -927,56 +877,56 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_same_type_differen
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -1065,8 +1015,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -1074,22 +1023,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1106,14 +1051,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -1139,8 +1084,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -1148,22 +1092,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1180,14 +1120,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -1216,8 +1156,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -1225,22 +1164,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1251,18 +1186,15 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -1277,56 +1209,56 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -1393,8 +1325,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -1402,22 +1333,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1425,13 +1352,11 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -1446,56 +1371,56 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_sam
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -1585,8 +1510,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -1594,22 +1518,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1626,14 +1546,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -1659,8 +1579,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -1668,22 +1587,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1700,14 +1615,14 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -1736,8 +1651,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -1745,22 +1659,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1771,18 +1681,15 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -1797,56 +1704,56 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -1913,8 +1820,7 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -1922,22 +1828,18 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first)
-                {
+                if (it->key() != init_elem->first) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->value() != init_elem->second)
-                {
+                if (it->value() != init_elem->second) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -1945,13 +1847,11 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -1966,56 +1866,56 @@ GTEST_TEST(hashmap, copy_construct_bitwise_copy_constructible_different_type_dif
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -2100,8 +2000,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -2109,23 +2008,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2142,14 +2037,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -2175,8 +2070,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -2184,23 +2078,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2217,14 +2107,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -2253,8 +2143,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -2262,23 +2151,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2289,18 +2174,15 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -2315,56 +2197,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -2431,8 +2313,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -2440,23 +2321,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2464,13 +2341,11 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -2485,56 +2360,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_same
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -2620,8 +2495,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -2629,23 +2503,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2662,14 +2532,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -2695,8 +2565,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -2704,23 +2573,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2737,14 +2602,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -2773,8 +2638,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -2782,23 +2646,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2809,18 +2669,15 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -2835,56 +2692,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -2951,8 +2808,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -2960,23 +2816,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -2984,13 +2836,11 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -3005,56 +2855,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_same_type_diff
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -3143,8 +2993,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -3152,23 +3001,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3185,14 +3030,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -3218,8 +3063,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -3227,23 +3071,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3260,14 +3100,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -3296,8 +3136,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -3305,23 +3144,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3332,18 +3167,15 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -3358,56 +3190,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -3474,8 +3306,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -3483,23 +3314,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3507,13 +3334,11 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -3528,56 +3353,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -3667,8 +3492,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -3676,23 +3500,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3709,14 +3529,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -3742,8 +3562,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -3751,23 +3570,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3784,14 +3599,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -3820,8 +3635,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -3829,23 +3643,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -3856,18 +3666,15 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -3882,56 +3689,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -3998,8 +3805,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -4007,23 +3813,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4031,13 +3833,11 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -4052,56 +3852,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_copy_constructible_different_type
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -4186,8 +3986,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -4195,23 +3994,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4228,14 +4023,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -4261,8 +4056,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -4270,23 +4064,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4303,14 +4093,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -4339,8 +4129,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -4348,23 +4137,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4375,18 +4160,15 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
             return std::tuple {
@@ -4400,56 +4182,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -4516,8 +4298,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -4525,23 +4306,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4549,13 +4326,11 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -4570,56 +4345,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_same_allocator)
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -4705,8 +4480,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -4714,23 +4488,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4747,14 +4517,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -4780,8 +4550,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -4789,23 +4558,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4822,14 +4587,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -4858,8 +4623,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -4867,23 +4631,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -4894,18 +4654,15 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -4920,56 +4677,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -5036,8 +4793,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -5045,23 +4801,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(init_elem->first);
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -5069,13 +4821,11 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -5090,56 +4840,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_same_type_different_allocator)
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -5228,8 +4978,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -5237,23 +4986,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(key_type {init_elem->first});
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -5270,14 +5015,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -5303,8 +5048,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -5312,23 +5056,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(key_type {init_elem->first});
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -5345,14 +5085,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -5381,8 +5121,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -5390,23 +5129,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(key_type {init_elem->first});
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -5414,18 +5149,15 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the object to copy
-            if (initializer.size() > 0)
-            {
+            if (initializer.size() > 0) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -5440,28 +5172,28 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra = test_default_allocator({}, 10u);
+            const auto result_empty_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u);
             hud_assert_true(std::get<0>(result_empty_extra));
             hud_assert_true(std::get<1>(result_empty_extra));
             hud_assert_true(std::get<2>(result_empty_extra));
             hud_assert_true(std::get<3>(result_empty_extra));
             hud_assert_true(std::get<4>(result_empty_extra));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra = test_default_allocator(TEST_VALUES, 10u);
+            const auto result_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u);
             hud_assert_true(std::get<0>(result_extra));
             hud_assert_true(std::get<1>(result_extra));
             hud_assert_true(std::get<2>(result_extra));
@@ -5500,8 +5232,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
             hud_assert_true(std::get<4>(result_extra));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -5509,23 +5240,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(key_type {init_elem->first});
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -5533,13 +5260,11 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -5554,28 +5279,28 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_same_allocator)
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra = test_with_allocator({}, 10u);
+            const auto result_empty_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u);
             hud_assert_true(std::get<0>(result_empty_extra));
             hud_assert_true(std::get<1>(result_empty_extra));
             hud_assert_true(std::get<2>(result_empty_extra));
             hud_assert_true(std::get<3>(result_empty_extra));
             hud_assert_true(std::get<4>(result_empty_extra));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra = test_with_allocator(TEST_VALUES, 10u);
+            const auto result_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u);
             hud_assert_true(std::get<0>(result_extra));
             hud_assert_true(std::get<1>(result_extra));
             hud_assert_true(std::get<2>(result_extra));
@@ -5637,8 +5362,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
     // No extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -5646,23 +5370,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(key_type {init_elem->first});
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -5679,14 +5399,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
         // Non constant
         {
-            const auto result_empty = test_default_allocator({});
+            const auto result_empty = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_default_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -5712,8 +5432,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
             hud_assert_true(std::get<4>(result));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer) {
             const CopiedType copied(initializer);
 
             // Copy the map
@@ -5721,23 +5440,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(key_type {init_elem->first});
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -5754,14 +5469,14 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
         // Non constant
         {
-            const auto result_empty = test_with_allocator({});
+            const auto result_empty = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {});
             hud_assert_true(std::get<0>(result_empty));
             hud_assert_true(std::get<1>(result_empty));
             hud_assert_true(std::get<2>(result_empty));
             hud_assert_true(std::get<3>(result_empty));
             hud_assert_true(std::get<4>(result_empty));
 
-            const auto result = test_with_allocator(TEST_VALUES);
+            const auto result = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES);
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
             hud_assert_true(std::get<2>(result));
@@ -5790,8 +5505,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
     // With extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -5799,23 +5513,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(key_type {init_elem->first});
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -5826,18 +5536,15 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
             bool copy_allocate = copied_allocate || copy_extra > 0;
 
             // Allocation of the object to copy
-            if (copied_allocate)
-            {
+            if (copied_allocate) {
                 expected_allocation_count++;
             }
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (copy_allocate)
-            {
+            if (copy_allocate) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
             return std::tuple {
@@ -5851,56 +5558,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_default_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_default_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_default_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_default_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_default_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_default_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_default_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_default_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_default_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));
@@ -5967,8 +5674,7 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
             hud_assert_true(std::get<4>(result_extra3));
         }
 
-        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra)
-        {
+        auto test_with_allocator = [](std::initializer_list<hud::pair<i32, i64>> initializer, usize copied_extra, usize copy_extra) {
             const CopiedType copied(initializer, copied_extra);
 
             // Copy the map
@@ -5976,23 +5682,19 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
             // Ensure we copy all elements
             bool all_keys_and_values_copied = true;
-            for (usize index = 0; index < initializer.size(); index++)
-            {
+            for (usize index = 0; index < initializer.size(); index++) {
                 const auto &init_elem = (initializer.begin() + index);
                 const auto it = copy.find(key_type {init_elem->first});
-                if (it == copy.end())
-                {
+                if (it == copy.end()) {
                     all_keys_and_values_copied = false;
                     break;
                 }
-                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2)
-                {
+                if (it->key() != init_elem->first && it->key().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
 
-                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2)
-                {
+                if (it->value() != init_elem->second && it->value().copy_constructor_count() != 2) {
                     all_keys_and_values_copied = false;
                     break;
                 }
@@ -6000,13 +5702,11 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
             // Allocation count
             u32 expected_allocation_count = 0;
             // Allocation of the copy, if we have element to copy or if we have extra
-            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0)
-            {
+            if (initializer.size() > 0 || copied_extra > 0 || copy_extra > 0) {
                 expected_allocation_count++;
             }
             // If we are in constant evaluated the allocation is done in 2 separated memory
-            if consteval
-            {
+            if consteval {
                 expected_allocation_count *= 2;
             }
 
@@ -6021,56 +5721,56 @@ GTEST_TEST(hashmap, copy_construct_non_bitwise_different_type_different_allocato
 
         // Non constant
         {
-            const auto result_empty_no_extra = test_with_allocator({}, 0u, 0u);
+            const auto result_empty_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 0u);
             hud_assert_true(std::get<0>(result_empty_no_extra));
             hud_assert_true(std::get<1>(result_empty_no_extra));
             hud_assert_true(std::get<2>(result_empty_no_extra));
             hud_assert_true(std::get<3>(result_empty_no_extra));
             hud_assert_true(std::get<4>(result_empty_no_extra));
 
-            const auto result_empty_extra_1 = test_with_allocator({}, 10u, 0u);
+            const auto result_empty_extra_1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 0u);
             hud_assert_true(std::get<0>(result_empty_extra_1));
             hud_assert_true(std::get<1>(result_empty_extra_1));
             hud_assert_true(std::get<2>(result_empty_extra_1));
             hud_assert_true(std::get<3>(result_empty_extra_1));
             hud_assert_true(std::get<4>(result_empty_extra_1));
 
-            const auto result_empty_extra_2 = test_with_allocator({}, 0u, 10u);
+            const auto result_empty_extra_2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 0u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_2));
             hud_assert_true(std::get<1>(result_empty_extra_2));
             hud_assert_true(std::get<2>(result_empty_extra_2));
             hud_assert_true(std::get<3>(result_empty_extra_2));
             hud_assert_true(std::get<4>(result_empty_extra_2));
 
-            const auto result_empty_extra_3 = test_with_allocator({}, 10u, 10u);
+            const auto result_empty_extra_3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> {}, 10u, 10u);
             hud_assert_true(std::get<0>(result_empty_extra_3));
             hud_assert_true(std::get<1>(result_empty_extra_3));
             hud_assert_true(std::get<2>(result_empty_extra_3));
             hud_assert_true(std::get<3>(result_empty_extra_3));
             hud_assert_true(std::get<4>(result_empty_extra_3));
 
-            const auto result_no_extra = test_with_allocator(TEST_VALUES, 0u, 0u);
+            const auto result_no_extra = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 0u);
             hud_assert_true(std::get<0>(result_no_extra));
             hud_assert_true(std::get<1>(result_no_extra));
             hud_assert_true(std::get<2>(result_no_extra));
             hud_assert_true(std::get<3>(result_no_extra));
             hud_assert_true(std::get<4>(result_no_extra));
 
-            const auto result_extra1 = test_with_allocator(TEST_VALUES, 10u, 0u);
+            const auto result_extra1 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 0u);
             hud_assert_true(std::get<0>(result_extra1));
             hud_assert_true(std::get<1>(result_extra1));
             hud_assert_true(std::get<2>(result_extra1));
             hud_assert_true(std::get<3>(result_extra1));
             hud_assert_true(std::get<4>(result_extra1));
 
-            const auto result_extra2 = test_with_allocator(TEST_VALUES, 0u, 10u);
+            const auto result_extra2 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 0u, 10u);
             hud_assert_true(std::get<0>(result_extra2));
             hud_assert_true(std::get<1>(result_extra2));
             hud_assert_true(std::get<2>(result_extra2));
             hud_assert_true(std::get<3>(result_extra2));
             hud_assert_true(std::get<4>(result_extra2));
 
-            const auto result_extra3 = test_with_allocator(TEST_VALUES, 10u, 10u);
+            const auto result_extra3 = runtime_test(test_with_allocator, std::initializer_list<hud::pair<i32, i64>> TEST_VALUES, 10u, 10u);
             hud_assert_true(std::get<0>(result_extra3));
             hud_assert_true(std::get<1>(result_extra3));
             hud_assert_true(std::get<2>(result_extra3));

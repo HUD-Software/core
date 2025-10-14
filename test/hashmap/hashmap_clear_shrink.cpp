@@ -3,16 +3,14 @@
 
 GTEST_TEST(hashmap, clear_shrink_trivially_destructible_empty_map)
 {
-    const auto test = []()
-    {
+    static const auto test = []() {
         using key_type = i32;
         using value_type = i64;
         hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
         map.clear_shrink();
 
         i32 count {0};
-        for (const auto &_ : map)
-        {
+        for (const auto &_ : map) {
             count++;
         }
         return std::tuple {
@@ -48,21 +46,18 @@ GTEST_TEST(hashmap, clear_shrink_trivially_destructible_empty_map)
 GTEST_TEST(hashmap, clear_shrink_trivially_destructible_non_empty_map)
 {
 
-    const auto test = []()
-    {
+    static const auto test = []() {
         using key_type = i32;
         using value_type = i64;
         hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
         map.reserve(256);
-        for (u32 index = 0; index < 256; index++)
-        {
+        for (u32 index = 0; index < 256; index++) {
             map.add({index, index * 10});
         }
 
         map.clear_shrink();
         i32 count {0};
-        for (const auto &_ : map)
-        {
+        for (const auto &_ : map) {
             count++;
         }
         return std::tuple {
@@ -100,16 +95,14 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_empty_map)
 
     // No memory allocated
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             map.clear_shrink();
 
             i32 count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 count++;
             }
             return std::tuple {
@@ -144,8 +137,7 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_empty_map)
 
     // Memory reserved
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
@@ -154,8 +146,7 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_empty_map)
             map.clear_shrink();
 
             i32 count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 count++;
             }
             return std::tuple {
@@ -192,8 +183,7 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_empty_map)
 GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_non_empty_map)
 {
 
-    const auto test = []()
-    {
+    static const auto test = []() {
         using key_type = hud_test::non_bitwise_type;
         using value_type = hud_test::non_bitwise_type;
         hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
@@ -204,8 +194,7 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_non_empty_map)
         i32 value_destructor_called_count[COUNT];
 
         // Add all elements
-        for (i32 index = 0; index < COUNT; index++)
-        {
+        for (i32 index = 0; index < COUNT; index++) {
             map.add(
                 key_type {index, key_destructor_called_count + index},
                 value_type {index * 10, value_destructor_called_count + index}
@@ -219,22 +208,18 @@ GTEST_TEST(hashmap, clear_shrink_non_trivially_destructible_non_empty_map)
 
         // Ensure we have no element left in the map
         i32 count {0};
-        for (const auto &_ : map)
-        {
+        for (const auto &_ : map) {
             count++;
         }
 
         // Ensure all destructor are called once
         bool all_destructor_called_after_clear = true;
-        for (i32 index = 0; index < COUNT; index++)
-        {
-            if (key_destructor_called_count[index] != 1)
-            {
+        for (i32 index = 0; index < COUNT; index++) {
+            if (key_destructor_called_count[index] != 1) {
                 all_destructor_called_after_clear = false;
                 break;
             }
-            if (value_destructor_called_count[index] != 1)
-            {
+            if (value_destructor_called_count[index] != 1) {
                 all_destructor_called_after_clear = false;
                 break;
             }
@@ -278,23 +263,20 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
 
     // No reserve
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = i32;
             using value_type = i64;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 256;
             map.clear_shrink();
 
-            for (u32 index = 0; index < COUNT; index++)
-            {
+            for (u32 index = 0; index < COUNT; index++) {
                 map.add({index, index * 10});
             }
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 count++;
             }
 
@@ -330,8 +312,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
 
     // With reserve
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = i32;
             using value_type = i64;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
@@ -339,15 +320,13 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_empty_map)
             map.reserve(COUNT);
             map.clear_shrink();
 
-            for (u32 index = 0; index < COUNT; index++)
-            {
+            for (u32 index = 0; index < COUNT; index++) {
                 map.add({index, index * 10});
             }
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 count++;
             }
 
@@ -386,29 +365,25 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_non_empty_map)
 {
     // No reserve
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = i32;
             using value_type = i64;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             // Add elements then clear the map
             constexpr usize COUNT = 128;
-            for (u32 index = 0; index < COUNT; index++)
-            {
+            for (u32 index = 0; index < COUNT; index++) {
                 map.add({index, index * 10});
             }
             map.clear_shrink();
 
             // Add elements again
-            for (u32 index = 0; index < COUNT * 2; index++)
-            {
+            for (u32 index = 0; index < COUNT * 2; index++) {
                 map.add({index, index * 10});
             }
 
             // Check that we can iterate over all elements
             i32 element_count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 element_count++;
             }
 
@@ -444,30 +419,26 @@ GTEST_TEST(hashmap, clear_shrink_then_add_trivially_destructible_non_empty_map)
 
     // Reserve
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = i32;
             using value_type = i64;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             // Add elements then clear the map
             constexpr usize COUNT = 128;
             map.reserve(COUNT * 2);
-            for (u32 index = 0; index < COUNT; index++)
-            {
+            for (u32 index = 0; index < COUNT; index++) {
                 map.add({index, index * 10});
             }
             map.clear_shrink();
 
             // Add elements again
-            for (u32 index = 0; index < COUNT * 2; index++)
-            {
+            for (u32 index = 0; index < COUNT * 2; index++) {
                 map.add({index, index * 10});
             }
 
             // Check that we can iterate over all elements
             i32 element_count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 element_count++;
             }
 
@@ -507,8 +478,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
 
     // No reserve
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
@@ -516,8 +486,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
             map.clear_shrink();
 
             // Add all elements
-            for (i32 index = 0; index < COUNT * 2; index++)
-            {
+            for (i32 index = 0; index < COUNT * 2; index++) {
                 map.add(
                     key_type {index},
                     value_type {index * 10}
@@ -526,8 +495,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 count++;
             }
 
@@ -563,8 +531,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
 
     // With reserve
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
@@ -573,8 +540,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
             map.clear_shrink();
 
             // Add all elements
-            for (i32 index = 0; index < COUNT * 2; index++)
-            {
+            for (i32 index = 0; index < COUNT * 2; index++) {
                 map.add(
                     key_type {index},
                     value_type {index * 10}
@@ -583,8 +549,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_empty_map)
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 count++;
             }
 
@@ -624,16 +589,14 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
 
     // No reserve
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
             constexpr usize COUNT = 64;
 
             // Add all elements
-            for (i32 index = 0; index < COUNT; index++)
-            {
+            for (i32 index = 0; index < COUNT; index++) {
                 map.add(
                     key_type {index},
                     value_type {index * 10}
@@ -643,8 +606,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
             map.clear_shrink();
 
             // Add all elements
-            for (i32 index = 0; index < COUNT * 2; index++)
-            {
+            for (i32 index = 0; index < COUNT * 2; index++) {
                 map.add(
                     key_type {index},
                     value_type {index * 10}
@@ -653,8 +615,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 count++;
             }
 
@@ -690,8 +651,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
 
     // With reserve
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             using key_type = hud_test::non_bitwise_type;
             using value_type = hud_test::non_bitwise_type;
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>> map;
@@ -699,8 +659,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
             map.reserve(COUNT * 2);
 
             // Add all elements
-            for (i32 index = 0; index < COUNT; index++)
-            {
+            for (i32 index = 0; index < COUNT; index++) {
                 map.add(
                     key_type {index},
                     value_type {index * 10}
@@ -710,8 +669,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
             map.clear_shrink();
 
             // Add all elements
-            for (i32 index = 0; index < COUNT * 2; index++)
-            {
+            for (i32 index = 0; index < COUNT * 2; index++) {
                 map.add(
                     key_type {index},
                     value_type {index * 10}
@@ -720,8 +678,7 @@ GTEST_TEST(hashmap, clear_shrink_then_add_non_trivially_destructible_non_empty_m
 
             // Check that we can iterate over all elements
             i32 count {0};
-            for (const auto &_ : map)
-            {
+            for (const auto &_ : map) {
                 count++;
             }
 

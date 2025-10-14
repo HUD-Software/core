@@ -12,8 +12,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_same_ty
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             const key_type key_to_copy(1);
             const value_type value_to_copy(11);
@@ -65,7 +64,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_same_ty
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -135,8 +134,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_same_ty
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -190,7 +188,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_same_ty
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -274,8 +272,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             const other_key_type key_to_copy(1);
             const other_value_type value_to_copy(11);
@@ -327,7 +324,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -397,8 +394,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(2);
@@ -453,7 +449,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_non_bitwise_copy_constructible_differe
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -534,8 +530,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_same_type)
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             const key_type key_to_copy(1);
             const value_type value_to_copy(11);
@@ -582,7 +577,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_same_type)
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -639,8 +634,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_same_type)
     }
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -689,7 +683,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_same_type)
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -759,8 +753,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_different_t
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             const other_key_type key_to_copy(1);
             const other_value_type value_to_copy(11);
@@ -806,7 +799,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_different_t
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -863,8 +856,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_different_t
     }
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -913,7 +905,7 @@ GTEST_TEST(hashmap, add_by_copy_construct_bitwise_copy_constructible_different_t
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -981,8 +973,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_same_ty
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             key_type key_to_copy(1);
             value_type value_to_copy(11);
@@ -1033,7 +1024,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_same_ty
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -1103,8 +1094,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_same_ty
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -1158,7 +1148,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_same_ty
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -1241,8 +1231,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             other_key_type key_to_copy(1);
             other_value_type value_to_copy(11);
@@ -1293,7 +1282,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -1363,8 +1352,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -1418,7 +1406,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_copy_constructible_differe
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -1499,8 +1487,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_same_type)
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             key_type key_to_copy(1);
             value_type value_to_copy(11);
@@ -1547,7 +1534,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_same_type)
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -1604,8 +1591,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_same_type)
     }
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 3;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -1654,7 +1640,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_same_type)
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -1724,8 +1710,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_different_t
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             other_key_type key_to_copy(1);
             other_value_type value_to_copy(11);
@@ -1772,7 +1757,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_different_t
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -1829,8 +1814,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_different_t
     }
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 3;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -1879,7 +1863,7 @@ GTEST_TEST(hashmap, add_by_move_construct_bitwise_copy_constructible_different_t
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -1947,8 +1931,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_same_ty
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             key_type key_to_copy(1);
             value_type value_to_copy(11);
@@ -2005,7 +1988,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_same_ty
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -2087,8 +2070,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_same_ty
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -2148,7 +2130,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_same_ty
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -2244,8 +2226,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             other_key_type key_to_copy(1);
             other_value_type value_to_copy(11);
@@ -2302,7 +2283,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -2384,8 +2365,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -2445,7 +2425,7 @@ GTEST_TEST(hashmap, add_by_move_construct_non_bitwise_move_constructible_differe
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -2538,8 +2518,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_sa
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
 
             const hud::pair<key_type, value_type> pair {1, 11};
@@ -2587,7 +2566,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_sa
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -2657,8 +2636,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_sa
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -2707,7 +2685,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_sa
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -2790,8 +2768,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
 
             const hud::pair<other_key_type, other_value_type> pair {1, 11};
@@ -2839,7 +2816,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -2909,8 +2886,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -2959,7 +2935,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_non_bitwise_copy_constructible_di
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3040,8 +3016,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_same_t
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             const hud::pair<key_type, value_type> pair {1, 11};
             const auto it_1st = map.add(pair);
@@ -3085,7 +3060,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_same_t
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3142,8 +3117,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_same_t
     }
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 3;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -3188,7 +3162,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_same_t
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3258,8 +3232,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_differ
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             const hud::pair<other_key_type, other_value_type> pair {1, 11};
             const auto it_1st = map.add(pair);
@@ -3303,7 +3276,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_differ
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3360,8 +3333,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_differ
     }
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 3;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -3406,7 +3378,7 @@ GTEST_TEST(hashmap, add_pair_by_copy_construct_bitwise_copy_constructible_differ
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3474,8 +3446,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_sa
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             hud::pair<key_type, value_type> pair(1, 11);
             const auto it_1st = map.add(hud::move(pair));
@@ -3523,7 +3494,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_sa
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3593,8 +3564,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_sa
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -3644,7 +3614,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_sa
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3727,8 +3697,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             hud::pair<other_key_type, other_value_type> pair(1, 11);
             const auto it_1st = map.add(hud::move(pair));
@@ -3776,7 +3745,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3846,8 +3815,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -3897,7 +3865,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_copy_constructible_di
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -3978,8 +3946,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_same_t
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             hud::pair<key_type, value_type> pair(1, 11);
             const auto it_1st = map.add(hud::move(pair));
@@ -4023,7 +3990,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_same_t
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -4080,8 +4047,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_same_t
     }
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 3;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -4127,7 +4093,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_same_t
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -4197,8 +4163,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_differ
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             hud::pair<other_key_type, other_value_type> pair(1, 11);
             const auto it_1st = map.add(hud::move(pair));
@@ -4242,7 +4207,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_differ
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -4299,8 +4264,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_differ
     }
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 3;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -4346,7 +4310,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_bitwise_copy_constructible_differ
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -4414,8 +4378,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_sa
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             hud::pair<key_type, value_type> pair(1, 11);
             const auto it_1st = map.add(hud::move(pair));
@@ -4469,7 +4432,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_sa
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -4551,8 +4514,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_sa
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -4608,7 +4570,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_sa
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -4703,8 +4665,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
 
     // With reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             hashmap_type map;
             hud::pair<other_key_type, other_value_type> pair(1, 11);
             const auto it_1st = map.add(hud::move(pair));
@@ -4758,7 +4719,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -4840,8 +4801,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
 
     // Without reallocation
     {
-        const auto test = []()
-        {
+        static const auto test = []() {
             constexpr usize reserved_size = 2;
             hashmap_type map;
             map.reserve(reserved_size);
@@ -4897,7 +4857,7 @@ GTEST_TEST(hashmap, add_pair_by_move_construct_non_bitwise_move_constructible_di
 
         // Non Constant
         {
-            const auto result = test();
+            const auto result = runtime_test(test);
 
             // First element is correctly added
             const auto first_element_result = std::get<0>(result);
@@ -4985,8 +4945,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_same_type)
     using value_type = i64;
     using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
-    const auto test = []() -> decltype(auto)
-    {
+    static const auto test = []() -> decltype(auto) {
         constexpr usize reserved_size = 2;
         hashmap_type map;
         map.reserve(reserved_size);
@@ -5000,7 +4959,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_same_type)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = runtime_test(test);
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));
@@ -5023,8 +4982,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_different_type)
     using other_value_type = u64;
     using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
-    const auto test = []()
-    {
+    static const auto test = []() {
         constexpr usize reserved_size = 2;
         hashmap_type map;
         map.reserve(reserved_size);
@@ -5039,7 +4997,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_bitwise_different_type)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = runtime_test(test);
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));
@@ -5060,8 +5018,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_same_type)
     using value_type = hud_test::non_bitwise_type;
     using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
-    const auto test = []()
-    {
+    static const auto test = []() {
         constexpr usize reserved_size = 2;
         i32 ptr[2];
         hashmap_type map;
@@ -5093,7 +5050,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_same_type)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = runtime_test(test);
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));
@@ -5138,8 +5095,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_different_type)
     using value_type = hud_test::non_bitwise_type;
     using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
-    const auto test = []()
-    {
+    static const auto test = []() {
         constexpr usize reserved_size = 2;
         i32 ptr[2];
         hashmap_type map;
@@ -5171,7 +5127,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_non_bitwise_different_type)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = runtime_test(test);
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));
@@ -5216,8 +5172,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_tuples)
     using value_type = hud::tuple<i32, u64, hud_test::non_bitwise_type>;
     using hashmap_type = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, hud_test::allocator_watcher<1>>;
 
-    const auto test = []()
-    {
+    static const auto test = []() {
         constexpr usize reserved_size = 2;
         i32 ptr[2];
         hashmap_type map;
@@ -5247,7 +5202,7 @@ GTEST_TEST(hashmap, add_by_piecewise_construct_tuples)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = runtime_test(test);
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));

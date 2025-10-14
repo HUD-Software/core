@@ -28,7 +28,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -90,7 +90,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
         // Non constant
         {
             {
-                const auto result = test({}, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -98,7 +98,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -106,7 +106,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -114,7 +114,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -122,7 +122,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -130,7 +130,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -194,7 +194,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -256,7 +256,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
         // Non constant
         {
             {
-                const auto result = test({}, 0, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -264,7 +264,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -272,7 +272,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -280,40 +280,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -322,7 +289,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             }
 
             {
-                const auto result = test({}, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
+
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -330,7 +298,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -338,7 +306,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -346,7 +314,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -355,7 +323,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             }
 
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -363,7 +331,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -371,7 +339,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -379,40 +347,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -421,7 +356,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             }
 
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -429,7 +364,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -437,7 +372,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -445,7 +380,73 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -667,7 +668,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -728,7 +729,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
         // Non constant
         {
             {
-                const auto result = test({}, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -736,7 +737,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -744,7 +745,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -752,7 +753,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -760,7 +761,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -768,7 +769,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -832,7 +833,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -892,7 +893,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
         // Non constant
         {
             {
-                const auto result = test({}, 0, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -900,7 +901,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -908,7 +909,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -916,40 +917,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -958,7 +926,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             }
 
             {
-                const auto result = test({}, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
+
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -966,7 +935,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -974,7 +943,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -982,7 +951,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -991,7 +960,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             }
 
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -999,7 +968,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1007,7 +976,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1015,40 +984,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1057,7 +993,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
             }
 
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1065,7 +1001,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1073,7 +1009,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1081,7 +1017,73 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_same_type_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1307,7 +1309,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hash_64<key_type_2>, hud::equal<key_type_2>, AllocatorType>;
@@ -1370,7 +1372,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
         // Non constant
         {
             {
-                const auto result = test({}, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type_2, value_type_2>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1378,7 +1380,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1386,7 +1388,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1394,7 +1396,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1402,7 +1404,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1410,7 +1412,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1474,7 +1476,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hash_64<key_type_2>, hud::equal<key_type_2>, AllocatorType>;
@@ -1536,7 +1538,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
         // Non constant
         {
             {
-                const auto result = test({}, 0, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1544,7 +1546,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1552,7 +1554,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1560,40 +1562,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1602,7 +1571,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             }
 
             {
-                const auto result = test({}, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
+
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1610,7 +1580,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1618,7 +1588,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1626,7 +1596,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1635,7 +1605,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             }
 
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1643,7 +1613,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1651,7 +1621,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1659,40 +1629,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1701,7 +1638,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             }
 
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1709,7 +1646,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1717,7 +1654,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1725,7 +1662,73 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -1951,7 +1954,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -2011,7 +2014,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
         // Non constant
         {
             {
-                const auto result = test({}, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type_2, value_type_2>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2019,7 +2022,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2027,7 +2030,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2035,7 +2038,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2043,7 +2046,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2051,7 +2054,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2115,7 +2118,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -2175,7 +2178,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
         // Non constant
         {
             {
-                const auto result = test({}, 0, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2183,7 +2186,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2191,7 +2194,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2199,40 +2202,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2241,7 +2211,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             }
 
             {
-                const auto result = test({}, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
+
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2249,7 +2220,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2257,7 +2228,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2265,7 +2236,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2274,7 +2245,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             }
 
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2282,7 +2253,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2290,7 +2261,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2298,40 +2269,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2340,7 +2278,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
             }
 
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2348,7 +2286,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2356,7 +2294,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2364,7 +2302,73 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_bitwise_copy_constructible_different_
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2586,7 +2590,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -2656,7 +2660,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
         // Non constant
         {
             {
-                const auto result = test({}, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2664,7 +2668,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2672,7 +2676,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2680,7 +2684,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2688,7 +2692,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2696,7 +2700,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2760,7 +2764,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -2830,7 +2834,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
         // Non constant
         {
             {
-                const auto result = test({}, 0, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2838,7 +2842,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2846,7 +2850,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2854,40 +2858,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2896,7 +2867,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             }
 
             {
-                const auto result = test({}, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
+
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2904,7 +2876,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2912,7 +2884,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2920,7 +2892,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2929,7 +2901,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             }
 
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2937,7 +2909,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2945,7 +2917,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2953,40 +2925,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -2995,7 +2934,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             }
 
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3003,7 +2942,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3011,7 +2950,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3019,7 +2958,73 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3241,7 +3246,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -3310,7 +3315,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
         // Non constant
         {
             {
-                const auto result = test({}, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3318,7 +3323,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3326,7 +3331,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3334,7 +3339,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3342,7 +3347,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3350,7 +3355,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3414,7 +3419,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type, value_type>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -3482,7 +3487,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
         // Non constant
         {
             {
-                const auto result = test({}, 0, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3490,7 +3495,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3498,7 +3503,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3506,40 +3511,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3548,7 +3520,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             }
 
             {
-                const auto result = test({}, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
+
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3556,7 +3529,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3564,7 +3537,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3572,7 +3545,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3581,7 +3554,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             }
 
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3589,7 +3562,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3597,7 +3570,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3605,40 +3578,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3647,7 +3587,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
             }
 
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3655,7 +3595,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3663,7 +3603,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3671,7 +3611,73 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_same_t
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3897,7 +3903,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hash_64<key_type>, hud::equal<key_type_2>, AllocatorType>;
@@ -3968,7 +3974,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
         // Non constant
         {
             {
-                const auto result = test({}, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type_2, value_type_2>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3976,7 +3982,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3984,7 +3990,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -3992,7 +3998,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4000,7 +4006,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4008,7 +4014,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4072,7 +4078,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             using ToAssignType = hud::hashmap<key_type_2, value_type_2, hud::hash_64<key_type>, hud::equal<key_type_2>, AllocatorType>;
@@ -4142,7 +4148,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
         // Non constant
         {
             {
-                const auto result = test({}, 0, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4150,7 +4156,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4158,7 +4164,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4166,40 +4172,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4208,7 +4181,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             }
 
             {
-                const auto result = test({}, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
+
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4216,7 +4190,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4224,7 +4198,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4232,7 +4206,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4241,7 +4215,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             }
 
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4249,7 +4223,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4257,7 +4231,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4265,40 +4239,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4307,7 +4248,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             }
 
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4315,7 +4256,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4323,7 +4264,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4331,7 +4272,73 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4557,7 +4564,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -4625,7 +4632,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
         // Non constant
         {
             {
-                const auto result = test({}, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type_2, value_type_2>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4633,7 +4640,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, {});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4641,7 +4648,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4649,7 +4656,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4657,7 +4664,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4665,7 +4672,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4729,7 +4736,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned, std::initializer_list<hud::pair<key_type_2, value_type_2>> elements_to_assign, usize extra_to_assign) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AllocatorType2 = hud_test::allocator_watcher_2<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
@@ -4797,7 +4804,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
         // Non constant
         {
             {
-                const auto result = test({}, 0, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4805,7 +4812,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4813,7 +4820,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4821,40 +4828,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, {}, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, {}, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4863,7 +4837,8 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             }
 
             {
-                const auto result = test({}, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
+
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4871,7 +4846,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4879,7 +4854,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4887,7 +4862,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test({}, 1, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> {}, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4896,7 +4871,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             }
 
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4904,7 +4879,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES2, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4912,7 +4887,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4920,40 +4895,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES2, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 0, TEST_VALUES, 1);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-                hud_assert_true(std::get<4>(result));
-            }
-            {
-                const auto result = test(TEST_VALUES, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4962,7 +4904,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
             }
 
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4970,7 +4912,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 0, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4978,7 +4920,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -4986,7 +4928,73 @@ GTEST_TEST(hashmap, copy_assign_hashmap_of_non_bitwise_copy_constructible_differ
                 hud_assert_true(std::get<4>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 1, TEST_VALUES, 1);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES2, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+                hud_assert_true(std::get<4>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 1, std::initializer_list<hud::pair<key_type_2, value_type_2>> TEST_VALUES, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -5205,7 +5213,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
     // Test without extra
     {
-        const auto test = [](const usize count_in_assigned, const usize count_to_assigned) {
+        static const auto test = [](const usize count_in_assigned, const usize count_to_assigned) {
             i32 *dtor_assigned_key_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
 
@@ -5313,70 +5321,63 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
         // Non constant
         {
             {
-                const auto result = test(0, 0);
+                const auto result = runtime_test(test, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 0);
+                const auto result = runtime_test(test, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 1);
+                const auto result = runtime_test(test, 0, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 1);
+                const auto result = runtime_test(test, 1, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 16);
+                const auto result = runtime_test(test, 0, 16);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 0);
+                const auto result = runtime_test(test, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 16);
+                const auto result = runtime_test(test, 16, 16);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 16);
+                const auto result = runtime_test(test, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-            {
-                const auto result = test(10, 16);
+                const auto result = runtime_test(test, 10, 16);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -5461,7 +5462,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
 
     // Test with extra
     {
-        const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned) {
+        static const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned) {
             i32 *dtor_assigned_key_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
 
@@ -5570,290 +5571,252 @@ GTEST_TEST(hashmap, copy_assign_hashmap_same_allocator_call_destructor_of_elemen
         // Non constant
         {
             {
-                const auto result = test(0, 0, 0, 0);
+                const auto result = runtime_test(test, 0, 0, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 0, 0);
+                const auto result = runtime_test(test, 0, 10, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 0, 0, 10);
+                const auto result = runtime_test(test, 0, 0, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 0, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(1, 0, 0, 0);
+                const auto result = runtime_test(test, 0, 10, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 10, 0, 0);
+                const auto result = runtime_test(test, 1, 0, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 0, 0, 10);
+                const auto result = runtime_test(test, 1, 10, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 10, 0, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(0, 0, 1, 0);
+                const auto result = runtime_test(test, 1, 0, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 1, 0);
+                const auto result = runtime_test(test, 1, 10, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 0, 1, 10);
+                const auto result = runtime_test(test, 0, 0, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 1, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(1, 0, 1, 0);
+                const auto result = runtime_test(test, 0, 10, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 0, 1, 10);
+                const auto result = runtime_test(test, 0, 0, 1, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 10, 1, 0);
+                const auto result = runtime_test(test, 0, 10, 1, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 10, 1, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(0, 0, 16, 0);
+                const auto result = runtime_test(test, 1, 0, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 16, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(0, 0, 16, 10);
+                const auto result = runtime_test(test, 1, 0, 1, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 16, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(16, 0, 0, 0);
+                const auto result = runtime_test(test, 1, 10, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 0, 0);
+                const auto result = runtime_test(test, 1, 10, 1, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 0, 0, 10);
+                const auto result = runtime_test(test, 0, 0, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 0, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(0, 0, 16, 0);
+                const auto result = runtime_test(test, 0, 10, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 16, 0);
+                const auto result = runtime_test(test, 0, 0, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 0, 16, 10);
+                const auto result = runtime_test(test, 0, 10, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 16, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(16, 0, 16, 0);
+                const auto result = runtime_test(test, 16, 0, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 16, 0);
+                const auto result = runtime_test(test, 16, 10, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 0, 16, 10);
+                const auto result = runtime_test(test, 16, 0, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 16, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(16, 0, 10, 0);
+                const auto result = runtime_test(test, 16, 10, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 10, 0);
+                const auto result = runtime_test(test, 16, 0, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 0, 10, 10);
+                const auto result = runtime_test(test, 16, 10, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 10, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(10, 0, 16, 0);
+                const auto result = runtime_test(test, 16, 0, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(10, 10, 16, 0);
+                const auto result = runtime_test(test, 16, 10, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(10, 0, 16, 10);
+                const auto result = runtime_test(test, 16, 0, 10, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(10, 10, 16, 10);
+                const auto result = runtime_test(test, 16, 10, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 16, 0, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 16, 10, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 10, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 10, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 10, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 10, 10, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -6164,7 +6127,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
     // Test without extra
     {
-        const auto test = [](const usize count_in_assigned, const usize count_to_assigned) {
+        static const auto test = [](const usize count_in_assigned, const usize count_to_assigned) {
             i32 *dtor_assigned_key_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
 
@@ -6272,70 +6235,70 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
         // Non constant
         {
             {
-                const auto result = test(0, 0);
+                const auto result = runtime_test(test, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 0);
+                const auto result = runtime_test(test, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 1);
+                const auto result = runtime_test(test, 0, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 1);
+                const auto result = runtime_test(test, 1, 1);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 16);
+                const auto result = runtime_test(test, 0, 16);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 0);
+                const auto result = runtime_test(test, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 16);
+                const auto result = runtime_test(test, 0, 16);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 16);
+                const auto result = runtime_test(test, 16, 16);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10);
+                const auto result = runtime_test(test, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(10, 16);
+                const auto result = runtime_test(test, 10, 16);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -6420,7 +6383,7 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
 
     // Test with extra
     {
-        const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned) {
+        static const auto test = [](const usize count_in_assigned, usize extra_in_assigned, const usize count_to_assigned, usize extra_to_assigned) {
             i32 *dtor_assigned_key_counter = nullptr;
             i32 *dtor_assigned_value_counter = nullptr;
 
@@ -6528,290 +6491,280 @@ GTEST_TEST(hashmap, copy_assign_hashmap_different_allocator_call_destructor_of_e
         // Non constant
         {
             {
-                const auto result = test(0, 0, 0, 0);
+                const auto result = runtime_test(test, 0, 0, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 0, 0);
+                const auto result = runtime_test(test, 0, 10, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 0, 0, 10);
+                const auto result = runtime_test(test, 0, 0, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 0, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(1, 0, 0, 0);
+                const auto result = runtime_test(test, 0, 10, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 10, 0, 0);
+                const auto result = runtime_test(test, 1, 0, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 0, 0, 10);
+                const auto result = runtime_test(test, 1, 10, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 10, 0, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(0, 0, 1, 0);
+                const auto result = runtime_test(test, 1, 0, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 1, 0);
+                const auto result = runtime_test(test, 1, 10, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 0, 1, 10);
+                const auto result = runtime_test(test, 0, 0, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 1, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(1, 0, 1, 0);
+                const auto result = runtime_test(test, 0, 10, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 0, 1, 10);
+                const auto result = runtime_test(test, 0, 0, 1, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 10, 1, 0);
+                const auto result = runtime_test(test, 0, 10, 1, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(1, 10, 1, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(0, 0, 16, 0);
+                const auto result = runtime_test(test, 1, 0, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 16, 0);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(0, 0, 16, 10);
+                const auto result = runtime_test(test, 1, 0, 1, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 16, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(16, 0, 0, 0);
+                const auto result = runtime_test(test, 1, 10, 1, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 0, 0);
+                const auto result = runtime_test(test, 1, 10, 1, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 0, 0, 10);
+                const auto result = runtime_test(test, 0, 0, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 0, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(0, 0, 16, 0);
+                const auto result = runtime_test(test, 0, 10, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 16, 0);
+                const auto result = runtime_test(test, 0, 0, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 0, 16, 10);
+                const auto result = runtime_test(test, 0, 10, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(0, 10, 16, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(16, 0, 16, 0);
+                const auto result = runtime_test(test, 16, 0, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 16, 0);
+                const auto result = runtime_test(test, 16, 10, 0, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 0, 16, 10);
+                const auto result = runtime_test(test, 16, 0, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 16, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(16, 0, 10, 0);
+                const auto result = runtime_test(test, 16, 10, 0, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 10, 0);
+                const auto result = runtime_test(test, 0, 0, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 0, 10, 10);
+                const auto result = runtime_test(test, 0, 10, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(16, 10, 10, 10);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-                hud_assert_true(std::get<3>(result));
-            }
-
-            {
-                const auto result = test(10, 0, 16, 0);
+                const auto result = runtime_test(test, 0, 0, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(10, 10, 16, 0);
+                const auto result = runtime_test(test, 0, 10, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(10, 0, 16, 10);
+                const auto result = runtime_test(test, 16, 0, 16, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
                 hud_assert_true(std::get<3>(result));
             }
             {
-                const auto result = test(10, 10, 16, 10);
+                const auto result = runtime_test(test, 16, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 16, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 16, 10, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 16, 0, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 16, 10, 10, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 16, 0, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 16, 10, 10, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 10, 0, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 10, 10, 16, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 10, 0, 16, 10);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+                hud_assert_true(std::get<3>(result));
+            }
+            {
+                const auto result = runtime_test(test, 10, 10, 16, 10);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -7125,7 +7078,7 @@ GTEST_TEST(vector, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned);
@@ -7177,20 +7130,19 @@ GTEST_TEST(vector, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
         // Non constant
         {
             {
-                const auto result = test({});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
             }
             {
-                const auto result = test(TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
             }
             {
-
-                const auto result = test(TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -7222,7 +7174,7 @@ GTEST_TEST(vector, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned, extra_assigned);
@@ -7274,38 +7226,37 @@ GTEST_TEST(vector, copy_assign_hashmap_of_bitwise_copy_assignable_to_self)
         // Non constant
         {
             {
-                const auto result = test({}, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
             }
             {
-                const auto result = test({}, 15);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {}, 15);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 0);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
             }
             {
-                const auto result = test(TEST_VALUES, 15);
-                hud_assert_true(std::get<0>(result));
-                hud_assert_true(std::get<1>(result));
-                hud_assert_true(std::get<2>(result));
-            }
-
-            {
-                const auto result = test(TEST_VALUES2, 0);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES, 15);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
             }
             {
-                const auto result = test(TEST_VALUES2, 15);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 0);
+                hud_assert_true(std::get<0>(result));
+                hud_assert_true(std::get<1>(result));
+                hud_assert_true(std::get<2>(result));
+            }
+            {
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2, 15);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -7365,7 +7316,7 @@ GTEST_TEST(vector, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
 
     // Test without extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned);
@@ -7437,19 +7388,19 @@ GTEST_TEST(vector, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
         // Non constant
         {
             {
-                const auto result = test({});
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> {});
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
             }
             {
-                const auto result = test(TEST_VALUES);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
             }
             {
-                const auto result = test(TEST_VALUES2);
+                const auto result = runtime_test(test, std::initializer_list<hud::pair<key_type, value_type>> TEST_VALUES2);
                 hud_assert_true(std::get<0>(result));
                 hud_assert_true(std::get<1>(result));
                 hud_assert_true(std::get<2>(result));
@@ -7481,7 +7432,7 @@ GTEST_TEST(vector, copy_assign_hashmap_of_non_bitwise_copy_assignable_to_self)
 
     // Test with extra
     {
-        const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned) {
+        static const auto test = [](std::initializer_list<hud::pair<key_type, value_type>> elements_in_assigned, usize extra_assigned) {
             using AllocatorType = hud_test::allocator_watcher<1>;
             using AssignedType = hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>, AllocatorType>;
             AssignedType assigned(elements_in_assigned, extra_assigned);

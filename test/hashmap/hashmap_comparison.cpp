@@ -6,8 +6,7 @@ GTEST_TEST(hashmap, equal_operator)
     using value_type = hud_test::non_bitwise_copy_constructible_type;
     using hashmap_type = hud::hashmap<key_type, value_type>;
 
-    const auto test = []()
-    {
+    static const auto test = []() {
         hashmap_type map;
         hashmap_type map_2;
         bool empty_empty_same = (map == map_2);
@@ -51,7 +50,7 @@ GTEST_TEST(hashmap, equal_operator)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = runtime_test(test);
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));
@@ -76,8 +75,7 @@ GTEST_TEST(hashmap, not_equal_operator)
     using value_type = hud_test::non_bitwise_copy_constructible_type;
     using hashmap_type = hud::hashmap<key_type, value_type>;
 
-    const auto test = []()
-    {
+    static const auto test = []() {
         hashmap_type map;
         hashmap_type map_2;
         bool empty_empty_same = !(map != map_2);
@@ -121,7 +119,7 @@ GTEST_TEST(hashmap, not_equal_operator)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = runtime_test(test);
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
         hud_assert_true(std::get<2>(result));

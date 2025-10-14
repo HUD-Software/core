@@ -22,8 +22,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
 
     // Test with default allocator and no extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
-        {
+        static auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
@@ -55,11 +54,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<key_type, value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -92,8 +91,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
 
     // Test with default allocator with extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
@@ -125,11 +123,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<key_type, value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -174,8 +172,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
 
     // Test with default allocator and no extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
@@ -207,11 +204,12 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<other_key_type, other_value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -244,8 +242,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
 
     // Test with default allocator and with extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
@@ -277,11 +274,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_bitwise_copy_constructibl
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<other_key_type, other_value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -324,16 +321,14 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
     // Test with default allocator and no extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
             bool key_1_is_correct = key_1_inserted;
-            if (key_1_inserted)
-            {
+            if (key_1_inserted) {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
@@ -347,8 +342,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
             bool key_2_is_correct = key_2_inserted;
-            if (key_2_inserted)
-            {
+            if (key_2_inserted) {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
@@ -362,8 +356,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
             bool key_3_is_correct = key_3_inserted;
-            if (key_3_inserted)
-            {
+            if (key_3_inserted) {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
@@ -387,11 +380,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<key_type, value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -424,16 +417,14 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
     // Test with default allocator with extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
             bool key_1_is_correct = key_1_inserted;
-            if (key_1_inserted)
-            {
+            if (key_1_inserted) {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
@@ -447,8 +438,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
             bool key_2_is_correct = key_2_inserted;
-            if (key_2_inserted)
-            {
+            if (key_2_inserted) {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
@@ -462,8 +452,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
             bool key_3_is_correct = key_3_inserted;
-            if (key_3_inserted)
-            {
+            if (key_3_inserted) {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
@@ -487,11 +476,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<key_type, value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -535,16 +524,14 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
     // Test with default allocator and no extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
             bool key_1_is_correct = key_1_inserted;
-            if (key_1_inserted)
-            {
+            if (key_1_inserted) {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
@@ -558,8 +545,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
             bool key_2_is_correct = key_2_inserted;
-            if (key_2_inserted)
-            {
+            if (key_2_inserted) {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
@@ -573,8 +559,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
             bool key_3_is_correct = key_3_inserted;
-            if (key_3_inserted)
-            {
+            if (key_3_inserted) {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
@@ -598,11 +583,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<other_key_type, other_value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -635,16 +620,14 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
     // Test with default allocator with extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
             bool key_1_is_correct = key_1_inserted;
-            if (key_1_inserted)
-            {
+            if (key_1_inserted) {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
@@ -658,8 +641,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
             bool key_2_is_correct = key_2_inserted;
-            if (key_2_inserted)
-            {
+            if (key_2_inserted) {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
@@ -673,8 +655,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
             bool key_3_is_correct = key_3_inserted;
-            if (key_3_inserted)
-            {
+            if (key_3_inserted) {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
@@ -698,11 +679,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_copy_construc
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<other_key_type, other_value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -745,16 +726,14 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
 
     // Test with default allocator and no extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
             bool key_1_is_correct = key_1_inserted;
-            if (key_1_inserted)
-            {
+            if (key_1_inserted) {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
@@ -770,8 +749,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
             bool key_2_is_correct = key_2_inserted;
-            if (key_2_inserted)
-            {
+            if (key_2_inserted) {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
@@ -787,8 +765,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
             bool key_3_is_correct = key_3_inserted;
-            if (key_3_inserted)
-            {
+            if (key_3_inserted) {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
@@ -814,11 +791,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<key_type, value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -851,16 +828,14 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
 
     // Test with default allocator with extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<key_type, value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
             bool key_1_is_correct = key_1_inserted;
-            if (key_1_inserted)
-            {
+            if (key_1_inserted) {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
@@ -876,8 +851,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
             bool key_2_is_correct = key_2_inserted;
-            if (key_2_inserted)
-            {
+            if (key_2_inserted) {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
@@ -893,8 +867,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
             bool key_3_is_correct = key_3_inserted;
-            if (key_3_inserted)
-            {
+            if (key_3_inserted) {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
@@ -920,11 +893,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<key_type, value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -968,16 +941,14 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
 
     // Test with default allocator and no extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
             bool key_1_is_correct = key_1_inserted;
-            if (key_1_inserted)
-            {
+            if (key_1_inserted) {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
@@ -993,8 +964,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
             bool key_2_is_correct = key_2_inserted;
-            if (key_2_inserted)
-            {
+            if (key_2_inserted) {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
@@ -1010,8 +980,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
             bool key_3_is_correct = key_3_inserted;
-            if (key_3_inserted)
-            {
+            if (key_3_inserted) {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
@@ -1037,11 +1006,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<other_key_type, other_value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));
@@ -1074,16 +1043,14 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
 
     // Test with default allocator with extra
     {
-        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer)
-        {
+        auto test_default_allocator = [](std::initializer_list<hud::pair<other_key_type, other_value_type>> initializer) {
             hud::hashmap<key_type, value_type, hud::hash_64<key_type>, hud::equal<key_type>> map {initializer, 200};
 
             // Validate we have {1,11}
             const auto &it_1 = map.find(1);
             bool key_1_inserted = it_1 != map.end();
             bool key_1_is_correct = key_1_inserted;
-            if (key_1_inserted)
-            {
+            if (key_1_inserted) {
                 // Validate key is correctly added
                 key_1_is_correct &= it_1->key() == 1;
                 key_1_is_correct &= it_1->key().copy_constructor_count() == 1;
@@ -1099,8 +1066,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
             const auto &it_2 = map.find(2);
             bool key_2_inserted = it_2 != map.end();
             bool key_2_is_correct = key_2_inserted;
-            if (key_2_inserted)
-            {
+            if (key_2_inserted) {
                 // Validate key is correctly added
                 key_2_is_correct &= it_2->key() == 2;
                 key_2_is_correct &= it_2->key().copy_constructor_count() == 1;
@@ -1116,8 +1082,7 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
             const auto &it_3 = map.find(3);
             bool key_3_inserted = it_3 != map.end();
             bool key_3_is_correct = key_3_inserted;
-            if (key_3_inserted)
-            {
+            if (key_3_inserted) {
                 // Validate key is correctly added
                 key_3_is_correct &= it_3->key() == 3;
                 key_3_is_correct &= it_3->key().copy_constructor_count() == 1;
@@ -1143,11 +1108,11 @@ GTEST_TEST(hashmap, construct_with_initializer_list_of_non_bitwise_move_construc
 
         // Non Constant
         {
-            const auto result = test_default_allocator({
-                {1, 11},
-                {1, 00},
-                {2, 22},
-                {3, 33}
+            const auto result = runtime_test(test_default_allocator, std::initializer_list<hud::pair<other_key_type, other_value_type>> {
+                                                                         {1, 11},
+                                                                         {1, 00},
+                                                                         {2, 22},
+                                                                         {3, 33}
             });
             hud_assert_true(std::get<0>(result));
             hud_assert_true(std::get<1>(result));

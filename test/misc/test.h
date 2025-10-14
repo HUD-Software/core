@@ -7,17 +7,12 @@ namespace hud_test
     void assert_true(A condition, const char *const condition_str, int line, const char *file) noexcept
     {
         // LCOV_EXCL_START
-        try
-        {
+        try {
             hud::debugger::break_here_if(!condition);
             GTEST_ASSERT_TRUE(condition) << file << "(" << line << "): " << condition_str << " != true";
-        }
-        catch (const std::exception &e)
-        {
+        } catch (const std::exception &e) {
             GTEST_FAIL() << "Exception is throw: " << e.what();
-        }
-        catch (...)
-        {
+        } catch (...) {
             GTEST_FAIL();
         }
         // LCOV_EXCL_STOP
@@ -27,17 +22,12 @@ namespace hud_test
     void assert_false(A condition, const char *const condition_str, int line, const char *file) noexcept
     {
         // LCOV_EXCL_START
-        try
-        {
+        try {
             hud::debugger::break_here_if(condition);
             GTEST_ASSERT_FALSE(condition) << file << "(" << line << "): " << condition_str << " != false";
-        }
-        catch (const std::exception &e)
-        {
+        } catch (const std::exception &e) {
             GTEST_FAIL() << "Exception is throw: " << e.what();
-        }
-        catch (...)
-        {
+        } catch (...) {
             GTEST_FAIL();
         }
         // LCOV_EXCL_STOP
@@ -47,17 +37,12 @@ namespace hud_test
     void assert_eq(A &&a, B &&b, const char *const a_str, const char *const b_str, int line, const char *file) noexcept
     {
         // LCOV_EXCL_START
-        try
-        {
+        try {
             hud::debugger::break_here_if(!(a == b));
             GTEST_ASSERT_EQ(a, b) << file << "(" << line << "): " << a_str << " == " << b_str;
-        }
-        catch (const std::exception &e)
-        {
+        } catch (const std::exception &e) {
             GTEST_FAIL() << "Exception is throw: " << e.what();
-        }
-        catch (...)
-        {
+        } catch (...) {
             GTEST_FAIL();
         }
         // LCOV_EXCL_STOP
@@ -67,17 +52,12 @@ namespace hud_test
     void assert_ge(A &&a, B &&b, const char *const a_str, const char *const b_str, int line, const char *file) noexcept
     {
         // LCOV_EXCL_START
-        try
-        {
+        try {
             hud::debugger::break_here_if(!(a >= b));
             GTEST_ASSERT_GE(a, b) << file << "(" << line << "): " << a_str << " == " << b_str;
-        }
-        catch (const std::exception &e)
-        {
+        } catch (const std::exception &e) {
             GTEST_FAIL() << "Exception is throw: " << e.what();
-        }
-        catch (...)
-        {
+        } catch (...) {
             GTEST_FAIL();
         }
         // LCOV_EXCL_STOP
@@ -87,17 +67,12 @@ namespace hud_test
     void assert_ne(A &&a, B &&b, const char *const a_str, const char *const b_str, int line, const char *file) noexcept
     {
         // LCOV_EXCL_START
-        try
-        {
+        try {
             hud::debugger::break_here_if(!(a != b));
             GTEST_ASSERT_NE(a, b) << file << "(" << line << "): " << a_str << " != " << b_str;
-        }
-        catch (const std::exception &e)
-        {
+        } catch (const std::exception &e) {
             GTEST_FAIL() << "Exception is throw: " << e.what();
-        }
-        catch (...)
-        {
+        } catch (...) {
             GTEST_FAIL();
         }
         // LCOV_EXCL_STOP
@@ -110,4 +85,9 @@ namespace hud_test
 #define hud_assert_ge(a, b) hud_test::assert_ge(a, b, #a, #b, __LINE__, __FILE__)
 #define hud_assert_ne(a, b) hud_test::assert_ne(a, b, #a, #b, __LINE__, __FILE__)
 
+template<typename F, typename... Args>
+auto runtime_test(F &&f, Args &&...args) -> decltype(std::forward<F>(f)(std::forward<Args>(args)...))
+{
+    return std::forward<F>(f)(std::forward<Args>(args)...);
+}
 #endif // HD_INC_TEST_MISC_TEST_H

@@ -8,8 +8,7 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
     using value_type = hud_test::non_bitwise_type;
     using hashmap_type = hud::hashmap<key_type, value_type>;
 
-    const auto test = []()
-    {
+    const auto test = []() {
         hashmap_type map;
 
         const usize COUNT = 4;
@@ -29,21 +28,17 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
         {
             hashmap_type map;
             map.reserve(COUNT);
-            for (i32 i = 0; i < COUNT; i++)
-            {
+            for (i32 i = 0; i < COUNT; i++) {
                 map.add(hud::tag_piecewise_construct, hud::forward_as_tuple(i, dtor_assigned_key_counter + i), hud::forward_as_tuple(i, dtor_assigned_value_counter + i));
             }
 
             // Ensure element's destructors are not called
-            for (i32 i = 0; i < COUNT; i++)
-            {
+            for (i32 i = 0; i < COUNT; i++) {
                 const auto it = map.find(i);
-                if (*it->key().destructor_counter() != 0)
-                {
+                if (*it->key().destructor_counter() != 0) {
                     all_keys_destructor_are_not_called = false;
                 }
-                if (*it->value().destructor_counter() != 0)
-                {
+                if (*it->value().destructor_counter() != 0) {
                     all_values_destructor_are_not_called = false;
                 }
             }
@@ -57,7 +52,7 @@ GTEST_TEST(hashmap, destructor_call_elements_destructors)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = runtime_test(test);
         hud_assert_true(std::get<0>(result));
         hud_assert_true(std::get<1>(result));
     }
