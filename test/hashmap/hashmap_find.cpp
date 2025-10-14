@@ -127,7 +127,6 @@ GTEST_TEST(hashmap, find_in_hashmap_non_trivial_type)
                 is_find_ok = false;
             }
         }
-
         // Find elements that exists
         for (u32 index = 0; index < max; index++) {
             const auto it = map.find(KeyType(index));
@@ -149,7 +148,6 @@ GTEST_TEST(hashmap, find_in_hashmap_non_trivial_type)
                 is_find_ok = false;
             }
         }
-
         return is_find_ok;
     };
 
