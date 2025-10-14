@@ -156,46 +156,46 @@ GTEST_TEST(string, constructor_from_char8)
         const char8 txt_russian[] = RUSSIAN_LIPSUM_1;
         hud::optional<hud::string> str_russian_opt = hud::make_string(txt_russian, sizeof(txt_russian));
         return std::tuple {
-            str_opt.has_value(),                                                                                       // 0
-            str_opt->byte_count() == sizeof(txt),                                                                      // 1
-            str_opt->max_byte_count() == sizeof(txt),                                                                  // 2
-            hud::memory::is_memory_compare_equal(str_opt->bytes(), txt, sizeof(txt)),                                  // 3
-            str_arabic_opt.has_value(),                                                                                // 4
-            str_arabic_opt->byte_count() == sizeof(ARABIC_LIPSUM),                                                     // 5
-            str_arabic_opt->max_byte_count() == sizeof(ARABIC_LIPSUM),                                                 // 6
-            hud::memory::is_memory_compare_equal(str_arabic_opt->bytes(), ARABIC_LIPSUM, sizeof(ARABIC_LIPSUM)),       // 7
-            str_chinese_opt.has_value(),                                                                               // 8
-            str_chinese_opt->byte_count() == sizeof(CHINESE_LIPSUM),                                                   // 9
-            str_chinese_opt->max_byte_count() == sizeof(CHINESE_LIPSUM),                                               // 10
-            hud::memory::is_memory_compare_equal(str_chinese_opt->bytes(), CHINESE_LIPSUM, sizeof(CHINESE_LIPSUM)),    // 11
-            str_emoji_opt.has_value(),                                                                                 // 12
-            str_emoji_opt->byte_count() == sizeof(EMOJI_LIPSUM),                                                       // 13
-            str_emoji_opt->max_byte_count() == sizeof(EMOJI_LIPSUM),                                                   // 14
-            hud::memory::is_memory_compare_equal(str_emoji_opt->bytes(), EMOJI_LIPSUM, sizeof(EMOJI_LIPSUM)),          // 15
-            str_hebrew_opt.has_value(),                                                                                // 16
-            str_hebrew_opt->byte_count() == sizeof(HEBREW_LIPSUM),                                                     // 17
-            str_hebrew_opt->max_byte_count() == sizeof(HEBREW_LIPSUM),                                                 // 18
-            hud::memory::is_memory_compare_equal(str_hebrew_opt->bytes(), HEBREW_LIPSUM, sizeof(HEBREW_LIPSUM)),       // 19
-            str_hindi_opt.has_value(),                                                                                 // 20
-            str_hindi_opt->byte_count() == sizeof(HINDI_LIPSUM),                                                       // 21
-            str_hindi_opt->max_byte_count() == sizeof(HINDI_LIPSUM),                                                   // 22
-            hud::memory::is_memory_compare_equal(str_hindi_opt->bytes(), HINDI_LIPSUM, sizeof(HINDI_LIPSUM)),          // 23
-            str_japanese_opt.has_value(),                                                                              // 24
-            str_japanese_opt->byte_count() == sizeof(JAPANESE_LIPSUM),                                                 // 25
-            str_japanese_opt->max_byte_count() == sizeof(JAPANESE_LIPSUM),                                             // 26
-            hud::memory::is_memory_compare_equal(str_japanese_opt->bytes(), JAPANESE_LIPSUM, sizeof(JAPANESE_LIPSUM)), // 27
-            str_korean_opt.has_value(),                                                                                // 28
-            str_korean_opt->byte_count() == sizeof(KOREAN_LIPSUM),                                                     // 29
-            str_korean_opt->max_byte_count() == sizeof(KOREAN_LIPSUM),                                                 // 30
-            hud::memory::is_memory_compare_equal(str_korean_opt->bytes(), KOREAN_LIPSUM, sizeof(KOREAN_LIPSUM)),       // 31
-            str_latin_opt.has_value(),                                                                                 // 32
-            str_latin_opt->byte_count() == sizeof(LATIN_LIPSUM),                                                       // 33
-            str_latin_opt->max_byte_count() == sizeof(LATIN_LIPSUM),                                                   // 34
-            hud::memory::is_memory_compare_equal(str_latin_opt->bytes(), LATIN_LIPSUM, sizeof(LATIN_LIPSUM)),          // 35
-            str_russian_opt.has_value(),                                                                               // 36
-            str_russian_opt->byte_count() == sizeof(RUSSIAN_LIPSUM),                                                   // 37
-            str_russian_opt->max_byte_count() == sizeof(RUSSIAN_LIPSUM),                                               // 38
-            hud::memory::is_memory_compare_equal(str_russian_opt->bytes(), RUSSIAN_LIPSUM, sizeof(RUSSIAN_LIPSUM)),    // 39
+            str_opt.has_value(),                                                                                           // 0
+            str_opt->byte_count() == sizeof(txt),                                                                          // 1
+            str_opt->max_byte_count() == sizeof(txt),                                                                      // 2
+            hud::memory::is_memory_compare_equal(str_opt->bytes(), txt, sizeof(txt)),                                      // 3
+            str_arabic_opt.has_value(),                                                                                    // 4
+            str_arabic_opt->byte_count() == sizeof(ARABIC_LIPSUM_1),                                                       // 5
+            str_arabic_opt->max_byte_count() == sizeof(ARABIC_LIPSUM_1),                                                   // 6
+            hud::memory::is_memory_compare_equal(str_arabic_opt->bytes(), ARABIC_LIPSUM_1, sizeof(ARABIC_LIPSUM_1)),       // 7
+            str_chinese_opt.has_value(),                                                                                   // 8
+            str_chinese_opt->byte_count() == sizeof(CHINESE_LIPSUM_1),                                                     // 9
+            str_chinese_opt->max_byte_count() == sizeof(CHINESE_LIPSUM_1),                                                 // 10
+            hud::memory::is_memory_compare_equal(str_chinese_opt->bytes(), CHINESE_LIPSUM_1, sizeof(CHINESE_LIPSUM_1)),    // 11
+            str_emoji_opt.has_value(),                                                                                     // 12
+            str_emoji_opt->byte_count() == sizeof(EMOJI_LIPSUM),                                                           // 13
+            str_emoji_opt->max_byte_count() == sizeof(EMOJI_LIPSUM),                                                       // 14
+            hud::memory::is_memory_compare_equal(str_emoji_opt->bytes(), EMOJI_LIPSUM, sizeof(EMOJI_LIPSUM)),              // 15
+            str_hebrew_opt.has_value(),                                                                                    // 16
+            str_hebrew_opt->byte_count() == sizeof(HEBREW_LIPSUM_1),                                                       // 17
+            str_hebrew_opt->max_byte_count() == sizeof(HEBREW_LIPSUM_1),                                                   // 18
+            hud::memory::is_memory_compare_equal(str_hebrew_opt->bytes(), HEBREW_LIPSUM_1, sizeof(HEBREW_LIPSUM_1)),       // 19
+            str_hindi_opt.has_value(),                                                                                     // 20
+            str_hindi_opt->byte_count() == sizeof(HINDI_LIPSUM_1),                                                         // 21
+            str_hindi_opt->max_byte_count() == sizeof(HINDI_LIPSUM_1),                                                     // 22
+            hud::memory::is_memory_compare_equal(str_hindi_opt->bytes(), HINDI_LIPSUM_1, sizeof(HINDI_LIPSUM_1)),          // 23
+            str_japanese_opt.has_value(),                                                                                  // 24
+            str_japanese_opt->byte_count() == sizeof(JAPANESE_LIPSUM_1),                                                   // 25
+            str_japanese_opt->max_byte_count() == sizeof(JAPANESE_LIPSUM_1),                                               // 26
+            hud::memory::is_memory_compare_equal(str_japanese_opt->bytes(), JAPANESE_LIPSUM_1, sizeof(JAPANESE_LIPSUM_1)), // 27
+            str_korean_opt.has_value(),                                                                                    // 28
+            str_korean_opt->byte_count() == sizeof(KOREAN_LIPSUM_1),                                                       // 29
+            str_korean_opt->max_byte_count() == sizeof(KOREAN_LIPSUM_1),                                                   // 30
+            hud::memory::is_memory_compare_equal(str_korean_opt->bytes(), KOREAN_LIPSUM_1, sizeof(KOREAN_LIPSUM_1)),       // 31
+            str_latin_opt.has_value(),                                                                                     // 32
+            str_latin_opt->byte_count() == sizeof(LATIN_LIPSUM_1),                                                         // 33
+            str_latin_opt->max_byte_count() == sizeof(LATIN_LIPSUM_1),                                                     // 34
+            hud::memory::is_memory_compare_equal(str_latin_opt->bytes(), LATIN_LIPSUM_1, sizeof(LATIN_LIPSUM_1)),          // 35
+            str_russian_opt.has_value(),                                                                                   // 36
+            str_russian_opt->byte_count() == sizeof(RUSSIAN_LIPSUM_1),                                                     // 37
+            str_russian_opt->max_byte_count() == sizeof(RUSSIAN_LIPSUM_1),                                                 // 38
+            hud::memory::is_memory_compare_equal(str_russian_opt->bytes(), RUSSIAN_LIPSUM_1, sizeof(RUSSIAN_LIPSUM_1)),    // 39
 
         };
     };

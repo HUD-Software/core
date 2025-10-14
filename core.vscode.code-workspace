@@ -29,7 +29,7 @@
         "rust-analyzer.checkOnSave": true,
         "dotnetAcquisitionExtension.enableTelemetry": false,
         "cmake.ctest.allowParallelJobs": false,
-        "cmake.parallelJobs": 1,
+        "cmake.parallelJobs": 0,
     },
     "extensions": {
         "recommendations": [
