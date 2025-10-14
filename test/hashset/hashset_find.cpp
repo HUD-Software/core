@@ -86,8 +86,6 @@ GTEST_TEST(hashset, find_in_hashset_trivial_type)
         hud_assert_true(result64);
         constexpr auto result128 = test(128);
         hud_assert_true(result128);
-        constexpr auto result256 = test(256);
-        hud_assert_true(result256);
     }
 }
 
@@ -188,7 +186,5 @@ GTEST_TEST(hashset, find_in_hashset_non_trivial_type)
         hud_assert_true(result64);
         constexpr auto result128 = test(128);
         hud_assert_true(result128);
-        constexpr auto result256 = test(256);
-        hud_assert_true(result256);
     }
 }

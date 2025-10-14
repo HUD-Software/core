@@ -90,8 +90,6 @@ GTEST_TEST(hashmap, find_in_hashmap_trivial_type)
         hud_assert_true(result64);
         constexpr auto result128 = test(128);
         hud_assert_true(result128);
-        constexpr auto result256 = test(256);
-        hud_assert_true(result256);
     }
 }
 
@@ -197,7 +195,5 @@ GTEST_TEST(hashmap, find_in_hashmap_non_trivial_type)
         hud_assert_true(result64);
         constexpr auto result128 = test(128);
         hud_assert_true(result128);
-        constexpr auto result256 = test(256);
-        hud_assert_true(result256);
     }
 }

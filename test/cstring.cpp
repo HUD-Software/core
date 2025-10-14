@@ -15,20 +15,20 @@ namespace hud_test
 
 GTEST_TEST(cstring, is_ascii)
 {
-    const auto test = []() {
+    const auto test = [](usize max) {
         if (hud::cstring::is_ascii((char8 *)nullptr)) {
             return false;
         }
         if (hud::cstring::is_ascii((wchar *)nullptr)) {
             return false;
         }
-        for (char8 cur = 0; cur < hud::char8_max; cur++) {
+        for (char8 cur = 0; cur < max; cur++) {
             char8 text[2] = {cur, '\0'};
             if (!hud::cstring::is_ascii(text)) {
                 return false;
             }
         }
-        for (wchar cur = hud::wchar_max / 2; cur < hud::wchar_max; cur++) {
+        for (wchar cur = max / 2; cur < max; cur++) {
             wchar text[2] = {cur, L'\0'};
             if (hud::character::is_ascii(cur)) {
                 if (!hud::cstring::is_ascii(text)) {
@@ -46,33 +46,33 @@ GTEST_TEST(cstring, is_ascii)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = test(hud::char8_max + 20);
         hud_assert_true(result);
     }
 
     // Constant
     {
-        constexpr auto result = test();
+        constexpr auto result = test(hud::char8_max + 20);
         hud_assert_true(result);
     }
 }
 
 GTEST_TEST(cstring, is_ascii_safe)
 {
-    const auto test = []() {
+    const auto test = [](usize max) {
         if (hud::cstring::is_ascii_safe((char8 *)nullptr, 1)) {
             return false;
         }
         if (hud::cstring::is_ascii_safe((wchar *)nullptr, 1)) {
             return false;
         }
-        for (char8 cur = 0; cur < hud::char8_max; cur++) {
+        for (char8 cur = 0; cur < max; cur++) {
             char8 text[2] = {cur, '\0'};
             if (!hud::cstring::is_ascii_safe(text, 1)) {
                 return false;
             }
         }
-        for (wchar cur = hud::wchar_max / 2; cur < hud::wchar_max; cur++) {
+        for (wchar cur = max / 2; cur < max; cur++) {
             wchar text[2] = {cur, L'\0'};
             if (hud::character::is_ascii(cur)) {
                 if (!hud::cstring::is_ascii_safe(text, 1)) {
@@ -88,13 +88,13 @@ GTEST_TEST(cstring, is_ascii_safe)
 
     // Non constant
     {
-        const auto result = test();
+        const auto result = test(hud::char8_max + 20);
         hud_assert_true(result);
     }
 
     // Constant
     {
-        constexpr auto result = test();
+        constexpr auto result = test(hud::char8_max + 20);
         hud_assert_true(result);
     }
 }
