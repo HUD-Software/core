@@ -17,7 +17,7 @@ jobs:
       - name: Generate
         run: cmake.exe --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Release -DCMAKE_C_COMPILER:FILEPATH="x86_64-w64-mingw32-gcc.exe" -DCMAKE_CXX_COMPILER:FILEPATH="x86_64-w64-mingw32-g++.exe" -Btarget -G "MinGW Makefiles"
       - name: Build
-        run: cmake --build target --parallel
+        run: cmake --build target
       - name: Test
         run: ctest --test-dir target -C Release -T test --output-on-failure -VV
       - name: Test Report
