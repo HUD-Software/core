@@ -264,14 +264,21 @@ GTEST_TEST(traits, is_bitwise_copyable)
 #if defined(HD_HOST_WINDOWS)
     hud_assert_true((hud::is_bitwise_copyable_v<wchar, char16>));
     hud_assert_false((hud::is_bitwise_copyable_v<wchar, char32>));
+    hud_assert_false((hud::is_bitwise_copyable_v<wchar, iptr>));
+    hud_assert_false((hud::is_bitwise_copyable_v<wchar, uptr>));
 #else
     hud_assert_false((hud::is_bitwise_copyable_v<wchar, char16>));
     hud_assert_true((hud::is_bitwise_copyable_v<wchar, char32>));
+#if defined(HD_TARGET_32_BITS)
+    hud_assert_true((hud::is_bitwise_copyable_v<wchar, iptr>));
+    hud_assert_true((hud::is_bitwise_copyable_v<wchar, uptr>));
+#else
+    hud_assert_false((hud::is_bitwise_copyable_v<wchar, iptr>));
+    hud_assert_false((hud::is_bitwise_copyable_v<wchar, uptr>));
+#endif
 #endif
     hud_assert_false((hud::is_bitwise_copyable_v<wchar, f32>));
     hud_assert_false((hud::is_bitwise_copyable_v<wchar, f64>));
-    hud_assert_false((hud::is_bitwise_copyable_v<wchar, iptr>));
-    hud_assert_false((hud::is_bitwise_copyable_v<wchar, uptr>));
 
     // char16
     hud_assert_false((hud::is_bitwise_copyable_v<char16, i8>));
@@ -373,12 +380,17 @@ GTEST_TEST(traits, is_bitwise_copyable)
 #if defined(HD_TARGET_32_BITS)
     hud_assert_true((hud::is_bitwise_copyable_v<iptr, u32>));
     hud_assert_false((hud::is_bitwise_copyable_v<iptr, u64>));
+#if defined(HD_HOST_WINDOWS)
+    hud_assert_false((hud::is_bitwise_copyable_v<iptr, wchar>));
+#else
+    hud_assert_true((hud::is_bitwise_copyable_v<iptr, wchar>));
+#endif
 #else
     hud_assert_false((hud::is_bitwise_copyable_v<iptr, u32>));
     hud_assert_true((hud::is_bitwise_copyable_v<iptr, u64>));
+    hud_assert_false((hud::is_bitwise_copyable_v<iptr, wchar>));
 #endif
     hud_assert_false((hud::is_bitwise_copyable_v<iptr, char8>));
-    hud_assert_false((hud::is_bitwise_copyable_v<iptr, wchar>));
     hud_assert_false((hud::is_bitwise_copyable_v<iptr, char16>));
 #if defined(HD_TARGET_32_BITS)
     hud_assert_true((hud::is_bitwise_copyable_v<iptr, char32>));
@@ -405,12 +417,17 @@ GTEST_TEST(traits, is_bitwise_copyable)
 #if defined(HD_TARGET_32_BITS)
     hud_assert_true((hud::is_bitwise_copyable_v<uptr, u32>));
     hud_assert_false((hud::is_bitwise_copyable_v<uptr, u64>));
+#if defined(HD_HOST_WINDOWS)
+    hud_assert_false((hud::is_bitwise_copyable_v<uptr, wchar>));
+#else
+    hud_assert_true((hud::is_bitwise_copyable_v<uptr, wchar>));
+#endif
 #else
     hud_assert_false((hud::is_bitwise_copyable_v<uptr, u32>));
     hud_assert_true((hud::is_bitwise_copyable_v<uptr, u64>));
+    hud_assert_false((hud::is_bitwise_copyable_v<uptr, wchar>));
 #endif
     hud_assert_false((hud::is_bitwise_copyable_v<uptr, char8>));
-    hud_assert_false((hud::is_bitwise_copyable_v<uptr, wchar>));
     hud_assert_false((hud::is_bitwise_copyable_v<uptr, char16>));
 #if defined(HD_TARGET_32_BITS)
     hud_assert_true((hud::is_bitwise_copyable_v<uptr, char32>));

@@ -29,7 +29,7 @@ namespace hud::common
         using f64 = double; // 64 bits f64 (IEEE 754)
 
 #if defined(HD_TARGET_32_BITS)
-                            // Pointer types
+        // Pointer types
         using uptr = u32; // unsigned integer same size as a pointer
         using iptr = i32; // signed integer same size as a pointer
 
