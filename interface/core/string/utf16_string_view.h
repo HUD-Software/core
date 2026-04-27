@@ -7,16 +7,15 @@
 
 namespace hud
 {
-    template<typename char_t, usize char_size = sizeof(char_t)>
-    struct utf16_string_view;
-
     template<typename char_t>
-    struct utf16_string_view<char_t, 2>
+    struct utf16_string_view
     {
 
         /** Type of the underlying character. */
         using char_type = char_t;
 
+        /** UTF16 string view only support 2 byte char_type. */
+        static_assert(sizeof(char_t) == 2, "utf16_string_view requires char_t with sizeof(char_t) == 2 (UTF-16)");
         /**
          * Returns the length of the string (number of characters before the null terminator).
          * @return The length of the string in characters.
@@ -53,7 +52,7 @@ namespace hud
          * @return true if both strings are identical, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool equals(const utf16_string_view<char_type, 1> &v) const noexcept
+        constexpr bool equals(const utf16_string_view<char_type> &v) const noexcept
         {
             return hud::cstring::equals(ptr_, v.ptr_);
         }
@@ -65,7 +64,7 @@ namespace hud
          * @return true if the first n characters match, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool equals_partial(const utf16_string_view<char_type, 1> &v, const usize n) const noexcept
+        constexpr bool equals_partial(const utf16_string_view<char_type> &v, const usize n) const noexcept
         {
             return hud::cstring::equals_partial(ptr_, v.ptr_, n);
         }
@@ -88,7 +87,7 @@ namespace hud
          * @return Index of the first occurrence, or -1 if not found.
          */
         [[nodiscard]]
-        constexpr isize find_first(const utf16_string_view<char_type, 1> &to_find) const noexcept
+        constexpr isize find_first(const utf16_string_view<char_type> &to_find) const noexcept
         {
             return find_first(to_find.data());
         }
@@ -122,7 +121,7 @@ namespace hud
          * @return true if the substring is found, false otherwise.
          */
         [[nodiscard]]
-        constexpr bool contains(const utf16_string_view<char_type, 1> &to_find) const noexcept
+        constexpr bool contains(const utf16_string_view<char_type> &to_find) const noexcept
         {
             return contains(to_find.data());
         }

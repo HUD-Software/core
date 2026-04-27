@@ -11,9 +11,6 @@
 
 namespace hud
 {
-    template<typename char_t, usize char_size = sizeof(char_t)>
-    struct cstring_view;
-
     /**
      * An immutable view of a C-style, null-terminated string.
      * This view does not own the underlying string and does not allow modification
@@ -21,10 +18,13 @@ namespace hud
      * the string content.
      */
     template<typename char_t>
-    struct cstring_view<char_t, 1>
+    struct cstring_view
     {
         /** Type of the underlying character. */
         using char_type = char_t;
+
+        /** CString string view only support 1 byte char_type. */
+        static_assert(sizeof(char_t) == 1, "cstring_view requires char_t with sizeof(char_t) == 1");
 
         /**
          * Constructs a cstring_view from a C-style string pointer.
